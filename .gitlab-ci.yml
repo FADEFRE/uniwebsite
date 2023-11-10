@@ -1,17 +1,19 @@
 stages:
     - test
     - build
+    - deploy
 
 test_frontend:
     stage: test
     image: public.ecr.aws/docker/library/node:lts-alpine
-    script: 
+    script:
         - cd frontend/modulecrediting
         - npm install
         - npm run test
 
 build_frontend:
     stage: build
+    needs: ["test_frontend"]
     image: public.ecr.aws/docker/library/node:lts-alpine
     script:
         - cd frontend/modulecrediting
