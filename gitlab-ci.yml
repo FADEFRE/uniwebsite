@@ -5,3 +5,18 @@ stages:
 test_frontend:
     stage: test
     image: public.ecr.aws/docker/library/node:lts-alpine
+    script: 
+        - cd frontend/modulecrediting
+        - npm install
+        - npm run test
+
+build_frontend:
+    stage: build
+    image: public.ecr.aws/docker/library/node:lts-alpine
+    script:
+        - cd frontend/modulecrediting
+        - npm install
+        - npm run build
+    artifacts:
+        paths:
+            - frontend/modulecrediting/dist
