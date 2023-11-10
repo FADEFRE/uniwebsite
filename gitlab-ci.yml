@@ -1,0 +1,7 @@
+stages:
+    - test
+    - build
+
+test_frontend:
+    stage: test
+    image: public.ecr.aws/docker/library/node:lts-alpine
