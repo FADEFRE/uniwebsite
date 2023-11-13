@@ -1,0 +1,14 @@
+version: "3.7"
+
+services:
+  frontend:
+    container_name: vue-frontend
+    build:
+      context: ./frontend/modulecrediting/
+      dockerfile: Dockerfile
+      target: development
+    ports:
+      - 8080:8080
+    volumes:
+      - ./frontend/modulecrediting/:/app
+    restart: unless-stopped

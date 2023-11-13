@@ -1,0 +1,9 @@
+version: "3.7"
+
+services: 
+  frontend:
+    container_name: vue-frontend
+    image: japark999/vue-frontend
+    ports:
+      - 172.26.92.39:3000:80
+    restart: unless-stopped

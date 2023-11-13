@@ -4,21 +4,41 @@ stages:
     - deploy
 
 test_frontend:
-    stage: test
-    image: public.ecr.aws/docker/library/node:lts-alpine
-    script:
-        - cd frontend/modulecrediting
-        - npm install
-        - npm run test
+  stage: test
+  image: public.ecr.aws/docker/library/node:lts-alpine
+  script:
+      - cd frontend/modulecrediting
+      - npm install
+      - npm run test
 
 build_frontend:
-    stage: build
-    needs: ["test_frontend"]
-    image: public.ecr.aws/docker/library/node:lts-alpine
+  stage: build
+  needs: ["test_frontend"]
+  image: public.ecr.aws/docker/library/node:lts-alpine
+  script:
+      - cd frontend/modulecrediting
+      - npm install
+      - npm run build
+
+artifacts:
+  paths:
+      - frontend/modulecrediting/dist
+
+deploy_frontend:
+    stage: deploy
+    needs: ["build_frontend"]
+    when: manual 
+    image: public.ecr.aws/docker/library/nginx:alpine
+    variables:
+      DOCKER_HOST: "ssh://swtp@172.26.92.91"
+    before_script:
+      - apk update
+      - apk add openssh docker docker-compose
+      - eval $(ssh-agent -s)
+      - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+      - mkdir -p ~/.ssh && chmod 700 ~/.ssh
+      - echo "$SSH_KNOWN_HOSTS" >> ~/.ssh/known_hosts
+      - chmod 644 ~/.ssh/known_hosts
     script:
-        - cd frontend/modulecrediting
-        - npm install
-        - npm run build
-    artifacts:
-        paths:
-            - frontend/modulecrediting/dist
+      - docker-compose down -rmi all
+      - docker-compose -f docker-compose-prod.yml up -d
