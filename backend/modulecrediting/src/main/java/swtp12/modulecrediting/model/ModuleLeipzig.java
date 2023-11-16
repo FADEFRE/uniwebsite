@@ -10,20 +10,21 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class Pdf {
+public class ModuleLeipzig {   
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
-    private int refNumber;
-    private byte[] pdfData;
+    private String number;
+    private String studiengang;
 
-    public Pdf(String name, int refNumber, byte[] pdfData) {
+    public ModuleLeipzig(String name, String number, String studiengang) {
         this.name = name;
-        this.refNumber = refNumber;
-        this.pdfData = pdfData;
+        this.number = number;
+        this.studiengang = studiengang;
     }
 
-    public Pdf() {
-    } 
+    public ModuleLeipzig() {
+    }
+
 }

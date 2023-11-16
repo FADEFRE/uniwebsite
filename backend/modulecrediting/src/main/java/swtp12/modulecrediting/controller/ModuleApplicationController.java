@@ -6,21 +6,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import swtp12.modulecrediting.model.ModulAntrag;
-import swtp12.modulecrediting.repository.ModulAntragRepository;
+import swtp12.modulecrediting.model.ModuleApplication;
+import swtp12.modulecrediting.repository.ModuleApplicationRepository;
 
 @RestController
-@RequestMapping("/modulantrag")
-public class ModulAntragController {
+@RequestMapping("/moduleapplication")
+public class ModuleApplicationController {
     
-    private final ModulAntragRepository modulAntragRepository;
+    private final ModuleApplicationRepository modulAntragRepository;
 
-    public ModulAntragController(ModulAntragRepository modulAntragRepository) {
+    public ModuleApplicationController(ModuleApplicationRepository modulAntragRepository) {
         this.modulAntragRepository = modulAntragRepository;
     }
 
     @GetMapping
-    List<ModulAntrag> all() {
+    List<ModuleApplication> all() {
         return modulAntragRepository.findAll();
     }
 

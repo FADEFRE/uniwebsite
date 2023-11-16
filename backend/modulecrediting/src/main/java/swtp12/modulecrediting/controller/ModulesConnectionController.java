@@ -6,21 +6,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import swtp12.modulecrediting.model.ModulsConnection;
-import swtp12.modulecrediting.repository.ModulsConnectionRepository;
+import swtp12.modulecrediting.model.ModulesConnection;
+import swtp12.modulecrediting.repository.ModulesConnectionRepository;
 
 @RestController
-@RequestMapping("/modulsconnection")
-public class ModulsConnectionController {
+@RequestMapping("/modulesconnection")
+public class ModulesConnectionController {
     
-    private final ModulsConnectionRepository modulsConnectionRepository;
+    private final ModulesConnectionRepository modulsConnectionRepository;
 
-    public ModulsConnectionController(ModulsConnectionRepository modulsConnectionRepository) {
+    public ModulesConnectionController(ModulesConnectionRepository modulsConnectionRepository) {
         this.modulsConnectionRepository = modulsConnectionRepository;
     }
 
     @GetMapping
-    List<ModulsConnection> all() {
+    List<ModulesConnection> all() {
         return modulsConnectionRepository.findAll();
     }
 

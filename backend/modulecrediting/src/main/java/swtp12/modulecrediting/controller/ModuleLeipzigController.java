@@ -1,3 +1,4 @@
+
 package swtp12.modulecrediting.controller;
 
 import java.util.List;
@@ -6,21 +7,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import swtp12.modulecrediting.model.ModulLeipzig;
-import swtp12.modulecrediting.repository.ModulLeipzigRepository;
+import swtp12.modulecrediting.model.ModuleLeipzig;
+import swtp12.modulecrediting.repository.ModuleLeipzigRepository;
 
 @RestController
-@RequestMapping("/modulleipzig")
-public class ModulLeipzigController {
+@RequestMapping("/moduleleipzig")
+public class ModuleLeipzigController {
     
-    private final ModulLeipzigRepository modulLeipzigRepository;
+    private final ModuleLeipzigRepository modulLeipzigRepository;
 
-    public ModulLeipzigController(ModulLeipzigRepository modulLeipzigRepository) {
+    public ModuleLeipzigController(ModuleLeipzigRepository modulLeipzigRepository) {
         this.modulLeipzigRepository = modulLeipzigRepository;
     }
 
     @GetMapping
-    List<ModulLeipzig> all() {
+    List<ModuleLeipzig> all() {
         return modulLeipzigRepository.findAll();
     }
 

@@ -4,8 +4,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import swtp12.modulecrediting.model.ModulLeipzig;
-import swtp12.modulecrediting.repository.ModulLeipzigRepository;
+import swtp12.modulecrediting.model.ModuleLeipzig;
+import swtp12.modulecrediting.repository.ModuleLeipzigRepository;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -20,16 +20,16 @@ import java.util.Optional;
 public class DataLoader implements CommandLineRunner {
 
     private final ObjectMapper objectMapper;
-    private final ModulLeipzigRepository modulLeipzigRepo;
+    private final ModuleLeipzigRepository modulLeipzigRepo;
 
-    public DataLoader(ObjectMapper objectMapper, ModulLeipzigRepository modulLeipzigRepo) {
+    public DataLoader(ObjectMapper objectMapper, ModuleLeipzigRepository modulLeipzigRepo) {
         this.objectMapper = objectMapper;
         this.modulLeipzigRepo = modulLeipzigRepo;
     }
 
     @Override
     public void run(String... args) {
-        List<ModulLeipzig> modulsLeipzigs = new ArrayList<>();
+        List<ModuleLeipzig> modulsLeipzigs = new ArrayList<>();
         JsonNode json;
 
         try (InputStream inputStream = TypeReference.class.getResourceAsStream("/module_liste.json")) {
@@ -55,11 +55,10 @@ public class DataLoader implements CommandLineRunner {
                 .orElseThrow(() -> new IllegalArgumentException("Invalid JSON Object"));
     }
 
-    private ModulLeipzig createModulsFromNode(JsonNode modul, String courseName) {
+    private ModuleLeipzig createModulsFromNode(JsonNode modul, String courseName) {
         String name = modul.get("name").asText();
         String number = modul.get("number").asText();
-        long id = -1;
-        return new ModulLeipzig(id, name, number, courseName);
+        return new ModuleLeipzig(name, number, courseName);
     }
 
 }
