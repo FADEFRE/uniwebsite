@@ -1,6 +1,8 @@
 package swtp12.modulecrediting.controller;
 
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,12 +13,9 @@ import swtp12.modulecrediting.repository.NutzerRepository;
 @RestController
 @RequestMapping("/nutzer")
 public class NutzerController {
-    
-    private final NutzerRepository nutzerRepository;
 
-    public NutzerController(NutzerRepository nutzerRepository) {
-        this.nutzerRepository = nutzerRepository;
-    }
+    @Autowired
+    private NutzerRepository nutzerRepository;
 
     @GetMapping
     List<Nutzer> all(){
