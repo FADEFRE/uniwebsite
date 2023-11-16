@@ -1,6 +1,5 @@
 package swtp12.modulecrediting.service;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import swtp12.modulecrediting.dto.ModuleBlockDTO;
 
