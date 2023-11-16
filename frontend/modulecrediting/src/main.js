@@ -2,6 +2,10 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 
+const app = createApp(App)
+    .use(router)
+
+// PrimeVue setup
 import PrimeVue from 'primevue/config'
 import Dropdown from 'primevue/dropdown'
 import Panel from 'primevue/panel'
@@ -13,9 +17,7 @@ import FileUpload from "primevue/fileupload";
 import 'primevue/resources/themes/nova/theme.css'
 import 'primeicons/primeicons.css'
 
-const app = createApp(App)
-    .use(router)
-    .use(PrimeVue)
+app.use(PrimeVue)
     .component('Dropdown', Dropdown)
     .component('Panel', Panel)
     .component('Button', Button)
@@ -23,4 +25,5 @@ const app = createApp(App)
     .component('InputText', InputText)
     .component('FileUpload', FileUpload)
 
+// app mounting
 app.mount('#app')
