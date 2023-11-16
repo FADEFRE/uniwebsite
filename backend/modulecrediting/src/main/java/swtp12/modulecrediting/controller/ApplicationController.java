@@ -1,28 +1,23 @@
 package swtp12.modulecrediting.controller;
 
-import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import swtp12.modulecrediting.dto.ModuleBlockDTO;
+import swtp12.modulecrediting.service.ApplicationService;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import swtp12.modulecrediting.model.Application;
-import swtp12.modulecrediting.repository.ApplicationRepository;
+import java.util.ArrayList;
 
 @RestController
-@RequestMapping("/application")
+@CrossOrigin
 public class ApplicationController {
-    
-    private final ApplicationRepository antragRepository;
 
-    public ApplicationController(ApplicationRepository antragRepository) {
-        this.antragRepository = antragRepository;
+    @Autowired
+    private ApplicationService applicationService;
+
+
+    @PostMapping(value = "/application")
+    public ResponseEntity<Integer> createApplication(@ModelAttribute ArrayList<ModuleBlockDTO> moduleBlockDTOList) {
+        return ResponseEntity.ok(applicationService.createApplication(moduleBlockDTOList));
     }
-
-    @GetMapping
-    List<Application> all() {
-        return antragRepository.findAll();
-    }
-
-
 }
