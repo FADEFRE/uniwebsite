@@ -26,4 +26,24 @@ spring.datasource.password=<your_password>
 // this line says the database schema will always be created after starting and deleted after stopping // other config possible
 spring.jpa.hibernate.ddl-auto=create-drop
 
+## API ENDPOINTS
+
+http://localhost:8090/modules-leipzig
+ -> GET: all internal modules leipzig
+
+http://localhost:8090/applications
+
+ -> POST: post new application
+            String moduleName;
+            String course;
+            String university;
+            Integer points;
+            String pointSystem;
+            MultipartFile description;
+            String comment;     
+
+http://localhost:8090/pdf-documents/{id}
+
+ -> GET: get single pdf file
+
 ## Add your files
