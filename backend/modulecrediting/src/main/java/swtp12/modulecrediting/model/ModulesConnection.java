@@ -16,8 +16,7 @@ import java.util.List;
     private Long id;
     private String decision; //Enum maybe
 
-    @ElementCollection
-    private List<String> comments; // wieso array?
+    private String comment; // wieso array?
 
 
     // OneToOne
@@ -28,8 +27,8 @@ import java.util.List;
     //private List<ModuleLeipzig> moduleLeipzigList;
 
 
-    public ModulesConnection(String decision, List<String> comments) {
+    public ModulesConnection(String decision, String comment) {
         this.decision = decision;
-        this.comments = comments;
+        this.comment = comment;
     }
 }

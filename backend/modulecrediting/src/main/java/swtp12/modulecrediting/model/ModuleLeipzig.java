@@ -7,6 +7,7 @@ import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import java.util.List;
 
 @Entity
 @Getter
@@ -14,14 +15,14 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ModuleLeipzig {   
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue
     private Long id;
     private String moduleName;
     private String moduleCode;
     private String course;
 
     // @ManyToMany
-    // private ModulesConnection modulesConnection;
+    // private List<ModulesConnection> modulesConnection;
 
 
     public ModuleLeipzig(String moduleName, String moduleCode, String course) {

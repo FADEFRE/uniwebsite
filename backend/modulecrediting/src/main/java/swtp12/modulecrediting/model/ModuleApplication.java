@@ -23,12 +23,13 @@ public class ModuleApplication {
 
     private String university;
 
-    private List<String> commentApplicant;
+    private String commentApplicant;
+
 
     //private PdfDocument pdfDocument;
 
 
-    public ModuleApplication(String name, Integer points, String pointSystem, String university, List<String> commentApplicant) {
+    public ModuleApplication(String name, Integer points, String pointSystem, String university, String commentApplicant) {
         this.name = name;
         this.points = points;
         this.pointSystem = pointSystem;
