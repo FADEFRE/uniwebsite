@@ -23,7 +23,7 @@ build_frontend:
 
   script:
       - /kaniko/executor
-        --context "frontend/modulecrediting"
-        --dockerfile "frontend/modulecrediting/Dockerfile"
+        --context "${CI_PROJECT_DIR}/frontend/modulecrediting"
+        --dockerfile "${CI_PROJECT_DIR}/frontend/modulecrediting/Dockerfile"
         --destination "${CI_REGISTRY_IMAGE}:latest"
 
