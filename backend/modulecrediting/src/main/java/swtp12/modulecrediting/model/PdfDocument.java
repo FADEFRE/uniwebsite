@@ -5,25 +5,26 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
-public class Pdf {
+@NoArgsConstructor
+public class PdfDocument {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
-    private int refNumber;
     private byte[] pdfData;
 
-    public Pdf(String name, int refNumber, byte[] pdfData) {
+    // @OneToOne
+    //private ModuleApplication moduleApplication;
+
+
+    public PdfDocument(String name, byte[] pdfData) {
         this.name = name;
-        this.refNumber = refNumber;
         this.pdfData = pdfData;
     }
-
-    public Pdf() {
-    } 
 }

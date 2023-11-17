@@ -7,18 +7,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import swtp12.modulecrediting.model.Nutzer;
-import swtp12.modulecrediting.repository.NutzerRepository;
+import swtp12.modulecrediting.model.PdfDocument;
+import swtp12.modulecrediting.repository.PdfDocumentRepository;
 
 @RestController
-@RequestMapping("/nutzer")
-public class NutzerController {
+@RequestMapping("/pdf-documents")
+public class PdfDocumentContoller {
 
     @Autowired
-    private NutzerRepository nutzerRepository;
+    private PdfDocumentRepository pdfDocumentRepository;
 
     @GetMapping
-    List<Nutzer> all(){
-        return nutzerRepository.findAll();
+    List<PdfDocument> getPdfDocuments() {
+        return pdfDocumentRepository.findAll();
     }
+
 }

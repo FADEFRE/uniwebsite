@@ -10,8 +10,8 @@ public class ModuleBlockDTO {
     private String moduleName;
     private String course;
     private String university;
-    private Integer creditPoints;
-    private String creditSystem;
+    private Integer points;
+    private String pointSystem;
     private MultipartFile description;
     private String comment;
 }

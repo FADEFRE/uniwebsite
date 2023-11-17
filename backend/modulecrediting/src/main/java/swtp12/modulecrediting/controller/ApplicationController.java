@@ -12,12 +12,13 @@ import java.util.ArrayList;
 
 @RestController
 @CrossOrigin
+@RequestMapping("/applications")
 public class ApplicationController {
 
     @Autowired
     private ApplicationService applicationService;
 
-    @PostMapping(value = "/application")
+    @PostMapping
     public ResponseEntity<Integer> createApplication(@ModelAttribute ArrayList<ModuleBlockDTO> moduleBlockDTOList) {
         return ResponseEntity.ok(applicationService.createApplication(moduleBlockDTOList));
     }

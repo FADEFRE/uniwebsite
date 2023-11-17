@@ -12,12 +12,11 @@ import swtp12.modulecrediting.model.ModuleLeipzig;
 import swtp12.modulecrediting.repository.ModuleLeipzigRepository;
 
 @RestController
-@RequestMapping("/moduleleipzig")
+@RequestMapping("/modules-leipzig")
 public class ModuleLeipzigController {
 
     @Autowired
     private ModuleLeipzigRepository modulLeipzigRepository;
-
 
     @GetMapping
     List<ModuleLeipzig> getModulesLeipzig() {

@@ -3,8 +3,8 @@ package swtp12.modulecrediting.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import org.springframework.stereotype.Repository;
-import swtp12.modulecrediting.model.Pdf;
+import swtp12.modulecrediting.model.User;
 @Repository
-public interface PdfRepository extends JpaRepository<Pdf, Long>{
+public interface UserRepository extends JpaRepository<User, Long>{
     
 }
