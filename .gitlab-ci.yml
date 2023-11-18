@@ -69,6 +69,6 @@ deploy:
     - echo "${SSH_PRIVATE_KEY}" >> ~/.ssh/keyto_vm
     - chmod 644 ~/.ssh/known_hosts
   script:
-    - ssh -o StrictHostKeyChecking=no -i ~/.ssh/keyto_vm swtp@${SSH_KNOWN_HOSTS} "touch testingtilting"
+    - ssh -o StrictHostKeyChecking=no -i ~/.ssh/keyto_vm swtp@${SSH_KNOWN_HOSTS} "echo test"
     - scp ${CI_PROJECT_DIR}/docker-compose.yml swtp@${SSH_KNOWN_HOSTS}:/home/swtp/
     - ssh -o StrictHostKeyChecking=no -i ~/.ssh/keyto_vm swtp@${SSH_KNOWN_HOSTS} "cd ~/ && docker-compose up -d"

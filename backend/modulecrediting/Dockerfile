@@ -2,7 +2,8 @@
 FROM public.ecr.aws/docker/library/alpine:latest as development
 WORKDIR /app
 COPY pom.xml ./ 
-EXPOSE 8081
+EXPOSE 8080
+CMD ["mvn", "spring-boot:run"]
 
 # build
 FROM development as build
