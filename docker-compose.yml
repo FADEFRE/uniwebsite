@@ -2,14 +2,12 @@ version: "3.7"
 
 services:
   frontend:
-    container_name: vue-frontend
-    build:
-      context: ./frontend/modulecrediting/
-      dockerfile: Dockerfile
-      target: development
+    container_name: frontend
+    image: ${CI_REGISTRY_IMAGE}/swtp_frontend:latest
     ports:
       - 8080:8080
-    volumes:
-      - ./frontend/modulecrediting/:/app
-    restart: unless-stopped
-
+  backend:
+    container_name: backend
+    image: ${CI_REGISTRY_IMAGE}/swtp_backend:latest
+    ports: 
+      - 8080:8080

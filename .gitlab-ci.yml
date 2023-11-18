@@ -57,7 +57,7 @@ deploy_frontend:
   stage: deploy
   needs: ["build_frontend"]
   when: manual
-  image: public.ecr.aws/docker/library/nginx:alpine
+  image: alpine
   variables: 
     DOCKER_HOST: "ssh://$SERVER_USER@SERVER_IP"
   before_script:
