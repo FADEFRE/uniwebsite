@@ -53,11 +53,11 @@ build_backend:
       --destination "${CI_REGISTRY_IMAGE}/swtp_backend:latest"
 
 
-deploy_frontend:
+deploy:
   stage: deploy
-  needs: ["build_frontend"]
+  needs: ["build_frontend", "build_backend"]
   when: manual
-  image: alpine
+  image: public.ecr.aws/docker/library/nginx:alpine
   variables: 
     DOCKER_HOST: "ssh://$SERVER_USER@SERVER_IP"
   before_script:
@@ -69,5 +69,4 @@ deploy_frontend:
     - echo "${SSH_KNOWN_HOSTS}" >> ~/.ssh/known_hosts
     - chmod 644 ~/.ssh/known_hosts
   script:
-    - docker-compose down -rmi all
     - docker-compose -f docker-compose.yml up -d

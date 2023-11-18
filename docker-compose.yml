@@ -10,4 +10,4 @@ services:
     container_name: backend
     image: ${CI_REGISTRY_IMAGE}/swtp_backend:latest
     ports: 
-      - 8080:8080
+      - 8081:8080
