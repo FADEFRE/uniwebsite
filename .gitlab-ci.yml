@@ -56,7 +56,6 @@ build_backend:
 deploy:
   stage: deploy
   needs: ["build_frontend", "build_backend"]
-  when: manual
   image: public.ecr.aws/docker/library/nginx:alpine
   variables: 
     DOCKER_HOST: "ssh://$SERVER_USER@SERVER_IP"
@@ -67,6 +66,9 @@ deploy:
     - echo "${SSH_PRIVATE_KEY}" | tr -d '\r' | ssh-add -
     - mkdir -p ~/.ssh && chmod 700 ~/.ssh
     - echo "${SSH_KNOWN_HOSTS}" >> ~/.ssh/known_hosts
+    - echo "${SSH_PRIVATE_KEY}" >> ~/.ssh/keyto_vm
     - chmod 644 ~/.ssh/known_hosts
   script:
-    - docker-compose -f docker-compose.yml up -d
+    - ssh -o StrictHostKeyChecking=no -i ~/.ssh/keyto_vm swtp@${SSH_KNOWN_HOSTS} "touch testingtilting"
+    - scp ${CI_PROJECT_DIR}/docker-compose.yml swtp@${SSH_KNOWN_HOSTS}:/home/swtp/
+    - ssh -o StrictHostKeyChecking=no -i ~/.ssh/keyto_vm swtp@${SSH_KNOWN_HOSTS} "cd ~/ && docker-compose up -d"
