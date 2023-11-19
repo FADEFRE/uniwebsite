@@ -10,7 +10,6 @@ import PrimeVue from 'primevue/config'
 import Dropdown from 'primevue/dropdown'
 import Panel from 'primevue/panel'
 import Button from 'primevue/button'
-import Divider from 'primevue/divider'
 import InputText from 'primevue/inputtext'
 import FileUpload from "primevue/fileupload";
 
@@ -21,7 +20,6 @@ app.use(PrimeVue)
     .component('Dropdown', Dropdown)
     .component('Panel', Panel)
     .component('Button', Button)
-    .component('Divider', Divider)
     .component('InputText', InputText)
     .component('FileUpload', FileUpload)
 
