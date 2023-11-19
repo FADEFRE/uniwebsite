@@ -16,5 +16,5 @@ ENTRYPOINT ["mvn", "package"]
 FROM build as production
 WORKDIR /app
 COPY --from=build /app/target/modulecrediting-0.0.1-SNAPSHOT.jar application.jar
-EXPOSE 8070
+EXPOSE 8090
 ENTRYPOINT ["java", "-jar", "application.jar"]
