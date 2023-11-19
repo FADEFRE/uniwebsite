@@ -1,8 +1,12 @@
 <script setup>
 import ModuleApplicationData from "@/components/ModuleApplicationData.vue";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 
-const dataRef = ref(null)
+const dataRef = ref(0)
+
+const moduleName = computed(() => {
+  return dataRef.value?.moduleName ? dataRef.value.moduleName : 'Neues Modul'
+})
 </script>
 
 <template>
@@ -10,8 +14,7 @@ const dataRef = ref(null)
     <Panel toggleable>
 
       <template #header>
-        <h2 v-if="dataRef.moduleName">{{ dataRef.moduleName }}</h2>
-        <h2 v-else>Neues Modul</h2>
+        <h2>{{ moduleName }}</h2>
       </template>
 
       <template #icons>
