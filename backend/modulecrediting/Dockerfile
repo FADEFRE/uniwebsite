@@ -2,8 +2,7 @@
 FROM public.ecr.aws/docker/library/alpine:latest as development
 WORKDIR /app
 COPY pom.xml ./ 
-EXPOSE 8080
-CMD ["mvn", "spring-boot:run"]
+EXPOSE 8090
 
 # build
 FROM development as build
@@ -12,6 +11,8 @@ COPY . .
 RUN mvn clean package
 
 # production
-FROM build as production
+FROM public.ecr.aws/docker/library/alpine:latest as production
+EXPOSE 8090
+RUN apk --no-cache add maven openjdk17
 RUN mkdir -p app/target
 COPY --from=build /app/target /app/target
