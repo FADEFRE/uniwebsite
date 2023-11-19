@@ -7,9 +7,24 @@ services:
     image: docker.io/japark999/swtp_frontend:latest
     ports:
       - 8080:8080
+    networks: 
+      - swtp_network
 
   backend:
     container_name: backend
     image: docker.io/japark999/swtp_backend:latest
     ports: 
       - 8090:8090
+    networks: 
+      - swtp_network
+
+  nginx:
+    container_name: nginx
+    image: docker.io/japark999/swtp_nginx:latest
+    ports: 
+      - 9000:8080
+    networks: 
+      - swtp_network
+
+networks:
+  swtp_network:
