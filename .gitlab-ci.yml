@@ -1,10 +1,10 @@
 services:
   - postgres:13.1-alpine
 variables:
-  - POSTGRES_DB: postgres
-  - POSTGRES_USER: postgres
-  - POSTGRES_PASSWORD: "123"
-  - POSTGRES_HOST_AUTH_METHOD: trust
+  POSTGRES_DB: postgres
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: "123"
+  POSTGRES_HOST_AUTH_METHOD: trust
 
 
 stages:
