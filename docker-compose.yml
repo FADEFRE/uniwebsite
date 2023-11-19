@@ -1,13 +1,26 @@
 version: "3.7"
 
 services:
+
   frontend:
     container_name: frontend
     image: docker.io/japark999/swtp_frontend:latest
     ports:
       - 8080:8080
+
   backend:
     container_name: backend
     image: docker.io/japark999/swtp_backend:latest
     ports: 
-      - 8081:8081
+      - 8090:8090
+
+  db:
+    env_file:
+      - .env.dev
+    container_name: postgres_db
+    image: postgres
+    volumes:
+      - ./postgres-database:/var/lib/postgresql/data
+    restart: always
+    ports:
+      - 127.0.0.1:5432
