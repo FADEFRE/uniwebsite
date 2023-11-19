@@ -81,4 +81,4 @@ deploy:
   script:
     - ssh -o StrictHostKeyChecking=no -i ~/.ssh/keyto_vm swtp@${SSH_KNOWN_HOSTS} "echo test"
     - scp ${CI_PROJECT_DIR}/docker-compose.yml swtp@${SSH_KNOWN_HOSTS}:/home/swtp/
-    - ssh -o StrictHostKeyChecking=no -i ~/.ssh/keyto_vm swtp@${SSH_KNOWN_HOSTS} "cd ~/ && docker-compose up -d"
+    - ssh -o StrictHostKeyChecking=no -i ~/.ssh/keyto_vm swtp@${SSH_KNOWN_HOSTS} "cd ~/ && docker-compose down --rmi all && docker-compose up -d"
