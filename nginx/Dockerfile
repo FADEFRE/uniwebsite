@@ -1,8 +1,0 @@
-FROM  public.ecr.aws/docker/library/nginx:alpine
-
-WORKDIR /etc/nginx
-
-COPY ./nginx.conf ./conf.d/default.conf
-EXPOSE 8080
-ENTRYPOINT ["nginx"]
-CMD ["-g", "daemon off;"]

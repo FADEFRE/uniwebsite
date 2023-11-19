@@ -4,26 +4,34 @@ services:
 
   frontend:
     container_name: frontend
-    image: docker.io/japark999/swtp_frontend:latest
+    image: docker.io/japark999/swtp_frontend
     ports:
-      - 8080:8080
+      - 9000:80
     networks: 
       - swtp_network
 
   backend:
     container_name: backend
-    image: docker.io/japark999/swtp_backend:latest
+    image: docker.io/japark999/swtp_backend
+    depends_on: 
+      - db
     ports: 
-      - 8090:8090
+      - 8090:8070
     networks: 
       - swtp_network
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/compose-postgres
+      - SPRING_DATASOURCE_USERNAME=compose-postgres
+      - SPRING_DATASOURCE_PASSWORD=compose-postgres
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
 
-  nginx:
-    container_name: nginx
-    image: docker.io/japark999/swtp_nginx:latest
-    ports: 
-      - 9000:8080
-    networks: 
+  db:
+    image: 'postgres:13.1-alpine'
+    container_name: db
+    environment:
+      - POSTGRES_USER=compose-postgres
+      - POSTGRES_PASSWORD=compose-postgres
+    networks:
       - swtp_network
 
 networks:

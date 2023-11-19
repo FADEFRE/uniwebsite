@@ -1,18 +1,20 @@
 # development
-FROM public.ecr.aws/docker/library/alpine:latest as development
+FROM maven:3-openjdk-17-slim as development
+RUN mkdir /app
 WORKDIR /app
-COPY pom.xml ./ 
-EXPOSE 8090
+ENTRYPOINT ["mvn", "spring-boot:run"]
+
 
 # build
 FROM development as build
-RUN apk --no-cache add maven openjdk17
+WORKDIR /app
 COPY . .
-RUN mvn clean package
+RUN mvn clean package -DskipTests
+ENTRYPOINT ["mvn", "package"]
 
 # production
-FROM public.ecr.aws/docker/library/alpine:latest as production
-EXPOSE 8090
-RUN apk --no-cache add maven openjdk17
-RUN mkdir -p app/target
-COPY --from=build /app/target /app/target
+FROM build as production
+WORKDIR /app
+COPY --from=build /app/target/modulecrediting-0.0.1-SNAPSHOT.jar application.jar
+EXPOSE 8070
+ENTRYPOINT ["java", "-jar", "application.jar"]
