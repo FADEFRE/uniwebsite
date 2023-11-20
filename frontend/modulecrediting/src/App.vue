@@ -23,15 +23,14 @@ import { RouterLink, RouterView } from 'vue-router'
 .header-container {
   height: 7vh;
   display: flex;
+
+  border-width: 1px;
+  border-color: #aaaaaa;
+  border-bottom-style: solid;
 }
 
 .logo {
   height: 100%;
-}
-
-.router-container {
-  display: inline;
-  justify-content: right;
 }
 
 .router-button {

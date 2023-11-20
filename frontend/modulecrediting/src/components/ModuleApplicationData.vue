@@ -24,17 +24,24 @@ defineExpose({moduleName})
     <div class="module-container" id="external">
 
       <h3 class="module-heading">Anzurechnendes Modul:</h3>
+      <!-- Module Name -->
       <div class="text-input-container">
         <p>Modulname:</p>
         <InputText type="text" v-model="moduleName"/>
       </div>
+      <!-- University -->
       <div class="text-input-container">
         <p>Universität:</p>
         <InputText type="text" v-model="university"/>
       </div>
+      <!-- Credit Points -->
       <div class="text-input-container">
         <p>Leistungspunkte:</p>
         <InputText type="text" v-model="creditPoints"/>
+      </div>
+      <!-- File Upload -->
+      <div class="file-input-container">
+        <input type="file" accept=".pdf">
       </div>
 
     </div>
@@ -44,6 +51,7 @@ defineExpose({moduleName})
 
       <h3 class="module-heading">Module der Uni Leipzig:</h3>
       <div class="internal-module-container">
+        <!-- Internal Module Selection -->
         <div v-for="n in selectedInternalModules.length" class="internal-module-dropdown-item">
           <Dropdown
               v-model="selectedInternalModules[n]"
@@ -57,6 +65,7 @@ defineExpose({moduleName})
               @click="selectedInternalModules.splice(n, 1)"
           />
         </div>
+        <!-- Comment -->
         <div>
           <textarea class="module -comment"/>
         </div>
