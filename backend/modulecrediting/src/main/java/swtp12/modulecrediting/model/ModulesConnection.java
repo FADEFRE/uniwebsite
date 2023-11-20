@@ -1,10 +1,12 @@
 package swtp12.modulecrediting.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import java.util.List;
 
 @Entity
 @Getter
@@ -12,20 +14,24 @@ import java.util.List;
 @NoArgsConstructor
  public class ModulesConnection {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String decision; //Enum maybe
+    private String comment;
 
-    private String comment; // wieso array?
+    @ManyToOne(targetEntity = Application.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "application_id")
+    private Application application;
 
 
-    // OneToOne
-    //private ModuleApplication moduleApplication;
+    @OneToOne(targetEntity = ModuleApplication.class , fetch = FetchType.LAZY , cascade = CascadeType.ALL , orphanRemoval = true)
+    @JoinColumn(name = "moduleApplications_id" , referencedColumnName = "id")
+    private ModuleApplication moduleApplications;
 
-
-    // ManyToMany??
-    //private List<ModuleLeipzig> moduleLeipzigList;
-
+    @ManyToMany(targetEntity = ModuleLeipzig.class , fetch =  FetchType.LAZY)
+    @JoinColumn(name = "moduleLeipzigs_id", referencedColumnName = "id")
+    private List<ModuleLeipzig> moduleLeipzigs = new ArrayList<ModuleLeipzig>();
+    
 
     public ModulesConnection(String decision, String comment) {
         this.decision = decision;

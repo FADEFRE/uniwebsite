@@ -1,10 +1,13 @@
 package swtp12.modulecrediting.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import java.util.List;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,19 +18,20 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ModuleApplication {   
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private Integer points;
     private String pointSystem;
-
     private String university;
-
     private String commentApplicant;
 
+    @OneToOne(targetEntity = ModulesConnection.class , mappedBy = "moduleApplications" , fetch = FetchType.LAZY)
+    private ModulesConnection modulesConnection;
 
-    //private PdfDocument pdfDocument;
-
+    @OneToOne(targetEntity = PdfDocument.class , fetch = FetchType.LAZY , cascade = CascadeType.ALL , orphanRemoval = true)
+    @JoinColumn(name = "pdfDocument")
+    private PdfDocument pdfDocument;
 
     public ModuleApplication(String name, Integer points, String pointSystem, String university, String commentApplicant) {
         this.name = name;
