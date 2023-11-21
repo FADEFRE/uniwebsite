@@ -6,12 +6,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
-public class ModuleBlockDTO {
+public class ModuleBlockCreateDTO {
     private String moduleName;
-    private String course;
     private String university;
     private Integer points;
     private String pointSystem;
     private MultipartFile description;
-    private String comment;
+    private String moduleNameLeipzig;
+    private String commentApplicant;
 }

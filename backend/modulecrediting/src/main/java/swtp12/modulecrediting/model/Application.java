@@ -1,5 +1,6 @@
 package swtp12.modulecrediting.model;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -27,18 +28,24 @@ import lombok.Setter;
     private Long id;
     private String fullStatus; //enum?
     @CreationTimestamp
-    private Date creationDate;
-    private Date decisionDate;
-    private String course;
+    private LocalDate creationDate;
+    private LocalDate decisionDate;
 
-    @OneToMany(targetEntity = ModulesConnection.class , mappedBy = "application" , cascade = CascadeType.REMOVE , fetch = FetchType.LAZY)
-    private List<ModulesConnection> modulesConnections = new ArrayList<ModulesConnection>();
+    @OneToMany(mappedBy = "application" , cascade = CascadeType.ALL , orphanRemoval = true)
+    private List<ModulesConnection> modulesConnections = new ArrayList<>();
 
 
-    public Application(String fullStatus, Date creationDate, Date decisionDate, String course) {
+    public Application(String fullStatus, LocalDate creationDate, LocalDate decisionDate) {
         this.fullStatus = fullStatus;
         this.creationDate = creationDate;
         this.decisionDate = decisionDate;
-        this.course = course;
+    }
+
+    public void setModulesConnections(List<ModulesConnection> modulesConnections) {
+        for(ModulesConnection mc : modulesConnections) {
+            mc.setApplication(this);
+        }
+
+        this.modulesConnections = modulesConnections;
     }
 }

@@ -19,22 +19,30 @@ import lombok.Setter;
     private String decision; //Enum maybe
     private String comment;
 
-    @ManyToOne(targetEntity = Application.class, fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "application_id")
     private Application application;
 
+    @OneToOne(cascade = CascadeType.ALL , orphanRemoval = true)
+    @JoinColumn(name = "module_application_id")
+    private ModuleApplication moduleApplication;
 
-    @OneToOne(targetEntity = ModuleApplication.class , fetch = FetchType.LAZY , cascade = CascadeType.ALL , orphanRemoval = true)
-    @JoinColumn(name = "moduleApplications_id" , referencedColumnName = "id")
-    private ModuleApplication moduleApplications;
-
-    @ManyToMany(targetEntity = ModuleLeipzig.class , fetch =  FetchType.LAZY)
-    @JoinColumn(name = "moduleLeipzigs_id", referencedColumnName = "id")
-    private List<ModuleLeipzig> moduleLeipzigs = new ArrayList<ModuleLeipzig>();
+    @ManyToMany
+    @JoinTable(
+            name = "module_connection_module_leipzig",
+            joinColumns = @JoinColumn(name = "module_connection_id"),
+            inverseJoinColumns = @JoinColumn(name = "module_leipzig_id")
+    )
+    private List<ModuleLeipzig> modulesLeipzig = new ArrayList<>();
     
 
     public ModulesConnection(String decision, String comment) {
         this.decision = decision;
         this.comment = comment;
     }
+
+   public void setModuleApplication(ModuleApplication moduleApplication) {
+        moduleApplication.setModulesConnection(this);
+      this.moduleApplication = moduleApplication;
+   }
 }
