@@ -1,7 +1,8 @@
 <script setup>
 import ModuleApplicationPanel from "@/components/ModuleApplicationPanel.vue";
-import { ref, reactive } from 'vue'
 import NewModuleApplicationButton from "@/components/NewModuleApplicationButton.vue";
+import { ref, reactive } from 'vue'
+
 
 const selectedCourse = ref()
 const courses = ref([
@@ -9,8 +10,9 @@ const courses = ref([
 ])
 
 const moduleApplicationPanels = reactive({
-  1: {}
+  1: null
 })
+const moduleApplicationPanelsRef = ref([])
 
 const addModuleApplication = () => {
   let nextKey = null
@@ -20,7 +22,7 @@ const addModuleApplication = () => {
     // noinspection JSCheckFunctionSignatures
     nextKey = Math.max(...Object.keys(moduleApplicationPanels)) + 1
   }
-  moduleApplicationPanels[nextKey] = {}
+  moduleApplicationPanels[nextKey] = null
 }
 
 const deleteModuleApplication = (key) => {
@@ -34,7 +36,7 @@ const deleteModuleApplication = (key) => {
     <ModuleApplicationPanel
         v-for="(value, key) in moduleApplicationPanels"
         :key="key"
-        ref="(data) => {moduleApplicationPanels[key] = data}"
+        ref="moduleApplicationPanelsRef"
         @deletePanel="deleteModuleApplication(key)"
     />
     <NewModuleApplicationButton @add-module-application="addModuleApplication" />

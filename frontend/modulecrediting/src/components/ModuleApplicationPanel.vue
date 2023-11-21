@@ -3,6 +3,7 @@ import ModuleApplicationData from "@/components/ModuleApplicationData.vue";
 import { ref, computed } from "vue";
 
 const emit = defineEmits(['deletePanel'])
+
 const deleteSelf = () => {
   emit('deletePanel')
 }
