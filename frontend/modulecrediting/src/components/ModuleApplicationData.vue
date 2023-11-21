@@ -1,20 +1,31 @@
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 
 const moduleName = ref()
 const university = ref()
 const creditPoints = ref()
+const comment = ref()
 
-const internalModules = ref([
-  "Modellierung und Programmierung 1",
-  "Praktikum Objektorientierte Programmierung",
-  "Softwaretechnik",
-  "Softwaretechnikpraktikum"
-])
+const internalModules = [
+    'Modellierung und Programmierung 1',
+    'Praktikum Objektorientierte Programmierung',
+    'Softwaretechnik',
+    'Softwaretechnikpraktikum'
+]
+const internalModulesModel = ref(['placeholder'])
+const selectedInternalModules = computed(
+    () => internalModulesModel.value.filter((item) => item !== 'placeholder')
+)
 
-const selectedInternalModules = ref(['placeholder'])
+let selectedFiles = ref()
+const handleFiles = (e) => {
+  selectedFiles.value = e.target.files
+}
+const descriptionFile = computed(() => selectedFiles.value ? selectedFiles.value.item(0) : null)
 
-defineExpose({moduleName})
+defineExpose({
+  moduleName, university, creditPoints, descriptionFile, selectedInternalModules, comment
+})
 </script>
 
 <template>
@@ -41,7 +52,7 @@ defineExpose({moduleName})
       </div>
       <!-- File Upload -->
       <div class="file-input-container">
-        <input type="file" accept=".pdf">
+        <input type="file" accept=".pdf" @change="handleFiles">
       </div>
 
     </div>
@@ -52,22 +63,22 @@ defineExpose({moduleName})
       <h3 class="module-heading">Module der Uni Leipzig:</h3>
       <div class="internal-module-container">
         <!-- Internal Module Selection -->
-        <div v-for="n in selectedInternalModules.length" class="internal-module-dropdown-item">
+        <div v-for="n in internalModulesModel.length" class="internal-module-dropdown-item">
           <Dropdown
-              v-model="selectedInternalModules[n]"
+              v-model="internalModulesModel[n]"
               :options="internalModules"
               :placeholder="n === 1 ? 'Modul wählen' : 'Weiteres Modul wählen'"
               class="module-dropdown"
           />
           <button
-              v-if="n < selectedInternalModules.length"
+              v-if="n < internalModulesModel.length"
               icon="pi pi-trash"
-              @click="selectedInternalModules.splice(n, 1)"
+              @click="internalModulesModel.splice(n, 1)"
           />
         </div>
         <!-- Comment -->
         <div>
-          <textarea class="module -comment"/>
+          <textarea class="module -comment" v-model="comment"/>
         </div>
       </div>
 

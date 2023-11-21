@@ -24,8 +24,8 @@ public class ModuleLeipzig {
     private String moduleCode;
     private String course;
 
-    @ManyToMany(targetEntity = ModulesConnection.class , mappedBy = "moduleLeipzigs" , fetch = FetchType.LAZY)
-    private List<ModulesConnection> modulesConnections = new ArrayList<ModulesConnection>();
+    @ManyToMany(mappedBy = "modulesLeipzig")
+    private List<ModulesConnection> modulesConnections = new ArrayList<>();
 
 
     public ModuleLeipzig(String moduleName, String moduleCode, String course) {

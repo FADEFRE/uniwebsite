@@ -26,11 +26,11 @@ public class ModuleApplication {
     private String university;
     private String commentApplicant;
 
-    @OneToOne(targetEntity = ModulesConnection.class , mappedBy = "moduleApplications" , fetch = FetchType.LAZY)
+    @OneToOne(targetEntity = ModulesConnection.class , mappedBy = "moduleApplication")
     private ModulesConnection modulesConnection;
 
-    @OneToOne(targetEntity = PdfDocument.class , fetch = FetchType.LAZY , cascade = CascadeType.ALL , orphanRemoval = true)
-    @JoinColumn(name = "pdfDocument")
+    @OneToOne(targetEntity = PdfDocument.class , cascade = CascadeType.ALL , orphanRemoval = true)
+    @JoinColumn(name = "pdf_document_id")
     private PdfDocument pdfDocument;
 
     public ModuleApplication(String name, Integer points, String pointSystem, String university, String commentApplicant) {
@@ -39,5 +39,10 @@ public class ModuleApplication {
         this.pointSystem = pointSystem;
         this.university = university;
         this.commentApplicant = commentApplicant;
+    }
+
+    public void setPdfDocument(PdfDocument pdfDocument) {
+        pdfDocument.setModuleApplication(this);
+        this.pdfDocument = pdfDocument;
     }
 }
