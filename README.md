@@ -26,6 +26,8 @@ spring.datasource.password=<your_password>
 // this line says the database schema will always be created after starting and deleted after stopping // other config possible
 spring.jpa.hibernate.ddl-auto=create-drop
 
+!! Always stop programm with CTRL+C inside your IDE terminal/console, otherwise DB-tables won't be dropped !!
+
 ## API ENDPOINTS
 
 http://localhost:8090/modules-leipzig
