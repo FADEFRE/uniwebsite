@@ -2,14 +2,14 @@ package swtp12.modulecrediting.model;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -31,7 +31,9 @@ import lombok.Setter;
     private LocalDate creationDate;
     private LocalDate decisionDate;
 
+    //Relation Application <-> ModulesConnection
     @OneToMany(mappedBy = "application" , cascade = CascadeType.ALL , orphanRemoval = true)
+    @JsonIgnore
     private List<ModulesConnection> modulesConnections = new ArrayList<>();
 
 
@@ -41,11 +43,12 @@ import lombok.Setter;
         this.decisionDate = decisionDate;
     }
 
+
+    //Setter for Relation: Application <-> ModulesConnection
     public void setModulesConnections(List<ModulesConnection> modulesConnections) {
         for(ModulesConnection mc : modulesConnections) {
             mc.setApplication(this);
         }
-
         this.modulesConnections = modulesConnections;
     }
 }

@@ -1,8 +1,9 @@
 package swtp12.modulecrediting.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -26,9 +27,12 @@ public class ModuleApplication {
     private String university;
     private String commentApplicant;
 
+    //Relation ModuleApplication <-> ModulesConnection (Setter in ModulesConnection)
     @OneToOne(targetEntity = ModulesConnection.class , mappedBy = "moduleApplication")
+    @JsonIgnore
     private ModulesConnection modulesConnection;
 
+    //Relation ModuleApplication <-> PdfDocument
     @OneToOne(targetEntity = PdfDocument.class , cascade = CascadeType.ALL , orphanRemoval = true)
     @JoinColumn(name = "pdf_document_id")
     private PdfDocument pdfDocument;
@@ -41,6 +45,8 @@ public class ModuleApplication {
         this.commentApplicant = commentApplicant;
     }
 
+
+    //Setter for Relation: ModuleApplication <-> ModulesConnection
     public void setPdfDocument(PdfDocument pdfDocument) {
         pdfDocument.setModuleApplication(this);
         this.pdfDocument = pdfDocument;

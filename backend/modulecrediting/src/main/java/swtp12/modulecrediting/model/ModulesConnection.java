@@ -19,14 +19,17 @@ import lombok.Setter;
     private String decision; //Enum maybe
     private String comment;
 
+    //Relation ModulesConnection <-> Application (Setter in Application)
     @ManyToOne
     @JoinColumn(name = "application_id")
     private Application application;
 
+    //Relation ModulesConnection <-> ModuleApplication (Setter in ModuleApplication)
     @OneToOne(cascade = CascadeType.ALL , orphanRemoval = true)
     @JoinColumn(name = "module_application_id")
     private ModuleApplication moduleApplication;
 
+    //Relation ModulesConnection <-> ModuleLeipzig 
     @ManyToMany
     @JoinTable(
             name = "module_connection_module_leipzig",
@@ -40,9 +43,10 @@ import lombok.Setter;
         this.decision = decision;
         this.comment = comment;
     }
-
-   public void setModuleApplication(ModuleApplication moduleApplication) {
-        moduleApplication.setModulesConnection(this);
+    
+    //Setter for Relation: ModulesConnection <-> ModuleLeipzig
+    public void setModuleApplication(ModuleApplication moduleApplication) {
+      moduleApplication.setModulesConnection(this);
       this.moduleApplication = moduleApplication;
-   }
+    }
 }

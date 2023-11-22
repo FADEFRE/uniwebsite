@@ -20,7 +20,9 @@ public class PdfDocument {
     @JsonIgnore
     private byte[] pdfData;
 
+    //Relation PdfDocument <-> ModuleApplication (Setter in ModuleApplication)
     @OneToOne(mappedBy = "pdfDocument")
+    @JsonIgnore
     private ModuleApplication moduleApplication;
 
 
@@ -28,4 +30,5 @@ public class PdfDocument {
         this.name = name;
         this.pdfData = pdfData;
     }
+
 }
