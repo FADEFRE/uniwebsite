@@ -29,7 +29,7 @@ public class CourseLeipzigController {
     @Autowired
     CourseLeipzigRepository courseLeipzigRepository;
 
-    @GetMapping("/course-leipzig")
+    @GetMapping("/courses-leipzig")
     List<CourseLeipzig> getCourseLeipzigs() {
         return courseLeipzigRepository.findAll();
     }
