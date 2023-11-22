@@ -96,6 +96,56 @@
                     "number": "10-201-2108-1"
                 }
             ]
+        },
+
+        {
+            "name": "test course",
+            "modules" : [
+                {
+                    "name": "Programmierparadigmen",
+                    "number": "test Pp"
+                },
+                {
+                    "name": "Algorithmen und Datenstrukturen 1",
+                    "number": "test ADS1"
+                },
+                {
+                    "name": "Algorithmen und Datenstrukturen 2",
+                    "number": "test ADS2"
+                },
+                {
+                    "name": "Grundlagen der Technischen Informatik 1",
+                    "number": "test TI1"
+                },
+                {
+                    "name": "Grundlagen der Technischen Informatik 2",
+                    "number": "test TI2"
+                },
+                {
+                    "name": "Betriebs- und Kommuikationssysteme",
+                    "number": "test BKS"
+                },
+                {
+                    "name": "Logik",
+                    "number": "test"
+                },
+                {
+                    "name": "Automaten und Sprachen",
+                    "number": "10-201-2108-2"
+                },
+                {
+                    "name": "Berechenbarkeit",
+                    "number": "10-201-2009"
+                },
+                {
+                    "name": "Datenbanksysteme 1",
+                    "number": "10-201-2211"
+                },
+                {
+                    "name": "Software Engineering",
+                    "number": "10-201-2321"
+                }
+            ]
         }
     ]
 

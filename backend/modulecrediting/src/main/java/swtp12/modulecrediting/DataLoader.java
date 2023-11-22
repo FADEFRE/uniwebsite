@@ -33,6 +33,7 @@ public class DataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
+        List<ModuleLeipzig> fullModulsLeipzigs = new ArrayList<>();
         List<ModuleLeipzig> modulsLeipzigs = new ArrayList<>();
         List<CourseLeipzig> courseLeipzigs = new ArrayList<>();
         JsonNode json;
@@ -52,14 +53,23 @@ public class DataLoader implements CommandLineRunner {
             courseLeipzigs.add(cL);
             JsonNode modules = course.get("modules");
             for (JsonNode modul : modules) {
-                modulsLeipzigs.add(createModulsFromNode(modul, courseLeipzigs));
+                ModuleLeipzig mLeipzig = createModulsFromNode(modul, courseLeipzigs);
+                modulsLeipzigs.add(mLeipzig);
             }
             for (ModuleLeipzig mL : modulsLeipzigs) {
-                cL.addCourseToModulesLeipzig(mL);
+                ModuleLeipzig doubleTester = mL;
+                for (ModuleLeipzig fullModule : fullModulsLeipzigs) {
+                    if (fullModule.getModuleCode().equals(mL.getModuleCode())) {
+                        doubleTester = fullModule;
+                    }
+                }
+                fullModulsLeipzigs.add(doubleTester);
+                cL.addCourseToModulesLeipzig(doubleTester);
             }
+            modulsLeipzigs.clear();
         }
         courseLeipzigRepo.saveAll(courseLeipzigs);
-        modulLeipzigRepo.saveAll(modulsLeipzigs);
+        modulLeipzigRepo.saveAll(fullModulsLeipzigs);
         System.out.println("Dataloader: Data successfully loaded into Database");        
         System.out.println("Dataloader: Relations successfully established");
 
