@@ -38,15 +38,26 @@ http://localhost:8090/modules-leipzig
 
 http://localhost:8090/applications
 
- -> POST: post new application
-        with moduleBlockCreateDTOList List:
-            String moduleName;
-            String university;
-            Integer points;
-            String pointSystem;
-            MultipartFile description;
-            String moduleNameLeipzig
-            String commentApplicant;     
+ -> POST: post new application   Content-Type: multipart/form-data
+    bspBody:
+    courseLeipzig: B.Sc. Informatik
+    moduleBlockCreateDTOList[0].moduleName: ...
+    moduleBlockCreateDTOList[0].university: ...
+    moduleBlockCreateDTOList[0].points: ...
+    moduleBlockCreateDTOList[0].pointSystem: ...
+    moduleBlockCreateDTOList[0].description: ...
+    moduleBlockCreateDTOList[0].moduleNameLeipzig: ...
+    moduleBlockCreateDTOList[0].commentApplicant: ...
+    moduleBlockCreateDTOList[1].moduleName: ...
+    ...
+
+http://localhost:8090/applications
+ -> GET: getAllApplications requestparam: limit (default = 10)
+
+http://localhost:8090/applications/{id}
+ -> GET: getApplicationById 
+    
+    (pdf id is included: use for retrieving pdf data over seperate api endpoint)
 
 http://localhost:8090/pdf-documents/{id}
 
