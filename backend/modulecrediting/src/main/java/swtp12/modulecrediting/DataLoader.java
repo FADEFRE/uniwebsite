@@ -33,8 +33,7 @@ public class DataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        List<ModuleLeipzig> fullModulsLeipzigs = new ArrayList<>();
-        List<ModuleLeipzig> modulsLeipzigs = new ArrayList<>();
+        List<ModuleLeipzig> modulsLeipzigsSorted = new ArrayList<>();
         List<CourseLeipzig> courseLeipzigs = new ArrayList<>();
         JsonNode json;
 
@@ -48,31 +47,57 @@ public class DataLoader implements CommandLineRunner {
         //grab and create courses and modules form first node
         JsonNode courses = getCourses(json);
         for (JsonNode course : courses) {
+            List<ModuleLeipzig> modulesForCourse = new ArrayList<>();
             String courseName = course.get("name").asText();
             CourseLeipzig cL = createCourseFromNode(courses, courseName);
             courseLeipzigs.add(cL);
             JsonNode modules = course.get("modules");
             for (JsonNode modul : modules) {
-                ModuleLeipzig mLeipzig = createModulsFromNode(modul, courseLeipzigs);
-                modulsLeipzigs.add(mLeipzig);
-            }
-            for (ModuleLeipzig mL : modulsLeipzigs) {
-                ModuleLeipzig doubleTester = mL;
-                for (ModuleLeipzig fullModule : fullModulsLeipzigs) {
-                    if (fullModule.getModuleCode().equals(mL.getModuleCode())) {
-                        doubleTester = fullModule;
-                    }
+                ModuleLeipzig mLeipzig = createModulsFromNode(modul, cL);
+                modulesForCourse.add(mLeipzig);
+            } 
+            modulsLeipzigsSorted = removeDuplicateModules(modulsLeipzigsSorted, modulesForCourse);
+        }
+
+        for (CourseLeipzig courseDB : courseLeipzigs) {
+            String courseName = courseDB.getName();
+            for (ModuleLeipzig moduleDB : modulsLeipzigsSorted) {
+                List<String> coursesInModules = moduleDB.getCourses();
+                if (coursesInModules.contains(courseName)) {
+                    courseDB.addCourseToModulesLeipzig(moduleDB);
                 }
-                fullModulsLeipzigs.add(doubleTester);
-                cL.addCourseToModulesLeipzig(doubleTester);
             }
-            modulsLeipzigs.clear();
         }
         courseLeipzigRepo.saveAll(courseLeipzigs);
-        modulLeipzigRepo.saveAll(fullModulsLeipzigs);
+        modulLeipzigRepo.saveAll(modulsLeipzigsSorted);
         System.out.println("Dataloader: Data successfully loaded into Database");        
         System.out.println("Dataloader: Relations successfully established");
+        
+    }
 
+    private List<ModuleLeipzig> removeDuplicateModules(List<ModuleLeipzig> modulesLeipzigsSorted, List<ModuleLeipzig> modulesForCourse) {
+        for (ModuleLeipzig moduleForCourse : modulesForCourse) {
+            if (modulesLeipzigsSorted.isEmpty()) {
+                modulesLeipzigsSorted.add(moduleForCourse);
+            }
+            else {
+                String moduleCode = moduleForCourse.getModuleCode();
+                String moduleName = moduleForCourse.getModuleName();
+                int exists = 0;
+                for (int i = 0; i < modulesLeipzigsSorted.size(); i++) {
+                    String moduleCodeSort = modulesLeipzigsSorted.get(i).getModuleCode();
+                    String moduleNameSort = modulesLeipzigsSorted.get(i).getModuleName();                                
+                    if (moduleCode.equals(moduleCodeSort) && moduleName.equals(moduleNameSort)) {
+                        modulesLeipzigsSorted.get(i).addCourseNames(moduleForCourse.getCourses());
+                        exists++;
+                    }
+                }
+                if (exists == 0) {
+                    modulesLeipzigsSorted.add(moduleForCourse);
+                }
+            }
+        }
+        return modulesLeipzigsSorted;
     }
 
     //helper to get courses
@@ -83,10 +108,13 @@ public class DataLoader implements CommandLineRunner {
     }
 
     //helper to create Modules from courses node
-    private ModuleLeipzig createModulsFromNode(JsonNode modul, List<CourseLeipzig> courseLeipzigs) {
+    private ModuleLeipzig createModulsFromNode(JsonNode modul, CourseLeipzig cL) {
         String name = modul.get("name").asText();
         String number = modul.get("number").asText();
-        return new ModuleLeipzig(name, number);
+        List<String> courseNames = new ArrayList<String>();
+        String courseName = cL.getName();
+        courseNames.add(courseName);
+        return new ModuleLeipzig(name, number, courseNames);
     }
 
     //helper to create Course form courses node

@@ -24,6 +24,7 @@ public class ModuleLeipzig {
     private Long id;
     private String moduleName;
     private String moduleCode;
+    private List<String> courses;
 
     //Relation ModuleLeipzig <-> ModulesConnection
     @ManyToMany(mappedBy = "modulesLeipzig")
@@ -36,9 +37,10 @@ public class ModuleLeipzig {
     private List<CourseLeipzig> courseSLeipzig = new ArrayList<>();
 
 
-    public ModuleLeipzig(String moduleName, String moduleCode) {
+    public ModuleLeipzig(String moduleName, String moduleCode, List<String> courses) {
         this.moduleName = moduleName;
         this.moduleCode = moduleCode;
+        this.courses = courses;
     }
 
 
@@ -48,5 +50,9 @@ public class ModuleLeipzig {
             mc.getModulesLeipzig().add(this);
         }
         this.modulesConnections = modulesConnections;
+    }
+
+    public void addCourseNames(List<String> courseName) {
+        courses.addAll(courseName);
     }
 }
