@@ -39,13 +39,14 @@ http://localhost:8090/modules-leipzig
 http://localhost:8090/applications
 
  -> POST: post new application
+        with moduleBlockCreateDTOList List:
             String moduleName;
-            String course;
             String university;
             Integer points;
             String pointSystem;
             MultipartFile description;
-            String comment;     
+            String moduleNameLeipzig
+            String commentApplicant;     
 
 http://localhost:8090/pdf-documents/{id}
 
