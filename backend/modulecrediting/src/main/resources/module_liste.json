@@ -102,47 +102,47 @@
             "name": "test course",
             "modules" : [
                 {
-                    "name": "Programmierparadigmen",
+                    "name": "Programmierparadigmen_2",
                     "number": "test Pp"
                 },
                 {
-                    "name": "Algorithmen und Datenstrukturen 1",
+                    "name": "Algorithmen und Datenstrukturen 1_2",
                     "number": "test ADS1"
                 },
                 {
-                    "name": "Algorithmen und Datenstrukturen 2",
+                    "name": "Algorithmen und Datenstrukturen 2_2",
                     "number": "test ADS2"
                 },
                 {
-                    "name": "Grundlagen der Technischen Informatik 1",
+                    "name": "Grundlagen der Technischen Informatik 1_2",
                     "number": "test TI1"
                 },
                 {
-                    "name": "Grundlagen der Technischen Informatik 2",
+                    "name": "Grundlagen der Technischen Informatik 2_2",
                     "number": "test TI2"
                 },
                 {
-                    "name": "Betriebs- und Kommuikationssysteme",
+                    "name": "Betriebs- und Kommuikationssysteme_2",
                     "number": "test BKS"
                 },
                 {
-                    "name": "Logik",
+                    "name": "Logik_2",
                     "number": "test"
                 },
                 {
-                    "name": "Automaten und Sprachen",
+                    "name": "Automaten und Sprachen_2",
                     "number": "10-201-2108-2"
                 },
                 {
-                    "name": "Berechenbarkeit",
+                    "name": "Berechenbarkeit_2",
                     "number": "10-201-2009"
                 },
                 {
-                    "name": "Datenbanksysteme 1",
+                    "name": "Datenbanksysteme 1_2",
                     "number": "10-201-2211"
                 },
                 {
-                    "name": "Software Engineering",
+                    "name": "Software Engineering_2",
                     "number": "10-201-2321"
                 }
             ]

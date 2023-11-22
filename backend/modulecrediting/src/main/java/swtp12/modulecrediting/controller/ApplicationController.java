@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import swtp12.modulecrediting.dto.ApplicationCreateDTO;
 import swtp12.modulecrediting.model.Application;
-import swtp12.modulecrediting.repository.ApplicationProjection;
+import swtp12.modulecrediting.repository.projection.ApplicationProjection;
 import swtp12.modulecrediting.service.ApplicationService;
 
 import java.util.List;
@@ -23,7 +23,6 @@ public class ApplicationController {
     public ResponseEntity<Long> createApplication(@ModelAttribute ApplicationCreateDTO applicationCreateDTO) {
         return ResponseEntity.ok(applicationService.createApplication(applicationCreateDTO));
     }
-
 
     @GetMapping
     public ResponseEntity<List<ApplicationProjection>> getAllCreditTransferApplications(@RequestParam(defaultValue = "10") int limit) {

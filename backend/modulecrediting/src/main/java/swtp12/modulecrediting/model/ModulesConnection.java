@@ -50,9 +50,15 @@ import lombok.Setter;
         this.comment = comment;
     }
 
-    //Setter for Relation: ModulesConnection <-> ModuleLeipzig
+    //Setter for Relation: ModulesConnection <-> ModuleApplication
     public void setModuleApplication(ModuleApplication moduleApplication) {
       moduleApplication.setModulesConnection(this);
       this.moduleApplication = moduleApplication;
     }
+
+    // Setter for Relation: ModulesConnectiom <-> ModuleLeipzig
+   public void setModulesLeipzig(ArrayList<ModuleLeipzig> modulesLeipzig) {
+       for(ModuleLeipzig m : modulesLeipzig) m.addModulesConnection(this);
+       this.modulesLeipzig = modulesLeipzig;
+   }
 }

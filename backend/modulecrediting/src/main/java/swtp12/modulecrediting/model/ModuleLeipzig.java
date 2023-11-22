@@ -6,11 +6,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,6 +19,7 @@ public class ModuleLeipzig {
     @Id
     @GeneratedValue
     private Long id;
+
     private String moduleName;
     private String moduleCode;
 
@@ -34,7 +31,8 @@ public class ModuleLeipzig {
     //Relation ModuleLeipzig <-> CourseLeipzig
     @ManyToMany(mappedBy = "modulesLeipzigCourse", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JsonIgnore
-    private List<CourseLeipzig> courseSLeipzig = new ArrayList<>();
+    @JsonBackReference
+    private List<CourseLeipzig> coursesLeipzig = new ArrayList<>();
 
 
     public ModuleLeipzig(String moduleName, String moduleCode) {
@@ -49,5 +47,9 @@ public class ModuleLeipzig {
             mc.getModulesLeipzig().add(this);
         }
         this.modulesConnections = modulesConnections;
+    }
+    // add (Setter) for Relation: ModuleLeipzig <-> ModulesConnection
+    public void addModulesConnection(ModulesConnection modulesConnection) {
+        modulesConnections.add(modulesConnection);
     }
 }

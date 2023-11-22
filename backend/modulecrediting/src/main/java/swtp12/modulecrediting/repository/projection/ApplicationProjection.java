@@ -1,4 +1,4 @@
-package swtp12.modulecrediting.repository;
+package swtp12.modulecrediting.repository.projection;
 
 import java.time.LocalDate;
 

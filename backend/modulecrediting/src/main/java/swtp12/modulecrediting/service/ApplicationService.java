@@ -1,19 +1,16 @@
 package swtp12.modulecrediting.service;
 
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import swtp12.modulecrediting.dto.*;
 import swtp12.modulecrediting.model.*;
-import swtp12.modulecrediting.repository.ApplicationProjection;
+import swtp12.modulecrediting.repository.projection.ApplicationProjection;
 import swtp12.modulecrediting.repository.ApplicationRepository;
-import swtp12.modulecrediting.repository.PdfDocumentRepository;
 
 
 import java.time.LocalDate;
@@ -24,11 +21,11 @@ import java.util.Optional;
 @Service
 public class ApplicationService {
     @Autowired
-    PdfDocumentService pdfDocumentService;
+    private PdfDocumentService pdfDocumentService;
     @Autowired
-    ApplicationRepository applicationRepository;
+    private ApplicationRepository applicationRepository;
     @Autowired
-    PdfDocumentRepository pdfDocumentRepository;
+    private ModuleLeipzigService moduleLeipzigService;
 
 
     public Long createApplication(ApplicationCreateDTO applicationCreateDTO) {
@@ -43,6 +40,8 @@ public class ApplicationService {
             modulesConnection.setModuleApplication(moduleApplication);
 
             // find module leipzig...
+            ArrayList<ModuleLeipzig> modulesLeipzig = moduleLeipzigService.getModulesLeipzigByNames(m.getModuleNamesLeipzig());
+            modulesConnection.setModulesLeipzig(modulesLeipzig);
 
             modulesConnections.add(modulesConnection);
         }
