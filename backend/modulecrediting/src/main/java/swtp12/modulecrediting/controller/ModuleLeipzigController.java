@@ -22,7 +22,7 @@ import swtp12.modulecrediting.repository.CourseLeipzigRepository;
 import swtp12.modulecrediting.repository.ModuleLeipzigRepository;
 
 @RestController
-@RequestMapping("/module-leipzig")
+@RequestMapping("/modules-leipzig")
 @CrossOrigin
 public class ModuleLeipzigController {
 
