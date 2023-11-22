@@ -37,43 +37,49 @@ public class DataLoader implements CommandLineRunner {
         List<CourseLeipzig> courseLeipzigs = new ArrayList<>();
         JsonNode json;
 
+        //read in json and get the first node
         try (InputStream inputStream = TypeReference.class.getResourceAsStream("/module_liste.json")) {
             json = objectMapper.readValue(inputStream, JsonNode.class);
         } catch (IOException e) {
             throw new RuntimeException("Failed to read JSON data", e);
         }
 
+        //grab and create courses and modules form first node
         JsonNode courses = getCourses(json);
         for (JsonNode course : courses) {
             String courseName = course.get("name").asText();
-            courseLeipzigs.add(createCourseFromNode(courses, courseName));
+            CourseLeipzig cL = createCourseFromNode(courses, courseName);
+            courseLeipzigs.add(cL);
             JsonNode modules = course.get("modules");
             for (JsonNode modul : modules) {
-                modulsLeipzigs.add(createModulsFromNode(modul, courseName));
-            }    
-        }
-        /*for (ModuleLeipzig mL : modulsLeipzigs) {
-            mL.setAllCourseLeipzig(courseLeipzigs);
-        }*/
-        for (CourseLeipzig cL : courseLeipzigs) {
-            cL.setAllModuleLeipzigs(modulsLeipzigs);
+                modulsLeipzigs.add(createModulsFromNode(modul, courseLeipzigs));
+            }
+            for (ModuleLeipzig mL : modulsLeipzigs) {
+                cL.addCourseToModulesLeipzig(mL);
+            }
         }
         courseLeipzigRepo.saveAll(courseLeipzigs);
         modulLeipzigRepo.saveAll(modulsLeipzigs);
+        System.out.println("Dataloader: Data successfully loaded into Database");        
+        System.out.println("Dataloader: Relations successfully established");
+
     }
 
+    //helper to get courses
     private JsonNode getCourses(JsonNode json) {
         return Optional.ofNullable(json)
                 .map(j -> j.get("courses"))
                 .orElseThrow(() -> new IllegalArgumentException("Invalid JSON Object"));
     }
 
-    private ModuleLeipzig createModulsFromNode(JsonNode modul, String courseName) {
+    //helper to create Modules from courses node
+    private ModuleLeipzig createModulsFromNode(JsonNode modul, List<CourseLeipzig> courseLeipzigs) {
         String name = modul.get("name").asText();
         String number = modul.get("number").asText();
-        return new ModuleLeipzig(name, number, courseName);
+        return new ModuleLeipzig(name, number);
     }
 
+    //helper to create Course form courses node
     private CourseLeipzig createCourseFromNode(JsonNode course, String courseName) {
         return new CourseLeipzig(courseName);
     }

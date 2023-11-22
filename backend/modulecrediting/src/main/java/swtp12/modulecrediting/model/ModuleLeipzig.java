@@ -3,8 +3,10 @@ package swtp12.modulecrediting.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
@@ -22,15 +24,29 @@ public class ModuleLeipzig {
     private Long id;
     private String moduleName;
     private String moduleCode;
-    private String course;
 
+    //Relation ModuleLeipzig <-> ModulesConnection
     @ManyToMany(mappedBy = "modulesLeipzig")
+    @JsonIgnore
     private List<ModulesConnection> modulesConnections = new ArrayList<>();
 
+    //Relation ModuleLeipzig <-> CourseLeipzig
+    @ManyToMany(mappedBy = "modulesLeipzigCourse", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JsonIgnore
+    private List<CourseLeipzig> courseSLeipzig = new ArrayList<>();
 
-    public ModuleLeipzig(String moduleName, String moduleCode, String course) {
+
+    public ModuleLeipzig(String moduleName, String moduleCode) {
         this.moduleName = moduleName;
         this.moduleCode = moduleCode;
-        this.course = course;
+    }
+
+
+    //Setter for Relation: ModuleLeipzig <-> ModulesConnection
+    public void setModulesConnections(List<ModulesConnection> modulesConnections) {
+        for(ModulesConnection mc : modulesConnections) {
+            mc.getModulesLeipzig().add(this);
+        }
+        this.modulesConnections = modulesConnections;
     }
 }
