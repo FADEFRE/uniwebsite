@@ -30,6 +30,9 @@ spring.jpa.hibernate.ddl-auto=create-drop
 
 ## API ENDPOINTS
 
+http://localhost:8090/courses-leipzig
+ -> GET: all internal courses leipzig with their modules
+
 http://localhost:8090/modules-leipzig
  -> GET: all internal modules leipzig
 
