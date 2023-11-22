@@ -4,7 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import swtp12.modulecrediting.dto.*;
 import swtp12.modulecrediting.model.*;
 import swtp12.modulecrediting.repository.ApplicationRepository;
@@ -14,6 +17,7 @@ import swtp12.modulecrediting.repository.PdfDocumentRepository;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ApplicationService {
@@ -41,7 +45,7 @@ public class ApplicationService {
             modulesConnections.add(modulesConnection);
         }
 
-        Application application = new Application("open", LocalDate.now(), LocalDate.now());
+        Application application = new Application("open", LocalDate.now(), LocalDate.now(), applicationCreateDTO.getCourseLeipzig());
         application.setModulesConnections(modulesConnections);
 
         Application savedApplication = applicationRepository.save(application);
@@ -54,4 +58,13 @@ public class ApplicationService {
         return page.getContent();
     }
 
+    public Application getApplicationById(Long id) {
+        Optional<Application> applicationOptional = applicationRepository.findById(id);
+        if(applicationOptional.isPresent()) {
+            Application application = applicationOptional.get();
+            return application;
+        }else {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Application not Found");
+        }
+    }
 }

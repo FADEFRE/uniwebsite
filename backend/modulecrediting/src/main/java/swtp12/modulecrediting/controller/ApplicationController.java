@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/application")
+@RequestMapping("/applications")
 public class ApplicationController {
 
     @Autowired
@@ -28,5 +28,10 @@ public class ApplicationController {
     public ResponseEntity<List<Application>> getAllCreditTransferApplications(@RequestParam(defaultValue = "10") int limit) {
         List<Application> creditTransferApplications = applicationService.getAllApplciations(limit);
         return new ResponseEntity<>(creditTransferApplications, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Application>  getApplicationById(@PathVariable Long id) {
+        return ResponseEntity.ok(applicationService.getApplicationById(id));
     }
 }

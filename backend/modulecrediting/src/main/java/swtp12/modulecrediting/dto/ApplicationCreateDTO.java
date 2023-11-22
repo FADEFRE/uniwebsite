@@ -8,5 +8,6 @@ import java.util.List;
 @Getter
 @Setter
 public class ApplicationCreateDTO {
-    List<ModuleBlockCreateDTO> moduleBlockCreateDTOList;
+    private String courseLeipzig;
+    private List<ModuleBlockCreateDTO> moduleBlockCreateDTOList;
 }

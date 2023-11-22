@@ -31,16 +31,19 @@ import lombok.Setter;
     private LocalDate creationDate;
     private LocalDate decisionDate;
 
+    private String courseLeipzig;
+
     //Relation Application <-> ModulesConnection
     @OneToMany(mappedBy = "application" , cascade = CascadeType.ALL , orphanRemoval = true)
     @JsonIgnore
     private List<ModulesConnection> modulesConnections = new ArrayList<>();
 
 
-    public Application(String fullStatus, LocalDate creationDate, LocalDate decisionDate) {
+    public Application(String fullStatus, LocalDate creationDate, LocalDate decisionDate, String courseLeipzig) {
         this.fullStatus = fullStatus;
         this.creationDate = creationDate;
         this.decisionDate = decisionDate;
+        this.courseLeipzig = courseLeipzig;
     }
 
 
