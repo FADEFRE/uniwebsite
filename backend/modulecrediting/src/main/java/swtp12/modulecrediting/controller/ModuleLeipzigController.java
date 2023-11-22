@@ -43,7 +43,7 @@ public class ModuleLeipzigController {
 
 
     /* 
-    @GetMapping("/modules-leipzig/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<ModuleLeipzig> getModuleLeipzigById(@PathVariable("id") Long id) {
         Optional<ModuleLeipzig> moduleLeipzig = modulLeipzigRepository.findById(id);
         if(moduleLeipzig.isEmpty()) {
@@ -52,7 +52,7 @@ public class ModuleLeipzigController {
         return new ResponseEntity<>(moduleLeipzig.get(), HttpStatus.OK);
     }
 
-    @PostMapping("/courses-leipzig/{courseLeipzigId}/modules-leipzig")
+    @PostMapping("/{courseLeipzigId}/modules-leipzig")
     public ResponseEntity<ModuleLeipzig> createModuleLeipzig(@PathVariable("courseLeipzigId") Long id, @RequestBody ModuleLeipzig reqModuleLeipzig) {
         Optional<CourseLeipzig> optionalCourse = courseLeipzigRepository.findById(id);
         if (optionalCourse.isEmpty()) {
@@ -74,7 +74,7 @@ public class ModuleLeipzigController {
         }
     }
 
-    @DeleteMapping("modules-leipzig/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> deleteModuleLeipzigById(@PathVariable("id") Long id) {
         modulLeipzigRepository.deleteById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

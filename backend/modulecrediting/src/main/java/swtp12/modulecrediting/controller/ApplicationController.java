@@ -8,7 +8,7 @@ import swtp12.modulecrediting.service.ApplicationService;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/application")
+@RequestMapping("/applications")
 public class ApplicationController {
 
     @Autowired
@@ -18,6 +18,5 @@ public class ApplicationController {
     public ResponseEntity<Long> createApplication(@ModelAttribute ApplicationCreateDTO applicationCreateDTO) {
         return ResponseEntity.ok(applicationService.createApplication(applicationCreateDTO));
     }
-
 
 }
