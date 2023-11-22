@@ -2,13 +2,14 @@
 import ModuleApplicationPanel from "@/components/ModuleApplicationPanel.vue";
 import NewModuleApplicationButton from "@/components/NewModuleApplicationButton.vue";
 import { ref, reactive, computed, provide } from "vue"
+import { url } from "@/scripts/url-config"
 import axios from "axios";
 
 // courses
 const selectedCourse = ref()
 
 let courseData = ref()
-axios.get('http://localhost:8090/courses-leipzig')
+axios.get(url + '/courses-leipzig')
     .then(response => {
       courseData.value = response.data
     })
