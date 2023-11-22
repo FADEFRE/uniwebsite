@@ -29,7 +29,7 @@ public class CourseLeipzigController {
     @Autowired
     CourseLeipzigRepository courseLeipzigRepository;
 
-    @GetMapping("/course-leipzig-test")
+    @GetMapping("/course-leipzig")
     List<CourseLeipzig> getCourseLeipzigs() {
         return courseLeipzigRepository.findAll();
     }
@@ -55,7 +55,7 @@ public class CourseLeipzigController {
 
         return new ResponseEntity<>(resCourseLeipzig, HttpStatus.CREATED);
     }
-
+    
     @DeleteMapping("/course-Leipzig/{id}")
     public ResponseEntity<HttpStatus> deleteCourseLeipzigById(@PathVariable("id") Long id) {
         courseLeipzigRepository.deleteById(id);
