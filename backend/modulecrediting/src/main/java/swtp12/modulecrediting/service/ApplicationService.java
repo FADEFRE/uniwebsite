@@ -1,5 +1,6 @@
 package swtp12.modulecrediting.service;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import swtp12.modulecrediting.dto.*;
 import swtp12.modulecrediting.model.*;
+import swtp12.modulecrediting.repository.ApplicationProjection;
 import swtp12.modulecrediting.repository.ApplicationRepository;
 import swtp12.modulecrediting.repository.PdfDocumentRepository;
 
@@ -52,9 +54,9 @@ public class ApplicationService {
         return savedApplication.getId();
     }
 
-    public List<Application> getAllApplciations(int limit){
+    public List<ApplicationProjection> getAllApplciations(int limit){
         Pageable pageeable = PageRequest.of(0, limit);
-        Page<Application> page = applicationRepository.findAll(pageeable);
+        Page<ApplicationProjection> page = applicationRepository.findAllBy(pageeable);
         return page.getContent();
     }
 

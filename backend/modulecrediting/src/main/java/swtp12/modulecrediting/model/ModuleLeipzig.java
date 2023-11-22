@@ -3,6 +3,7 @@ package swtp12.modulecrediting.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
@@ -27,7 +28,7 @@ public class ModuleLeipzig {
 
     //Relation ModuleLeipzig <-> ModulesConnection
     @ManyToMany(mappedBy = "modulesLeipzig")
-    @JsonIgnore
+    @JsonBackReference
     private List<ModulesConnection> modulesConnections = new ArrayList<>();
 
     //Relation ModuleLeipzig <-> CourseLeipzig
