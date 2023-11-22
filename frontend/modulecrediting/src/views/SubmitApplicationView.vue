@@ -1,12 +1,30 @@
 <script setup>
 import ModuleApplicationPanel from "@/components/ModuleApplicationPanel.vue";
 import NewModuleApplicationButton from "@/components/NewModuleApplicationButton.vue";
-import { ref, reactive, computed, inject } from 'vue'
+import { ref, reactive, computed, provide } from "vue"
+import axios from "axios";
 
 // courses
 const selectedCourse = ref()
-const courseData = inject('courseData')
-const courses = computed(()  => courseData.value ? courseData.value.map((obj) => obj.name) : [])
+
+let courseData = ref()
+axios.get('http://localhost:8090/courses-leipzig')
+    .then(response => {
+      courseData.value = response.data
+    })
+// todo error catching
+
+const courses = computed(() => courseData.value ? courseData.value.map((obj) => obj.name) : [])
+const modules = computed(() => {
+  if (courseData.value && selectedCourse.value) {
+    const selectedCourseObject = courseData.value.find((course) => course.name === selectedCourse.value)
+    const moduleObjects = selectedCourseObject["modulesLeipzigCourse"]
+    return moduleObjects.map((module) => module.moduleName).sort()
+  } else {
+    return []
+  }
+})
+provide('modules', modules)
 
 // module applications
 const moduleApplicationPanels = reactive({

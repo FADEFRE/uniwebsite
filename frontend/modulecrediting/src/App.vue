@@ -1,17 +1,5 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
-import { ref, provide } from 'vue'
-import axios from "axios"
-
-let courseData = ref()
-axios.get('http://localhost:8090/courses-leipzig')
-    .then(response => {
-      console.log(response.data)
-      courseData.value = response.data
-    })
-// todo error catching
-
-provide('courseData', courseData)
 </script>
 
 <template>
