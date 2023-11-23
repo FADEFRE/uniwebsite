@@ -8,14 +8,14 @@ import org.springframework.web.bind.annotation.*;
 import swtp12.modulecrediting.service.PdfDocumentService;
 
 @RestController
-@RequestMapping("/pdf-document")
+@RequestMapping("/pdf-documents")
 @CrossOrigin
 public class PdfDocumentContoller {
 
     @Autowired
     private PdfDocumentService pdfDocumentService;
 
-    @GetMapping(value = "/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<byte[]> getPdfDocumentById(@PathVariable Long id) {
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_PDF).body(pdfDocumentService.getPdfDocumentDataById(id));
     }

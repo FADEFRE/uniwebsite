@@ -1,14 +1,10 @@
 package swtp12.modulecrediting.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -29,12 +25,13 @@ public class ModuleApplication {
 
     //Relation ModuleApplication <-> ModulesConnection (Setter in ModulesConnection)
     @OneToOne(targetEntity = ModulesConnection.class , mappedBy = "moduleApplication")
-    @JsonIgnore
+    @JsonBackReference
     private ModulesConnection modulesConnection;
 
     //Relation ModuleApplication <-> PdfDocument
     @OneToOne(targetEntity = PdfDocument.class , cascade = CascadeType.ALL , orphanRemoval = true)
     @JoinColumn(name = "pdf_document_id")
+    @JsonManagedReference
     private PdfDocument pdfDocument;
 
     public ModuleApplication(String name, Integer points, String pointSystem, String university, String commentApplicant) {

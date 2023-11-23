@@ -4,16 +4,12 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,6 +18,10 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@NamedEntityGraph(
+        name = "graph.Application.modulesConnections",
+        attributeNodes = @NamedAttributeNode(value = "modulesConnections")
+)
  public class Application {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,16 +31,19 @@ import lombok.Setter;
     private LocalDate creationDate;
     private LocalDate decisionDate;
 
+    private String courseLeipzig;
+
     //Relation Application <-> ModulesConnection
     @OneToMany(mappedBy = "application" , cascade = CascadeType.ALL , orphanRemoval = true)
-    @JsonIgnore
+    @JsonManagedReference
     private List<ModulesConnection> modulesConnections = new ArrayList<>();
 
 
-    public Application(String fullStatus, LocalDate creationDate, LocalDate decisionDate) {
+    public Application(String fullStatus, LocalDate creationDate, LocalDate decisionDate, String courseLeipzig) {
         this.fullStatus = fullStatus;
         this.creationDate = creationDate;
         this.decisionDate = decisionDate;
+        this.courseLeipzig = courseLeipzig;
     }
 
 

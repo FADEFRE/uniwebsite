@@ -3,6 +3,7 @@ package swtp12.modulecrediting.dto;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
+import java.util.List;
 
 @Getter
 @Setter
@@ -12,6 +13,6 @@ public class ModuleBlockCreateDTO {
     private Integer points;
     private String pointSystem;
     private MultipartFile description;
-    private String moduleNameLeipzig;
+    private List<String> moduleNamesLeipzig;
     private String commentApplicant;
 }

@@ -1,5 +1,6 @@
 package swtp12.modulecrediting.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.persistence.OneToOne;
@@ -22,7 +23,7 @@ public class PdfDocument {
 
     //Relation PdfDocument <-> ModuleApplication (Setter in ModuleApplication)
     @OneToOne(mappedBy = "pdfDocument")
-    @JsonIgnore
+    @JsonBackReference
     private ModuleApplication moduleApplication;
 
 

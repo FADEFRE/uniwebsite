@@ -1,14 +1,33 @@
 <script setup>
 import ModuleApplicationPanel from "@/components/ModuleApplicationPanel.vue";
 import NewModuleApplicationButton from "@/components/NewModuleApplicationButton.vue";
-import { ref, reactive } from 'vue'
+import { ref, reactive, computed, provide } from "vue"
+import { url } from "@/scripts/url-config"
+import axios from "axios";
 
-
+// courses
 const selectedCourse = ref()
-const courses = ref([
-  "B.Sc. Informatik"
-])
 
+let courseData = ref()
+axios.get(url + '/courses-leipzig')
+    .then(response => {
+      courseData.value = response.data
+    })
+// todo error catching
+
+const courses = computed(() => courseData.value ? courseData.value.map((obj) => obj.name) : [])
+const modules = computed(() => {
+  if (courseData.value && selectedCourse.value) {
+    const selectedCourseObject = courseData.value.find((course) => course.name === selectedCourse.value)
+    const moduleObjects = selectedCourseObject["modulesLeipzigCourse"]
+    return moduleObjects.map((module) => module.moduleName).sort()
+  } else {
+    return []
+  }
+})
+provide('modules', modules)
+
+// module applications
 const moduleApplicationPanels = reactive({
   1: null
 })
@@ -32,7 +51,11 @@ const deleteModuleApplication = (key) => {
 
 <template>
   <div class="view-container">
-    <Dropdown v-model="selectedCourse" :options="courses" placeholder="Studiengang wählen" class="course-dropdown"/>
+
+    <!-- courses -->
+    <Dropdown v-model="selectedCourse" :options="courses" placeholder="Studiengang wählen" class="course-dropdown" />
+
+    <!-- module applications -->
     <ModuleApplicationPanel
         v-for="(value, key) in moduleApplicationPanels"
         :key="key"
@@ -40,6 +63,7 @@ const deleteModuleApplication = (key) => {
         @deletePanel="deleteModuleApplication(key)"
     />
     <NewModuleApplicationButton @add-module-application="addModuleApplication" />
+
   </div>
 </template>
 

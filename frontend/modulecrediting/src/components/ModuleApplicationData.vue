@@ -1,27 +1,25 @@
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, inject } from "vue";
 
+// external module
 const moduleName = ref()
 const university = ref()
 const creditPoints = ref()
-const comment = ref()
-
-const internalModules = [
-    'Modellierung und Programmierung 1',
-    'Praktikum Objektorientierte Programmierung',
-    'Softwaretechnik',
-    'Softwaretechnikpraktikum'
-]
-const internalModulesModel = ref(['placeholder'])
-const selectedInternalModules = computed(
-    () => internalModulesModel.value.filter((item) => item !== 'placeholder')
-)
 
 let selectedFiles = ref()
 const handleFiles = (e) => {
   selectedFiles.value = e.target.files
 }
 const descriptionFile = computed(() => selectedFiles.value ? selectedFiles.value.item(0) : null)
+
+// internal module
+const internalModules = inject('modules')
+const internalModulesModel = ref(['placeholder'])
+const selectedInternalModules = computed(
+    () => internalModulesModel.value.filter((item) => item !== 'placeholder')
+)
+
+const comment = ref()
 
 defineExpose({
   moduleName, university, creditPoints, descriptionFile, selectedInternalModules, comment

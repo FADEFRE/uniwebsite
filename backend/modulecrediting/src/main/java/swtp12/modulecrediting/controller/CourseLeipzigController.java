@@ -7,13 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import swtp12.modulecrediting.model.CourseLeipzig;
 import swtp12.modulecrediting.repository.CourseLeipzigRepository;
@@ -21,6 +15,7 @@ import swtp12.modulecrediting.repository.ModuleLeipzigRepository;
 
 @RestController
 @CrossOrigin
+@RequestMapping("/courses-leipzig")
 public class CourseLeipzigController {
 
     @Autowired
@@ -29,12 +24,15 @@ public class CourseLeipzigController {
     @Autowired
     CourseLeipzigRepository courseLeipzigRepository;
 
-    @GetMapping("/courses-leipzig")
+    @GetMapping
     List<CourseLeipzig> getCourseLeipzigs() {
         return courseLeipzigRepository.findAll();
     }
+
+
+
     /*
-    @GetMapping("/course-leipzig/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<CourseLeipzig> getCourseLeipzigById(@PathVariable("id") Long id) {
         Optional<CourseLeipzig> courseLeipzig = courseLeipzigRepository.findById(id);
         if (courseLeipzig.isEmpty()) {
@@ -43,7 +41,7 @@ public class CourseLeipzigController {
         return new ResponseEntity<>(courseLeipzig.get(), HttpStatus.OK);
     }
 
-    @PostMapping("/course-leipzig")
+    @PostMapping
     public ResponseEntity<CourseLeipzig> createCourseLeipzig(@RequestBody CourseLeipzig courseLeipzig) {
         if (courseLeipzig.getModulesLeipzigCourse().size() != 0) {
             courseLeipzig.getModulesLeipzigCourse().stream().map((module -> {
