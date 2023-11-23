@@ -8,7 +8,7 @@ const deleteSelf = () => {
   emit('deletePanel')
 }
 
-const dataRef = ref(0)
+const dataRef = ref()
 const moduleName = computed(() => {
   return dataRef.value?.moduleName ? dataRef.value.moduleName : 'Neues Modul'
 })

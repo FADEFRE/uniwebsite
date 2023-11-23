@@ -47,13 +47,19 @@ const addModuleApplication = () => {
 const deleteModuleApplication = (key) => {
   delete moduleApplicationPanels[key]
 }
+
+const resetSelectedModules = () => {
+  for (let panelRef of moduleApplicationPanelsRef.value) {
+    panelRef.dataRef.resetSelectedInternalModules()
+  }
+}
 </script>
 
 <template>
   <div class="view-container">
 
     <!-- courses -->
-    <Dropdown v-model="selectedCourse" :options="courses" placeholder="Studiengang wählen" class="course-dropdown" />
+    <Dropdown v-model="selectedCourse" :options="courses" placeholder="Studiengang wählen" class="course-dropdown" @change="resetSelectedModules"/>
 
     <!-- module applications -->
     <ModuleApplicationPanel

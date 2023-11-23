@@ -18,11 +18,15 @@ const internalModulesModel = ref(['placeholder'])
 const selectedInternalModules = computed(
     () => internalModulesModel.value.filter((item) => item !== 'placeholder')
 )
+const resetSelectedInternalModules = () => {
+  console.log('reset in ModuleApplicationData')
+  internalModulesModel.value = ['placeholder']
+}
 
 const comment = ref()
 
 defineExpose({
-  moduleName, university, creditPoints, descriptionFile, selectedInternalModules, comment
+  moduleName, university, creditPoints, descriptionFile, selectedInternalModules, resetSelectedInternalModules, comment
 })
 </script>
 
