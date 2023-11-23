@@ -27,7 +27,7 @@ import lombok.Setter;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String fullStatus; //enum?
+    private ApplicationStatus fullStatus; //enum?
     @CreationTimestamp
     private LocalDate creationDate;
     private LocalDate decisionDate;
@@ -43,10 +43,16 @@ import lombok.Setter;
     private List<ModulesConnection> modulesConnections = new ArrayList<>();
 
 
-    public Application(String fullStatus, LocalDate creationDate, LocalDate decisionDate) {
+    public Application(ApplicationStatus fullStatus, LocalDate creationDate, LocalDate decisionDate) {
         this.fullStatus = fullStatus;
         this.creationDate = creationDate;
         this.decisionDate = decisionDate;
+    }
+
+    public enum ApplicationStatus{
+        OFFEN,
+        IN_BEARBEITUNG,
+        ABGESCHLOSSEN
     }
 
 

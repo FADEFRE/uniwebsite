@@ -10,6 +10,8 @@ import swtp12.modulecrediting.repository.projection.ApplicationProjection;
 import swtp12.modulecrediting.service.ApplicationService;
 
 import java.util.List;
+import java.util.Optional;
+
 
 @RestController
 @CrossOrigin
@@ -25,13 +27,16 @@ public class ApplicationController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ApplicationProjection>> getAllCreditTransferApplications(@RequestParam(defaultValue = "10") int limit) {
-        List<ApplicationProjection> creditTransferApplications = applicationService.getAllApplciations(limit);
-        return new ResponseEntity<>(creditTransferApplications, HttpStatus.OK);
+    public ResponseEntity<List<ApplicationProjection>> getAllCreditTransferApplications(@RequestParam(defaultValue = "10") int limit,
+                                                                                        @RequestParam(required = false) Application.ApplicationStatus status) {
+
+        List<ApplicationProjection> allApplications = applicationService.getAllApplciations(limit, Optional.ofNullable(status));
+        return new ResponseEntity<>(allApplications, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Application>  getApplicationById(@PathVariable Long id) {
         return ResponseEntity.ok(applicationService.getApplicationById(id));
     }
+
 }
