@@ -26,6 +26,8 @@ public class ApplicationService {
     private ApplicationRepository applicationRepository;
     @Autowired
     private ModuleLeipzigService moduleLeipzigService;
+    @Autowired
+    private CourseLeipzigService courseLeipzigService;
 
 
     public Long createApplication(ApplicationCreateDTO applicationCreateDTO) {
@@ -46,7 +48,11 @@ public class ApplicationService {
             modulesConnections.add(modulesConnection);
         }
 
-        Application application = new Application("open", LocalDate.now(), LocalDate.now(), applicationCreateDTO.getCourseLeipzig());
+        CourseLeipzig courseLeipzig = courseLeipzigService.getCourseLeipzigByName(applicationCreateDTO.getCourseLeipzig());
+
+        Application application = new Application("open", LocalDate.now(), LocalDate.now());
+        application.setCourseLeipzig(courseLeipzig);
+
         application.setModulesConnections(modulesConnections);
 
         Application savedApplication = applicationRepository.save(application);

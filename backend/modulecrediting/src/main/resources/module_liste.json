@@ -102,47 +102,47 @@
             "name": "test course",
             "modules" : [
                 {
-                    "name": "Programmierparadigmen_2",
-                    "number": "test Pp"
+                    "name": "Programmierparadigmen",
+                    "number": "10-201-2005-2"
                 },
                 {
-                    "name": "Algorithmen und Datenstrukturen 1_2",
-                    "number": "test ADS1"
+                    "name": "Algorithmen und Datenstrukturen 1",
+                    "number": "10-201-2001-1"
                 },
                 {
-                    "name": "Algorithmen und Datenstrukturen 2_2",
-                    "number": "test ADS2"
+                    "name": "Algorithmen und Datenstrukturen 2",
+                    "number": "10-201-2001-2"
                 },
                 {
-                    "name": "Grundlagen der Technischen Informatik 1_2",
-                    "number": "test TI1"
+                    "name": "Grundlagen der Technischen Informatik 1",
+                    "number": "10-201-2006-1"
                 },
                 {
-                    "name": "Grundlagen der Technischen Informatik 2_2",
-                    "number": "test TI2"
+                    "name": "Grundlagen der Technischen Informatik 2",
+                    "number": "10-201-2006-2"
                 },
                 {
-                    "name": "Betriebs- und Kommuikationssysteme_2",
-                    "number": "test BKS"
+                    "name": "Betriebs- und Kommuikationssysteme",
+                    "number": ""
                 },
                 {
-                    "name": "Logik_2",
-                    "number": "test"
+                    "name": "Logik",
+                    "number": "10-201-2108-1"
                 },
                 {
-                    "name": "Automaten und Sprachen_2",
+                    "name": "Automaten und Sprachen",
                     "number": "10-201-2108-2"
                 },
                 {
-                    "name": "Berechenbarkeit_2",
+                    "name": "Berechenbarkeit",
                     "number": "10-201-2009"
                 },
                 {
-                    "name": "Datenbanksysteme 1_2",
+                    "name": "Datenbanksysteme 1",
                     "number": "10-201-2211"
                 },
                 {
-                    "name": "Software Engineering_2",
+                    "name": "Software Engineering",
                     "number": "10-201-2321"
                 }
             ]

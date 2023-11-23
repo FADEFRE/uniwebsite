@@ -3,14 +3,10 @@ package swtp12.modulecrediting.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,6 +21,10 @@ public class CourseLeipzig {
     private Long id;
     private String name;
 
+    @OneToMany(mappedBy = "courseLeipzig")
+    @JsonBackReference
+    private List<Application> applications = new ArrayList<>();
+
     //Realtion CourseLeipzig <-> ModuleLeipzig
     @ManyToMany (cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
@@ -33,6 +33,7 @@ public class CourseLeipzig {
             inverseJoinColumns = @JoinColumn(name = "module_leipzig_id", referencedColumnName = "id")
     )
     @JsonManagedReference
+    @JsonIgnore
     private List<ModuleLeipzig> modulesLeipzigCourse = new ArrayList<>();
 
 
@@ -44,5 +45,9 @@ public class CourseLeipzig {
     public void addCourseToModulesLeipzig(ModuleLeipzig moduleLeipzig) {
         this.modulesLeipzigCourse.add(moduleLeipzig);
         moduleLeipzig.getCoursesLeipzig().add(this);
+    }
+
+    public void addApplication(Application application) {
+        applications.add(application);
     }
 }
