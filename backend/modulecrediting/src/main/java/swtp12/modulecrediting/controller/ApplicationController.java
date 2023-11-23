@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import swtp12.modulecrediting.dto.ApplicationCreateDTO;
+import swtp12.modulecrediting.dto.ApplicationDTO;
 import swtp12.modulecrediting.dto.ApplicationStudentDTO;
 import swtp12.modulecrediting.model.Application;
 import swtp12.modulecrediting.repository.projection.ApplicationProjection;
@@ -36,7 +37,7 @@ public class ApplicationController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Application>  getApplicationById(@PathVariable Long id) {
+    public ResponseEntity<ApplicationDTO>  getApplicationById(@PathVariable Long id) {
         return ResponseEntity.ok(applicationService.getApplicationById(id));
     }
 

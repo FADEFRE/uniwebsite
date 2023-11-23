@@ -32,6 +32,8 @@ public class ApplicationService {
     private ModuleLeipzigService moduleLeipzigService;
     @Autowired
     private CourseLeipzigService courseLeipzigService;
+    @Autowired
+    private ModulesConnectionService modulesConnectionService;
 
 
     public Long createApplication(ApplicationCreateDTO applicationCreateDTO) {
@@ -73,10 +75,13 @@ public class ApplicationService {
         }
     }
 
-    public Application getApplicationById(Long id) {
+    public ApplicationDTO getApplicationById(Long id) {
         Optional<Application> applicationOptional = applicationRepository.findById(id);
         if(applicationOptional.isPresent()) {
-            return applicationOptional.get();
+            Application a = applicationOptional.get();
+            CourseLeipzigWithoutModulesDTO courseLeipzig = courseLeipzigService.mapToCourseLeipzigWithoutModulesDTO(a.getCourseLeipzig());
+            ApplicationDTO applicationDTO = new ApplicationDTO(a.getId(),a.getFullStatus(),a.getCreationDate(),a.getDecisionDate(),courseLeipzig, a.getModulesConnections());
+            return applicationDTO;
         }else {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Application not Found");
         }
@@ -87,16 +92,15 @@ public class ApplicationService {
         if(applicationOptional.isPresent()) {
             Application application = applicationOptional.get();
 
-            List<ModulesConnection> modulesConnections = application.getModulesConnections();
-            List<ModulesConnectionStudentDTO> modulesConnectionsStudentDTO = new ArrayList<>();
-            for(ModulesConnection m : modulesConnections) {
-                modulesConnectionsStudentDTO.add(new ModulesConnectionStudentDTO(m.getId(),m.getDecision(),m.getModuleApplication(),m.getModulesLeipzig()));
-            }
-            return new ApplicationStudentDTO(application.getId(),application.getFullStatus(),application.getCourseLeipzig(),modulesConnectionsStudentDTO);
+            List<ModulesConnectionStudentDTO> modulesConnections = modulesConnectionService.mapToModulesConnectionStudentDTOList(application.getModulesConnections());
+            CourseLeipzigWithoutModulesDTO courseLeipzig = courseLeipzigService.mapToCourseLeipzigWithoutModulesDTO(application.getCourseLeipzig());
+
+            return new ApplicationStudentDTO(application.getId(),application.getFullStatus(),courseLeipzig,modulesConnections);
         }else {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Application not Found");
         }
     }
+
 
 
 }
