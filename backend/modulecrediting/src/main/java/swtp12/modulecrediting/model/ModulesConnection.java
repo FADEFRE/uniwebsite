@@ -19,7 +19,8 @@ import lombok.Setter;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String decision; //Enum maybe
+    private ModuleConnectionDecision decision; //Enum maybe
+    private ModuleConnectionDecision decisionSuggestion;
     private String comment;
 
     //Relation ModulesConnection <-> Application (Setter in Application)
@@ -45,10 +46,19 @@ import lombok.Setter;
     private List<ModuleLeipzig> modulesLeipzig = new ArrayList<>();
 
 
-    public ModulesConnection(String decision, String comment) {
+    public ModulesConnection(ModuleConnectionDecision decision, ModuleConnectionDecision decisionSuggestion, String comment) {
         this.decision = decision;
+        this.decisionSuggestion = decisionSuggestion;
         this.comment = comment;
     }
+
+    public enum ModuleConnectionDecision{
+        ANGENOMMEN,
+        VERAENDERT_ANGENOMMEN,
+        ABGELEHNT,
+        UNBEARBEITET
+    }
+
 
     //Setter for Relation: ModulesConnection <-> ModuleApplication
     public void setModuleApplication(ModuleApplication moduleApplication) {

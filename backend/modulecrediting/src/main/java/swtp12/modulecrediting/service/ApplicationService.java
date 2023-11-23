@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static swtp12.modulecrediting.model.Application.ApplicationStatus.OFFEN;
+import static swtp12.modulecrediting.model.ModulesConnection.ModuleConnectionDecision.UNBEARBEITET;
 
 @Service
 public class ApplicationService {
@@ -41,10 +42,9 @@ public class ApplicationService {
             ModuleApplication moduleApplication = new ModuleApplication(m.getModuleName(), m.getPoints(), m.getPointSystem(), m.getUniversity(), m.getCommentApplicant());
             moduleApplication.setPdfDocument(pdfDocument);
 
-            ModulesConnection modulesConnection = new ModulesConnection("open", "");
+            ModulesConnection modulesConnection = new ModulesConnection(UNBEARBEITET,UNBEARBEITET,"");
             modulesConnection.setModuleApplication(moduleApplication);
 
-            // find module leipzig...
             ArrayList<ModuleLeipzig> modulesLeipzig = moduleLeipzigService.getModulesLeipzigByNames(m.getModuleNamesLeipzig());
             modulesConnection.setModulesLeipzig(modulesLeipzig);
 
@@ -76,8 +76,23 @@ public class ApplicationService {
     public Application getApplicationById(Long id) {
         Optional<Application> applicationOptional = applicationRepository.findById(id);
         if(applicationOptional.isPresent()) {
+            return applicationOptional.get();
+        }else {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Application not Found");
+        }
+    }
+
+    public ApplicationStudentDTO getApplicationStudentById(Long id) {
+        Optional<Application> applicationOptional = applicationRepository.findById(id);
+        if(applicationOptional.isPresent()) {
             Application application = applicationOptional.get();
-            return application;
+
+            List<ModulesConnection> modulesConnections = application.getModulesConnections();
+            List<ModulesConnectionStudentDTO> modulesConnectionsStudentDTO = new ArrayList<>();
+            for(ModulesConnection m : modulesConnections) {
+                modulesConnectionsStudentDTO.add(new ModulesConnectionStudentDTO(m.getId(),m.getDecision(),m.getModuleApplication(),m.getModulesLeipzig()));
+            }
+            return new ApplicationStudentDTO(application.getId(),application.getFullStatus(),application.getCourseLeipzig(),modulesConnectionsStudentDTO);
         }else {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Application not Found");
         }

@@ -27,7 +27,7 @@ import lombok.Setter;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private ApplicationStatus fullStatus; //enum?
+    private ApplicationStatus fullStatus;
     @CreationTimestamp
     private LocalDate creationDate;
     private LocalDate decisionDate;
