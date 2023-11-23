@@ -72,10 +72,12 @@ defineExpose({
               :placeholder="n === 1 ? 'Modul wählen' : 'Weiteres Modul wählen'"
               class="module-dropdown"
           />
-          <button
+          <Button
+              text
               v-if="n < internalModulesModel.length"
               icon="pi pi-trash"
               @click="internalModulesModel.splice(n, 1)"
+              class="internal-module-remove-button"
           />
         </div>
         <!-- Comment -->
@@ -116,6 +118,10 @@ defineExpose({
 
 .internal-module-dropdown-item > * {
   margin: 5px;
+}
+
+.internal-module-remove-button {
+  color: #848484;
 }
 
 .module-comment {
