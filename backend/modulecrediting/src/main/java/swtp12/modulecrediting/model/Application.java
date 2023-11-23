@@ -4,12 +4,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,6 +29,7 @@ import lombok.Setter;
     private LocalDate creationDate;
     private LocalDate decisionDate;
 
+    //Relation Application <-> CourseLeipzig
     @ManyToOne
     @JoinColumn(name = "course_leipzig_id")
     @JsonManagedReference
@@ -56,16 +54,17 @@ import lombok.Setter;
     }
 
 
-    //Setter for Relation: Application <-> ModulesConnection
-    public void setModulesConnections(List<ModulesConnection> modulesConnections) {
+    //Function for adding a List of ModuelsConnections to this Application (and add the Application to all ModulesConnection in the List)
+    public void addModulesConnections(List<ModulesConnection> modulesConnections) {
         for(ModulesConnection mc : modulesConnections) {
             mc.setApplication(this);
         }
         this.modulesConnections = modulesConnections;
     }
 
+    //Function for adding a Course to this Application (and add the Application to the Course aswell)
     public void setCourseLeipzig(CourseLeipzig courseLeipzig) {
-        courseLeipzig.addApplication(this);
+        courseLeipzig.getApplications().add(this);
         this.courseLeipzig = courseLeipzig;
     }
 }

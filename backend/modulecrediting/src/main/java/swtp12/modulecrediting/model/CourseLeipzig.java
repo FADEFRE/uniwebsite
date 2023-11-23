@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,11 +21,12 @@ public class CourseLeipzig {
     private Long id;
     private String name;
 
+    //Relation CourseLeipzig <-> Application
     @OneToMany(mappedBy = "courseLeipzig")
     @JsonBackReference
     private List<Application> applications = new ArrayList<>();
 
-    //Realtion CourseLeipzig <-> ModuleLeipzig
+    //Reltion CourseLeipzig <-> ModuleLeipzig
     @ManyToMany (cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "course_leipzig_module_leipzig",
@@ -40,13 +41,10 @@ public class CourseLeipzig {
         this.name = name;
     }
 
-    //Function to add Course to Module and vice versa
+    //Function to add a Module to this Course (adds the Course to the Module aswell)
     public void addCourseToModulesLeipzig(ModuleLeipzig moduleLeipzig) {
         this.modulesLeipzigCourse.add(moduleLeipzig);
         moduleLeipzig.getCoursesLeipzig().add(this);
     }
 
-    public void addApplication(Application application) {
-        applications.add(application);
-    }
 }

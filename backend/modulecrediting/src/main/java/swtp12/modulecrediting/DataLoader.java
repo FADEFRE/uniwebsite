@@ -62,7 +62,7 @@ public class DataLoader implements CommandLineRunner {
         for (CourseLeipzig courseDB : courseLeipzigs) {
             String courseName = courseDB.getName();
             for (ModuleLeipzig moduleDB : modulsLeipzigsSorted) {
-                List<String> coursesInModules = moduleDB.getCourses();
+                List<String> coursesInModules = moduleDB.getDataloaderOnlyCourses();
                 if (coursesInModules.contains(courseName)) {
                     courseDB.addCourseToModulesLeipzig(moduleDB);
                 }
@@ -88,7 +88,7 @@ public class DataLoader implements CommandLineRunner {
                     String moduleCodeSort = modulesLeipzigsSorted.get(i).getModuleCode();
                     String moduleNameSort = modulesLeipzigsSorted.get(i).getModuleName();                                
                     if (moduleCode.equals(moduleCodeSort) && moduleName.equals(moduleNameSort)) {
-                        modulesLeipzigsSorted.get(i).addCourseNames(moduleForCourse.getCourses());
+                        modulesLeipzigsSorted.get(i).addDataloaderOnlyCourses(moduleForCourse.getDataloaderOnlyCourses());
                         exists++;
                     }
                 }

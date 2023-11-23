@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import swtp12.modulecrediting.model.Application;
-import swtp12.modulecrediting.model.CourseLeipzig;
 import swtp12.modulecrediting.model.ModulesConnection;
 
 import java.time.LocalDate;
