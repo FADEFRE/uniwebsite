@@ -16,6 +16,9 @@ public class ModuleLeipzigService {
     @Autowired
     private ModuleLeipzigRepository moduleLeipzigRepository;
     public ArrayList<ModuleLeipzig> getModulesLeipzigByNames(List<String> moduleNamesLeipzig) {
+        if(moduleNamesLeipzig == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No Module Leipzig");
+        }
         ArrayList<ModuleLeipzig> modulesLeipzig = new ArrayList();
         for(String name : moduleNamesLeipzig) {
             Optional<ModuleLeipzig> moduleLeipzig = moduleLeipzigRepository.findByModuleName(name);
