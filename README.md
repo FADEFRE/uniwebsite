@@ -53,11 +53,18 @@ http://localhost:8090/applications
     ...
 
 http://localhost:8090/applications
- -> GET: getAllApplications requestparam: limit (default = 10)
+ -> GET: getAllApplications requestparam: limit (default = 10), optional status,
+    enum status:
+        - OFFEN
+        - IN_BEARBEITUNG
+        - ABGESCHLOSSEN
 
 http://localhost:8090/applications/{id}
- -> GET: getApplicationById 
-    
+ -> GET: getApplicationById (full applicaiton for sutdienbuero and pav)
+    (pdf id is included: use for retrieving pdf data over seperate api endpoint)
+
+http://localhost:8090/applications/student/{id}
+ -> GET: getApplicationById (limited info)
     (pdf id is included: use for retrieving pdf data over seperate api endpoint)
 
 http://localhost:8090/pdf-documents/{id}
