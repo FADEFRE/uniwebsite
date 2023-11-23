@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,7 +23,8 @@ public class ModuleLeipzig {
 
     private String moduleName;
     private String moduleCode;
-    private List<String> courses;
+    @JsonIgnore
+    private List<String> DataloaderOnlyCourses;
 
     //Relation ModuleLeipzig <-> ModulesConnection
     @ManyToMany(mappedBy = "modulesLeipzig")
@@ -38,23 +40,25 @@ public class ModuleLeipzig {
     public ModuleLeipzig(String moduleName, String moduleCode, List<String> courses) {
         this.moduleName = moduleName;
         this.moduleCode = moduleCode;
-        this.courses = courses;
+        this.DataloaderOnlyCourses = courses;
     }
 
 
-    //Setter for Relation: ModuleLeipzig <-> ModulesConnection
-    public void setModulesConnections(List<ModulesConnection> modulesConnections) {
+    //Function to add a List of ModulesConnection to this ModuleLeipzig (and add this ModuleLeipzig to these ModuleConnections)
+    public void addModulesConnections(List<ModulesConnection> modulesConnections) {
         for(ModulesConnection mc : modulesConnections) {
             mc.getModulesLeipzig().add(this);
         }
         this.modulesConnections = modulesConnections;
     }
-    // add (Setter) for Relation: ModuleLeipzig <-> ModulesConnection
-    public void addModulesConnection(ModulesConnection modulesConnection) {
-        modulesConnections.add(modulesConnection);
+    //Function to add a ModulesConnection to this ModuleLeipzig (and add this ModuleLeipzig to the ModuleConnection)
+    public void addModulesConnection(ModulesConnection mc) {
+        mc.getModulesLeipzig().add(this);
+        modulesConnections.add(mc);
     }
 
-    public void addCourseNames(List<String> courseName) {
-        courses.addAll(courseName);
+    //Dataloader Function to add Courses to this ModuelLeipzig
+    public void addDataloaderOnlyCourses(List<String> dtLC) {
+        DataloaderOnlyCourses.addAll(dtLC);
     }
 }

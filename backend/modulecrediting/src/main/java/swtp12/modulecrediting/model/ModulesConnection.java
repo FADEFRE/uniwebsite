@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -60,15 +59,17 @@ import lombok.Setter;
     }
 
 
-    //Setter for Relation: ModulesConnection <-> ModuleApplication
-    public void setModuleApplication(ModuleApplication moduleApplication) {
+    //Function to add ModuleApplication to this ModuleConnection (and add this ModuleConnection to the ModuleApplication)
+    public void addModuleApplication(ModuleApplication moduleApplication) {
       moduleApplication.setModulesConnection(this);
       this.moduleApplication = moduleApplication;
     }
 
-    // Setter for Relation: ModulesConnectiom <-> ModuleLeipzig
-   public void setModulesLeipzig(ArrayList<ModuleLeipzig> modulesLeipzig) {
-       for(ModuleLeipzig m : modulesLeipzig) m.addModulesConnection(this);
+    //Function to add List of ModuleLeipzig to this ModulesConnection (and add this ModuleConnectio to all ModulesLeipzig in the List)
+    public void addModulesLeipzig(List<ModuleLeipzig> modulesLeipzig) {
+        for(ModuleLeipzig m : modulesLeipzig) { 
+            m.getModulesConnections().add(this);
+        }
        this.modulesLeipzig = modulesLeipzig;
    }
 }

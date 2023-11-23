@@ -42,13 +42,13 @@ public class ApplicationService {
             PdfDocument pdfDocument = pdfDocumentService.createPdfDocument(m.getDescription());
 
             ModuleApplication moduleApplication = new ModuleApplication(m.getModuleName(), m.getPoints(), m.getPointSystem(), m.getUniversity(), m.getCommentApplicant());
-            moduleApplication.setPdfDocument(pdfDocument);
+            moduleApplication.addPdfDocument(pdfDocument);
 
             ModulesConnection modulesConnection = new ModulesConnection(UNBEARBEITET,UNBEARBEITET,"");
-            modulesConnection.setModuleApplication(moduleApplication);
+            modulesConnection.addModuleApplication(moduleApplication);
 
             ArrayList<ModuleLeipzig> modulesLeipzig = moduleLeipzigService.getModulesLeipzigByNames(m.getModuleNamesLeipzig());
-            modulesConnection.setModulesLeipzig(modulesLeipzig);
+            modulesConnection.addModulesLeipzig(modulesLeipzig);
 
             modulesConnections.add(modulesConnection);
         }
@@ -58,7 +58,7 @@ public class ApplicationService {
         Application application = new Application(OFFEN, LocalDate.now(), LocalDate.now());
         application.setCourseLeipzig(courseLeipzig);
 
-        application.setModulesConnections(modulesConnections);
+        application.addModulesConnections(modulesConnections);
 
         Application savedApplication = applicationRepository.save(application);
         return savedApplication.getId();

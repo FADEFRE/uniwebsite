@@ -1,10 +1,9 @@
 package swtp12.modulecrediting.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -43,8 +42,8 @@ public class ModuleApplication {
     }
 
 
-    //Setter for Relation: ModuleApplication <-> ModulesConnection
-    public void setPdfDocument(PdfDocument pdfDocument) {
+    //Function to add a PDF Document to this ModuleApplication (adds this Module to the PDF aswell)
+    public void addPdfDocument(PdfDocument pdfDocument) {
         pdfDocument.setModuleApplication(this);
         this.pdfDocument = pdfDocument;
     }

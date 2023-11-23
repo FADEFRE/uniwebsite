@@ -6,10 +6,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import swtp12.modulecrediting.dto.CourseLeipzigWithoutModulesDTO;
 import swtp12.modulecrediting.model.CourseLeipzig;
-import swtp12.modulecrediting.model.ModuleLeipzig;
 import swtp12.modulecrediting.repository.CourseLeipzigRepository;
 
-import java.util.ArrayList;
 import java.util.Optional;
 
 @Service

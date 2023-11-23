@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 import swtp12.modulecrediting.model.Application;
 import swtp12.modulecrediting.repository.projection.ApplicationProjection;
 
-import java.util.List;
 import java.util.Optional;
 
 @Repository
