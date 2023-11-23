@@ -31,7 +31,6 @@ public class ModuleLeipzig {
 
     //Relation ModuleLeipzig <-> CourseLeipzig
     @ManyToMany(mappedBy = "modulesLeipzigCourse", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JsonIgnore
     @JsonBackReference
     private List<CourseLeipzig> coursesLeipzig = new ArrayList<>();
 

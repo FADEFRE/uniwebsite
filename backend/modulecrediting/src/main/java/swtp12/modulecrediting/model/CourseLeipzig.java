@@ -33,7 +33,6 @@ public class CourseLeipzig {
             inverseJoinColumns = @JoinColumn(name = "module_leipzig_id", referencedColumnName = "id")
     )
     @JsonManagedReference
-    @JsonIgnore
     private List<ModuleLeipzig> modulesLeipzigCourse = new ArrayList<>();
 
 
