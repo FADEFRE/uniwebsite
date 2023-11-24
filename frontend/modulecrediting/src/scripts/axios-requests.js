@@ -28,8 +28,8 @@ function postApplication (course, applicationObjects) {
             formData.append(`moduleBlockCreateDTOList[${index}].commentApplicant`, object.comment)
         }
     )
-    axios.post(url + '/applications', formData)
-        .then(response => console.log(response))
+    return axios.post(url + '/applications', formData)
+        .then(response => response.data)
     // todo error catching
 }
 

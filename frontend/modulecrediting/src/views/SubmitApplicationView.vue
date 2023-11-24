@@ -1,10 +1,13 @@
 <script setup>
 import ModuleApplicationPanel from "@/components/ModuleApplicationPanel.vue";
 import NewModuleApplicationButton from "@/components/NewModuleApplicationButton.vue";
+import { useRouter } from "vue-router"
 import { ref, reactive, computed, provide } from "vue"
 import { postApplication } from "@/scripts/axios-requests";
 import { url } from "@/scripts/url-config"
 import axios from "axios";
+
+const router = useRouter()
 
 // courses
 const selectedCourse = ref()
@@ -59,6 +62,10 @@ const resetSelectedModules = () => {
 const triggerPostApplication = () => {
   const applicationsObject = moduleApplicationPanelsRef.value.map((obj) => obj['dataRef'])
   postApplication(selectedCourse, applicationsObject)
+      .then((id) => {
+        const routeData = router.resolve({name: 'statusDetail', params: {id: id}})
+        window.open(routeData.href, '_top')
+      })
 }
 </script>
 
