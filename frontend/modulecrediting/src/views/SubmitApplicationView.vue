@@ -83,10 +83,6 @@ const triggerPostApplication = () => {
 </template>
 
 <style scoped>
-.view-container{
-  margin: 10px 0 20px 0;
-}
-
 .course-dropdown {
   margin: 10px;
 }
