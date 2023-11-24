@@ -2,6 +2,7 @@
 import ModuleApplicationPanel from "@/components/ModuleApplicationPanel.vue";
 import NewModuleApplicationButton from "@/components/NewModuleApplicationButton.vue";
 import { ref, reactive, computed, provide } from "vue"
+import { postApplication } from "@/scripts/axios-requests";
 import { url } from "@/scripts/url-config"
 import axios from "axios";
 
@@ -53,6 +54,12 @@ const resetSelectedModules = () => {
     panelRef.dataRef.resetSelectedInternalModules()
   }
 }
+
+// send button
+const triggerPostApplication = () => {
+  const applicationsObject = moduleApplicationPanelsRef.value.map((obj) => obj['dataRef'])
+  postApplication(selectedCourse, applicationsObject)
+}
 </script>
 
 <template>
@@ -70,6 +77,8 @@ const resetSelectedModules = () => {
     />
     <NewModuleApplicationButton @add-module-application="addModuleApplication" />
 
+    <!-- send button -->
+    <Button @click="triggerPostApplication">Absenden</Button>
   </div>
 </template>
 
