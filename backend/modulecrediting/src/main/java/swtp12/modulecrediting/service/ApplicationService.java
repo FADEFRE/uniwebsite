@@ -101,6 +101,15 @@ public class ApplicationService {
         }
     }
 
+    public boolean applicationExists(Long id) {
+        Optional<Application> applicationOptional = applicationRepository.findById(id);
+        if(applicationOptional.isPresent()) {
+            return true;
+        }else {
+            return false;
+        }
+    }
+
 
 
 }

@@ -45,4 +45,9 @@ public class ApplicationController {
     public ResponseEntity<ApplicationStudentDTO>  getApplicationStudentById(@PathVariable Long id) {
         return ResponseEntity.ok(applicationService.getApplicationStudentById(id));
     }
+
+    @GetMapping("/{id}/exists")
+    public ResponseEntity<Boolean> applicationExists(@PathVariable Long id) {
+        return ResponseEntity.ok(applicationService.applicationExists(id));
+    }
 }
