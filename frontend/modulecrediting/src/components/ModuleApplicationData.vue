@@ -5,6 +5,7 @@ import { ref, computed, inject } from "vue";
 const moduleName = ref()
 const university = ref()
 const creditPoints = ref()
+const pointSystem = ref()
 
 let selectedFiles = ref()
 const handleFiles = (e) => {
@@ -26,7 +27,8 @@ const resetSelectedInternalModules = () => {
 const comment = ref()
 
 defineExpose({
-  moduleName, university, creditPoints, descriptionFile, selectedInternalModules, resetSelectedInternalModules, comment
+  moduleName, university, creditPoints, pointSystem, descriptionFile,
+  selectedInternalModules, resetSelectedInternalModules, comment
 })
 </script>
 
@@ -51,6 +53,11 @@ defineExpose({
       <div class="text-input-container">
         <p>Leistungspunkte:</p>
         <InputText type="text" v-model="creditPoints"/>
+      </div>
+      <!-- Point System -->
+      <div class="text-input-container">
+        <p>Punktesystem:</p>
+        <InputText type="text" v-model="pointSystem"/>
       </div>
       <!-- File Upload -->
       <div class="file-input-container">
