@@ -33,7 +33,7 @@ const fileLink = computed(() => `${url}/pdf-documents/${id.value}`)
           <p>Anrechnung für {{ applicationData['courseLeipzig']['name'] }} an der Universität Leipzig.</p>
         </div>
 
-        <Panel toggleable v-for="moduleConnection in applicationData['modulesConnections']" class="module-panel">
+        <Panel toggleable collapsed v-for="moduleConnection in applicationData['modulesConnections']" class="module-panel">
 
           <template #header>
             <h2>
