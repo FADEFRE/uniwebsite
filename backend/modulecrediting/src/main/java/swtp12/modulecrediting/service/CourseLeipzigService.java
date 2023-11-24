@@ -20,7 +20,7 @@ public class CourseLeipzigService {
         if(courseLeipzig.isPresent()) {
             return courseLeipzig.get();
         }else{
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Module Leipzig not found with moduleName: " + name);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Course Leipzig not found with moduleName: " + name);
         }
     }
 
