@@ -10,7 +10,7 @@ let applicationData = ref()
 const id = ref()
 onBeforeMount(() => {
   id.value = route.params.id
-  axios.get(url + `/applications/${id.value}`)
+  axios.get(url + `/applications/student/${id.value}`)
       .then(response => {
         applicationData.value = response.data
         console.log(applicationData.value)
