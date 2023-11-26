@@ -3,6 +3,7 @@ package swtp12.modulecrediting.model;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -22,8 +23,24 @@ import lombok.Setter;
 )
  public class Application {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @PrePersist
+    public void ensureId() {
+        if (this.id == null) {
+            this.id = generateRandomUniqueId();
+        }
+    }
+
+    private Long generateRandomUniqueId() {
+        // Custom logic to generate a random long ID
+        Random random = new Random();
+        long uniqueId = System.currentTimeMillis(); // Use current timestamp as part of the ID
+        uniqueId = uniqueId * 1000 + random.nextInt(1000); // Append a random number
+
+        return uniqueId;
+    }
+
     private ApplicationStatus fullStatus;
     @CreationTimestamp
     private LocalDate creationDate;
