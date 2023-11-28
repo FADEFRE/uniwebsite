@@ -1,3 +1,12 @@
+<!--
+shows status of an application
+displays:
+- application id
+- overall status
+- course application is related to
+- panels containing module application information
+-->
+
 <script setup>
 import { useRoute, useRouter } from 'vue-router'
 import { ref, computed, onMounted, onBeforeMount } from "vue";
@@ -18,7 +27,8 @@ onBeforeMount(() => {
   // todo error catching
 })
 
-const fileLink = computed(() => `${url}/pdf-documents/${id.value}`)
+// link to pdf document
+const fileLinkBase = computed(() => `${url}/pdf-documents/`)
 </script>
 
 <template>
@@ -33,7 +43,12 @@ const fileLink = computed(() => `${url}/pdf-documents/${id.value}`)
           <p>Anrechnung für {{ applicationData['courseLeipzig']['name'] }} an der Universität Leipzig.</p>
         </div>
 
-        <Panel toggleable collapsed v-for="moduleConnection in applicationData['modulesConnections']" class="module-panel">
+        <Panel
+            toggleable
+            collapsed
+            v-for="moduleConnection in applicationData['modulesConnections']"
+            class="module-panel"
+        >
 
           <template #header>
             <h2>
@@ -58,7 +73,9 @@ const fileLink = computed(() => `${url}/pdf-documents/${id.value}`)
             </div>
             <!-- File Link -->
             <div>
-              <a :href="fileLink" target="_blank">Modulbeschreibung anzeigen</a>
+              <a :href="fileLinkBase + moduleConnection['moduleApplication']['pdfDocument']['id']" target="_blank">
+                Modulbeschreibung anzeigen
+              </a>
             </div>
           </div>
 

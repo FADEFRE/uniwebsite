@@ -1,3 +1,13 @@
+<!--
+users can search for their applications status
+displays:
+- id text input
+- see status button
+functionality:
+- tests on button click, if application with corresponding id exists
+- if application exists, redirects to StatusDetailView
+-->
+
 <script setup>
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
@@ -14,6 +24,7 @@ const openDetailView = () => {
   axios.get(url + `/applications/${id.value}/exists`)
       .then(response => {
         if (response.data) {
+          // routes to status detail view
           const routeData = router.resolve({name: 'statusDetail', params: {id: id.value}})
           window.open(routeData.href, '_top')
         } else {
