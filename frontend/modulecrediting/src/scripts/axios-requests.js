@@ -12,7 +12,7 @@ parameters:
 */
 function postApplication (course, applicationObjects) {
     const formData = new FormData()
-    formData.append(`courseLeipzig`, course.value)
+    formData.append(`courseLeipzig`, course)
     applicationObjects.forEach(
         (object, index) => {
             formData.append(`moduleBlockCreateDTOList[${index}].moduleName`, object.moduleName)

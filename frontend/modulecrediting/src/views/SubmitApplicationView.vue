@@ -1,6 +1,19 @@
+<!--
+user can edit and submit an application
+displays:
+- course selection dropdown
+- module panels (varying amount) VIA ApplicationModulePanel
+- add module button VIA NewApplicationModulePanel
+- submit button
+functionality:
+- course selection
+- adding and deleting module panels
+- submitting i.e. triggering /applications POST-request
+-->
+
 <script setup>
-import ModuleApplicationPanel from "@/components/ModuleApplicationPanel.vue";
-import NewModuleApplicationButton from "@/components/NewModuleApplicationButton.vue";
+import ApplicationModulePanel from "@/components/ApplicationModulePanel.vue";
+import NewApplicationModulePanel from "@/components/NewApplicationModulePanel.vue";
 import { useRouter } from "vue-router"
 import { ref, reactive, computed, provide } from "vue"
 import { postApplication } from "@/scripts/axios-requests";
@@ -33,7 +46,7 @@ provide('modules', modules)
 
 // module applications
 const moduleApplicationPanels = reactive({
-  1: null
+  1: 'moduleApplication'
 })
 const moduleApplicationPanelsRef = ref([])
 
@@ -45,7 +58,7 @@ const addModuleApplication = () => {
     // noinspection JSCheckFunctionSignatures
     nextKey = Math.max(...Object.keys(moduleApplicationPanels)) + 1
   }
-  moduleApplicationPanels[nextKey] = null
+  moduleApplicationPanels[nextKey] = 'moduleApplication'
 }
 
 const deleteModuleApplication = (key) => {
@@ -53,16 +66,29 @@ const deleteModuleApplication = (key) => {
 }
 
 const resetSelectedModules = () => {
-  for (let panelRef of moduleApplicationPanelsRef.value) {
-    panelRef.dataRef.resetSelectedInternalModules()
+  for (let panel of moduleApplicationPanelsRef.value) {
+    panel.internalModules.resetSelectedInternalModules()
   }
 }
 
 // send button
 const triggerPostApplication = () => {
-  const applicationsObject = moduleApplicationPanelsRef.value.map((obj) => obj['dataRef'])
-  postApplication(selectedCourse, applicationsObject)
+  // unwrapping data
+  const applicationsObject = moduleApplicationPanelsRef.value.map((panel) => {
+    return {
+      moduleName: panel.base.moduleName,
+      university: panel.base.university,
+      creditPoints: panel.base.creditPoints,
+      pointSystem: panel.base.pointSystem,
+      descriptionFile: panel.file.descriptionFile,
+      selectedInternalModules: panel.internalModules.selectedInternalModules,
+      comment: panel.comment.applicantComment,
+    }
+  })
+  // post request
+  postApplication(selectedCourse.value, applicationsObject)
       .then((id) => {
+        // routing to status page for application
         const routeData = router.resolve({name: 'statusDetail', params: {id: id}})
         window.open(routeData.href, '_top')
       })
@@ -76,13 +102,13 @@ const triggerPostApplication = () => {
     <Dropdown v-model="selectedCourse" :options="courses" placeholder="Studiengang wählen" class="course-dropdown" @change="resetSelectedModules"/>
 
     <!-- module applications -->
-    <ModuleApplicationPanel
+    <ApplicationModulePanel
         v-for="(value, key) in moduleApplicationPanels"
         :key="key"
         ref="moduleApplicationPanelsRef"
         @deletePanel="deleteModuleApplication(key)"
     />
-    <NewModuleApplicationButton @add-module-application="addModuleApplication" />
+    <NewApplicationModulePanel @add-module-application="addModuleApplication" />
 
     <!-- send button -->
     <Button @click="triggerPostApplication">Absenden</Button>
