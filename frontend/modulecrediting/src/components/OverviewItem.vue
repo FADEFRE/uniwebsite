@@ -1,3 +1,11 @@
+<!--
+represents one application, used for StudyOfficeSelectionView
+displays:
+- id, course, status, creationDate
+functionality:
+- links to related detail view
+-->
+
 <script setup>
 const props = defineProps(['data'])
 console.log(props.data)
