@@ -1,3 +1,11 @@
+<!--
+button for adding new module to application
+displays:
+- add module button
+functionality:
+- emits addModuleApplication event
+-->
+
 <script setup>
 const emit = defineEmits(['addModuleApplication'])
 
