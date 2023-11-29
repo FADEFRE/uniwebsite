@@ -20,7 +20,6 @@ const isInvalid = ref(false)
 
 const id = ref()
 const openDetailView = () => {
-  console.log(url + `/applications/${id.value}/exists`)
   axios.get(url + `/applications/${id.value}/exists`)
       .then(response => {
         if (response.data) {

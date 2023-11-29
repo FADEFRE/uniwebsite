@@ -33,16 +33,6 @@ axios.get(url + '/courses-leipzig')
 // todo error catching
 
 const courses = computed(() => courseData.value ? courseData.value.map((obj) => obj.name) : [])
-const modules = computed(() => {
-  if (courseData.value && selectedCourse.value) {
-    const selectedCourseObject = courseData.value.find((course) => course.name === selectedCourse.value)
-    const moduleObjects = selectedCourseObject["modulesLeipzigCourse"]
-    return moduleObjects.map((module) => module.moduleName).sort()
-  } else {
-    return []
-  }
-})
-provide('modules', modules)
 
 // module applications
 const moduleApplicationPanels = reactive({
@@ -65,9 +55,17 @@ const deleteModuleApplication = (key) => {
   delete moduleApplicationPanels[key]
 }
 
-const resetSelectedModules = () => {
+const resetInternalModules = () => {
+  // getting modules
+  let modules = []
+  if (courseData.value && selectedCourse.value) {
+    const selectedCourseObject = courseData.value.find((course) => course.name === selectedCourse.value)
+    const moduleObjects = selectedCourseObject["modulesLeipzigCourse"]
+    modules = moduleObjects.map((module) => module.moduleName).sort()
+  }
+  // resetting internalModules dropdowns
   for (let panel of moduleApplicationPanelsRef.value) {
-    panel.internalModules.resetSelectedInternalModules()
+    panel.internalModules.resetInternalModules(modules)
   }
 }
 
@@ -99,7 +97,7 @@ const triggerPostApplication = () => {
   <div class="view-container">
 
     <!-- courses -->
-    <Dropdown v-model="selectedCourse" :options="courses" placeholder="Studiengang wählen" class="course-dropdown" @change="resetSelectedModules"/>
+    <Dropdown v-model="selectedCourse" :options="courses" placeholder="Studiengang wählen" class="course-dropdown" @change="resetInternalModules"/>
 
     <!-- module applications -->
     <ApplicationModulePanel

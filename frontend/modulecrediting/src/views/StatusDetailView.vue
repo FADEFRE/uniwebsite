@@ -8,8 +8,8 @@ displays:
 -->
 
 <script setup>
-import { useRoute, useRouter } from 'vue-router'
-import { ref, computed, onMounted, onBeforeMount } from "vue";
+import { useRoute } from 'vue-router'
+import { ref, computed, onBeforeMount } from "vue";
 import { url } from "@/scripts/url-config";
 import axios from "axios";
 

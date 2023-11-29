@@ -8,24 +8,46 @@ functionality:
 - displays dropdown with placeholder at first
 - adds a new placeholder dropdown with each selection
 - deleting dropdowns with content selected
+restrictions:
+- every element of initials has to be an element of options
 -->
 
 <script setup>
-import { ref, computed, inject } from 'vue';
+import { ref, computed } from 'vue';
 
-// internal module
-const internalModules = inject('modules')
+const props = defineProps(['useInitials'])
+
+// data
+const internalModules = ref()
 const internalModulesModel = ref(['placeholder'])
 const selectedInternalModules = computed(
     () => internalModulesModel.value.filter((item) => item !== 'placeholder')
 )
-const resetSelectedInternalModules = () => {
-  console.log('reset in ModuleApplicationData')
-  internalModulesModel.value = ['placeholder']
+
+// used in SubmitApplicationView on course change
+const resetInternalModules = (options) => {
+  if (props.useInitials) {
+    throw Error('PanelBaseInternalModules with initials is not allowed to reset')
+  } else {
+    console.log('reset in PanelBaseInternalModules')
+    internalModulesModel.value = ['placeholder']
+    internalModules.value = options
+  }
+}
+
+// used in StudyOfficeDetailView for setup
+const setup = (options, initials) => {
+  if (props.useInitials) {
+    internalModules.value = options
+    initials.unshift('placeholder')
+    internalModulesModel.value = initials
+  } else {
+    throw Error('PanelBaseInternalModules without initials is not allowed to setup')
+  }
 }
 
 defineExpose({
-  selectedInternalModules, resetSelectedInternalModules
+  selectedInternalModules, resetInternalModules, setup
 })
 </script>
 

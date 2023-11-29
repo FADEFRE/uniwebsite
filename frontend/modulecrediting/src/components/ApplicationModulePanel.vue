@@ -3,7 +3,7 @@ module panel for SubmitApplicationView, built on PanelBase
 displays:
 - module, university, credit points, point system inputs VIA PanelBase
 - file upload VIA PanelApplicationFile (PanelBase file slot)
-- internal modules selection VIA PanelApplicationInternalModules (PanelBase internalModules slot)
+- internal modules selection VIA PanelBaseInternalModules (PanelBase internalModules slot)
 - comment VIA PanelApplicationComment (PanelBase comment slot)
 functionality:
 - extending PanelBase with file, internalModules and comment input
@@ -12,9 +12,9 @@ functionality:
 <script setup>
 import PanelBase from "@/components/PanelBase.vue";
 import PanelApplicationFile from "@/components/PanelApplicationFile.vue";
-import PanelApplicationInternalModules from "@/components/PanelApplicationInternalModules.vue";
+import PanelBaseInternalModules from "@/components/PanelBaseInternalModules.vue";
 import PanelApplicationComment from "@/components/PanelApplicationComment.vue";
-import { ref, computed } from "vue";
+import { ref, computed, watch, inject } from "vue";
 
 const emit = defineEmits(['deletePanel'])
 
@@ -30,6 +30,7 @@ const panelHeading = computed(() => {
 const file = ref()
 const internalModules = ref()
 const comment = ref()
+
 
 defineExpose({
   base, file, internalModules, comment
@@ -55,7 +56,7 @@ defineExpose({
           <PanelApplicationFile ref="file"/>
         </template>
         <template #internalModules>
-          <PanelApplicationInternalModules ref="internalModules"/>
+          <PanelBaseInternalModules ref="internalModules"/>
         </template>
         <template #comment>
           <PanelApplicationComment ref="comment"/>

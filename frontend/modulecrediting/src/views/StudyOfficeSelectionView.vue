@@ -16,7 +16,6 @@ let applicationsData = ref()
 onBeforeMount(() => {
   axios.get(url + '/applications')
       .then((response) => {
-        console.log(response)
         applicationsData.value = response.data
       })
   // todo error catching

@@ -11,16 +11,19 @@ displays:
 functionality:
 - module, university, credit points, point system input
 - providing layout with exchangeable slot content
+- can be used with or without initial data as props
 -->
 
 <script setup>
 import { ref } from "vue";
 
+const props = defineProps(['moduleName', 'university', 'creditPoints', 'pointSystem'])
+
 // external module
-const moduleName = ref()
-const university = ref()
-const creditPoints = ref()
-const pointSystem = ref()
+const moduleName = ref(props.moduleName)
+const university = ref(props.university)
+const creditPoints = ref(props.creditPoints)
+const pointSystem = ref(props.pointSystem)
 
 defineExpose({
   moduleName, university, creditPoints, pointSystem
