@@ -7,12 +7,18 @@ return a list containing all modules related to a specific course
 
 parameters:
     course - String, course name
+on error:
+    returns 'error' instead of data
  */
 function getModulesByCourse (course) {
     return axios.get(url + '/courses-leipzig')
         .then(response => {
             const courseObject = response.data.find(obj => obj.name === course)
             return courseObject.modulesLeipzigCourse.map(obj => obj.moduleName)
+        })
+        .catch(error => {
+            console.log(error)
+            return 'error'
         })
 }
 

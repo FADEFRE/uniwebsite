@@ -9,8 +9,8 @@ functionality:
 <script setup>
 import { url } from "@/scripts/url-config";
 
-const props = defineProps(['fileID', 'fileName'])
-const fileLink = url + '/pdf-documents' + props.fileID
+const props = defineProps(['fileId', 'fileName'])
+const fileLink = url + '/pdf-documents/' + props.fileId
 </script>
 
 <template>

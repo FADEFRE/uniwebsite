@@ -7,12 +7,20 @@ functionality:
 -->
 
 <script setup>
+import { useRouter } from "vue-router";
+
 const props = defineProps(['data'])
-console.log(props.data)
+
+const router = useRouter()
+
+const openDetailView = () => {
+  const routeData = router.resolve({name: 'studyOfficeDetail', params: {id: props.data.id}})
+  window.open(routeData.href, '_top')
+}
 </script>
 
 <template>
-  <div @click="console.log(`clicked ${props.data}`)" class="overview-item">
+  <div @click="openDetailView" class="overview-item">
     <div class="overview-child">
       <p>{{ props.data['id'] }}</p>
     </div>
