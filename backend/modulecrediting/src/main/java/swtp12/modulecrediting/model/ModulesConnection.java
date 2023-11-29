@@ -5,33 +5,31 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
+@Entity
  public class ModulesConnection {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Long id;
-    private ModuleConnectionDecision decision; //Enum maybe
+    @JsonView(Views.ApplicationStudent.class)
+    private ModuleConnectionDecision decision;
+    @JsonView(Views.ApplicationLogin.class)
     private ModuleConnectionDecision decisionSuggestion;
+    @JsonView(Views.ApplicationStudent.class)
     private String comment;
-
-    //Relation ModulesConnection <-> Application (Setter in Application)
-    @ManyToOne
-    @JoinColumn(name = "application_id")
-    @JsonBackReference
-    private Application application;
 
     //Relation ModulesConnection <-> ModuleApplication (Setter in ModuleApplication)
     @OneToOne(cascade = CascadeType.ALL , orphanRemoval = true)
-    @JoinColumn(name = "module_application_id")
     @JsonManagedReference
+    @JsonView(Views.ApplicationStudent.class)
     private ModuleApplication moduleApplication;
 
     //Relation ModulesConnection <-> ModuleLeipzig
@@ -42,7 +40,17 @@ import lombok.Setter;
             inverseJoinColumns = @JoinColumn(name = "module_leipzig_id")
     )
     @JsonManagedReference
+    @JsonView(Views.ApplicationStudent.class)
     private List<ModuleLeipzig> modulesLeipzig = new ArrayList<>();
+
+
+
+
+    //Relation ModulesConnection <-> Application (Setter in Application)
+    @ManyToOne
+    @JsonBackReference
+    private Application application;
+
 
 
     public ModulesConnection(ModuleConnectionDecision decision, ModuleConnectionDecision decisionSuggestion, String comment) {

@@ -6,22 +6,25 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
+@Entity
 public class ModuleLeipzig {   
     @Id
     @GeneratedValue
     private Long id;
 
+    @JsonView({Views.coursesWithModules.class, Views.modulesWithoutCourse.class, Views.ApplicationStudent.class})
     private String moduleName;
+    @JsonView({Views.coursesWithModules.class, Views.modulesWithoutCourse.class})
     private String moduleCode;
     @JsonIgnore
     private List<String> DataloaderOnlyCourses;
@@ -43,19 +46,6 @@ public class ModuleLeipzig {
         this.DataloaderOnlyCourses = courses;
     }
 
-
-    //Function to add a List of ModulesConnection to this ModuleLeipzig (and add this ModuleLeipzig to these ModuleConnections)
-    public void addModulesConnections(List<ModulesConnection> modulesConnections) {
-        for(ModulesConnection mc : modulesConnections) {
-            mc.getModulesLeipzig().add(this);
-        }
-        this.modulesConnections = modulesConnections;
-    }
-    //Function to add a ModulesConnection to this ModuleLeipzig (and add this ModuleLeipzig to the ModuleConnection)
-    public void addModulesConnection(ModulesConnection mc) {
-        mc.getModulesLeipzig().add(this);
-        modulesConnections.add(mc);
-    }
 
     //Dataloader Function to add Courses to this ModuelLeipzig
     public void addDataloaderOnlyCourses(List<String> dtLC) {

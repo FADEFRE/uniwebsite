@@ -5,39 +5,47 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
+import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
-@Getter
-@Setter
+
+@Data
 @NoArgsConstructor
+@Entity
 @NamedEntityGraph(
         name = "graph.Application.modulesConnections",
         attributeNodes = @NamedAttributeNode(value = "modulesConnections")
 )
  public class Application {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
+    @JsonView(Views.ApplicationOverview.class)
     private Long id;
+    @JsonView(Views.ApplicationOverview.class)
     private ApplicationStatus fullStatus;
     @CreationTimestamp
+    @JsonView(Views.ApplicationOverview.class)
     private LocalDate creationDate;
+    @JsonView(Views.ApplicationLogin.class)
     private LocalDate decisionDate;
 
     //Relation Application <-> CourseLeipzig
     @ManyToOne
     @JoinColumn(name = "course_leipzig_id")
     @JsonManagedReference
+    @JsonView(Views.ApplicationOverview.class)
     private CourseLeipzig courseLeipzig;
 
     //Relation Application <-> ModulesConnection
-    @OneToMany(mappedBy = "application" , cascade = CascadeType.ALL , orphanRemoval = true)
+    @OneToMany(mappedBy = "application" , cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
+    @JsonView(Views.ApplicationStudent.class)
     private List<ModulesConnection> modulesConnections = new ArrayList<>();
 
 

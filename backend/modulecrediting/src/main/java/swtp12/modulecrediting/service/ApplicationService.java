@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import swtp12.modulecrediting.dto.*;
 import swtp12.modulecrediting.model.*;
-import swtp12.modulecrediting.repository.projection.ApplicationProjection;
 import swtp12.modulecrediting.repository.ApplicationRepository;
 
 
@@ -32,8 +31,6 @@ public class ApplicationService {
     private ModuleLeipzigService moduleLeipzigService;
     @Autowired
     private CourseLeipzigService courseLeipzigService;
-    @Autowired
-    private ModulesConnectionService modulesConnectionService;
 
 
     public Long createApplication(ApplicationCreateDTO applicationCreateDTO) {
@@ -64,40 +61,23 @@ public class ApplicationService {
         return savedApplication.getId();
     }
 
-    public List<ApplicationProjection> getAllApplciations(int limit, Optional<Application.ApplicationStatus> status){
+    public List<Application> getAllApplciations(int limit, Optional<Application.ApplicationStatus> status){
         Pageable pageeable = PageRequest.of(0, limit, Sort.by("creationDate").descending());
         if(status.isPresent()) {
-            Page<ApplicationProjection> page = applicationRepository.findByFullStatus(status.get(), pageeable);
+            Page<Application> page = applicationRepository.findByFullStatus(status.get(), pageeable);
             return page.getContent();
         }else {
-            Page<ApplicationProjection> page = applicationRepository.findAllBy(pageeable);
+            Page<Application> page = applicationRepository.findAllBy(pageeable);
             return page.getContent();
         }
     }
 
-    public ApplicationDTO getApplicationById(Long id) {
+    public Application getApplicationById(Long id) {
         Optional<Application> applicationOptional = applicationRepository.findById(id);
         if(applicationOptional.isPresent()) {
-            Application a = applicationOptional.get();
-            CourseLeipzigWithoutModulesDTO courseLeipzig = courseLeipzigService.mapToCourseLeipzigWithoutModulesDTO(a.getCourseLeipzig());
-            ApplicationDTO applicationDTO = new ApplicationDTO(a.getId(),a.getFullStatus(),a.getCreationDate(),a.getDecisionDate(),courseLeipzig, a.getModulesConnections());
-            return applicationDTO;
+            return applicationOptional.get();
         }else {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Application not Found");
-        }
-    }
-
-    public ApplicationStudentDTO getApplicationStudentById(Long id) {
-        Optional<Application> applicationOptional = applicationRepository.findById(id);
-        if(applicationOptional.isPresent()) {
-            Application application = applicationOptional.get();
-
-            List<ModulesConnectionStudentDTO> modulesConnections = modulesConnectionService.mapToModulesConnectionStudentDTOList(application.getModulesConnections());
-            CourseLeipzigWithoutModulesDTO courseLeipzig = courseLeipzigService.mapToCourseLeipzigWithoutModulesDTO(application.getCourseLeipzig());
-
-            return new ApplicationStudentDTO(application.getId(),application.getFullStatus(),courseLeipzig,modulesConnections);
-        }else {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Application not Found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Application not Found");
         }
     }
 
@@ -109,7 +89,4 @@ public class ApplicationService {
             return false;
         }
     }
-
-
-
 }

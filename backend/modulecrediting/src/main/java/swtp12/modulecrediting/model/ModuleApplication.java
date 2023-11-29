@@ -2,36 +2,44 @@ package swtp12.modulecrediting.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
+@Entity
 public class ModuleApplication {   
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Long id;
+    @JsonView(Views.ApplicationStudent.class)
     private String name;
+    @JsonView(Views.ApplicationStudent.class)
     private Integer points;
+    @JsonView(Views.ApplicationStudent.class)
     private String pointSystem;
+    @JsonView(Views.ApplicationStudent.class)
     private String university;
+    @JsonView(Views.ApplicationStudent.class)
     private String commentApplicant;
 
+    //Relation ModuleApplication <-> PdfDocument
+    @OneToOne(cascade = CascadeType.ALL , orphanRemoval = true, fetch = FetchType.EAGER)
+    @JsonManagedReference
+    @JsonView(Views.ApplicationStudent.class)
+    private PdfDocument pdfDocument;
+
+
+
     //Relation ModuleApplication <-> ModulesConnection (Setter in ModulesConnection)
-    @OneToOne(targetEntity = ModulesConnection.class , mappedBy = "moduleApplication")
+    @OneToOne(mappedBy = "moduleApplication")
     @JsonBackReference
     private ModulesConnection modulesConnection;
-
-    //Relation ModuleApplication <-> PdfDocument
-    @OneToOne(targetEntity = PdfDocument.class , cascade = CascadeType.ALL , orphanRemoval = true)
-    @JoinColumn(name = "pdf_document_id")
-    @JsonManagedReference
-    private PdfDocument pdfDocument;
 
     public ModuleApplication(String name, Integer points, String pointSystem, String university, String commentApplicant) {
         this.name = name;
