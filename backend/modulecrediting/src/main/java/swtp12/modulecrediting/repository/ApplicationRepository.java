@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import org.springframework.stereotype.Repository;
 import swtp12.modulecrediting.model.Application;
+import swtp12.modulecrediting.model.ApplicationStatus;
 
 import java.util.Optional;
 
@@ -17,5 +18,5 @@ public interface ApplicationRepository extends JpaRepository<Application, Long>{
 
     Page<Application> findAllBy(Pageable pageable);
 
-    Page<Application> findByFullStatus(Application.ApplicationStatus status, Pageable pageable);
+    Page<Application> findByFullStatus(ApplicationStatus status, Pageable pageable);
 }

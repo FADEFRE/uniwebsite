@@ -6,7 +6,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import swtp12.modulecrediting.dto.ApplicationCreateDTO;
+import swtp12.modulecrediting.dto.ApplicationUpdateDTO;
 import swtp12.modulecrediting.model.Application;
+import swtp12.modulecrediting.model.ApplicationStatus;
 import swtp12.modulecrediting.model.Views;
 import swtp12.modulecrediting.service.ApplicationService;
 
@@ -21,6 +23,11 @@ public class ApplicationController {
     @Autowired
     private ApplicationService applicationService;
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Long> updateApplication(@PathVariable Long id, @ModelAttribute ApplicationUpdateDTO applicationUpdateDTO) {
+        return ResponseEntity.ok(applicationService.updateApplication(id, applicationUpdateDTO));
+    }
+
     @PostMapping
     public ResponseEntity<Long> createApplication(@ModelAttribute ApplicationCreateDTO applicationCreateDTO) {
         return ResponseEntity.ok(applicationService.createApplication(applicationCreateDTO));
@@ -29,7 +36,7 @@ public class ApplicationController {
     @GetMapping
     @JsonView(Views.ApplicationOverview.class)
     public ResponseEntity<List<Application>> getAllCreditTransferApplications(@RequestParam(defaultValue = "10") int limit,
-                                                                                        @RequestParam(required = false) Application.ApplicationStatus status) {
+                                                                                        @RequestParam(required = false) ApplicationStatus status) {
         List<Application> allApplications = applicationService.getAllApplciations(limit, Optional.ofNullable(status));
         return new ResponseEntity<>(allApplications, HttpStatus.OK);
     }

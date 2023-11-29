@@ -32,7 +32,7 @@ import lombok.Setter;
     @CreationTimestamp
     @JsonView(Views.ApplicationOverview.class)
     private LocalDate creationDate;
-    @JsonView(Views.ApplicationLogin.class)
+    @JsonView(Views.ApplicationOverview.class)
     private LocalDate decisionDate;
 
     //Relation Application <-> CourseLeipzig
@@ -53,12 +53,6 @@ import lombok.Setter;
         this.fullStatus = fullStatus;
         this.creationDate = creationDate;
         this.decisionDate = decisionDate;
-    }
-
-    public enum ApplicationStatus{
-        OFFEN,
-        IN_BEARBEITUNG,
-        ABGESCHLOSSEN
     }
 
 

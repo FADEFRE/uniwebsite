@@ -59,12 +59,6 @@ import lombok.Setter;
         this.comment = comment;
     }
 
-    public enum ModuleConnectionDecision{
-        ANGENOMMEN,
-        VERAENDERT_ANGENOMMEN,
-        ABGELEHNT,
-        UNBEARBEITET
-    }
 
 
     //Function to add ModuleApplication to this ModuleConnection (and add this ModuleConnection to the ModuleApplication)
@@ -73,11 +67,28 @@ import lombok.Setter;
       this.moduleApplication = moduleApplication;
     }
 
-    //Function to add List of ModuleLeipzig to this ModulesConnection (and add this ModuleConnectio to all ModulesLeipzig in the List)
-    public void addModulesLeipzig(List<ModuleLeipzig> modulesLeipzig) {
+    //Function to set List of ModuleLeipzig to this ModulesConnection (and add this ModuleConnectio to all ModulesLeipzig in the List)
+    public void setModulesLeipzig(List<ModuleLeipzig> modulesLeipzig) {
         for(ModuleLeipzig m : modulesLeipzig) { 
             m.getModulesConnections().add(this);
         }
        this.modulesLeipzig = modulesLeipzig;
+   }
+
+
+    public void addModulesLeipzig(List<ModuleLeipzig> modulesLeipzig) {
+        for(ModuleLeipzig m : modulesLeipzig) {
+            m.getModulesConnections().add(this);
+            this.modulesLeipzig.add(m);
+        }
+
+    }
+
+   public void removeModulesLeipzig(List<ModuleLeipzig> modulesLeipzig) {
+        for(ModuleLeipzig m : modulesLeipzig) {
+            m.getModulesConnections().remove(this);
+            this.modulesLeipzig.remove(m);
+        }
+
    }
 }
