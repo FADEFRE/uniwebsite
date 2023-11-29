@@ -15,22 +15,27 @@ functionality:
 import ApplicationModulePanel from "@/components/ApplicationModulePanel.vue";
 import NewApplicationModulePanel from "@/components/NewApplicationModulePanel.vue";
 import { useRouter } from "vue-router"
-import { ref, reactive, computed, provide } from "vue"
+import { ref, reactive, computed, onBeforeMount } from "vue"
 import { postApplication } from "@/scripts/axios-requests";
-import { url } from "@/scripts/url-config"
-import axios from "axios";
+import { getCourseData } from "@/scripts/axios-requests"
 
 const router = useRouter()
 
 // courses
 const selectedCourse = ref()
 
-let courseData = ref()
-axios.get(url + '/courses-leipzig')
-    .then(response => {
-      courseData.value = response.data
-    })
-// todo error catching
+const courseData = ref(undefined)
+
+onBeforeMount(() => {
+  getCourseData()
+      .then(data => {
+        courseData.value = data
+      })
+      .catch(error => {
+        console.log(error)
+        courseData.value = 'error'
+      })
+})
 
 const courses = computed(() => courseData.value ? courseData.value.map((obj) => obj.name) : [])
 
@@ -58,7 +63,7 @@ const deleteModuleApplication = (key) => {
 const resetInternalModules = () => {
   // getting modules
   let modules = []
-  if (courseData.value && selectedCourse.value) {
+  if (courses.value && courses.value !== 'error' && selectedCourse.value) {
     const selectedCourseObject = courseData.value.find((course) => course.name === selectedCourse.value)
     const moduleObjects = selectedCourseObject["modulesLeipzigCourse"]
     modules = moduleObjects.map((module) => module.moduleName).sort()
@@ -94,7 +99,16 @@ const triggerPostApplication = () => {
 </script>
 
 <template>
-  <div class="view-container">
+
+  <div v-if="!courseData">
+    <p>Lade Daten ...</p>
+  </div>
+
+  <div v-else-if="courseData === 'error'">
+    <p>Fehler bei der Datenabfrage!</p>
+  </div>
+
+  <div v-else class="view-container">
 
     <!-- courses -->
     <Dropdown v-model="selectedCourse" :options="courses" placeholder="Studiengang wählen" class="course-dropdown" @change="resetInternalModules"/>

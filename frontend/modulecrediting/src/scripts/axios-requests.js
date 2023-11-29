@@ -3,22 +3,31 @@ import axios from "axios";
 
 /*
 GET-Request to '/courses-leipzig' endpoint
-return a list containing all modules related to a specific course
+returns todo
+
+parameters:
+    none
+ */
+function getCourseData () {
+    return axios.get(url + '/courses-leipzig')
+        .then(response => {
+            console.log(response.data)
+            return response.data
+        })
+}
+
+/*
+GET-Request to '/courses-leipzig' endpoint
+returns a list containing all modules related to a specific course
 
 parameters:
     course - String, course name
-on error:
-    returns 'error' instead of data
  */
 function getModulesByCourse (course) {
     return axios.get(url + '/courses-leipzig')
         .then(response => {
             const courseObject = response.data.find(obj => obj.name === course)
             return courseObject.modulesLeipzigCourse.map(obj => obj.moduleName)
-        })
-        .catch(error => {
-            console.log(error)
-            return 'error'
         })
 }
 
@@ -28,17 +37,11 @@ returns data of the related application
 
 parameters:
     id - Number, application id
-on error:
-    returns 'error' instead of data
  */
 function getApplicationById (id) {
     return axios.get(url + '/applications/' + id)
         .then(response => {
             return response.data
-        })
-        .catch(error => {
-            console.log(error)
-            return 'error'
         })
 }
 
@@ -74,4 +77,4 @@ function postApplication (course, applicationObjects) {
     // todo error catching
 }
 
-export { getModulesByCourse, getApplicationById, postApplication }
+export { getCourseData, getModulesByCourse, getApplicationById, postApplication }

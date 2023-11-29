@@ -20,14 +20,22 @@ onBeforeMount(() => {
   id = route.params.id
   getApplicationById(id)
       .then(data => {
+        console.log("1 - " + data)
         applicationData.value = data
         return data
       })
       .then(data => {
+        console.log("2 - " + data)
         return getModulesByCourse(data.courseLeipzig.name)
       })
       .then(moduleArray => {
+        console.log("3 - " + data)
         internalModules.value = moduleArray
+      })
+      .catch(error => {
+        console.log(error)
+        applicationData.value = 'error'
+        internalModules.value = 'error'
       })
 })
 </script>

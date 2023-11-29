@@ -29,7 +29,6 @@ const resetInternalModules = (options) => {
   if (props.useInitials) {
     throw Error('PanelBaseInternalModules with initials is not allowed to reset')
   } else {
-    console.log('reset in PanelBaseInternalModules')
     internalModulesModel.value = ['placeholder']
     internalModules.value = options
   }
