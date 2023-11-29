@@ -32,6 +32,8 @@ public class ApplicationService {
     @Autowired
     private CourseLeipzigService courseLeipzigService;
 
+
+    // TODO: update decision date etc...
     @Transactional
     public Long updateApplication(Long id, ApplicationUpdateDTO applicationUpdateDTO) {
         Application application = getApplicationById(id);
@@ -43,7 +45,10 @@ public class ApplicationService {
             ModuleBlockUpdateDTO moduleBlockUpdateDTO = applicationUpdateDTO.getModuleBlockUpdateDTOList().get(i);
 
             modulesConnection.setDecision(moduleBlockUpdateDTO.getDecision());
-            modulesConnection.setComment(moduleBlockUpdateDTO.getComment());
+            modulesConnection.setDecisionSuggestion(moduleBlockUpdateDTO.getDecisionSuggestion());
+            System.out.println(moduleBlockUpdateDTO.getCommentStudyOffice());
+            modulesConnection.setCommentStudyOffice(moduleBlockUpdateDTO.getCommentStudyOffice());
+            modulesConnection.setCommentDecision(moduleBlockUpdateDTO.getCommentDecision());
 
             moduleApplication.setName(moduleBlockUpdateDTO.getModuleName());
             moduleApplication.setUniversity(moduleBlockUpdateDTO.getUniversity());
@@ -92,7 +97,7 @@ public class ApplicationService {
             ModuleApplication moduleApplication = new ModuleApplication(m.getModuleName(), m.getPoints(), m.getPointSystem(), m.getUniversity(), m.getCommentApplicant());
             moduleApplication.addPdfDocument(pdfDocument);
 
-            ModulesConnection modulesConnection = new ModulesConnection(ModuleConnectionDecision.UNBEARBEITET,ModuleConnectionDecision.UNBEARBEITET,"");
+            ModulesConnection modulesConnection = new ModulesConnection(ModuleConnectionDecision.UNBEARBEITET,ModuleConnectionDecision.UNBEARBEITET,"","");
             modulesConnection.addModuleApplication(moduleApplication);
 
             ArrayList<ModuleLeipzig> modulesLeipzig = moduleLeipzigService.getModulesLeipzigByNames(m.getModuleNamesLeipzig());

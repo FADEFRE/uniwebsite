@@ -24,7 +24,10 @@ import lombok.Setter;
     @JsonView(Views.ApplicationLogin.class)
     private ModuleConnectionDecision decisionSuggestion;
     @JsonView(Views.ApplicationStudent.class)
-    private String comment;
+    private String commentDecision;
+    @JsonView(Views.ApplicationStudent.class)
+    private String commentStudyOffice;
+
 
     //Relation ModulesConnection <-> ModuleApplication (Setter in ModuleApplication)
     @OneToOne(cascade = CascadeType.ALL , orphanRemoval = true)
@@ -52,14 +55,12 @@ import lombok.Setter;
     private Application application;
 
 
-
-    public ModulesConnection(ModuleConnectionDecision decision, ModuleConnectionDecision decisionSuggestion, String comment) {
+    public ModulesConnection(ModuleConnectionDecision decision, ModuleConnectionDecision decisionSuggestion, String commentDecision, String commentStudyOffice) {
         this.decision = decision;
         this.decisionSuggestion = decisionSuggestion;
-        this.comment = comment;
+        this.commentDecision = commentDecision;
+        this.commentStudyOffice = commentStudyOffice;
     }
-
-
 
     //Function to add ModuleApplication to this ModuleConnection (and add this ModuleConnection to the ModuleApplication)
     public void addModuleApplication(ModuleApplication moduleApplication) {
