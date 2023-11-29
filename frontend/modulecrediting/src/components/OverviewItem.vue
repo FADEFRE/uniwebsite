@@ -22,10 +22,10 @@ const openDetailView = () => {
 <template>
   <div @click="openDetailView" class="overview-item">
     <div class="overview-child">
-      <p>{{ props.data['id'] }}</p>
+      <p>Vorgangsnummer: {{ props.data['id'] }}</p>
     </div>
     <div class="overview-child">
-      <p>Studiengang</p>
+      <p>Studiengang: {{ props.data['courseLeipzig']['name'] }}</p>
     </div>
     <div class="overview-child">
       <p>Status: {{ props.data['fullStatus'] }}</p>
