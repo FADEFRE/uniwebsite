@@ -3,12 +3,18 @@ package swtp12.modulecrediting.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
-import jakarta.persistence.*;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+
+
 
 @Data
 @NoArgsConstructor
@@ -34,12 +40,12 @@ public class ModuleApplication {
     @JsonView(Views.ApplicationStudent.class)
     private PdfDocument pdfDocument;
 
-
-
     //Relation ModuleApplication <-> ModulesConnection (Setter in ModulesConnection)
     @OneToOne(mappedBy = "moduleApplication")
     @JsonBackReference
     private ModulesConnection modulesConnection;
+
+
 
     public ModuleApplication(String name, Integer points, String pointSystem, String university, String commentApplicant) {
         this.name = name;

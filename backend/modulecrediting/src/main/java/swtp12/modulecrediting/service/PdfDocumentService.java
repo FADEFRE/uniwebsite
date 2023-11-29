@@ -1,26 +1,30 @@
 package swtp12.modulecrediting.service;
 
+import java.io.IOException;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
+
 import swtp12.modulecrediting.model.PdfDocument;
 import swtp12.modulecrediting.repository.PdfDocumentRepository;
 
-import java.io.IOException;
-import java.util.Optional;
+
 
 @Service
 public class PdfDocumentService {
     @Autowired
     private PdfDocumentRepository pdfDocumentRepository;
 
+
     public PdfDocument createPdfDocument(MultipartFile pdf) {
         if (pdf == null || pdf.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No PDF file provided or file is empty");
         }
-
+        
         try {
             return new PdfDocument(pdf.getOriginalFilename(), pdf.getBytes());
         } catch (IOException ioException) {

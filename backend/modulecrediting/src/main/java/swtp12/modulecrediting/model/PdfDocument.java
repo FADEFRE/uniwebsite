@@ -3,12 +3,17 @@ package swtp12.modulecrediting.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
-import jakarta.persistence.*;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.OneToOne;
+
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+
+
 
 @Data
 @NoArgsConstructor
@@ -30,9 +35,9 @@ public class PdfDocument {
     private ModuleApplication moduleApplication;
 
 
+    //Constructer
     public PdfDocument(String name, byte[] pdfData) {
         this.name = name;
         this.pdfData = pdfData;
     }
-
 }

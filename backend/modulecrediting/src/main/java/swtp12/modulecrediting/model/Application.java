@@ -6,13 +6,22 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
-import jakarta.persistence.*;
-import lombok.Data;
+
 import org.hibernate.annotations.CreationTimestamp;
 
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.NamedAttributeNode;
+import jakarta.persistence.NamedEntityGraph;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinColumn;
+
 
 
 @Data
@@ -22,7 +31,7 @@ import lombok.Setter;
         name = "graph.Application.modulesConnections",
         attributeNodes = @NamedAttributeNode(value = "modulesConnections")
 )
- public class Application {
+public class Application {
     @Id
     @GeneratedValue
     @JsonView(Views.ApplicationOverview.class)
@@ -43,7 +52,7 @@ import lombok.Setter;
     private CourseLeipzig courseLeipzig;
 
     //Relation Application <-> ModulesConnection
-    @OneToMany(mappedBy = "application" , cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "application", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     @JsonView(Views.ApplicationStudent.class)
     private List<ModulesConnection> modulesConnections = new ArrayList<>();

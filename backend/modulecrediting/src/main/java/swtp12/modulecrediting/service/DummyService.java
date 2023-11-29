@@ -15,5 +15,4 @@ public class DummyService {
             return (firstChar == lastChar) && isPalindrome(mid);
         }
     }
-
 }

@@ -6,12 +6,22 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
-import jakarta.persistence.*;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.validation.constraints.NotBlank;
 
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+
+
 
 @Data
 @NoArgsConstructor
@@ -23,9 +33,10 @@ public class CourseLeipzig {
 
     @JsonView({Views.coursesWithModules.class, Views.ApplicationOverview.class})
     @Column(unique = true)
+    @NotBlank(message = "Name may not be blank")
     private String name;
 
-    //Reltion CourseLeipzig <-> ModuleLeipzig
+    //Relation CourseLeipzig <-> ModuleLeipzig
     @ManyToMany (cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "course_leipzig_module_leipzig",
@@ -36,9 +47,6 @@ public class CourseLeipzig {
     @JsonView(Views.coursesWithModules.class)
     private List<ModuleLeipzig> modulesLeipzigCourse = new ArrayList<>();
 
-
-
-
     //Relation CourseLeipzig <-> Application
     @OneToMany(mappedBy = "courseLeipzig")
     @JsonBackReference
@@ -48,6 +56,7 @@ public class CourseLeipzig {
     public CourseLeipzig(String name) {
         this.name = name;
     }
+
 
     //Function to add a Module to this Course (adds the Course to the Module aswell)
     public void addCourseToModulesLeipzig(ModuleLeipzig moduleLeipzig) {
