@@ -58,10 +58,9 @@ public class Application {
     private List<ModulesConnection> modulesConnections = new ArrayList<>();
 
 
-    public Application(ApplicationStatus fullStatus, LocalDate creationDate, LocalDate decisionDate) {
+    public Application(ApplicationStatus fullStatus, LocalDate creationDate) {
         this.fullStatus = fullStatus;
         this.creationDate = creationDate;
-        this.decisionDate = decisionDate;
     }
 
 

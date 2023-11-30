@@ -11,8 +11,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 
 
 
@@ -24,14 +27,19 @@ public class ModuleApplication {
     @GeneratedValue
     private Long id;
     @JsonView(Views.ApplicationStudent.class)
+    @NotBlank(message = "module name must not be blank (empty String)")
     private String name;
     @JsonView(Views.ApplicationStudent.class)
+    @NotNull(message = "points must not be null")
     private Integer points;
     @JsonView(Views.ApplicationStudent.class)
+    @NotNull(message = "point system must not be null")
     private String pointSystem;
     @JsonView(Views.ApplicationStudent.class)
+    @NotBlank(message = "university must not be blank (empty String)")
     private String university;
     @JsonView(Views.ApplicationStudent.class)
+    @NotNull(message = "comment applicant must not be null")
     private String commentApplicant;
 
     //Relation ModuleApplication <-> PdfDocument

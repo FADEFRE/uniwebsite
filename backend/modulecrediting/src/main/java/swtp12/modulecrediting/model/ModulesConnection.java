@@ -19,12 +19,11 @@ import jakarta.persistence.JoinColumn;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
+import static swtp12.modulecrediting.model.ModuleConnectionDecision.*;
 
 
 @Data
-@NoArgsConstructor
 @Entity
 public class ModulesConnection {
     @Id
@@ -37,8 +36,10 @@ public class ModulesConnection {
     @NotNull(message = "decisionSuggestion must not be null")
     private ModuleConnectionDecision decisionSuggestion;
     @JsonView(Views.ApplicationStudent.class)
+    @NotNull(message = "commentDecision must not be null")
     private String commentDecision;
     @JsonView(Views.ApplicationStudent.class)
+    @NotNull(message = "commentStudyOffice must not be null")
     private String commentStudyOffice;
 
     //Relation ModulesConnection <-> ModuleApplication (Setter in ModuleApplication)
@@ -64,11 +65,11 @@ public class ModulesConnection {
     private Application application;
 
 
-    public ModulesConnection(ModuleConnectionDecision decisionFinal, ModuleConnectionDecision decisionSuggestion, String commentDecision, String commentStudyOffice) {
-        this.decisionFinal = decisionFinal;
-        this.decisionSuggestion = decisionSuggestion;
-        this.commentDecision = commentDecision;
-        this.commentStudyOffice = commentStudyOffice;
+    public ModulesConnection() {
+        decisionFinal = UNBEARBEITET;
+        decisionSuggestion = UNBEARBEITET;
+        commentDecision = "";
+        commentStudyOffice = "";
     }
 
 

@@ -37,60 +37,86 @@ public class ApplicationService {
     private CourseLeipzigService courseLeipzigService;
 
 
-    // TODO: update decisionFinal date etc...
+    // TODO: Corner Case: No Module Leipzig when creating, or when updating
+    // TODO: Module Accepted but only as Pruefungsschien
     @Transactional
     public Long updateApplication(Long id, ApplicationUpdateDTO applicationUpdateDTO) {
+
+
         Application application = getApplicationById(id);
         List<ModulesConnection> modulesConnections = application.getModulesConnections();
+
+
+        if(applicationUpdateDTO.getModuleBlockUpdateDTOList() == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Module Information is missing");
+        if(applicationUpdateDTO.getModuleBlockUpdateDTOList().size() != modulesConnections.size()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Modules Information don't match the saved Modules Information");
 
         for (int i = 0; i < modulesConnections.size(); i++) {
             ModulesConnection modulesConnection = modulesConnections.get(i);
             ModuleApplication moduleApplication = modulesConnection.getModuleApplication();
             ModuleBlockUpdateDTO moduleBlockUpdateDTO = applicationUpdateDTO.getModuleBlockUpdateDTOList().get(i);
 
-            modulesConnection.setDecisionFinal(moduleBlockUpdateDTO.getDecisionFinal());
-            modulesConnection.setDecisionSuggestion(moduleBlockUpdateDTO.getDecisionSuggestion());
-            modulesConnection.setCommentStudyOffice(moduleBlockUpdateDTO.getCommentStudyOffice());
-            modulesConnection.setCommentDecision(moduleBlockUpdateDTO.getCommentDecision());
-
+            // UPDATE BASIC MODULE APPLICATION ATTRIBUTES
             moduleApplication.setName(moduleBlockUpdateDTO.getModuleName());
             moduleApplication.setUniversity(moduleBlockUpdateDTO.getUniversity());
             moduleApplication.setPoints(moduleBlockUpdateDTO.getPoints());
             moduleApplication.setPointSystem(moduleBlockUpdateDTO.getPointSystem());
 
+            // UPDATE PAV/STUDY_OFFICE RELATED ATTRBIUTES
+            modulesConnection.setDecisionFinal(moduleBlockUpdateDTO.getDecisionFinal());
+            modulesConnection.setDecisionSuggestion(moduleBlockUpdateDTO.getDecisionSuggestion());
+            modulesConnection.setCommentStudyOffice(moduleBlockUpdateDTO.getCommentStudyOffice());
+            modulesConnection.setCommentDecision(moduleBlockUpdateDTO.getCommentDecision());
+
+            // UPDATE CONNECTED MODULES LEIPZIG
+            if(moduleBlockUpdateDTO.getModuleNamesLeipzig() == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Module Leipzig Names are missing");
             List<ModuleLeipzig> modulesLeipzig = modulesConnection.getModulesLeipzig();
-            List<String> existingModuleNames = new ArrayList<>();
-            for (ModuleLeipzig module : modulesLeipzig) {
-                existingModuleNames.add(module.getModuleName());
-            }
+            List<String> existingModuleNames = getExistingModuleNames(modulesLeipzig);
+            List<String> newModuleNames = getNewModuleNames(existingModuleNames, moduleBlockUpdateDTO.getModuleNamesLeipzig());
+            List<String> deletedModuleNames = getDeletedModuleNames(existingModuleNames, moduleBlockUpdateDTO.getModuleNamesLeipzig());
 
-            // Check for new modules
-            List<String> newModuleNames = new ArrayList<>();
-            for (String moduleName : moduleBlockUpdateDTO.getModuleNamesLeipzig()) {
-                if (!existingModuleNames.contains(moduleName)) {
-                    newModuleNames.add(moduleName);
-                }
-            }
             List<ModuleLeipzig> modulesLeipzigNew = moduleLeipzigService.getModulesLeipzigByNames(newModuleNames);
-            modulesConnection.addModulesLeipzig(modulesLeipzigNew);
-
-            // Check for deleted modules
-            List<String> deletedModuleNames = new ArrayList<>();
-            for (String moduleName : existingModuleNames) {
-                if (!moduleBlockUpdateDTO.getModuleNamesLeipzig().contains(moduleName)) {
-                    deletedModuleNames.add(moduleName);
-                }
-            }
             List<ModuleLeipzig> modulesLeipzigDeleted = moduleLeipzigService.getModulesLeipzigByNames(deletedModuleNames);
-            modulesConnection.removeModulesLeipzig(modulesLeipzigDeleted);
 
+            modulesConnection.addModulesLeipzig(modulesLeipzigNew);
+            modulesConnection.removeModulesLeipzig(modulesLeipzigDeleted);
         }
+
+        // UPDATE APPLICATION STATUS (& DECISIONDATE)
         updateApplicationStatus(application);
 
         applicationRepository.save(application);
         return id;
     }
 
+    public List<String> getExistingModuleNames(List<ModuleLeipzig> modulesLeipzig) {
+        List<String> existingModuleNames = new ArrayList<>();
+        for (ModuleLeipzig module : modulesLeipzig) {
+            existingModuleNames.add(module.getModuleName());
+        }
+        return existingModuleNames;
+    }
+
+    public List<String> getNewModuleNames(List<String> existingModuleNames, List<String> updatedModuleNames) {
+        List<String> newModuleNames = new ArrayList<>();
+        for (String updatedModuleName : updatedModuleNames) {
+            if (!existingModuleNames.contains(updatedModuleName)) {
+                newModuleNames.add(updatedModuleName);
+            }
+        }
+        return newModuleNames;
+    }
+
+    public List<String> getDeletedModuleNames(List<String> existingModuleNames, List<String> updatedModuleNames) {
+        List<String> deletedModuleNames = new ArrayList<>();
+        for (String moduleName : existingModuleNames) {
+            if (!updatedModuleNames.contains(moduleName)) {
+                deletedModuleNames.add(moduleName);
+            }
+        }
+        return deletedModuleNames;
+    }
+
+    // FUNCTION TO UPDADTE APPLICATION STATUS ON UPDATE
     public void updateApplicationStatus(Application application) {
         boolean noDecisionSuggestionCompleted = true;
         boolean allDecisionsSuggestionsCompleted = true;
@@ -105,20 +131,26 @@ public class ApplicationService {
 
         if(!noDecisionSuggestionCompleted) application.setFullStatus(IN_BEARBEITUNG);
         if(allDecisionsSuggestionsCompleted) application.setFullStatus(WARTEN_AUF_ENTSCHEIDUNG_DES_PRUEFUNGSAUSSCHUSSES);
-        if(allDecisionsFinalCompleted) application.setFullStatus(ABGESCHLOSSEN);
+        if(allDecisionsFinalCompleted) {
+            application.setFullStatus(ABGESCHLOSSEN);
+            application.setDecisionDate(LocalDate.now());
+        }
     }
 
 
 
     public Long createApplication(ApplicationCreateDTO applicationCreateDTO) {
         ArrayList<ModulesConnection> modulesConnections = new ArrayList<>();
+
+        if(applicationCreateDTO.getModuleBlockCreateDTOList() == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Modules are required");
+
         for(ModuleBlockCreateDTO m : applicationCreateDTO.getModuleBlockCreateDTOList()) {
             PdfDocument pdfDocument = pdfDocumentService.createPdfDocument(m.getDescription());
 
             ModuleApplication moduleApplication = new ModuleApplication(m.getModuleName(), m.getPoints(), m.getPointSystem(), m.getUniversity(), m.getCommentApplicant());
             moduleApplication.addPdfDocument(pdfDocument);
 
-            ModulesConnection modulesConnection = new ModulesConnection(ModuleConnectionDecision.UNBEARBEITET,ModuleConnectionDecision.UNBEARBEITET,"","");
+            ModulesConnection modulesConnection = new ModulesConnection();
             modulesConnection.addModuleApplication(moduleApplication);
 
             ArrayList<ModuleLeipzig> modulesLeipzig = moduleLeipzigService.getModulesLeipzigByNames(m.getModuleNamesLeipzig());
@@ -129,7 +161,7 @@ public class ApplicationService {
 
         CourseLeipzig courseLeipzig = courseLeipzigService.getCourseLeipzigByName(applicationCreateDTO.getCourseLeipzig());
 
-        Application application = new Application(OFFEN, LocalDate.now(), LocalDate.now());
+        Application application = new Application(OFFEN, LocalDate.now());
         application.setCourseLeipzig(courseLeipzig);
 
         application.addModulesConnections(modulesConnections);
