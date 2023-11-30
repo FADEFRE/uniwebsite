@@ -48,7 +48,7 @@ public class ApplicationService {
             ModuleApplication moduleApplication = modulesConnection.getModuleApplication();
             ModuleBlockUpdateDTO moduleBlockUpdateDTO = applicationUpdateDTO.getModuleBlockUpdateDTOList().get(i);
 
-            modulesConnection.setDecisionFinal(moduleBlockUpdateDTO.getDecision());
+            modulesConnection.setDecisionFinal(moduleBlockUpdateDTO.getDecisionFinal());
             modulesConnection.setDecisionSuggestion(moduleBlockUpdateDTO.getDecisionSuggestion());
             modulesConnection.setCommentStudyOffice(moduleBlockUpdateDTO.getCommentStudyOffice());
             modulesConnection.setCommentDecision(moduleBlockUpdateDTO.getCommentDecision());

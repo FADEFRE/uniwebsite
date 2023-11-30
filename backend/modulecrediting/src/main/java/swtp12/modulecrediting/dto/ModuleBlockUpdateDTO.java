@@ -19,7 +19,7 @@ public class ModuleBlockUpdateDTO {
     private Integer points;
     private String pointSystem;
     private List<String> moduleNamesLeipzig;
-    private ModuleConnectionDecision decision; // either suggestion or real depending on pav/studienbuero
+    private ModuleConnectionDecision decisionFinal;
     private ModuleConnectionDecision decisionSuggestion;
     private String commentStudyOffice;
     private String commentDecision;
