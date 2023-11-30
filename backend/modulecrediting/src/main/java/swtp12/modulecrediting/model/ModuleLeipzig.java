@@ -12,7 +12,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
-
+import jakarta.persistence.Transient;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -30,6 +30,7 @@ public class ModuleLeipzig {
     private String moduleName;
     @JsonView({Views.coursesWithModules.class, Views.modulesWithoutCourse.class})
     private String moduleCode;
+    @Transient
     @JsonIgnore
     private List<String> DataloaderOnlyCourses;
 
