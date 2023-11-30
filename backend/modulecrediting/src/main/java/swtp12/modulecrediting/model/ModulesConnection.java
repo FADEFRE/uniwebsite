@@ -17,6 +17,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.JoinColumn;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -30,8 +31,10 @@ public class ModulesConnection {
     @GeneratedValue
     private Long id;
     @JsonView(Views.ApplicationStudent.class)
-    private ModuleConnectionDecision decision;
+    @NotNull(message = "decisionFinal must not be null")
+    private ModuleConnectionDecision decisionFinal;
     @JsonView(Views.ApplicationLogin.class)
+    @NotNull(message = "decisionSuggestion must not be null")
     private ModuleConnectionDecision decisionSuggestion;
     @JsonView(Views.ApplicationStudent.class)
     private String commentDecision;
@@ -61,8 +64,8 @@ public class ModulesConnection {
     private Application application;
 
 
-    public ModulesConnection(ModuleConnectionDecision decision, ModuleConnectionDecision decisionSuggestion, String commentDecision, String commentStudyOffice) {
-        this.decision = decision;
+    public ModulesConnection(ModuleConnectionDecision decisionFinal, ModuleConnectionDecision decisionSuggestion, String commentDecision, String commentStudyOffice) {
+        this.decisionFinal = decisionFinal;
         this.decisionSuggestion = decisionSuggestion;
         this.commentDecision = commentDecision;
         this.commentStudyOffice = commentStudyOffice;

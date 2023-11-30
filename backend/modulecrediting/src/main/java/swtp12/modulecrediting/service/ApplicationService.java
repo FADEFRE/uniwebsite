@@ -20,7 +20,8 @@ import swtp12.modulecrediting.dto.*;
 import swtp12.modulecrediting.model.*;
 import swtp12.modulecrediting.repository.ApplicationRepository;
 
-import static swtp12.modulecrediting.model.ApplicationStatus.OFFEN;
+import static swtp12.modulecrediting.model.ApplicationStatus.*;
+import static swtp12.modulecrediting.model.ModuleConnectionDecision.*;
 
 
 
@@ -36,7 +37,7 @@ public class ApplicationService {
     private CourseLeipzigService courseLeipzigService;
 
 
-    // TODO: update decision date etc...
+    // TODO: update decisionFinal date etc...
     @Transactional
     public Long updateApplication(Long id, ApplicationUpdateDTO applicationUpdateDTO) {
         Application application = getApplicationById(id);
@@ -47,9 +48,8 @@ public class ApplicationService {
             ModuleApplication moduleApplication = modulesConnection.getModuleApplication();
             ModuleBlockUpdateDTO moduleBlockUpdateDTO = applicationUpdateDTO.getModuleBlockUpdateDTOList().get(i);
 
-            modulesConnection.setDecision(moduleBlockUpdateDTO.getDecision());
+            modulesConnection.setDecisionFinal(moduleBlockUpdateDTO.getDecision());
             modulesConnection.setDecisionSuggestion(moduleBlockUpdateDTO.getDecisionSuggestion());
-            System.out.println(moduleBlockUpdateDTO.getCommentStudyOffice());
             modulesConnection.setCommentStudyOffice(moduleBlockUpdateDTO.getCommentStudyOffice());
             modulesConnection.setCommentDecision(moduleBlockUpdateDTO.getCommentDecision());
 
@@ -85,9 +85,27 @@ public class ApplicationService {
             modulesConnection.removeModulesLeipzig(modulesLeipzigDeleted);
 
         }
+        updateApplicationStatus(application);
 
         applicationRepository.save(application);
         return id;
+    }
+
+    public void updateApplicationStatus(Application application) {
+        boolean noDecisionSuggestionCompleted = true;
+        boolean allDecisionsSuggestionsCompleted = true;
+        boolean allDecisionsFinalCompleted = true;
+
+
+        for(ModulesConnection m : application.getModulesConnections()) {
+            if(m.getDecisionSuggestion() == UNBEARBEITET) allDecisionsSuggestionsCompleted = false;
+            if(m.getDecisionSuggestion() == ABGELEHNT || m.getDecisionSuggestion() == ANGENOMMEN) noDecisionSuggestionCompleted = false;
+            if(m.getDecisionFinal() == UNBEARBEITET) allDecisionsFinalCompleted = false;
+        }
+
+        if(!noDecisionSuggestionCompleted) application.setFullStatus(IN_BEARBEITUNG);
+        if(allDecisionsSuggestionsCompleted) application.setFullStatus(WARTEN_AUF_ENTSCHEIDUNG_DES_PRUEFUNGSAUSSCHUSSES);
+        if(allDecisionsFinalCompleted) application.setFullStatus(ABGESCHLOSSEN);
     }
 
 

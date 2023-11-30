@@ -24,7 +24,7 @@ public class ApplicationController {
     private ApplicationService applicationService;
 
     @PutMapping("/{id}")
-    public ResponseEntity<Long> updateApplication(@PathVariable Long id, @ModelAttribute ApplicationUpdateDTO applicationUpdateDTO) {
+    public ResponseEntity<Long> updateApplication(@PathVariable Long id,@ModelAttribute ApplicationUpdateDTO applicationUpdateDTO) {
         return ResponseEntity.ok(applicationService.updateApplication(id, applicationUpdateDTO));
     }
 
