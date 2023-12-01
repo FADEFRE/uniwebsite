@@ -12,6 +12,7 @@ import Panel from 'primevue/panel'
 import Button from 'primevue/button'
 import InputText from 'primevue/inputtext'
 import FileUpload from "primevue/fileupload";
+import SelectButton from "primevue/selectbutton";
 
 import 'primevue/resources/themes/nova/theme.css'
 import 'primeicons/primeicons.css'
@@ -22,6 +23,7 @@ app.use(PrimeVue)
     .component('Button', Button)
     .component('InputText', InputText)
     .component('FileUpload', FileUpload)
+    .component('SelectButton', SelectButton)
 
 // app mounting
 app.mount('#app')

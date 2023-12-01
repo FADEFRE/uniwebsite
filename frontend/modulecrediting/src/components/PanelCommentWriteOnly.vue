@@ -1,13 +1,16 @@
-<template>
-  <div>
-    <textarea class="module-comment" v-model="applicantComment" ref="commentInput" @input="adjustTextareaHeight" />
-  </div>
-</template>
+<!--
+comment input
+displays:
+- comment text input
+functionality:
+- comment input
+-->
+
 
 <script setup>
 import { ref } from 'vue';
 
-const applicantComment = ref('');
+const comment = ref('');
 const commentInput = ref(null);
 
 const adjustTextareaHeight = () => {
@@ -17,9 +20,15 @@ const adjustTextareaHeight = () => {
 };
 
 defineExpose({
-  applicantComment
+  comment
 })
 </script>
+
+<template>
+  <div>
+    <textarea class="module-comment" v-model="comment" ref="commentInput" @input="adjustTextareaHeight" />
+  </div>
+</template>
 
 <style scoped>
 .module-comment {

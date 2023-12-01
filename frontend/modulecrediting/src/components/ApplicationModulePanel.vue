@@ -4,7 +4,7 @@ displays:
 - module, university, credit points, point system inputs VIA PanelBase
 - file upload VIA PanelApplicationFile (PanelBase file slot)
 - internal modules selection VIA PanelBaseInternalModules (PanelBase internalModules slot)
-- comment VIA PanelApplicationComment (PanelBase comment slot)
+- comment VIA PanelCommentWriteOnly (PanelBase comment slot)
 functionality:
 - extending PanelBase with file, internalModules and comment input
 -->
@@ -13,8 +13,8 @@ functionality:
 import PanelBase from "@/components/PanelBase.vue";
 import PanelApplicationFile from "@/components/PanelApplicationFile.vue";
 import PanelBaseInternalModules from "@/components/PanelBaseInternalModules.vue";
-import PanelApplicationComment from "@/components/PanelApplicationComment.vue";
-import { ref, computed, watch, inject } from "vue";
+import PanelCommentWriteOnly from "@/components/PanelCommentWriteOnly.vue";
+import { ref, computed } from "vue";
 
 const emit = defineEmits(['deletePanel'])
 
@@ -59,7 +59,7 @@ defineExpose({
           <PanelBaseInternalModules ref="internalModules"/>
         </template>
         <template #comment>
-          <PanelApplicationComment ref="comment"/>
+          <PanelCommentWriteOnly ref="comment"/>
         </template>
       </PanelBase>
 
