@@ -1,19 +1,3 @@
-<!--
-base modul panel
-displays:
-- module text input
-- university text input
-- credit points text input
-- point system text input
-- file SLOT CONTENT
-- internalModules SLOT CONTENT
-- comment SLOT CONTENT
-functionality:
-- module, university, credit points, point system input
-- providing layout with exchangeable slot content
-- can be used with or without initial data as props
--->
-
 <script setup>
 import { ref } from "vue";
 
@@ -26,7 +10,10 @@ const creditPoints = ref(props.creditPoints)
 const pointSystem = ref(props.pointSystem)
 
 defineExpose({
-  moduleName, university, creditPoints, pointSystem
+  moduleName,
+  university,
+  creditPoints,
+  pointSystem
 })
 </script>
 
@@ -40,22 +27,22 @@ defineExpose({
       <!-- Module Name -->
       <div class="text-input-container">
         <p>Modulname:</p>
-        <InputText type="text" v-model="moduleName"/>
+        <InputText type="text" v-model="moduleName" class="text-input" />
       </div>
       <!-- University -->
       <div class="text-input-container">
         <p>Universität:</p>
-        <InputText type="text" v-model="university"/>
+        <InputText type="text" v-model="university" class="text-input" />
       </div>
       <!-- Credit Points -->
       <div class="text-input-container">
         <p>Leistungspunkte:</p>
-        <InputText type="text" v-model="creditPoints"/>
+        <InputText type="text" v-model="creditPoints" class="text-input" />
       </div>
       <!-- Point System -->
       <div class="text-input-container">
         <p>Punktesystem:</p>
-        <InputText type="text" v-model="pointSystem"/>
+        <InputText type="text" v-model="pointSystem" class="text-input" />
       </div>
       <!-- File -->
       <slot name="file">
@@ -92,17 +79,28 @@ defineExpose({
   text-decoration-line: underline;
 }
 
-.text-input-container > * {
+.text-input-container>* {
   display: inline-block;
   margin: 5px;
 }
 
-.text-input-container > p {
+.text-input-container>p {
   width: 18%;
   text-align: center;
 }
 
-.internal-module-dropdown-item > * {
-  margin: 5px;
+/* Anpassung der Schriftgröße */
+.text-input {
+  font-size: 16px;
+  width: calc(100% - 60px);
+  /* Dynamische Breite des Textfeldes */
+}
+
+/* Anpassung der Texteingabefelder an die Fenstergröße */
+@media screen and (max-width: 768px) {
+  .text-input {
+    width: calc(100% - 40px);
+    /* Ändern Sie die Breite für kleinere Bildschirme */
+  }
 }
 </style>

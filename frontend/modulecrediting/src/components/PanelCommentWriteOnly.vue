@@ -12,6 +12,7 @@ import { ref } from 'vue';
 
 const comment = ref('');
 const commentInput = ref(null);
+const fontSize = ref(16); // Fest auf 16 Pixel gesetzte Schriftgröße
 
 const adjustTextareaHeight = () => {
   const textarea = commentInput.value;
@@ -19,8 +20,15 @@ const adjustTextareaHeight = () => {
   textarea.style.height = `${textarea.scrollHeight}px`; // Setting height based on content
 };
 
+const adjustFontSize = () => {
+  const textarea = commentInput.value;
+  textarea.style.fontSize = `${fontSize.value}px`; // Setting font size
+};
+
 defineExpose({
-  comment
+  comment,
+  fontSize,
+  adjustFontSize // Expose the function to adjust font size
 })
 </script>
 
@@ -37,7 +45,8 @@ defineExpose({
   /* Zentriert das Textfeld horizontal */
   width: 90%;
   min-height: 50px;
-  font-size: 12px;
+  font-size: 16px;
+  /* Fest auf 16 Pixel gesetzte Schriftgröße */
   color: #333333;
   box-shadow: 0 0 5px rgba(0, 128, 255, 0);
   border: 1px solid #aaaaaa;
