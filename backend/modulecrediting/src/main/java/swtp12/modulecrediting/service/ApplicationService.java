@@ -1,19 +1,15 @@
 package swtp12.modulecrediting.service;
 
+import static swtp12.modulecrediting.model.EnumApplicationStatus.*;
+import static swtp12.modulecrediting.model.EnumModuleConnectionDecision.*;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.PdfWriter;
-import jakarta.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -24,12 +20,24 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import swtp12.modulecrediting.dto.*;
-import swtp12.modulecrediting.model.*;
-import swtp12.modulecrediting.repository.ApplicationRepository;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
 
-import static swtp12.modulecrediting.model.ApplicationStatus.*;
-import static swtp12.modulecrediting.model.ModuleConnectionDecision.*;
+import jakarta.transaction.Transactional;
+
+import swtp12.modulecrediting.dto.ApplicationCreateDTO;
+import swtp12.modulecrediting.dto.ApplicationUpdateDTO;
+import swtp12.modulecrediting.dto.ModuleBlockCreateDTO;
+import swtp12.modulecrediting.dto.ModuleBlockUpdateDTO;
+import swtp12.modulecrediting.model.Application;
+import swtp12.modulecrediting.model.EnumApplicationStatus;
+import swtp12.modulecrediting.model.CourseLeipzig;
+import swtp12.modulecrediting.model.ModuleApplication;
+import swtp12.modulecrediting.model.ModuleLeipzig;
+import swtp12.modulecrediting.model.ModulesConnection;
+import swtp12.modulecrediting.model.PdfDocument;
+import swtp12.modulecrediting.repository.ApplicationRepository;
 
 
 
@@ -178,7 +186,7 @@ public class ApplicationService {
         return savedApplication.getId();
     }
 
-    public List<Application> getAllApplciations(int limit, Optional<ApplicationStatus> status){
+    public List<Application> getAllApplciations(int limit, Optional<EnumApplicationStatus> status){
         Pageable pageeable = PageRequest.of(0, limit, Sort.by("creationDate").descending());
         if(status.isPresent()) {
             Page<Application> page = applicationRepository.findByFullStatus(status.get(), pageeable);

@@ -20,7 +20,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
-import static swtp12.modulecrediting.model.ModuleConnectionDecision.*;
+import static swtp12.modulecrediting.model.EnumModuleConnectionDecision.*;
 
 
 @Data
@@ -31,10 +31,10 @@ public class ModulesConnection {
     private Long id;
     @JsonView(Views.ApplicationStudent.class)
     @NotNull(message = "decisionFinal must not be null")
-    private ModuleConnectionDecision decisionFinal;
+    private EnumModuleConnectionDecision decisionFinal;
     @JsonView(Views.ApplicationLogin.class)
     @NotNull(message = "decisionSuggestion must not be null")
-    private ModuleConnectionDecision decisionSuggestion;
+    private EnumModuleConnectionDecision decisionSuggestion;
     @JsonView(Views.ApplicationStudent.class)
     @NotNull(message = "commentDecision must not be null")
     private String commentDecision;

@@ -4,23 +4,23 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonView;
-
 import org.hibernate.annotations.CreationTimestamp;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonView;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedAttributeNode;
 import jakarta.persistence.NamedEntityGraph;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.JoinColumn;
+
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 
@@ -37,7 +37,7 @@ public class Application {
     @JsonView(Views.ApplicationOverview.class)
     private Long id;
     @JsonView(Views.ApplicationOverview.class)
-    private ApplicationStatus fullStatus;
+    private EnumApplicationStatus fullStatus;
     @CreationTimestamp
     @JsonView(Views.ApplicationOverview.class)
     private LocalDate creationDate;
@@ -58,7 +58,7 @@ public class Application {
     private List<ModulesConnection> modulesConnections = new ArrayList<>();
 
 
-    public Application(ApplicationStatus fullStatus, LocalDate creationDate) {
+    public Application(EnumApplicationStatus fullStatus, LocalDate creationDate) {
         this.fullStatus = fullStatus;
         this.creationDate = creationDate;
     }

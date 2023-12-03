@@ -6,8 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import swtp12.modulecrediting.model.ModuleConnectionDecision;
-
+import swtp12.modulecrediting.model.EnumModuleConnectionDecision;
 
 
 @Getter
@@ -19,8 +18,8 @@ public class ModuleBlockUpdateDTO {
     private Integer points;
     private String pointSystem;
     private List<String> moduleNamesLeipzig;
-    private ModuleConnectionDecision decisionFinal;
-    private ModuleConnectionDecision decisionSuggestion;
+    private EnumModuleConnectionDecision decisionFinal;
+    private EnumModuleConnectionDecision decisionSuggestion;
     private String commentStudyOffice;
     private String commentDecision;
 }
