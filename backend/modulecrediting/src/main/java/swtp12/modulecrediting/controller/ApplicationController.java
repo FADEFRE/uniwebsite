@@ -1,8 +1,11 @@
 package swtp12.modulecrediting.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.itextpdf.text.DocumentException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import swtp12.modulecrediting.dto.ApplicationCreateDTO;
@@ -11,9 +14,13 @@ import swtp12.modulecrediting.model.Application;
 import swtp12.modulecrediting.model.ApplicationStatus;
 import swtp12.modulecrediting.model.Views;
 import swtp12.modulecrediting.service.ApplicationService;
+import swtp12.modulecrediting.service.PdfDocumentService;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+
+import static org.hibernate.query.sqm.tree.SqmNode.log;
 
 
 @RestController
@@ -57,5 +64,24 @@ public class ApplicationController {
     @GetMapping("/{id}/exists")
     public ResponseEntity<Boolean> applicationExists(@PathVariable Long id) {
         return ResponseEntity.ok(applicationService.applicationExists(id));
+    }
+    @GetMapping("/pdfData")
+    public ResponseEntity<byte[]> generatePdf(@RequestParam Long applicationId) {
+        try {
+            byte[] pdfBytes = applicationService.generatePdfDataDocument(applicationId);
+
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_PDF);
+            headers.setContentDispositionFormData("inline", "Antrag.pdf");
+
+            return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
+        } catch (IOException | DocumentException e) {
+            log.error("Fehler beim Generieren des PDFs", e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (Exception e) {
+            log.error("Unerwarteter Fehler beim Generieren des PDFs", e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
