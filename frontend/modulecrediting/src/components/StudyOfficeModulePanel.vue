@@ -7,12 +7,20 @@ import PanelBase from "@/components/PanelBase.vue";
 import PanelStudyOfficeFile from "@/components/PanelStudyOfficeFile.vue";
 import PanelBaseInternalModules from "@/components/PanelBaseInternalModules.vue";
 import PanelCommentReadOnly from "@/components/PanelCommentDisplayOnly.vue";
-import { ref, computed, onMounted } from "vue";
+import { ref, onMounted } from "vue";
 import PanelCommentWriteOnly from "@/components/PanelCommentWriteOnly.vue";
 
+// props
 const props = defineProps(['moduleConnectionData', 'internalModuleOptions'])
 
+const commentApplicant = props.moduleConnectionData.commentApplicant ? props.moduleConnectionData.commentApplicant : '-'
+
+// refs
+const base = ref()
 const internalModules = ref()
+const decisionSuggestion = ref()
+const decisionSuggestionOptions = ref(['Ablehnen', 'Annehmen'])
+const commentStudyOffice = ref()
 
 onMounted(() => {
   internalModules.value.setup(
@@ -21,17 +29,9 @@ onMounted(() => {
   )
 })
 
-const decision = ref()
-const decisionOptions = ref(['Ablehnen', 'Annehmen'])
-const decisionStyle = computed(() => {
-  if (decision.value === 'Ablehnen') {
-    return 'reject-color'
-  } else {
-    return 'accept-color'
-  }
+defineExpose({
+  base, internalModules, decisionSuggestion, commentStudyOffice
 })
-
-const studyOfficeComment = ref()
 </script>
 
 <template>
@@ -39,7 +39,7 @@ const studyOfficeComment = ref()
     <Panel toggleable class="module-application-panel">
 
       <template #header>
-        <h2>{{ moduleConnectionData.moduleApplication.name }}</h2>
+        <h2>{{ base?.moduleName }}</h2>
       </template>
 
       <div>
@@ -48,12 +48,14 @@ const studyOfficeComment = ref()
           :university="moduleConnectionData.moduleApplication.university"
           :credit-points="moduleConnectionData.moduleApplication.points"
           :point-system="moduleConnectionData.moduleApplication.pointSystem"
+          ref="base"
         >
 
           <template #file>
             <PanelStudyOfficeFile
                 :file-id="moduleConnectionData.moduleApplication.pdfDocument.id"
                 :file-name="moduleConnectionData.moduleApplication.pdfDocument.name"
+                ref="file"
             />
           </template>
 
@@ -62,7 +64,7 @@ const studyOfficeComment = ref()
           </template>
 
           <template #comment>
-            <PanelCommentReadOnly :applicant-comment="moduleConnectionData.moduleApplication.commentApplicant"/>
+            <PanelCommentReadOnly :applicant-comment="commentApplicant" ref="comment"/>
           </template>
 
         </PanelBase>
@@ -72,10 +74,14 @@ const studyOfficeComment = ref()
 
       <div class="study-office-container">
         <div>
-          <SelectButton :allow-empty="false" v-model="decision" :options="decisionOptions" :class="decisionStyle" />
+          <SelectButton
+              :allow-empty="false"
+              v-model="decisionSuggestion"
+              :options="decisionSuggestionOptions"
+          />
         </div>
         <div>
-          <PanelCommentWriteOnly ref="studyOfficeComment" />
+          <PanelCommentWriteOnly ref="commentStudyOffice" />
         </div>
       </div>
 

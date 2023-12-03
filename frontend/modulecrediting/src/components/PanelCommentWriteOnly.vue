@@ -10,7 +10,7 @@ functionality:
 <script setup>
 import { ref } from 'vue';
 
-const comment = ref('');
+const applicantComment = ref('');
 const commentInput = ref(null);
 const fontSize = ref(16); // Fest auf 16 Pixel gesetzte Schriftgröße
 
@@ -26,15 +26,13 @@ const adjustFontSize = () => {
 };
 
 defineExpose({
-  comment,
-  fontSize,
-  adjustFontSize // Expose the function to adjust font size
+  applicantComment
 })
 </script>
 
 <template>
   <div>
-    <textarea class="module-comment" v-model="comment" ref="commentInput" @input="adjustTextareaHeight" />
+    <textarea class="module-comment" v-model="applicantComment" ref="commentInput" @input="adjustTextareaHeight" />
   </div>
 </template>
 
