@@ -86,4 +86,9 @@ http://localhost:8090/pdf-documents/{id}
 
  -> GET: get single pdf file
 
+http://localhost:8090/applications/pdfData
+ -> GET: generated PDF Document with application Data
+
 ## Add your files
+
+
