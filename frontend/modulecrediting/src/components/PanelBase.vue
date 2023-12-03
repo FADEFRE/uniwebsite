@@ -1,3 +1,19 @@
+<!--
+base modul panel
+displays:
+- module text input
+- university text input
+- credit points text input
+- point system text input
+- file SLOT CONTENT
+- internalModules SLOT CONTENT
+- comment SLOT CONTENT
+functionality:
+- module, university, credit points, point system input
+- providing layout with exchangeable slot content
+- can be used with or without initial data as props
+-->
+
 <script setup>
 import { ref } from "vue";
 
