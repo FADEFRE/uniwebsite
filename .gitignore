@@ -1,2 +1,37 @@
+### text ###
 *.DS_STORE
-*.vscode/
+*.target/
+*.HELP.md
+*.local
+
+### Backend ###
+backend/**/*.properties
+!backend/**/application-prod.properties
+
+
+### Frontend ###
+*.local
+
+
+### Logs ###
+*.log*
+*.log
+
+
+### IntelliJ IDEA ###
+*.idea
+*.iws
+*.iml
+*.ipr
+
+### VS Code ###
+**/.vscode
+!frontend/**/.vscode
+
+
+### other ##
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
