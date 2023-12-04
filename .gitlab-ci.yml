@@ -1,0 +1,84 @@
+services:
+  - postgres:13.1-alpine
+variables:
+  POSTGRES_DB: postgres
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: "123"
+  POSTGRES_HOST_AUTH_METHOD: trust
+
+
+stages:
+    - test
+    - build
+    - deploy
+
+
+
+test_frontend:
+  stage: test
+  image: public.ecr.aws/docker/library/node:lts-alpine
+  script:
+      - cd frontend/modulecrediting
+      - npm install
+      - npm run test
+
+test_backend:
+  stage: test
+  image: public.ecr.aws/docker/library/maven:3.8.4-openjdk-17
+  script:
+    - cd backend/modulecrediting
+    - mvn clean verify
+
+
+
+build_frontend:
+  stage: build
+  needs: ["test_frontend"]
+  image: 
+    name: gcr.io/kaniko-project/executor:v1.9.0-debug
+    entrypoint: [""]
+  before_script:
+    - mkdir -p /kaniko/.docker
+    - echo "{\"auths\":{\"${CI_REGISTRY}\":{\"auth\":\"$(printf "%s:%s" "${CI_REGISTRY_USER}" "${CI_REGISTRY_PASSWORD}" | base64 | tr -d '\n')\"},\"$(echo -n $CI_DEPENDENCY_PROXY_SERVER | awk -F[:] '{print $1}')\":{\"auth\":\"$(printf "%s:%s" ${CI_DEPENDENCY_PROXY_USER} "${CI_DEPENDENCY_PROXY_PASSWORD}" | base64 | tr -d '\n')\"}}}" > /kaniko/.docker/config.json
+  script:
+    - /kaniko/executor
+      --context "${CI_PROJECT_DIR}/frontend/modulecrediting"
+      --dockerfile "${CI_PROJECT_DIR}/frontend/modulecrediting/Dockerfile"
+      --destination "${CI_REGISTRY_IMAGE}/swtp_frontend:latest"
+
+build_backend:
+  stage: build
+  needs: ["test_backend"]
+  image:
+    name: gcr.io/kaniko-project/executor:v1.9.0-debug
+    entrypoint: [""]
+  before_script:
+    - mkdir -p /kaniko/.docker
+    - echo "{\"auths\":{\"${CI_REGISTRY}\":{\"auth\":\"$(printf "%s:%s" "${CI_REGISTRY_USER}" "${CI_REGISTRY_PASSWORD}" | base64 | tr -d '\n')\"},\"$(echo -n $CI_DEPENDENCY_PROXY_SERVER | awk -F[:] '{print $1}')\":{\"auth\":\"$(printf "%s:%s" ${CI_DEPENDENCY_PROXY_USER} "${CI_DEPENDENCY_PROXY_PASSWORD}" | base64 | tr -d '\n')\"}}}" > /kaniko/.docker/config.json
+  script:
+    - /kaniko/executor
+      --context "${CI_PROJECT_DIR}/backend/modulecrediting"
+      --dockerfile "${CI_PROJECT_DIR}/backend/modulecrediting/Dockerfile"
+      --destination "${CI_REGISTRY_IMAGE}/swtp_backend:latest"
+
+
+
+deploy:
+  stage: deploy
+  needs: ["build_frontend", "build_backend"]
+  image: public.ecr.aws/docker/library/nginx:alpine
+  variables: 
+    DOCKER_HOST: "ssh://$SERVER_USER@SERVER_IP"
+  before_script:
+    - apk update
+    - apk add openssh docker docker-compose
+    - eval $(ssh-agent -s)
+    - echo "${SSH_PRIVATE_KEY}" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh && chmod 700 ~/.ssh
+    - echo "${SSH_KNOWN_HOSTS}" >> ~/.ssh/known_hosts
+    - echo "${SSH_PRIVATE_KEY}" >> ~/.ssh/keyto_vm
+    - chmod 644 ~/.ssh/known_hosts
+  script:
+    - ssh -o StrictHostKeyChecking=no -i ~/.ssh/keyto_vm swtp@${SSH_KNOWN_HOSTS} "echo test"
+    - scp ${CI_PROJECT_DIR}/docker-compose.yml swtp@${SSH_KNOWN_HOSTS}:/home/swtp/
+    - ssh -o StrictHostKeyChecking=no -i ~/.ssh/keyto_vm swtp@${SSH_KNOWN_HOSTS} "cd ~/ && docker-compose down --rmi all && docker-compose up -d"
