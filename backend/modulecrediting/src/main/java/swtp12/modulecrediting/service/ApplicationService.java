@@ -72,16 +72,24 @@ public class ApplicationService {
             ModuleBlockUpdateDTO moduleBlockUpdateDTO = applicationUpdateDTO.getModuleBlockUpdateDTOList().get(i);
 
             // UPDATE BASIC MODULE APPLICATION ATTRIBUTES
+
             moduleApplication.setName(moduleBlockUpdateDTO.getModuleName());
             moduleApplication.setUniversity(moduleBlockUpdateDTO.getUniversity());
             moduleApplication.setPoints(moduleBlockUpdateDTO.getPoints());
             moduleApplication.setPointSystem(moduleBlockUpdateDTO.getPointSystem());
 
             // UPDATE PAV/STUDY_OFFICE RELATED ATTRBIUTES
-            modulesConnection.setDecisionFinal(moduleBlockUpdateDTO.getDecisionFinal());
-            modulesConnection.setDecisionSuggestion(moduleBlockUpdateDTO.getDecisionSuggestion());
-            modulesConnection.setCommentStudyOffice(moduleBlockUpdateDTO.getCommentStudyOffice());
-            modulesConnection.setCommentDecision(moduleBlockUpdateDTO.getCommentDecision());
+            if(applicationUpdateDTO.getUserRole().equals("pav")) {
+                modulesConnection.setDecisionFinal(moduleBlockUpdateDTO.getDecisionFinal());
+                modulesConnection.setDecisionSuggestion(moduleBlockUpdateDTO.getDecisionSuggestion());
+            }else if(applicationUpdateDTO.getUserRole().equals("study_office")) {
+                modulesConnection.setCommentStudyOffice(moduleBlockUpdateDTO.getCommentStudyOffice());
+                modulesConnection.setCommentDecision(moduleBlockUpdateDTO.getCommentDecision());
+            }else{
+                // error but UserRole is not final solutionm !
+            }
+
+
 
             // UPDATE CONNECTED MODULES LEIPZIG
             if(moduleBlockUpdateDTO.getModuleNamesLeipzig() == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Module Leipzig Names are missing");

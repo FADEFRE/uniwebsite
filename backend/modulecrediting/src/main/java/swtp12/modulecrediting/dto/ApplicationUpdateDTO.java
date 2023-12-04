@@ -12,5 +12,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class ApplicationUpdateDTO {
+    private String userRole; // "study_office" / "pav"
     private List<ModuleBlockUpdateDTO> moduleBlockUpdateDTOList;
 }
