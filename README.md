@@ -86,9 +86,12 @@ http://localhost:8090/pdf-documents/{id}
 
  -> GET: get single pdf file
 
-http://localhost:8090/applications/pdfData
+http://localhost:8090/applications/pdfData/{id}
  -> GET: generated PDF Document with application Data
 
-## Add your files
+
+http://localhost:8090/modules-connection/{id}/related
+
+-> GET: all related modules-connections of a module connection 
 
 
