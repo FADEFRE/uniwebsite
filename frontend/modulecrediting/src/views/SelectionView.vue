@@ -8,6 +8,7 @@ functionality:
 
 <script setup>
 import OverviewItem from "@/components/OverviewItem.vue";
+import { useRoute } from "vue-router";
 import { ref, onBeforeMount } from "vue"
 import { url } from "@/scripts/url-config"
 import axios from "axios"
@@ -20,6 +21,8 @@ onBeforeMount(() => {
       })
   // todo error catching
 })
+
+const route = useRoute()
 </script>
 
 <template>
@@ -27,6 +30,7 @@ onBeforeMount(() => {
     <OverviewItem
         v-for="application of applicationsData"
         :data="application"
+        :forward="route.meta.forward"
     />
   </div>
 </template>

@@ -9,12 +9,12 @@ functionality:
 <script setup>
 import { useRouter } from "vue-router";
 
-const props = defineProps(['data'])
+const props = defineProps(['data', 'forward'])
 
 const router = useRouter()
 
 const openDetailView = () => {
-  const routeData = router.resolve({name: 'studyOfficeDetail', params: {id: props.data.id}})
+  const routeData = router.resolve({name: props.forward, params: {id: props.data.id}})
   window.open(routeData.href, '_top')
 }
 </script>

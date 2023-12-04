@@ -8,7 +8,7 @@ import PanelStudyOfficeFile from "@/components/PanelStudyOfficeFile.vue";
 import PanelBaseInternalModules from "@/components/PanelBaseInternalModules.vue";
 import PanelCommentReadOnly from "@/components/PanelCommentDisplayOnly.vue";
 import { ref, onMounted } from "vue";
-import PanelCommentReadAndWrite from "@/components/PanelCommentReadAndWrite.vue";
+import PanelCommentWrite from "@/components/PanelCommentWrite.vue";
 
 // props
 const props = defineProps(['moduleConnectionData', 'internalModuleOptions'])
@@ -90,7 +90,7 @@ defineExpose({
           />
         </div>
         <div>
-          <PanelCommentReadAndWrite :comment="moduleConnectionData.commentStudyOffice" ref="commentStudyOffice" />
+          <PanelCommentWrite :comment="moduleConnectionData.commentStudyOffice" ref="commentStudyOffice" />
         </div>
       </div>
 
