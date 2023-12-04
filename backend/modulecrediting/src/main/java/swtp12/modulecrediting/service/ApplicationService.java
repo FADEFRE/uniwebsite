@@ -56,7 +56,7 @@ public class ApplicationService {
     // TODO: Corner Case: No Module Leipzig when creating, or when updating
     // TODO: Module Accepted but only as Pruefungsschien
     @Transactional
-    public Long updateApplication(Long id, ApplicationUpdateDTO applicationUpdateDTO) {
+    public String updateApplication(String id, ApplicationUpdateDTO applicationUpdateDTO) {
 
 
         Application application = getApplicationById(id);
@@ -163,7 +163,7 @@ public class ApplicationService {
 
 
 
-    public Long createApplication(ApplicationCreateDTO applicationCreateDTO) {
+    public String createApplication(ApplicationCreateDTO applicationCreateDTO) {
         ArrayList<ModulesConnection> modulesConnections = new ArrayList<>();
 
         if(applicationCreateDTO.getModuleBlockCreateDTOList() == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Modules are required");
@@ -205,7 +205,7 @@ public class ApplicationService {
         }
     }
 
-    public Application getApplicationById(Long id) {
+    public Application getApplicationById(String id) {
         Optional<Application> applicationOptional = applicationRepository.findById(id);
         if(applicationOptional.isPresent()) {
             return applicationOptional.get();
@@ -214,16 +214,12 @@ public class ApplicationService {
         }
     }
 
-    public boolean applicationExists(Long id) {
+    public boolean applicationExists(String id) {
         Optional<Application> applicationOptional = applicationRepository.findById(id);
-        if(applicationOptional.isPresent()) {
-            return true;
-        }else {
-            return false;
-        }
+        return applicationOptional.isPresent();
     }
 
-    public byte[] generatePdfDataDocument(Long id) throws IOException, DocumentException {
+    public byte[] generatePdfDataDocument(String id) throws IOException, DocumentException {
         Application application = getApplicationById(id);
         List<ModulesConnection> modulesConnections = application.getModulesConnections();
 

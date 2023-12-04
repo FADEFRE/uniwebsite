@@ -4,24 +4,19 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.aventrix.jnanoid.jnanoid.NanoIdUtils;
+import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.NamedAttributeNode;
-import jakarta.persistence.NamedEntityGraph;
-import jakarta.persistence.OneToMany;
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import swtp12.modulecrediting.repository.ApplicationRepository;
+import swtp12.modulecrediting.service.ApplicationService;
 
 
 @Data
@@ -32,10 +27,18 @@ import lombok.NoArgsConstructor;
         attributeNodes = @NamedAttributeNode(value = "modulesConnections")
 )
 public class Application {
+
+
     @Id
-    @GeneratedValue
     @JsonView(Views.ApplicationOverview.class)
-    private Long id;
+    private String id;
+    @PrePersist
+    public void generateId() {
+        if (id == null) {
+            id = NanoIdUtils.randomNanoId();
+        }
+    }
+
     @JsonView(Views.ApplicationOverview.class)
     private EnumApplicationStatus fullStatus;
     @CreationTimestamp

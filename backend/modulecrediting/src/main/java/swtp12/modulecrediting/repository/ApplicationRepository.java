@@ -12,9 +12,9 @@ import swtp12.modulecrediting.model.Application;
 import swtp12.modulecrediting.model.EnumApplicationStatus;
 
 @Repository
-public interface ApplicationRepository extends JpaRepository<Application, Long>{
+public interface ApplicationRepository extends JpaRepository<Application, String>{
     @EntityGraph(value = "graph.Application.modulesConnections", type = EntityGraph.EntityGraphType.LOAD)
-    Optional<Application> findById(Long id);
+    Optional<Application> findById(String id);
 
     Page<Application> findAllBy(Pageable pageable);
 

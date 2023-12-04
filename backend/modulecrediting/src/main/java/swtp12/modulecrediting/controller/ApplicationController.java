@@ -40,12 +40,12 @@ public class ApplicationController {
     private ApplicationService applicationService;
 
     @PutMapping("/{id}")
-    public ResponseEntity<Long> updateApplication(@PathVariable Long id,@ModelAttribute ApplicationUpdateDTO applicationUpdateDTO) {
+    public ResponseEntity<String> updateApplication(@PathVariable String id,@ModelAttribute ApplicationUpdateDTO applicationUpdateDTO) {
         return ResponseEntity.ok(applicationService.updateApplication(id, applicationUpdateDTO));
     }
 
     @PostMapping
-    public ResponseEntity<Long> createApplication(@ModelAttribute ApplicationCreateDTO applicationCreateDTO) {
+    public ResponseEntity<String> createApplication(@ModelAttribute ApplicationCreateDTO applicationCreateDTO) {
         return ResponseEntity.ok(applicationService.createApplication(applicationCreateDTO));
     }
 
@@ -60,26 +60,26 @@ public class ApplicationController {
 
     @GetMapping("/{id}")
     @JsonView(Views.ApplicationLogin.class)
-    public ResponseEntity<Application>  getApplicationById(@PathVariable Long id) {
+    public ResponseEntity<Application>  getApplicationById(@PathVariable String id) {
         return ResponseEntity.ok(applicationService.getApplicationById(id));
     }
 
 
     @GetMapping("/student/{id}")
     @JsonView(Views.ApplicationStudent.class)
-    public ResponseEntity<Application>  getApplicationStudentById(@PathVariable Long id) {
+    public ResponseEntity<Application>  getApplicationStudentById(@PathVariable String id) {
         return ResponseEntity.ok(applicationService.getApplicationById(id));
     }
 
     @GetMapping("/{id}/exists")
-    public ResponseEntity<Boolean> applicationExists(@PathVariable Long id) {
+    public ResponseEntity<Boolean> applicationExists(@PathVariable String id) {
         return ResponseEntity.ok(applicationService.applicationExists(id));
     }
 
-    @GetMapping("/pdfData")
-    public ResponseEntity<byte[]> generatePdf(@RequestParam Long applicationId) {
+    @GetMapping("/pdfData/{id}")
+    public ResponseEntity<byte[]> generatePdf(@PathVariable String id) {
         try {
-            byte[] pdfBytes = applicationService.generatePdfDataDocument(applicationId);
+            byte[] pdfBytes = applicationService.generatePdfDataDocument(id);
 
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_PDF);
