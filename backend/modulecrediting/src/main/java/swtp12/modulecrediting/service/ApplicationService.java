@@ -81,10 +81,10 @@ public class ApplicationService {
             // UPDATE PAV/STUDY_OFFICE RELATED ATTRBIUTES
             if(applicationUpdateDTO.getUserRole().equals("pav")) {
                 modulesConnection.setDecisionFinal(moduleBlockUpdateDTO.getDecisionFinal());
-                modulesConnection.setDecisionSuggestion(moduleBlockUpdateDTO.getDecisionSuggestion());
-            }else if(applicationUpdateDTO.getUserRole().equals("study_office")) {
-                modulesConnection.setCommentStudyOffice(moduleBlockUpdateDTO.getCommentStudyOffice());
                 modulesConnection.setCommentDecision(moduleBlockUpdateDTO.getCommentDecision());
+            }else if(applicationUpdateDTO.getUserRole().equals("study_office")) {
+                modulesConnection.setDecisionSuggestion(moduleBlockUpdateDTO.getDecisionSuggestion());
+                modulesConnection.setCommentStudyOffice(moduleBlockUpdateDTO.getCommentStudyOffice());
             }else{
                 // error but UserRole is not final solutionm !
             }
