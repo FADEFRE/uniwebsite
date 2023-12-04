@@ -48,7 +48,6 @@ public class DataLoader implements CommandLineRunner {
      */
     @Override
     public void run(String... args) {
-
         String jsonPath = "/module_liste.json";
 
         System.out.print("Dataloader: Trying to read JSON");

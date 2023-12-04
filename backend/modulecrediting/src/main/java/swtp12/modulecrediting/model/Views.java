@@ -9,4 +9,6 @@ public interface Views {
 
     public class ApplicationLogin extends ApplicationStudent {}
 
+    public class RelatedModulesConnection {}
+
 }

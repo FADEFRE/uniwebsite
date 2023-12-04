@@ -26,7 +26,7 @@ public class ModuleLeipzig {
     @GeneratedValue
     private Long id;
 
-    @JsonView({Views.coursesWithModules.class, Views.modulesWithoutCourse.class, Views.ApplicationStudent.class})
+    @JsonView({Views.coursesWithModules.class, Views.modulesWithoutCourse.class, Views.ApplicationStudent.class, Views.RelatedModulesConnection.class})
     private String moduleName;
     @JsonView({Views.coursesWithModules.class, Views.modulesWithoutCourse.class})
     private String moduleCode;

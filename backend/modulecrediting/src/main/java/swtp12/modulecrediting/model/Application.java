@@ -30,7 +30,7 @@ public class Application {
 
 
     @Id
-    @JsonView(Views.ApplicationOverview.class)
+    @JsonView({Views.ApplicationOverview.class,Views.RelatedModulesConnection.class})
     private String id;
     @PrePersist
     public void generateId() {
@@ -39,19 +39,19 @@ public class Application {
         }
     }
 
-    @JsonView(Views.ApplicationOverview.class)
+    @JsonView({Views.ApplicationOverview.class,Views.RelatedModulesConnection.class})
     private EnumApplicationStatus fullStatus;
     @CreationTimestamp
-    @JsonView(Views.ApplicationOverview.class)
+    @JsonView({Views.ApplicationOverview.class,Views.RelatedModulesConnection.class})
     private LocalDate creationDate;
-    @JsonView(Views.ApplicationOverview.class)
+    @JsonView({Views.ApplicationOverview.class,Views.RelatedModulesConnection.class})
     private LocalDate decisionDate;
 
     //Relation Application <-> CourseLeipzig
     @ManyToOne
     @JoinColumn(name = "course_leipzig_id")
     @JsonManagedReference
-    @JsonView(Views.ApplicationOverview.class)
+    @JsonView({Views.ApplicationOverview.class,Views.RelatedModulesConnection.class})
     private CourseLeipzig courseLeipzig;
 
     //Relation Application <-> ModulesConnection

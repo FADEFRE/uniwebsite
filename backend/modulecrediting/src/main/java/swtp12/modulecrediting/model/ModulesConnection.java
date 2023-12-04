@@ -28,14 +28,15 @@ import static swtp12.modulecrediting.model.EnumModuleConnectionDecision.*;
 public class ModulesConnection {
     @Id
     @GeneratedValue
+    @JsonView(Views.ApplicationLogin.class)
     private Long id;
-    @JsonView(Views.ApplicationStudent.class)
+    @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class})
     @NotNull(message = "decisionFinal must not be null")
     private EnumModuleConnectionDecision decisionFinal;
     @JsonView(Views.ApplicationLogin.class)
     @NotNull(message = "decisionSuggestion must not be null")
     private EnumModuleConnectionDecision decisionSuggestion;
-    @JsonView(Views.ApplicationStudent.class)
+    @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class})
     @NotNull(message = "commentDecision must not be null")
     private String commentDecision;
     @JsonView(Views.ApplicationStudent.class)
@@ -45,7 +46,7 @@ public class ModulesConnection {
     //Relation ModulesConnection <-> ModuleApplication (Setter in ModuleApplication)
     @OneToOne(cascade = CascadeType.ALL , orphanRemoval = true)
     @JsonManagedReference
-    @JsonView(Views.ApplicationStudent.class)
+    @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class})
     private ModuleApplication moduleApplication;
 
     //Relation ModulesConnection <-> ModuleLeipzig
@@ -56,12 +57,12 @@ public class ModulesConnection {
             inverseJoinColumns = @JoinColumn(name = "module_leipzig_id")
     )
     @JsonManagedReference
-    @JsonView(Views.ApplicationStudent.class)
+    @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class})
     private List<ModuleLeipzig> modulesLeipzig = new ArrayList<>();
 
     //Relation ModulesConnection <-> Application (Setter in Application)
     @ManyToOne
-    @JsonBackReference
+    @JsonView(Views.RelatedModulesConnection.class)
     private Application application;
 
 

@@ -210,7 +210,7 @@ public class ApplicationService {
         if(applicationOptional.isPresent()) {
             return applicationOptional.get();
         }else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Application not Found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Application with id: " + id + " not Found");
         }
     }
 

@@ -31,7 +31,7 @@ public class CourseLeipzig {
     @GeneratedValue
     private Long id;
 
-    @JsonView({Views.coursesWithModules.class, Views.ApplicationOverview.class})
+    @JsonView({Views.coursesWithModules.class, Views.ApplicationOverview.class,Views.RelatedModulesConnection.class})
     @Column(unique = true)
     @NotBlank(message = "Name may not be blank")
     private String name;
