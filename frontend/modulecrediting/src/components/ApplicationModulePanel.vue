@@ -13,7 +13,7 @@ functionality:
 import PanelBase from "@/components/PanelBase.vue";
 import PanelApplicationFile from "@/components/PanelApplicationFile.vue";
 import PanelBaseInternalModules from "@/components/PanelBaseInternalModules.vue";
-import PanelCommentWriteOnly from "@/components/PanelCommentWriteOnly.vue";
+import PanelCommentWriteOnly from "@/components/PanelCommentReadAndWrite.vue";
 import { ref, computed } from "vue";
 
 const emit = defineEmits(['deletePanel'])

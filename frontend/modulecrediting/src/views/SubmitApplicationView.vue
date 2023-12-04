@@ -85,7 +85,7 @@ const triggerPostApplication = () => {
       pointSystem: panel.base.pointSystem,
       descriptionFile: panel.file.descriptionFile,
       selectedInternalModules: panel.internalModules.selectedInternalModules,
-      comment: panel.comment.applicantComment,
+      comment: panel.comment.comment,
     }
   })
   // post request

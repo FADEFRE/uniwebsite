@@ -5,7 +5,7 @@ documentation todo
 <script setup>
 import { useRoute } from "vue-router";
 import { ref, onBeforeMount } from "vue";
-import { getApplicationById, getModulesByCourse } from "@/scripts/axios-requests"
+import { getApplicationById, getModulesByCourse, putStudyOffice } from "@/scripts/axios-requests"
 import StudyOfficeModulePanel from "@/components/StudyOfficeModulePanel.vue";
 
 const route = useRoute()
@@ -32,9 +32,39 @@ onBeforeMount(() => {
       .catch(error => {
         console.log(error)
         applicationData.value = 'error'
-        internalModules.value = 'error'
       })
 })
+
+const moduleApplicationPanelsRef = ref([])
+
+const checkPutData = () => {
+  if (!id) {
+    return false
+  }
+  return moduleApplicationPanelsRef.value.every(obj => obj.decisionSuggestion)
+}
+
+const triggerPutData = () => {
+  if (checkPutData()) {
+    const applicationObjects = moduleApplicationPanelsRef.value.map(panel => {
+      return {
+        moduleName: panel.base.moduleName,
+        university: panel.base.university,
+        creditPoints: panel.base.creditPoints,
+        pointSystem: panel.base.pointSystem,
+        selectedInternalModules: panel.internalModules.selectedInternalModules,
+        decisionSuggestion: panel.decisionSuggestion === 'Annehmen' ? 'ANGENOMMEN' : 'ABGELEHNT',
+        commentStudyOffice: panel.commentStudyOffice.comment
+      }
+    })
+    console.log(applicationObjects)
+    putStudyOffice(id, applicationObjects)
+        .then(() => location.reload())
+  } else {
+    console.log('check in triggerPutData failed')
+    // todo user feedback
+  }
+}
 </script>
 
 <template>
@@ -65,8 +95,13 @@ onBeforeMount(() => {
           v-for="moduleConnection in applicationData.modulesConnections"
           :module-connection-data="moduleConnection"
           :internal-module-options="internalModules"
+          ref="moduleApplicationPanelsRef"
         />
       </div>
+
+      <Button @click="triggerPutData">
+        Speichern
+      </Button>
 
     </div>
 

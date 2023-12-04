@@ -8,7 +8,7 @@ import PanelStudyOfficeFile from "@/components/PanelStudyOfficeFile.vue";
 import PanelBaseInternalModules from "@/components/PanelBaseInternalModules.vue";
 import PanelCommentReadOnly from "@/components/PanelCommentDisplayOnly.vue";
 import { ref, onMounted } from "vue";
-import PanelCommentWriteOnly from "@/components/PanelCommentWriteOnly.vue";
+import PanelCommentReadAndWrite from "@/components/PanelCommentReadAndWrite.vue";
 
 // props
 const props = defineProps(['moduleConnectionData', 'internalModuleOptions'])
@@ -21,6 +21,15 @@ const internalModules = ref()
 const decisionSuggestion = ref()
 const decisionSuggestionOptions = ref(['Ablehnen', 'Annehmen'])
 const commentStudyOffice = ref()
+
+// setting decision suggestion
+if (props.moduleConnectionData.decisionSuggestion === 'ANGENOMMEN') {
+  decisionSuggestion.value = 'Annehmen'
+} else {
+  if (props.moduleConnectionData.decisionSuggestion === 'ABGELEHNT') {
+    decisionSuggestion.value = 'Ablehnen'
+  }
+}
 
 onMounted(() => {
   internalModules.value.setup(
@@ -81,7 +90,7 @@ defineExpose({
           />
         </div>
         <div>
-          <PanelCommentWriteOnly ref="commentStudyOffice" />
+          <PanelCommentReadAndWrite :comment="moduleConnectionData.commentStudyOffice" ref="commentStudyOffice" />
         </div>
       </div>
 

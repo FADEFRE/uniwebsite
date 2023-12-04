@@ -72,9 +72,36 @@ function postApplication (course, applicationObjects) {
             formData.append(`moduleBlockCreateDTOList[${index}].commentApplicant`, object.comment)
         }
     )
+    console.log('post request to /applications')
+    console.log([...formData])
     return axios.post(url + '/applications', formData)
         .then(response => response.data)
     // todo error catching
 }
 
-export { getCourseData, getModulesByCourse, getApplicationById, postApplication }
+function putStudyOffice (id, applicationObjects) {
+    const formData = new FormData()
+    formData.append('userRole', 'study_office')  // todo
+    applicationObjects.forEach(
+        (object, index) => {
+            // application data
+            formData.append(`moduleBlockUpdateDTOList[${index}].moduleName`, object.moduleName)
+            formData.append(`moduleBlockUpdateDTOList[${index}].university`, object.university)
+            formData.append(`moduleBlockUpdateDTOList[${index}].points`, object.creditPoints)
+            formData.append(`moduleBlockUpdateDTOList[${index}].pointSystem`, object.pointSystem)
+            object.selectedInternalModules.forEach(
+                (moduleName, moduleIndex) => {
+                    formData.append(`moduleBlockUpdateDTOList[${index}].moduleNamesLeipzig[${moduleIndex}]`, moduleName)
+                }
+            )
+            // study office data
+            formData.append(`moduleBlockUpdateDTOList[${index}].decisionSuggestion`, object.decisionSuggestion)
+            formData.append(`moduleBlockUpdateDTOList[${index}].commentStudyOffice`, object.commentStudyOffice)
+        }
+    )
+    console.log([...formData])
+    return axios.put(url + '/applications/' + id, formData)
+        .then(response => console.log(response.data))
+}
+
+export { getCourseData, getModulesByCourse, getApplicationById, postApplication, putStudyOffice }
