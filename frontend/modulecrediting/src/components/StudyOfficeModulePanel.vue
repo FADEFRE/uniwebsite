@@ -3,103 +3,38 @@ documentation todo
 -->
 
 <script setup>
-import PanelBase from "@/components/PanelBase.vue";
-import PanelStudyOfficeFile from "@/components/PanelStudyOfficeFile.vue";
-import PanelBaseInternalModules from "@/components/PanelBaseInternalModules.vue";
-import PanelCommentReadOnly from "@/components/PanelCommentDisplayOnly.vue";
-import { ref, onMounted } from "vue";
-import PanelCommentWrite from "@/components/PanelCommentWrite.vue";
+import AdministrativeModulePanel from "@/components/AdministrativeModulePanel.vue";
+import StudyOfficePanelBlock from "@/components/StudyOfficePanelBlock.vue";
+import { ref } from "vue";
 
-// props
 const props = defineProps(['moduleConnectionData', 'internalModuleOptions'])
-
-const commentApplicant = props.moduleConnectionData.commentApplicant ? props.moduleConnectionData.commentApplicant : '-'
-
-// refs
-const base = ref()
-const internalModules = ref()
-const decisionSuggestion = ref()
-const decisionSuggestionOptions = ref(['Ablehnen', 'Annehmen'])
-const commentStudyOffice = ref()
-
-// setting decision suggestion
-if (props.moduleConnectionData.decisionSuggestion === 'ANGENOMMEN') {
-  decisionSuggestion.value = 'Annehmen'
-} else {
-  if (props.moduleConnectionData.decisionSuggestion === 'ABGELEHNT') {
-    decisionSuggestion.value = 'Ablehnen'
-  }
+const studyOfficeData = {
+  decisionSuggestion: props.moduleConnectionData.decisionSuggestion,
+  commentStudyOffice: props.moduleConnectionData.commentStudyOffice
 }
 
-onMounted(() => {
-  internalModules.value.setup(
-      props.internalModuleOptions,  // options
-      props.moduleConnectionData.modulesLeipzig.map(module => module.moduleName)  // initials
-  )
-})
+const general = ref()
+const studyOffice = ref()
 
 defineExpose({
-  base, internalModules, decisionSuggestion, commentStudyOffice
+  general, studyOffice
 })
 </script>
 
 <template>
   <div>
-    <Panel toggleable class="module-application-panel">
-
-      <template #header>
-        <h2>{{ base?.moduleName }}</h2>
+    <AdministrativeModulePanel
+      :module-connection-data="props.moduleConnectionData"
+      :internal-module-options="props.internalModuleOptions"
+      ref="general"
+    >
+      <template #studyOffice>
+        <StudyOfficePanelBlock :data="studyOfficeData" ref="studyOffice" />
       </template>
-
-      <div>
-        <PanelBase
-          :module-name="moduleConnectionData.moduleApplication.name"
-          :university="moduleConnectionData.moduleApplication.university"
-          :credit-points="moduleConnectionData.moduleApplication.points"
-          :point-system="moduleConnectionData.moduleApplication.pointSystem"
-          ref="base"
-        >
-
-          <template #file>
-            <PanelStudyOfficeFile
-                :file-id="moduleConnectionData.moduleApplication.pdfDocument.id"
-                :file-name="moduleConnectionData.moduleApplication.pdfDocument.name"
-                ref="file"
-            />
-          </template>
-
-          <template #internalModules>
-            <PanelBaseInternalModules :use-initials="true" ref="internalModules" />
-          </template>
-
-          <template #comment>
-            <PanelCommentReadOnly :applicant-comment="commentApplicant" ref="comment"/>
-          </template>
-
-        </PanelBase>
-      </div>
-
-      <hr>
-
-      <div class="study-office-container">
-        <div>
-          <SelectButton
-              :allow-empty="false"
-              v-model="decisionSuggestion"
-              :options="decisionSuggestionOptions"
-          />
-        </div>
-        <div>
-          <PanelCommentWrite :comment="moduleConnectionData.commentStudyOffice" ref="commentStudyOffice" />
-        </div>
-      </div>
-
-    </Panel>
+    </AdministrativeModulePanel>
   </div>
 </template>
 
 <style scoped>
-.module-application-panel {
-  margin: 10px;
-}
+
 </style>

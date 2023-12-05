@@ -35,26 +35,26 @@ onBeforeMount(() => {
       })
 })
 
-const moduleApplicationPanelsRef = ref([])
+const modulePanelsRef = ref([])
 
 const checkPutData = () => {
   if (!id) {
     return false
   }
-  return moduleApplicationPanelsRef.value.every(obj => obj.decisionSuggestion)
+  return modulePanelsRef.value.every(obj => obj.studyOffice.decisionSuggestion)
 }
 
 const triggerPutData = () => {
   if (checkPutData()) {
-    const applicationObjects = moduleApplicationPanelsRef.value.map(panel => {
+    const applicationObjects = modulePanelsRef.value.map(panel => {
       return {
-        moduleName: panel.base.moduleName,
-        university: panel.base.university,
-        creditPoints: panel.base.creditPoints,
-        pointSystem: panel.base.pointSystem,
-        selectedInternalModules: panel.internalModules.selectedInternalModules,
-        decisionSuggestion: panel.decisionSuggestion === 'Annehmen' ? 'ANGENOMMEN' : 'ABGELEHNT',
-        commentStudyOffice: panel.commentStudyOffice.comment
+        moduleName: panel.general.base.moduleName,
+        university: panel.general.base.university,
+        creditPoints: panel.general.base.creditPoints,
+        pointSystem: panel.general.base.pointSystem,
+        selectedInternalModules: panel.general.internalModules.selectedInternalModules,
+        decisionSuggestion: panel.studyOffice.decisionSuggestion === 'Annehmen' ? 'ANGENOMMEN' : 'ABGELEHNT',
+        commentStudyOffice: panel.studyOffice.commentStudyOffice.comment
       }
     })
     console.log(applicationObjects)
@@ -95,7 +95,7 @@ const triggerPutData = () => {
           v-for="moduleConnection in applicationData.modulesConnections"
           :module-connection-data="moduleConnection"
           :internal-module-options="internalModules"
-          ref="moduleApplicationPanelsRef"
+          ref="modulePanelsRef"
         />
       </div>
 

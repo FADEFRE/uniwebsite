@@ -10,7 +10,9 @@ functionality:
 <script setup>
 import { ref } from 'vue';
 
-const props = defineProps(['comment'])
+const props = defineProps(['readOnly', 'comment'])
+
+const readOnly = ref(props.readOnly ? props.readOnly : false)
 
 const comment = ref('');
 if (props.comment) {
@@ -38,7 +40,7 @@ defineExpose({
 
 <template>
   <div>
-    <textarea class="module-comment" v-model="comment" ref="commentInput" @input="adjustTextareaHeight" />
+    <textarea :readonly="readOnly" class="module-comment" v-model="comment" ref="commentInput" @input="adjustTextareaHeight" />
   </div>
 </template>
 
