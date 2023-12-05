@@ -54,7 +54,8 @@ const triggerPutData = () => {
         pointSystem: panel.general.base.pointSystem,
         selectedInternalModules: panel.general.internalModules.selectedInternalModules,
         decisionSuggestion: panel.studyOffice.decisionSuggestion === 'Annehmen' ? 'ANGENOMMEN' : 'ABGELEHNT',
-        commentStudyOffice: panel.studyOffice.commentStudyOffice.comment
+        commentStudyOffice: panel.studyOffice.commentStudyOffice.comment,
+        asExamCertificate: false
       }
     })
     console.log(applicationObjects)

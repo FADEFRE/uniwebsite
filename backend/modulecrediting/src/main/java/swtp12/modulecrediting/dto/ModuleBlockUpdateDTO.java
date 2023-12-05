@@ -22,4 +22,5 @@ public class ModuleBlockUpdateDTO {
     private EnumModuleConnectionDecision decisionSuggestion;
     private String commentStudyOffice;
     private String commentDecision;
+    private Boolean asExamCertificate;
 }

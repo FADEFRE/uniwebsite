@@ -86,9 +86,8 @@ public class ApplicationService {
             }else if(applicationUpdateDTO.getUserRole().equals("study_office")) {
                 modulesConnection.setDecisionSuggestion(moduleBlockUpdateDTO.getDecisionSuggestion());
                 modulesConnection.setCommentStudyOffice(moduleBlockUpdateDTO.getCommentStudyOffice());
-            }else{
-                // error but UserRole is not final solutionm !
             }
+            modulesConnection.setAsExamCertificate(moduleBlockUpdateDTO.getAsExamCertificate());
 
 
 

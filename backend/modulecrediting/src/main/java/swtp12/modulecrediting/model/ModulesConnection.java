@@ -7,18 +7,11 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.JoinColumn;
+import jakarta.persistence.*;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
 
 import static swtp12.modulecrediting.model.EnumModuleConnectionDecision.*;
 
@@ -33,12 +26,16 @@ public class ModulesConnection {
     @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class})
     @NotNull(message = "decisionFinal must not be null")
     private EnumModuleConnectionDecision decisionFinal;
-    @JsonView(Views.ApplicationLogin.class)
-    @NotNull(message = "decisionSuggestion must not be null")
-    private EnumModuleConnectionDecision decisionSuggestion;
     @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class})
     @NotNull(message = "commentDecision must not be null")
     private String commentDecision;
+
+    @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class})
+    @NotNull(message = "asExamCertificate must not be null")
+    private Boolean asExamCertificate;
+    @JsonView(Views.ApplicationLogin.class)
+    @NotNull(message = "decisionSuggestion must not be null")
+    private EnumModuleConnectionDecision decisionSuggestion;
     @JsonView(Views.ApplicationStudent.class)
     @NotNull(message = "commentStudyOffice must not be null")
     private String commentStudyOffice;
@@ -71,6 +68,7 @@ public class ModulesConnection {
         decisionSuggestion = UNBEARBEITET;
         commentDecision = "";
         commentStudyOffice = "";
+        asExamCertificate = false;
     }
 
 
