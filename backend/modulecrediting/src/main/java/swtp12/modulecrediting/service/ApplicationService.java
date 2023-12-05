@@ -17,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.server.DelegatingServerHttpResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -185,13 +186,31 @@ public class ApplicationService {
 
         CourseLeipzig courseLeipzig = courseLeipzigService.getCourseLeipzigByName(applicationCreateDTO.getCourseLeipzig());
 
-        Application application = new Application(OFFEN, LocalDate.now());
+
+        Application application = new Application(generateValidApplicationId(), OFFEN, LocalDate.now());
         application.setCourseLeipzig(courseLeipzig);
 
         application.addModulesConnections(modulesConnections);
 
         Application savedApplication = applicationRepository.save(application);
         return savedApplication.getId();
+    }
+
+    private String generateValidApplicationId() {
+        String id;
+        do {
+            id = generateApplicationId();
+        }while(applicationExists(id));
+
+        return id;
+    }
+
+    private String generateApplicationId() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 6; i++) {
+            sb.append((int) (Math.random() * 10));
+        }
+        return sb.toString();
     }
 
     public List<Application> getAllApplciations(int limit, Optional<EnumApplicationStatus> status){
@@ -215,8 +234,7 @@ public class ApplicationService {
     }
 
     public boolean applicationExists(String id) {
-        Optional<Application> applicationOptional = applicationRepository.findById(id);
-        return applicationOptional.isPresent();
+        return applicationRepository.existsById(id);
     }
 
     public byte[] generatePdfDataDocument(String id) throws IOException, DocumentException {

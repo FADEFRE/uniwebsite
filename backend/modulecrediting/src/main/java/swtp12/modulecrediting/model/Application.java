@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.aventrix.jnanoid.jnanoid.NanoIdUtils;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -13,10 +12,6 @@ import com.fasterxml.jackson.annotation.JsonView;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import swtp12.modulecrediting.repository.ApplicationRepository;
-import swtp12.modulecrediting.service.ApplicationService;
 
 
 @Data
@@ -32,12 +27,6 @@ public class Application {
     @Id
     @JsonView({Views.ApplicationOverview.class,Views.RelatedModulesConnection.class})
     private String id;
-    @PrePersist
-    public void generateId() {
-        if (id == null) {
-            id = NanoIdUtils.randomNanoId();
-        }
-    }
 
     @JsonView({Views.ApplicationOverview.class,Views.RelatedModulesConnection.class})
     private EnumApplicationStatus fullStatus;
@@ -61,7 +50,8 @@ public class Application {
     private List<ModulesConnection> modulesConnections = new ArrayList<>();
 
 
-    public Application(EnumApplicationStatus fullStatus, LocalDate creationDate) {
+    public Application(String id, EnumApplicationStatus fullStatus, LocalDate creationDate) {
+        this.id = id;
         this.fullStatus = fullStatus;
         this.creationDate = creationDate;
     }

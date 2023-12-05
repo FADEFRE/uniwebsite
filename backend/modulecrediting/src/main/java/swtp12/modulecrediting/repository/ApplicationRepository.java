@@ -19,4 +19,6 @@ public interface ApplicationRepository extends JpaRepository<Application, String
     Page<Application> findAllBy(Pageable pageable);
 
     Page<Application> findByFullStatus(EnumApplicationStatus status, Pageable pageable);
+
+    boolean existsById(String id);
 }
