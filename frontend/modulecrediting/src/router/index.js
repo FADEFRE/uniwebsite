@@ -5,6 +5,7 @@ import StatusDetailView from "@/views/StatusDetailView.vue";
 import SelectionView from "@/views/SelectionView.vue";
 import StudyOfficeDetailView from "@/views/StudyOfficeDetailView.vue";
 import ChairmanDetailView from "@/views/ChairmanDetailView.vue";
+import LoginView from "@/views/LoginView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -25,8 +26,13 @@ const router = createRouter({
       component: StatusDetailView
     },
     {
+      path: '/login',
+      name: 'login',
+      component: LoginView
+    },
+    {
       path: '/study-office',
-      name: 'studyOfficeSelectionView',
+      name: 'studyOfficeSelection',
       component: SelectionView,
       meta: {forward: 'studyOfficeDetail'}
     },
@@ -37,7 +43,7 @@ const router = createRouter({
     },
     {
       path: '/chairman',
-      name: 'chairmanSelectionView',
+      name: 'chairmanSelection',
       component: SelectionView,
       meta: {forward: 'chairmanDetail'}
     },
