@@ -123,7 +123,7 @@ const triggerPostApplication = () => {
     <NewApplicationModulePanel @add-module-application="addModuleApplication" />
 
     <!-- send button -->
-    <Button @click="triggerPostApplication">Absenden</Button>
+    <button @click="triggerPostApplication" class="submit-button">Absenden</button>
   </div>
 </template>
 
@@ -131,4 +131,18 @@ const triggerPostApplication = () => {
 .course-dropdown {
   margin: 10px;
 }
+button.submit-button {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #8AC2D1;
+  color: #000;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+  border: none; 
+  cursor: pointer; 
+  
+}
+
+
 </style>
