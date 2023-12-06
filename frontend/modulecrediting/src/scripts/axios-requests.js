@@ -46,6 +46,20 @@ function getApplicationById (id) {
 }
 
 /*
+GET-Request to '/applications/student/{id} endpoint
+return application data without study office and chairman data
+
+parameters:
+    id - Number, application id
+ */
+function getApplicationByIdForStatus (id) {
+    return axios.get(url + '/applications/student/' + id)
+        .then(response => {
+            return response.data
+        })
+}
+
+/*
 POST-Request to '/applications' endpoint
 posts a new application
 
@@ -131,4 +145,4 @@ function putChairman (id, applicationObjects) {
         .then(response => console.log(response.data))
 }
 
-export { getCourseData, getModulesByCourse, getApplicationById, postApplication, putStudyOffice, putChairman }
+export { getCourseData, getModulesByCourse, getApplicationById, getApplicationByIdForStatus, postApplication, putStudyOffice, putChairman }
