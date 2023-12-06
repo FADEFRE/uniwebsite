@@ -6,11 +6,17 @@ import static swtp12.modulecrediting.model.EnumModuleConnectionDecision.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.PdfWriter;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,10 +26,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.server.DelegatingServerHttpResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Paragraph;
 
 import jakarta.transaction.Transactional;
 
@@ -236,42 +238,72 @@ public class ApplicationService {
         return applicationRepository.existsById(id);
     }
 
-    public byte[] generatePdfDataDocument(String id) throws IOException, DocumentException {
-        Application application = getApplicationById(id);
-        List<ModulesConnection> modulesConnections = application.getModulesConnections();
 
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        Document document = new Document();
-        //PdfWriter.getInstance(document, baos);
-
-        for(int i = 0; i < modulesConnections.size(); i++) {
-            ModulesConnection modulesConnection = modulesConnections.get(i);
-            ModuleApplication moduleApplication = modulesConnection.getModuleApplication();
-            PdfDocument pdfDocument = moduleApplication.getPdfDocument();
-            String modulbeschreibung = new String(pdfDocument.getPdfData(), StandardCharsets.UTF_8);
-
-
+    public byte[] generatePdfDataDocument() throws IOException, DocumentException {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            Document document = new Document(PageSize.A4);
+            PdfWriter.getInstance(document, baos);
             document.open();
-            document.add(new Paragraph("ID Antrag: " + application.getId()));
-            document.add(new Paragraph("Status: " + application.getFullStatus()));
-            document.add(new Paragraph("Erstellungsdatum: " + application.getCreationDate()));
-            document.add(new Paragraph("Entscheidungsdatum: " + application.getDecisionDate()));
 
-            document.add(new Paragraph("Studiengang: " + application.getCourseLeipzig()));
-            document.add(new Paragraph("Modulname: " + moduleApplication.getName()));
-            document.add(new Paragraph("Punkte: " + moduleApplication.getPoints()));
-            document.add(new Paragraph("Punktesystem: " + moduleApplication.getPointSystem()));
-            document.add(new Paragraph("Universität: " + moduleApplication.getUniversity()));
-            document.add(new Paragraph("Kommentar des Bewerbers: " + moduleApplication.getCommentApplicant()));
-            document.add(new Paragraph("Modulbeschreibung: " +  modulbeschreibung));
+            //uni-leipzig icon
+            Image uniLeipzigIcon = Image.getInstance(getClass().getResource("/Universität_Leipzig_Logo.png"));
+            float maxWidth = 200f;
+            float maxHeight = 200f;
+            uniLeipzigIcon.scaleToFit(maxWidth, maxHeight);
+            float iconX = 36;
+            float iconY = PageSize.A4.getHeight() - 36 - uniLeipzigIcon.getScaledHeight();
+            uniLeipzigIcon.setAbsolutePosition(iconX, iconY);
+            document.add(uniLeipzigIcon);
 
-            document.add(new Paragraph("Entscheidung: " + modulesConnection.getDecisionFinal()));
-            document.add(new Paragraph("Entscheidungsvorschlag: " + modulesConnection.getDecisionSuggestion()));
-            document.add(new Paragraph("Kommentar: " + modulesConnection.getCommentDecision()));
-            document.add(new Paragraph("Kommentar des Studienbüros: " + modulesConnection.getCommentStudyOffice()));
+            //Title
+            String titleText = "ANTRAG ZUR MODULANRECHNUNG";
+            Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 14);
+            Paragraph title = new Paragraph(titleText, titleFont);
+            title.setAlignment(Element.ALIGN_CENTER);
+            float Spacing = 80f; // Abstand zwischen Icon und Titel
+            title.setSpacingBefore(Spacing);
+            document.add(title);
 
-        }
-        document.close();
-        return baos.toByteArray();
+            //Application Data
+            Font titleFont1 = FontFactory.getFont(FontFactory.TIMES, 12);
+            Paragraph p1 = new Paragraph("ID: 129593", titleFont1);
+            p1.setAlignment(Paragraph.ALIGN_LEFT);
+            Paragraph p2 = new Paragraph("Status: ANGENOMMEN", titleFont1);
+            p2.setAlignment(Paragraph.ALIGN_LEFT);
+            Paragraph p3 = new Paragraph("Erstellungsdatum: 21.09.2023", titleFont1);
+            p3.setAlignment(Paragraph.ALIGN_LEFT);
+            Paragraph p4 = new Paragraph("Entscheidungsdatum: 01.11.2023", titleFont1);
+            p4.setAlignment(Paragraph.ALIGN_LEFT);
+            float spacingBetweenTitleAndParagraphs = 50f; // Abstand zwischen Titel und Absätzen
+            title.setSpacingAfter(spacingBetweenTitleAndParagraphs);
+            document.add(p1);
+            document.add(p2);
+            document.add(p3);
+            document.add(p4);
+
+            //
+            Paragraph p5 = new Paragraph("Modulname: Berechenbarkeit", titleFont1);
+            p1.setAlignment(Paragraph.ALIGN_LEFT);
+            Paragraph p6 = new Paragraph("Punkte: 5", titleFont1);
+            p2.setAlignment(Paragraph.ALIGN_LEFT);
+            Paragraph p7 = new Paragraph("Punktesystem: ECTS", titleFont1);
+            p3.setAlignment(Paragraph.ALIGN_LEFT);
+            Paragraph p8 = new Paragraph("Universität: Martin-Luther-Universität Halle-Wittenberg", titleFont1);
+            p4.setAlignment(Paragraph.ALIGN_LEFT);
+            Paragraph p9 = new Paragraph("Kommentar des Antragstellers: Ich find dat macht janz schön viel Bock hier");
+            float spacingBetweenTitleAndParagraphs2 = 30f; // Abstand zwischen Titel und Absätzen
+            title.setSpacingAfter(spacingBetweenTitleAndParagraphs2);
+            document.add(p5);
+            document.add(p6);
+            document.add(p7);
+            document.add(p8);
+            document.add(p9);
+
+
+            document.close();
+            return baos.toByteArray();
+
     }
+
+
 }

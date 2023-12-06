@@ -3,6 +3,9 @@ package swtp12.modulecrediting.controller;
 import static org.hibernate.query.sqm.tree.SqmNode.log;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,6 +33,8 @@ import swtp12.modulecrediting.model.Application;
 import swtp12.modulecrediting.model.EnumApplicationStatus;
 import swtp12.modulecrediting.model.Views;
 import swtp12.modulecrediting.service.ApplicationService;
+
+import javax.servlet.http.HttpServletResponse;
 
 
 @RestController
@@ -76,22 +81,18 @@ public class ApplicationController {
         return ResponseEntity.ok(applicationService.applicationExists(id));
     }
 
-    @GetMapping("/pdfData/{id}")
-    public ResponseEntity<byte[]> generatePdf(@PathVariable String id) {
-        try {
-            byte[] pdfBytes = applicationService.generatePdfDataDocument(id);
+    @GetMapping("/pdfData")
+    public ResponseEntity<byte[]> generatePdf() throws DocumentException, IOException {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
 
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_PDF);
-            headers.setContentDispositionFormData("inline", "Antrag.pdf");
+        headers.setContentDispositionFormData("att", "Antrag.pdf");
+        byte[] pdfBytes = applicationService.generatePdfDataDocument(); // Rufe die Methode im Service auf
 
-            return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
-        } catch (IOException | DocumentException e) {
-            log.error("Fehler beim Generieren des PDFs", e);
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        } catch (Exception e) {
-            log.error("Unerwarteter Fehler beim Generieren des PDFs", e);
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentLength(pdfBytes.length)
+                .body(pdfBytes);
+
     }
 }
