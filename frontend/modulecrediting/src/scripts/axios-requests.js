@@ -95,6 +95,7 @@ function putStudyOffice (id, applicationObjects) {
                 }
             )
             // study office data
+            formData.append(`moduleBlockUpdateDTOList[${index}].asExamCertificate`, false)  // todo add asExamCertificate value
             formData.append(`moduleBlockUpdateDTOList[${index}].decisionSuggestion`, object.decisionSuggestion)
             formData.append(`moduleBlockUpdateDTOList[${index}].commentStudyOffice`, object.commentStudyOffice)
         }
