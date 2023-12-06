@@ -89,13 +89,13 @@ function putStudyOffice (id, applicationObjects) {
             formData.append(`moduleBlockUpdateDTOList[${index}].university`, object.university)
             formData.append(`moduleBlockUpdateDTOList[${index}].points`, object.creditPoints)
             formData.append(`moduleBlockUpdateDTOList[${index}].pointSystem`, object.pointSystem)
+            formData.append(`moduleBlockUpdateDTOList[${index}].asExamCertificate`, object.asExamCertificate)
             object.selectedInternalModules.forEach(
                 (moduleName, moduleIndex) => {
                     formData.append(`moduleBlockUpdateDTOList[${index}].moduleNamesLeipzig[${moduleIndex}]`, moduleName)
                 }
             )
             // study office data
-            formData.append(`moduleBlockUpdateDTOList[${index}].asExamCertificate`, false)  // todo add asExamCertificate value
             formData.append(`moduleBlockUpdateDTOList[${index}].decisionSuggestion`, object.decisionSuggestion)
             formData.append(`moduleBlockUpdateDTOList[${index}].commentStudyOffice`, object.commentStudyOffice)
         }
@@ -105,4 +105,30 @@ function putStudyOffice (id, applicationObjects) {
         .then(response => console.log(response.data))
 }
 
-export { getCourseData, getModulesByCourse, getApplicationById, postApplication, putStudyOffice }
+function putChairman (id, applicationObjects) {
+    const formData = new FormData()
+    formData.append('userRole', 'pav')  // todo
+    applicationObjects.forEach(
+        (object, index) => {
+            // application data
+            formData.append(`moduleBlockUpdateDTOList[${index}].moduleName`, object.moduleName)
+            formData.append(`moduleBlockUpdateDTOList[${index}].university`, object.university)
+            formData.append(`moduleBlockUpdateDTOList[${index}].points`, object.creditPoints)
+            formData.append(`moduleBlockUpdateDTOList[${index}].pointSystem`, object.pointSystem)
+            formData.append(`moduleBlockUpdateDTOList[${index}].asExamCertificate`, object.asExamCertificate)
+            object.selectedInternalModules.forEach(
+                (moduleName, moduleIndex) => {
+                    formData.append(`moduleBlockUpdateDTOList[${index}].moduleNamesLeipzig[${moduleIndex}]`, moduleName)
+                }
+            )
+            // chairman data
+            formData.append(`moduleBlockUpdateDTOList[${index}].decisionFinal`, object.decisionFinal)
+            formData.append(`moduleBlockUpdateDTOList[${index}].commentDecision`, object.commentDecision)
+        }
+    )
+    console.log([...formData])
+    return axios.put(url + '/applications/' + id, formData)
+        .then(response => console.log(response.data))
+}
+
+export { getCourseData, getModulesByCourse, getApplicationById, postApplication, putStudyOffice, putChairman }

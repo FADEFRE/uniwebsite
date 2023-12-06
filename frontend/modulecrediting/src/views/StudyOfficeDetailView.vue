@@ -41,7 +41,7 @@ const checkPutData = () => {
   if (!id) {
     return false
   }
-  return modulePanelsRef.value.every(obj => obj.studyOffice.decisionSuggestion)
+  return modulePanelsRef.value.every(obj => obj.studyOffice.decision)
 }
 
 const triggerPutData = () => {
@@ -53,16 +53,16 @@ const triggerPutData = () => {
         creditPoints: panel.general.base.creditPoints,
         pointSystem: panel.general.base.pointSystem,
         selectedInternalModules: panel.general.internalModules.selectedInternalModules,
-        decisionSuggestion: panel.studyOffice.decisionSuggestion === 'Annehmen' ? 'ANGENOMMEN' : 'ABGELEHNT',
-        commentStudyOffice: panel.studyOffice.commentStudyOffice.comment,
-        asExamCertificate: false
+        decisionSuggestion: panel.studyOffice.decision === 'Annehmen' ? 'ANGENOMMEN' : 'ABGELEHNT',
+        commentStudyOffice: panel.studyOffice.comment.comment,
+        asExamCertificate: false  // todo replace with actual data
       }
     })
     console.log(applicationObjects)
     putStudyOffice(id, applicationObjects)
         .then(() => location.reload())
   } else {
-    console.log('check in triggerPutData failed')
+    console.log('check in study office triggerPutData failed')
     // todo user feedback
   }
 }

@@ -7,12 +7,11 @@ import PanelBase from "@/components/PanelBase.vue";
 import PanelStudyOfficeFile from "@/components/PanelStudyOfficeFile.vue";
 import PanelBaseInternalModules from "@/components/PanelBaseInternalModules.vue";
 import PanelComment from "@/components/PanelComment.vue";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, useSlots } from "vue";
 
 // props
 const props = defineProps(['moduleConnectionData', 'internalModuleOptions'])
-
-const commentApplicant = props.moduleConnectionData.commentApplicant ? props.moduleConnectionData.commentApplicant : '-'
+const commentApplicant = props.moduleConnectionData.moduleApplication.commentApplicant ? props.moduleConnectionData.moduleApplication.commentApplicant : '-'
 
 // refs
 const base = ref()
@@ -81,6 +80,10 @@ defineExpose({
       <hr>
 
       <slot name="studyOffice" />
+
+      <hr>
+
+      <slot name="chairman" />
 
     </Panel>
   </div>
