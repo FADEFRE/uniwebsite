@@ -81,13 +81,13 @@ public class ApplicationController {
         return ResponseEntity.ok(applicationService.applicationExists(id));
     }
 
-    @GetMapping("/pdfData")
-    public ResponseEntity<byte[]> generatePdf() throws DocumentException, IOException {
+    @GetMapping("/pdfData/{id}")
+    public ResponseEntity<byte[]> generatePdf(@PathVariable String id) throws DocumentException, IOException {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
 
         headers.setContentDispositionFormData("att", "Antrag.pdf");
-        byte[] pdfBytes = applicationService.generatePdfDataDocument(); // Rufe die Methode im Service auf
+        byte[] pdfBytes = applicationService.generatePdfDataDocument(id);
 
         return ResponseEntity.ok()
                 .headers(headers)

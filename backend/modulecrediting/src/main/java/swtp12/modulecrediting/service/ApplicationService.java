@@ -5,6 +5,7 @@ import static swtp12.modulecrediting.model.EnumModuleConnectionDecision.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -15,8 +16,13 @@ import java.util.Objects;
 import java.util.Optional;
 
 import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import javax.servlet.http.HttpServletResponse;
+
+import com.itextpdf.text.pdf.draw.LineSeparator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -239,71 +245,126 @@ public class ApplicationService {
     }
 
 
-    public byte[] generatePdfDataDocument() throws IOException, DocumentException {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            Document document = new Document(PageSize.A4);
-            PdfWriter.getInstance(document, baos);
-            document.open();
+    public byte[] generatePdfDataDocument(String id) throws IOException, DocumentException {
+        Application application = getApplicationById(id);
+        List<ModulesConnection> modulesConnections = application.getModulesConnections();
 
-            //uni-leipzig icon
-            Image uniLeipzigIcon = Image.getInstance(getClass().getResource("/Universität_Leipzig_Logo.png"));
-            float maxWidth = 200f;
-            float maxHeight = 200f;
-            uniLeipzigIcon.scaleToFit(maxWidth, maxHeight);
-            float iconX = 36;
-            float iconY = PageSize.A4.getHeight() - 36 - uniLeipzigIcon.getScaledHeight();
-            uniLeipzigIcon.setAbsolutePosition(iconX, iconY);
-            document.add(uniLeipzigIcon);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        Document document = new Document(PageSize.A4);
+        PdfWriter.getInstance(document, baos);
+        document.open();
 
-            //Title
-            String titleText = "ANTRAG ZUR MODULANRECHNUNG";
-            Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 14);
-            Paragraph title = new Paragraph(titleText, titleFont);
-            title.setAlignment(Element.ALIGN_CENTER);
-            float Spacing = 80f; // Abstand zwischen Icon und Titel
-            title.setSpacingBefore(Spacing);
-            document.add(title);
+        //uni-leipzig icon
+        Image uniLeipzigIcon = Image.getInstance(getClass().getResource("/Universität_Leipzig_Logo.png"));
+        float maxWidth = 300f;
+        float maxHeight = 300f;
+        uniLeipzigIcon.scaleToFit(maxWidth, maxHeight);
+        float iconX = 36;
+        float iconY = PageSize.A4.getHeight() - 36 - uniLeipzigIcon.getScaledHeight();
+        uniLeipzigIcon.setAbsolutePosition(iconX, iconY);
+        document.add(uniLeipzigIcon);
 
-            //Application Data
-            Font titleFont1 = FontFactory.getFont(FontFactory.TIMES, 12);
-            Paragraph p1 = new Paragraph("ID: 129593", titleFont1);
-            p1.setAlignment(Paragraph.ALIGN_LEFT);
-            Paragraph p2 = new Paragraph("Status: ANGENOMMEN", titleFont1);
-            p2.setAlignment(Paragraph.ALIGN_LEFT);
-            Paragraph p3 = new Paragraph("Erstellungsdatum: 21.09.2023", titleFont1);
-            p3.setAlignment(Paragraph.ALIGN_LEFT);
-            Paragraph p4 = new Paragraph("Entscheidungsdatum: 01.11.2023", titleFont1);
-            p4.setAlignment(Paragraph.ALIGN_LEFT);
-            float spacingBetweenTitleAndParagraphs = 50f; // Abstand zwischen Titel und Absätzen
-            title.setSpacingAfter(spacingBetweenTitleAndParagraphs);
-            document.add(p1);
-            document.add(p2);
-            document.add(p3);
-            document.add(p4);
+        //Title
+        String titleText = "ANTRAG ZUR MODULANRECHNUNG";
+        String titleText1 = "STUDIENBÜRO";
+        Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 15);
+        Font titleFont1 = FontFactory.getFont(FontFactory.HELVETICA, 14);
+        Paragraph title = new Paragraph(titleText, titleFont);
+        Paragraph title1 = new Paragraph(titleText1, titleFont1);
+        title.setAlignment(Element.ALIGN_LEFT);
+        title1.setAlignment(Element.ALIGN_LEFT);
+        title.setIndentationLeft(30f);
+        title1.setIndentationLeft(30f);
+        float Spacing = 150f; // Abstand zwischen Icon und Titel
+        title.setSpacingBefore(Spacing);
+        title1.setSpacingAfter(50);
+        document.add(title);
+        document.add(title1);
 
-            //
-            Paragraph p5 = new Paragraph("Modulname: Berechenbarkeit", titleFont1);
-            p1.setAlignment(Paragraph.ALIGN_LEFT);
-            Paragraph p6 = new Paragraph("Punkte: 5", titleFont1);
-            p2.setAlignment(Paragraph.ALIGN_LEFT);
-            Paragraph p7 = new Paragraph("Punktesystem: ECTS", titleFont1);
-            p3.setAlignment(Paragraph.ALIGN_LEFT);
-            Paragraph p8 = new Paragraph("Universität: Martin-Luther-Universität Halle-Wittenberg", titleFont1);
-            p4.setAlignment(Paragraph.ALIGN_LEFT);
-            Paragraph p9 = new Paragraph("Kommentar des Antragstellers: Ich find dat macht janz schön viel Bock hier");
-            float spacingBetweenTitleAndParagraphs2 = 30f; // Abstand zwischen Titel und Absätzen
-            title.setSpacingAfter(spacingBetweenTitleAndParagraphs2);
-            document.add(p5);
-            document.add(p6);
-            document.add(p7);
-            document.add(p8);
-            document.add(p9);
+        // Generelle Antragsdaten
+        addTable(document, "ID:", String.valueOf(id));
+        addTable(document, "Status:", (application.getFullStatus() != null) ? application.getFullStatus().toString() : "");
+        addTable(document, "Erstellungsdatum:", (application.getCreationDate() != null) ? application.getCreationDate().toString() : "");
+        addTable(document, "Entscheidungsdatum:", (application.getDecisionDate() != null) ? application.getDecisionDate().toString() : "");
+
+        for (ModulesConnection modulesConnection : modulesConnections) {
+            ModuleApplication moduleApplication = modulesConnection.getModuleApplication();
+
+            // Module-Anwendungsdaten
+            addTable(document, "Modulname:", (moduleApplication.getName() != null) ? moduleApplication.getName() : "");
+            addTable(document, "Punkte:", (moduleApplication.getPoints() != null) ? String.valueOf(moduleApplication.getPoints()) : "");
+            addTable(document, "Punktesystem:", (moduleApplication.getPointSystem() != null) ? moduleApplication.getPointSystem() : "");
+            addTable(document, "Universität:", (moduleApplication.getUniversity() != null) ? moduleApplication.getUniversity() : "");
+            addTable(document, "Kommentar des Antragstellers:", (moduleApplication.getCommentApplicant() != null) ? moduleApplication.getCommentApplicant() : "");
+
+            //Studibüro daten
+            addTable(document, "Finale Entscheidung:", (modulesConnection.getDecisionFinal() != null) ? String.valueOf(modulesConnection.getDecisionFinal()) : "");
+            addTable(document, "Kommentar zur Entscheidung:", (modulesConnection.getCommentDecision() != null) ? modulesConnection.getCommentDecision() : "");
+            addTable(document, "Vorschlag zur Entscheidung:", (modulesConnection.getDecisionSuggestion() != null) ? modulesConnection.getDecisionSuggestion().toString() : "");
+            addTable(document, "Kommentar des Studienbüros:", (modulesConnection.getCommentStudyOffice() != null) ? modulesConnection.getCommentStudyOffice() : "");
+        }
+
+        //Informationen Uni Leipzig
+        String addressText = "Universität Leipzig\n" +
+                "Dezernat Akademische Verwaltung\n" +
+                "Studierendensekretariat\n" +
+                "Postanschrift\n" +
+                "04081 Leipzig\n\n" +
+                "Besucheranschrift\n" +
+                "StudierendenServiceZentrums [SSZ]\n" +
+                "Goethestraße 3-5\n" +
+                "04109 Leipzig\n\n" +
+                "Die aktuellen Öffnungszeiten entnehmen\n" +
+                "Sie bitte der Homepage:\n" +
+                "www.uni-leipzig.de/ssz/";
+
+        Font addressFont = FontFactory.getFont(FontFactory.HELVETICA, 10);
+        PdfPTable addressTable = new PdfPTable(1);
+        addressTable.setWidthPercentage(88);
+        addressTable.getDefaultCell().setBorder(Rectangle.NO_BORDER);
+
+        PdfPCell addressCell = new PdfPCell(new Paragraph(addressText, addressFont));
+        addressCell.setHorizontalAlignment(Element.ALIGN_LEFT);
+        addressCell.setBorder(Rectangle.NO_BORDER);
 
 
-            document.close();
-            return baos.toByteArray();
+        addressTable.addCell(addressCell);
+        addressTable.setSpacingBefore(50f);
+        document.add(addressTable);
 
+        document.close();
+        return baos.toByteArray();
     }
 
+    private void addTable(Document document, String label, String value) throws DocumentException {
+        PdfPTable table = new PdfPTable(2);
+        table.setWidthPercentage(88);
 
+        Font labelFont = FontFactory.getFont(FontFactory.TIMES, 12);
+        Font valueFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12);
+
+        PdfPCell labelCell = new PdfPCell(new Phrase(label, labelFont));
+        PdfPCell valueCell = new PdfPCell(new Phrase(String.valueOf(value), valueFont));
+
+
+        labelCell.setBorderColorLeft(BaseColor.BLACK);
+        valueCell.setBorderColorLeft(BaseColor.BLACK);
+
+        labelCell.setBorderColorRight(BaseColor.BLACK);
+        valueCell.setBorderColorRight(BaseColor.BLACK);
+
+        labelCell.setBorderColor(BaseColor.WHITE);
+        valueCell.setBorderColor(BaseColor.WHITE);
+
+        labelCell.setBorderWidth(0);
+        valueCell.setBorderWidth(0);
+
+        table.addCell(labelCell);
+        table.addCell(valueCell);
+
+        float spacingBetweenTable = 5f;
+        table.setSpacingAfter(spacingBetweenTable);
+
+        document.add(table);
+    }
 }
