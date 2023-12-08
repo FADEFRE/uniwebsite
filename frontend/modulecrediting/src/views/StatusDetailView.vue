@@ -67,17 +67,26 @@ const fileLinkBase = computed(() => `${url}/pdf-documents/`)
             <template #header>
               <h2>
                 {{ moduleConnection['moduleApplication']['name'] }}
+                <span v-if="moduleConnection['asExamCertificate']" style="color: #8a8a8a">
+                  (als Übungsschein)
+                </span>
               </h2>
             </template>
 
             <!-- accept / reject Icons -->
             <template #icons>
-              <div v-if="moduleConnection['decisionFinal'] === 'ANGENOMMEN'" class="p-panel-header-icon">
-                <span class="pi pi-check-circle" style="color: green; font-size: 1.5rem"></span>
-              </div>
+              <div class="p-panel-header-icon">
+                <div v-if="moduleConnection['decisionFinal'] === 'ANGENOMMEN' && !moduleConnection['asExamCertificate']">
+                  <span class="pi pi-check-circle" style="color: green; font-size: 1.5rem"></span>
+                </div>
 
-              <div v-if="moduleConnection['decisionFinal'] === 'ABGELEHNT'" class="p-panel-header-icon">
-                <span class="pi pi-times-circle" style="color:red; font-size: 1.5rem"></span>
+                <div v-else-if="moduleConnection['decisionFinal'] === 'ANGENOMMEN' && moduleConnection['asExamCertificate']">
+                  <span class="pi pi-info-circle" style="color: darkorange; font-size: 1.5rem"></span>
+                </div>
+
+                <div v-else-if="moduleConnection['decisionFinal'] === 'ABGELEHNT'">
+                  <span class="pi pi-times-circle" style="color:red; font-size: 1.5rem"></span>
+                </div>
               </div>
             </template>
 
@@ -119,25 +128,30 @@ const fileLinkBase = computed(() => `${url}/pdf-documents/`)
 
             <!-- Decision -->
             <template #footer v-if="applicationData['fullStatus'] === 'ABGESCHLOSSEN'">
-
               <div class="footer-container">
+                <h3>Beschluss:</h3>
+                <div class="decision-container">
 
-                <div class="icon-container">
-                  <div v-if="moduleConnection['decisionFinal'] === 'ANGENOMMEN'" class="footer-icon">
-                    <span class="pi pi-check" style="color: green; font-size: 1.5rem"></span>
+                  <div class="icon-container">
+                    <div v-if="moduleConnection['decisionFinal'] === 'ANGENOMMEN' && !moduleConnection['asExamCertificate']">
+                      <span class="pi pi-check" style="color: green; font-size: 1.5rem"></span>
+                    </div>
+
+                    <div v-else-if="moduleConnection['decisionFinal'] === 'ANGENOMMEN' && moduleConnection['asExamCertificate']">
+                      <span class="pi pi-info" style="color: darkorange; font-size: 1.5rem"></span>
+                    </div>
+
+                    <div v-else-if="moduleConnection['decisionFinal'] === 'ABGELEHNT'">
+                      <span class="pi pi-times" style="color:red; font-size: 1.5rem;"></span>
+                    </div>
                   </div>
 
-                  <div v-if="moduleConnection['decisionFinal'] === 'ABGELEHNT'" class="footer-icon">
-                    <span class="pi pi-times" style="color:red; font-size: 1.5rem;"></span>
+                  <div class="comment-container">
+                    <p>{{ moduleConnection['commentDecision'] }}</p>
                   </div>
-                </div>
 
-                <div class="comment-container">
-                  <p>{{ moduleConnection['commentDecision'] }}</p>
                 </div>
-
               </div>
-
             </template>
 
           </Panel>
@@ -159,11 +173,11 @@ const fileLinkBase = computed(() => `${url}/pdf-documents/`)
   margin: 10px;
 }
 
-.footer-container {
+.decision-container {
   display: inline-flex;
 }
 
-.footer-icon {
+.icon-container > * {
   margin: 13px;
 }
 </style>

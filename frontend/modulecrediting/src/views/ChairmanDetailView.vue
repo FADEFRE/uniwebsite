@@ -49,9 +49,9 @@ const triggerPutData = () => {
         creditPoints: panel.general.base.creditPoints,
         pointSystem: panel.general.base.pointSystem,
         selectedInternalModules: panel.general.internalModules.selectedInternalModules,
+        asExamCertificate: panel.general.asExamCertificate,
         decisionFinal: panel.chairman.decision === 'Annehmen' ? 'ANGENOMMEN' : 'ABGELEHNT',
         commentDecision: panel.chairman.comment.comment,
-        asExamCertificate: false  // todo replace with actual data
       }
     })
     console.log(applicationObjects)

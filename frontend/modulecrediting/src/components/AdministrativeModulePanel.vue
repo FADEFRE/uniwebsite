@@ -7,7 +7,7 @@ import PanelBase from "@/components/PanelBase.vue";
 import PanelStudyOfficeFile from "@/components/PanelStudyOfficeFile.vue";
 import PanelBaseInternalModules from "@/components/PanelBaseInternalModules.vue";
 import PanelComment from "@/components/PanelComment.vue";
-import { ref, onMounted, useSlots } from "vue";
+import { ref, computed, onMounted } from "vue";
 
 // props
 const props = defineProps(['moduleConnectionData', 'internalModuleOptions'])
@@ -16,9 +16,18 @@ const commentApplicant = props.moduleConnectionData.moduleApplication.commentApp
 // refs
 const base = ref()
 const internalModules = ref()
+const asExamCertificate = ref(props.moduleConnectionData.asExamCertificate)
 const decisionSuggestion = ref()
 const decisionSuggestionOptions = ref(['Ablehnen', 'Annehmen'])
 const commentStudyOffice = ref()
+
+const headerName = computed(() => {
+  if (props.moduleConnectionData.asExamCertificate) {
+    return base.value?.moduleName + ' <style color=yellow>(als Übungsschein)</style>'
+  } else {
+    return base.value?.moduleName
+  }
+})
 
 // setting decision suggestion
 if (props.moduleConnectionData.decisionSuggestion === 'ANGENOMMEN') {
@@ -37,7 +46,7 @@ onMounted(() => {
 })
 
 defineExpose({
-  base, internalModules, decisionSuggestion, commentStudyOffice
+  base, internalModules, asExamCertificate, decisionSuggestion, commentStudyOffice
 })
 </script>
 
@@ -46,7 +55,12 @@ defineExpose({
     <Panel toggleable class="module-application-panel">
 
       <template #header>
-        <h2>{{ base?.moduleName }}</h2>
+        <h2>
+          {{ base?.moduleName }}
+          <span v-if="props.moduleConnectionData.asExamCertificate" style="color: #d8413f">
+            (als Übungsschein)
+          </span>
+        </h2>
       </template>
 
       <div>
@@ -75,6 +89,12 @@ defineExpose({
           </template>
 
         </PanelBase>
+
+        <div class="checkbox-container">
+          <Checkbox v-model="asExamCertificate" :binary="true" class="checkbox" />
+          <p>als Übungsschein anrechnen</p>
+        </div>
+
       </div>
 
       <hr>
@@ -92,5 +112,15 @@ defineExpose({
 <style scoped>
 .module-application-panel {
   margin: 10px;
+}
+
+.checkbox-container {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.checkbox {
+  margin: 5px;
 }
 </style>
