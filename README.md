@@ -86,7 +86,7 @@ http://localhost:8090/pdf-documents/{id}
 
  -> GET: get single pdf file
 
-http://localhost:8090/applications/pdfData/{id}
+http://localhost:8090/applications/pdf-data/{id}
  -> GET: generated PDF Document with application Data
 
 
