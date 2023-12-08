@@ -117,8 +117,8 @@ const fileLinkBase = computed(() => `${url}/pdf-documents/`)
               </div>
             </div>
 
-            <!-- Status -->
-            <template #footer>
+            <!-- Decision -->
+            <template #footer v-if="applicationData['fullStatus'] === 'ABGESCHLOSSEN'">
 
               <div class="footer-container">
 
