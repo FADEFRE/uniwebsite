@@ -74,7 +74,7 @@ const fileLinkBase = computed(() => `${url}/pdf-documents/`)
             </template>
 
             <!-- accept / reject Icons -->
-            <template #icons>
+            <template #icons v-if="moduleConnection['decisionFinal'] === 'ANGENOMMEN' || moduleConnection['decisionFinal'] === 'ABGELEHNT'">
               <div class="p-panel-header-icon">
                 <div v-if="moduleConnection['decisionFinal'] === 'ANGENOMMEN' && !moduleConnection['asExamCertificate']">
                   <span class="pi pi-check-circle" style="color: green; font-size: 1.5rem"></span>
