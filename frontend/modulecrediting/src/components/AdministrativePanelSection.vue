@@ -41,17 +41,32 @@ defineExpose({
 <template>
   <div class="study-office-container">
     <hr>
-    <div>
-      <!-- todo change disabled style -->
-      <SelectButton
-          :disabled="props.readOnly"
-          :allow-empty="false"
-          v-model="decision"
-          :options="decisionSuggestionOptions"
-      />
-    </div>
-    <div>
-      <PanelComment :read-only="props.readOnly" :comment="commentData" ref="comment" />
+    <div class="study-office-content">
+      <div v-if="props.readOnly">
+
+        <div class="icon-container">
+          <div v-if="data.decision === 'ANGENOMMEN'">
+            <span class="pi pi-check" style="color: green; font-size: 1.5rem"></span>
+          </div>
+
+          <div v-else-if="data.decision === 'ABGELEHNT'">
+            <span class="pi pi-times" style="color:red; font-size: 1.5rem;"></span>
+          </div>
+        </div>
+
+      </div>
+      <div v-else>
+
+        <SelectButton
+            :allow-empty="false"
+            v-model="decision"
+            :options="decisionSuggestionOptions"
+        />
+
+      </div>
+      <div>
+        <PanelComment :read-only="props.readOnly" :comment="commentData" ref="comment" />
+      </div>
     </div>
   </div>
 </template>
