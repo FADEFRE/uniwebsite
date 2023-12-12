@@ -3,24 +3,24 @@ import { useRouter } from "vue-router";
 import { ref } from "vue";
 
 const user = ref()
-const userInvalid = ref(false)
+const styleInvalid = ref(false)
 const password = ref()
 
 const router = useRouter()
 
 const login = () => {
-  if (user.value === 'studienbüro') {
+  if (user.value === 'studienbüro' && password.value) {
 
     const routeData = router.resolve({name: 'studyOfficeSelection'})
     window.open(routeData.href, '_top')
 
-  } else if (user.value === 'pav') {
+  } else if (user.value === 'pav' && password.value) {
 
     const routeData = router.resolve({name: 'chairmanSelection'})
     window.open(routeData.href, '_top')
 
   } else {
-    userInvalid.value = true;
+    styleInvalid.value = true;
   }
 }
 </script>
@@ -35,15 +35,13 @@ const login = () => {
         <div class="input-container">
           <div class="input-box">
           <span class="p-input-icon-right">
-            <InputText v-model="user" placeholder="Benutzername" :class="{ 'p-invalid': userInvalid }" class="input-text" />
-            <i class="pi pi-user"></i>
+            <input type="text" placeholder="Benutzername" v-model="user" class="input-text" :class="{'invalid': styleInvalid}" />
           </span>
           </div>
 
           <div class="input-box">
           <span class="p-input-icon-right">
-            <InputText v-model="password" placeholder="Passwort" class="input-text" />
-            <i class="pi pi-lock"></i>
+            <input type="password" placeholder="Passwort" v-model="password" class="input-text" :class="{'invalid': styleInvalid}"/>
           </span>
           </div>
         </div>
@@ -89,6 +87,16 @@ const login = () => {
 
 .input-text {
   width: 14vw;
+  font-size: 16px;
+  padding: 5px;
+  border-color: black;
+  border-radius: 3px;
+}
+
+.invalid {
+  border-style: solid;
+  border-width: 1px;
+  border-color: #d8413f;
 }
 
 .button-container {
