@@ -17,8 +17,10 @@ const route = useRoute()
 
 const applicationData = ref(undefined)
 let id = undefined
+let pdfDataLink = undefined
 onBeforeMount(() => {
   id = route.params.id
+  pdfDataLink = url + '/applications/pdfData/' + id
   getApplicationByIdForStatus(id)
       .then(data => applicationData.value = data)
       .catch(error => {
@@ -54,6 +56,7 @@ const fileLinkBase = computed(() => `${url}/pdf-documents/`)
             <h2>Vorgangsnummer: {{ id }}</h2>
             <p>Status: {{ applicationData['fullStatus'] }}</p>
             <p>Anrechnung für {{ applicationData['courseLeipzig']['name'] }} an der Universität Leipzig.</p>
+            <p>Zusammenfassung als PDF: <a :href="pdfDataLink">Antrag {{ id }}</a></p>
           </div>
 
           <Panel

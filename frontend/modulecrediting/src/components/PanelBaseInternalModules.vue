@@ -80,4 +80,8 @@ defineExpose({
 .internal-module-remove-button {
   color: #848484;
 }
+
+.internal-module-dropdown-item {
+  margin: 2px;
+}
 </style>
