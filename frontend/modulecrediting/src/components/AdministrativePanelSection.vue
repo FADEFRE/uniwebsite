@@ -40,6 +40,7 @@ defineExpose({
 
 <template>
   <div class="study-office-container">
+    <hr>
     <div>
       <!-- todo change disabled style -->
       <SelectButton

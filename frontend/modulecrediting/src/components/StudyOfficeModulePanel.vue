@@ -6,6 +6,7 @@ documentation todo
 import AdministrativeModulePanel from "@/components/AdministrativeModulePanel.vue";
 import AdministrativePanelSection from "@/components/AdministrativePanelSection.vue";
 import { ref } from "vue";
+import RelatedModuleConnections from "@/components/RelatedModuleConnections.vue";
 
 const props = defineProps(['moduleConnectionData', 'internalModuleOptions'])
 const studyOfficeData = {
@@ -28,6 +29,9 @@ defineExpose({
       :internal-module-options="props.internalModuleOptions"
       ref="general"
     >
+      <template #relatedModuleConnections>
+        <RelatedModuleConnections :module-connection-id="props.moduleConnectionData.id" />
+      </template>
       <template #studyOffice>
         <AdministrativePanelSection :data="studyOfficeData" ref="studyOffice" />
       </template>

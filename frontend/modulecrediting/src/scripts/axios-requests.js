@@ -60,6 +60,20 @@ function getApplicationByIdForStatus (id) {
 }
 
 /*
+GET-Request to '/applications/{id}/related' endpoint
+returns related module connections
+
+parameters:
+    moduleConnectionId - Number, module connection id
+ */
+function getRelatedModuleConnections (moduleConnectionId) {
+    return axios.get(url + '/modules-connection/' + moduleConnectionId + '/related')
+        .then(response => {
+            return response.data
+        })
+}
+
+/*
 POST-Request to '/applications' endpoint
 posts a new application
 
@@ -145,4 +159,13 @@ function putChairman (id, applicationObjects) {
         .then(response => console.log(response.data))
 }
 
-export { getCourseData, getModulesByCourse, getApplicationById, getApplicationByIdForStatus, postApplication, putStudyOffice, putChairman }
+export {
+    getCourseData,
+    getModulesByCourse,
+    getApplicationById,
+    getApplicationByIdForStatus,
+    getRelatedModuleConnections,
+    postApplication,
+    putStudyOffice,
+    putChairman
+}

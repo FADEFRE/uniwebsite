@@ -97,11 +97,9 @@ defineExpose({
 
       </div>
 
-      <hr>
+      <slot name="relatedModuleConnections" />
 
       <slot name="studyOffice" />
-
-      <hr>
 
       <slot name="chairman" />
 
