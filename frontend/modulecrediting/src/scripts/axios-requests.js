@@ -1,4 +1,4 @@
-import { url } from "@/scripts/url-config.js"
+import { url } from "./url-config.js"
 import axios from "axios";
 
 /*
