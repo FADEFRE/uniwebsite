@@ -3,7 +3,7 @@ FROM public.ecr.aws/docker/library/node:lts-alpine as development
 WORKDIR /app
 COPY package*.json ./ 
 RUN npm install 
-EXPOSE 9001
+EXPOSE 80
 CMD ["npm", "run", "serve"]
 
 # build
