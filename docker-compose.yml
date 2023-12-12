@@ -42,7 +42,7 @@ services:
     depends_on:
       - backend
     ports:
-      - 9001:80
+      - 9001:9001
     networks: 
       - swtp_network
 
