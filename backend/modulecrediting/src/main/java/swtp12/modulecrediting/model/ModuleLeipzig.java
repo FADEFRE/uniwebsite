@@ -4,15 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Transient;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -23,16 +20,10 @@ import lombok.NoArgsConstructor;
 @Entity
 public class ModuleLeipzig {   
     @Id
-    @GeneratedValue
-    private Long id;
-
     @JsonView({Views.coursesWithModules.class, Views.modulesWithoutCourse.class, Views.ApplicationStudent.class, Views.RelatedModulesConnection.class})
     private String moduleName;
     @JsonView({Views.coursesWithModules.class, Views.modulesWithoutCourse.class})
     private String moduleCode;
-    @Transient
-    @JsonIgnore
-    private List<String> DataloaderOnlyCourses;
 
     //Relation ModuleLeipzig <-> ModulesConnection
     @ManyToMany(mappedBy = "modulesLeipzig")
@@ -45,15 +36,9 @@ public class ModuleLeipzig {
     private List<CourseLeipzig> coursesLeipzig = new ArrayList<>();
 
 
-    public ModuleLeipzig(String moduleName, String moduleCode, List<String> courses) {
+    public ModuleLeipzig(String moduleName, String moduleCode) {
         this.moduleName = moduleName;
         this.moduleCode = moduleCode;
-        this.DataloaderOnlyCourses = courses;
     }
 
-
-    //Dataloader Function to add Courses to this ModuelLeipzig
-    public void addDataloaderOnlyCourses(List<String> dtLC) {
-        DataloaderOnlyCourses.addAll(dtLC);
-    }
 }

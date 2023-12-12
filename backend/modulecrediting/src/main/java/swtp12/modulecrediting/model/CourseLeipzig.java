@@ -20,11 +20,7 @@ import lombok.NoArgsConstructor;
 @Entity
 public class CourseLeipzig {
     @Id
-    @GeneratedValue
-    private Long id;
-
     @JsonView({Views.coursesWithModules.class, Views.ApplicationOverview.class,Views.RelatedModulesConnection.class})
-    @Column(unique = true)
     @NotBlank(message = "Name may not be blank")
     private String name;
 
@@ -32,8 +28,8 @@ public class CourseLeipzig {
     @ManyToMany (cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "course_leipzig_module_leipzig",
-            joinColumns = @JoinColumn(name = "course_leipzig_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "module_leipzig_id", referencedColumnName = "id")
+            joinColumns = @JoinColumn(name = "course_leipzig", referencedColumnName = "name"),
+            inverseJoinColumns = @JoinColumn(name = "module_leipzig", referencedColumnName = "moduleName")
     )
     @JsonManagedReference
     @JsonView(Views.coursesWithModules.class)

@@ -3,7 +3,6 @@ package swtp12.modulecrediting.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
 
@@ -11,7 +10,6 @@ import jakarta.persistence.*;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
 
 import static swtp12.modulecrediting.model.EnumModuleConnectionDecision.*;
 

@@ -1,11 +1,6 @@
 package swtp12.modulecrediting.controller;
 
-import static org.hibernate.query.sqm.tree.SqmNode.log;
-
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,8 +28,6 @@ import swtp12.modulecrediting.model.Application;
 import swtp12.modulecrediting.model.EnumApplicationStatus;
 import swtp12.modulecrediting.model.Views;
 import swtp12.modulecrediting.service.ApplicationService;
-
-import javax.servlet.http.HttpServletResponse;
 
 
 @RestController

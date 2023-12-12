@@ -2,10 +2,10 @@ package swtp12.modulecrediting;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +13,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import jakarta.transaction.Transactional;
 import swtp12.modulecrediting.model.CourseLeipzig;
 import swtp12.modulecrediting.model.ModuleLeipzig;
 import swtp12.modulecrediting.repository.CourseLeipzigRepository;
@@ -23,14 +24,15 @@ import swtp12.modulecrediting.repository.ModuleLeipzigRepository;
  * The DataLoader class is responsible for reading JSON data and saving the data correctly into the database.
  */
 @Component
+@Transactional
 public class DataLoader implements CommandLineRunner {
-    
+    @Autowired
+    private ModuleLeipzigRepository modulLeipzigRepo;
+
+    @Autowired
+    private CourseLeipzigRepository courseLeipzigRepo;
+
     private final ObjectMapper objectMapper;
-    private final ModuleLeipzigRepository modulLeipzigRepo;
-    private final CourseLeipzigRepository courseLeipzigRepo;
-    
-    private List<CourseLeipzig> coursesInLeipzig = new ArrayList<>();
-    private List<ModuleLeipzig> modulesLeipzigsSorted = new ArrayList<>();
 
 
     public DataLoader(ObjectMapper objectMapper, ModuleLeipzigRepository modulLeipzigRepo, CourseLeipzigRepository courseLeipzigRepo) {
@@ -60,36 +62,36 @@ public class DataLoader implements CommandLineRunner {
             System.out.print("\033[2K\033[1G");
             System.out.print("Dataloader: Creating a course");
 
-            createCourseFromNode(courseNode);
-            List<ModuleLeipzig> modulesForCourse = new ArrayList<>();
+            CourseLeipzig cL = createCourseFromNode(courseNode);
+            if (courseLeipzigRepo.existsById(cL.getName()) == false) {
+                courseLeipzigRepo.save(cL);
+            }
+            
             JsonNode modules = grabModulesFromJsonNode(courseNode);
-
+            
             System.out.print("\033[2K\033[1G");
             System.out.print("Dataloader: Creating modules for this course");
 
             for (JsonNode module : modules) {
-                ModuleLeipzig mL = createModulsFromNode(module, courseNode);
-                modulesForCourse.add(mL);
+                ModuleLeipzig mL = createModulsFromNode(module);
+                if (modulLeipzigRepo.existsById(mL.getModuleName()) == false) {
+                    modulLeipzigRepo.save(mL);
+                }
+                CourseLeipzig cLdB = courseLeipzigRepo.findById(cL.getName()).get();
+                ModuleLeipzig mLdB = modulLeipzigRepo.findById(mL.getModuleName()).get();
+
+                List<ModuleLeipzig> mList = cLdB.getModulesLeipzigCourse(); ;
+                mList.add(mLdB);
+                cLdB.setModulesLeipzigCourse(mList);
+
+                List<CourseLeipzig> cList = mLdB.getCoursesLeipzig();
+                cList.add(cLdB);
+                mLdB.setCoursesLeipzig(cList);
+
+                courseLeipzigRepo.save(cLdB);
+                modulLeipzigRepo.save(mLdB);
             }
-
-            System.out.print("\033[2K\033[1G");
-            System.out.print("Dataloader: Checking for duplicate modules for this course");
-
-            removeDuplicateModules(modulesForCourse);
-            modulesForCourse.clear();
         }
-
-        for (CourseLeipzig courseDB : coursesInLeipzig) { addModulesToCourseDtL(courseDB); }
-
-        System.out.print("\033[2K\033[1G");
-        System.out.print("Dataloader: Relations successfully established");
-        System.out.print("Dataloader: Writing Data into Database");
-
-        courseLeipzigRepo.saveAll(coursesInLeipzig);
-        modulLeipzigRepo.saveAll(modulesLeipzigsSorted);
-        coursesInLeipzig.clear();
-        modulesLeipzigsSorted.clear();
-
         System.out.print("\033[2K\033[1G");
         System.out.print("Dataloader: Data successfully loaded into Database"); 
     }
@@ -126,10 +128,11 @@ public class DataLoader implements CommandLineRunner {
      * 
      * @param course A JsonNode object representing a course.
      */
-    private void createCourseFromNode(JsonNode course) {
+    private CourseLeipzig createCourseFromNode(JsonNode course) {
         String courseName = course.get("name").asText();
         CourseLeipzig cL = new CourseLeipzig(courseName);
-        coursesInLeipzig.add(cL);
+        //coursesInLeipzig.add(cL);
+        return cL;
     }
 
 
@@ -156,71 +159,11 @@ public class DataLoader implements CommandLineRunner {
      * @param module A JsonNode representing a module.
      * @param course A JsonNode object representing a course.
      */
-    private ModuleLeipzig createModulsFromNode(JsonNode module, JsonNode course) {
-        String courseName = course.get("name").asText();
+    private ModuleLeipzig createModulsFromNode(JsonNode module) {
         String name = module.get("name").asText();
         String number = module.get("number").asText();
-        List<String> allCourseNames = new ArrayList<String>();
-        allCourseNames.add(courseName);
-        ModuleLeipzig mLeipzig = new ModuleLeipzig(name, number, allCourseNames);
+        ModuleLeipzig mLeipzig = new ModuleLeipzig(name, number);
         return mLeipzig;
     }
-
-
-    /**
-     * The function only adds non-duplicate 'modules' from a List of modules for a 'course' to the 'List' of all modules.
-     * The function calls the helper-function {@link #removeDupeModHelper()}
-     * 
-     * @param modulesForCourse A list of ModuleLeipzig objects representing the modules for a course.
-     */
-    private void removeDuplicateModules(List<ModuleLeipzig> modulesForCourse) {
-        for (ModuleLeipzig moduleOfCourse : modulesForCourse) {
-            boolean exists = false;
-            if (!modulesLeipzigsSorted.isEmpty()) { exists = removeDupeModHelper(moduleOfCourse);}
-            if (exists == false) { modulesLeipzigsSorted.add(moduleOfCourse); }
-        }
-    }
-
-
-    /**
-     * The helper-function checks if a 'module' already exists in a list and 
-     * if so, adds given 'course' to the already existing 'module' in the list 'modulesLeipzigsSorted'.
-     * 
-     * @param moduleOfCourse A 'ModuleLeipzig' object, that needs to be checked for duplication.
-     * @return true if the 'module' already existed.
-     */
-    private boolean removeDupeModHelper(ModuleLeipzig moduleOfCourse) {
-        String moduleCode = moduleOfCourse.getModuleCode();
-        String moduleName = moduleOfCourse.getModuleName();
-        boolean bool = false;
-        for (int i = 0; i < modulesLeipzigsSorted.size(); i++) {
-            String moduleCodeSort = modulesLeipzigsSorted.get(i).getModuleCode();
-            String moduleNameSort = modulesLeipzigsSorted.get(i).getModuleName();                                
-            if (moduleCode.equals(moduleCodeSort) && moduleName.equals(moduleNameSort)) {
-                //if module already exists: only add the new Course to the Module already in the List
-                List<String> mDtLC = moduleOfCourse.getDataloaderOnlyCourses();
-                modulesLeipzigsSorted.get(i).addDataloaderOnlyCourses(mDtLC);
-                bool = true;
-            }
-        }
-        return bool;
-    }
-
-
-    
-    /**
-     * The function adds all modules, that belong to the giving 'course', to it.
-     * 
-     * @param course The 'course' to which the modules should be added
-     */
-    private void addModulesToCourseDtL(CourseLeipzig course) {
-        String courseName = course.getName();
-        for (ModuleLeipzig moduleDB : modulesLeipzigsSorted) {
-            if (moduleDB.getDataloaderOnlyCourses().contains(courseName)) {
-                course.addCourseToModulesLeipzig(moduleDB);
-            }
-        }
-    }
-
 
 }
