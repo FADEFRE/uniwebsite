@@ -23,7 +23,6 @@ public class PdfDocumentService {
         if (pdf == null || pdf.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No PDF file provided or file is empty");
         }
-
         try {
             return new PdfDocument(pdf.getOriginalFilename(), pdf.getBytes());
         } catch (IOException ioException) {

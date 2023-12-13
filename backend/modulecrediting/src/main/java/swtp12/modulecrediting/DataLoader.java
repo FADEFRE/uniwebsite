@@ -2,6 +2,8 @@ package swtp12.modulecrediting;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -48,10 +50,8 @@ public class DataLoader implements CommandLineRunner {
     private final ObjectMapper objectMapper;
 
 
-    public DataLoader(ObjectMapper objectMapper, ModuleLeipzigRepository modulLeipzigRepo, CourseLeipzigRepository courseLeipzigRepo) {
+    public DataLoader(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
-        this.modulLeipzigRepo = modulLeipzigRepo;
-        this.courseLeipzigRepo = courseLeipzigRepo;
     }
 
 
@@ -107,7 +107,6 @@ public class DataLoader implements CommandLineRunner {
 
     @Transactional
     private void createTestData(String testFileName) {
-        leipzigDataLoader(testFileName);
 
         JsonNode applicationSettingsNode = grabFirstNodeFromJson(testFileName, "randApplications").get(0);
         JsonNode moduleSettingsNode = grabFirstNodeFromJson(testFileName, "randModuleApplications").get(0);
@@ -146,9 +145,8 @@ public class DataLoader implements CommandLineRunner {
             applicationCreateDTO.setCourseLeipzig(cL.getName());
             applicationCreateDTO.setModuleBlockCreateDTOList(listModuleCreateDTO);
 
-            applicationService.createApplication(applicationCreateDTO);
-
-
+            String vorgangsnummer = applicationService.createApplication(applicationCreateDTO);
+            System.out.println("Created Dummy Application: " + vorgangsnummer);
         }
     }
 
@@ -210,14 +208,28 @@ public class DataLoader implements CommandLineRunner {
         }
         moduleBlockCreateDTO.setModuleNamesLeipzig(listModuleLeipzig);
 
-        Path pdfPath = Paths.get("backend/modulecrediting/src/main/resources/dummy.pdf");
-        byte[] pdf;
-        try { pdf = Files.readAllBytes(pdfPath); } 
-        catch (IOException e) { throw new RuntimeException("Failed to read dummy.pdf", e); }
-        MultipartFile pdfMultipartFile = new MockMultipartFile("dummy", "dummy.pdf", "application/pdf", pdf);
-        moduleBlockCreateDTO.setDescription(pdfMultipartFile);
-        //moduleBlockCreateDTO.setDescription(null);
 
+        // Get the class loader to access resources on the classpath
+        Path pdfPath = Paths.get("dummy.pdf");
+        ClassLoader classLoader = DataLoader.class.getClassLoader();
+        URL resource = classLoader.getResource(pdfPath.toString());
+
+        // Check if the resource (file) exists
+        if (resource != null) {
+            try { // Read the file content
+                Path filePath = Paths.get(resource.toURI());
+                byte[] pdf = Files.readAllBytes(filePath);
+                MultipartFile pdfMultipartFile = new MockMultipartFile("dummy", "dummy.pdf", "application/pdf", pdf);
+                moduleBlockCreateDTO.setDescription(pdfMultipartFile);
+
+            } catch (IOException | URISyntaxException e) {
+                throw new RuntimeException("Failed to read dummy.pdf", e);
+            }
+        } else {
+            System.out.println("File not found: " + pdfPath);
+            MultipartFile pdfMultipartFile = new MockMultipartFile("dummy", "dummy.pdf", "application/pdf", "pdf_data_mock".getBytes());
+            moduleBlockCreateDTO.setDescription(pdfMultipartFile);
+        }
 
         return moduleBlockCreateDTO;
     }
