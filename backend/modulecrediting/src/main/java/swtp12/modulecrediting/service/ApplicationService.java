@@ -1,42 +1,24 @@
 package swtp12.modulecrediting.service;
 
-import static com.itextpdf.text.FontFactory.*;
 import static swtp12.modulecrediting.model.EnumApplicationStatus.*;
 import static swtp12.modulecrediting.model.EnumModuleConnectionDecision.*;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
-import com.itextpdf.text.*;
-import com.itextpdf.text.pdf.*;
-
-import javax.servlet.http.HttpServletResponse;
-
-import com.itextpdf.text.pdf.draw.LineSeparator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.server.DelegatingServerHttpResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import jakarta.transaction.Transactional;
 
-import swtp12.modulecrediting.DataLoader;
 import swtp12.modulecrediting.dto.ApplicationCreateDTO;
 import swtp12.modulecrediting.dto.ApplicationUpdateDTO;
 import swtp12.modulecrediting.dto.ModuleBlockCreateDTO;
@@ -173,7 +155,6 @@ public class ApplicationService {
     }
 
 
-
     public String createApplication(ApplicationCreateDTO applicationCreateDTO) {
         ArrayList<ModulesConnection> modulesConnections = new ArrayList<>();
 
@@ -247,7 +228,7 @@ public class ApplicationService {
         return applicationRepository.existsById(id);
     }
 
-
+/*
     public byte[] generatePdfDataDocument(String id) throws IOException, DocumentException {
         Application application = getApplicationById(id);
         List<ModulesConnection> modulesConnections = application.getModulesConnections();
@@ -370,4 +351,5 @@ public class ApplicationService {
 
         document.add(table);
     }
+*/
 }

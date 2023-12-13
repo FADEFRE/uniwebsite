@@ -28,6 +28,7 @@ import swtp12.modulecrediting.model.Application;
 import swtp12.modulecrediting.model.EnumApplicationStatus;
 import swtp12.modulecrediting.model.Views;
 import swtp12.modulecrediting.service.ApplicationService;
+import swtp12.modulecrediting.service.GeneratedPdfService;
 
 
 @RestController
@@ -36,6 +37,9 @@ import swtp12.modulecrediting.service.ApplicationService;
 public class ApplicationController {
     @Autowired
     private ApplicationService applicationService;
+
+    @Autowired
+    private GeneratedPdfService generatedPdfService;
 
     @PutMapping("/{id}")
     public ResponseEntity<String> updateApplication(@PathVariable String id,@ModelAttribute ApplicationUpdateDTO applicationUpdateDTO) {
@@ -80,7 +84,7 @@ public class ApplicationController {
         headers.setContentType(MediaType.APPLICATION_PDF);
 
         headers.setContentDispositionFormData("att", "Antrag.pdf");
-        byte[] pdfBytes = applicationService.generatePdfDataDocument(id);
+        byte[] pdfBytes = generatedPdfService.generatePdfDataDocument(id);
 
         return ResponseEntity.ok()
                 .headers(headers)
