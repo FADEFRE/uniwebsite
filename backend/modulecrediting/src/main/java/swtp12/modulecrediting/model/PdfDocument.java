@@ -11,6 +11,7 @@ import jakarta.persistence.Lob;
 import jakarta.persistence.OneToOne;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 
@@ -32,6 +33,7 @@ public class PdfDocument {
     //Relation PdfDocument <-> ModuleApplication (Setter in ModuleApplication)
     @OneToOne(mappedBy = "pdfDocument")
     @JsonBackReference
+    @EqualsAndHashCode.Exclude
     private ModuleApplication moduleApplication;
 
 

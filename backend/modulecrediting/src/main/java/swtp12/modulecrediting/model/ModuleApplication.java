@@ -14,6 +14,7 @@ import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 
@@ -51,6 +52,7 @@ public class ModuleApplication {
     //Relation ModuleApplication <-> ModulesConnection (Setter in ModulesConnection)
     @OneToOne(mappedBy = "moduleApplication")
     @JsonBackReference
+    @EqualsAndHashCode.Exclude
     private ModulesConnection modulesConnection;
 
 

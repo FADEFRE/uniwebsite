@@ -6,10 +6,19 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
 
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import static swtp12.modulecrediting.model.EnumModuleConnectionDecision.*;
 
@@ -58,6 +67,7 @@ public class ModulesConnection {
     //Relation ModulesConnection <-> Application (Setter in Application)
     @ManyToOne
     @JsonView(Views.RelatedModulesConnection.class)
+    @EqualsAndHashCode.Exclude
     private Application application;
 
 
