@@ -1,13 +1,16 @@
 package swtp12.modulecrediting.service;
 
+import static com.itextpdf.text.FontFactory.*;
 import static swtp12.modulecrediting.model.EnumApplicationStatus.*;
 import static swtp12.modulecrediting.model.EnumModuleConnectionDecision.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -16,10 +19,8 @@ import java.util.Objects;
 import java.util.Optional;
 
 import com.itextpdf.text.*;
-import com.itextpdf.text.pdf.BaseFont;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.pdf.*;
+
 import javax.servlet.http.HttpServletResponse;
 
 import com.itextpdf.text.pdf.draw.LineSeparator;
@@ -35,6 +36,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import jakarta.transaction.Transactional;
 
+import swtp12.modulecrediting.DataLoader;
 import swtp12.modulecrediting.dto.ApplicationCreateDTO;
 import swtp12.modulecrediting.dto.ApplicationUpdateDTO;
 import swtp12.modulecrediting.dto.ModuleBlockCreateDTO;
@@ -61,7 +63,6 @@ public class ApplicationService {
     @Autowired
     private CourseLeipzigService courseLeipzigService;
 
-    private static final String JOST_FONT_PATH = "/resources/JostFont-Regular.ttf";
 
 
     // TODO: Corner Case: No Module Leipzig when creating, or when updating
@@ -251,6 +252,8 @@ public class ApplicationService {
         Application application = getApplicationById(id);
         List<ModulesConnection> modulesConnections = application.getModulesConnections();
 
+
+
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         Document document = new Document(PageSize.A4);
         PdfWriter.getInstance(document, baos);
@@ -274,8 +277,8 @@ public class ApplicationService {
             //Title
             String titleText = "ANTRAG ZUR MODULANRECHNUNG";
             String titleText1 = "FAKULTÄT MATHEMATIK UND INFORMATIK";
-            Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 15);
-            Font titleFont1 = FontFactory.getFont(JOST_FONT_PATH, 14);
+            Font titleFont = getFont(HELVETICA_BOLD, 15);
+            Font titleFont1 = getFont(HELVETICA, 14);
             Paragraph title = new Paragraph(titleText, titleFont);
             Paragraph title1 = new Paragraph(titleText1, titleFont1);
             title.setAlignment(Element.ALIGN_LEFT);
@@ -318,7 +321,7 @@ public class ApplicationService {
                     "Sie bitte der Homepage:\n" +
                     "https://www.mathcs.uni-leipzig.de/studium/studienbuero\n";
 
-            Font addressFont = FontFactory.getFont(JOST_FONT_PATH, 10);
+            Font addressFont = getFont(HELVETICA, 10);
             PdfPTable addressTable = new PdfPTable(1);
             addressTable.setWidthPercentage(88);
             addressTable.getDefaultCell().setBorder(Rectangle.NO_BORDER);
@@ -340,8 +343,8 @@ public class ApplicationService {
         PdfPTable table = new PdfPTable(2);
         table.setWidthPercentage(88);
 
-        Font labelFont = FontFactory.getFont(JOST_FONT_PATH, 12);
-        Font valueFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12);
+        Font labelFont = getFont(HELVETICA, 12);
+        Font valueFont = getFont(FontFactory.HELVETICA_BOLD, 12);
 
         PdfPCell labelCell = new PdfPCell(new Phrase(label, labelFont));
         PdfPCell valueCell = new PdfPCell(new Phrase(String.valueOf(value), valueFont));
