@@ -1,0 +1,92 @@
+{
+    "randApplications": [
+        {
+            "offen": 2,
+            "bearbeitung": 2,
+            "fertig": 2
+        }
+    ],
+
+    "randModuleApplications": [
+        {
+            "name": "testModule",
+            "uni": "testUni",
+            "points": [42,69,420,1337],
+            "pointSystem": ["ECTS", "PI", "SIN", "COS"],
+            "comment": [
+                "Wird das hier gelesen?",
+                "Dopsball",
+                "Where is the money, Lebowski?",
+                "Did you ever hear of the tragedy of Darth Plagueis the Wise?"
+                ]
+        }
+    ],
+
+
+    "courses": [
+        {
+            "name": "B.Sc. Informatik",
+            "modules" : [
+                {
+                    "name": "Einführung in die objektorientierte Modellierung und Programmierung",
+                    "number": "10-201-2012"
+                },
+                {
+                    "name": "Programmierparadigmen",
+                    "number": "10-201-2005-2"
+                },
+                {
+                    "name": "Algorithmen und Datenstrukturen 1",
+                    "number": "10-201-2001-1"
+                },
+                {
+                    "name": "Algorithmen und Datenstrukturen 2",
+                    "number": "10-201-2001-2"
+                },
+                {
+                    "name": "Grundlagen der Technischen Informatik 1",
+                    "number": "10-201-2006-1"
+                },
+                {
+                    "name": "Grundlagen der Technischen Informatik 2",
+                    "number": "10-201-2006-2"
+                },
+                {
+                    "name": "Betriebs- und Kommuikationssysteme",
+                    "number": ""
+                },
+                {
+                    "name": "Logik",
+                    "number": "10-201-2108-1"
+                }
+            ]
+        },
+
+        {
+            "name": "test course",
+            "modules" : [
+                {
+                    "name": "Programmierparadigmen",
+                    "number": "10-201-2005-2"
+                },
+                {
+                    "name": "Algorithmen und Datenstrukturen 1",
+                    "number": "10-201-2001-1"
+                },
+                {
+                    "name": "Algorithmen und Datenstrukturen 2",
+                    "number": "10-201-2001-2"
+                },
+                {
+                    "name": "Grundlagen der Technischen Informatik 1",
+                    "number": "10-201-2006-1"
+                },
+                {
+                    "name": "Grundlagen der Technischen Informatik 2",
+                    "number": "10-201-2006-2"
+                }
+            ]
+        }
+    ]
+
+}
