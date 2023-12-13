@@ -2,35 +2,48 @@ package swtp12.modulecrediting;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.mock.web.MockMultipartFile;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.transaction.Transactional;
+import swtp12.modulecrediting.dto.ApplicationCreateDTO;
+import swtp12.modulecrediting.dto.ModuleBlockCreateDTO;
+import swtp12.modulecrediting.dto.ModuleBlockUpdateDTO;
 import swtp12.modulecrediting.model.CourseLeipzig;
 import swtp12.modulecrediting.model.ModuleLeipzig;
 import swtp12.modulecrediting.repository.CourseLeipzigRepository;
 import swtp12.modulecrediting.repository.ModuleLeipzigRepository;
+import swtp12.modulecrediting.service.ApplicationService;
 
 
 /**
  * The DataLoader class is responsible for reading JSON data and saving the data correctly into the database.
  */
 @Component
-@Transactional
 public class DataLoader implements CommandLineRunner {
     @Autowired
     private ModuleLeipzigRepository modulLeipzigRepo;
 
     @Autowired
     private CourseLeipzigRepository courseLeipzigRepo;
+
+    @Autowired
+    private ApplicationService applicationService;
 
     private final ObjectMapper objectMapper;
 
@@ -41,44 +54,40 @@ public class DataLoader implements CommandLineRunner {
         this.courseLeipzigRepo = courseLeipzigRepo;
     }
 
-    //master method
 
-    /**
-     * The 'run' function reads JSON data, creates courses and modules from the data, checks for
-     * duplicate modules, establishes relations between courses and modules, and saves the data into a
-     * database.
-     */
     @Override
+    @Transactional
     public void run(String... args) {
-        String jsonPath = "/module_liste.json";
+        String moduleLeipzigData = "/module_liste.json";
+        String testData = "/test_data.json";
 
-        System.out.print("Dataloader: Trying to read JSON");
-        JsonNode courseNodes = grabCoursesFromJson(jsonPath);
+        leipzigDataLoader(moduleLeipzigData);
 
-        System.out.print("\033[2K\033[1G");
-        System.out.print("Dataloader: Grabbing data from JSON");
+        createTestData(testData);
+    }
 
+
+    @Transactional
+    private void leipzigDataLoader(String fileName) {
+        
+        JsonNode courseNodes = grabFirstNodeFromJson(fileName, "courses");
         for (JsonNode courseNode : courseNodes) {
-            System.out.print("\033[2K\033[1G");
-            System.out.print("Dataloader: Creating a course");
-
-            CourseLeipzig cL = createCourseFromNode(courseNode);
-            if (courseLeipzigRepo.existsById(cL.getName()) == false) {
-                courseLeipzigRepo.save(cL);
+            CourseLeipzig courseLeipzig = new CourseLeipzig(courseNode.get("name").asText());
+            if (courseLeipzigRepo.existsById(courseLeipzig.getName()) == false) {
+                courseLeipzigRepo.save(courseLeipzig);
             }
-            
-            JsonNode modules = grabModulesFromJsonNode(courseNode);
-            
-            System.out.print("\033[2K\033[1G");
-            System.out.print("Dataloader: Creating modules for this course");
 
+            JsonNode modules = grabModulesFromJsonNode(courseNode);
             for (JsonNode module : modules) {
-                ModuleLeipzig mL = createModulsFromNode(module);
-                if (modulLeipzigRepo.existsById(mL.getModuleName()) == false) {
-                    modulLeipzigRepo.save(mL);
+                String name = module.get("name").asText();
+                String number = module.get("number").asText();
+                ModuleLeipzig moduleLeipzig = new ModuleLeipzig(name, number);
+                if (modulLeipzigRepo.existsById(moduleLeipzig.getModuleName()) == false) {
+                    modulLeipzigRepo.save(moduleLeipzig);
                 }
-                CourseLeipzig cLdB = courseLeipzigRepo.findById(cL.getName()).get();
-                ModuleLeipzig mLdB = modulLeipzigRepo.findById(mL.getModuleName()).get();
+
+                CourseLeipzig cLdB = courseLeipzigRepo.findById(courseLeipzig.getName()).get();
+                ModuleLeipzig mLdB = modulLeipzigRepo.findById(moduleLeipzig.getModuleName()).get();
 
                 List<ModuleLeipzig> mList = cLdB.getModulesLeipzigCourse(); ;
                 mList.add(mLdB);
@@ -92,24 +101,71 @@ public class DataLoader implements CommandLineRunner {
                 modulLeipzigRepo.save(mLdB);
             }
         }
-        System.out.print("\033[2K\033[1G");
-        System.out.print("Dataloader: Data successfully loaded into Database"); 
+        System.out.print("Dataloader: Data successfully loaded into Database \n"); 
     }
 
+
+    @Transactional
+    private void createTestData(String testFileName) {
+        leipzigDataLoader(testFileName);
+
+        JsonNode applicationSettingsNode = grabFirstNodeFromJson(testFileName, "randApplications").get(0);
+        JsonNode moduleSettingsNode = grabFirstNodeFromJson(testFileName, "randModuleApplications").get(0);
+        Random rand = new Random();
+
+        int open = applicationSettingsNode.get("offen").asInt();
+        int inEdit = applicationSettingsNode.get("bearbeitung").asInt();
+        int closed = applicationSettingsNode.get("fertig").asInt();
+        int total = open + inEdit + closed;
+        
+        List<CourseLeipzig> listOfCourseLeipzig = new ArrayList<>();
+        List<CourseLeipzig> listOfCLinDB = courseLeipzigRepo.findAll();
+        for (int i = 0; i < total; i++) {
+            int randomIdx = rand.nextInt(listOfCLinDB.size());
+            CourseLeipzig courseLeipzig = listOfCLinDB.get(randomIdx);
+            listOfCourseLeipzig.add(courseLeipzig);
+        }
+        int count = 1;
+        for (CourseLeipzig cL : listOfCourseLeipzig) {
+            List<ModuleBlockCreateDTO> listModuleCreateDTO = new ArrayList<>();
+            List<ModuleBlockUpdateDTO> listModuleUpdateDTO = new ArrayList<>();
+            ApplicationCreateDTO applicationCreateDTO = new ApplicationCreateDTO();
+            applicationCreateDTO.setCourseLeipzig(cL.getName());
+
+            int rIdx = rand.nextInt(3) + 1;
+            for (int i = 0; i < rIdx; i++) {
+                ModuleBlockCreateDTO mBcDTO = createModuleDTO(cL, moduleSettingsNode);
+                mBcDTO.setModuleName(mBcDTO.getModuleName() + "_" + count);
+                mBcDTO.setUniversity(mBcDTO.getUniversity() + "_" + count);
+                listModuleCreateDTO.add(mBcDTO);
+                ModuleBlockUpdateDTO mUdto = new ModuleBlockUpdateDTO();
+                listModuleUpdateDTO.add(mUdto);
+                count++;
+            }
+
+            applicationCreateDTO.setCourseLeipzig(cL.getName());
+            applicationCreateDTO.setModuleBlockCreateDTOList(listModuleCreateDTO);
+
+            applicationService.createApplication(applicationCreateDTO);
+
+
+        }
+    }
 
     //Helper methods:
 
     /**
-     * The function "grabCoursesFromJson" reads a JSON file from the given path and returns the 'courses' JsonNode 
-     * or throws mutliple exception if failed to do so.
+     * The function "grabFirstNodeFromJson" reads a JSON file from the given path and returns the first JsonNode
+     * with the given name or throws mutliple exception if failed to do so.
      * 
      * @exception IOException Gets thrown as RuntimeException if failed to read JSON data
      * @exception IllegalArgumentException Gets thrown if JsonNode is invalid
      * @param jsonPath String that represents the path to the JSON file that you want to read. 
      *                      It can be either an absolute path or a relative path to the JSON file.
-     * @return The 'courses' JsonNode of the JSON file.
+     * @param nodeName String that represents the Name of the JsonNode you want to be returned
+     * @return The JsonNode of the JSON file.
      */
-    private JsonNode grabCoursesFromJson(String jsonPath) {
+    private JsonNode grabFirstNodeFromJson(String jsonPath, String nodeName) {
         JsonNode jsonNode;
         try (InputStream inputStream = TypeReference.class.getResourceAsStream(jsonPath)) {
             jsonNode = objectMapper.readValue(inputStream, JsonNode.class);
@@ -117,22 +173,8 @@ public class DataLoader implements CommandLineRunner {
         catch (IOException e) { throw new RuntimeException("Failed to read JSON data", e); }
 
         return Optional.ofNullable(jsonNode)
-                .map(j -> j.get("courses"))
+                .map(j -> j.get(nodeName))
                 .orElseThrow(() -> new IllegalArgumentException("Invalid JSON Object"));
-    }
-
-
-    /**
-     * The function creates a new 'CourseLeipzig' object with the name extracted from the 'course' JsonNode and adds it
-     * to the list of all courses.
-     * 
-     * @param course A JsonNode object representing a course.
-     */
-    private CourseLeipzig createCourseFromNode(JsonNode course) {
-        String courseName = course.get("name").asText();
-        CourseLeipzig cL = new CourseLeipzig(courseName);
-        //coursesInLeipzig.add(cL);
-        return cL;
     }
 
 
@@ -151,19 +193,40 @@ public class DataLoader implements CommandLineRunner {
     }
 
 
-    /**
-     * The function creates a 'ModuleLeipzig' object from the 'module' JsonNode and 
-     *  - adds it to a list of modules for that course.
-     *  - adds that course to the list of courses for this module.
-     * 
-     * @param module A JsonNode representing a module.
-     * @param course A JsonNode object representing a course.
-     */
-    private ModuleLeipzig createModulsFromNode(JsonNode module) {
-        String name = module.get("name").asText();
-        String number = module.get("number").asText();
-        ModuleLeipzig mLeipzig = new ModuleLeipzig(name, number);
-        return mLeipzig;
+    private ModuleBlockCreateDTO createModuleDTO(CourseLeipzig cL, JsonNode moduleSettingNode) {
+        ModuleBlockCreateDTO moduleBlockCreateDTO = new ModuleBlockCreateDTO();
+        Random rdm = new Random();
+        moduleBlockCreateDTO.setModuleName(moduleSettingNode.get("name").asText());
+        moduleBlockCreateDTO.setUniversity(moduleSettingNode.get("uni").asText());
+        moduleBlockCreateDTO.setPoints(Integer.parseInt(getRandValueOfNode(moduleSettingNode, "points", rdm)));
+        moduleBlockCreateDTO.setPointSystem(getRandValueOfNode(moduleSettingNode, "pointSystem", rdm));
+        moduleBlockCreateDTO.setCommentApplicant(getRandValueOfNode(moduleSettingNode, "comment", rdm));
+        
+        List<String> listModuleLeipzig = new ArrayList<>();
+        int numberOf = rdm.nextInt(3)+1;
+        for (int i = 0; i < numberOf; i++) {
+            int idxR = rdm.nextInt(cL.getModulesLeipzigCourse().size());
+            listModuleLeipzig.add(cL.getModulesLeipzigCourse().get(idxR).getModuleName());
+        }
+        moduleBlockCreateDTO.setModuleNamesLeipzig(listModuleLeipzig);
+
+        Path pdfPath = Paths.get("backend/modulecrediting/src/main/resources/dummy.pdf");
+        byte[] pdf;
+        try { pdf = Files.readAllBytes(pdfPath); } 
+        catch (IOException e) { throw new RuntimeException("Failed to read dummy.pdf", e); }
+        MultipartFile pdfMultipartFile = new MockMultipartFile("dummy", "dummy.pdf", "application/pdf", pdf);
+        moduleBlockCreateDTO.setDescription(pdfMultipartFile);
+        //moduleBlockCreateDTO.setDescription(null);
+
+
+        return moduleBlockCreateDTO;
     }
 
+
+
+    private String getRandValueOfNode(JsonNode currentNode, String nodeName, Random rdm) {
+        JsonNode valueNode = currentNode.get(nodeName);
+        int rdmIdx = rdm.nextInt(valueNode.size());
+        return valueNode.get(rdmIdx).asText();
+    }
 }
