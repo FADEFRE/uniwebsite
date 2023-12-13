@@ -265,7 +265,7 @@ public class ApplicationService {
             ModuleApplication moduleApplication = modulesConnection.getModuleApplication();
 
             //uni-leipzig icon
-            Image uniLeipzigIcon = Image.getInstance(getClass().getResource("/Universität_Leipzig_Logo.png"));
+            Image uniLeipzigIcon = Image.getInstance(Objects.requireNonNull(getClass().getResource("/Universität_Leipzig_Logo.png")));
             float maxWidth = 300f;
             float maxHeight = 300f;
             uniLeipzigIcon.scaleToFit(maxWidth, maxHeight);
@@ -319,7 +319,7 @@ public class ApplicationService {
                     "Email-Adresse: studienbuero@math.uni-leipzig.de\n\n" +
                     "Die aktuellen Sprechzeiten entnehmen\n" +
                     "Sie bitte der Homepage:\n" +
-                    "https://www.mathcs.uni-leipzig.de/studium/studienbuero\n";
+                    "www.mathcs.uni-leipzig.de/studium/studienbuero\n";
 
             Font addressFont = getFont(HELVETICA, 10);
             PdfPTable addressTable = new PdfPTable(1);
