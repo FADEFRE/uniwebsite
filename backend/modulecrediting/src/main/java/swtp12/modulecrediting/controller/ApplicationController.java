@@ -74,7 +74,7 @@ public class ApplicationController {
         return ResponseEntity.ok(applicationService.applicationExists(id));
     }
 
-    @GetMapping("/pdfData/{id}")
+    @GetMapping("/pdf-data/{id}")
     public ResponseEntity<byte[]> generatePdf(@PathVariable String id) throws DocumentException, IOException {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
