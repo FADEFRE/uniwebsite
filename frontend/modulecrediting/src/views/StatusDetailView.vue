@@ -20,7 +20,7 @@ let id = undefined
 let pdfDataLink = undefined
 onBeforeMount(() => {
   id = route.params.id
-  pdfDataLink = url + '/applications/pdfData/' + id
+  pdfDataLink = url + '/applications/pdf-data/' + id
   getApplicationByIdForStatus(id)
       .then(data => applicationData.value = data)
       .catch(error => {
