@@ -36,12 +36,24 @@ const openDetailView = () => {
 
 <template>
   <div class="view-container">
-    <h2>Vorgangsnummer eingeben:</h2>
-    <InputText type="text" v-model="id" :class="{ 'p-invalid': isInvalid }"/>
-    <Button @click="openDetailView">Status einsehen</Button>
+    <div>
+      <h2>Vorgangsnummer eingeben:</h2>
+      <InputText type="text" v-model="id" class="input-object" :class="{ 'p-invalid': isInvalid }"/>
+      <Button @click="openDetailView" class="input-object">Status einsehen</Button>
+    </div>
   </div>
 </template>
 
 <style scoped>
+.view-container {
+  width: 100%;
+  height: 50vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
+.input-object {
+  margin-right: 10px;
+}
 </style>

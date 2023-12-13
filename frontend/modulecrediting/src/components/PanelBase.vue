@@ -101,14 +101,14 @@ defineExpose({
 }
 
 .text-input-container>p {
-  width: 18%;
-  text-align: center;
+  width: 15%;
+  text-align: left;
 }
 
 /* Anpassung der Schriftgröße */
 .text-input {
   font-size: 16px;
-  width: calc(100% - 60px);
+  width: 60%;
   /* Dynamische Breite des Textfeldes */
 }
 

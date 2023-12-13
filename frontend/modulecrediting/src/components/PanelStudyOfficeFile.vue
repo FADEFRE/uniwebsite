@@ -15,7 +15,7 @@ const fileLink = url + '/pdf-documents/' + props.fileId
 
 <template>
   <div>
-    <a :href="fileLink" target="_blank">{{ props.fileName }}</a>
+    <p>Modulbeschreibung: <a :href="fileLink" target="_blank">{{ props.fileName }}</a></p>
   </div>
 </template>
 
