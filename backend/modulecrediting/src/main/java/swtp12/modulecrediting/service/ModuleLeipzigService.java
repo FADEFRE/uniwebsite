@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import swtp12.modulecrediting.dto.ModuleLeipzigCreateDTO;
 import swtp12.modulecrediting.model.ModuleLeipzig;
 import swtp12.modulecrediting.repository.ModuleLeipzigRepository;
 
@@ -35,4 +36,12 @@ public class ModuleLeipzigService {
         }
         return modulesLeipzig;
     }
+
+    public void createModuleLeipzig(ModuleLeipzigCreateDTO moduleLeipzigCreateDTO) {
+        
+        if(moduleLeipzigCreateDTO.getModuleName() == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Module Name is required");
+
+        
+    }
+
 }

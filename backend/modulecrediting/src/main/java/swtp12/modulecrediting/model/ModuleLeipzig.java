@@ -10,6 +10,7 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -20,6 +21,7 @@ import lombok.NoArgsConstructor;
 @Entity
 public class ModuleLeipzig {   
     @Id
+    @NotBlank
     @JsonView({Views.coursesWithModules.class, Views.modulesWithoutCourse.class, Views.ApplicationStudent.class, Views.RelatedModulesConnection.class})
     private String moduleName;
     @JsonView({Views.coursesWithModules.class, Views.modulesWithoutCourse.class})
