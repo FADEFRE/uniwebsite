@@ -2,7 +2,7 @@
     "randApplications": [
         {
             "offen": 2,
-            "bearbeitung": 2,
+            "warten": 2,
             "fertig": 2
         }
     ],
@@ -17,7 +17,8 @@
                 "Wird das hier gelesen?",
                 "Dopsball",
                 "Where is the money, Lebowski?",
-                "Did you ever hear of the tragedy of Darth Plagueis the Wise?"
+                "Did you ever hear of the tragedy of Darth Plagueis the Wise?",
+                "Die Pipeline ist toll!"
                 ]
         }
     ],

@@ -1,5 +1,7 @@
 package swtp12.modulecrediting;
 
+import static swtp12.modulecrediting.model.EnumModuleConnectionDecision.ANGENOMMEN;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
@@ -24,10 +26,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.transaction.Transactional;
 import swtp12.modulecrediting.dto.ApplicationCreateDTO;
+import swtp12.modulecrediting.dto.ApplicationUpdateDTO;
 import swtp12.modulecrediting.dto.ModuleBlockCreateDTO;
 import swtp12.modulecrediting.dto.ModuleBlockUpdateDTO;
+import swtp12.modulecrediting.model.Application;
 import swtp12.modulecrediting.model.CourseLeipzig;
 import swtp12.modulecrediting.model.ModuleLeipzig;
+import swtp12.modulecrediting.model.ModulesConnection;
 import swtp12.modulecrediting.repository.CourseLeipzigRepository;
 import swtp12.modulecrediting.repository.ModuleLeipzigRepository;
 import swtp12.modulecrediting.service.ApplicationService;
@@ -66,7 +71,13 @@ public class DataLoader implements CommandLineRunner {
         createTestData(testData);
     }
 
-
+    /**
+     * The function `leipzigDataLoader` loads data from a JSON file into the database, creating and linking
+     * `CourseLeipzig` and `ModuleLeipzig` objects.
+     * 
+     * @param fileName The `fileName` parameter is the name of the JSON file that contains the data to be
+     * loaded into the database.
+     */
     @Transactional
     private void leipzigDataLoader(String fileName) {
         
@@ -101,21 +112,31 @@ public class DataLoader implements CommandLineRunner {
                 modulLeipzigRepo.save(mLdB);
             }
         }
-        System.out.print("Dataloader: Data successfully loaded into Database \n"); 
+        System.out.println("Dataloader: Data successfully loaded into Database \n"); 
     }
 
-
+    /**
+     * The `createTestData` function generates dummy data for testing purposes by creating random
+     * applications with associated module blocks.
+     * 
+     * @param testFileName The `testFileName` parameter is the name of the JSON file from which the test
+     * data settings will be extracted.
+     */
     @Transactional
     private void createTestData(String testFileName) {
+        /*//Loads specified courses/modules 
+        leipzigDataLoader(testFileName);
+        System.out.print("\033[2K\033[1G");*/
 
         JsonNode applicationSettingsNode = grabFirstNodeFromJson(testFileName, "randApplications").get(0);
         JsonNode moduleSettingsNode = grabFirstNodeFromJson(testFileName, "randModuleApplications").get(0);
         Random rand = new Random();
 
         int open = applicationSettingsNode.get("offen").asInt();
-        int inEdit = applicationSettingsNode.get("bearbeitung").asInt();
+        //int inEdit = applicationSettingsNode.get("bearbeitung").asInt();
+        int onWait = applicationSettingsNode.get("warten").asInt();
         int closed = applicationSettingsNode.get("fertig").asInt();
-        int total = open + inEdit + closed;
+        int total = open + onWait + closed;
         
         List<CourseLeipzig> listOfCourseLeipzig = new ArrayList<>();
         List<CourseLeipzig> listOfCLinDB = courseLeipzigRepo.findAll();
@@ -124,13 +145,17 @@ public class DataLoader implements CommandLineRunner {
             CourseLeipzig courseLeipzig = listOfCLinDB.get(randomIdx);
             listOfCourseLeipzig.add(courseLeipzig);
         }
+        
+        System.out.println("Dataloader: Generating random Dummy Applications:");
         int count = 1;
         for (CourseLeipzig cL : listOfCourseLeipzig) {
             List<ModuleBlockCreateDTO> listModuleCreateDTO = new ArrayList<>();
             List<ModuleBlockUpdateDTO> listModuleUpdateDTO = new ArrayList<>();
+
             ApplicationCreateDTO applicationCreateDTO = new ApplicationCreateDTO();
             applicationCreateDTO.setCourseLeipzig(cL.getName());
-
+            
+            
             int rIdx = rand.nextInt(3) + 1;
             for (int i = 0; i < rIdx; i++) {
                 ModuleBlockCreateDTO mBcDTO = createModuleDTO(cL, moduleSettingsNode);
@@ -141,16 +166,55 @@ public class DataLoader implements CommandLineRunner {
                 listModuleUpdateDTO.add(mUdto);
                 count++;
             }
-
             applicationCreateDTO.setCourseLeipzig(cL.getName());
             applicationCreateDTO.setModuleBlockCreateDTOList(listModuleCreateDTO);
 
             String vorgangsnummer = applicationService.createApplication(applicationCreateDTO);
-            System.out.println("Created Dummy Application: " + vorgangsnummer);
+            
+            
+            // updating the status of those randomGen Applications:
+            ApplicationUpdateDTO applicationUpdateDTO = new ApplicationUpdateDTO();
+            Application application = applicationService.getApplicationById(vorgangsnummer);
+
+            String updatedData = "";
+            int updater = onWait + closed;
+            if (updater > 0) {
+                if (closed > 0) {
+                    //update as inEdit
+                    updatedData = "onWait";
+                    applicationUpdateDTO.setUserRole("study_office");
+                    applicationUpdateDTO.setModuleBlockUpdateDTOList(helper("So", application));
+                    closed--;
+                } 
+                else {
+                    //update as closed
+                    updatedData = "closed";
+                    applicationUpdateDTO.setUserRole("pav");
+                    applicationUpdateDTO.setModuleBlockUpdateDTOList(helper("Pav", application));
+                    onWait--;
+                }
+
+                applicationService.updateApplication(vorgangsnummer, applicationUpdateDTO);
+            }
+            else if (open > 0) {
+                updatedData = "open";
+                open --;
+            }
+
+
+
+            
+
+
+            //Printing out the randomGen Applications for ease of Use
+            
+            System.out.println("Created Dummy Application: " + vorgangsnummer + " as: " + updatedData);
         }
+        System.out.println("Dataloader: Testdata successfully loaded into Database"); 
     }
 
-    //Helper methods:
+
+    //Json Helper methods:
 
     /**
      * The function "grabFirstNodeFromJson" reads a JSON file from the given path and returns the first JsonNode
@@ -175,7 +239,6 @@ public class DataLoader implements CommandLineRunner {
                 .orElseThrow(() -> new IllegalArgumentException("Invalid JSON Object"));
     }
 
-
     /**
      * The function grabs the "modules" field from the 'courses' JsonNode and returns it as a JsonNode object 
      * or throws an exception if object invalid.
@@ -191,6 +254,18 @@ public class DataLoader implements CommandLineRunner {
     }
 
 
+    //
+
+    /**
+     * The function `createModuleDTO` creates a `ModuleBlockCreateDTO` object with various properties and
+     * sets a description file based on a resource file.
+     * 
+     * @param cL An instance of the CourseLeipzig class, which contains information about the Leipzig
+     * course.
+     * @param moduleSettingNode A JSON object containing the settings for a module. It has the following
+     * properties: name, university, points, pointsystem, comment.
+     * @return The method is returning a ModuleBlockCreateDTO object.
+     */
     private ModuleBlockCreateDTO createModuleDTO(CourseLeipzig cL, JsonNode moduleSettingNode) {
         ModuleBlockCreateDTO moduleBlockCreateDTO = new ModuleBlockCreateDTO();
         Random rdm = new Random();
@@ -234,11 +309,56 @@ public class DataLoader implements CommandLineRunner {
         return moduleBlockCreateDTO;
     }
 
-
-
+    /**
+     * The function retrieves a String from a random index from a specified node in a JSON object.
+     * 
+     * @param currentNode The `currentNode` parameter is a `JsonNode` object that represents the current
+     * node in a JSON structure.
+     * @param nodeName The `nodeName` parameter is a `String` that represents the name of the node one layer
+     * below the given JsonNode in the JSON structure that you want to retrieve a random value from.
+     * @param rdm The "rdm" parameter is an instance of the Random class, which is used to generate random
+     * numbers. It is passed as an argument to the method so that the method can use it to generate a
+     * random index for selecting a value from the "valueNode".
+     * @return The method is returning a randomly selected value from a specific node in a JSON object.
+     */
     private String getRandValueOfNode(JsonNode currentNode, String nodeName, Random rdm) {
         JsonNode valueNode = currentNode.get(nodeName);
         int rdmIdx = rdm.nextInt(valueNode.size());
         return valueNode.get(rdmIdx).asText();
+    }
+
+
+    private List<ModuleBlockUpdateDTO> helper(String user, Application application) {
+        List<ModuleBlockUpdateDTO> moduleBlockUpdateDTOs = new ArrayList<>();
+        
+        for (ModulesConnection modCon : application.getModulesConnections()) {
+            ModuleBlockUpdateDTO mBlockUpdateDTO = new ModuleBlockUpdateDTO();
+
+            mBlockUpdateDTO.setModuleName(modCon.getModuleApplication().getName());
+            mBlockUpdateDTO.setUniversity(modCon.getModuleApplication().getUniversity());
+            mBlockUpdateDTO.setPoints(modCon.getModuleApplication().getPoints());
+            mBlockUpdateDTO.setPointSystem(modCon.getModuleApplication().getPointSystem());
+            mBlockUpdateDTO.setAsExamCertificate(modCon.getAsExamCertificate());
+            mBlockUpdateDTO.setCommentDecision("finally inner peace");
+
+
+            List<String> moduleNameList = new ArrayList<>();
+            moduleNameList.add(modCon.getModulesLeipzig().get(0).getModuleName());
+            //for (ModuleLeipzig mL : modCon.getModulesLeipzig()) { moduleNameList.add(mL.getModuleName()); }
+            mBlockUpdateDTO.setModuleNamesLeipzig(moduleNameList);
+            
+            mBlockUpdateDTO.setDecisionSuggestion(ANGENOMMEN);
+            if (user.equals("So")) {
+                mBlockUpdateDTO.setCommentStudyOffice("Studyoffice Comment");
+            } 
+            else if (user.equals("Pav")){
+                mBlockUpdateDTO.setCommentStudyOffice("PAV Comment");
+                mBlockUpdateDTO.setDecisionFinal(ANGENOMMEN);
+            }
+
+            moduleBlockUpdateDTOs.add(mBlockUpdateDTO);
+        }
+
+        return moduleBlockUpdateDTOs;
     }
 }
