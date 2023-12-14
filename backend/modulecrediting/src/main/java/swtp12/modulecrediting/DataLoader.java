@@ -59,7 +59,11 @@ public class DataLoader implements CommandLineRunner {
         this.objectMapper = objectMapper;
     }
 
-
+    /**
+     * The run function hooks into the run function of the main. 
+     * Reads Uni Leipzig Data from a JSON and writes it into the database
+     * Reads test data from a Json and writes it into the databse
+     */
     @Override
     @Transactional
     public void run(String... args) {
@@ -70,6 +74,9 @@ public class DataLoader implements CommandLineRunner {
 
         createTestData(testData);
     }
+
+
+    //the two dataloader functions (leipzigData/ testData):
 
     /**
      * The function `leipzigDataLoader` loads data from a JSON file into the database, creating and linking
@@ -183,14 +190,14 @@ public class DataLoader implements CommandLineRunner {
                     //update as inEdit
                     updatedData = "onWait";
                     applicationUpdateDTO.setUserRole("study_office");
-                    applicationUpdateDTO.setModuleBlockUpdateDTOList(helper("So", application));
+                    applicationUpdateDTO.setModuleBlockUpdateDTOList(updateModuleDTO("So", application));
                     closed--;
                 } 
                 else {
                     //update as closed
                     updatedData = "closed";
                     applicationUpdateDTO.setUserRole("pav");
-                    applicationUpdateDTO.setModuleBlockUpdateDTOList(helper("Pav", application));
+                    applicationUpdateDTO.setModuleBlockUpdateDTOList(updateModuleDTO("Pav", application));
                     onWait--;
                 }
 
@@ -212,6 +219,7 @@ public class DataLoader implements CommandLineRunner {
         }
         System.out.println("Dataloader: Testdata successfully loaded into Database"); 
     }
+
 
 
     //Json Helper methods:
@@ -254,7 +262,8 @@ public class DataLoader implements CommandLineRunner {
     }
 
 
-    //
+
+    //Helper methods for creating and updating application data in the database:
 
     /**
      * The function `createModuleDTO` creates a `ModuleBlockCreateDTO` object with various properties and
@@ -327,8 +336,16 @@ public class DataLoader implements CommandLineRunner {
         return valueNode.get(rdmIdx).asText();
     }
 
-
-    private List<ModuleBlockUpdateDTO> helper(String user, Application application) {
+    /**
+     * The `updateModuleDTO` function takes a user and an application as input and returns a list of
+     * `ModuleBlockUpdateDTO` objects with updated information based on the user's role.
+     * 
+     * @param user A string representing the user's name.
+     * @param application An Application object, which contains information about a specific
+     * application.
+     * @return The method `updateModuleDTO` returns a `List<ModuleBlockUpdateDTO>`.
+     */
+    private List<ModuleBlockUpdateDTO> updateModuleDTO(String user, Application application) {
         List<ModuleBlockUpdateDTO> moduleBlockUpdateDTOs = new ArrayList<>();
         
         for (ModulesConnection modCon : application.getModulesConnections()) {
