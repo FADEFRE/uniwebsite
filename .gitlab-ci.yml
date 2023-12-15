@@ -7,7 +7,6 @@ variables:
   DB_PASSWORD: 123
   DB_PORT: 5432
   DB_NAME: development
-  #test
 
 # Wenn der Commit Tag nicht gesetzt ist wird er auf latest gesetzt
 # workflow:
@@ -91,7 +90,7 @@ build_frontend:
 
 deploy:
   stage: deploy
-  needs: ['build_frontend', 'build_backend']
+  #needs: ['build_frontend', 'build_backend']
   when: manual
   image: nginx:1.25.3-alpine
   variables:
