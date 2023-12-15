@@ -1,4 +1,4 @@
-version: '3.7'
+version: '3.8'
 
 services:
 
@@ -26,8 +26,9 @@ services:
       - postgres
     ports: 
       - 8090:8090
-    networks: 
+    networks:
       - swtp_network
+    pull_policy: always
     environment:
       - DB_SERVER=postgres
       - DB_PORT=5432
@@ -46,6 +47,7 @@ services:
       - 8080:80
     networks: 
       - swtp_network
+    pull_policy: always
     environment:
       - VITE_URL=http://172.26.92.91:8090
 
