@@ -90,7 +90,7 @@ build_frontend:
 
 deploy:
   stage: deploy
-  needs: ['build_frontend', 'build_backend']
+  #needs: ['build_frontend', 'build_backend']
   when: manual
   image: nginx:1.25.3-alpine
   variables:
