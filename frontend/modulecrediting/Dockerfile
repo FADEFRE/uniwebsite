@@ -10,7 +10,7 @@ CMD ["npm", "run", "dev", "--", "--host"]
 FROM development as build
 WORKDIR /app
 ARG VITE_URL
-ENV VITE_URL=${VITE_URL}
+ENV VITE_URL=http://172.26.92.91:8090
 COPY . .
 RUN npm run build
 
