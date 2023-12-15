@@ -292,7 +292,7 @@ public class DataLoader implements CommandLineRunner {
         }
         moduleBlockCreateDTO.setModuleNamesLeipzig(listModuleLeipzig);
 
-
+/*
         // Get the class loader to access resources on the classpath
         Path pdfPath = Paths.get("dummy.pdf");
         ClassLoader classLoader = DataLoader.class.getClassLoader();
@@ -314,6 +314,9 @@ public class DataLoader implements CommandLineRunner {
             MultipartFile pdfMultipartFile = new MockMultipartFile("dummy", "dummy.pdf", "application/pdf", "pdf_data_mock".getBytes());
             moduleBlockCreateDTO.setDescription(pdfMultipartFile);
         }
+*/
+        MultipartFile pdfMultipartFile = new MockMultipartFile("dummy", "dummy.pdf", "application/pdf", "pdf_data_mock".getBytes());
+        moduleBlockCreateDTO.setDescription(pdfMultipartFile);
 
         return moduleBlockCreateDTO;
     }

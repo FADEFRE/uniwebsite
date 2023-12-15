@@ -1,0 +1,112 @@
+variables:
+  CI_REGISTRY_IMAGE_BACKEND: docker.io/japark999/swtp_backend
+  CI_REGISTRY_IMAGE_FRONTEND: docker.io/japark999/swtp_frontend
+  CI_REGISTRY: https://index.docker.io/v1/
+  DB_HOST: db
+  DB_USERNAME: admin
+  DB_PASSWORD: 123
+  DB_PORT: 5432
+  DB_NAME: development
+
+# Wenn der Commit Tag nicht gesetzt ist wird er auf latest gesetzt
+# workflow:
+#   rules:
+#     - if: $CI_COMMIT_TAG == ""
+#       variables:
+#         CI_COMMIT_TAG: "latest"
+#     - when: always
+
+stages:
+  - test
+  - build
+  - deploy
+
+test_frontend:
+  stage: test
+  image: node:21.1-alpine3.17
+  script:
+    - cd frontend/modulecrediting
+    - npm install
+    - npm run test
+
+test_backend:
+  stage: test
+  image: public.ecr.aws/docker/library/maven:3.8.4-openjdk-17
+  script:
+    - cd backend/modulecrediting
+    - mvn clean verify
+  # services:
+  #  - name: postgres:16.0-alpine
+  #    alias: db
+  #    variables:
+  #      POSTGRES_PASSWORD: '$DB_PASSWORD'
+  #      POSTGRES_USER: '$DB_USERNAME'
+  #      POSTGRES_DB: '$DB_NAME'
+  #    entrypoint: ['docker-entrypoint.sh']
+  #    command: ['postgres']
+  
+
+# generate_javadoc:
+#   stage: build
+#   image: gradle:8.4.0-jdk17-alpine
+#   script:
+#     - cd creditport-backend
+#     - gradle javadoc
+#   artifacts:
+#     paths:
+#       - creditport-backend/build/docs/javadoc
+#   only:
+#     - developer
+
+
+build_backend:
+  stage: build
+  needs: ['test_backend']
+  when: manual
+  image:
+    name: gcr.io/kaniko-project/executor:v1.14.0-debug
+    entrypoint: ['']
+  script:
+    - echo "{\"auths\":{\"$CI_REGISTRY\":{\"auth\":\"$(echo -n $CI_REGISTRY_USER:$CI_REGISTRY_PASSWORD | base64)\"}}}" > /kaniko/.docker/config.json
+    - /kaniko/executor --context "${CI_PROJECT_DIR}/backend/modulecrediting" --dockerfile
+      "${CI_PROJECT_DIR}/backend/modulecrediting/Dockerfile" --destination "${CI_REGISTRY_IMAGE_BACKEND}:${CI_COMMIT_TAG}"
+  rules:
+    - if: '$CI_COMMIT_TAG'
+
+build_frontend:
+  stage: build
+  needs: ['test_frontend']
+  when: manual
+  image:
+    name: gcr.io/kaniko-project/executor:v1.14.0-debug
+    entrypoint: ['']
+  script:
+    - echo "{\"auths\":{\"$CI_REGISTRY\":{\"auth\":\"$(echo -n $CI_REGISTRY_USER:$CI_REGISTRY_PASSWORD | base64)\"}}}" > /kaniko/.docker/config.json
+    - /kaniko/executor --context "${CI_PROJECT_DIR}/frontend/modulecrediting" --dockerfile "${CI_PROJECT_DIR}/frontend/modulecrediting/Dockerfile" --destination
+      "${CI_REGISTRY_IMAGE_FRONTEND}:${CI_COMMIT_TAG}"
+  rules:
+    - if: '$CI_COMMIT_TAG'
+
+
+deploy:
+  stage: deploy
+  needs: ['build_frontend', 'build_backend']
+  when: manual
+  image: nginx:1.25.3-alpine
+  variables:
+    DOCKER_HOST: ssh://$DEPLOY_USER@$DEPLOY_SERVER
+  before_script:
+    - apk update
+    - apk add openssh docker docker-compose
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh && chmod 700 ~/.ssh
+    - echo "$SSH_KNOWN_HOSTS" >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+  script:
+    - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
+    - docker compose -f docker-compose-prod.yml stop frontend backend postgres
+    - docker compose rm -f frontend backend postgres
+    - docker compose -f docker-compose-prod.yml up -d frontend backend postgres
+
+#
