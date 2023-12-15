@@ -20,7 +20,7 @@ services:
 
   backend:
     container_name: backend
-    image: japark999/swtp_backend:latest
+    image: fadefre824/swtp202312:backend-latest
     restart: always
     depends_on: 
       - postgres
@@ -38,7 +38,7 @@ services:
       
   frontend:
     container_name: frontend
-    image: japark999/swtp_frontend:latest
+    image: fadefre824/swtp202312:frontend-latest
     restart: always
     depends_on:
       - backend
