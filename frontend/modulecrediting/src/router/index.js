@@ -6,6 +6,7 @@ import SelectionView from "@/views/SelectionView.vue";
 import StudyOfficeDetailView from "@/views/StudyOfficeDetailView.vue";
 import ChairmanDetailView from "@/views/ChairmanDetailView.vue";
 import LoginView from "@/views/LoginView.vue";
+import dummyView from "@/views/dummyView.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -51,6 +52,11 @@ const router = createRouter({
       path: '/chairman/:id',
       name: 'chairmanDetail',
       component: ChairmanDetailView
+    },
+    {
+      path: '/jwtdummy',
+      name: 'jwtdummy',
+      component: dummyView
     }
   ]
 })
