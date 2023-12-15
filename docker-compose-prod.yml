@@ -50,7 +50,7 @@ services:
       - VITE_URL_TEST=http://172.26.92.91:8090
 
 volumes:
-  backend-db:
+  backend_db:
     name: backend_db
 
 networks:
