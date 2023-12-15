@@ -1,13 +1,13 @@
 variables:
-  CI_REGISTRY_IMAGE: docker.io/fadefre824/swtp202312
-  CI_REGISTRY: https://index.docker.io/v1/
-  CI_REGISTRY_PASSWORD: h2#0!87tZh8027hF
-  CI_REGISTRY_USER: fadefre824
+  CI_REGISTRY_1_IMAGE_1: docker.io/fadefre824/swtp202312
+  CI_REGISTRY_1: https://index.docker.io/v1/
+  CI_REGISTRY_1_PASSWORD: h2#0!87tZh8027hF
+  CI_REGISTRY_1_USER: fadefre824
   CI_COMMIT_TAG: latest
-  DEPLOY_SERVER: 172.26.92.91
-  DEPLOY_USER: swtp
-  SSH_KNOWN_HOSTS: "172.26.92.91 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBP3TtNAESWwq9RwHvzH/ZCqsDKT5XCHNmmZDrexxuslv/4AIi2Mvm0WaWH4Iv93MB3nNVAdXtXiwawZQkXRSLLs="
-  SSH_PRIVATE_KEY: "-----BEGIN OPENSSH PRIVATE KEY-----\nb3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW\nQyNTUxOQAAACDnCz53HMApyAwVGp8zQMlrK96CF6Iuj/hI/e/numHscgAAAKhlT6JYZU+i\nWAAAAAtzc2gtZWQyNTUxOQAAACDnCz53HMApyAwVGp8zQMlrK96CF6Iuj/hI/e/numHscg\nAAAECVZ3FmbhT0RfqrPeW5i0aOV6yz3ybPJxw8/vocg27FGecLPnccwCnIDBUanzNAyWsr\n3oIXoi6P+Ej97+e6YexyAAAAIG55NjNmYWJpQHN0dWRzZXJ2LnVuaS1sZWlwemlnLmRlAQ\nIDBAU=\n-----END OPENSSH PRIVATE KEY-----"
+  DEPLOY_1_SERVER: 172.26.92.91
+  DEPLOY_1_USER: swtp
+  SSH_KNOWN_HOSTS_1: "172.26.92.91 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBP3TtNAESWwq9RwHvzH/ZCqsDKT5XCHNmmZDrexxuslv/4AIi2Mvm0WaWH4Iv93MB3nNVAdXtXiwawZQkXRSLLs="
+  SSH_PRIVATE_KEY_1: "-----BEGIN OPENSSH PRIVATE KEY-----\nb3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW\nQyNTUxOQAAACDnCz53HMApyAwVGp8zQMlrK96CF6Iuj/hI/e/numHscgAAAKhlT6JYZU+i\nWAAAAAtzc2gtZWQyNTUxOQAAACDnCz53HMApyAwVGp8zQMlrK96CF6Iuj/hI/e/numHscg\nAAAECVZ3FmbhT0RfqrPeW5i0aOV6yz3ybPJxw8/vocg27FGecLPnccwCnIDBUanzNAyWsr\n3oIXoi6P+Ej97+e6YexyAAAAIG55NjNmYWJpQHN0dWRzZXJ2LnVuaS1sZWlwemlnLmRlAQ\nIDBAU=\n-----END OPENSSH PRIVATE KEY-----"
   DB_HOST: db
   DB_USERNAME: admin
   DB_PASSWORD: 123
@@ -74,9 +74,9 @@ build_backend:
     name: gcr.io/kaniko-project/executor:v1.14.0-debug
     entrypoint: ['']
   script:
-    - echo "{\"auths\":{\"$CI_REGISTRY\":{\"auth\":\"$(echo -n $CI_REGISTRY_USER:$CI_REGISTRY_PASSWORD | base64)\"}}}" > /kaniko/.docker/config.json
+    - echo "{\"auths\":{\"$CI_REGISTRY_1\":{\"auth\":\"$(echo -n $CI_REGISTRY_1_USER:$CI_REGISTRY_1_PASSWORD | base64)\"}}}" > /kaniko/.docker/config.json
     - /kaniko/executor --context "${CI_PROJECT_DIR}/backend/modulecrediting" --dockerfile
-      "${CI_PROJECT_DIR}/backend/modulecrediting/Dockerfile" --destination "${CI_REGISTRY_IMAGE}:backend-${CI_COMMIT_TAG}"
+      "${CI_PROJECT_DIR}/backend/modulecrediting/Dockerfile" --destination "${CI_REGISTRY_1_IMAGE_1}:backend-${CI_COMMIT_TAG}"
   rules:
     - if: '$CI_COMMIT_TAG'
 
@@ -88,9 +88,9 @@ build_frontend:
     name: gcr.io/kaniko-project/executor:v1.14.0-debug
     entrypoint: ['']
   script:
-    - echo "{\"auths\":{\"$CI_REGISTRY\":{\"auth\":\"$(echo -n $CI_REGISTRY_USER:$CI_REGISTRY_PASSWORD | base64)\"}}}" > /kaniko/.docker/config.json
+    - echo "{\"auths\":{\"$CI_REGISTRY_1\":{\"auth\":\"$(echo -n $CI_REGISTRY_1_USER:$CI_REGISTRY_1_PASSWORD | base64)\"}}}" > /kaniko/.docker/config.json
     - /kaniko/executor --context "${CI_PROJECT_DIR}/frontend/modulecrediting" --dockerfile "${CI_PROJECT_DIR}/frontend/modulecrediting/Dockerfile" --destination
-      "${CI_REGISTRY_IMAGE}:frontend-${CI_COMMIT_TAG}"
+      "${CI_REGISTRY_1_IMAGE_1}:frontend-${CI_COMMIT_TAG}"
   rules:
     - if: '$CI_COMMIT_TAG'
 
@@ -101,17 +101,17 @@ deploy:
   when: manual
   image: nginx:1.25.3-alpine
   variables:
-    DOCKER_HOST: ssh://$DEPLOY_USER@$DEPLOY_SERVER
+    DOCKER_HOST: ssh://$DEPLOY_1_USER@$DEPLOY_1_SERVER
   before_script:
     - apk update
     - apk add openssh docker docker-compose
     - eval $(ssh-agent -s)
-    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - echo "$SSH_PRIVATE_KEY_1" | tr -d '\r' | ssh-add -
     - mkdir -p ~/.ssh && chmod 700 ~/.ssh
-    - echo "$SSH_KNOWN_HOSTS" >> ~/.ssh/known_hosts
+    - echo "$SSH_KNOWN_HOSTS_1" >> ~/.ssh/known_hosts
     - chmod 644 ~/.ssh/known_hosts
   script:
-    - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
+    - echo $CI_REGISTRY_1_PASSWORD | docker login -u $CI_REGISTRY_1_USER --password-stdin $CI_REGISTRY_1
     - docker compose -f docker-compose-prod.yml stop frontend backend postgres
     - docker compose rm -f frontend backend postgres
     - docker compose -f docker-compose-prod.yml up -d frontend backend postgres
