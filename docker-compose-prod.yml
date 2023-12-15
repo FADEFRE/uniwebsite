@@ -47,7 +47,7 @@ services:
     networks: 
       - swtp_network
     environment:
-      - VITE_URL_TEST=http://172.26.92.91:8090
+      - VITE_URL=http://172.26.92.91:8090
 
 volumes:
   backend_db:

@@ -9,6 +9,8 @@ CMD ["npm", "run", "dev", "--", "--host"]
 # build
 FROM development as build
 WORKDIR /app
+ARG VITE_URL
+ENV VITE_URL=${VITE_URL}
 COPY . .
 RUN npm run build
 
