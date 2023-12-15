@@ -4,11 +4,6 @@ import static swtp12.modulecrediting.model.EnumModuleConnectionDecision.ANGENOMM
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -292,29 +287,6 @@ public class DataLoader implements CommandLineRunner {
         }
         moduleBlockCreateDTO.setModuleNamesLeipzig(listModuleLeipzig);
 
-/*
-        // Get the class loader to access resources on the classpath
-        Path pdfPath = Paths.get("dummy.pdf");
-        ClassLoader classLoader = DataLoader.class.getClassLoader();
-        URL resource = classLoader.getResource(pdfPath.toString());
-
-        // Check if the resource (file) exists
-        if (resource != null) {
-            try { // Read the file content
-                Path filePath = Paths.get(resource.toURI());
-                byte[] pdf = Files.readAllBytes(filePath);
-                MultipartFile pdfMultipartFile = new MockMultipartFile("dummy", "dummy.pdf", "application/pdf", pdf);
-                moduleBlockCreateDTO.setDescription(pdfMultipartFile);
-
-            } catch (IOException | URISyntaxException e) {
-                throw new RuntimeException("Failed to read dummy.pdf", e);
-            }
-        } else {
-            System.out.println("File not found: " + pdfPath);
-            MultipartFile pdfMultipartFile = new MockMultipartFile("dummy", "dummy.pdf", "application/pdf", "pdf_data_mock".getBytes());
-            moduleBlockCreateDTO.setDescription(pdfMultipartFile);
-        }
-*/
         MultipartFile pdfMultipartFile = new MockMultipartFile("dummy", "dummy.pdf", "application/pdf", "pdf_data_mock".getBytes());
         moduleBlockCreateDTO.setDescription(pdfMultipartFile);
 
