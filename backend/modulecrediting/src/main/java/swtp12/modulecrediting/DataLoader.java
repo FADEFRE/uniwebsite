@@ -1,6 +1,7 @@
 package swtp12.modulecrediting;
 
 import static swtp12.modulecrediting.model.EnumModuleConnectionDecision.ANGENOMMEN;
+import static swtp12.modulecrediting.model.EnumUserRole.*;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,6 +21,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.transaction.Transactional;
+
+
 import swtp12.modulecrediting.dto.ApplicationCreateDTO;
 import swtp12.modulecrediting.dto.ApplicationUpdateDTO;
 import swtp12.modulecrediting.dto.ModuleBlockCreateDTO;
@@ -28,8 +31,10 @@ import swtp12.modulecrediting.model.Application;
 import swtp12.modulecrediting.model.CourseLeipzig;
 import swtp12.modulecrediting.model.ModuleLeipzig;
 import swtp12.modulecrediting.model.ModulesConnection;
+import swtp12.modulecrediting.model.User;
 import swtp12.modulecrediting.repository.CourseLeipzigRepository;
 import swtp12.modulecrediting.repository.ModuleLeipzigRepository;
+import swtp12.modulecrediting.repository.UserRepository;
 import swtp12.modulecrediting.service.ApplicationService;
 
 
@@ -43,6 +48,9 @@ public class DataLoader implements CommandLineRunner {
 
     @Autowired
     private CourseLeipzigRepository courseLeipzigRepo;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private ApplicationService applicationService;
@@ -64,6 +72,13 @@ public class DataLoader implements CommandLineRunner {
     public void run(String... args) {
         String moduleLeipzigData = "/module_liste.json";
         String testData = "/test_data.json";
+
+        User study_office = new User("studyOff", "abc123", STUDY_OFFICE);
+        User chairman = new User("chairM", "xyz789", CHAIRMAN);
+        User admin = new User("admin", "admin", ADMIN);
+        userRepository.save(study_office);
+        userRepository.save(chairman);
+        userRepository.save(admin);
 
         leipzigDataLoader(moduleLeipzigData);
 
