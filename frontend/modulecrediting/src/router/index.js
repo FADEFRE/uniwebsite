@@ -6,7 +6,8 @@ import SelectionView from "@/views/SelectionView.vue";
 import StudyOfficeDetailView from "@/views/StudyOfficeDetailView.vue";
 import ChairmanDetailView from "@/views/ChairmanDetailView.vue";
 import LoginView from "@/views/LoginView.vue";
-import dummyView from "@/views/dummyView.vue"
+import JWTloginView from "@/views/JWTloginView.vue"
+import JWTstatusView from "@/views/JWTstatusView.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -54,9 +55,14 @@ const router = createRouter({
       component: ChairmanDetailView
     },
     {
-      path: '/jwtdummy',
-      name: 'jwtdummy',
-      component: dummyView
+      path: '/jwtlogin',
+      name: 'jwtlogin',
+      component: JWTloginView
+    },
+    {
+      path: '/jwtstatus',
+      name: 'jwtstatus',
+      component: JWTstatusView
     }
   ]
 })
