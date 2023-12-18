@@ -20,6 +20,7 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
 
     //TODO: Multiple User Roles
+    //TODO: check for existing!!!
     public AuthenticationResponse register(RegisterRequest request) {
         var user = User.builder()
             .username(request.getUsername())
@@ -42,4 +43,14 @@ public class AuthenticationService {
             .build();
     }
     
+
+
+    public void writeUser(String username, String password, EnumUserRole role) {
+        var user = User.builder()
+            .username(username)
+            .password(passwordEncoder.encode(password))
+            .role(role)
+            .build();
+        userRepository.save(user);
+    }
 }
