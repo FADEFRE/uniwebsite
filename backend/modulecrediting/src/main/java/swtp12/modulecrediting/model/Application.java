@@ -4,53 +4,64 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.NamedAttributeNode;
+import jakarta.persistence.NamedEntityGraph;
+import jakarta.persistence.OneToMany;
+
 import org.hibernate.annotations.CreationTimestamp;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonView;
 
-@Entity
-@Getter
-@Setter
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+
+@Data
 @NoArgsConstructor
+@Entity
 @NamedEntityGraph(
         name = "graph.Application.modulesConnections",
         attributeNodes = @NamedAttributeNode(value = "modulesConnections")
 )
- public class Application {
+public class Application {
+
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private ApplicationStatus fullStatus;
+    @JsonView({Views.ApplicationOverview.class,Views.RelatedModulesConnection.class})
+    private String id;
+
+    @JsonView({Views.ApplicationOverview.class,Views.RelatedModulesConnection.class})
+    private EnumApplicationStatus fullStatus;
     @CreationTimestamp
+    @JsonView({Views.ApplicationOverview.class,Views.RelatedModulesConnection.class})
     private LocalDate creationDate;
+    @JsonView({Views.ApplicationOverview.class,Views.RelatedModulesConnection.class})
     private LocalDate decisionDate;
 
     //Relation Application <-> CourseLeipzig
     @ManyToOne
     @JoinColumn(name = "course_leipzig_id")
     @JsonManagedReference
+    @JsonView({Views.ApplicationOverview.class,Views.RelatedModulesConnection.class})
     private CourseLeipzig courseLeipzig;
 
     //Relation Application <-> ModulesConnection
-    @OneToMany(mappedBy = "application" , cascade = CascadeType.ALL , orphanRemoval = true)
+    @OneToMany(mappedBy = "application", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
+    @JsonView(Views.ApplicationStudent.class)
     private List<ModulesConnection> modulesConnections = new ArrayList<>();
 
 
-    public Application(ApplicationStatus fullStatus, LocalDate creationDate, LocalDate decisionDate) {
+    public Application(String id, EnumApplicationStatus fullStatus, LocalDate creationDate) {
+        this.id = id;
         this.fullStatus = fullStatus;
         this.creationDate = creationDate;
-        this.decisionDate = decisionDate;
-    }
-
-    public enum ApplicationStatus{
-        OFFEN,
-        IN_BEARBEITUNG,
-        ABGESCHLOSSEN
     }
 
 

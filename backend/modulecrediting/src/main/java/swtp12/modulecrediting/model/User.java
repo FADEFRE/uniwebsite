@@ -1,26 +1,32 @@
 package swtp12.modulecrediting.model;
 
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
-@Entity
-@Getter
-@Setter
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+
+
+@Data
 @NoArgsConstructor
+@Entity
 @Table(name = "app_user")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Long id;
     private String username;
     private String password;
     private String role; //enum?
+
 
     public User(String username, String password, String role) {
         this.username = username;
         this.password = password;
         this.role = role;
     }
+
 }

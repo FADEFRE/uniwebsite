@@ -63,6 +63,18 @@ http://localhost:8090/applications/{id}
  -> GET: getApplicationById (full applicaiton for sutdienbuero and pav)
     (pdf id is included: use for retrieving pdf data over seperate api endpoint)
 
+http://localhost:8090/applications/{id}
+ -> PUT: update applicaiton
+    - moduleBlockUpdateDTOList[0].moduleName: ...
+    - moduleBlockUpdateDTOList[0].university: ...
+    - moduleBlockUpdateDTOList[0].points: ...
+    - moduleBlockUpdateDTOList[0].pointSystem: ...
+    - moduleBlockUpdateDTOList[0].moduleNameLeipzig[0]: Berechenbarkeit (!!! important name must be in database !!!)
+    - moduleBlockUpdateDTOList[0].moduleNameLeipzig[1]: ...
+    - moduleBlockUpdateDTOList[0].decision: {ANGENOMMEN,VERAENDERT_ANGENOMMEN,ABGELEHNT,UNBEARBEITET}
+    - moduleBlockUpdateDTOList[0].comment: ...
+    - moduleBlockUpdateDTOList[1].moduleName: ...
+
 http://localhost:8090/applications/{id}/exists
  -> GET: boolean if application with id exists
 
@@ -74,4 +86,12 @@ http://localhost:8090/pdf-documents/{id}
 
  -> GET: get single pdf file
 
-## Add your files
+http://localhost:8090/applications/pdf-data/{id}
+ -> GET: generated PDF Document with application Data
+
+
+http://localhost:8090/modules-connection/{id}/related
+
+-> GET: all related modules-connections of a module connection 
+
+

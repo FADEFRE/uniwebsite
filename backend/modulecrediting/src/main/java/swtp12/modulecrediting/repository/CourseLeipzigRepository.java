@@ -8,6 +8,8 @@ import swtp12.modulecrediting.model.CourseLeipzig;
 import java.util.Optional;
 
 @Repository
-public interface CourseLeipzigRepository extends JpaRepository<CourseLeipzig, Long>{
+public interface CourseLeipzigRepository extends JpaRepository<CourseLeipzig, String>{
     Optional<CourseLeipzig> findByName(String name);
+
+    boolean existsByName(String name);
 }

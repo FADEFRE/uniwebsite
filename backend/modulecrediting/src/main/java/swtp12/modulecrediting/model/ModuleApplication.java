@@ -2,36 +2,60 @@ package swtp12.modulecrediting.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonView;
 
-import lombok.Getter;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Entity
-@Getter
-@Setter
+
+
+
+@Data
 @NoArgsConstructor
+@Entity
 public class ModuleApplication {   
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Long id;
+    @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class})
+    @NotBlank(message = "module name must not be blank (empty String)")
     private String name;
+    @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class})
+    @NotNull(message = "points must not be null")
     private Integer points;
+    @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class})
+    @NotNull(message = "point system must not be null")
     private String pointSystem;
+    @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class})
+    @NotBlank(message = "university must not be blank (empty String)")
     private String university;
+    @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class})
+    @NotNull(message = "comment applicant must not be null")
     private String commentApplicant;
 
+    //Relation ModuleApplication <-> PdfDocument
+    @OneToOne(cascade = CascadeType.ALL , orphanRemoval = true, fetch = FetchType.EAGER)
+    @JsonManagedReference
+    @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class})
+    private PdfDocument pdfDocument;
+
     //Relation ModuleApplication <-> ModulesConnection (Setter in ModulesConnection)
-    @OneToOne(targetEntity = ModulesConnection.class , mappedBy = "moduleApplication")
+    @OneToOne(mappedBy = "moduleApplication")
     @JsonBackReference
+    @EqualsAndHashCode.Exclude
     private ModulesConnection modulesConnection;
 
-    //Relation ModuleApplication <-> PdfDocument
-    @OneToOne(targetEntity = PdfDocument.class , cascade = CascadeType.ALL , orphanRemoval = true)
-    @JoinColumn(name = "pdf_document_id")
-    @JsonManagedReference
-    private PdfDocument pdfDocument;
+
 
     public ModuleApplication(String name, Integer points, String pointSystem, String university, String commentApplicant) {
         this.name = name;

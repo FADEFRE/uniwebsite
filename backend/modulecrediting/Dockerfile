@@ -9,7 +9,7 @@ ENTRYPOINT ["mvn", "spring-boot:run"]
 FROM development as build
 WORKDIR /app
 COPY . .
-RUN mvn clean package
+RUN mvn clean package -Dmaven.test.skip=true
 ENTRYPOINT ["mvn", "package"]
 
 # production

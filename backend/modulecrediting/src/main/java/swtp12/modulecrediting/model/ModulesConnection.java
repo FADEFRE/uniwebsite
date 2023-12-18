@@ -3,35 +3,54 @@ package swtp12.modulecrediting.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonView;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
+
+import jakarta.validation.constraints.NotNull;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+import static swtp12.modulecrediting.model.EnumModuleConnectionDecision.*;
+
+
+@Data
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor
- public class ModulesConnection {
+public class ModulesConnection {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
+    @JsonView(Views.ApplicationLogin.class)
     private Long id;
-    private ModuleConnectionDecision decision; //Enum maybe
-    private ModuleConnectionDecision decisionSuggestion;
-    private String comment;
+    @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class})
+    @NotNull(message = "decisionFinal must not be null")
+    private EnumModuleConnectionDecision decisionFinal;
+    @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class})
+    @NotNull(message = "commentDecision must not be null")
+    private String commentDecision;
 
-    //Relation ModulesConnection <-> Application (Setter in Application)
-    @ManyToOne
-    @JoinColumn(name = "application_id")
-    @JsonBackReference
-    private Application application;
+    @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class})
+    @NotNull(message = "asExamCertificate must not be null")
+    private Boolean asExamCertificate;
+    @JsonView(Views.ApplicationLogin.class)
+    @NotNull(message = "decisionSuggestion must not be null")
+    private EnumModuleConnectionDecision decisionSuggestion;
+    @JsonView(Views.ApplicationStudent.class)
+    @NotNull(message = "commentStudyOffice must not be null")
+    private String commentStudyOffice;
 
     //Relation ModulesConnection <-> ModuleApplication (Setter in ModuleApplication)
     @OneToOne(cascade = CascadeType.ALL , orphanRemoval = true)
-    @JoinColumn(name = "module_application_id")
     @JsonManagedReference
+    @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class})
     private ModuleApplication moduleApplication;
 
     //Relation ModulesConnection <-> ModuleLeipzig
@@ -42,34 +61,50 @@ import lombok.Setter;
             inverseJoinColumns = @JoinColumn(name = "module_leipzig_id")
     )
     @JsonManagedReference
+    @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class})
     private List<ModuleLeipzig> modulesLeipzig = new ArrayList<>();
 
+    //Relation ModulesConnection <-> Application (Setter in Application)
+    @ManyToOne
+    @JsonView(Views.RelatedModulesConnection.class)
+    @EqualsAndHashCode.Exclude
+    private Application application;
 
-    public ModulesConnection(ModuleConnectionDecision decision, ModuleConnectionDecision decisionSuggestion, String comment) {
-        this.decision = decision;
-        this.decisionSuggestion = decisionSuggestion;
-        this.comment = comment;
-    }
 
-    public enum ModuleConnectionDecision{
-        ANGENOMMEN,
-        VERAENDERT_ANGENOMMEN,
-        ABGELEHNT,
-        UNBEARBEITET
+    public ModulesConnection() {
+        decisionFinal = UNBEARBEITET;
+        decisionSuggestion = UNBEARBEITET;
+        commentDecision = "";
+        commentStudyOffice = "";
+        asExamCertificate = false;
     }
 
 
     //Function to add ModuleApplication to this ModuleConnection (and add this ModuleConnection to the ModuleApplication)
     public void addModuleApplication(ModuleApplication moduleApplication) {
-      moduleApplication.setModulesConnection(this);
-      this.moduleApplication = moduleApplication;
+        moduleApplication.setModulesConnection(this);
+        this.moduleApplication = moduleApplication;
     }
 
-    //Function to add List of ModuleLeipzig to this ModulesConnection (and add this ModuleConnectio to all ModulesLeipzig in the List)
-    public void addModulesLeipzig(List<ModuleLeipzig> modulesLeipzig) {
+    //Function to set List of ModuleLeipzig to this ModulesConnection (and add this ModuleConnectio to all ModulesLeipzig in the List)
+    public void setModulesLeipzig(List<ModuleLeipzig> modulesLeipzig) {
         for(ModuleLeipzig m : modulesLeipzig) { 
             m.getModulesConnections().add(this);
         }
-       this.modulesLeipzig = modulesLeipzig;
-   }
+    this.modulesLeipzig = modulesLeipzig;
+    }
+
+    public void addModulesLeipzig(List<ModuleLeipzig> modulesLeipzig) {
+        for(ModuleLeipzig m : modulesLeipzig) {
+            m.getModulesConnections().add(this);
+            this.modulesLeipzig.add(m);
+        }
+    }
+
+    public void removeModulesLeipzig(List<ModuleLeipzig> modulesLeipzig) {
+        for(ModuleLeipzig m : modulesLeipzig) {
+            m.getModulesConnections().remove(this);
+            this.modulesLeipzig.remove(m);
+        }
+    }
 }

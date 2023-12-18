@@ -2,7 +2,6 @@ version: '3.7'
 
 services:
 
-
   postgres:
     container_name: postgres_container
     ports:
@@ -20,8 +19,11 @@ services:
       - swtp_network
 
   backend:
-    image: docker.io/japark999/swtp_backend
     container_name: backend
+    build:
+      context: ./backend/modulecrediting/
+      dockerfile: Dockerfile
+    image: swtp_backend
     restart: always
     depends_on: 
       - postgres
@@ -31,20 +33,28 @@ services:
       - swtp_network
     environment:
       - DB_SERVER=postgres
+      - DB_PORT=5432
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=123
       
+      
   frontend:
     container_name: frontend
-    image: docker.io/japark999/swtp_frontend
+    build:
+      context: ./frontend/modulecrediting/
+      dockerfile: Dockerfile
+      target: production
+    image: swtp_frontend
     restart: always
     depends_on:
       - backend
     ports:
-      - 80:80
+      - 8080:80
     networks: 
       - swtp_network
+    environment:
+      - VITE_URL_TEST=http://localhost:8090
 
 
 

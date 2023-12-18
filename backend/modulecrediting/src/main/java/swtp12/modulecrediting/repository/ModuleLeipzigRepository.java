@@ -8,7 +8,8 @@ import swtp12.modulecrediting.model.ModuleLeipzig;
 import java.util.Optional;
 
 @Repository
-public interface ModuleLeipzigRepository extends JpaRepository<ModuleLeipzig, Long>{
-
+public interface ModuleLeipzigRepository extends JpaRepository<ModuleLeipzig, String>{
     Optional<ModuleLeipzig> findByModuleName(String moduleName);
+
+    boolean existsByModuleName(String moduleName);
 }
