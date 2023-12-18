@@ -204,15 +204,8 @@ public class ApplicationService {
         return sb.toString();
     }
 
-    public List<Application> getAllApplciations(int limit, Optional<EnumApplicationStatus> status){
-        Pageable pageeable = PageRequest.of(0, limit, Sort.by("creationDate").descending());
-        if(status.isPresent()) {
-            Page<Application> page = applicationRepository.findByFullStatus(status.get(), pageeable);
-            return page.getContent();
-        }else {
-            Page<Application> page = applicationRepository.findAllBy(pageeable);
-            return page.getContent();
-        }
+    public List<Application> getAllApplciations(){
+        return applicationRepository.findAll();
     }
 
     public Application getApplicationById(String id) {

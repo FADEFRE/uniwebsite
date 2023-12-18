@@ -16,9 +16,5 @@ public interface ApplicationRepository extends JpaRepository<Application, String
     @EntityGraph(value = "graph.Application.modulesConnections", type = EntityGraph.EntityGraphType.LOAD)
     Optional<Application> findById(String id);
 
-    Page<Application> findAllBy(Pageable pageable);
-
-    Page<Application> findByFullStatus(EnumApplicationStatus status, Pageable pageable);
-
     boolean existsById(String id);
 }

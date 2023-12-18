@@ -53,12 +53,9 @@ public class ApplicationController {
 
     @GetMapping
     @JsonView(Views.ApplicationOverview.class)
-    public ResponseEntity<List<Application>> getAllCreditTransferApplications(
-        @RequestParam(defaultValue = "10") int limit,
-        @RequestParam(required = false) EnumApplicationStatus status) {
-            List<Application> allApplications = applicationService.getAllApplciations(limit, Optional.ofNullable(status));
-            return new ResponseEntity<>(allApplications, HttpStatus.OK);
-        }
+    public ResponseEntity<List<Application>> get() {
+            return ResponseEntity.ok(applicationService.getAllApplciations());
+    }
 
     @GetMapping("/{id}")
     @JsonView(Views.ApplicationLogin.class)
