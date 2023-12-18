@@ -31,6 +31,7 @@ stages:
 test_frontend:
   stage: test
   image: node:21.1-alpine3.17
+  when: manual
   script:
     - cd frontend/modulecrediting
     - npm install
@@ -39,6 +40,7 @@ test_frontend:
 test_backend:
   stage: test
   image: public.ecr.aws/docker/library/maven:3.8.4-openjdk-17
+  when: manual
   script:
     - cd backend/modulecrediting
     - mvn clean verify

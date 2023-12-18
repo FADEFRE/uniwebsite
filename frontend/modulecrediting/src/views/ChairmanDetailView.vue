@@ -100,7 +100,6 @@ const triggerPutData = () => {
       <Button @click="triggerPutData">Speichern</Button>
 
     </div>
-
   </div>
 </template>
 
