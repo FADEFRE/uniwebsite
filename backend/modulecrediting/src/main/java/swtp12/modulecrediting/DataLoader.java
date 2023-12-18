@@ -73,13 +73,15 @@ public class DataLoader implements CommandLineRunner {
         String moduleLeipzigData = "/module_liste.json";
         String testData = "/test_data.json";
 
-        User study_office = new User("studyOff", "abc123", STUDY_OFFICE);
-        User chairman = new User("chairM", "xyz789", CHAIRMAN);
-        User admin = new User("admin", "admin", ADMIN);
+/*
+        //!outdated Create users
+        User study_office = new User(null, "studyOff", "abc123", STUDY_OFFICE);
+        User chairman = new User(null, "chairM", "xyz789", CHAIRMAN);
+        User admin = new User(null, "admin", "admin", ADMIN);
         userRepository.save(study_office);
         userRepository.save(chairman);
         userRepository.save(admin);
-
+*/
         leipzigDataLoader(moduleLeipzigData);
 
         createTestData(testData);
