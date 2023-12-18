@@ -19,7 +19,7 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
 
-
+    //TODO: Multiple User Roles
     public AuthenticationResponse register(RegisterRequest request) {
         var user = User.builder()
             .username(request.getUsername())
