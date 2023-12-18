@@ -2,7 +2,7 @@
 import { useRoute, useRouter } from 'vue-router'
 import { ref, computed, onMounted, onBeforeMount } from "vue";
 import { url } from "@/scripts/url-config";
-import axios from "axios";
+import axios from "https://cdn.jsdelivr.net/npm/axios@1.3.5/+esm";
 
 const route = useRoute()
 

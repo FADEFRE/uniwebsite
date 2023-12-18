@@ -5,7 +5,7 @@ import { useRouter } from "vue-router"
 import { ref, reactive, computed, provide } from "vue"
 import { postApplication } from "@/scripts/axios-requests";
 import { url } from "@/scripts/url-config"
-import axios from "axios";
+import axios from "https://cdn.jsdelivr.net/npm/axios@1.3.5/+esm";
 
 const router = useRouter()
 
