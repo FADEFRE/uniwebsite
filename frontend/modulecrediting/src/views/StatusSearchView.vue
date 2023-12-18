@@ -12,7 +12,7 @@ functionality:
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
 import { url } from "@/scripts/url-config";
-import axios from "https://cdn.jsdelivr.net/npm/axios@1.3.5/+esm";
+import axios from "axios";
 
 const router = useRouter()
 

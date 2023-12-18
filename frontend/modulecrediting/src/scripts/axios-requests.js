@@ -1,5 +1,6 @@
-import { url } from "./url-config.js"
-import axios from "https://cdn.jsdelivr.net/npm/axios@1.3.5/+esm";
+import { url } from "@/scripts/url-config.js"
+import axios from "axios";
+
 
 /*
 GET-Request to '/courses-leipzig' endpoint
