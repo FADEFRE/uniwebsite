@@ -31,10 +31,9 @@ import swtp12.modulecrediting.model.Application;
 import swtp12.modulecrediting.model.CourseLeipzig;
 import swtp12.modulecrediting.model.ModuleLeipzig;
 import swtp12.modulecrediting.model.ModulesConnection;
-import swtp12.modulecrediting.model.User;
 import swtp12.modulecrediting.repository.CourseLeipzigRepository;
 import swtp12.modulecrediting.repository.ModuleLeipzigRepository;
-import swtp12.modulecrediting.repository.UserRepository;
+import swtp12.modulecrediting.security.AuthenticationService;
 import swtp12.modulecrediting.service.ApplicationService;
 
 
@@ -50,10 +49,10 @@ public class DataLoader implements CommandLineRunner {
     private CourseLeipzigRepository courseLeipzigRepo;
 
     @Autowired
-    private UserRepository userRepository;
+    private ApplicationService applicationService;
 
     @Autowired
-    private ApplicationService applicationService;
+    private AuthenticationService authenticationService;
 
     private final ObjectMapper objectMapper;
 
@@ -73,15 +72,10 @@ public class DataLoader implements CommandLineRunner {
         String moduleLeipzigData = "/module_liste.json";
         String testData = "/test_data.json";
 
-/*
-        //!outdated Create users
-        User study_office = new User(null, "studyOff", "abc123", STUDY_OFFICE);
-        User chairman = new User(null, "chairM", "xyz789", CHAIRMAN);
-        User admin = new User(null, "admin", "admin", ADMIN);
-        userRepository.save(study_office);
-        userRepository.save(chairman);
-        userRepository.save(admin);
-*/
+        authenticationService.writeUser("studyoffice", "abc123", STUDY_OFFICE);
+        authenticationService.writeUser("pav", "pav123", CHAIRMAN);
+        authenticationService.writeUser("admin", "admin", ADMIN);
+
         leipzigDataLoader(moduleLeipzigData);
 
         createTestData(testData);
