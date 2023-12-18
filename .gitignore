@@ -5,8 +5,6 @@
 *.local
 
 ### Backend ###
-backend/**/*.properties
-!backend/**/application-prod.properties
 
 
 ### Frontend ###
