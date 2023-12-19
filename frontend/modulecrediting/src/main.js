@@ -5,10 +5,6 @@ import App from './App.vue'
 import router from './router'
 
 const app = createApp(App)
-<<<<<<< HEAD
-
-app.use(router)
-=======
     .use(router)
 
 // PrimeVue setup
@@ -32,7 +28,6 @@ app.use(PrimeVue)
     .component('FileUpload', FileUpload)
     .component('SelectButton', SelectButton)
     .component('Checkbox', Checkbox)
->>>>>>> develop
 
 // app mounting
 app.mount('#app')

@@ -9,12 +9,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
-<<<<<<< HEAD
-=======
     "axios": "^1.6.2",
     "primeicons": "^6.0.1",
     "primevue": "^3.40.1",
->>>>>>> develop
     "vue": "^3.3.4",
     "vue-router": "^4.2.5"
   },
