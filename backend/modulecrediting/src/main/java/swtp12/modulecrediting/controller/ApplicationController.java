@@ -2,11 +2,9 @@ package swtp12.modulecrediting.controller;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -16,7 +14,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.annotation.JsonView;
@@ -25,7 +22,6 @@ import com.itextpdf.text.DocumentException;
 import swtp12.modulecrediting.dto.ApplicationCreateDTO;
 import swtp12.modulecrediting.dto.ApplicationUpdateDTO;
 import swtp12.modulecrediting.model.Application;
-import swtp12.modulecrediting.model.EnumApplicationStatus;
 import swtp12.modulecrediting.model.Views;
 import swtp12.modulecrediting.service.ApplicationService;
 import swtp12.modulecrediting.service.GeneratedPdfService;
@@ -53,12 +49,10 @@ public class ApplicationController {
 
     @GetMapping
     @JsonView(Views.ApplicationOverview.class)
-    public ResponseEntity<List<Application>> getAllCreditTransferApplications(
-        @RequestParam(defaultValue = "100") int limit,
-        @RequestParam(required = false) EnumApplicationStatus status) {
-            List<Application> allApplications = applicationService.getAllApplciations(limit, Optional.ofNullable(status));
-            return new ResponseEntity<>(allApplications, HttpStatus.OK);
-        }
+    public ResponseEntity<List<Application>> get() {
+        return ResponseEntity.ok(applicationService.getAllApplciations());
+    }
+
 
     @GetMapping("/{id}")
     @JsonView(Views.ApplicationLogin.class)

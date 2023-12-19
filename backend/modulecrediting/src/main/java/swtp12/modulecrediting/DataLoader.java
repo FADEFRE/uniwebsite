@@ -1,7 +1,6 @@
 package swtp12.modulecrediting;
 
 import static swtp12.modulecrediting.model.EnumModuleConnectionDecision.ANGENOMMEN;
-import static swtp12.modulecrediting.model.EnumUserRole.*;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,7 +32,6 @@ import swtp12.modulecrediting.model.ModuleLeipzig;
 import swtp12.modulecrediting.model.ModulesConnection;
 import swtp12.modulecrediting.repository.CourseLeipzigRepository;
 import swtp12.modulecrediting.repository.ModuleLeipzigRepository;
-import swtp12.modulecrediting.security.AuthenticationService;
 import swtp12.modulecrediting.service.ApplicationService;
 
 
@@ -50,9 +48,6 @@ public class DataLoader implements CommandLineRunner {
 
     @Autowired
     private ApplicationService applicationService;
-
-    @Autowired
-    private AuthenticationService authenticationService;
 
     private final ObjectMapper objectMapper;
 
@@ -71,11 +66,11 @@ public class DataLoader implements CommandLineRunner {
     public void run(String... args) {
         String moduleLeipzigData = "/module_liste.json";
         String testData = "/test_data.json";
-
+/*
         authenticationService.writeUser("studyoffice", "abc123", STUDY_OFFICE);
         authenticationService.writeUser("pav", "pav123", CHAIRMAN);
         authenticationService.writeUser("admin", "admin", ADMIN);
-
+*/
         leipzigDataLoader(moduleLeipzigData);
 
         createTestData(testData);

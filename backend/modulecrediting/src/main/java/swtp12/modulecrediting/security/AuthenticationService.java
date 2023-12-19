@@ -1,56 +1,83 @@
 package swtp12.modulecrediting.security;
 
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import java.nio.CharBuffer;
+import java.nio.charset.StandardCharsets;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
+import java.util.Objects;
+
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import lombok.RequiredArgsConstructor;
-import swtp12.modulecrediting.model.EnumUserRole;
-import swtp12.modulecrediting.model.User;
-import swtp12.modulecrediting.repository.UserRepository;
+import swtp12.modulecrediting.dto.CredentialsDTO;
+import swtp12.modulecrediting.dto.UserDTO;
 
 @Service
-@RequiredArgsConstructor
 public class AuthenticationService {
-    
-    private final UserRepository userRepository;
-    private final AuthenticationManager authenticationManager;
-    private final JwtService jwtService;
+
     private final PasswordEncoder passwordEncoder;
 
-    //TODO: Multiple User Roles
-    //TODO: check for existing!!!
-    public AuthenticationResponse register(RegisterRequest request) {
-        var user = User.builder()
-            .username(request.getUsername())
-            .password(passwordEncoder.encode(request.getPassword()))
-            .role(EnumUserRole.STUDY_OFFICE)
-            .build();
-        userRepository.save(user);
-        var jwToken = jwtService.generateToken(user);
-        return AuthenticationResponse.builder()
-            .token(jwToken)
-            .build();
+    @Value("my-secret-key")
+    private String secretKey;
+
+    public AuthenticationService(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
     }
 
-    public AuthenticationResponse authenticate(AuthenticationRequest request) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
-        var user = userRepository.findByUsername(request.getUsername()).orElseThrow();
-        var jwToken = jwtService.generateToken(user);
-        return AuthenticationResponse.builder()
-            .token(jwToken)
-            .build();
+    public UserDTO authenticate(CredentialsDTO credentialsDto) {
+        String encodedMasterPassword = passwordEncoder.encode(CharBuffer.wrap("the-password"));
+        if (passwordEncoder.matches(CharBuffer.wrap(credentialsDto.getPassword()), encodedMasterPassword)) {
+            return new UserDTO(1L, "admin", "token");
+        }
+        throw new RuntimeException("Invalid password");
     }
-    
+
+    public UserDTO findByLogin(String login) {
+        if ("login".equals(login)) {
+            return new UserDTO(1L, "admin", "token");
+        }
+        throw new RuntimeException("Invalid login");
+    }
+
+    public String createToken(UserDTO user) {
+        return user.getId() + "&" + user.getUsername() + "&" + calculateHmac(user);
+    }
+
+    public UserDTO findByToken(String token) {
+        String[] parts = token.split("&");
+
+        Long userId = Long.valueOf(parts[0]);
+        String login = parts[1];
+        String hmac = parts[2];
+
+        UserDTO userDto = findByLogin(login);
+
+        if (!hmac.equals(calculateHmac(userDto)) || userId != userDto.getId()) {
+            throw new RuntimeException("Invalid Cookie value");
+        }
+
+        return userDto;
+    }
 
 
-    public void writeUser(String username, String password, EnumUserRole role) {
-        var user = User.builder()
-            .username(username)
-            .password(passwordEncoder.encode(password))
-            .role(role)
-            .build();
-        userRepository.save(user);
+    private String calculateHmac(UserDTO user) {
+        byte[] secretKeyBytes = Objects.requireNonNull(secretKey).getBytes(StandardCharsets.UTF_8);
+        byte[] valueBytes = Objects.requireNonNull(user.getId() + "&" + user.getUsername()).getBytes(StandardCharsets.UTF_8);
+
+        try {
+            Mac mac = Mac.getInstance("HmacSHA512");
+            SecretKeySpec secretKeySpec = new SecretKeySpec(secretKeyBytes, "HmacSHA512");
+            mac.init(secretKeySpec);
+            byte[] hmacBytes = mac.doFinal(valueBytes);
+            return Base64.getEncoder().encodeToString(hmacBytes);
+
+        } catch (NoSuchAlgorithmException | InvalidKeyException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

@@ -9,10 +9,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -24,7 +20,6 @@ import swtp12.modulecrediting.dto.ApplicationUpdateDTO;
 import swtp12.modulecrediting.dto.ModuleBlockCreateDTO;
 import swtp12.modulecrediting.dto.ModuleBlockUpdateDTO;
 import swtp12.modulecrediting.model.Application;
-import swtp12.modulecrediting.model.EnumApplicationStatus;
 import swtp12.modulecrediting.model.CourseLeipzig;
 import swtp12.modulecrediting.model.ModuleApplication;
 import swtp12.modulecrediting.model.ModuleLeipzig;
@@ -204,15 +199,8 @@ public class ApplicationService {
         return sb.toString();
     }
 
-    public List<Application> getAllApplciations(int limit, Optional<EnumApplicationStatus> status){
-        Pageable pageeable = PageRequest.of(0, limit, Sort.by("creationDate").descending());
-        if(status.isPresent()) {
-            Page<Application> page = applicationRepository.findByFullStatus(status.get(), pageeable);
-            return page.getContent();
-        }else {
-            Page<Application> page = applicationRepository.findAllBy(pageeable);
-            return page.getContent();
-        }
+    public List<Application> getAllApplciations(){
+        return applicationRepository.findAll();
     }
 
     public Application getApplicationById(String id) {
