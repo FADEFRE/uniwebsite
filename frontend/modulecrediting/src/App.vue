@@ -63,15 +63,7 @@ body {
   flex: 1;
 }
 
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
+.router-button {
   display: inline-block;
   padding: 10px 20px;
   background-color: #b02f2c;
