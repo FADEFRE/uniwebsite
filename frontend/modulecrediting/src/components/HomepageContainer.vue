@@ -1,29 +1,17 @@
-<script>
-export default {
-    name: 'HomepageContainer',
-    props: {
-        header: {
-            type: String,
-            default: '',
-        },
-        text: {
-            type: String,
-            default: '',
-        },
-    
-    },
-};
+<script setup>
+const props = defineProps(['header', 'text'])
 </script>
+
 <template>
-    <div class="homepage-container" :style="{ 'border-left-color': borderLeftColor }">
-        <div class="header">
+    <div>
+        <div>
             <h2 v-if="header">{{ header }}</h2>
             <h2 v-else>Platzhalter heading</h2>
         </div>
-        <div class="text" v-if="text">
-            <p v-html="text"></p>
+        <div v-if="text">
+            <p>{{ text }}</p>
         </div>
-        <div class="text" v-else>
+        <div v-else>
             <p>Platzhalter Text</p>
         </div>
         <div>

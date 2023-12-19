@@ -1,24 +1,16 @@
-<script>
-export default {
-    name: 'SideInfoContainer',
-    props: {
-        heading: {
-            type: String,
-            default: '',
-        },
-    },
-};
+<script setup>
+const props = defineProps(['heading'])
 </script>
 
 <template>
-    <div class="side-info-container">
+    <div>
         <h3>{{ heading }}</h3>
-        <div class="slot-content">
+        <div>
             <slot></slot>
         </div>
     </div>
 </template>
 
-
 <style scoped>
+
 </style>

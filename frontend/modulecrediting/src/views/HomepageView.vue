@@ -27,6 +27,7 @@ const goToSubmitApplication = () => {
     router.push({ name: 'SubmitApplication' })
 }
 </script>
+
 <template>
     <div class="homepage-container">
         <div class="main-content">
@@ -57,8 +58,6 @@ const goToSubmitApplication = () => {
         </div>
     </div>
 </template>
-
-
 
 <style scoped>
 .homepage-container {
