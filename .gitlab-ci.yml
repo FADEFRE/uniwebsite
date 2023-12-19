@@ -8,8 +8,8 @@ variables:
   # CI_REGISTRY_USER: fadefre824
   DEPLOY_SERVER_TEST: 172.26.92.91
   DEPLOY_USER_TEST: swtp
-  SSH_KNOWN_HOSTS: "172.26.92.91 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBP3TtNAESWwq9RwHvzH/ZCqsDKT5XCHNmmZDrexxuslv/4AIi2Mvm0WaWH4Iv93MB3nNVAdXtXiwawZQkXRSLLs="
-  SSH_PRIVATE_KEY: "-----BEGIN OPENSSH PRIVATE KEY-----\nb3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW\nQyNTUxOQAAACDnCz53HMApyAwVGp8zQMlrK96CF6Iuj/hI/e/numHscgAAAKhlT6JYZU+i\nWAAAAAtzc2gtZWQyNTUxOQAAACDnCz53HMApyAwVGp8zQMlrK96CF6Iuj/hI/e/numHscg\nAAAECVZ3FmbhT0RfqrPeW5i0aOV6yz3ybPJxw8/vocg27FGecLPnccwCnIDBUanzNAyWsr\n3oIXoi6P+Ej97+e6YexyAAAAIG55NjNmYWJpQHN0dWRzZXJ2LnVuaS1sZWlwemlnLmRlAQ\nIDBAU=\n-----END OPENSSH PRIVATE KEY-----"
+  #SSH_KNOWN_HOSTS: "172.26.92.91 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBP3TtNAESWwq9RwHvzH/ZCqsDKT5XCHNmmZDrexxuslv/4AIi2Mvm0WaWH4Iv93MB3nNVAdXtXiwawZQkXRSLLs="
+  #SSH_PRIVATE_KEY: "-----BEGIN OPENSSH PRIVATE KEY-----\nb3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW\nQyNTUxOQAAACDnCz53HMApyAwVGp8zQMlrK96CF6Iuj/hI/e/numHscgAAAKhlT6JYZU+i\nWAAAAAtzc2gtZWQyNTUxOQAAACDnCz53HMApyAwVGp8zQMlrK96CF6Iuj/hI/e/numHscg\nAAAECVZ3FmbhT0RfqrPeW5i0aOV6yz3ybPJxw8/vocg27FGecLPnccwCnIDBUanzNAyWsr\n3oIXoi6P+Ej97+e6YexyAAAAIG55NjNmYWJpQHN0dWRzZXJ2LnVuaS1sZWlwemlnLmRlAQ\nIDBAU=\n-----END OPENSSH PRIVATE KEY-----"
   # DB_HOST: db
   # DB_USERNAME: admin
   # DB_PASSWORD: 123
@@ -56,6 +56,7 @@ test_backend:
 build_backend:
   stage: build
   #needs: ['test_backend']
+  when: manual
   image:
     name: gcr.io/kaniko-project/executor:v1.14.0-debug
     entrypoint: ['']
@@ -70,6 +71,7 @@ build_backend:
 build_frontend:
   stage: build
   #needs: ['test_frontend']
+  when: manual
   image:
     name: gcr.io/kaniko-project/executor:v1.14.0-debug
     entrypoint: ['']
