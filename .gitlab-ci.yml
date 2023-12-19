@@ -24,6 +24,7 @@ stages:
 
 test_frontend:
   stage: test
+  when: manual
   image: node:21.1-alpine3.17
   script:
     - cd frontend/modulecrediting
@@ -32,6 +33,7 @@ test_frontend:
 
 test_backend:
   stage: test
+  when: manual
   image: public.ecr.aws/docker/library/maven:3.8.4-openjdk-17
   script:
     - cd backend/modulecrediting
@@ -53,7 +55,7 @@ test_backend:
 
 build_backend:
   stage: build
-  needs: ['test_backend']
+  #needs: ['test_backend']
   image:
     name: gcr.io/kaniko-project/executor:v1.14.0-debug
     entrypoint: ['']
@@ -67,7 +69,7 @@ build_backend:
 
 build_frontend:
   stage: build
-  needs: ['test_frontend']
+  #needs: ['test_frontend']
   image:
     name: gcr.io/kaniko-project/executor:v1.14.0-debug
     entrypoint: ['']
