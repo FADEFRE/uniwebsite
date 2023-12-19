@@ -1,0 +1,62 @@
+version: '3.7'
+
+services:
+
+  postgres:
+    container_name: postgres_container
+    ports:
+      - 5432:5432
+    image: 'postgres:13.1-alpine'
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_PASSWORD=123
+      - POSTGRES_USER=postgres
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes: 
+      - /home/swtp/postgresStorage:/var/lib/postgresql/data
+    restart: always
+    networks:
+      - swtp_network
+
+  backend:
+    container_name: backend
+    build:
+      context: ./backend/modulecrediting/
+      dockerfile: Dockerfile
+    image: swtp_backend
+    restart: always
+    depends_on: 
+      - postgres
+    ports: 
+      - 8090:8090
+    networks: 
+      - swtp_network
+    environment:
+      - DB_SERVER=postgres
+      - DB_PORT=5432
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=123
+      
+      
+  frontend:
+    container_name: frontend
+    build:
+      context: ./frontend/modulecrediting/
+      dockerfile: Dockerfile
+      target: production
+    image: swtp_frontend
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - 8080:80
+    networks: 
+      - swtp_network
+    environment:
+      - VITE_URL_TEST=http://localhost:8090
+
+
+
+networks:
+  swtp_network:
