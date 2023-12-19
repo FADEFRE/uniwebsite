@@ -5,7 +5,7 @@
         <img src="./assets/Universität_Leipzig_logo.svg" alt="Logo der Universität Leipzig" class="logo" />
         <div class="spacer"></div>
         <div class="router-container">
-          <router-link to="/" class="router-button">Antrag</router-link>
+          <router-link to="/submit" class="router-button">Antrag</router-link>
           <router-link to="/status" class="router-button">Status</router-link>
         </div>
       </div>
