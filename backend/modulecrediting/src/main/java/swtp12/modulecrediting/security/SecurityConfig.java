@@ -31,10 +31,10 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .logout((logout) -> logout.deleteCookies(CookieAuthenticationFilter.COOKIE_NAME))
             .authorizeHttpRequests(requests -> requests
-                .requestMatchers(HttpMethod.POST, "/v1/signIn", "/v1/signUp")
+                .requestMatchers(HttpMethod.POST, "/auth/signIn", "/auth/signUp")
                 .permitAll()
-                .anyRequest()
-                .authenticated());
+            .anyRequest()
+            .authenticated());
 
         return http.build();
     }

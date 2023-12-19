@@ -37,11 +37,11 @@ public class AuthenticationService {
         throw new RuntimeException("Invalid password");
     }
 
-    public UserDTO findByLogin(String login) {
-        if ("login".equals(login)) {
+    public UserDTO findByLogin(String username) {
+        if ("login".equals(username)) {
             return new UserDTO(1L, "admin", "token");
         }
-        throw new RuntimeException("Invalid login");
+        throw new RuntimeException("Invalid Username");
     }
 
     public String createToken(UserDTO user) {
@@ -52,10 +52,10 @@ public class AuthenticationService {
         String[] parts = token.split("&");
 
         Long userId = Long.valueOf(parts[0]);
-        String login = parts[1];
+        String username = parts[1];
         String hmac = parts[2];
 
-        UserDTO userDto = findByLogin(login);
+        UserDTO userDto = findByLogin(username);
 
         if (!hmac.equals(calculateHmac(userDto)) || userId != userDto.getId()) {
             throw new RuntimeException("Invalid Cookie value");

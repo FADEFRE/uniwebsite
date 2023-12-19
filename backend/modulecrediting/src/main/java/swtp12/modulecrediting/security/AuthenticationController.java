@@ -24,7 +24,7 @@ import swtp12.modulecrediting.dto.UserDTO;
 import swtp12.modulecrediting.service.UserService;
 
 @RestController
-@RequestMapping("/v1")
+@RequestMapping("/auth")
 public class AuthenticationController {
 
     private final UserService userService;

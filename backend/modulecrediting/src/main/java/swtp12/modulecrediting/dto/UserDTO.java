@@ -15,6 +15,11 @@ public class UserDTO {
         super();
     }
 
+    public UserDTO(String username, String token) {
+        this.token = token;
+        this.username = username;
+    }
+
     public UserDTO(Long id, String username, String token) {
         this.id = id;
         this.username = username;
