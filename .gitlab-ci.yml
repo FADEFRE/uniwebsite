@@ -31,7 +31,6 @@ stages:
 test_frontend:
   stage: test
   image: node:21.1-alpine3.17
-  when: manual
   script:
     - cd frontend/modulecrediting
     - npm install
@@ -40,7 +39,6 @@ test_frontend:
 test_backend:
   stage: test
   image: public.ecr.aws/docker/library/maven:3.8.4-openjdk-17
-  when: manual
   script:
     - cd backend/modulecrediting
     - mvn clean verify
@@ -72,7 +70,10 @@ test_backend:
 build_backend:
   stage: build
   #needs: ['test_backend']
-  when: manual
+  rules:
+    - if: '$CI_COMMIT_TAG'
+    - if: $CI_COMMIT_BRANCH != "main"
+      when: manual
   image:
     name: gcr.io/kaniko-project/executor:v1.14.0-debug
     entrypoint: ['']
@@ -80,13 +81,14 @@ build_backend:
     - echo "{\"auths\":{\"$CI_REGISTRY_1\":{\"auth\":\"$(echo -n $CI_REGISTRY_1_USER:$CI_REGISTRY_1_PASSWORD | base64)\"}}}" > /kaniko/.docker/config.json
     - /kaniko/executor --context "${CI_PROJECT_DIR}/backend/modulecrediting" --build-arg VITE_URL=$VITE_URL --dockerfile
       "${CI_PROJECT_DIR}/backend/modulecrediting/Dockerfile" --destination "${CI_REGISTRY_1_IMAGE_1}:backend-${CI_COMMIT_TAG}"
-  rules:
-    - if: '$CI_COMMIT_TAG'
 
 build_frontend:
   stage: build
   #needs: ['test_frontend']
-  when: manual
+  rules:
+    - if: '$CI_COMMIT_TAG'
+    - if: $CI_COMMIT_BRANCH != "main"
+      when: manual
   image:
     name: gcr.io/kaniko-project/executor:v1.14.0-debug
     entrypoint: ['']
@@ -94,14 +96,14 @@ build_frontend:
     - echo "{\"auths\":{\"$CI_REGISTRY_1\":{\"auth\":\"$(echo -n $CI_REGISTRY_1_USER:$CI_REGISTRY_1_PASSWORD | base64)\"}}}" > /kaniko/.docker/config.json
     - /kaniko/executor --context "${CI_PROJECT_DIR}/frontend/modulecrediting" --dockerfile "${CI_PROJECT_DIR}/frontend/modulecrediting/Dockerfile" --destination
       "${CI_REGISTRY_1_IMAGE_1}:frontend-${CI_COMMIT_TAG}"
-  rules:
-    - if: '$CI_COMMIT_TAG'
 
 
 deploy:
   stage: deploy
   #needs: ['build_frontend', 'build_backend']
-  when: manual
+  rules:
+    - if: $CI_COMMIT_BRANCH != "main"
+      when: manual
   image: nginx:1.25.3-alpine
   variables:
     DOCKER_HOST: ssh://$DEPLOY_1_USER@$DEPLOY_1_SERVER
