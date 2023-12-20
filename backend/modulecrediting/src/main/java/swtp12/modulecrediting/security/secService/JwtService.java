@@ -1,4 +1,4 @@
-package swtp12.modulecrediting.security;
+package swtp12.modulecrediting.security.secService;
 
 import java.security.Key;
 import java.util.Date;
@@ -40,7 +40,7 @@ public class JwtService {
             .setClaims(extraClaims)
             .setSubject(userDetails.getUsername())
             .setIssuedAt(new Date(System.currentTimeMillis()))
-            .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
+            .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 5 )) //!how long the jwt is valid
             .signWith(getSignInKey(), SignatureAlgorithm.HS256)
             .compact();
     }

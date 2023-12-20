@@ -1,4 +1,4 @@
-package swtp12.modulecrediting.security;
+package swtp12.modulecrediting.security.secOther;
 
 import java.io.IOException;
 
@@ -16,6 +16,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import swtp12.modulecrediting.security.secService.JwtService;
 
 @Component
 @RequiredArgsConstructor

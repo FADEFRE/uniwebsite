@@ -1,4 +1,4 @@
-package swtp12.modulecrediting.demo;
+package swtp12.modulecrediting.security.secController;
 
 import org.springframework.web.bind.annotation.RestController;
 

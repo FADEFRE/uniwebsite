@@ -1,4 +1,4 @@
-package swtp12.modulecrediting.security;
+package swtp12.modulecrediting.security.secService;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -9,6 +9,9 @@ import lombok.RequiredArgsConstructor;
 import swtp12.modulecrediting.model.EnumUserRole;
 import swtp12.modulecrediting.model.User;
 import swtp12.modulecrediting.repository.UserRepository;
+import swtp12.modulecrediting.security.secOther.AuthenticationRequest;
+import swtp12.modulecrediting.security.secOther.AuthenticationResponse;
+import swtp12.modulecrediting.security.secOther.RegisterRequest;
 
 @Service
 @RequiredArgsConstructor

@@ -1,4 +1,4 @@
-package swtp12.modulecrediting.security;
+package swtp12.modulecrediting.security.secOther;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,10 +7,11 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
-public class RegisterRequest {
+@NoArgsConstructor
+public class AuthenticationRequest {
 
     private String username;
+
     private String password;
 }

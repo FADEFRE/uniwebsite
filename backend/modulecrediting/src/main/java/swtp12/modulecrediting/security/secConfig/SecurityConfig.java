@@ -1,4 +1,4 @@
-package swtp12.modulecrediting.security;
+package swtp12.modulecrediting.security.secConfig;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,6 +10,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import lombok.RequiredArgsConstructor;
+import swtp12.modulecrediting.security.secOther.JwtAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -24,8 +25,10 @@ public class SecurityConfig {
         http
             .csrf((csrf) -> csrf.disable())
             .authorizeHttpRequests(requests -> requests
+                //white listed api paths
                 .requestMatchers("/api/v1/auth/**")
                 .permitAll()
+                //blocked all other
                 .anyRequest()
                 .authenticated())
             .sessionManagement(management -> management

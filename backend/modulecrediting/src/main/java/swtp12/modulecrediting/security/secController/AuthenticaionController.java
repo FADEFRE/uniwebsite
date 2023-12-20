@@ -1,8 +1,12 @@
-package swtp12.modulecrediting.security;
+package swtp12.modulecrediting.security.secController;
 
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
+import swtp12.modulecrediting.security.secOther.AuthenticationRequest;
+import swtp12.modulecrediting.security.secOther.AuthenticationResponse;
+import swtp12.modulecrediting.security.secOther.RegisterRequest;
+import swtp12.modulecrediting.security.secService.AuthenticationService;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.http.ResponseEntity;

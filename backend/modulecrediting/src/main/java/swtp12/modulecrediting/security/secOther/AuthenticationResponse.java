@@ -1,4 +1,4 @@
-package swtp12.modulecrediting.security;
+package swtp12.modulecrediting.security.secOther;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
