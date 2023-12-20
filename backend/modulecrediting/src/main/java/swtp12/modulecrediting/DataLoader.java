@@ -29,11 +29,12 @@ import swtp12.modulecrediting.dto.ModuleBlockCreateDTO;
 import swtp12.modulecrediting.dto.ModuleBlockUpdateDTO;
 import swtp12.modulecrediting.model.Application;
 import swtp12.modulecrediting.model.CourseLeipzig;
+import swtp12.modulecrediting.model.EnumUserRole;
 import swtp12.modulecrediting.model.ModuleLeipzig;
 import swtp12.modulecrediting.model.ModulesConnection;
 import swtp12.modulecrediting.repository.CourseLeipzigRepository;
 import swtp12.modulecrediting.repository.ModuleLeipzigRepository;
-import swtp12.modulecrediting.security.AuthenticationService;
+import swtp12.modulecrediting.security.secService.AuthenticationService;
 import swtp12.modulecrediting.service.ApplicationService;
 
 
@@ -72,14 +73,50 @@ public class DataLoader implements CommandLineRunner {
         String moduleLeipzigData = "/module_liste.json";
         String testData = "/test_data.json";
 
-        authenticationService.writeUser("studyoffice", "abc123", STUDY_OFFICE);
-        authenticationService.writeUser("pav", "pav123", CHAIRMAN);
-        authenticationService.writeUser("admin", "admin", ADMIN);
+        userCreation(testData);
 
         leipzigDataLoader(moduleLeipzigData);
 
         createTestData(testData);
     }
+
+
+    //creates users defined in filename (test data)
+    private void userCreation(String fileName) {
+        System.out.println("Creating Users:");
+        JsonNode userSettings = grabFirstNodeFromJson(fileName, "users");
+        for (JsonNode user : userSettings) {
+            String username = user.get("name").asText();
+            String password = user.get("password").asText();
+            String roleName = user.get("role").asText();
+            EnumUserRole role = null;
+
+            switch (roleName) {
+                case "study":
+                    role = STUDY_OFFICE;
+                    break;
+                    
+                case "pav":
+                    role = CHAIRMAN;
+                    break;
+
+                case "admin":
+                    role = ADMIN;
+                    break;
+            
+                default:
+                    System.out.println("the user " + username + " has no role!!");
+                    break;
+            }
+
+            authenticationService.writeUser(username, password, role);
+        }
+    }
+
+
+
+
+
 
 
     //the two dataloader functions (leipzigData/ testData):
