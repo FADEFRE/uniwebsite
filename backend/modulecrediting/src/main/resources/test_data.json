@@ -1,9 +1,9 @@
 {
     "randApplications": [
         {
-            "offen": 2,
-            "warten": 2,
-            "fertig": 2
+            "offen": 5,
+            "warten": 5,
+            "fertig": 5
         }
     ],
 
@@ -20,6 +20,27 @@
                 "Did you ever hear of the tragedy of Darth Plagueis the Wise?",
                 "Die Pipeline ist toll!"
                 ]
+        }
+    ],
+
+
+    "users": [
+        {
+            "name": "studyoffice",
+            "password": "abc123",
+            "role": "study"
+        },
+            
+        {
+            "name": "pav",
+            "password": "pav123",
+            "role": "pav"
+        },
+
+        {
+            "name": "admin",
+            "password": "admin",
+            "role": "admin"
         }
     ],
 
