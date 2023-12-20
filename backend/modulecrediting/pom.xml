@@ -84,7 +84,7 @@
 		</dependency>
 
 
-		<dependency>
+		<dependency> <!-- security dependency begin -->
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-api</artifactId>
 			<version>0.11.5</version>
@@ -100,7 +100,7 @@
 			<artifactId>jjwt-jackson</artifactId>
 			<version>0.11.5</version>
 			<scope>runtime</scope>
-		</dependency>
+		</dependency> <!-- security dependency end -->
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
