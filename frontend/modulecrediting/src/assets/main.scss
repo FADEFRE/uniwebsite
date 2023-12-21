@@ -1,0 +1,41 @@
+// resets
+* {
+    box-sizing: border-box;
+}
+
+
+
+
+@font-face {
+    font-family: 'Jost';
+    src: url('@/assets/fonts/Jost-VariableFont_wght.ttf'); /* Adjust the file path and format */
+    font-weight: 1 999;
+}
+
+$black: #000;
+$dark-gray: #262A31;
+$gray: #F0F0F0;
+$white: #fff;
+$red: #D83D3B;
+
+body {
+    background-color: $gray;
+}
+
+h2 {
+    color: $dark-gray;
+    font-family: 'Jost';
+    font-size: 2.125rem;
+    font-weight: 800;
+    line-height: normal;
+    letter-spacing: -0.04rem;
+}
+
+p {
+    color: $black;
+    font-family: 'Jost';
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: normal;
+}
+

@@ -91,4 +91,6 @@ const goToSubmitApplication = () => {
 .narrower {
     width: 50%;
 }
+
+
 </style>

@@ -14,26 +14,13 @@
   </div>
 </template>
 
-<style>
-
-
+<style lang="scss">
+@import './assets/main.scss';
 
 .view-container {
   margin: 10px 20px 0;
 }
 
-body {
-  margin: 0;
-  padding: 0;
-  background-image: url(./assets/Universität_Leipzig_background.svg);
-  background-size: contain;
-  background-position: left;
-  background-repeat: no-repeat;
-  background-position-y: 50px;
-
-  background-attachment: fixed;
-
-}
 </style>
 
 <style scoped>
