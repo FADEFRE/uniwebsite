@@ -92,8 +92,7 @@ const triggerPostApplication = () => {
   postApplication(selectedCourse.value, applicationsObject)
       .then((id) => {
         // routing to status page for application
-        const routeData = router.resolve({name: 'statusDetail', params: {id: id}})
-        window.open(routeData.href, '_top')
+         router.push({ name: 'confirmation', params: { id: id } });
       })
 }
 </script>
