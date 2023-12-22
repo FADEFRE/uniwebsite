@@ -62,9 +62,24 @@ const router = createRouter({
     {
       path: '/jwtstatus',
       name: 'jwtstatus',
-      component: JWTstatusView
+      component: JWTstatusView,
+      meta: {requiresAuth: true, allowedUsers: ['studienbüro', 'pav']}
     }
   ]
+})
+
+router.beforeEach((to, from) => {
+  if (to.meta['requiresAuth']) {
+
+    // todo if logged in set username
+    // todo else set username to undefined
+    const username = 'studienbüro'
+
+    if (!to.meta['allowedUsers'].includes(username)) {
+      return {name: 'jwtlogin'}
+    }
+
+  }
 })
 
 export default router
