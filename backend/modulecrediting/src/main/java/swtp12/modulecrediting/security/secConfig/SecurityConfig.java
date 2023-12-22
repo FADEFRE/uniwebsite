@@ -26,7 +26,12 @@ public class SecurityConfig {
             .csrf((csrf) -> csrf.disable())
             .authorizeHttpRequests(requests -> requests
                 //white listed api paths
-                .requestMatchers("/api/v1/auth/**")
+                .requestMatchers(
+                    "/",
+                    "/api/v1/auth/**",
+                    "/error",
+                    "/favicon.ico",
+                    "/**/*.svg")
                 .permitAll()
                 //blocked all other
                 .anyRequest()
