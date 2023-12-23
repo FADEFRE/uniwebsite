@@ -3,7 +3,7 @@ const props = defineProps(['header', 'text'])
 </script>
 
 <template>
-    <div>
+    <div class="homepage-container">
         <div>
             <h2 v-if="header">{{ header }}</h2>
             <h2 v-else>Platzhalter heading</h2>
@@ -20,6 +20,18 @@ const props = defineProps(['header', 'text'])
     </div>
 </template>
 
-<style>
+<style scoped lang="scss">
 
+.homepage-container {
+    background-color: #fff;
+    border-left: 3px solid var(--Red, #D83D3B);
+
+    display: flex;
+    padding: 0.9375rem 1.25rem;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 1.25rem;
+    align-self: stretch;
+}
 </style>

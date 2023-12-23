@@ -29,19 +29,16 @@ const goToSubmitApplication = () => {
 </script>
 
 <template>
-    <div class="homepage-container">
-        <div class="main-content">
+    <div class="main">
             <!-- HomepageContainer Application -->
             <HomepageContainer :header="'Antrag stellen'"
-                :text="'Erstellen Sie einen Antrag, um Module anderer Universitäten an der Universität Leipzig anzurechnen lassen.'"
-                class="panel wide">
-                <Button @click="goToSubmitApplication" class="p-button-success">einen Antrag erstellen</Button>
+                :text="'Erstellen Sie einen Antrag, um Module anderer Universitäten an der Universität Leipzig anzurechnen lassen.'">
+                <Button @click="goToSubmitApplication" class="p-button-success">Antrag stellen</Button>
             </HomepageContainer>
 
             <!-- HomepageContainer StatusView -->
             <HomepageContainer :header="'Status einsehen'"
-                :text="'Sehen Sie den Status von bereits gestellten Anträgen über die 6-stellige Vorgangsnummer ein.'"
-                class="panel wide">
+                :text="'Sehen Sie den Status von bereits gestellten Anträgen über die 6-stellige Vorgangsnummer ein.'">
                 <InputText v-model="id" :class="{ 'p-invalid': isInvalid }" placeholder="z.B. 133769" />
                 <Button @click="openDetailView" class="p-button-primary">Status einsehen</Button>
             </HomepageContainer>
@@ -55,42 +52,8 @@ const goToSubmitApplication = () => {
                     <li>Mit abgeschlossenem Antrag zum Studienbüro gehen</li>
                 </ul>
             </SideInfoContainer>
-        </div>
     </div>
 </template>
 
-<style scoped>
-.homepage-container {
-    display: flex;
-    justify-content: center;
-}
-
-.main-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-    margin-top: 50px;
-}
-
-
-
-.panel,
-.sidebar {
-    border: 2px solid #1e1717;
-    padding: 10px;
-    width: 100%;
-    max-width: 400px;
-}
-
-.wide {
-    width: 100%;
-    max-width: unset;
-}
-
-.narrower {
-    width: 50%;
-}
-
-
+<style scoped lang="scss">
 </style>
