@@ -7,9 +7,7 @@ import StudyOfficeDetailView from "@/views/StudyOfficeDetailView.vue";
 import ChairmanDetailView from "@/views/ChairmanDetailView.vue";
 import LoginView from "@/views/LoginView.vue";
 import HomepageView from "@/views/HomepageView.vue"
-import ConfirmationContainer from "@/components/ConfirmationContainer.vue"
 import ApplicationConfirmationView from "@/views/ApplicationConfirmationView.vue"
-import LoginContainer from "@/components/LoginContainer.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -19,12 +17,7 @@ const router = createRouter({
       name: 'home',
       component: HomepageView
     },
-     {
-      path: '/test',
-      name: 'test',
-      component: LoginContainer
-    },
-     {
+    {
       path: '/confirmation/:id',
       name: 'confirmation',
       component: ApplicationConfirmationView
