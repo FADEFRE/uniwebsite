@@ -11,7 +11,5 @@ import LoginContainer from '../components/LoginContainer.vue';
 
 
 <style scoped>
-.login-view{
-  
-}
+
 </style>
