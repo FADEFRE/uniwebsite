@@ -1,6 +1,21 @@
 import { url } from "@/scripts/url-config.js"
 import axios from "axios";
 
+/*
+GET-Request to '/courses-leipzig' endpoint
+return list of all course names
+
+parameters:
+    none
+ */
+function getCoursesLeipzig () {
+    return axios.get(url + '/courses-leipzig')
+        .then(response => {
+            const courses = response.data.map(obj => obj.name)
+            console.log(courses)
+            return courses
+        })
+}
 
 /*
 GET-Request to '/courses-leipzig' endpoint
@@ -161,6 +176,7 @@ function putChairman (id, applicationObjects) {
 }
 
 export {
+    getCoursesLeipzig,
     getCourseData,
     getModulesByCourse,
     getApplicationById,
