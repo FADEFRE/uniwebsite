@@ -22,3 +22,6 @@ target/
 build/
 !**/src/main/**/build/
 !**/src/test/**/build/
+
+#dev properties
+application-dev.properties
