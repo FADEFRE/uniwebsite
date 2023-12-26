@@ -1,0 +1,12 @@
+@mixin listItem ($background-color) {
+    background-color: $background-color;
+    border-left: 3px solid $red;
+
+    display: flex;
+    padding: 0.9375rem 1.25rem;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 1.25rem;
+    align-self: stretch;
+}

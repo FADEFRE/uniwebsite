@@ -14,6 +14,8 @@
 </template>
 
 <style lang="scss">
+  @import './assets/mixins.scss';
+  @import './assets/variables.scss';
   @import './assets/main.scss';
 
   .header-container {
