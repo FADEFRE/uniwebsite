@@ -51,14 +51,7 @@ const login = () => {
 @import '../assets/variables.scss';
 
 .login-container {
-    width: fit-content;
-    background-color: $white;
-    display: flex;
-    padding: 4.375rem;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 0.625rem;
+    @include singleContainer();
 }
 
 .logo-container {

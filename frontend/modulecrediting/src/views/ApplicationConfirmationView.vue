@@ -40,19 +40,23 @@ const openPdf = () => {
     window.open(pdfDataLink, '_blank');
 };
 
-const copyId = () => {
-    navigator.clipboard.writeText(id);
-};
+
 </script>
 
 <template>
-    <div class="confirmation-container" v-if="applicationData">
+    <div class="main" v-if="applicationData">
         <ConfirmationContainer :id="id">
-            <img @click="copyId" class="copy-icon" src="@/assets/icons/CopyIcon.svg" alt="Copy Icon">
-            <Button @click="openPdf" class="pdf-button">PDF Öffnen/herunterladen</Button>
+            <Button @click="openPdf" class="pdf-button">Antrag herunterladen</Button>
             <Button @click="openDetailView" class="status-button">Status einsehen</Button>
         </ConfirmationContainer>
     </div>
 </template>
 
-<style scoped></style>
+<style scoped lang="scss">
+@import '../assets/variables.scss';
+@import '../assets/mixins.scss';
+
+.main {
+    @include main();
+}
+</style>
