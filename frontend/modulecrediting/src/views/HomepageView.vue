@@ -61,15 +61,10 @@ const goToSubmitApplication = () => {
 
 <style scoped lang="scss">
 @import '../assets/variables.scss';
+@import '../assets/mixins.scss';
 
 .main {
-    max-width: 1350px; /* Adjust this value as needed */
-    margin: 0 auto;
-    display: flex;
-    padding: 3.125rem 4.375rem;
-    justify-content: center;
-    align-items: flex-start;
-    gap: 1.875rem;
+    @include main();
 }
 
 .homepage-content{

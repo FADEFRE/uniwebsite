@@ -10,3 +10,13 @@
     gap: 1.25rem;
     align-self: stretch;
 }
+
+@mixin main () {
+    max-width: 1350px;
+    margin: 0 auto;
+    display: flex;
+    padding: 3.125rem 4.375rem;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 1.875rem;
+}

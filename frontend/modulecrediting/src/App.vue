@@ -31,7 +31,8 @@
 
 
 .logo {
-  height: 150px;
+  width: 27.42188rem;
+  height: 11.25rem;
 }
 
 

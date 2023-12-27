@@ -27,56 +27,72 @@ const login = () => {
             <img src="@/assets/Universität_Leipzig_logo.svg" alt="Logo" />
         </div>
         <div class="login-content">
-            <h1 class="login-heading">ANMELDUNG</h1>
+            <h2 class="login-heading">ANMELDUNG</h2>
 
             <div class="input-container">
-                <div class="input-box">
-                    <span class="p-input-icon-right">
-                        <input type="text" placeholder="Benutzername" v-model="user" class="input-text"
-                        :class="{ 'invalid': styleInvalid }" />
-                    </span>
-                </div>
-                <div class="input-box">
-                    <span class="p-input-icon-right">
-                        <input type="password" placeholder="Passwort" v-model="password" class="input-text"
-                        :class="{ 'invalid': styleInvalid }" />
-                    </span>
-                </div>
+                <input type="text" placeholder="Benutzername" v-model="user" class="input-text"
+                    :class="{ 'invalid': styleInvalid }" />
+
+                <input type="password" placeholder="Passwort" v-model="password" class="input-text"
+                    :class="{ 'invalid': styleInvalid }" />
             </div>
 
-                <div class="button-container">
-                    <Button @click="login" class="button-login">Anmelden</Button>
-                </div>
-
-                <p v-if="styleInvalid" class="error-message">Ungültige Anmeldeinformationen. Bitte versuche es erneut.</p>
+            <div class="button-container">
+                <Button @click="login" class="button-login">Anmelden</Button>
             </div>
+
+            <p v-if="styleInvalid" class="error-message">Ungültige Anmeldeinformationen. Bitte versuche es erneut.</p>
         </div>
+    </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+@import '../assets/mixins.scss';
+@import '../assets/variables.scss';
+
+.login-container {
+    width: fit-content;
+    background-color: $white;
+    display: flex;
+    padding: 4.375rem;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0.625rem;
+}
+
 .logo-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100%;
-    height: 200px;
-   
-}
-
-.logo-container img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-}
-
-.login-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-height: 100vh;
-   
+    width: 27.42188rem;
+    height: 11.25rem;
 }
 
 .login-content {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5625rem;
+}
+
+.input-container {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0.625rem;
+}
+
+input {
+    width: 100%;
+    padding: 0.625rem;
+
+    &:focus {
+        background-color: $gray;
+    }
 }
 </style>
