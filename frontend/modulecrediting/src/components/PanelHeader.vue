@@ -1,13 +1,22 @@
+<!--
+shows mapping of external modules on internal modules
+props:
+  - externalModules (Array of module names)
+  - internalModules (Array of module names)
+displays:
+  - list of external modules
+  - arrow icon
+  - list of internal modules
+-->
+
 <script setup>
 import { defineProps } from 'vue';
 
 const props = defineProps({
     externalModules: {
-      required: true,
       type: Array
     },
     internalModules: {
-      required: true,
       type: Array
     }
 });
@@ -16,7 +25,8 @@ const props = defineProps({
 <template>
   <div class="panel-header">
     <div class="external-modules">
-      <p>{{ externalModules.join(', ') }}</p>
+      <p v-if="externalModules">{{ externalModules.join(', ') }}</p>
+      <p v-else>...</p>
     </div>
 
     <div class="arrow-icon">
@@ -24,7 +34,8 @@ const props = defineProps({
     </div>
 
     <div class="internal-modules">
-      <p>{{ internalModules.join(', ') }}</p>
+      <p v-if="internalModules">{{ internalModules.join(', ') }}</p>
+      <p v-else>...</p>
     </div>
   </div>
 </template>
