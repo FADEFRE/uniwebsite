@@ -1,7 +1,7 @@
 <!--
 comment input
 props:
-  - type (may be 'edit' or 'readonly')
+  - type (may be 'new', 'edit' or 'readonly')
   - comment (optional)
 exposes:
   - comment
@@ -18,7 +18,7 @@ const props = defineProps({
     required: true,
     type: String,
     validator(value) {
-      return ['edit', 'readonly'].includes(value)
+      return ['new', 'edit', 'readonly'].includes(value)
     }
   },
   comment: {
@@ -40,7 +40,7 @@ defineExpose({
   <div>
     <h3>Kommentar</h3>
     <textarea
-        :readonly="type === 'new' || type === 'edit'"
+        :readonly="!(type === 'new' || type === 'edit')"
         rows="3"
         v-model="comment"
     />
