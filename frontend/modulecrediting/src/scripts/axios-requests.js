@@ -103,17 +103,17 @@ function postApplication (course, applicationObjects) {
     formData.append(`courseLeipzig`, course)
     applicationObjects.forEach(
         (object, index) => {
-            formData.append(`moduleBlockCreateDTOList[${index}].moduleName`, object.moduleName)
-            formData.append(`moduleBlockCreateDTOList[${index}].university`, object.university)
-            formData.append(`moduleBlockCreateDTOList[${index}].points`, object.creditPoints)
-            formData.append(`moduleBlockCreateDTOList[${index}].pointSystem`, object.pointSystem)
-            formData.append(`moduleBlockCreateDTOList[${index}].description`, object.descriptionFile)
+            formData.append(`modulesConnections[${index}].moduleApplications[0].moduleName`, object.moduleName)
+            formData.append(`modulesConnections[${index}].moduleApplications[0].university`, object.university)
+            formData.append(`modulesConnections[${index}].moduleApplications[0].points`, object.creditPoints)
+            formData.append(`modulesConnections[${index}].moduleApplications[0].pointSystem`, object.pointSystem)
+            formData.append(`modulesConnections[${index}].moduleApplications[0].description`, object.descriptionFile)
             object.selectedInternalModules.forEach(
                 (moduleName, moduleIndex) => {
-                    formData.append(`moduleBlockCreateDTOList[${index}].moduleNamesLeipzig[${moduleIndex}]`, moduleName)
+                    formData.append(`modulesConnections[${index}].modulesLeipzig[${moduleIndex}]`, moduleName)
                 }
             )
-            formData.append(`moduleBlockCreateDTOList[${index}].commentApplicant`, object.comment)
+            formData.append(`modulesConnections[${index}].commentApplicant`, object.comment)
         }
     )
     console.log('post request to /applications')
