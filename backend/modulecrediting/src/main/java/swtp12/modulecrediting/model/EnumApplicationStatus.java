@@ -1,8 +1,9 @@
 package swtp12.modulecrediting.model;
 
 public enum EnumApplicationStatus {
+    NEU,
     OFFEN,
-    IN_BEARBEITUNG,
-    WARTEN_AUF_ENTSCHEIDUNG_DES_PRUEFUNGSAUSSCHUSSES,
+    STUDIENBÜRO,
+    PRÜFUNGSAUSSCHUSS,
     ABGESCHLOSSEN
 }

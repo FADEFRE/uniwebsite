@@ -146,8 +146,8 @@ public class ApplicationService {
             if(m.getDecisionFinal() == UNBEARBEITET) allDecisionsFinalCompleted = false;
         }
 
-        if(!noDecisionSuggestionCompleted) application.setFullStatus(IN_BEARBEITUNG);
-        if(allDecisionsSuggestionsCompleted) application.setFullStatus(WARTEN_AUF_ENTSCHEIDUNG_DES_PRUEFUNGSAUSSCHUSSES);
+        if(!noDecisionSuggestionCompleted) application.setFullStatus(STUDIENBÜRO);
+        if(allDecisionsSuggestionsCompleted) application.setFullStatus(PRÜFUNGSAUSSCHUSS);
         if(allDecisionsFinalCompleted) {
             application.setFullStatus(ABGESCHLOSSEN);
             application.setDecisionDate(LocalDate.now());
@@ -178,7 +178,7 @@ public class ApplicationService {
         CourseLeipzig courseLeipzig = courseLeipzigService.getCourseLeipzigByName(applicationCreateDTO.getCourseLeipzig());
 
 
-        Application application = new Application(generateValidApplicationId(), OFFEN, LocalDate.now());
+        Application application = new Application(generateValidApplicationId(), NEU, LocalDate.now());
         application.setCourseLeipzig(courseLeipzig);
 
         application.addModulesConnections(modulesConnections);
