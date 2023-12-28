@@ -7,7 +7,8 @@ import { useRoute } from "vue-router";
 import { ref, onBeforeMount } from "vue";
 import { getApplicationById, getModulesByCourse, putStudyOffice } from "@/scripts/axios-requests"
 import StudyOfficeModulePanel from "@/components/StudyOfficeModulePanel.vue";
-import ApplicationOverview from "../components/ApplicationOverview.vue";
+import ApplicationOverview from "@/components/ApplicationOverview.vue";
+import PanelHeader from "@/components/PanelHeader.vue";
 
 const route = useRoute()
 
@@ -84,6 +85,15 @@ const triggerPutData = () => {
 
     <!-- request resolved -->
     <div v-else>
+
+      <div>
+        <PanelHeader
+        v-for="moduleConnection in applicationData['modulesConnections']"
+                         :key="moduleConnection['moduleApplication']['name']"
+                         :moduleName="moduleConnection['moduleApplication']['name']"
+                         :internalModules="moduleConnection['modulesLeipzig']"
+        />
+      </div>
 
       <div>
       <ApplicationOverview
