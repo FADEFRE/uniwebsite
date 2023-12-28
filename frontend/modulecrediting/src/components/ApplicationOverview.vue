@@ -30,7 +30,7 @@ const props = defineProps({
 </script>
 
 <template>
-    <div class="application-overview">
+    <div class="application-overview-container">
         <div class="dates">
             <!-- Div-Block Creation Date -->
             <div v-if="creationDate" class="date-block">
@@ -60,20 +60,27 @@ const props = defineProps({
         <!-- remaining data -->
         <div class="application-info">
             <div class="vorgangsnummer">
-                <div class="vorgangsnummer-text">Vorgangsnummer: {{ vorgangsnummer || 'Placeholder for Vorgangsnummer' }}
+                <div class="vorgangsnummer-text overview-text">Vorgangsnummer: {{ vorgangsnummer || 'Placeholder for Vorgangsnummer' }}
                 </div>
             </div>
             <div class="status-text-wrapper">
-                <div class="status-text-2">Status: {{ status || 'Placeholder for Status' }}</div>
+                <div class="status-text-2 overview-text">Status: {{ status || 'Placeholder for Status' }}</div>
             </div>
 
             <!-- Slot study course -->
-            <slot name="studiengang">B. Sc. Informatik </slot>
+            <slot name="studiengang" class="overview-text">B. Sc. Informatik </slot>
         </div>
     </div>
 </template>
 
-<style>
+<style scoped lang="scss">
+@import '../assets/mixins.scss';
+@import '../assets/variables.scss';
+.application-overview-container {
+    
+    @include applicationOverview();
+}
+
 .date-block {
     border: 1px solid #ccc;
     padding: 10px;

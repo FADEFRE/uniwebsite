@@ -16,13 +16,8 @@ const props = defineProps(['heading'])
 @import '../assets/variables.scss';
 
 .sideinfo-container {
-    max-width: 330px;
-    background-color: $white;
-    padding: 0.9375rem 1.5625rem;
-
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+    @include basicContainer();
+    
 }
 
 :slotted(.list-container) {

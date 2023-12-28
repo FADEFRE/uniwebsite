@@ -58,12 +58,12 @@ defineExpose({
 </script>
 
 <template>
-  <div>
+  <div class="filter-container">
 
-    <h2>Filteroptionen</h2>
+    <h3>Filteroptionen</h3>
 
     <div>
-      <h3>Suchen</h3>
+      <h4>Suchen</h4>
       <InputText v-model="searchString" placeholder="Antrag suchen">
         <!-- todo place search icon -->
       </InputText>
@@ -71,7 +71,7 @@ defineExpose({
     </div>
 
     <div>
-      <h3>Allgemein</h3>
+      <h4>Allgemein</h4>
       <div>
         <div @click="dateType = 'creation'">
           <img src="../assets/icons/CreationDate.svg">
@@ -93,26 +93,26 @@ defineExpose({
 
     <div>
       <!-- todo add correct styles -->
-      <h3>Status</h3>
+      <h4>Status</h4>
       <div :class="{ 'selected': statusNew }" @click="statusNew ? statusNew=false : statusNew=true">
-        <p>Status: Neu</p>
+        <p>NEU</p>
       </div>
       <div :class="{ 'selected': statusOpen }" @click="statusOpen ? statusOpen=false : statusOpen=true">
-        <p>Status: Offen</p>
+        <p>OFFEN</p>
       </div>
       <div :class="{ 'selected': statusStudyOffice }" @click="statusStudyOffice ? statusStudyOffice=false : statusStudyOffice=true">
-        <p>Status: Studienbüro</p>
+        <p>STUDIENBÜRO</p>
       </div>
       <div :class="{ 'selected': statusPav }" @click="statusPav ? statusPav=false : statusPav=true">
-        <p>Status: Prüfungsausschussvorsitzender</p>
+        <p>PRÜFUNGSAUSSCHUSS</p>
       </div>
       <div :class="{ 'selected': statusClosed }" @click="statusClosed ? statusClosed=false : statusClosed=true">
-        <p>Status: Abgeschlossen</p>
+        <p>ABGESCHLOSSEN</p>
       </div>
     </div>
 
     <div>
-      <h3>Studiengang</h3>
+      <h4>Studiengang</h4>
       <Dropdown show-clear
           v-model="selectedCourse"
           :options="courses"
@@ -123,7 +123,13 @@ defineExpose({
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+@import '../assets/mixins.scss';
+@import '../assets/variables.scss';
+
+.filter-container {
+  @include basicContainer();
+}
 .selected {
   background-color: salmon;
 }

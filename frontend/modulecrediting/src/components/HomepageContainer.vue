@@ -26,7 +26,14 @@ const props = defineProps(['header', 'text'])
 @import '../assets/variables.scss';
 
 .homepage-container {
-    @include listItem($white);
+    @include verticalListItem($white);
+    display: flex;
+    padding: 0.9375rem 1.25rem;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 1.25rem;
+    align-self: stretch;
 }
 
 .input-button-container{

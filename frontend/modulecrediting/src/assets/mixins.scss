@@ -1,33 +1,59 @@
-@mixin listItem ($background-color) {
+@mixin main() {
+  max-width: 1350px;
+  margin: 0 auto;
+  display: flex;
+  padding: 3.125rem 4.375rem;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 1.875rem;
+}
+
+@mixin verticalList() {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.25rem;
+}
+
+@mixin verticalListItem($background-color) {
     background-color: $background-color;
     border-left: 3px solid $red;
+  }
 
-    display: flex;
-    padding: 0.9375rem 1.25rem;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    gap: 1.25rem;
-    align-self: stretch;
+@mixin singleContainer() {
+  width: fit-content;
+  background-color: $white;
+  display: flex;
+  padding: 4.375rem;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2.5rem;
 }
 
-@mixin main () {
-    max-width: 1350px;
-    margin: 0 auto;
-    display: flex;
-    padding: 3.125rem 4.375rem;
-    justify-content: center;
-    align-items: flex-start;
-    gap: 1.875rem;
+@mixin basicContainer() {
+  width: min-content;
+  background-color: $white;
+  padding: 0.9375rem 1.5625rem;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.625rem;
 }
 
-@mixin singleContainer () {
-    width: fit-content;
-    background-color: $white;
-    display: flex;
-    padding: 4.375rem;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 2.5rem;
+@mixin applicationOverview() {
+  background-color: $white;
+  display: flex;
+  padding: 0.625rem 0.625rem 0.625rem 1.25rem;
+  justify-content: space-between;
+  align-items: center;
+  align-content: center;
+  row-gap: 0.625rem;
+  align-self: stretch;
+  flex-wrap: wrap;
+}
+
+@mixin redBorder() {
+    
 }

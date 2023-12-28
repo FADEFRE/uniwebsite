@@ -20,7 +20,7 @@ const openDetailView = () => {
 </script>
 
 <template>
-  <div @click="openDetailView" class="overview-item">
+  <div @click="openDetailView" class="application-overview-container">
     <div class="overview-child">
       <p>Vorgangsnummer: {{ props.data['id'] }}</p>
     </div>
@@ -36,18 +36,15 @@ const openDetailView = () => {
   </div>
 </template>
 
-<style scoped>
-.overview-item {
-  margin: 10px;
+<style scoped lang="scss">
+@import '../assets/mixins.scss';
+@import '../assets/variables.scss';
 
-  background-color: #f4f4f4;
-
-  border-width: 1px;
-  border-radius: 5px;
-  border-style: solid;
-  border-color: #555555;
+.application-overview-container {
+  @include verticalListItem($white);
+  @include applicationOverview();
+  
 }
-
 .overview-item:hover {
   background-color: #f8f8f8;
 }

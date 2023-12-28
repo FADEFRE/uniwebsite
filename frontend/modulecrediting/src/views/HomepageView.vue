@@ -68,10 +68,6 @@ const goToSubmitApplication = () => {
 }
 
 .homepage-content{
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1.875rem;
-    flex: 1 0 0;
+    @include verticalList();
 }
 </style>
