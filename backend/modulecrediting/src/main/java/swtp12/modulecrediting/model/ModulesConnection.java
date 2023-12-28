@@ -98,6 +98,9 @@ public class ModulesConnection {
 
     //Function to set List of ModuleLeipzig to this ModulesConnection (and add this ModuleConnectio to all ModulesLeipzig in the List)
     public void setModulesLeipzig(List<ModuleLeipzig> modulesLeipzig) {
+        // no modules leipzig set
+        if(modulesLeipzig == null) return;
+
         for(ModuleLeipzig m : modulesLeipzig) { 
             m.getModulesConnections().add(this);
         }
