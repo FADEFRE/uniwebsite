@@ -4,12 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -28,7 +23,7 @@ public class ModuleApplication {
     @GeneratedValue
     private Long id;
     @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class})
-    @NotBlank(message = "module name must not be blank (empty String)")
+    @NotBlank(message = "moduleName must not be blank (empty String)")
     private String name;
     @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class})
     @NotNull(message = "points must not be null")
@@ -48,23 +43,16 @@ public class ModuleApplication {
     private PdfDocument pdfDocument;
 
     //Relation ModuleApplication <-> ModulesConnection (Setter in ModulesConnection)
-    @OneToOne(mappedBy = "moduleApplication")
+    @ManyToOne
     @JsonBackReference
     @EqualsAndHashCode.Exclude
     private ModulesConnection modulesConnection;
 
 
 
-    public ModuleApplication(String name, Integer points, String pointSystem, String university) {
-        this.name = name;
-        this.points = points;
-        this.pointSystem = pointSystem;
-        this.university = university;
-    }
 
-
-    //Function to add a PDF Document to this ModuleApplication (adds this Module to the PDF aswell)
-    public void addPdfDocument(PdfDocument pdfDocument) {
+    //Function to set the PDF Document to this ModuleApplication (adds this Module to the PDF aswell)
+    public void setPdfDocument(PdfDocument pdfDocument) {
         pdfDocument.setModuleApplication(this);
         this.pdfDocument = pdfDocument;
     }

@@ -5,7 +5,7 @@ import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
+import org.apache.catalina.LifecycleState;
 
 
 @Getter
@@ -13,5 +13,5 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ApplicationCreateDTO {
     private String courseLeipzig;
-    private List<ModuleBlockCreateDTO> moduleBlockCreateDTOList;
+    private List<ModulesConnectionCreateDTO> modulesConnections;
 }

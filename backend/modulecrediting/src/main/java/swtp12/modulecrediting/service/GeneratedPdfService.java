@@ -21,11 +21,13 @@ public class GeneratedPdfService {
     @Autowired
     private ApplicationService applicationService;
 
+    public byte[] generatePdfDataDocument(String id) {
+        return id.getBytes();
+    }
+/*
     public byte[] generatePdfDataDocument(String id) throws IOException, DocumentException {
         Application application = applicationService.getApplicationById(id);
         List<ModulesConnection> modulesConnections = application.getModulesConnections();
-
-
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         Document document = new Document(PageSize.A4);
@@ -159,7 +161,7 @@ public class GeneratedPdfService {
         document.close();
         return baos.toByteArray();
     }
-
+*/
     private void addTable(Document document, String label, String value) throws DocumentException {
         PdfPTable table = new PdfPTable(2);
         table.setWidthPercentage(88);

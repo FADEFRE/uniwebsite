@@ -13,12 +13,10 @@ import org.springframework.web.multipart.MultipartFile;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ModuleBlockCreateDTO {
+public class ModuleApplicationCreateDTO {
     private String moduleName;
     private String university;
     private Integer points;
     private String pointSystem;
     private MultipartFile description;
-    private List<String> moduleNamesLeipzig;
-    private String commentApplicant;
 }

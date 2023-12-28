@@ -13,8 +13,5 @@ import swtp12.modulecrediting.model.EnumApplicationStatus;
 
 @Repository
 public interface ApplicationRepository extends JpaRepository<Application, String>{
-    @EntityGraph(value = "graph.Application.modulesConnections", type = EntityGraph.EntityGraphType.LOAD)
-    Optional<Application> findById(String id);
-
     boolean existsById(String id);
 }

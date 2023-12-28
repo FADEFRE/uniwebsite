@@ -4,15 +4,12 @@ import static swtp12.modulecrediting.model.EnumApplicationStatus.*;
 import static swtp12.modulecrediting.model.EnumModuleConnectionDecision.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -21,10 +18,9 @@ import jakarta.transaction.Transactional;
 
 import swtp12.modulecrediting.dto.ApplicationCreateDTO;
 import swtp12.modulecrediting.dto.ApplicationUpdateDTO;
-import swtp12.modulecrediting.dto.ModuleBlockCreateDTO;
+import swtp12.modulecrediting.dto.ModuleApplicationCreateDTO;
 import swtp12.modulecrediting.dto.ModuleBlockUpdateDTO;
 import swtp12.modulecrediting.model.Application;
-import swtp12.modulecrediting.model.EnumApplicationStatus;
 import swtp12.modulecrediting.model.CourseLeipzig;
 import swtp12.modulecrediting.model.ModuleApplication;
 import swtp12.modulecrediting.model.ModuleLeipzig;
@@ -32,18 +28,22 @@ import swtp12.modulecrediting.model.ModulesConnection;
 import swtp12.modulecrediting.model.PdfDocument;
 import swtp12.modulecrediting.repository.ApplicationRepository;
 
-
+// TODO: fix dataloader
+// TODO: fix pdf generator
+// TODO: fix related modules
 
 @Service
 public class ApplicationService {
     @Autowired
-    private PdfDocumentService pdfDocumentService;
-    @Autowired
     private ApplicationRepository applicationRepository;
+    @Autowired
+    ModulesConnectionService modulesConnectionService;
     @Autowired
     private ModuleLeipzigService moduleLeipzigService;
     @Autowired
     private CourseLeipzigService courseLeipzigService;
+    @Autowired
+    private PdfDocumentService pdfDocumentService;
 
 
 
@@ -62,15 +62,15 @@ public class ApplicationService {
 
         for (int i = 0; i < modulesConnections.size(); i++) {
             ModulesConnection modulesConnection = modulesConnections.get(i);
-            ModuleApplication moduleApplication = modulesConnection.getModuleApplication();
+            //ModuleApplication moduleApplication = modulesConnection.getModuleApplication();
             ModuleBlockUpdateDTO moduleBlockUpdateDTO = applicationUpdateDTO.getModuleBlockUpdateDTOList().get(i);
 
             // UPDATE BASIC MODULE APPLICATION ATTRIBUTES
 
-            moduleApplication.setName(moduleBlockUpdateDTO.getModuleName());
-            moduleApplication.setUniversity(moduleBlockUpdateDTO.getUniversity());
-            moduleApplication.setPoints(moduleBlockUpdateDTO.getPoints());
-            moduleApplication.setPointSystem(moduleBlockUpdateDTO.getPointSystem());
+            //moduleApplication.setName(moduleBlockUpdateDTO.getModuleName());
+            //moduleApplication.setUniversity(moduleBlockUpdateDTO.getUniversity());
+            //moduleApplication.setPoints(moduleBlockUpdateDTO.getPoints());
+            //moduleApplication.setPointSystem(moduleBlockUpdateDTO.getPointSystem());
 
             // UPDATE PAV/STUDY_OFFICE RELATED ATTRBIUTES
             if(applicationUpdateDTO.getUserRole().equals("pav")) {
@@ -150,42 +150,21 @@ public class ApplicationService {
         if(allDecisionsSuggestionsCompleted) application.setFullStatus(PRÜFUNGSAUSSCHUSS);
         if(allDecisionsFinalCompleted) {
             application.setFullStatus(ABGESCHLOSSEN);
-            application.setDecisionDate(LocalDate.now());
+            application.setDecisionDate(LocalDateTime.now());
         }
     }
 
+    public String createApplication(ApplicationCreateDTO applicationDTO) {
+        Application application = new Application(generateValidApplicationId());
 
-    public String createApplication(ApplicationCreateDTO applicationCreateDTO) {
-        ArrayList<ModulesConnection> modulesConnections = new ArrayList<>();
-
-        if(applicationCreateDTO.getModuleBlockCreateDTOList() == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Modules are required");
-
-        for(ModuleBlockCreateDTO m : applicationCreateDTO.getModuleBlockCreateDTOList()) {
-            PdfDocument pdfDocument = pdfDocumentService.createPdfDocument(m.getDescription());
-
-            ModuleApplication moduleApplication = new ModuleApplication(m.getModuleName(), m.getPoints(), m.getPointSystem(), m.getUniversity());
-            moduleApplication.addPdfDocument(pdfDocument);
-
-            ModulesConnection modulesConnection = new ModulesConnection();
-            modulesConnection.setCommentApplicant(m.getCommentApplicant());
-            modulesConnection.addModuleApplication(moduleApplication);
-
-            ArrayList<ModuleLeipzig> modulesLeipzig = moduleLeipzigService.getModulesLeipzigByNames(m.getModuleNamesLeipzig());
-            modulesConnection.setModulesLeipzig(modulesLeipzig);
-
-            modulesConnections.add(modulesConnection);
-        }
-
-        CourseLeipzig courseLeipzig = courseLeipzigService.getCourseLeipzigByName(applicationCreateDTO.getCourseLeipzig());
-
-
-        Application application = new Application(generateValidApplicationId(), NEU, LocalDate.now());
+        CourseLeipzig courseLeipzig = courseLeipzigService.getCourseLeipzigByName(applicationDTO.getCourseLeipzig());
         application.setCourseLeipzig(courseLeipzig);
 
-        application.addModulesConnections(modulesConnections);
+        List<ModulesConnection> modulesConnections = modulesConnectionService.createModulesConnections(applicationDTO.getModulesConnections());
+        application.setModulesConnections(modulesConnections);
 
-        Application savedApplication = applicationRepository.save(application);
-        return savedApplication.getId();
+        application = applicationRepository.save(application);
+        return application.getId();
     }
 
     private String generateValidApplicationId() {

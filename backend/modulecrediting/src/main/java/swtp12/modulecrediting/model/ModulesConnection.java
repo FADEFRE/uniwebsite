@@ -6,15 +6,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -52,10 +44,10 @@ public class ModulesConnection {
     private String commentApplicant;
 
     //Relation ModulesConnection <-> ModuleApplication (Setter in ModuleApplication)
-    @OneToOne(cascade = CascadeType.ALL , orphanRemoval = true)
+    @OneToMany(mappedBy = "modulesConnection", cascade = CascadeType.ALL , orphanRemoval = true, fetch = FetchType.EAGER)
     @JsonManagedReference
     @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class})
-    private ModuleApplication moduleApplication;
+    private List<ModuleApplication> moduleApplications = new ArrayList<>();
 
     //Relation ModulesConnection <-> ModuleLeipzig
     @ManyToMany
@@ -84,10 +76,24 @@ public class ModulesConnection {
     }
 
 
-    //Function to add ModuleApplication to this ModuleConnection (and add this ModuleConnection to the ModuleApplication)
-    public void addModuleApplication(ModuleApplication moduleApplication) {
-        moduleApplication.setModulesConnection(this);
-        this.moduleApplication = moduleApplication;
+    //Function to set List of ModuleApplication to this ModulesConnection (and add this ModuleConnectio to all ModuleApplication in the List)
+    public void setModuleApplications(List<ModuleApplication> moduleApplications) {
+        for(ModuleApplication m : moduleApplications) {
+            m.setModulesConnection(this);
+        }
+        this.moduleApplications = moduleApplications;
+    }
+    public void addModuleApplications(List<ModuleApplication> moduleApplications) {
+        for(ModuleApplication m : moduleApplications) {
+            m.setModulesConnection(this);
+            this.moduleApplications.add(m);
+        }
+    }
+    public void removeModuleApplications(List<ModuleApplication> moduleApplications) {
+        for(ModuleApplication m : moduleApplications) {
+            m.setModulesConnection(null);
+            this.moduleApplications.remove(m);
+        }
     }
 
     //Function to set List of ModuleLeipzig to this ModulesConnection (and add this ModuleConnectio to all ModulesLeipzig in the List)
@@ -95,7 +101,7 @@ public class ModulesConnection {
         for(ModuleLeipzig m : modulesLeipzig) { 
             m.getModulesConnections().add(this);
         }
-    this.modulesLeipzig = modulesLeipzig;
+        this.modulesLeipzig = modulesLeipzig;
     }
 
     public void addModulesLeipzig(List<ModuleLeipzig> modulesLeipzig) {

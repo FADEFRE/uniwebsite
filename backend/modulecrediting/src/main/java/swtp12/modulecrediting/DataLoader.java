@@ -22,7 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import swtp12.modulecrediting.dto.ApplicationCreateDTO;
 import swtp12.modulecrediting.dto.ApplicationUpdateDTO;
-import swtp12.modulecrediting.dto.ModuleBlockCreateDTO;
+import swtp12.modulecrediting.dto.ModuleApplicationCreateDTO;
 import swtp12.modulecrediting.dto.ModuleBlockUpdateDTO;
 import swtp12.modulecrediting.model.Application;
 import swtp12.modulecrediting.model.CourseLeipzig;
@@ -67,7 +67,7 @@ public class DataLoader implements CommandLineRunner {
 
         leipzigDataLoader(moduleLeipzigData);
 
-        createTestData(testData);
+        //createTestData(testData);
     }
 
 
@@ -124,11 +124,12 @@ public class DataLoader implements CommandLineRunner {
      * @param testFileName The `testFileName` parameter is the name of the JSON file from which the test
      * data settings will be extracted.
      */
+    /*
     @Transactional
     private void createTestData(String testFileName) {
-        /*//Loads specified courses/modules 
-        leipzigDataLoader(testFileName);
-        System.out.print("\033[2K\033[1G");*/
+        //Loads specified courses/modules
+        //leipzigDataLoader(testFileName);
+        //System.out.print("\033[2K\033[1G");
 
         JsonNode applicationSettingsNode = grabFirstNodeFromJson(testFileName, "randApplications").get(0);
         JsonNode moduleSettingsNode = grabFirstNodeFromJson(testFileName, "randModuleApplications").get(0);
@@ -151,7 +152,7 @@ public class DataLoader implements CommandLineRunner {
         System.out.println("Dataloader: Generating random Dummy Applications:");
         int count = 1;
         for (CourseLeipzig cL : listOfCourseLeipzig) {
-            List<ModuleBlockCreateDTO> listModuleCreateDTO = new ArrayList<>();
+            List<ModuleApplicationCreateDTO> listModuleCreateDTO = new ArrayList<>();
             List<ModuleBlockUpdateDTO> listModuleUpdateDTO = new ArrayList<>();
 
             ApplicationCreateDTO applicationCreateDTO = new ApplicationCreateDTO();
@@ -160,7 +161,7 @@ public class DataLoader implements CommandLineRunner {
             
             int rIdx = rand.nextInt(3) + 1;
             for (int i = 0; i < rIdx; i++) {
-                ModuleBlockCreateDTO mBcDTO = createModuleDTO(cL, moduleSettingsNode);
+                ModuleApplicationCreateDTO mBcDTO = createModuleDTO(cL, moduleSettingsNode);
                 mBcDTO.setModuleName(mBcDTO.getModuleName() + "_" + count);
                 mBcDTO.setUniversity(mBcDTO.getUniversity() + "_" + count);
                 listModuleCreateDTO.add(mBcDTO);
@@ -169,7 +170,7 @@ public class DataLoader implements CommandLineRunner {
                 count++;
             }
             applicationCreateDTO.setCourseLeipzig(cL.getName());
-            applicationCreateDTO.setModuleBlockCreateDTOList(listModuleCreateDTO);
+            applicationCreateDTO.setModuleApplicationCreateDTOList(listModuleCreateDTO);
 
             String vorgangsnummer = applicationService.createApplication(applicationCreateDTO);
             
@@ -213,7 +214,7 @@ public class DataLoader implements CommandLineRunner {
             System.out.println("Created Dummy Application: " + vorgangsnummer + " as: " + updatedData);
         }
         System.out.println("Dataloader: Testdata successfully loaded into Database"); 
-    }
+    }*/
 
 
 
@@ -270,14 +271,16 @@ public class DataLoader implements CommandLineRunner {
      * properties: name, university, points, pointsystem, comment.
      * @return The method is returning a ModuleBlockCreateDTO object.
      */
-    private ModuleBlockCreateDTO createModuleDTO(CourseLeipzig cL, JsonNode moduleSettingNode) {
-        ModuleBlockCreateDTO moduleBlockCreateDTO = new ModuleBlockCreateDTO();
+
+    /*
+    private ModuleApplicationCreateDTO createModuleDTO(CourseLeipzig cL, JsonNode moduleSettingNode) {
+        ModuleApplicationCreateDTO moduleApplicationCreateDTO = new ModuleApplicationCreateDTO();
         Random rdm = new Random();
-        moduleBlockCreateDTO.setModuleName(moduleSettingNode.get("name").asText());
-        moduleBlockCreateDTO.setUniversity(moduleSettingNode.get("uni").asText());
-        moduleBlockCreateDTO.setPoints(Integer.parseInt(getRandValueOfNode(moduleSettingNode, "points", rdm)));
-        moduleBlockCreateDTO.setPointSystem(getRandValueOfNode(moduleSettingNode, "pointSystem", rdm));
-        moduleBlockCreateDTO.setCommentApplicant(getRandValueOfNode(moduleSettingNode, "comment", rdm));
+        moduleApplicationCreateDTO.setModuleName(moduleSettingNode.get("name").asText());
+        moduleApplicationCreateDTO.setUniversity(moduleSettingNode.get("uni").asText());
+        moduleApplicationCreateDTO.setPoints(Integer.parseInt(getRandValueOfNode(moduleSettingNode, "points", rdm)));
+        moduleApplicationCreateDTO.setPointSystem(getRandValueOfNode(moduleSettingNode, "pointSystem", rdm));
+        moduleApplicationCreateDTO.setCommentApplicant(getRandValueOfNode(moduleSettingNode, "comment", rdm));
         
         List<String> listModuleLeipzig = new ArrayList<>();
         int numberOf = rdm.nextInt(3)+1;
@@ -285,13 +288,13 @@ public class DataLoader implements CommandLineRunner {
             int idxR = rdm.nextInt(cL.getModulesLeipzigCourse().size());
             listModuleLeipzig.add(cL.getModulesLeipzigCourse().get(idxR).getModuleName());
         }
-        moduleBlockCreateDTO.setModuleNamesLeipzig(listModuleLeipzig);
+        moduleApplicationCreateDTO.setModuleNamesLeipzig(listModuleLeipzig);
 
         MultipartFile pdfMultipartFile = new MockMultipartFile("dummy", "dummy.pdf", "application/pdf", "pdf_data_mock".getBytes());
-        moduleBlockCreateDTO.setDescription(pdfMultipartFile);
+        moduleApplicationCreateDTO.setDescription(pdfMultipartFile);
 
-        return moduleBlockCreateDTO;
-    }
+        return moduleApplicationCreateDTO;
+    }*/
 
     /**
      * The function retrieves a String from a random index from a specified node in a JSON object.
@@ -320,6 +323,7 @@ public class DataLoader implements CommandLineRunner {
      * application.
      * @return The method `updateModuleDTO` returns a `List<ModuleBlockUpdateDTO>`.
      */
+    /*
     private List<ModuleBlockUpdateDTO> updateModuleDTO(String user, Application application) {
         List<ModuleBlockUpdateDTO> moduleBlockUpdateDTOs = new ArrayList<>();
         
@@ -352,5 +356,5 @@ public class DataLoader implements CommandLineRunner {
         }
 
         return moduleBlockUpdateDTOs;
-    }
+    }*/
 }
