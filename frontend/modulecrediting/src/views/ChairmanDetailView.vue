@@ -7,6 +7,7 @@ import { useRoute } from "vue-router";
 import { ref, onBeforeMount } from "vue";
 import { getApplicationById, getModulesByCourse, putChairman } from "@/scripts/axios-requests";
 import ChairmanModulePanel from "@/components/ChairmanModulePanel.vue";
+import ApplicationOverview from "@/components/ApplicationOverview.vue";
 
 const route = useRoute()
 let id = undefined
@@ -81,10 +82,13 @@ const triggerPutData = () => {
     <div v-else>
 
       <div>
-        <p>Vorgangsnummer: {{ applicationData.id }}</p>
-        <p>Studiengang: {{ applicationData.courseLeipzig.name }}</p>
-        <p>Status: {{ applicationData.fullStatus }}</p>
-        <p>Erstellt: {{ applicationData.creationDate }}</p>
+        <ApplicationOverview
+        :vorgangsnummer="applicationData.id"
+        :studiengang="applicationData.courseLeipzig.name"
+        :status="applicationData.fullStatus"
+        :creationDate="applicationData.creationDate">
+      </ApplicationOverview>
+
       </div>
 
       <div>
