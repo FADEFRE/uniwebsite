@@ -12,6 +12,7 @@ import { useRoute } from 'vue-router'
 import { ref, computed, onBeforeMount } from "vue";
 import { getApplicationByIdForStatus } from "@/scripts/axios-requests";
 import { url } from "@/scripts/url-config"
+import PanelHeader from '../components/PanelHeader.vue';
 
 const route = useRoute()
 
@@ -51,6 +52,14 @@ const fileLinkBase = computed(() => `${url}/pdf-documents/`)
 
       <div v-if="applicationData">
         <div>
+          <div class="additional-section">
+     
+        <PanelHeader v-for="moduleConnection in applicationData['modulesConnections']"
+                       :key="moduleConnection['moduleApplication']['name']"
+                       :moduleName="moduleConnection['moduleApplication']['name']"
+                       :internalModules="moduleConnection['modulesLeipzig']"
+          />
+      </div>
 
           <div>
             <h2>Vorgangsnummer: {{ id }}</h2>
@@ -74,6 +83,7 @@ const fileLinkBase = computed(() => `${url}/pdf-documents/`)
                   (als Übungsschein)
                 </span>
               </h2>
+              
             </template>
 
             <!-- accept / reject Icons -->
