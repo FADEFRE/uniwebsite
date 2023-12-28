@@ -9,7 +9,7 @@ import { getApplicationById, getModulesByCourse, putStudyOffice } from "@/script
 import StudyOfficeModulePanel from "@/components/StudyOfficeModulePanel.vue";
 import ApplicationOverview from "@/components/ApplicationOverview.vue";
 import PanelHeader from "@/components/PanelHeader.vue";
-
+import PanelStatusIcons from "@/components/PanelStatusIcons.vue";
 const route = useRoute()
 
 let id = undefined
@@ -86,6 +86,13 @@ const triggerPutData = () => {
     <!-- request resolved -->
     <div v-else>
 
+      <div>
+
+      </div>
+      <PanelStatusIcons
+            :decisionSuggestion="moduleConnection['decisionSuggestion']"
+            :decisionFinal="moduleConnection['decisionFinal']"
+          />
       <div>
         <PanelHeader
         v-for="moduleConnection in applicationData['modulesConnections']"
