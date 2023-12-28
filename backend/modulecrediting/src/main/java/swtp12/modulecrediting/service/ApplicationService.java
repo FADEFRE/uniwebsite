@@ -163,10 +163,11 @@ public class ApplicationService {
         for(ModuleBlockCreateDTO m : applicationCreateDTO.getModuleBlockCreateDTOList()) {
             PdfDocument pdfDocument = pdfDocumentService.createPdfDocument(m.getDescription());
 
-            ModuleApplication moduleApplication = new ModuleApplication(m.getModuleName(), m.getPoints(), m.getPointSystem(), m.getUniversity(), m.getCommentApplicant());
+            ModuleApplication moduleApplication = new ModuleApplication(m.getModuleName(), m.getPoints(), m.getPointSystem(), m.getUniversity());
             moduleApplication.addPdfDocument(pdfDocument);
 
             ModulesConnection modulesConnection = new ModulesConnection();
+            modulesConnection.setCommentApplicant(m.getCommentApplicant());
             modulesConnection.addModuleApplication(moduleApplication);
 
             ArrayList<ModuleLeipzig> modulesLeipzig = moduleLeipzigService.getModulesLeipzigByNames(m.getModuleNamesLeipzig());

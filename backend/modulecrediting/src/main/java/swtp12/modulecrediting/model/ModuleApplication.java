@@ -39,9 +39,7 @@ public class ModuleApplication {
     @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class})
     @NotBlank(message = "university must not be blank (empty String)")
     private String university;
-    @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class})
-    @NotNull(message = "comment applicant must not be null")
-    private String commentApplicant;
+
 
     //Relation ModuleApplication <-> PdfDocument
     @OneToOne(cascade = CascadeType.ALL , orphanRemoval = true, fetch = FetchType.EAGER)
@@ -57,12 +55,11 @@ public class ModuleApplication {
 
 
 
-    public ModuleApplication(String name, Integer points, String pointSystem, String university, String commentApplicant) {
+    public ModuleApplication(String name, Integer points, String pointSystem, String university) {
         this.name = name;
         this.points = points;
         this.pointSystem = pointSystem;
         this.university = university;
-        this.commentApplicant = commentApplicant;
     }
 
 

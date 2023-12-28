@@ -47,6 +47,10 @@ public class ModulesConnection {
     @NotNull(message = "commentStudyOffice must not be null")
     private String commentStudyOffice;
 
+    @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class})
+    @NotNull(message = "comment applicant must not be null")
+    private String commentApplicant;
+
     //Relation ModulesConnection <-> ModuleApplication (Setter in ModuleApplication)
     @OneToOne(cascade = CascadeType.ALL , orphanRemoval = true)
     @JsonManagedReference
