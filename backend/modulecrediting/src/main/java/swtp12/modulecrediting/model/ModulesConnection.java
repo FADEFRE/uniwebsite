@@ -25,7 +25,7 @@ public class ModulesConnection {
     @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class})
     @NotNull(message = "decisionFinal must not be null")
     private EnumModuleConnectionDecision decisionFinal;
-    @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class})
+    @JsonView({Views.ApplicationStudent.class})
     @NotNull(message = "commentDecision must not be null")
     private String commentDecision;
     @JsonView(Views.ApplicationLogin.class)
@@ -35,7 +35,7 @@ public class ModulesConnection {
     @NotNull(message = "commentStudyOffice must not be null")
     private String commentStudyOffice;
 
-    @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class})
+    @JsonView({Views.ApplicationStudent.class})
     @NotNull(message = "comment applicant must not be null")
     private String commentApplicant;
 
@@ -53,7 +53,7 @@ public class ModulesConnection {
             inverseJoinColumns = @JoinColumn(name = "module_leipzig_id")
     )
     @JsonManagedReference
-    @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class})
+    @JsonView({Views.ApplicationStudent.class, Views.RelatedModulesConnection.class})
     private List<ModuleLeipzig> modulesLeipzig = new ArrayList<>();
 
     //Relation ModulesConnection <-> Application (Setter in Application)

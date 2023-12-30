@@ -22,9 +22,9 @@ import lombok.NoArgsConstructor;
 public class PdfDocument {
     @Id
     @GeneratedValue
-    @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class})
+    @JsonView({Views.ApplicationStudent.class})
     private Long id;
-    @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class})
+    @JsonView({Views.ApplicationStudent.class})
     private String name;
     @Lob
     @JsonIgnore

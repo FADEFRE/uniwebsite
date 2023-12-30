@@ -14,9 +14,7 @@ import swtp12.modulecrediting.model.ModuleLeipzig;
 import swtp12.modulecrediting.model.ModulesConnection;
 import swtp12.modulecrediting.repository.ModulesConnectionRepository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class ModulesConnectionService {
@@ -91,7 +89,7 @@ public class ModulesConnectionService {
 
     // METHODS FOR RELATED MODULES //
 
-    public List<ModulesConnection> getRelatedModulesConnections(Long id) {
+    public ArrayList<ModulesConnection> getRelatedModulesConnections(Long id) {
         ModulesConnection baseModulesConnection = getModulesConnectionById(id);
         List<ModulesConnection> allModulesConnections = modulesConnectionRepository.findAll();
         ArrayList<ModulesConnection> relatedModuleConnections = new ArrayList<>();
@@ -101,32 +99,31 @@ public class ModulesConnectionService {
 
             if(m.getDecisionFinal() == EnumModuleConnectionDecision.UNBEARBEITET) continue;
 
-            // if(checkSimilarity(baseModulesConnection,m)) relatedModuleConnections.add(m);
+            if(checkSimilarityOfModulesConnection(baseModulesConnection,m)) relatedModuleConnections.add(m);
         }
         return relatedModuleConnections;
     }
 
-    /*
-    public boolean checkSimilarity(ModulesConnection baseModulesConnection, ModulesConnection relatedModulesConnection) {
-        String baseUniversity = baseModulesConnection.getModuleApplication().getUniversity();
-        String baseModuleName = baseModulesConnection.getModuleApplication().getName();
+    // checks if a module connection is similar, based on if any of a modulename, university pair matches with another pair.
+    public boolean checkSimilarityOfModulesConnection(ModulesConnection baseModulesConnection, ModulesConnection relatedModulesConnection) {
+        for(ModuleApplication maBase : baseModulesConnection.getModuleApplications()) {
+            for(ModuleApplication maRel : relatedModulesConnection.getModuleApplications()) {
+                int distanceModuleName = checkSimilarityOfStrings(maBase.getName(), maRel.getName());
+                int distanceUniversity = checkSimilarityOfStrings(maBase.getUniversity(), maRel.getUniversity());
 
-        String relatedUniversity = relatedModulesConnection.getModuleApplication().getUniversity();
-        String relatedModuleName = relatedModulesConnection.getModuleApplication().getName();
-
-        // TODO convert Strings no spaces, all lower case etc.? use LevenSteinDetalied Distance for universiry
-
-        LevenshteinDistance levenshteinDistance = new LevenshteinDistance();
-        LevenshteinDetailedDistance levenshteinDetailedDistance = new LevenshteinDetailedDistance();
-
-        int distanceUniversity = levenshteinDistance.apply(baseUniversity, relatedUniversity);
-        int distanceModuleName = levenshteinDistance.apply(baseModuleName, relatedModuleName);
-
-        System.out.println(distanceUniversity + " " + distanceModuleName + " ");
-
-        if(distanceUniversity <= 5 && distanceModuleName <= 5) return true;
+                if(distanceUniversity <= 5 && distanceModuleName <= 5) return true;
+            }
+        }
         return false;
-    }*/
+    }
+
+    public int checkSimilarityOfStrings(String name1, String name2) {
+        LevenshteinDistance levenshteinDistance = new LevenshteinDistance();
+        String name1Clean = name1.toLowerCase().replaceAll(" ", "");
+        String name2Clean = name2.toLowerCase().replaceAll(" ", "");
+        System.out.println(name1Clean + "   " + name2Clean);
+        return levenshteinDistance.apply(name1, name1);
+    }
 
 
     // GENERALL METHODS //

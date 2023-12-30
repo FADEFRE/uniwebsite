@@ -26,13 +26,13 @@ public class ModuleApplication {
     @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class})
     @NotBlank(message = "moduleName must not be blank (empty String)")
     private String name;
-    @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class})
+    @JsonView({Views.ApplicationStudent.class})
     @NotNull(message = "points must not be null")
     private Integer points;
-    @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class})
+    @JsonView({Views.ApplicationStudent.class})
     @NotNull(message = "point system must not be null")
     private String pointSystem;
-    @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class})
+    @JsonView({Views.ApplicationStudent.class})
     @NotBlank(message = "university must not be blank (empty String)")
     private String university;
 
@@ -40,7 +40,7 @@ public class ModuleApplication {
     //Relation ModuleApplication <-> PdfDocument
     @OneToOne(cascade = CascadeType.ALL)
     @JsonManagedReference
-    @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class})
+    @JsonView({Views.ApplicationStudent.class})
     private PdfDocument pdfDocument;
 
     //Relation ModuleApplication <-> ModulesConnection (Setter in ModulesConnection)

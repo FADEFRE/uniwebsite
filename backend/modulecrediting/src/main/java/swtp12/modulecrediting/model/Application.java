@@ -24,14 +24,14 @@ public class Application {
     @JsonView({Views.ApplicationOverview.class,Views.RelatedModulesConnection.class})
     private String id;
 
-    @JsonView({Views.ApplicationOverview.class,Views.RelatedModulesConnection.class})
+    @JsonView({Views.ApplicationOverview.class})
     private EnumApplicationStatus fullStatus;
     @CreationTimestamp
     @JsonView({Views.ApplicationOverview.class,Views.RelatedModulesConnection.class})
     private LocalDateTime creationDate;
-    @JsonView({Views.ApplicationOverview.class,Views.RelatedModulesConnection.class})
+    @JsonView({Views.ApplicationOverview.class})
     private LocalDateTime lastEditedDate;
-    @JsonView({Views.ApplicationOverview.class,Views.RelatedModulesConnection.class})
+    @JsonView({Views.ApplicationOverview.class})
     private LocalDateTime decisionDate;
 
     //Relation Application <-> CourseLeipzig

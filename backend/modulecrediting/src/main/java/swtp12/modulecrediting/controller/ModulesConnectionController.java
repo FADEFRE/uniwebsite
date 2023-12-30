@@ -8,6 +8,7 @@ import swtp12.modulecrediting.model.ModulesConnection;
 import swtp12.modulecrediting.model.Views;
 import swtp12.modulecrediting.service.ModulesConnectionService;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @CrossOrigin

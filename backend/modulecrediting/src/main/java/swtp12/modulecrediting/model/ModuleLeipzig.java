@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 public class ModuleLeipzig {   
     @Id
     @NotBlank
-    @JsonView({Views.coursesWithModules.class, Views.modulesWithoutCourse.class, Views.ApplicationStudent.class, Views.RelatedModulesConnection.class})
+    @JsonView({Views.coursesWithModules.class, Views.modulesWithoutCourse.class, Views.ApplicationStudent.class,Views.RelatedModulesConnection.class})
     private String moduleName;
     @JsonView({Views.coursesWithModules.class, Views.modulesWithoutCourse.class})
     private String moduleCode;
