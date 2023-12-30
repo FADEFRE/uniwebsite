@@ -42,7 +42,7 @@ public class Application {
     private CourseLeipzig courseLeipzig;
 
     //Relation Application <-> ModulesConnection
-    @OneToMany(mappedBy = "application", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "application", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference
     @JsonView(Views.ApplicationStudent.class)
     private List<ModulesConnection> modulesConnections = new ArrayList<>();

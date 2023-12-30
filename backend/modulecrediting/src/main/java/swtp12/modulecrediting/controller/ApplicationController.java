@@ -4,20 +4,14 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.itextpdf.text.DocumentException;
@@ -42,7 +36,13 @@ public class ApplicationController {
     private GeneratedPdfService generatedPdfService;
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateApplication(@PathVariable String id,@ModelAttribute ApplicationUpdateDTO applicationUpdateDTO) {
+    public ResponseEntity<String> updateApplication(@PathVariable String id,
+                                                    @Valid @ModelAttribute ApplicationUpdateDTO applicationUpdateDTO,
+                                                    BindingResult result) {
+        if (result.hasErrors()) {
+            return ResponseEntity.badRequest().body("Validation failed: " + result.getAllErrors());
+        }
+
         return ResponseEntity.ok(applicationService.updateApplication(id, applicationUpdateDTO));
     }
 
@@ -54,7 +54,7 @@ public class ApplicationController {
     @GetMapping
     @JsonView(Views.ApplicationOverview.class)
     public ResponseEntity<List<Application>> get() {
-            return ResponseEntity.ok(applicationService.getAllApplciations());
+        return ResponseEntity.ok(applicationService.getAllApplciations());
     }
 
     @GetMapping("/{id}")

@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import swtp12.modulecrediting.dto.ModuleLeipzigCreateDTO;
+import swtp12.modulecrediting.dto.ModuleLeipzigUpdateDTO;
 import swtp12.modulecrediting.model.ModuleLeipzig;
+import swtp12.modulecrediting.model.ModulesConnection;
 import swtp12.modulecrediting.repository.ModuleLeipzigRepository;
 
 
@@ -20,29 +22,44 @@ public class ModuleLeipzigService {
     @Autowired
     private ModuleLeipzigRepository moduleLeipzigRepository;
 
+    public void updateModulesLeipzig(ModulesConnection modulesConnection, List<ModuleLeipzigUpdateDTO> modulesLeipzigDTO) {
+        for(ModuleLeipzigUpdateDTO ml : modulesLeipzigDTO) {
+            ModuleLeipzig moduleLeipzig = getModuleLeipzigByName(ml.getModuleName());
+
+            // remove from application (modules connection)
+            if(ml.getRemoveFromModulesConnection() != null && ml.getRemoveFromModulesConnection()) {
+                modulesConnection.removeModulesLeipzig(List.of(moduleLeipzig));
+                continue;
+            }
+
+            // check if duplicate module leipzig was sent
+            if(modulesConnection.getModulesLeipzig().contains(moduleLeipzig))
+                continue;
+
+            // add new module leipzig to modules conneciton
+            modulesConnection.addModulesLeipzig(List.of(moduleLeipzig));
+        }
+    }
 
     public ArrayList<ModuleLeipzig> getModulesLeipzigByNames(List<String> moduleNamesLeipzig) {
-        // moduleconnection has no modules leipzig
-        if(moduleNamesLeipzig == null || moduleNamesLeipzig.size() == 0) return null;
-
+        if(moduleNamesLeipzig.size() == 0) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No Module Leipzig Names provided");
 
         ArrayList<ModuleLeipzig> modulesLeipzig = new ArrayList<>();
         for(String name : moduleNamesLeipzig) {
-            Optional<ModuleLeipzig> moduleLeipzig = moduleLeipzigRepository.findByModuleName(name);
-            if(moduleLeipzig.isPresent()) {
-                modulesLeipzig.add(moduleLeipzig.get());
-            }else{
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Module Leipzig not found with moduleName: " + name);
-            }
+            modulesLeipzig.add(getModuleLeipzigByName(name));
         }
         return modulesLeipzig;
     }
 
-    public void createModuleLeipzig(ModuleLeipzigCreateDTO moduleLeipzigCreateDTO) {
-        
-        if(moduleLeipzigCreateDTO.getModuleName() == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Module Name is required");
+    public ModuleLeipzig getModuleLeipzigByName(String name) {
+        Optional<ModuleLeipzig> moduleLeipzig = moduleLeipzigRepository.findByModuleName(name);
+        if(moduleLeipzig.isPresent())
+            return moduleLeipzig.get();
 
-        
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Module Leipzig not found with moduleName: " + name);
     }
 
+    public void createModuleLeipzig(ModuleLeipzigCreateDTO moduleLeipzigCreateDTO) {
+        if(moduleLeipzigCreateDTO.getModuleName() == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Module Name is required");
+    }
 }

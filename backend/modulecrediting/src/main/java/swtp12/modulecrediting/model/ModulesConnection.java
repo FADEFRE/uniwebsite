@@ -28,10 +28,6 @@ public class ModulesConnection {
     @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class})
     @NotNull(message = "commentDecision must not be null")
     private String commentDecision;
-
-    @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class})
-    @NotNull(message = "asExamCertificate must not be null")
-    private Boolean asExamCertificate;
     @JsonView(Views.ApplicationLogin.class)
     @NotNull(message = "decisionSuggestion must not be null")
     private EnumModuleConnectionDecision decisionSuggestion;
@@ -44,7 +40,7 @@ public class ModulesConnection {
     private String commentApplicant;
 
     //Relation ModulesConnection <-> ModuleApplication (Setter in ModuleApplication)
-    @OneToMany(mappedBy = "modulesConnection", cascade = CascadeType.ALL , orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "modulesConnection", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JsonManagedReference
     @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class})
     private List<ModuleApplication> moduleApplications = new ArrayList<>();
@@ -72,7 +68,6 @@ public class ModulesConnection {
         decisionSuggestion = UNBEARBEITET;
         commentDecision = "";
         commentStudyOffice = "";
-        asExamCertificate = false;
     }
 
 
@@ -98,10 +93,7 @@ public class ModulesConnection {
 
     //Function to set List of ModuleLeipzig to this ModulesConnection (and add this ModuleConnectio to all ModulesLeipzig in the List)
     public void setModulesLeipzig(List<ModuleLeipzig> modulesLeipzig) {
-        // no modules leipzig set
-        if(modulesLeipzig == null) return;
-
-        for(ModuleLeipzig m : modulesLeipzig) { 
+        for(ModuleLeipzig m : modulesLeipzig) {
             m.getModulesConnections().add(this);
         }
         this.modulesLeipzig = modulesLeipzig;

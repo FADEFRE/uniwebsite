@@ -3,9 +3,7 @@ package swtp12.modulecrediting.service;
 import static swtp12.modulecrediting.model.EnumApplicationStatus.*;
 import static swtp12.modulecrediting.model.EnumModuleConnectionDecision.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,14 +16,9 @@ import jakarta.transaction.Transactional;
 
 import swtp12.modulecrediting.dto.ApplicationCreateDTO;
 import swtp12.modulecrediting.dto.ApplicationUpdateDTO;
-import swtp12.modulecrediting.dto.ModuleApplicationCreateDTO;
-import swtp12.modulecrediting.dto.ModuleBlockUpdateDTO;
 import swtp12.modulecrediting.model.Application;
 import swtp12.modulecrediting.model.CourseLeipzig;
-import swtp12.modulecrediting.model.ModuleApplication;
-import swtp12.modulecrediting.model.ModuleLeipzig;
 import swtp12.modulecrediting.model.ModulesConnection;
-import swtp12.modulecrediting.model.PdfDocument;
 import swtp12.modulecrediting.repository.ApplicationRepository;
 
 // TODO: fix dataloader
@@ -39,98 +32,24 @@ public class ApplicationService {
     @Autowired
     ModulesConnectionService modulesConnectionService;
     @Autowired
-    private ModuleLeipzigService moduleLeipzigService;
-    @Autowired
     private CourseLeipzigService courseLeipzigService;
-    @Autowired
-    private PdfDocumentService pdfDocumentService;
 
 
-
-    // TODO: Corner Case: No Module Leipzig when creating, or when updating
-    // TODO: Module Accepted but only as Pruefungsschien
     @Transactional
-    public String updateApplication(String id, ApplicationUpdateDTO applicationUpdateDTO) {
-
-
+    public String updateApplication(String id, ApplicationUpdateDTO applicationDTO) {
         Application application = getApplicationById(id);
-        List<ModulesConnection> modulesConnections = application.getModulesConnections();
 
+        if(applicationDTO.getModulesConnections() != null) // check if any changes were made
+            modulesConnectionService.updateModulesConnection(
+                    applicationDTO.getModulesConnections(),
+                    applicationDTO.getUserRole()
+            );
 
-        if(applicationUpdateDTO.getModuleBlockUpdateDTOList() == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Module Information is missing");
-        if(applicationUpdateDTO.getModuleBlockUpdateDTOList().size() != modulesConnections.size()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Modules Information don't match the saved Modules Information");
-
-        for (int i = 0; i < modulesConnections.size(); i++) {
-            ModulesConnection modulesConnection = modulesConnections.get(i);
-            //ModuleApplication moduleApplication = modulesConnection.getModuleApplication();
-            ModuleBlockUpdateDTO moduleBlockUpdateDTO = applicationUpdateDTO.getModuleBlockUpdateDTOList().get(i);
-
-            // UPDATE BASIC MODULE APPLICATION ATTRIBUTES
-
-            //moduleApplication.setName(moduleBlockUpdateDTO.getModuleName());
-            //moduleApplication.setUniversity(moduleBlockUpdateDTO.getUniversity());
-            //moduleApplication.setPoints(moduleBlockUpdateDTO.getPoints());
-            //moduleApplication.setPointSystem(moduleBlockUpdateDTO.getPointSystem());
-
-            // UPDATE PAV/STUDY_OFFICE RELATED ATTRBIUTES
-            if(applicationUpdateDTO.getUserRole().equals("pav")) {
-                modulesConnection.setDecisionFinal(moduleBlockUpdateDTO.getDecisionFinal());
-                modulesConnection.setCommentDecision(moduleBlockUpdateDTO.getCommentDecision());
-            }else if(applicationUpdateDTO.getUserRole().equals("study_office")) {
-                modulesConnection.setDecisionSuggestion(moduleBlockUpdateDTO.getDecisionSuggestion());
-                modulesConnection.setCommentStudyOffice(moduleBlockUpdateDTO.getCommentStudyOffice());
-            }
-            modulesConnection.setAsExamCertificate(moduleBlockUpdateDTO.getAsExamCertificate());
-
-
-
-            // UPDATE CONNECTED MODULES LEIPZIG
-            if(moduleBlockUpdateDTO.getModuleNamesLeipzig() == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Module Leipzig Names are missing");
-            List<ModuleLeipzig> modulesLeipzig = modulesConnection.getModulesLeipzig();
-            List<String> existingModuleNames = getExistingModuleNames(modulesLeipzig);
-            List<String> newModuleNames = getNewModuleNames(existingModuleNames, moduleBlockUpdateDTO.getModuleNamesLeipzig());
-            List<String> deletedModuleNames = getDeletedModuleNames(existingModuleNames, moduleBlockUpdateDTO.getModuleNamesLeipzig());
-
-            List<ModuleLeipzig> modulesLeipzigNew = moduleLeipzigService.getModulesLeipzigByNames(newModuleNames);
-            List<ModuleLeipzig> modulesLeipzigDeleted = moduleLeipzigService.getModulesLeipzigByNames(deletedModuleNames);
-
-            modulesConnection.addModulesLeipzig(modulesLeipzigNew);
-            modulesConnection.removeModulesLeipzig(modulesLeipzigDeleted);
-        }
-
-        // UPDATE APPLICATION STATUS (& DECISIONDATE)
+        application.setLastEditedDate(LocalDateTime.now());
         updateApplicationStatus(application);
 
         applicationRepository.save(application);
         return id;
-    }
-
-    public List<String> getExistingModuleNames(List<ModuleLeipzig> modulesLeipzig) {
-        List<String> existingModuleNames = new ArrayList<>();
-        for (ModuleLeipzig module : modulesLeipzig) {
-            existingModuleNames.add(module.getModuleName());
-        }
-        return existingModuleNames;
-    }
-
-    public List<String> getNewModuleNames(List<String> existingModuleNames, List<String> updatedModuleNames) {
-        List<String> newModuleNames = new ArrayList<>();
-        for (String updatedModuleName : updatedModuleNames) {
-            if (!existingModuleNames.contains(updatedModuleName)) {
-                newModuleNames.add(updatedModuleName);
-            }
-        }
-        return newModuleNames;
-    }
-
-    public List<String> getDeletedModuleNames(List<String> existingModuleNames, List<String> updatedModuleNames) {
-        List<String> deletedModuleNames = new ArrayList<>();
-        for (String moduleName : existingModuleNames) {
-            if (!updatedModuleNames.contains(moduleName)) {
-                deletedModuleNames.add(moduleName);
-            }
-        }
-        return deletedModuleNames;
     }
 
     // FUNCTION TO UPDADTE APPLICATION STATUS ON UPDATE

@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import swtp12.modulecrediting.dto.ModulesConnectionCreateDTO;
+import swtp12.modulecrediting.dto.ModulesConnectionUpdateDTO;
 import swtp12.modulecrediting.model.EnumModuleConnectionDecision;
 import swtp12.modulecrediting.model.ModuleApplication;
 import swtp12.modulecrediting.model.ModuleLeipzig;
@@ -27,6 +28,41 @@ public class ModulesConnectionService {
     ModuleLeipzigService moduleLeipzigService;
 
 
+    public void updateModulesConnection(List<ModulesConnectionUpdateDTO> modulesConnectionsDTO, String userRole) {
+        for(ModulesConnectionUpdateDTO mc : modulesConnectionsDTO) {
+            if(mc.getId() == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Modules Connection id must not be null");
+            ModulesConnection modulesConnection = getModulesConnectionById(mc.getId());
+
+            // handle decision block
+            if(userRole.equals("study-office")) {
+                if (mc.getCommentStudyOffice() != null)
+                    modulesConnection.setCommentStudyOffice(mc.getCommentStudyOffice());
+
+                if (mc.getDecisionSuggestion() != null)
+                    modulesConnection.setDecisionSuggestion(mc.getDecisionSuggestion());
+            }
+
+            if(userRole.equals("pav")) {
+                if (mc.getCommentDecision() != null)
+                    modulesConnection.setCommentDecision(mc.getCommentDecision());
+
+                if (mc.getDecisionFinal() != null)
+                    modulesConnection.setDecisionFinal(mc.getDecisionFinal());
+            }
+
+            // handle module applications changes
+            if(mc.getModuleApplications() != null) // changes in module applications
+                moduleApplicationService.updateModuleApplications(mc.getModuleApplications());
+
+            // handle modules leipzig changes
+            if(mc.getModulesLeipzig() != null)
+                moduleLeipzigService.updateModulesLeipzig(modulesConnection, mc.getModulesLeipzig());
+
+
+            // modulesConnection will be saved in application service due to cascade all
+        }
+    }
+
     public List<ModulesConnection> createModulesConnections(List<ModulesConnectionCreateDTO> modulesConnectionsDTO) {
         if(modulesConnectionsDTO == null || modulesConnectionsDTO.size() == 0)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, " No Modules Connections provided in the request");
@@ -39,8 +75,10 @@ public class ModulesConnectionService {
             List<ModuleApplication> moduleApplications = moduleApplicationService.createModuleApplications(mc.getModuleApplications());
             modulesConnection.setModuleApplications(moduleApplications);
 
-            List<ModuleLeipzig> modulesLeipzig = moduleLeipzigService.getModulesLeipzigByNames(mc.getModulesLeipzig());
-            modulesConnection.setModulesLeipzig(modulesLeipzig);
+            if(mc.getModulesLeipzig() != null) { // no modules leipzig sent
+                List<ModuleLeipzig> modulesLeipzig = moduleLeipzigService.getModulesLeipzigByNames(mc.getModulesLeipzig());
+                modulesConnection.setModulesLeipzig(modulesLeipzig);
+            }
 
             modulesConnections.add(modulesConnection);
         }
@@ -51,7 +89,7 @@ public class ModulesConnectionService {
 
 
 
-    // DOWN FROM HERE: METHODS FOR RELATED MODULES //
+    // METHODS FOR RELATED MODULES //
 
     public List<ModulesConnection> getRelatedModulesConnections(Long id) {
         ModulesConnection baseModulesConnection = getModulesConnectionById(id);
@@ -63,16 +101,9 @@ public class ModulesConnectionService {
 
             if(m.getDecisionFinal() == EnumModuleConnectionDecision.UNBEARBEITET) continue;
 
-           // if(checkSimilarity(baseModulesConnection,m)) relatedModuleConnections.add(m);
+            // if(checkSimilarity(baseModulesConnection,m)) relatedModuleConnections.add(m);
         }
         return relatedModuleConnections;
-    }
-
-    public ModulesConnection getModulesConnectionById(Long id) {
-        Optional<ModulesConnection> modulesConnection = modulesConnectionRepository.findById(id);
-        if(modulesConnection.isPresent()) return modulesConnection.get();
-
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "ModulesConnection with id " + id + " not found");
     }
 
     /*
@@ -96,4 +127,13 @@ public class ModulesConnectionService {
         if(distanceUniversity <= 5 && distanceModuleName <= 5) return true;
         return false;
     }*/
+
+
+    // GENERALL METHODS //
+    public ModulesConnection getModulesConnectionById(Long id) {
+        Optional<ModulesConnection> modulesConnection = modulesConnectionRepository.findById(id);
+        if(modulesConnection.isPresent()) return modulesConnection.get();
+
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "ModulesConnection with id " + id + " not found");
+    }
 }

@@ -1,11 +1,9 @@
 package swtp12.modulecrediting.dto;
 
-import java.util.List;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
+import java.util.List;
 
 
 @Getter
@@ -13,5 +11,15 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ApplicationUpdateDTO {
     private String userRole; // "study_office" / "pav"
-    private List<ModuleBlockUpdateDTO> moduleBlockUpdateDTOList;
+    private String courseLeipzig;
+    private List<ModulesConnectionUpdateDTO> modulesConnections;
+
+    @Override
+    public String toString() {
+        return "ApplicationUpdateDTO{" +
+                "userRole='" + userRole + '\'' +
+                ", courseLeipzig='" + courseLeipzig + '\'' +
+                ", modulesConnections=" + modulesConnections +
+                '}';
+    }
 }

@@ -18,7 +18,6 @@ public class CourseLeipzigService {
     @Autowired
     CourseLeipzigRepository courseLeipzigRepository;
 
-
     public CourseLeipzig getCourseLeipzigByName(String name) {
         Optional<CourseLeipzig> courseLeipzig = courseLeipzigRepository.findByName(name);
         if(courseLeipzig.isPresent()) {

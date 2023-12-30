@@ -12,15 +12,16 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-
+import javax.swing.text.View;
 
 
 @Data
 @NoArgsConstructor
 @Entity
-public class ModuleApplication {   
+public class ModuleApplication {
     @Id
     @GeneratedValue
+    @JsonView(Views.ApplicationLogin.class)
     private Long id;
     @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class})
     @NotBlank(message = "moduleName must not be blank (empty String)")
@@ -37,7 +38,7 @@ public class ModuleApplication {
 
 
     //Relation ModuleApplication <-> PdfDocument
-    @OneToOne(cascade = CascadeType.ALL , orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.ALL)
     @JsonManagedReference
     @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class})
     private PdfDocument pdfDocument;
@@ -47,8 +48,6 @@ public class ModuleApplication {
     @JsonBackReference
     @EqualsAndHashCode.Exclude
     private ModulesConnection modulesConnection;
-
-
 
 
     //Function to set the PDF Document to this ModuleApplication (adds this Module to the PDF aswell)
