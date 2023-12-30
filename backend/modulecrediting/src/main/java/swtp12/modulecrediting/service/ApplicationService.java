@@ -21,7 +21,6 @@ import swtp12.modulecrediting.model.CourseLeipzig;
 import swtp12.modulecrediting.model.ModulesConnection;
 import swtp12.modulecrediting.repository.ApplicationRepository;
 
-// TODO: fix dataloader
 // TODO: fix pdf generator
 // TODO: fix related modules
 
