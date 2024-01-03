@@ -17,4 +17,15 @@ const props = defineProps({
     </div>
 </template>
 
-<style scoped></style>
+<style scoped lang="scss">
+@import '../assets/mixins.scss';
+@import '../assets/variables.scss';
+.panel-status-icons {
+    display: flex;
+    justify-content: center;
+    gap: 0.9375rem;
+}
+.arrow-icon {
+    @include rightArrow();
+}
+</style>
