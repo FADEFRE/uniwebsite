@@ -13,20 +13,20 @@ displays:
 import { defineProps } from 'vue';
 
 const props = defineProps({
-    externalModules: {
-      type: Array
-    },
-    internalModules: {
-      type: Array
-    }
+  externalModules: {
+    type: Array
+  },
+  internalModules: {
+    type: Array
+  }
 });
 </script>
 
 <template>
   <div class="panel-header">
     <div class="external-modules">
-      <p v-if="externalModules">{{ externalModules.join(', ') }}</p>
-      <p v-else>...</p>
+      <h3 v-if="externalModules">{{ externalModules.join(', ') }}</h3>
+      <h3 v-else>...</h3>
     </div>
 
     <div class="arrow-icon">
@@ -34,15 +34,19 @@ const props = defineProps({
     </div>
 
     <div class="internal-modules">
-      <p v-if="internalModules">{{ internalModules.join(', ') }}</p>
-      <p v-else>...</p>
+      <h3 v-if="internalModules">{{ internalModules.join(', ') }}</h3>
+      <h3 v-else>...</h3>
     </div>
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .panel-header {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+.arrow-icon {
+  transform: rotate(-90deg);
 }
 </style>
