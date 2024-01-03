@@ -112,43 +112,96 @@ defineExpose({
 </script>
 
 <template>
-  <div>
+  <div class="external-modules-item">
 
-    <div>
-      <div>
+    <div class="screen-split">
+      <div class="left-side">
+        <InputText :readonly="readonly" type="text" v-model="moduleName" placeholder="Modulname" />
+        <InputText :readonly="readonly" type="text" v-model="university" placeholder="Universität"/>
+      </div>
 
-        <div>
-          <InputText :readonly="readonly" type="text" v-model="moduleName" placeholder="Modulname" />
-          <InputText :readonly="readonly" type="text" v-model="university" placeholder="Universität" />
+      <div class="right-side">
+
+        <div class="point-container">
+          <InputText :readonly="readonly" tyoe="text" v-model="pointSystem" placeholder="Punktesystem" />
           <InputText :readonly="readonly" type="text" v-model="creditPoints" placeholder="Punkte" />
         </div>
 
-        <div>
-          <InputText :readonly="readonly" tyoe="text" v-model="pointSystem" placeholder="Punktesystem" />
-          <div class="file-drop" @dragover="dragOverHandler" @drop="dropHandler">
-            <!-- todo add file dialog on click -->
-            <div v-if="selectedFile?.name">
-              <p>{{ selectedFile.name }}</p>
-            </div>
-            <div v-else>
-              <p>Modulbeschreibung hochladen</p>
-              <img src="../assets/icons/Upload.svg">
-            </div>
+        <div class="file-drop" @dragover="dragOverHandler" @drop="dropHandler">
+          <!-- todo add file dialog on click -->
+          <div v-if="selectedFile?.name">
+            <p>{{ selectedFile.name }}</p>
+          </div>
+          <div v-else>
+            <p>Modulbeschreibung hochladen</p>
+            <img src="../assets/icons/Upload.svg">
           </div>
         </div>
 
       </div>
 
-      <div v-if="type === 'new'">
-        <img src="../assets/icons/Trash.svg" @click="emit('deleteSelf')">
-      </div>
+    </div>
+
+    <div v-if="type === 'new'">
+      <img src="../assets/icons/Trash.svg" @click="emit('deleteSelf')">
     </div>
 
   </div>
 </template>
 
-<style scoped>
-.file-drop {
-  border-style: dashed;
+<style scoped lang="scss">
+@import '../assets/mixins.scss';
+@import '../assets/variables.scss';
+
+
+.external-modules-item {
+  @include verticalListItem($gray);
+
+  width: 100%;
+  padding: 0.625rem 0.9375rem 0.625rem 1.25rem;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 0.9375rem;
 }
+
+.screen-split {
+  @include screenSplit();
+  width: 100%;
+}
+
+.left-side {
+  @include verticalList(small);
+  justify-content: space-between;
+  align-self: stretch;
+  width: 50%;
+  
+}
+
+.right-side {
+  @include verticalList(small);
+  justify-content: space-between;
+  align-self: stretch;
+  width: 50%;
+}
+
+.point-container {
+  display: flex;
+  gap: 0.625rem;
+}
+
+.file-drop {
+  border: 1px dashed $black;
+
+  display: flex;
+  flex-direction: row;
+  padding: 0.625rem 0rem;
+  justify-content: center;
+  align-items: center;
+  gap: 0.625rem;
+  align-self: stretch;
+}
+
+
 </style>

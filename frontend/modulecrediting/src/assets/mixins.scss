@@ -8,11 +8,14 @@
   gap: 1.875rem;
 }
 
-@mixin verticalList() {
+@mixin verticalList($gapSize) {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 1.25rem;
+  @if $gapSize == small {
+    gap: 0.625rem; 
+  } @else if $gapSize == big{
+    gap: 1.25rem; 
+  }
 }
 
 @mixin verticalListItem($background-color) {
@@ -54,6 +57,24 @@
   flex-wrap: wrap;
 }
 
-@mixin redBorder() {
-    
+@mixin panelComponent() {
+  width: 100%;
+  padding: 0.625rem 0rem;
+  background-color: $white;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 0.625rem;
+}
+
+@mixin screenSplit() {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.875rem;
+}
+
+@mixin rightArrow() {
+  transform: rotate(-90deg);
 }

@@ -77,7 +77,6 @@ const props = defineProps({
 @import '../assets/mixins.scss';
 @import '../assets/variables.scss';
 .application-overview-container {
-    
     @include applicationOverview();
 }
 

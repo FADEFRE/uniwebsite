@@ -1,86 +1,109 @@
 // resets
 * {
-    box-sizing: border-box;
-    border-radius: 0;
-    margin: 0;
-    padding: 0;
+  box-sizing: border-box;
+  border-radius: 0;
+  margin: 0;
+  padding: 0;
 
-    &:focus {
-        outline: none;
-    }
+  &:focus {
+    outline: none;
+  }
 }
-
-
-
 
 @font-face {
-    font-family: 'Jost';
-    src: url('@/assets/fonts/Jost-VariableFont_wght.ttf'); /* Adjust the file path and format */
-    font-weight: 1 999;
+  font-family: "Jost";
+  src: url("@/assets/fonts/Jost-VariableFont_wght.ttf"); /* Adjust the file path and format */
+  font-weight: 1 999;
 }
 
-
 body {
-    background-color: $gray;
+  background-color: $gray;
 }
 
 h2 {
-    color: $dark-gray;
-    font-family: 'Jost';
-    text-transform: uppercase;
-    font-size: 2.125rem;
-    font-weight: 800;
-    letter-spacing: -0.04rem;
+  color: $dark-gray;
+  font-family: "Jost";
+  text-transform: uppercase;
+  font-size: 2.125rem;
+  font-weight: 800;
+  letter-spacing: -0.04rem;
 }
 
 h3 {
-    color: $dark-gray;
-    font-family: 'Jost';
-    font-size: 1.375rem;
-    font-weight: 800;
-    line-height: normal;
+  color: $dark-gray;
+  font-family: "Jost";
+  font-size: 1.375rem;
+  font-weight: 800;
+  line-height: normal;
 }
 
 h4 {
-    color: $dark-gray;
-    font-family: 'Jost';
-    font-size: 1.125rem;
-    font-weight: 600;
+  color: $dark-gray;
+  font-family: "Jost";
+  font-size: 1.125rem;
+  font-weight: 600;
 }
 
 .overview-text {
-    font-family: 'Jost';
-    font-size: 1.125rem;
-    font-weight: 600;
-    text-transform: uppercase;
+  font-family: "Jost";
+  font-size: 1.125rem;
+  font-weight: 600;
+  text-transform: uppercase;
 }
 
-p, input{
-    color: $black;
-    font-family: 'Jost';
-    font-size: 1rem;
-    font-weight: 400;
-    line-height: normal;
+p {
+  color: $black;
+  font-family: "Jost";
+  font-size: 1rem;
+  font-weight: 400;
 }
 
-a, Button {
-    font-family: 'Jost';
-    text-transform: uppercase;
-    text-decoration: none;
-    color: $white;
-    font-size: 1.125rem;
-    font-style: normal;
-    font-weight: 600;
-    line-height: normal;
+a,
+Button {
+  font-family: "Jost";
+  text-transform: uppercase;
+  text-decoration: none;
+  color: $white;
+  font-size: 1.125rem;
+  font-weight: 600;
 
-    display: flex;
-    padding: 0.625rem 1.125rem;
-    justify-content: center;
-    align-items: center;
-    gap: 0.5rem;
+  display: flex;
+  padding: 0.625rem 1.125rem;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
 
-    background-color: $dark-gray;
+  background-color: $dark-gray;
 }
 
+small {
+  font-family: "Jost";
+  font-size: 0.65rem;
+  font-weight: 400;
+}
+
+.p-inputtext,
+input {
+  border: 2px solid $dark-gray;
+  background-color: transparent;
+  padding: 0.625rem;
 
 
+  color: $black;
+  font-family: "Jost";
+  font-size: 1rem;
+  font-weight: 460;
+
+  min-width: 0;
+}
+
+.helper-text {
+  margin-left: 0.625rem;
+}
+
+::placeholder {
+  color: $dark-gray;
+  font-family: "Jost";
+  font-size: 1rem;
+  font-weight: 400;
+}

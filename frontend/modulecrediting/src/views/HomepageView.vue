@@ -68,6 +68,6 @@ const goToSubmitApplication = () => {
 }
 
 .homepage-content{
-    @include verticalList();
+    @include verticalList(big);
 }
 </style>

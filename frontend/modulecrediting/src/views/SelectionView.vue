@@ -44,6 +44,6 @@ const route = useRoute()
 }
 
 .overview-list {
-  @include verticalList();
+  @include verticalList(big);
 }
 </style>

@@ -79,13 +79,4 @@ const login = () => {
     align-items: center;
     gap: 0.625rem;
 }
-
-input {
-    width: 100%;
-    padding: 0.625rem;
-
-    &:focus {
-        background-color: $gray;
-    }
-}
 </style>

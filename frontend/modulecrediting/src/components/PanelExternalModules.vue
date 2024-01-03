@@ -72,11 +72,11 @@ defineExpose({
 </script>
 
 <template>
-  <div>
+  <div class="panel-external-modules">
 
     <h3>Anzurechnende Module</h3>
 
-    <div v-if="type === 'new'">
+    <div v-if="type === 'new'" class="external-modules-list">
       <PanelExternalModulesItem
           v-for="(_, i) in externalModulesCount"
           :key="i"
@@ -84,12 +84,12 @@ defineExpose({
           ref="externalModules"
           @delete-self="delete externalModulesCount[i]"
       />
-      {{ externalModules }}
       <Button @click="addExternalModule">Fremdmodul hinzufügen</Button>
       <small>Anrechnung mehrerer externer Module auf Module der Universität Leipzig</small>
     </div>
 
-    <div v-else-if="type === 'edit' || type === 'readonly'">
+
+    <div v-else-if="type === 'edit' || type === 'readonly'" class="external-modules-list">
       <PanelExternalModulesItem
           v-for="module in modulesData"
           :type="type"
@@ -99,13 +99,24 @@ defineExpose({
           :point-system="module.pointSystem"
           :selected-file="module.selectedFile"
           ref="externalModules"
-      />
-      {{ externalModules }}
+          />
     </div>
+
 
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 
+@import '../assets/mixins.scss';
+@import '../assets/variables.scss';
+
+.panel-external-modules {
+  @include panelComponent();
+}
+
+.external-modules-list {
+  @include verticalList(small);
+  width: 100%;
+}
 </style>
