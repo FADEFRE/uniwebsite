@@ -24,7 +24,7 @@ const openDetailView = () => {
 }
 
 const goToSubmitApplication = () => {
-    router.push({ name: 'SubmitApplication' })
+    router.push({ name: 'submitApplication' })
 }
 </script>
 
