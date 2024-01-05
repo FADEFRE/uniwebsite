@@ -14,6 +14,7 @@ displays:
 
 <script setup>
 import PanelExternalModulesItem from "@/components/PanelExternalModulesItem.vue";
+import ButtonAdd from "./ButtonAdd.vue";
 import { ref, reactive, onBeforeMount } from "vue";
 
 const props = defineProps({
@@ -74,7 +75,7 @@ defineExpose({
 <template>
   <div class="panel-external-modules">
 
-    <h3>Anzurechnende Module</h3>
+    <h4>Anzurechnende Module</h4>
 
     <div v-if="type === 'new'" class="external-modules-list">
       <PanelExternalModulesItem
@@ -84,7 +85,8 @@ defineExpose({
           ref="externalModules"
           @delete-self="delete externalModulesCount[i]"
       />
-      <Button @click="addExternalModule">Fremdmodul hinzufügen</Button>
+      <ButtonAdd @click="addExternalModule">Fremdmodul hinzufuegen</ButtonAdd>
+    
       <small>Anrechnung mehrerer externer Module auf Module der Universität Leipzig</small>
     </div>
 

@@ -67,8 +67,11 @@ Button {
   font-size: 1.125rem;
   font-weight: 600;
 
-  display: flex;
+  width: fit-content;
   padding: 0.625rem 1.125rem;
+
+  display: flex;
+  
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
