@@ -28,4 +28,10 @@ function getYearAgo () {
     return date
 }
 
-export { getWeekAgo, getMonthAgo, getSixMonthAgo, getYearAgo }
+function getFormattedDate (date) {
+    return date.getDate().toString().padStart(2, '0')
+        + '.' + (date.getMonth() + 1).toString().padStart(2, '0')  // month is zero based
+        + '.' + date.getFullYear().toString()
+}
+
+export { getWeekAgo, getMonthAgo, getSixMonthAgo, getYearAgo, getFormattedDate }
