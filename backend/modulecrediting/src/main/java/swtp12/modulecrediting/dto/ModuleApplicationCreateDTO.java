@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Setter
 @NoArgsConstructor
 public class ModuleApplicationCreateDTO {
-    private String moduleName;
+    private String name;
     private String university;
     private Integer points;
     private String pointSystem;

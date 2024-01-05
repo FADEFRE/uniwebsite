@@ -24,7 +24,7 @@ public class ModuleLeipzigService {
 
     public void updateModulesLeipzig(ModulesConnection modulesConnection, List<ModuleLeipzigUpdateDTO> modulesLeipzigDTO) {
         for(ModuleLeipzigUpdateDTO ml : modulesLeipzigDTO) {
-            ModuleLeipzig moduleLeipzig = getModuleLeipzigByName(ml.getModuleName());
+            ModuleLeipzig moduleLeipzig = getModuleLeipzigByName(ml.getName());
 
             // remove from application (modules connection)
             if(ml.getRemoveFromModulesConnection() != null && ml.getRemoveFromModulesConnection()) {
@@ -36,7 +36,7 @@ public class ModuleLeipzigService {
             if(modulesConnection.getModulesLeipzig().contains(moduleLeipzig))
                 continue;
 
-            // add new module leipzig to modules conneciton
+            // add new module leipzig to modules connection
             modulesConnection.addModulesLeipzig(List.of(moduleLeipzig));
         }
     }
@@ -52,7 +52,7 @@ public class ModuleLeipzigService {
     }
 
     public ModuleLeipzig getModuleLeipzigByName(String name) {
-        Optional<ModuleLeipzig> moduleLeipzig = moduleLeipzigRepository.findByModuleName(name);
+        Optional<ModuleLeipzig> moduleLeipzig = moduleLeipzigRepository.findByName(name);
         if(moduleLeipzig.isPresent())
             return moduleLeipzig.get();
 
@@ -60,6 +60,6 @@ public class ModuleLeipzigService {
     }
 
     public void createModuleLeipzig(ModuleLeipzigCreateDTO moduleLeipzigCreateDTO) {
-        if(moduleLeipzigCreateDTO.getModuleName() == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Module Name is required");
+        if(moduleLeipzigCreateDTO.getName() == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Module Name is required");
     }
 }

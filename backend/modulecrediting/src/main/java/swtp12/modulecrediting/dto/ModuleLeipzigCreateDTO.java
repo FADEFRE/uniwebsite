@@ -11,8 +11,8 @@ import lombok.Setter;
 @NoArgsConstructor
 // used to create a new module leipzig !! different to all the other create & update dtos. they are used for creating,updating an application
 public class ModuleLeipzigCreateDTO {
-    private String moduleName;
+    private String name;
 
     @JsonIgnore
-    private String moduleCode;
+    private String code;
 }

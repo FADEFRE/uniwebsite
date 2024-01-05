@@ -35,7 +35,7 @@ public class CourseLeipzig {
     @JoinTable(
             name = "course_leipzig_module_leipzig",
             joinColumns = @JoinColumn(name = "course_leipzig", referencedColumnName = "name"),
-            inverseJoinColumns = @JoinColumn(name = "module_leipzig", referencedColumnName = "moduleName")
+            inverseJoinColumns = @JoinColumn(name = "module_leipzig", referencedColumnName = "name")
     )
     @JsonManagedReference
     @JsonView(Views.coursesWithModules.class)

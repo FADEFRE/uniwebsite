@@ -29,7 +29,7 @@ public class ModuleApplicationService {
 
         for(ModuleApplicationCreateDTO ma : moduleApplicationsDTO) {
             ModuleApplication moduleApplication = new ModuleApplication();
-            moduleApplication.setName(ma.getModuleName());
+            moduleApplication.setName(ma.getName());
             moduleApplication.setUniversity(ma.getUniversity());
             moduleApplication.setPoints(ma.getPoints());
             moduleApplication.setPointSystem(ma.getPointSystem());
@@ -53,8 +53,8 @@ public class ModuleApplicationService {
                 return;
             }
 
-            if(ma.getModuleName() != null)
-                moduleApplication.setName(ma.getModuleName());
+            if(ma.getName() != null)
+                moduleApplication.setName(ma.getName());
 
             if(ma.getUniversity() != null)
                 moduleApplication.setUniversity(ma.getUniversity());

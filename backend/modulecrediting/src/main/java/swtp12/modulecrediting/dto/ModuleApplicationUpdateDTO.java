@@ -11,7 +11,7 @@ public class ModuleApplicationUpdateDTO {
     private Boolean delete;
     private Long id;
 
-    private String moduleName;
+    private String name;
     private String university;
     private Integer points;
     private String pointSystem;
@@ -21,7 +21,7 @@ public class ModuleApplicationUpdateDTO {
         return "ModuleApplicationUpdateDTO{" +
                 "delete=" + delete +
                 ", id=" + id +
-                ", moduleName='" + moduleName + '\'' +
+                ", moduleName='" + name + '\'' +
                 ", university='" + university + '\'' +
                 ", points=" + points +
                 ", pointSystem='" + pointSystem + '\'' +
