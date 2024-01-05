@@ -12,6 +12,7 @@ functionality:
 -->
 
 <script setup>
+import router from "@/router";
 import { ref, onBeforeMount } from "vue";
 import { getFormattedDate } from "@/scripts/date-utils";
 import { getCoursesLeipzig, getModulesByCourse, postApplication } from "@/scripts/axios-requests";
@@ -49,6 +50,9 @@ const triggerPostApplication = () => {
   console.log(selectedCourse.value)
   console.log(moduleConnectionsRef.value)
   postApplication(selectedCourse.value, moduleConnectionsRef.value)
+      .then(id => {
+        router.push({name: 'confirmation', params: {id: id}})
+      })
 }
 </script>
 

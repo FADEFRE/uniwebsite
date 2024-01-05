@@ -127,7 +127,10 @@ function postApplication (course, applicationObjects) {
     console.log([...formData])
 
     return axios.post(url + '/applications', formData)
-        .then(response => response.data)
+        .then(response => {
+            console.log('post application successful, data returned: ' + response.data)
+            return response.data
+        })
 }
 
 function putStudyOffice (id, applicationObjects) {
