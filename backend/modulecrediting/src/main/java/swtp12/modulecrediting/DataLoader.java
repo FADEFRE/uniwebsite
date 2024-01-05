@@ -374,7 +374,7 @@ public class DataLoader implements CommandLineRunner {
             int index = rand.nextInt(3);
 
             if (index == 0) return ANGENOMMEN;
-            if(index == 1) return PRÜFUNGSSCHEIN;
+            if(index == 1) return ÜBUNGSSCHEIN;
             return ABGELEHNT;
         }
     }
