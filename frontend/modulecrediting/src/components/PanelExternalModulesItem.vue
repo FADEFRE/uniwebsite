@@ -7,7 +7,7 @@ props:
       type 'readonly' allows no editing
   - moduleName (should be given if type is 'edit' or 'readonly')
   - university (should be given if type is 'edit' or 'readonly')
-  - creditPoints (should be given if type is 'edit' or 'readonly')
+  - points (should be given if type is 'edit' or 'readonly')
   - pointSystem (should be given if type is 'edit' or 'readonly')
   - selectedFile (should be given if type is 'edit' or 'readonly')
 emits:
@@ -15,7 +15,7 @@ emits:
 exposes:
   - moduleName
   - university
-  - creditPoints
+  - points
   - pointSystem
   - selectedFile
 displays:
@@ -35,20 +35,20 @@ const props = defineProps({
       return ['new', 'edit', 'readonly'].includes(value)
     }
   },
-  moduleName: {
+  name: {
     type: String
   },
   university: {
     type: String
   },
-  creditPoints: {
+  points: {
     type: Number
   },
   pointSystem: {
     type: String
   },
   selectedFile: {
-    type: File
+    type: Object
   }
 })
 
@@ -59,9 +59,9 @@ onBeforeMount(() => {
   }
 
   if (props.type === 'edit' || props.type === 'readonly') {
-    if (!props.moduleName) warn('moduleName')
+    if (!props.name) warn('name')
     if (!props.university) warn('university')
-    if (!props.creditPoints) warn('creditPoints')
+    if (!props.points) warn('points')
     if (!props.pointSystem) warn('pointSystem')
     if (!props.selectedFile) warn('selectedFile')
   }
@@ -71,9 +71,9 @@ const emit = defineEmits(['deleteSelf'])
 
 const readonly = props.type === 'readonly'
 
-const moduleName = ref(props.moduleName)
+const name = ref(props.name)
 const university = ref(props.university)
-const creditPoints = ref(props.creditPoints)
+const points = ref(props.points)
 const pointSystem = ref(props.pointSystem)
 
 // file drop div
@@ -107,7 +107,7 @@ const dragOverHandler = (e) => {
 }
 
 defineExpose({
-  moduleName, university, creditPoints, pointSystem, selectedFile
+  name, university, points, pointSystem, selectedFile
 })
 </script>
 
@@ -116,15 +116,15 @@ defineExpose({
 
     <div class="screen-split">
       <div class="left-side">
-        <InputText :readonly="readonly" type="text" v-model="moduleName" placeholder="Modulname" />
+        <InputText :readonly="readonly" type="text" v-model="name" placeholder="Modulname" />
         <InputText :readonly="readonly" type="text" v-model="university" placeholder="Universität"/>
       </div>
 
       <div class="right-side">
 
         <div class="point-container">
+          <InputText :readonly="readonly" type="text" v-model="points" placeholder="Punkte" />
           <InputText :readonly="readonly" tyoe="text" v-model="pointSystem" placeholder="Punktesystem" />
-          <InputText :readonly="readonly" type="text" v-model="creditPoints" placeholder="Punkte" />
         </div>
 
         <div class="file-drop" @dragover="dragOverHandler" @drop="dropHandler">

@@ -107,9 +107,9 @@ function postApplication (course, applicationObjects) {
         (connection, connectionIndex) => {
             connection.externalModules.forEach(
                 (externalModule, externalModuleIndex) => {
-                    formData.append(`modulesConnections[${connectionIndex}].moduleApplications[${externalModuleIndex}].moduleName`, externalModule.moduleName)
+                    formData.append(`modulesConnections[${connectionIndex}].moduleApplications[${externalModuleIndex}].name`, externalModule.name)
                     formData.append(`modulesConnections[${connectionIndex}].moduleApplications[${externalModuleIndex}].university`, externalModule.university)
-                    formData.append(`modulesConnections[${connectionIndex}].moduleApplications[${externalModuleIndex}].points`, externalModule.creditPoints)
+                    formData.append(`modulesConnections[${connectionIndex}].moduleApplications[${externalModuleIndex}].points`, externalModule.points)
                     formData.append(`modulesConnections[${connectionIndex}].moduleApplications[${externalModuleIndex}].pointSystem`, externalModule.pointSystem)
                     formData.append(`modulesConnections[${connectionIndex}].moduleApplications[${externalModuleIndex}].description`, externalModule.selectedFile)
                 }

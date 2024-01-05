@@ -4,7 +4,7 @@ props:
   - type (may be 'new', 'edit' or 'readonly', is cascaded to PanelExternalModulesItem)
       type 'new' allows for adding external modules
   - modulesData (should be given if type is 'edit' or 'readonly')
-      modulesData should be array containing objects, each with properties moduleName, university, creditPoints, pointSystem, selectedFile
+      modulesData should be array containing objects, each with properties name, university, creditPoints, pointSystem, selectedFile
 exposes:
   - externalModules (array similar to modulesData)
 displays:
@@ -29,9 +29,9 @@ const props = defineProps({
     type: Array,
     validator(value) {
       for (let e of value) {
-        if (!e.moduleName) return false
+        if (!e.name) return false
         if (!e.university) return false
-        if (!e.creditPoints) return false
+        if (!e.points) return false
         if (!e.pointSystem) return false
         if (!e.selectedFile) return false
       }
@@ -95,11 +95,11 @@ defineExpose({
       <PanelExternalModulesItem
           v-for="module in modulesData"
           :type="type"
-          :module-name="module.moduleName"
+          :name="module.name"
           :university="module.university"
-          :credit-points="module.creditPoints"
+          :points="module.points"
           :point-system="module.pointSystem"
-          :selected-file="module.selectedFile"
+          :selected-file="module['pdfDocument']"
           ref="externalModules"
           />
     </div>
