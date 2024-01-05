@@ -50,7 +50,7 @@ defineExpose({
     <Panel toggleable>
 
       <template #header>
-        <PanelHeader :external-modules="externalModules.map(m => m.name).filter(name => name !== '')" :internal-modules="internalModules" />
+        <PanelHeader :external-modules="externalModules?.map(m => m.name).filter(name => name !== '')" :internal-modules="internalModules" />
       </template>
 
       <template #icons>

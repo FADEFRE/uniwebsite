@@ -119,7 +119,7 @@ function postApplication (course, applicationObjects) {
                     formData.append(`modulesConnections[${connectionIndex}].modulesLeipzig[${moduleIndex}]`, moduleName)
                 }
             )
-            formData.append(`modulesConnections[${connectionIndex}].commentApplicant`, connection.comment)
+            formData.append(`modulesConnections[${connectionIndex}].commentApplicant`, connection.commentApplicant)
         }
     )
 
