@@ -12,6 +12,7 @@ import PanelHeader from '../components/PanelHeader.vue';
 import PanelExternalModules from "@/components/PanelExternalModules.vue";
 import PanelInternalModules from "@/components/PanelInternalModules.vue";
 import PanelComment from "@/components/PanelComment.vue";
+import PanelDecisionBlock from "@/components/PanelDecisionBlock.vue";
 
 const id = useRoute().params.id
 const summaryDocumentLink = `${url}/applications/pdf-data/${id}`
@@ -33,6 +34,12 @@ onBeforeMount(() => {
       })
 })
 // todo error handling
+
+const displayDecisionMap = {
+  ANGENOMMEN: 'accept',
+  ÜBUNGSSCHEIN: 'asExamCertificate',
+  ABGELEHNT: 'denied',
+}
 </script>
 
 <template>
@@ -78,6 +85,13 @@ onBeforeMount(() => {
             <PanelInternalModules type="edit" :options="moduleOptions" :selected-modules="connection['modulesLeipzig'].map(m => m.name)" />
             <hr>
             <PanelComment type="readonly" :comment="connection['commentApplicant']" />
+            <hr>
+            <PanelDecisionBlock
+                v-if="displayDecisionMap[connection['decisionFinal']]"
+                type="readonly"
+                :display-decision="displayDecisionMap[connection['decisionFinal']]"
+                :comment="connection['commentDecision']"
+            />
 
           </div>
 
