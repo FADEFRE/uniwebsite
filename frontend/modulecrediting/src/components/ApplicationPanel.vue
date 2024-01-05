@@ -46,10 +46,11 @@ defineExpose({
 
 <template>
   <div>
+
     <Panel toggleable>
 
       <template #header>
-        <PanelHeader />
+        <PanelHeader :external-modules="externalModules.map(m => m.name).filter(name => name !== '')" :internal-modules="internalModules" />
       </template>
 
       <template #icons>

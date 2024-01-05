@@ -71,10 +71,10 @@ const emit = defineEmits(['deleteSelf'])
 
 const readonly = props.type === 'readonly'
 
-const name = ref(props.name)
-const university = ref(props.university)
-const points = ref(props.points)
-const pointSystem = ref(props.pointSystem)
+const name = ref(props.name || "")
+const university = ref(props.university || "")
+const points = ref(props.points || "")
+const pointSystem = ref(props.pointSystem || "")
 
 // file drop div
 const selectedFile = ref(props.selectedFile)
