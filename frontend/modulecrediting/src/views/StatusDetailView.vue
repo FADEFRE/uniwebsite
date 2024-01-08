@@ -40,6 +40,10 @@ const displayDecisionMap = {
   ÜBUNGSSCHEIN: 'asExamCertificate',
   ABGELEHNT: 'denied',
 }
+
+const openSummaryDocument = () => {
+  window.open(summaryDocumentLink, '_blank')
+}
 </script>
 
 <template>
@@ -98,6 +102,11 @@ const displayDecisionMap = {
         </Panel>
 
       </div>
+
+      <Button @click="openSummaryDocument">
+        <p>Antrag herunterladen</p>
+        <img src="../assets/icons/Download.svg">
+      </Button>
 
     </div>
 
