@@ -113,7 +113,6 @@ defineExpose({
 
 <template>
   <div class="external-modules-item">
-
     <div class="screen-split">
       <div class="left-side">
         <InputText :readonly="readonly" type="text" v-model="moduleName" placeholder="Modulname" />
@@ -123,16 +122,16 @@ defineExpose({
       <div class="right-side">
 
         <div class="point-container">
-          <InputText :readonly="readonly" tyoe="text" v-model="pointSystem" placeholder="Punktesystem" />
+          <InputText :readonly="readonly" type="text" v-model="pointSystem" placeholder="Punktesystem" />
           <InputText :readonly="readonly" type="text" v-model="creditPoints" placeholder="Punkte" />
         </div>
 
-        <div class="file-drop" @dragover="dragOverHandler" @drop="dropHandler">
+        <div class="file-drop-container" @dragover="dragOverHandler" @drop="dropHandler">
           <!-- todo add file dialog on click -->
           <div v-if="selectedFile?.name">
             <p>{{ selectedFile.name }}</p>
           </div>
-          <div v-else>
+          <div v-else class="file-drop-unselected">
             <p>Modulbeschreibung hochladen</p>
             <img src="../assets/icons/Upload.svg">
           </div>
@@ -191,17 +190,17 @@ defineExpose({
   gap: 0.625rem;
 }
 
-.file-drop {
+.file-drop-container {
   border: 1px dashed $black;
 
   display: flex;
-  flex-direction: row;
   padding: 0.625rem 0rem;
   justify-content: center;
-  align-items: center;
-  gap: 0.625rem;
-  align-self: stretch;
 }
 
+.file-drop-unselected {
+  display: flex;
+  gap: 0.625rem;
+}
 
 </style>

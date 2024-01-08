@@ -30,31 +30,31 @@ const goToSubmitApplication = () => {
 
 <template>
     <div class="main">
-            <div class="homepage-content">
-                <!-- HomepageContainer Application -->
-                <HomepageContainer :header="'Antrag stellen'"
-                    :text="'Erstellen Sie einen Antrag, um Module anderer Universitäten an der Universität Leipzig anzurechnen lassen.'">
-                    <Button @click="goToSubmitApplication" class="p-button-success">Antrag stellen</Button>
-                </HomepageContainer>
+        <div class="homepage-content">
+            <!-- HomepageContainer Application -->
+            <HomepageContainer :header="'Antrag stellen'"
+                :text="'Erstellen Sie einen Antrag, um Module anderer Universitäten an der Universität Leipzig anzurechnen lassen.'">
+                <Button @click="goToSubmitApplication" class="p-button-success">Antrag stellen</Button>
+            </HomepageContainer>
 
-                <!-- HomepageContainer StatusView -->
-                <HomepageContainer :header="'Status einsehen'"
-                    :text="'Sehen Sie den Status von bereits gestellten Anträgen über die 6-stellige Vorgangsnummer ein.'">
-                    <InputText v-model="id" :class="{ 'p-invalid': isInvalid }" placeholder="0-0-0-0-0-0" />
-                    <Button @click="openDetailView" class="p-button-primary">Status einsehen</Button>
-                </HomepageContainer>
-            </div>
-            
+            <!-- HomepageContainer StatusView -->
+            <HomepageContainer :header="'Status einsehen'"
+                :text="'Sehen Sie den Status von bereits gestellten Anträgen über die 6-stellige Vorgangsnummer ein.'">
+                <InputText v-model="id" :class="{ 'p-invalid': isInvalid }" placeholder="0-0-0-0-0-0" />
+                <Button @click="openDetailView" class="p-button-primary">Status einsehen</Button>
+            </HomepageContainer>
+        </div>
 
-            <!--SideInfoContainerfür Antragprozess -->
-            <SideInfoContainer :heading="'ANTRAGSPROZESS'">
-                <ul class="list-container">
-                    <li class="list-item">Antrag online stellen</li>
-                    <li class="list-item">Über Vorgangsnummer online Status einsehen</li>
-                    <li class="list-item">Auf Entscheidung des PAV warten</li>
-                    <li class="list-item">Mit abgeschlossenem Antrag zum Studienbüro gehen</li>
-                </ul>
-            </SideInfoContainer>
+
+        <!--SideInfoContainerfür Antragprozess -->
+        <SideInfoContainer :heading="'ANTRAGSPROZESS'">
+            <ul class="list-container">
+                <li class="list-item">Antrag online stellen</li>
+                <li class="list-item">Über Vorgangsnummer online Status einsehen</li>
+                <li class="list-item">Auf Entscheidung des PAV warten</li>
+                <li class="list-item">Mit abgeschlossenem Antrag zum Studienbüro gehen</li>
+            </ul>
+        </SideInfoContainer>
     </div>
 </template>
 
@@ -67,7 +67,7 @@ const goToSubmitApplication = () => {
     @include main();
 }
 
-.homepage-content{
+.homepage-content {
     @include verticalList(big);
 }
 </style>

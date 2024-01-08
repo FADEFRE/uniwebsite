@@ -90,12 +90,13 @@ input {
   border: 2px solid $dark-gray;
   background-color: transparent;
   padding: 0.625rem;
-
+  width: 100%;
 
   color: $black;
   font-family: "Jost";
   font-size: 1rem;
   font-weight: 460;
+
 
   min-width: 0;
 }
