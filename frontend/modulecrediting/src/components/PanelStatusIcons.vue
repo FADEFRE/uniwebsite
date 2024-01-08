@@ -1,20 +1,51 @@
+<!--
+status icons for administrative panel header
+props:
+  - decisionSuggestion (optional, may be 'accepted', 'asExamCertificate' or 'denied')
+  - decisionFinal (optional, may be 'accepted', 'asExamCertificate' or 'denied')
+displays:
+  - suggestion icon, arrow, final decision icon
+-->
+
 <script setup>
 import { defineProps } from 'vue';
 
 const props = defineProps({
-    decisionSuggestion: String,
-    decisionFinal: String
+    decisionSuggestion: {
+      type: String,
+      validator(value) {
+        return ['accepted', 'asExamCertificate', 'denied'].includes(value)
+      }
+    },
+    decisionFinal: {
+      type: String,
+      validator(value) {
+        return ['accepted', 'asExamCertificate', 'denied'].includes(value)
+      }
+    }
 });
 </script>
 
 <template>
-    <div class="panel-status-icons">
-        <img v-if="decisionFinal === 'accepted'" src="@/assets/icons/ModuleAccepted.svg" alt="Accepted Icon">
-        <img v-else-if="decisionFinal === 'asExamCertificate'" src="@/assets/icons/ModuleAsExamCertificate.svg"
-            alt="Exam Certificate Icon">
-        <img v-else-if="decisionFinal === 'denied'" src="@/assets/icons/ModuleDenied.svg" alt="Denied Icon">
-        <img v-else src="@/assets/icons/moduleUnedited.svg" alt="Module Unedited Icon">
+  <div class="panel-status-icons">
+
+    <div>
+      <img v-if="decisionSuggestion === 'accepted'" src="@/assets/icons/ModuleAccepted.svg">
+      <img v-else-if="decisionSuggestion === 'asExamCertificate'" src="@/assets/icons/ModuleAsExamCertificate.svg">
+      <img v-else-if="decisionSuggestion === 'denied'" src="@/assets/icons/ModuleDenied.svg">
+      <img v-else src="@/assets/icons/moduleUnedited.svg">
     </div>
+
+    <img src="../assets/icons/ArrowDark.svg">
+
+    <div>
+      <img v-if="decisionFinal === 'accepted'" src="@/assets/icons/ModuleAccepted.svg">
+      <img v-else-if="decisionFinal === 'asExamCertificate'" src="@/assets/icons/ModuleAsExamCertificate.svg">
+      <img v-else-if="decisionFinal === 'denied'" src="@/assets/icons/ModuleDenied.svg">
+      <img v-else src="@/assets/icons/moduleUnedited.svg">
+    </div>
+
+  </div>
 </template>
 
 <style scoped lang="scss">
