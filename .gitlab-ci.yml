@@ -2,8 +2,6 @@ variables:
   CI_COMMIT_TAG: latest
   VITE_URL: http://172.26.92.91:8090
 
-  DEPLOY_SERVER: 172.26.92.91
-  DEPLOY_USER: swtp
 
 
 stages:
