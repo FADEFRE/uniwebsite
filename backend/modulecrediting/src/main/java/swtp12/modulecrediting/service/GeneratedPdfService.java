@@ -3,6 +3,7 @@ package swtp12.modulecrediting.service;
 import static com.itextpdf.text.FontFactory.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Objects;
 
@@ -31,6 +32,11 @@ public class GeneratedPdfService {
         document.open();
         document.newPage();
 
+        //Font
+        Font jostRegular = getJostRegular();
+        Font jostSemiBold = getJostSemiBold();
+        Font jostReallySmall = getJostReallySmall();
+
         //uni-leipzig icon
         Image uniLeipzigIcon = Image.getInstance(Objects.requireNonNull(getClass().getResource("/Universität_Leipzig_Logo.png")));
         float maxWidth = 300f;
@@ -44,10 +50,8 @@ public class GeneratedPdfService {
         //Title
         String titleText = "ANTRAG ZUR MODULANRECHNUNG";
         String titleText1 = "FAKULTÄT MATHEMATIK UND INFORMATIK";
-        Font titleFont = getFont(HELVETICA_BOLD, 15);
-        Font titleFont1 = getFont(HELVETICA, 14);
-        Paragraph title = new Paragraph(titleText, titleFont);
-        Paragraph title1 = new Paragraph(titleText1, titleFont1);
+        Paragraph title = new Paragraph(titleText, jostSemiBold);
+        Paragraph title1 = new Paragraph(titleText1, jostRegular);
         title.setAlignment(Element.ALIGN_LEFT);
         title1.setAlignment(Element.ALIGN_LEFT);
         title.setIndentationLeft(30f);
@@ -76,12 +80,11 @@ public class GeneratedPdfService {
                 "Sie bitte der Homepage:\n" +
                 "www.mathcs.uni-leipzig.de/studium/studienbuero\n";
 
-        Font addressFont = getFont(HELVETICA, 10);
         PdfPTable addressTable = new PdfPTable(1);
         addressTable.setWidthPercentage(88);
         addressTable.getDefaultCell().setBorder(Rectangle.NO_BORDER);
 
-        PdfPCell addressCell = new PdfPCell(new Paragraph(addressText, addressFont));
+        PdfPCell addressCell = new PdfPCell(new Paragraph(addressText, jostReallySmall));
         addressCell.setHorizontalAlignment(Element.ALIGN_LEFT);
         addressCell.setBorder(Rectangle.NO_BORDER);
 
@@ -91,25 +94,24 @@ public class GeneratedPdfService {
         document.add(addressTable);
 
 
+
+
         for (int i = 0; i < modulesConnections.size(); i += 2) {
             document.newPage();
 
+            //uni-leipzig icon
+            document.add(uniLeipzigIcon);
+
             ModulesConnection modulesConnection1 = modulesConnections.get(i);
-
-
             List<ModuleApplication> moduleApplications1 = modulesConnection1.getModuleApplications();
 
             for (ModuleApplication moduleApplication1 : moduleApplications1) {
 
-                //uni-leipzig icon
-                document.add(uniLeipzigIcon);
 
                 //Title
                 String titleText2 = "MODUL";
-                Font titleFont2 = getFont(HELVETICA_BOLD, 15);
-                Font titleFont3 = getFont(HELVETICA, 14);
-                Paragraph title2 = new Paragraph(titleText2, titleFont2);
-                Paragraph title3 = new Paragraph(moduleApplication1.getName().toUpperCase(), titleFont3);
+                Paragraph title2 = new Paragraph(titleText2, jostSemiBold);
+                Paragraph title3 = new Paragraph(moduleApplication1.getName().toUpperCase(), jostRegular);
                 title2.setAlignment(Element.ALIGN_LEFT);
                 title3.setAlignment(Element.ALIGN_LEFT);
                 title2.setIndentationLeft(30f);
@@ -135,10 +137,8 @@ public class GeneratedPdfService {
 
                 for (ModuleApplication moduleApplication2 : moduleApplications2) {
                     String titleText4 = "MODUL";
-                    Font titleFont4 = getFont(HELVETICA_BOLD, 15);
-                    Font titleFont5 = getFont(HELVETICA, 14);
-                    Paragraph title4 = new Paragraph(titleText4, titleFont4);
-                    Paragraph title5 = new Paragraph(moduleApplication2.getName().toUpperCase(), titleFont5);
+                    Paragraph title4 = new Paragraph(titleText4, jostSemiBold);
+                    Paragraph title5 = new Paragraph(moduleApplication2.getName().toUpperCase(), jostRegular);
                     title4.setAlignment(Element.ALIGN_LEFT);
                     title5.setAlignment(Element.ALIGN_LEFT);
                     title4.setIndentationLeft(30f);
@@ -164,15 +164,18 @@ public class GeneratedPdfService {
         return baos.toByteArray();
     }
 
-    private void addTable(Document document, String label, String value) throws DocumentException {
+    private void addTable(Document document, String label, String value) throws DocumentException, IOException {
         PdfPTable table = new PdfPTable(2);
         table.setWidthPercentage(88);
 
-        Font labelFont = getFont(HELVETICA, 12);
+        //Font
+        Font jostSmall = getJostSmall();
+        Font jostSmallBold = getJostSmallBold();
+
         Font valueFont = getFont(FontFactory.HELVETICA_BOLD, 12);
 
-        PdfPCell labelCell = new PdfPCell(new Phrase(label, labelFont));
-        PdfPCell valueCell = new PdfPCell(new Phrase(String.valueOf(value), valueFont));
+        PdfPCell labelCell = new PdfPCell(new Phrase(label, jostSmall));
+        PdfPCell valueCell = new PdfPCell(new Phrase(String.valueOf(value), jostSmallBold));
 
 
         labelCell.setBorderColorLeft(BaseColor.BLACK);
@@ -195,5 +198,42 @@ public class GeneratedPdfService {
 
         document.add(table);
     }
+
+    private Font getJostRegular() throws DocumentException, IOException {
+        InputStream fontStream = getClass().getClassLoader().getResourceAsStream("Jost-Regular.ttf");
+        BaseFont customBaseFont = BaseFont.createFont("Jost-Regular.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED, true, null, fontStream.readAllBytes());
+
+        return new Font(customBaseFont, 15, Font.NORMAL, BaseColor.BLACK);
+    }
+
+    private Font getJostSemiBold() throws DocumentException, IOException {
+        InputStream fontStream = getClass().getClassLoader().getResourceAsStream("Jost-SemiBold.ttf");
+        BaseFont customBaseFont = BaseFont.createFont("Jost-SemiBold.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED, true, null, fontStream.readAllBytes());
+
+        return new Font(customBaseFont, 15, Font.NORMAL, BaseColor.BLACK);
+    }
+
+    private Font getJostSmall() throws DocumentException, IOException {
+        InputStream fontStream = getClass().getClassLoader().getResourceAsStream("Jost-Regular.ttf");
+        BaseFont customBaseFont = BaseFont.createFont("Jost-Regular.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED, true, null, fontStream.readAllBytes());
+
+        return new Font(customBaseFont, 12, Font.NORMAL, BaseColor.BLACK);
+    }
+
+    private Font getJostSmallBold() throws DocumentException, IOException {
+        InputStream fontStream = getClass().getClassLoader().getResourceAsStream("Jost-SemiBold.ttf");
+        BaseFont customBaseFont = BaseFont.createFont("Jost-SemiBold.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED, true, null, fontStream.readAllBytes());
+
+        return new Font(customBaseFont, 12, Font.NORMAL, BaseColor.BLACK);
+    }
+
+    private Font getJostReallySmall() throws DocumentException, IOException {
+        InputStream fontStream = getClass().getClassLoader().getResourceAsStream("Jost-Regular.ttf");
+        BaseFont customBaseFont = BaseFont.createFont("Jost-Regular.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED, true, null, fontStream.readAllBytes());
+
+        return new Font(customBaseFont, 10, Font.NORMAL, BaseColor.BLACK);
+    }
+
+
 
 }
