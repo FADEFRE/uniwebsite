@@ -34,4 +34,12 @@ function getFormattedDate (date) {
         + '.' + date.getFullYear().toString()
 }
 
-export { getWeekAgo, getMonthAgo, getSixMonthAgo, getYearAgo, getFormattedDate }
+function parseRequestDate (dateString) {
+    if (dateString) {
+        return getFormattedDate(new Date(dateString))
+    } else {
+        return undefined
+    }
+}
+
+export { getWeekAgo, getMonthAgo, getSixMonthAgo, getYearAgo, getFormattedDate, parseRequestDate }

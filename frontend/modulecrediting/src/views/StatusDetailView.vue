@@ -4,15 +4,16 @@ shows status of an application
 
 <script setup>
 import { useRoute } from 'vue-router'
-import { ref, computed, onBeforeMount } from "vue";
-import {getApplicationByIdForStatus, getModulesByCourse} from "@/scripts/axios-requests";
-import { url } from "@/scripts/url-config"
+import { ref, onBeforeMount } from "vue";
 import ApplicationOverview from "@/components/ApplicationOverview.vue";
 import PanelHeader from '../components/PanelHeader.vue';
 import PanelExternalModules from "@/components/PanelExternalModules.vue";
 import PanelInternalModules from "@/components/PanelInternalModules.vue";
 import PanelComment from "@/components/PanelComment.vue";
 import PanelDecisionBlock from "@/components/PanelDecisionBlock.vue";
+import { url } from "@/scripts/url-config"
+import { getApplicationByIdForStatus, getModulesByCourse } from "@/scripts/axios-requests";
+import { parseRequestDate } from "@/scripts/date-utils";
 
 const id = useRoute().params.id
 const summaryDocumentLink = `${url}/applications/pdf-data/${id}`
@@ -56,10 +57,11 @@ const openSummaryDocument = () => {
 
     <div v-else>
 
+
       <ApplicationOverview
-          :creation-date="applicationData.creationDate"
-          :last-edited-date="undefined"
-          :decision-date="applicationData['decisionDate']"
+          :creation-date="parseRequestDate(applicationData['creationDate'])"
+          :last-edited-date="parseRequestDate(applicationData['lastEditedDate'])"
+          :decision-date="parseRequestDate(applicationData['decisionDate'])"
           :id="applicationData['id']"
           :course="applicationData['courseLeipzig']['name']"
           :status="applicationData['status']"
