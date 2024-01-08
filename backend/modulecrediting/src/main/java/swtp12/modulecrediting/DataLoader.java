@@ -90,12 +90,12 @@ public class DataLoader implements CommandLineRunner {
                 String name = module.get("name").asText();
                 String number = module.get("number").asText();
                 ModuleLeipzig moduleLeipzig = new ModuleLeipzig(name, number);
-                if (modulLeipzigRepo.existsById(moduleLeipzig.getModuleName()) == false) {
+                if (modulLeipzigRepo.existsById(moduleLeipzig.getName()) == false) {
                     modulLeipzigRepo.save(moduleLeipzig);
                 }
 
                 CourseLeipzig cLdB = courseLeipzigRepo.findById(courseLeipzig.getName()).get();
-                ModuleLeipzig mLdB = modulLeipzigRepo.findById(moduleLeipzig.getModuleName()).get();
+                ModuleLeipzig mLdB = modulLeipzigRepo.findById(moduleLeipzig.getName()).get();
 
                 List<ModuleLeipzig> mList = cLdB.getModulesLeipzigCourse(); ;
                 mList.add(mLdB);
@@ -296,7 +296,7 @@ public class DataLoader implements CommandLineRunner {
         int numberOfModulesLeipzig = rdm.nextInt(3)+1;
         for (int i = 0; i < numberOfModulesLeipzig; i++) {
             int idxR = rdm.nextInt(cL.getModulesLeipzigCourse().size());
-            listModuleLeipzig.add(cL.getModulesLeipzigCourse().get(idxR).getModuleName());
+            listModuleLeipzig.add(cL.getModulesLeipzigCourse().get(idxR).getName());
         }
         modulesConnectionCreateDTO.setModulesLeipzig(listModuleLeipzig);
 
@@ -307,7 +307,7 @@ public class DataLoader implements CommandLineRunner {
         ModuleApplicationCreateDTO moduleApplicationCreateDTO = new ModuleApplicationCreateDTO();
 
         Random rdm = new Random();
-        moduleApplicationCreateDTO.setModuleName(moduleSettingNode.get("name").asText());
+        moduleApplicationCreateDTO.setName(moduleSettingNode.get("name").asText());
         moduleApplicationCreateDTO.setUniversity(moduleSettingNode.get("uni").asText());
         moduleApplicationCreateDTO.setPoints(Integer.parseInt(getRandValueOfNode(moduleSettingNode, "points", rdm)));
         moduleApplicationCreateDTO.setPointSystem(getRandValueOfNode(moduleSettingNode, "pointSystem", rdm));
@@ -374,7 +374,7 @@ public class DataLoader implements CommandLineRunner {
             int index = rand.nextInt(3);
 
             if (index == 0) return ANGENOMMEN;
-            if(index == 1) return PRÜFUNGSSCHEIN;
+            if(index == 1) return ÜBUNGSSCHEIN;
             return ABGELEHNT;
         }
     }

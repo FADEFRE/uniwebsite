@@ -23,9 +23,9 @@ public class ModuleLeipzig {
     @Id
     @NotBlank
     @JsonView({Views.coursesWithModules.class, Views.modulesWithoutCourse.class, Views.ApplicationStudent.class,Views.RelatedModulesConnection.class})
-    private String moduleName;
+    private String name;
     @JsonView({Views.coursesWithModules.class, Views.modulesWithoutCourse.class})
-    private String moduleCode;
+    private String code;
 
     //Relation ModuleLeipzig <-> ModulesConnection
     @ManyToMany(mappedBy = "modulesLeipzig")
@@ -38,9 +38,9 @@ public class ModuleLeipzig {
     private List<CourseLeipzig> coursesLeipzig = new ArrayList<>();
 
 
-    public ModuleLeipzig(String moduleName, String moduleCode) {
-        this.moduleName = moduleName;
-        this.moduleCode = moduleCode;
+    public ModuleLeipzig(String name, String code) {
+        this.name = name;
+        this.code = code;
     }
 
 }

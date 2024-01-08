@@ -23,8 +23,8 @@ const router = createRouter({
       component: ApplicationConfirmationView
     },
     {
-      path: '/submit',
-      name: 'SubmitApplication',
+      path: '/antrag',
+      name: 'submitApplication',
       component: SubmitApplicationView
     },
     {

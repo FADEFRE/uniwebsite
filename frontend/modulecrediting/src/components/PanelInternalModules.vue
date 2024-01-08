@@ -31,17 +31,6 @@ const props = defineProps({
   }
 })
 
-// check selectedModules prop
-onBeforeMount(() => {
-  if (props.selectedModules) {
-    for (let module of props.selectedModules) {
-      if (!props.options.includes(module)) {
-        console.warn(`PanelInternalModules: ${module} is element in selectedModules prop but not in options prop`)
-      }
-    }
-  }
-})
-
 const selectedModules = ref(props.selectedModules || [])
 const addSelectedModule = (module) => {
   if (!selectedModules.value.includes(module)) {

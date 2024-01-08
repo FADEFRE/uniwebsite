@@ -1,37 +1,49 @@
 <!--
 shows status of an application
-displays:
-- application id
-- overall status
-- course application is related to
-- panels containing module application information
 -->
 
 <script setup>
 import { useRoute } from 'vue-router'
 import { ref, computed, onBeforeMount } from "vue";
-import { getApplicationByIdForStatus } from "@/scripts/axios-requests";
+import {getApplicationByIdForStatus, getModulesByCourse} from "@/scripts/axios-requests";
 import { url } from "@/scripts/url-config"
+import ApplicationOverview from "@/components/ApplicationOverview.vue";
 import PanelHeader from '../components/PanelHeader.vue';
+import PanelExternalModules from "@/components/PanelExternalModules.vue";
+import PanelInternalModules from "@/components/PanelInternalModules.vue";
+import PanelComment from "@/components/PanelComment.vue";
+import PanelDecisionBlock from "@/components/PanelDecisionBlock.vue";
 
-const route = useRoute()
+const id = useRoute().params.id
+const summaryDocumentLink = `${url}/applications/pdf-data/${id}`
 
-const applicationData = ref(undefined)
-let id = undefined
-let pdfDataLink = undefined
+const applicationData = ref()
+const moduleOptions = ref([])
+
 onBeforeMount(() => {
-  id = route.params.id
-  pdfDataLink = url + '/applications/pdf-data/' + id
   getApplicationByIdForStatus(id)
-      .then(data => applicationData.value = data)
-      .catch(error => {
-        console.log(error)
-        applicationData.value = 'error'
+      .then(data => {
+        applicationData.value = data
+        return data
+      })
+      .then(data => {
+        return getModulesByCourse(data['courseLeipzig']['name'])
+      })
+      .then(modules => {
+        moduleOptions.value = modules
       })
 })
+// todo error handling
 
-// link to pdf document
-const fileLinkBase = computed(() => `${url}/pdf-documents/`)
+const displayDecisionMap = {
+  ANGENOMMEN: 'accept',
+  ÜBUNGSSCHEIN: 'asExamCertificate',
+  ABGELEHNT: 'denied',
+}
+
+const openSummaryDocument = () => {
+  window.open(summaryDocumentLink, '_blank')
+}
 </script>
 
 <template>
@@ -42,135 +54,59 @@ const fileLinkBase = computed(() => `${url}/pdf-documents/`)
       <p>Lade Daten ...</p>
     </div>
 
-    <!-- request rejected -->
-    <div v-else-if="applicationData === 'error'">
-      <p>Fehler bei der Datenabfrage!</p>
-    </div>
+    <div v-else>
 
-    <!-- request resolved -->
-    <div v-else class="view-container">
+      <ApplicationOverview
+          :creation-date="applicationData.creationDate"
+          :last-edited-date="undefined"
+          :decision-date="applicationData['decisionDate']"
+          :id="applicationData['id']"
+          :course="applicationData['courseLeipzig']['name']"
+          :status="applicationData['status']"
+      />
 
-      <div v-if="applicationData">
-        <div>
-          <div class="additional-section">
-     
-        <PanelHeader v-for="moduleConnection in applicationData['modulesConnections']"
-                       :key="moduleConnection['moduleApplication']['name']"
-                       :moduleName="moduleConnection['moduleApplication']['name']"
-                       :internalModules="moduleConnection['modulesLeipzig']"
-          />
-      </div>
+      <div v-for="connection in applicationData['modulesConnections']">
+
+        <Panel toggleable>
+
+          <template #header>
+            <PanelHeader
+                :external-modules="connection['moduleApplications'].map(module => module['name'])"
+                :internal-modules="connection['modulesLeipzig'].map(module => module['name'])"
+            />
+          </template>
+
+          <template #icons>
+            <img v-if="connection['decisionFinal'] === 'ANGENOMMEN'" src="../assets/icons/ModuleAccepted.svg">
+            <img v-else-if="connection['decisionFinal'] === 'ÜBUNGSSCHEIN'" src="../assets/icons/ModuleAsExamCertificate.svg">
+            <img v-else-if="connection['decisionFinal'] === 'ABGELEHNT'" src="../assets/icons/ModuleDenied.svg">
+          </template>
 
           <div>
-            <h2>Vorgangsnummer: {{ id }}</h2>
-            <p>Status: {{ applicationData['fullStatus'] }}</p>
-            <p>Anrechnung für {{ applicationData['courseLeipzig']['name'] }} an der Universität Leipzig.</p>
-            <p>Zusammenfassung als PDF: <a :href="pdfDataLink">Antrag {{ id }}</a></p>
+
+            <PanelExternalModules type="edit" :modules-data="connection['moduleApplications']" />
+            <hr>
+            <PanelInternalModules type="edit" :options="moduleOptions" :selected-modules="connection['modulesLeipzig'].map(m => m.name)" />
+            <hr>
+            <PanelComment type="readonly" :comment="connection['commentApplicant']" />
+            <hr>
+            <PanelDecisionBlock
+                v-if="displayDecisionMap[connection['decisionFinal']]"
+                type="readonly"
+                :display-decision="displayDecisionMap[connection['decisionFinal']]"
+                :comment="connection['commentDecision']"
+            />
+
           </div>
 
-          <Panel
-              toggleable
-              collapsed
-              v-for="moduleConnection in applicationData['modulesConnections']"
-              class="module-panel"
-          >
-
-            <!-- Panel Header -->
-            <template #header>
-              <h2>
-                {{ moduleConnection['moduleApplication']['name'] }}
-                <span v-if="moduleConnection['asExamCertificate']" style="color: #8a8a8a">
-                  (als Übungsschein)
-                </span>
-              </h2>
-              
-            </template>
-
-            <!-- accept / reject Icons -->
-            <template #icons v-if="moduleConnection['decisionFinal'] === 'ANGENOMMEN' || moduleConnection['decisionFinal'] === 'ABGELEHNT'">
-              <div class="p-panel-header-icon">
-                <div v-if="moduleConnection['decisionFinal'] === 'ANGENOMMEN' && !moduleConnection['asExamCertificate']">
-                  <span class="pi pi-check-circle" style="color: green; font-size: 1.5rem"></span>
-                </div>
-
-                <div v-else-if="moduleConnection['decisionFinal'] === 'ANGENOMMEN' && moduleConnection['asExamCertificate']">
-                  <span class="pi pi-info-circle" style="color: darkorange; font-size: 1.5rem"></span>
-                </div>
-
-                <div v-else-if="moduleConnection['decisionFinal'] === 'ABGELEHNT'">
-                  <span class="pi pi-times-circle" style="color:red; font-size: 1.5rem"></span>
-                </div>
-              </div>
-            </template>
-
-            <!-- External Module -->
-            <div>
-              <h3>Anzurechnendes Modul:</h3>
-              <!-- Module Name -->
-              <div>
-                <p>Modulname: {{ moduleConnection['moduleApplication']['name'] }}</p>
-              </div>
-              <!-- University -->
-              <div>
-                <p>Universität: {{ moduleConnection['moduleApplication']['university'] }}</p>
-              </div>
-              <!-- Credit Points -->
-              <div>
-                <p>Punkte: {{ moduleConnection['moduleApplication']['points'] }} {{ moduleConnection['moduleApplication']['pointSystem'] }}</p>
-              </div>
-              <!-- File Link -->
-              <div>
-                <a :href="fileLinkBase + moduleConnection['moduleApplication']['pdfDocument']['id']" target="_blank">
-                  Modulbeschreibung anzeigen
-                </a>
-              </div>
-            </div>
-
-            <!-- Internal Module -->
-            <div>
-              <h3>Module der Uni Leipzig:</h3>
-              <!-- Internal Module List -->
-              <div>
-                <p v-for="internalModule in moduleConnection['modulesLeipzig']">{{ internalModule['moduleName'] }}</p>
-              </div>
-              <!-- Comment -->
-              <div v-if="moduleConnection['moduleApplication']['commentApplicant']">
-                <p>Anmerkung: {{ moduleConnection['moduleApplication']['commentApplicant'] }}</p>
-              </div>
-            </div>
-
-            <!-- Decision -->
-            <template #footer v-if="applicationData['fullStatus'] === 'ABGESCHLOSSEN'">
-              <div class="footer-container">
-                <h3>Beschluss:</h3>
-                <div class="decision-container">
-
-                  <div class="icon-container">
-                    <div v-if="moduleConnection['decisionFinal'] === 'ANGENOMMEN' && !moduleConnection['asExamCertificate']">
-                      <span class="pi pi-check" style="color: green; font-size: 1.5rem"></span>
-                    </div>
-
-                    <div v-else-if="moduleConnection['decisionFinal'] === 'ANGENOMMEN' && moduleConnection['asExamCertificate']">
-                      <span class="pi pi-info" style="color: darkorange; font-size: 1.5rem"></span>
-                    </div>
-
-                    <div v-else-if="moduleConnection['decisionFinal'] === 'ABGELEHNT'">
-                      <span class="pi pi-times" style="color:red; font-size: 1.5rem;"></span>
-                    </div>
-                  </div>
-
-                  <div class="comment-container">
-                    <p>{{ moduleConnection['commentDecision'] }}</p>
-                  </div>
-
-                </div>
-              </div>
-            </template>
-
-          </Panel>
-        </div>
+        </Panel>
 
       </div>
+
+      <Button @click="openSummaryDocument">
+        <p>Antrag herunterladen</p>
+        <img src="../assets/icons/Download.svg">
+      </Button>
 
     </div>
 
@@ -178,19 +114,5 @@ const fileLinkBase = computed(() => `${url}/pdf-documents/`)
 </template>
 
 <style scoped>
-.module-panel {
-  margin: 10px;
-}
 
-.p-panel-header-icon {
-  margin: 10px;
-}
-
-.decision-container {
-  display: inline-flex;
-}
-
-.icon-container > * {
-  margin: 13px;
-}
 </style>

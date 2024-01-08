@@ -43,7 +43,7 @@ function getModulesByCourse (course) {
     return axios.get(url + '/courses-leipzig')
         .then(response => {
             const courseObject = response.data.find(obj => obj.name === course)
-            return courseObject.modulesLeipzigCourse.map(obj => obj.moduleName)
+            return courseObject.modulesLeipzigCourse.map(obj => obj.name)
         })
 }
 
@@ -99,28 +99,38 @@ parameters:
     ... String pointSystem, File descriptionFile, String comment, array of Strings selectedInternalModules
  */
 function postApplication (course, applicationObjects) {
+
     const formData = new FormData()
     formData.append(`courseLeipzig`, course)
+
     applicationObjects.forEach(
-        (object, index) => {
-            formData.append(`modulesConnections[${index}].moduleApplications[0].moduleName`, object.moduleName)
-            formData.append(`modulesConnections[${index}].moduleApplications[0].university`, object.university)
-            formData.append(`modulesConnections[${index}].moduleApplications[0].points`, object.creditPoints)
-            formData.append(`modulesConnections[${index}].moduleApplications[0].pointSystem`, object.pointSystem)
-            formData.append(`modulesConnections[${index}].moduleApplications[0].description`, object.descriptionFile)
-            object.selectedInternalModules.forEach(
-                (moduleName, moduleIndex) => {
-                    formData.append(`modulesConnections[${index}].modulesLeipzig[${moduleIndex}]`, moduleName)
+        (connection, connectionIndex) => {
+            connection.externalModules.forEach(
+                (externalModule, externalModuleIndex) => {
+                    formData.append(`modulesConnections[${connectionIndex}].moduleApplications[${externalModuleIndex}].name`, externalModule.name)
+                    formData.append(`modulesConnections[${connectionIndex}].moduleApplications[${externalModuleIndex}].university`, externalModule.university)
+                    formData.append(`modulesConnections[${connectionIndex}].moduleApplications[${externalModuleIndex}].points`, externalModule.points)
+                    formData.append(`modulesConnections[${connectionIndex}].moduleApplications[${externalModuleIndex}].pointSystem`, externalModule.pointSystem)
+                    formData.append(`modulesConnections[${connectionIndex}].moduleApplications[${externalModuleIndex}].description`, externalModule.selectedFile)
                 }
             )
-            formData.append(`modulesConnections[${index}].commentApplicant`, object.comment)
+            connection.internalModules.forEach(
+                (moduleName, moduleIndex) => {
+                    formData.append(`modulesConnections[${connectionIndex}].modulesLeipzig[${moduleIndex}]`, moduleName)
+                }
+            )
+            formData.append(`modulesConnections[${connectionIndex}].commentApplicant`, connection.commentApplicant)
         }
     )
+
     console.log('post request to /applications')
     console.log([...formData])
+
     return axios.post(url + '/applications', formData)
-        .then(response => response.data)
-    // todo error catching
+        .then(response => {
+            console.log('post application successful, data returned: ' + response.data)
+            return response.data
+        })
 }
 
 function putStudyOffice (id, applicationObjects) {

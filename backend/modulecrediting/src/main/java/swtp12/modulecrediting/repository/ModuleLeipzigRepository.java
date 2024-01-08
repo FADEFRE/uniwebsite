@@ -9,7 +9,7 @@ import java.util.Optional;
 
 @Repository
 public interface ModuleLeipzigRepository extends JpaRepository<ModuleLeipzig, String>{
-    Optional<ModuleLeipzig> findByModuleName(String moduleName);
+    Optional<ModuleLeipzig> findByName(String name);
 
-    boolean existsByModuleName(String moduleName);
+    boolean existsByName(String name);
 }

@@ -10,17 +10,21 @@ const props = defineProps({
         type: String,
         required: true,
     },
-    inProgressDate: {
+    lastEditedDate: {
         type: String,
-        default: "",
+        required: true,
     },
     decisionDate: {
         type: String,
-        default: "",
+        required: true,
     },
-    vorgangsnummer: {
+    id: {
         type: String,
         required: true,
+    },
+    course: {
+        type: String,
+        // if not given use slot course
     },
     status: {
         type: String,
@@ -41,10 +45,10 @@ const props = defineProps({
             </div>
 
             <!-- Div-Block Last edited Date -->
-            <div v-if="inProgressDate" class="date-block">
+            <div v-if="lastEditedDate" class="date-block">
                 <div class="text-wrapper-2">
                     <img :src="LastEditedDate" alt="LastEdited Date Icon" />
-                    {{ inProgressDate }}
+                    {{ lastEditedDate }}
                 </div>
             </div>
 
@@ -60,7 +64,7 @@ const props = defineProps({
         <!-- remaining data -->
         <div class="application-info">
             <div class="vorgangsnummer">
-                <div class="vorgangsnummer-text overview-text">Vorgangsnummer: {{ vorgangsnummer || 'Placeholder for Vorgangsnummer' }}
+                <div class="vorgangsnummer-text overview-text">Vorgangsnummer: {{ id || 'Placeholder for Vorgangsnummer' }}
                 </div>
             </div>
             <div class="status-text-wrapper">
@@ -68,7 +72,7 @@ const props = defineProps({
             </div>
 
             <!-- Slot study course -->
-            <slot name="studiengang" class="overview-text">B. Sc. Informatik </slot>
+            <slot name="course" class="overview-text">{{ course }}</slot>
         </div>
     </div>
 </template>

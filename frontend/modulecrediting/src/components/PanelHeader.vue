@@ -10,8 +10,6 @@ displays:
 -->
 
 <script setup>
-import { defineProps } from 'vue';
-
 const props = defineProps({
   externalModules: {
     type: Array
@@ -25,7 +23,7 @@ const props = defineProps({
 <template>
   <div class="panel-header">
     <div class="external-modules">
-      <h3 v-if="externalModules">{{ externalModules.join(', ') }}</h3>
+      <h3 v-if="externalModules && externalModules.length">{{ externalModules.join(', ') }}</h3>
       <h3 v-else>...</h3>
     </div>
 
@@ -34,7 +32,7 @@ const props = defineProps({
     </div>
 
     <div class="internal-modules">
-      <h3 v-if="internalModules">{{ internalModules.join(', ') }}</h3>
+      <h3 v-if="internalModules && internalModules.length">{{ internalModules.join(', ') }}</h3>
       <h3 v-else>...</h3>
     </div>
   </div>

@@ -9,5 +9,5 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ModuleLeipzigUpdateDTO {
     private Boolean removeFromModulesConnection;
-    private String moduleName;
+    private String name;
 }
