@@ -21,10 +21,6 @@ public class GeneratedPdfService {
     @Autowired
     private ApplicationService applicationService;
 
-    public byte[] generatePdfDataDocument(String id) {
-        return id.getBytes();
-    }
-/*
     public byte[] generatePdfDataDocument(String id) throws IOException, DocumentException {
         Application application = applicationService.getApplicationById(id);
         List<ModulesConnection> modulesConnections = application.getModulesConnections();
@@ -99,69 +95,75 @@ public class GeneratedPdfService {
             document.newPage();
 
             ModulesConnection modulesConnection1 = modulesConnections.get(i);
-            ModuleApplication moduleApplication1 = modulesConnection1.getModuleApplication();
 
-            //uni-leipzig icon
-            document.add(uniLeipzigIcon);
 
-            //Title
-            String titleText2 = "MODUL";
-            Font titleFont2 = getFont(HELVETICA_BOLD, 15);
-            Font titleFont3 = getFont(HELVETICA, 14);
-            Paragraph title2 = new Paragraph(titleText2, titleFont2);
-            Paragraph title3 = new Paragraph(moduleApplication1.getName().toUpperCase(), titleFont3);
-            title2.setAlignment(Element.ALIGN_LEFT);
-            title3.setAlignment(Element.ALIGN_LEFT);
-            title2.setIndentationLeft(30f);
-            title3.setIndentationLeft(30f);
-            float Spacing1 = 150f; // Abstand zwischen Icon und Titel
-            title2.setSpacingBefore(Spacing1);
-            title3.setSpacingAfter(30);
-            document.add(title2);
-            document.add(title3);
+            List<ModuleApplication> moduleApplications1 = modulesConnection1.getModuleApplications();
 
-            // Module-Anwendungsdaten
-            addTable(document, "Punkte", (moduleApplication1.getPoints() != null) ? String.valueOf(moduleApplication1.getPoints()) : "");
-            addTable(document, "Punktesystem", (moduleApplication1.getPointSystem() != null) ? moduleApplication1.getPointSystem() : "");
-            addTable(document, "Universität", (moduleApplication1.getUniversity() != null) ? moduleApplication1.getUniversity() : "");
+            for (ModuleApplication moduleApplication1 : moduleApplications1) {
 
-            //Studibüro daten
-            addTable(document, "Finale Entscheidung", (modulesConnection1.getDecisionFinal() != null) ? String.valueOf(modulesConnection1.getDecisionFinal()) : "");
-            addTable(document, "Kommentar zur Entscheidung", (modulesConnection1.getCommentDecision() != null) ? modulesConnection1.getCommentDecision() : "");
+                //uni-leipzig icon
+                document.add(uniLeipzigIcon);
 
-            if (i + 1 < modulesConnections.size()) {
-                ModulesConnection modulesConnection2 = modulesConnections.get(i + 1);
-                ModuleApplication moduleApplication2 = modulesConnection2.getModuleApplication();
-
-                String titleText4 = "MODUL";
-                Font titleFont4 = getFont(HELVETICA_BOLD, 15);
-                Font titleFont5 = getFont(HELVETICA, 14);
-                Paragraph title4 = new Paragraph(titleText4, titleFont4);
-                Paragraph title5 = new Paragraph(moduleApplication2.getName().toUpperCase(), titleFont5);
-                title4.setAlignment(Element.ALIGN_LEFT);
-                title5.setAlignment(Element.ALIGN_LEFT);
-                title4.setIndentationLeft(30f);
-                title5.setIndentationLeft(30f);
-                float Spacing2 = 100f; // Abstand zwischen Icon und Titel
-                title4.setSpacingBefore(Spacing2);
-                title5.setSpacingAfter(50);
-                document.add(title4);
-                document.add(title5);
+                //Title
+                String titleText2 = "MODUL";
+                Font titleFont2 = getFont(HELVETICA_BOLD, 15);
+                Font titleFont3 = getFont(HELVETICA, 14);
+                Paragraph title2 = new Paragraph(titleText2, titleFont2);
+                Paragraph title3 = new Paragraph(moduleApplication1.getName().toUpperCase(), titleFont3);
+                title2.setAlignment(Element.ALIGN_LEFT);
+                title3.setAlignment(Element.ALIGN_LEFT);
+                title2.setIndentationLeft(30f);
+                title3.setIndentationLeft(30f);
+                float Spacing1 = 150f; // Abstand zwischen Icon und Titel
+                title2.setSpacingBefore(Spacing1);
+                title3.setSpacingAfter(30);
+                document.add(title2);
+                document.add(title3);
 
                 // Module-Anwendungsdaten
-                addTable(document, "Punkte", (moduleApplication2.getPoints() != null) ? String.valueOf(moduleApplication2.getPoints()) : "");
-                addTable(document, "Punktesystem", (moduleApplication2.getPointSystem() != null) ? moduleApplication2.getPointSystem() : "");
-                addTable(document, "Universität", (moduleApplication2.getUniversity() != null) ? moduleApplication2.getUniversity() : "");
+                addTable(document, "Punkte", (moduleApplication1.getPoints() != null) ? String.valueOf(moduleApplication1.getPoints()) : "");
+                addTable(document, "Punktesystem", (moduleApplication1.getPointSystem() != null) ? moduleApplication1.getPointSystem() : "");
+                addTable(document, "Universität", (moduleApplication1.getUniversity() != null) ? moduleApplication1.getUniversity() : "");
 
                 //Studibüro daten
-                addTable(document, "Finale Entscheidung", (modulesConnection2.getDecisionFinal() != null) ? String.valueOf(modulesConnection2.getDecisionFinal()) : "");
-                addTable(document, "Kommentar zur Entscheidung", (modulesConnection2.getCommentDecision() != null) ? modulesConnection2.getCommentDecision() : "");
+                addTable(document, "Finale Entscheidung", (modulesConnection1.getDecisionFinal() != null) ? String.valueOf(modulesConnection1.getDecisionFinal()) : "");
+                addTable(document, "Kommentar zur Entscheidung", (modulesConnection1.getCommentDecision() != null) ? modulesConnection1.getCommentDecision() : "");
+            }
+            if (i + 1 < modulesConnections.size()) {
+                ModulesConnection modulesConnection2 = modulesConnections.get(i + 1);
+                List<ModuleApplication> moduleApplications2 = modulesConnection2.getModuleApplications();
+
+                for (ModuleApplication moduleApplication2 : moduleApplications2) {
+                    String titleText4 = "MODUL";
+                    Font titleFont4 = getFont(HELVETICA_BOLD, 15);
+                    Font titleFont5 = getFont(HELVETICA, 14);
+                    Paragraph title4 = new Paragraph(titleText4, titleFont4);
+                    Paragraph title5 = new Paragraph(moduleApplication2.getName().toUpperCase(), titleFont5);
+                    title4.setAlignment(Element.ALIGN_LEFT);
+                    title5.setAlignment(Element.ALIGN_LEFT);
+                    title4.setIndentationLeft(30f);
+                    title5.setIndentationLeft(30f);
+                    float Spacing2 = 100f; // Abstand zwischen Icon und Titel
+                    title4.setSpacingBefore(Spacing2);
+                    title5.setSpacingAfter(50);
+                    document.add(title4);
+                    document.add(title5);
+
+                    // Module-Anwendungsdaten
+                    addTable(document, "Punkte", (moduleApplication2.getPoints() != null) ? String.valueOf(moduleApplication2.getPoints()) : "");
+                    addTable(document, "Punktesystem", (moduleApplication2.getPointSystem() != null) ? moduleApplication2.getPointSystem() : "");
+                    addTable(document, "Universität", (moduleApplication2.getUniversity() != null) ? moduleApplication2.getUniversity() : "");
+
+                    //Studibüro daten
+                    addTable(document, "Finale Entscheidung", (modulesConnection2.getDecisionFinal() != null) ? String.valueOf(modulesConnection2.getDecisionFinal()) : "");
+                    addTable(document, "Kommentar zur Entscheidung", (modulesConnection2.getCommentDecision() != null) ? modulesConnection2.getCommentDecision() : "");
+                }
             }
         }
         document.close();
         return baos.toByteArray();
     }
-*/
+
     private void addTable(Document document, String label, String value) throws DocumentException {
         PdfPTable table = new PdfPTable(2);
         table.setWidthPercentage(88);
