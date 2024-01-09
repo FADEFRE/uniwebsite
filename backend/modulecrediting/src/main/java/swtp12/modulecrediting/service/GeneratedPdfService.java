@@ -96,7 +96,7 @@ public class GeneratedPdfService {
 
 
 
-        for (int i = 0; i < modulesConnections.size(); i += 2) {
+        for (int i = 0; i < modulesConnections.size(); i+=2) {
             document.newPage();
 
             //uni-leipzig icon
@@ -105,8 +105,8 @@ public class GeneratedPdfService {
             ModulesConnection modulesConnection1 = modulesConnections.get(i);
             List<ModuleApplication> moduleApplications1 = modulesConnection1.getModuleApplications();
 
-            for (ModuleApplication moduleApplication1 : moduleApplications1) {
-
+            for (int j = 0; j < moduleApplications1.size(); j++) {
+                ModuleApplication moduleApplication1 = moduleApplications1.get(j);
 
                 //Title
                 String titleText2 = "MODUL";
@@ -130,33 +130,41 @@ public class GeneratedPdfService {
                 //Studibüro daten
                 addTable(document, "Finale Entscheidung", (modulesConnection1.getDecisionFinal() != null) ? String.valueOf(modulesConnection1.getDecisionFinal()) : "");
                 addTable(document, "Kommentar zur Entscheidung", (modulesConnection1.getCommentDecision() != null) ? modulesConnection1.getCommentDecision() : "");
-            }
-            if (i + 1 < modulesConnections.size()) {
-                ModulesConnection modulesConnection2 = modulesConnections.get(i + 1);
-                List<ModuleApplication> moduleApplications2 = modulesConnection2.getModuleApplications();
 
-                for (ModuleApplication moduleApplication2 : moduleApplications2) {
-                    String titleText4 = "MODUL";
-                    Paragraph title4 = new Paragraph(titleText4, jostSemiBold);
-                    Paragraph title5 = new Paragraph(moduleApplication2.getName().toUpperCase(), jostRegular);
-                    title4.setAlignment(Element.ALIGN_LEFT);
-                    title5.setAlignment(Element.ALIGN_LEFT);
-                    title4.setIndentationLeft(30f);
-                    title5.setIndentationLeft(30f);
-                    float Spacing2 = 100f; // Abstand zwischen Icon und Titel
-                    title4.setSpacingBefore(Spacing2);
-                    title5.setSpacingAfter(50);
-                    document.add(title4);
-                    document.add(title5);
+                if (i + 1 < modulesConnections.size()) {
 
-                    // Module-Anwendungsdaten
-                    addTable(document, "Punkte", (moduleApplication2.getPoints() != null) ? String.valueOf(moduleApplication2.getPoints()) : "");
-                    addTable(document, "Punktesystem", (moduleApplication2.getPointSystem() != null) ? moduleApplication2.getPointSystem() : "");
-                    addTable(document, "Universität", (moduleApplication2.getUniversity() != null) ? moduleApplication2.getUniversity() : "");
+                    document.add(uniLeipzigIcon);
 
-                    //Studibüro daten
-                    addTable(document, "Finale Entscheidung", (modulesConnection2.getDecisionFinal() != null) ? String.valueOf(modulesConnection2.getDecisionFinal()) : "");
-                    addTable(document, "Kommentar zur Entscheidung", (modulesConnection2.getCommentDecision() != null) ? modulesConnection2.getCommentDecision() : "");
+                    ModulesConnection modulesConnection2 = modulesConnections.get(i + 1);
+                    List<ModuleApplication> moduleApplications2 = modulesConnection2.getModuleApplications();
+
+
+                    if(j + 1 < moduleApplications2.size()) {
+                        document.add(uniLeipzigIcon);
+
+                        ModuleApplication moduleApplication2 = moduleApplications2.get(j + 1);
+                        String titleText4 = "MODUL";
+                        Paragraph title4 = new Paragraph(titleText4, jostSemiBold);
+                        Paragraph title5 = new Paragraph(moduleApplication2.getName().toUpperCase(), jostRegular);
+                        title4.setAlignment(Element.ALIGN_LEFT);
+                        title5.setAlignment(Element.ALIGN_LEFT);
+                        title4.setIndentationLeft(30f);
+                        title5.setIndentationLeft(30f);
+                        float Spacing2 = 100f; // Abstand zwischen Icon und Titel
+                        title4.setSpacingBefore(Spacing2);
+                        title5.setSpacingAfter(50);
+                        document.add(title4);
+                        document.add(title5);
+
+                        // Module-Anwendungsdaten
+                        addTable(document, "Punkte", (moduleApplication2.getPoints() != null) ? String.valueOf(moduleApplication2.getPoints()) : "");
+                        addTable(document, "Punktesystem", (moduleApplication2.getPointSystem() != null) ? moduleApplication2.getPointSystem() : "");
+                        addTable(document, "Universität", (moduleApplication2.getUniversity() != null) ? moduleApplication2.getUniversity() : "");
+
+                        //Studibüro daten
+                        addTable(document, "Finale Entscheidung", (modulesConnection2.getDecisionFinal() != null) ? String.valueOf(modulesConnection2.getDecisionFinal()) : "");
+                        addTable(document, "Kommentar zur Entscheidung", (modulesConnection2.getCommentDecision() != null) ? modulesConnection2.getCommentDecision() : "");
+                    }
                 }
             }
         }
