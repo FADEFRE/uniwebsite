@@ -27,6 +27,11 @@ const props = defineProps({
   }
 })
 
+const panelCollapsed = ref(true); // Initially collapsed
+const togglePanel = () => {
+  panelCollapsed.value = !panelCollapsed.value; // Toggle panel's collapse state
+};
+
 const panelExternalModules = ref()
 const panelInternalModules = ref()
 const panelComment = ref()
@@ -44,29 +49,97 @@ defineExpose({
 })
 </script>
 
+
 <template>
   <div>
-
-    <Panel toggleable>
-
+    <Panel toggleable :collapsed.sync="panelCollapsed">
+      <!-- Header Content -->
       <template #header>
-        <PanelHeader :external-modules="externalModules?.map(m => m.name).filter(name => name !== '')" :internal-modules="internalModules" />
+        <PanelHeader :external-modules="externalModules?.map(m => m.name).filter(name => name !== '')"
+          :internal-modules="internalModules" />
       </template>
 
+      <!-- Icons Slot -->
       <template #icons>
         <img src="../assets/icons/Trash.svg" @click="emit('deleteSelf')">
       </template>
 
+      <!-- Panel Content -->
       <PanelExternalModules type="new" ref="panelExternalModules" />
-      <hr>
       <PanelInternalModules type="new" :options="selectableModules" ref="panelInternalModules" />
-      <hr>
       <PanelComment type="new" ref="panelComment" />
-
     </Panel>
   </div>
 </template>
 
-<style scoped>
 
+<style scoped lang="scss">
+@import '../assets/mixins.scss';
+@import '../assets/variables.scss';
+
+:deep(.p-panel) {
+  width: 100%;
+  background-color: $white;
+
+
+}
+
+:deep(.p-panel-header) {
+  width: 100%;
+  padding: 1.25rem;
+  background-color: $white;
+
+  border: none;
+  border-top: 2px solid $dark-gray;
+  border-bottom: 2px solid $dark-gray;
+}
+
+:deep(.p-panel-header-icon) {
+  display: flex;
+
+}
+
+:deep(.p-panel-toggler) {
+  display: flex;
+  background-image: url("../assets/icons/ArrowDark.svg");
+}
+
+:deep(.p-panel-content){
+  border: none;
+  padding: 1.25rem 6.25rem;
+  border-bottom: 2px solid $dark-gray;
+
+  @include verticalList(small);
+  
+}
 </style>
+
+
+.panel {
+  background-color: $white;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  
+}
+
+.panel-header-all {
+  width: 100%;
+  display: flex;
+  padding: 1.25rem;
+  justify-content: space-between;
+  align-items: center;
+
+  border-top: 2px solid $dark-gray;
+  border-bottom: 2px solid $dark-gray;
+}
+
+.panel-content {
+  width: 100%;
+  display: flex;
+  padding: 1.25rem 6.25rem;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.625rem;
+}

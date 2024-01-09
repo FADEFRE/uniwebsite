@@ -45,16 +45,18 @@ const goToSubmitApplication = () => {
             </HomepageContainer>
         </div>
 
-
-        <!--SideInfoContainerfür Antragprozess -->
-        <SideInfoContainer :heading="'ANTRAGSPROZESS'">
+        <div class="side-infos-container">
+            <!--SideInfoContainerfür Antragprozess -->
+            <SideInfoContainer :heading="'ANTRAGSPROZESS'">
             <ul class="list-container">
                 <li class="list-item">Antrag online stellen</li>
                 <li class="list-item">Über Vorgangsnummer online Status einsehen</li>
                 <li class="list-item">Auf Entscheidung des PAV warten</li>
                 <li class="list-item">Mit abgeschlossenem Antrag zum Studienbüro gehen</li>
             </ul>
-        </SideInfoContainer>
+            </SideInfoContainer>
+        </div>
+        
     </div>
 </template>
 
@@ -69,5 +71,10 @@ const goToSubmitApplication = () => {
 
 .homepage-content {
     @include verticalList(big);
+}
+
+.side-infos-container {
+  @include verticalList(big);
+  width: min-content;
 }
 </style>

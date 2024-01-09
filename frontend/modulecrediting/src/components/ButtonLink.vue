@@ -24,14 +24,25 @@ const openLink = () => {
 </script>
 
 <template>
-  <div>
-    <Button @click="openLink">
+  <div >
+    <Button @click="openLink" class="button-container">
       <slot></slot>
-      <img src="../assets/icons/ArrowWhite.svg">
+      <img src="../assets/icons/ArrowWhite.svg" class="arrow-icon">
     </Button>
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+@import '../assets/variables.scss';
+.button-container{
+  display: flex;
+  gap: 0.625rem;
 
+  &:hover{
+    background-color: $red;
+  }
+}
+.arrow-icon{
+  transform: rotate(-90deg);
+} 
 </style>
