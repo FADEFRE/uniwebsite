@@ -17,6 +17,9 @@ import { ref, onBeforeMount } from "vue";
 import { getFormattedDate } from "@/scripts/date-utils";
 import { getCoursesLeipzig, getModulesByCourse, postApplication } from "@/scripts/axios-requests";
 import ApplicationPanel from "@/components/ApplicationPanel.vue";
+import SideInfoContainer from "@/components/SideInfoContainer.vue";
+import ButtonAdd from "@/components/ButtonAdd.vue";
+import ButtonLink from "@/components/ButtonLink.vue";
 
 const creationDate = new Date()
 
@@ -25,13 +28,13 @@ const selectedCourse = ref()
 
 onBeforeMount(() => {
   getCoursesLeipzig()
-      .then(data => courses.value = data)
+    .then(data => courses.value = data)
 })
 
 const selectableModules = ref([])
 const setSelectableModules = () => {
   getModulesByCourse(selectedCourse.value)
-      .then(data => selectableModules.value = data)
+    .then(data => selectableModules.value = data)
 }
 
 const moduleConnections = ref([1])
@@ -50,53 +53,83 @@ const triggerPostApplication = () => {
   console.log(selectedCourse.value)
   console.log(moduleConnectionsRef.value)
   postApplication(selectedCourse.value, moduleConnectionsRef.value)
-      .then(id => {
-        router.push({name: 'confirmation', params: {id: id}})
-      })
+    .then(id => {
+      router.push({ name: 'confirmation', params: { id: id } })
+    })
 }
 </script>
 
 <template>
-  <div>
+  <div class="main">
 
-    <div>
-      <div>
-        <img src="../assets/icons/CreationDate.svg">
-        <p>{{ getFormattedDate(creationDate) }}</p>
+    <div class="submit-application-container">
+      <div class="application-overview-container">
+        <div>
+          <img src="../assets/icons/CreationDate.svg">
+          <p>{{ getFormattedDate(creationDate) }}</p>
+        </div>
+
+        <div>
+          <Dropdown v-model="selectedCourse" :options="courses" placeholder="Studiengang wählen"
+            @change="setSelectableModules" />
+        </div>
+
+        <div>
+          <p>Status: Neu</p>
+        </div>
       </div>
 
-      <div>
-        <Dropdown
-            v-model="selectedCourse"
-            :options="courses"
-            placeholder="Studiengang wählen"
-            @change="setSelectableModules"
-        />
-      </div>
+      <ApplicationPanel :selectable-modules="selectableModules" v-for="item in moduleConnections" :key="item"
+        @delete-self="deleteModuleConnection(item)" ref="moduleConnectionsRef" />
 
-      <div>
-        <p>Status: Neu</p>
-      </div>
+      <ButtonAdd @click="addModuleConnection">Modulzuweisung hinzufügen</ButtonAdd>
+      <ButtonLink @click="triggerPostApplication">Absenden</ButtonLink>
     </div>
 
-    <div>
-      <ApplicationPanel
-          :selectable-modules="selectableModules"
-          v-for="item in moduleConnections"
-          :key="item"
-          @delete-self="deleteModuleConnection(item)"
-          ref="moduleConnectionsRef"
-      />
-      <Button @click="addModuleConnection">Modulzuweisung hinzufügen</Button>
-      <Button @click="triggerPostApplication">Absenden</Button>
+    <div class="side-infos-container">
+      <!--SideInfoContainerfür Antragprozess -->
+      <SideInfoContainer :heading="'ANTRAGSPROZESS'">
+        <ul class="list-container">
+          <li class="list-item">Antrag online stellen</li>
+          <li class="list-item">Über Vorgangsnummer online Status einsehen</li>
+          <li class="list-item">Auf Entscheidung des PAV warten</li>
+          <li class="list-item">Mit abgeschlossenem Antrag zum Studienbüro gehen</li>
+        </ul>
+      </SideInfoContainer>
+      <SideInfoContainer :heading="'STUDIENBÜRO'">
+        <ul class="list-container">
+          <li class="list-item">Antrag online stellen</li>
+          <li class="list-item">Über Vorgangsnummer online Status einsehen</li>
+          <li class="list-item">Auf Entscheidung des PAV warten</li>
+          <li class="list-item">Mit abgeschlossenem Antrag zum Studienbüro gehen</li>
+        </ul>
+      </SideInfoContainer>
     </div>
 
-    {{moduleConnections}}
-    {{moduleConnectionsRef}}
 
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+@import '../assets/variables.scss';
+@import '../assets/mixins.scss';
 
+.main {
+  @include main();
+}
+
+.submit-application-container {
+  @include verticalList(small);
+  width: 100%;
+}
+
+.application-overview-container {
+  @include applicationOverview();
+}
+
+.side-infos-container {
+  @include verticalList(big);
+  width: min-content;
+}
 </style>
+
