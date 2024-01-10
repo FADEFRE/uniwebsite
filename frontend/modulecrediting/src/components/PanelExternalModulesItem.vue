@@ -172,7 +172,6 @@ defineExpose({
 
 .screen-split {
   @include screenSplit();
-  width: 100%;
 }
 
 .left-side {

@@ -12,6 +12,7 @@
 @mixin verticalList($gapSize) {
   display: flex;
   flex-direction: column;
+
   @if $gapSize == small {
     gap: 0.625rem; 
   } @else if $gapSize == big{
@@ -21,6 +22,7 @@
 
 @mixin verticalListItem($background-color) {
     background-color: $background-color;
+    justify-content: space-between;
     border-left: 3px solid $red;
   }
 
@@ -51,6 +53,7 @@
   width: 100%;
   padding: 0.625rem 0rem;
   background-color: $white;
+  border-top: 1px solid $dark-gray;
 
   display: flex;
   flex-direction: column;
@@ -60,6 +63,7 @@
 }
 
 @mixin screenSplit() {
+  width: 100%;
   display: flex;
   align-items: flex-start;
   gap: 0.9735rem;

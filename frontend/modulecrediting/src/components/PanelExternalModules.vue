@@ -123,6 +123,7 @@ defineExpose({
 
 .panel-external-modules {
   @include panelComponent();
+  border-top: none;
 }
 
 .external-modules-list {

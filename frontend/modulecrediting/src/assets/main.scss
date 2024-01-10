@@ -59,10 +59,11 @@ p {
 }
 
 a,
-Button { font-family: "Jost";
+Button {
+  font-family: "Jost";
   text-transform: uppercase;
   text-decoration: none;
-  
+
   color: $white;
   font-size: 1.125rem;
   font-weight: 600;
@@ -90,7 +91,6 @@ input {
   font-size: 1rem;
   font-weight: 460;
 
-
   min-width: 0;
 }
 
@@ -104,3 +104,58 @@ input {
   font-size: 1rem;
   font-weight: 400;
 }
+
+
+// DROPDOWN STYLING
+.p-dropdown {
+  background-color: $dark-gray;
+  width: 100%;
+}
+
+.p-dropdown-label {
+  color: $white;
+  font-family: "Jost";
+  text-transform: uppercase;
+  text-decoration: none;
+
+  color: $white;
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.p-dropdown-trigger {
+  color: $white;
+}
+.p-dropdown-panel {
+  background-color: $gray;
+  border: none;
+  max-width: 100%;
+}
+.p-dropdown-filter-container {
+  
+  background-color: $white;
+  border-left: 2px solid $dark-gray;
+
+}
+.p-dropdown-header {
+  border: none;
+}
+.p-dropdown-item {
+  color: $black;
+  font-family: "Jost";
+  font-size: 1rem;
+  font-weight: 400; 
+
+  @include smallHighlightBox();
+  
+  width: 100%;
+  justify-content: flex-start;
+  
+  &:focus {
+    @include verticalListItem($gray);
+  }
+  &:hover {
+    background-color: $mid-gray ;
+  }
+}
+
