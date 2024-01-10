@@ -1,28 +1,56 @@
-<script setup>
-import { useRouter } from "vue-router";
-import { ref } from "vue";
+<script>
+import router from "../router";
+import httpResource from "../http/httpResource";
+import { parseApierror, performLogout, getAuthenticatedUser} from "../util/utils";
 
-const user = ref()
-const styleInvalid = ref(false)
-const password = ref()
 
-const router = useRouter()
+export default {
+  data() {
+    return {
+      loginForm: {
+        username: "",
+        password: ""
+      },
+      displayErrorMessage: false,
+      errorMessage: "",
+      loginInProcess: false
+    };
+  },
+  methods: {
+    async login() { //TODO: login wird noch als "" übergeben
+      this.loginInProcess = true;
+      let canNavigate = false;
+      const loginRequest = {
+        username: this.loginForm.username,
+        password: this.loginForm.password
+      };
+      try {
+        const response = await httpResource.post("/auth/login", loginRequest);
+        if (response.status === 200) {
+          await getAuthenticatedUser();
+          canNavigate = true;
+          //Correct routing for usernames -> get request api
+          if (loginRequest.username === "studyoffice") {
+            const routeData = router.resolve({name: 'studyOfficeSelection'})
+            window.open(routeData.href, '_top')
+          }
+        }
+      } catch (error) {
+        performLogout();
+        const apierror = parseApierror(error);
+        this.displayErrorMessage = true;
+        this.errorMessage = apierror.message;
+      }
+      this.loginInProcess = false;
 
-const login = () => {
-  if (user.value === 'studienbüro' && password.value) {
-
-    const routeData = router.resolve({name: 'studyOfficeSelection'})
-    window.open(routeData.href, '_top')
-
-  } else if (user.value === 'pav' && password.value) {
-
-    const routeData = router.resolve({name: 'chairmanSelection'})
-    window.open(routeData.href, '_top')
-
-  } else {
-    styleInvalid.value = true;
+      if (canNavigate) {
+        router.replace("/");
+      }
+    }
   }
-}
+};
+
+
 </script>
 
 <template>
@@ -35,13 +63,13 @@ const login = () => {
         <div class="input-container">
           <div class="input-box">
           <span class="p-input-icon-right">
-            <input type="text" placeholder="Benutzername" v-model="user" class="input-text" :class="{'invalid': styleInvalid}" />
+            <input type="text" placeholder="Benutzername" v-model="loginForm.username" class="input-text" :class="{'invalid': styleInvalid}" />
           </span>
           </div>
 
           <div class="input-box">
           <span class="p-input-icon-right">
-            <input type="password" placeholder="Passwort" v-model="password" class="input-text" :class="{'invalid': styleInvalid}"/>
+            <input type="password" placeholder="Passwort" v-model="loginForm.password" class="input-text" :class="{'invalid': styleInvalid}"/>
           </span>
           </div>
         </div>
