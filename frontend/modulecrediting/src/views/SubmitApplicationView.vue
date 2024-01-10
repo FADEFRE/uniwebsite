@@ -20,6 +20,7 @@ import ApplicationPanel from "@/components/ApplicationPanel.vue";
 import SideInfoContainer from "@/components/SideInfoContainer.vue";
 import ButtonAdd from "@/components/ButtonAdd.vue";
 import ButtonLink from "@/components/ButtonLink.vue";
+import ApplicationOverview from "@/components/ApplicationOverview.vue";
 
 const creationDate = new Date()
 
@@ -63,21 +64,20 @@ const triggerPostApplication = () => {
   <div class="main">
 
     <div class="submit-application-container">
-      <div class="application-overview-container">
-        <div>
-          <img src="../assets/icons/CreationDate.svg">
-          <p>{{ getFormattedDate(creationDate) }}</p>
-        </div>
 
-        <div>
-          <Dropdown v-model="selectedCourse" :options="courses" placeholder="Studiengang wählen"
-            @change="setSelectableModules" />
-        </div>
-
-        <div>
-          <p>Status: Neu</p>
-        </div>
-      </div>
+      <ApplicationOverview
+          :creation-date="getFormattedDate(creationDate)"
+          :last-edited-date="undefined"
+          :decision-date="undefined"
+          status="NEU"
+      >
+        <Dropdown
+            v-model="selectedCourse"
+            :options="courses"
+            placeholder="Studiengang wählen"
+            @change="setSelectableModules"
+        />
+      </ApplicationOverview>
 
       <ApplicationPanel :selectable-modules="selectableModules" v-for="item in moduleConnections" :key="item"
         @delete-self="deleteModuleConnection(item)" ref="moduleConnectionsRef" />

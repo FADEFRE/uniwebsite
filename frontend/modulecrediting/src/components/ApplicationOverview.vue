@@ -22,7 +22,6 @@ const props = defineProps({
     },
     id: {
         type: String,
-        required: true,
     },
     course: {
         type: String,
@@ -65,7 +64,7 @@ const statusStyle = computed(() => {
 
         <!-- remaining data -->
         <div class="application-info">
-            <div class="vorgangsnummer-container">
+            <div v-if="id" class="vorgangsnummer-container">
                 <div class="vorgangsnummer-text overview-text">Vorgangsnummer: {{ id || 'Placeholder for Vorgangsnummer' }}
                 </div>
             </div>
@@ -74,11 +73,12 @@ const statusStyle = computed(() => {
             </div>
 
             <!-- Slot study course -->
-            <div class="course-container">
-                <slot name="course">
-                    <div class="overview-text">{{ course }}</div>
-                </slot>
-            </div>
+            <slot>
+              <div class="course-container">
+                <div class="overview-text">{{ course }}</div>
+              </div>
+            </slot>
+
         </div>
     </div>
 </template>
