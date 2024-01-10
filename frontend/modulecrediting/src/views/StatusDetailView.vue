@@ -37,7 +37,7 @@ onBeforeMount(() => {
 })
 // todo error handling
 
-const displayDecisionMap = {
+const decisionMap = {
   ANGENOMMEN: 'accept',
   ÜBUNGSSCHEIN: 'asExamCertificate',
   ABGELEHNT: 'denied',
@@ -94,9 +94,9 @@ const openSummaryDocument = () => {
             <PanelComment type="readonly" :comment="connection['commentApplicant']" />
             <hr>
             <PanelDecisionBlock
-                v-if="displayDecisionMap[connection['decisionFinal']]"
+                v-if="decisionMap[connection['decisionFinal']]"
                 type="readonly"
-                :display-decision="displayDecisionMap[connection['decisionFinal']]"
+                :display-decision="decisionMap[connection['decisionFinal']]"
                 :comment="connection['commentDecision']"
             />
 

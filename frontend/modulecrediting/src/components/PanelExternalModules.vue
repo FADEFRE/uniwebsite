@@ -33,7 +33,7 @@ const props = defineProps({
         if (!e.university) return false
         if (!e.points) return false
         if (!e.pointSystem) return false
-        if (!e.selectedFile) return false
+        if (!e.pdfDocument) return false
       }
       return true
     }

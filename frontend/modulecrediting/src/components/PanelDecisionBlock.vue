@@ -21,7 +21,13 @@ const props = defineProps({
 })
 
 const decision = ref()
-const decisionOptions = ['Annehmen', 'Übungsschein', 'Ablehnen']
+if (props.displayDecision) decision.value = props.displayDecision
+
+const decisionOptions = [
+  { value: 'accepted', label: 'Annehmen' },
+  { value: 'asExamCertificate', label: 'Übungsschein'},
+  { value: 'denied', label: 'Ablehnen'}
+]
 </script>
 
 <!-- todo accessibility -->
@@ -29,8 +35,9 @@ const decisionOptions = ['Annehmen', 'Übungsschein', 'Ablehnen']
   <div>
 
     <div>
+
       <div v-if="type === 'edit'">
-        <SelectButton :allow-empty="false" v-model="decision" :options="decisionOptions" />
+        <SelectButton :allow-empty="false" v-model="decision" :options="decisionOptions" optionLabel="label" optionValue="value" />
       </div>
 
       <div v-else-if="type === 'readonly'">
