@@ -58,9 +58,9 @@ public class ApplicationService {
 
 
         for(ModulesConnection m : application.getModulesConnections()) {
-            if(m.getDecisionSuggestion() == UNBEARBEITET) allDecisionsSuggestionsCompleted = false;
-            if(m.getDecisionSuggestion() == ABGELEHNT || m.getDecisionSuggestion() == ANGENOMMEN) noDecisionSuggestionCompleted = false;
-            if(m.getDecisionFinal() == UNBEARBEITET) allDecisionsFinalCompleted = false;
+            if(m.getDecisionSuggestion() == unedited) allDecisionsSuggestionsCompleted = false;
+            if(m.getDecisionSuggestion() == accepted || m.getDecisionSuggestion() == accepted) noDecisionSuggestionCompleted = false;
+            if(m.getDecisionFinal() == asExamCertificate) allDecisionsFinalCompleted = false;
         }
 
         if(!noDecisionSuggestionCompleted) application.setFullStatus(STUDIENBÜRO);

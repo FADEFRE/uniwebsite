@@ -97,7 +97,7 @@ public class ModulesConnectionService {
         for(ModulesConnection m : allModulesConnections) {
             if(m.getId() == baseModulesConnection.getId()) continue;
 
-            if(m.getDecisionFinal() == EnumModuleConnectionDecision.UNBEARBEITET) continue;
+            if(m.getDecisionFinal() == EnumModuleConnectionDecision.unedited) continue;
 
             if(checkSimilarityOfModulesConnection(baseModulesConnection,m)) relatedModuleConnections.add(m);
         }

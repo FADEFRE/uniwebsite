@@ -369,13 +369,13 @@ public class DataLoader implements CommandLineRunner {
         double chooseUnbearbeitet = rand.nextDouble() * 100;
 
         if (chooseUnbearbeitet < probabilityUnbearbeitet) {
-            return UNBEARBEITET;
+            return unedited;
         } else {
             int index = rand.nextInt(3);
 
-            if (index == 0) return ANGENOMMEN;
-            if(index == 1) return ÜBUNGSSCHEIN;
-            return ABGELEHNT;
+            if (index == 0) return accepted;
+            if(index == 1) return asExamCertificate;
+            return denied;
         }
     }
 }

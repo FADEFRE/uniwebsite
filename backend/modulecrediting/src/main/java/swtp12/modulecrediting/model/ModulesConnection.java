@@ -64,8 +64,8 @@ public class ModulesConnection {
 
 
     public ModulesConnection() {
-        decisionFinal = UNBEARBEITET;
-        decisionSuggestion = UNBEARBEITET;
+        decisionFinal = unedited;
+        decisionSuggestion = unedited;
         commentDecision = "";
         commentStudyOffice = "";
     }
