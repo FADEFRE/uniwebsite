@@ -79,3 +79,15 @@
 @mixin rightArrow() {
   transform: rotate(-90deg);
 }
+
+@mixin smallHighlightBox() {
+  width: max-content;
+  padding: 0.625rem 1.125rem;
+  border: none;
+
+  display: flex;
+  
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}

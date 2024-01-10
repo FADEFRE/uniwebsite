@@ -12,6 +12,7 @@ import PanelExternalModules from "@/components/PanelExternalModules.vue";
 import PanelInternalModules from "@/components/PanelInternalModules.vue";
 import PanelComment from "@/components/PanelComment.vue";
 import PanelDecisionBlock from "@/components/PanelDecisionBlock.vue";
+import SideInfoContainer from '../components/SideInfoContainer.vue';
 import { url } from "@/scripts/url-config"
 import { getApplicationByIdForStatus, getModulesByCourse } from "@/scripts/axios-requests";
 import { parseRequestDate } from "@/scripts/date-utils";
@@ -49,24 +50,26 @@ const openSummaryDocument = () => {
 </script>
 
 <template>
-  <div>
+  <div class="main">
 
     <!-- request pending -->
     <div v-if="!applicationData">
       <p>Lade Daten ...</p>
     </div>
 
-    <div v-else>
+    <div v-else class="status-detail-container">
 
-
-      <ApplicationOverview
+      <div class="application-overview-container">
+        <ApplicationOverview
           :creation-date="parseRequestDate(applicationData['creationDate'])"
           :last-edited-date="parseRequestDate(applicationData['lastEditedDate'])"
           :decision-date="parseRequestDate(applicationData['decisionDate'])"
           :id="applicationData['id']"
           :course="applicationData['courseLeipzig']['name']"
-          :status="applicationData['status']"
+          :status="applicationData['fullStatus']"
       />
+      </div>
+      
 
       <div v-for="connection in applicationData['modulesConnections']">
 
@@ -107,15 +110,53 @@ const openSummaryDocument = () => {
       </div>
 
       <Button @click="openSummaryDocument">
-        <p>Antrag herunterladen</p>
+        Antrag herunterladen
         <img src="../assets/icons/Download.svg">
       </Button>
 
+    </div>
+    <div class="side-infos-container">
+      <!--SideInfoContainerfür Antragprozess -->
+      <SideInfoContainer :heading="'ANTRAGSPROZESS'">
+        <ul class="list-container">
+          <li class="list-item">Antrag online stellen</li>
+          <li class="list-item">Über Vorgangsnummer online Status einsehen</li>
+          <li class="list-item">Auf Entscheidung des PAV warten</li>
+          <li class="list-item">Mit abgeschlossenem Antrag zum Studienbüro gehen</li>
+        </ul>
+      </SideInfoContainer>
+      <SideInfoContainer :heading="'STUDIENBÜRO'">
+        <ul class="list-container">
+          <li class="list-item">Antrag online stellen</li>
+          <li class="list-item">Über Vorgangsnummer online Status einsehen</li>
+          <li class="list-item">Auf Entscheidung des PAV warten</li>
+          <li class="list-item">Mit abgeschlossenem Antrag zum Studienbüro gehen</li>
+        </ul>
+      </SideInfoContainer>
     </div>
 
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+@import '../assets/variables.scss';
+@import '../assets/mixins.scss';
 
+.main {
+  @include main();
+}
+
+.status-detail-container {
+  @include verticalList(small);
+  width: 100%;
+}
+
+.application-overview-container {
+  @include applicationOverview();
+}
+
+.side-infos-container {
+  @include verticalList(big);
+  width: min-content;
+}
 </style>

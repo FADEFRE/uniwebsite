@@ -5,6 +5,7 @@ import { url } from "@/scripts/url-config";
 import axios from "axios";
 import HomepageContainer from '../components/HomepageContainer.vue';
 import SideInfoContainer from '../components/SideInfoContainer.vue';
+import ButtonLink from '../components/ButtonLink.vue';
 
 const router = useRouter()
 
@@ -34,14 +35,14 @@ const goToSubmitApplication = () => {
             <!-- HomepageContainer Application -->
             <HomepageContainer :header="'Antrag stellen'"
                 :text="'Erstellen Sie einen Antrag, um Module anderer Universitäten an der Universität Leipzig anzurechnen lassen.'">
-                <Button @click="goToSubmitApplication" class="p-button-success">Antrag stellen</Button>
+                <ButtonLink @click="goToSubmitApplication" class="p-button-success">Antrag stellen</ButtonLink>
             </HomepageContainer>
 
             <!-- HomepageContainer StatusView -->
             <HomepageContainer :header="'Status einsehen'"
                 :text="'Sehen Sie den Status von bereits gestellten Anträgen über die 6-stellige Vorgangsnummer ein.'">
                 <InputText v-model="id" :class="{ 'p-invalid': isInvalid }" placeholder="0-0-0-0-0-0" />
-                <Button @click="openDetailView" class="p-button-primary">Status einsehen</Button>
+                <ButtonLink @click="openDetailView" class="p-button-primary">Status einsehen</ButtonLink>
             </HomepageContainer>
         </div>
 
@@ -71,6 +72,7 @@ const goToSubmitApplication = () => {
 
 .homepage-content {
     @include verticalList(big);
+    width: 100%;
 }
 
 .side-infos-container {

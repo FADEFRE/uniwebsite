@@ -59,22 +59,15 @@ p {
 }
 
 a,
-Button {
-  font-family: "Jost";
+Button { font-family: "Jost";
   text-transform: uppercase;
   text-decoration: none;
+  
   color: $white;
   font-size: 1.125rem;
   font-weight: 600;
 
-  width: fit-content;
-  padding: 0.625rem 1.125rem;
-
-  display: flex;
-  
-  justify-content: center;
-  align-items: center;
-  gap: 0.5rem;
+  @include smallHighlightBox();
 
   background-color: $dark-gray;
 }

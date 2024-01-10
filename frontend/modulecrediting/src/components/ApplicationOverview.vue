@@ -5,6 +5,8 @@ import CreationDate from '@/assets/icons/CreationDate.svg';
 import LastEditedDate from '@/assets/icons/LastEditedDate.svg';
 import DecisionDate from '@/assets/icons/DecisionDate.svg';
 
+import { computed } from 'vue';
+
 const props = defineProps({
     creationDate: {
         type: String,
@@ -31,6 +33,12 @@ const props = defineProps({
         required: true,
     },
 });
+
+const statusStyle = computed(() => {
+    if(props.status === "NEU") return "status-container greenBackground";
+    if(props.status === "STUDIENBÜRO" || props.status === "PRÜFUNGSAUSSCHUSS") return "status-container yellowBackground";
+    if(props.status === "ABGESCHLOSSEN") return "status-container redBackground";
+})
 </script>
 
 <template>
@@ -38,41 +46,39 @@ const props = defineProps({
         <div class="dates">
             <!-- Div-Block Creation Date -->
             <div v-if="creationDate" class="date-block">
-                <div class="text-wrapper-2">
-                    <img :src="CreationDate" alt="Creation Date Icon" />
-                    {{ creationDate }}
-                </div>
+                <img :src="CreationDate" alt="Creation Date Icon" />
+                <p>{{ creationDate }}</p>
             </div>
 
             <!-- Div-Block Last edited Date -->
             <div v-if="lastEditedDate" class="date-block">
-                <div class="text-wrapper-2">
-                    <img :src="LastEditedDate" alt="LastEdited Date Icon" />
-                    {{ lastEditedDate }}
-                </div>
+                <img :src="LastEditedDate" alt="LastEdited Date Icon" />
+                <p>{{ creationDate }}</p>
             </div>
 
             <!-- Div-Block Decision Date -->
             <div v-if="decisionDate" class="date-block">
-                <div class="text-wrapper-2">
-                    <img :src="DecisionDate" alt="Decision Date Icon" />
-                    {{ decisionDate }}
-                </div>
+                <img :src="DecisionDate" alt="Decision Date Icon" />
+                <p>{{ creationDate }}</p>
             </div>
         </div>
 
         <!-- remaining data -->
         <div class="application-info">
-            <div class="vorgangsnummer">
+            <div class="vorgangsnummer-container">
                 <div class="vorgangsnummer-text overview-text">Vorgangsnummer: {{ id || 'Placeholder for Vorgangsnummer' }}
                 </div>
             </div>
-            <div class="status-text-wrapper">
-                <div class="status-text-2 overview-text">Status: {{ status || 'Placeholder for Status' }}</div>
+            <div :class="statusStyle">
+                <div class="status-text overview-text">Status: {{ status || 'Placeholder for Status' }}</div>
             </div>
 
             <!-- Slot study course -->
-            <slot name="course" class="overview-text">{{ course }}</slot>
+            <div class="course-container">
+                <slot name="course">
+                    <div class="overview-text">{{ course }}</div>
+                </slot>
+            </div>
         </div>
     </div>
 </template>
@@ -80,13 +86,44 @@ const props = defineProps({
 <style scoped lang="scss">
 @import '../assets/mixins.scss';
 @import '../assets/variables.scss';
+
 .application-overview-container {
     @include applicationOverview();
 }
 
+
+.course-container {
+    @include smallHighlightBox();
+    background-color: $dark-gray;
+    color: $white;
+}
+.vorgangsnummer-container {
+    @include smallHighlightBox();
+    background-color: $gray;
+}
+.status-container {
+    @include smallHighlightBox();
+    color: $white;
+}
+.greenBackground {
+    background-color: $green;
+}
+.orangeBackground {
+    background-color: $red;
+}
+.redBackground {
+    background-color: $red;
+}
+
+.dates {
+    display: flex;
+    align-items: center;
+    gap: 0.9375rem;
+}
+
 .date-block {
-    border: 1px solid #ccc;
-    padding: 10px;
-    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
 }
 </style>

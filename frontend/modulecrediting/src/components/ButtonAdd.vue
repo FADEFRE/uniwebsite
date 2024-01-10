@@ -24,7 +24,7 @@ slots:
   gap: 0.625rem;
 
   &:hover{
-    background-color: $red;
+    background-color: $black;
   }
 }
 
