@@ -1,70 +1,59 @@
 package swtp12.modulecrediting.model;
 
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import java.io.Serializable;
+import java.util.Set;
 
-import java.util.Collection;
-import java.util.List;
-
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import swtp12.modulecrediting.dto.UserSummary;
 
-
-
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
+@Data
 @Table(name = "app-user")
-public class User implements UserDetails{
+@NoArgsConstructor
+public class User implements Serializable{
     @Id
-    @GeneratedValue
-    private Long id;
+    @GeneratedValue()
+    private Long userId;
+
     private String username;
+
     private String password;
+
+    private Boolean enabled;
+/*
+    @NotNull
     @Enumerated(EnumType.STRING)
-    private EnumUserRole role;
+    private AuthProvider provider;
+*/
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(
+        name = "user_roles",
+        joinColumns = {@JoinColumn(name = "userId", referencedColumnName = "userId")},
+        inverseJoinColumns = {@JoinColumn(name = "roleId", referencedColumnName = "roleId")}
+    )
+    private Set<Role> roles;
 
-
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
+    public User(String username, String password, Boolean enabled) {
+        this.username = username;
+        this.password = password;
+        this.enabled = enabled;
     }
 
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-
-    @Override
-    public boolean isEnabled() {
-        return true;
+    public UserSummary toUserSummary() {
+        UserSummary userSummary = new UserSummary();
+        userSummary.setUsername(this.username);
+        userSummary.setUserId(this.userId);
+        return userSummary;
     }
 
 }
