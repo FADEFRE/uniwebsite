@@ -1,20 +1,22 @@
 package swtp12.modulecrediting;
 
 import static swtp12.modulecrediting.model.EnumModuleConnectionDecision.ANGENOMMEN;
-import static swtp12.modulecrediting.model.EnumUserRole.*;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -28,13 +30,15 @@ import swtp12.modulecrediting.dto.ApplicationUpdateDTO;
 import swtp12.modulecrediting.dto.ModuleBlockCreateDTO;
 import swtp12.modulecrediting.dto.ModuleBlockUpdateDTO;
 import swtp12.modulecrediting.model.Application;
+import swtp12.modulecrediting.model.Role;
 import swtp12.modulecrediting.model.CourseLeipzig;
-import swtp12.modulecrediting.model.EnumUserRole;
 import swtp12.modulecrediting.model.ModuleLeipzig;
 import swtp12.modulecrediting.model.ModulesConnection;
+import swtp12.modulecrediting.model.User;
+import swtp12.modulecrediting.repository.RoleRepository;
 import swtp12.modulecrediting.repository.CourseLeipzigRepository;
 import swtp12.modulecrediting.repository.ModuleLeipzigRepository;
-import swtp12.modulecrediting.security.secService.AuthenticationService;
+import swtp12.modulecrediting.repository.UserRepository;
 import swtp12.modulecrediting.service.ApplicationService;
 
 
@@ -53,7 +57,13 @@ public class DataLoader implements CommandLineRunner {
     private ApplicationService applicationService;
 
     @Autowired
-    private AuthenticationService authenticationService;
+    private UserRepository userRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
+    
+    @Autowired
+    private PasswordEncoder encoder;
 
     private final ObjectMapper objectMapper;
 
@@ -73,12 +83,26 @@ public class DataLoader implements CommandLineRunner {
         String moduleLeipzigData = "/module_liste.json";
         String testData = "/test_data.json";
 
+        roleCreation();
+
         userCreation(testData);
 
         leipzigDataLoader(moduleLeipzigData);
 
         createTestData(testData);
     }
+
+
+    private void roleCreation() {
+        System.out.println("Creating Roles:");
+        Role admin = new Role("admin");
+        Role sb = new Role("studyoffice");
+        Role pav = new Role("chairman");
+        roleRepository.save(admin);
+        roleRepository.save(sb);
+        roleRepository.save(pav);
+    }
+
 
 
     //creates users defined in filename (test data)
@@ -89,19 +113,19 @@ public class DataLoader implements CommandLineRunner {
             String username = user.get("name").asText();
             String password = user.get("password").asText();
             String roleName = user.get("role").asText();
-            EnumUserRole role = null;
+            String role = "";
 
             switch (roleName) {
                 case "study":
-                    role = STUDY_OFFICE;
+                    role = "studyoffice";
                     break;
                     
                 case "pav":
-                    role = CHAIRMAN;
+                    role = "chairman";
                     break;
 
                 case "admin":
-                    role = ADMIN;
+                    role = "admin";
                     break;
             
                 default:
@@ -109,7 +133,27 @@ public class DataLoader implements CommandLineRunner {
                     break;
             }
 
-            authenticationService.writeUser(username, password, role);
+            Optional<User> userCandidate = userRepository.findByUsername(username);
+
+            if (!userCandidate.isPresent()) {
+                User userCreate = new User(
+                    username,
+                    encoder.encode(password),
+                    true
+                );
+                Optional<Role> roleCandidate = roleRepository.findByRoleName(role);
+                if (roleCandidate.isPresent()) {
+                    if(userCreate.getRoles() == null) {
+                        Set<Role> roles = new HashSet<>();
+                        roles.add(roleCandidate.get());
+                        userCreate.setRoles(roles);
+                    }
+                    else {
+                        userCreate.getRoles().add(roleCandidate.get());
+                    }
+                    userRepository.save(userCreate);
+                }
+            }
         }
     }
 
