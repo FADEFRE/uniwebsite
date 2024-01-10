@@ -41,10 +41,18 @@ const collapsed = ref()
   border: none;
   border-top: 2px solid $dark-gray;
   border-bottom: 2px solid $dark-gray;
+
+  display: flex;
+  padding: 1.25rem;
+  justify-content: space-between;
+  align-items: center;
 }
 
-:deep(.p-panel-header-icon) {
+:deep(.p-panel-icons) {
   display: flex;
+  align-items: center;
+  gap: 1.875rem;
+  margin-left: 0.625rem;
 }
 
 :deep(.p-panel-toggler) {

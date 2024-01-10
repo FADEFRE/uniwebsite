@@ -41,11 +41,13 @@ const props = defineProps({
 <style scoped lang="scss">
 @import '../assets/mixins.scss';
 @import '../assets/variables.scss';
+
 .panel-header {
   display: flex;
   align-items: center;
   gap: 0.625rem;
 }
+
 .arrow-icon {
   @include rightArrow();
 }
