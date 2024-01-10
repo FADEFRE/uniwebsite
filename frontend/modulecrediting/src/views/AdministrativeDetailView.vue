@@ -38,8 +38,6 @@ onBeforeMount(() => {
 
     <div v-else>
 
-      {{ applicationData }}
-
       <ApplicationOverview
           :creation-date="parseRequestDate(applicationData['creationDate'])"
           :last-edited-date="parseRequestDate(applicationData['lastEditedDate'])"
