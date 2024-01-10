@@ -6,6 +6,7 @@ shows status of an application
 import { useRoute } from 'vue-router'
 import { ref, onBeforeMount } from "vue";
 import ApplicationOverview from "@/components/ApplicationOverview.vue";
+import CustomPanel from "@/components/CustomPanel.vue";
 import PanelHeader from '../components/PanelHeader.vue';
 import PanelExternalModules from "@/components/PanelExternalModules.vue";
 import PanelInternalModules from "@/components/PanelInternalModules.vue";
@@ -69,7 +70,7 @@ const openSummaryDocument = () => {
 
       <div v-for="connection in applicationData['modulesConnections']">
 
-        <Panel toggleable>
+        <CustomPanel>
 
           <template #header>
             <PanelHeader
@@ -79,9 +80,9 @@ const openSummaryDocument = () => {
           </template>
 
           <template #icons>
-            <img v-if="connection['decisionFinal'] === 'ANGENOMMEN'" src="../assets/icons/ModuleAccepted.svg">
-            <img v-else-if="connection['decisionFinal'] === 'ÜBUNGSSCHEIN'" src="../assets/icons/ModuleAsExamCertificate.svg">
-            <img v-else-if="connection['decisionFinal'] === 'ABGELEHNT'" src="../assets/icons/ModuleDenied.svg">
+              <img v-if="connection['decisionFinal'] === 'ANGENOMMEN'" src="../assets/icons/ModuleAccepted.svg">
+              <img v-else-if="connection['decisionFinal'] === 'ÜBUNGSSCHEIN'" src="../assets/icons/ModuleAsExamCertificate.svg">
+              <img v-else-if="connection['decisionFinal'] === 'ABGELEHNT'" src="../assets/icons/ModuleDenied.svg">
           </template>
 
           <div>
@@ -101,7 +102,7 @@ const openSummaryDocument = () => {
 
           </div>
 
-        </Panel>
+        </CustomPanel>
 
       </div>
 

@@ -14,6 +14,7 @@ displays:
 -->
 
 <script setup>
+import CustomPanel from "@/components/CustomPanel.vue";
 import PanelHeader from "@/components/PanelHeader.vue";
 import PanelComment from "@/components/PanelComment.vue";
 import PanelExternalModules from "@/components/PanelExternalModules.vue";
@@ -35,8 +36,6 @@ const externalModules = computed(() => panelExternalModules.value?.externalModul
 const internalModules = computed(() => panelInternalModules.value?.selectedModules)
 const commentApplicant = computed(() => panelComment.value?.comment)
 
-const collapsed = ref(true)
-
 const emit = defineEmits(['deleteSelf'])
 
 defineExpose({
@@ -49,7 +48,7 @@ defineExpose({
 
 <template>
   <div>
-    <Panel toggleable :collapsed="collapsed">
+    <CustomPanel>
       <!-- Header Content -->
       <template #header>
         <PanelHeader :external-modules="externalModules?.map(m => m.name).filter(name => name !== '')"
@@ -59,14 +58,13 @@ defineExpose({
       <!-- Icons Slot -->
       <template #icons>
         <img src="@/assets/icons/Trash.svg" @click="emit('deleteSelf')">
-        <img src="@/assets/icons/ArrowRed.svg" @click="collapsed = !collapsed">
       </template>
 
       <!-- Panel Content -->
       <PanelExternalModules type="new" ref="panelExternalModules" />
       <PanelInternalModules type="new" :options="selectableModules" ref="panelInternalModules" />
       <PanelComment type="new" ref="panelComment" />
-    </Panel>
+    </CustomPanel>
   </div>
 </template>
 
