@@ -25,16 +25,16 @@ const moduleOptions = ref([])
 
 onBeforeMount(() => {
   getApplicationByIdForStatus(id)
-      .then(data => {
-        applicationData.value = data
-        return data
-      })
-      .then(data => {
-        return getModulesByCourse(data['courseLeipzig']['name'])
-      })
-      .then(modules => {
-        moduleOptions.value = modules
-      })
+    .then(data => {
+      applicationData.value = data
+      return data
+    })
+    .then(data => {
+      return getModulesByCourse(data['courseLeipzig']['name'])
+    })
+    .then(modules => {
+      moduleOptions.value = modules
+    })
 })
 // todo error handling
 
@@ -59,49 +59,39 @@ const openSummaryDocument = () => {
 
     <div v-else class="status-detail-container">
 
-      <div class="application-overview-container">
-        <ApplicationOverview
-          :creation-date="parseRequestDate(applicationData['creationDate'])"
-          :last-edited-date="parseRequestDate(applicationData['lastEditedDate'])"
-          :decision-date="parseRequestDate(applicationData['decisionDate'])"
-          :id="applicationData['id']"
-          :course="applicationData['courseLeipzig']['name']"
-          :status="applicationData['fullStatus']"
-      />
-      </div>
-      
+      <ApplicationOverview :creation-date="parseRequestDate(applicationData['creationDate'])"
+        :last-edited-date="parseRequestDate(applicationData['lastEditedDate'])"
+        :decision-date="parseRequestDate(applicationData['decisionDate'])" :id="applicationData['id']"
+        :course="applicationData['courseLeipzig']['name']" :status="applicationData['fullStatus']" />
+
 
       <div v-for="connection in applicationData['modulesConnections']">
 
         <CustomPanel>
 
           <template #header>
-            <PanelHeader
-                :external-modules="connection['moduleApplications'].map(module => module['name'])"
-                :internal-modules="connection['modulesLeipzig'].map(module => module['name'])"
-            />
+            <PanelHeader :external-modules="connection['moduleApplications'].map(module => module['name'])"
+              :internal-modules="connection['modulesLeipzig'].map(module => module['name'])" />
           </template>
 
           <template #icons>
-              <img v-if="connection['decisionFinal'] === 'ANGENOMMEN'" src="../assets/icons/ModuleAccepted.svg">
-              <img v-else-if="connection['decisionFinal'] === 'ÜBUNGSSCHEIN'" src="../assets/icons/ModuleAsExamCertificate.svg">
-              <img v-else-if="connection['decisionFinal'] === 'ABGELEHNT'" src="../assets/icons/ModuleDenied.svg">
+            <img v-if="connection['decisionFinal'] === 'ANGENOMMEN'" src="../assets/icons/ModuleAccepted.svg">
+            <img v-else-if="connection['decisionFinal'] === 'ÜBUNGSSCHEIN'"
+              src="../assets/icons/ModuleAsExamCertificate.svg">
+            <img v-else-if="connection['decisionFinal'] === 'ABGELEHNT'" src="../assets/icons/ModuleDenied.svg">
           </template>
 
           <div>
 
             <PanelExternalModules type="edit" :modules-data="connection['moduleApplications']" />
             <hr>
-            <PanelInternalModules type="edit" :options="moduleOptions" :selected-modules="connection['modulesLeipzig'].map(m => m.name)" />
+            <PanelInternalModules type="edit" :options="moduleOptions"
+              :selected-modules="connection['modulesLeipzig'].map(m => m.name)" />
             <hr>
             <PanelComment type="readonly" :comment="connection['commentApplicant']" />
             <hr>
-            <PanelDecisionBlock
-                v-if="decisionMap[connection['decisionFinal']]"
-                type="readonly"
-                :display-decision="decisionMap[connection['decisionFinal']]"
-                :comment="connection['commentDecision']"
-            />
+            <PanelDecisionBlock v-if="decisionMap[connection['decisionFinal']]" type="readonly"
+              :display-decision="decisionMap[connection['decisionFinal']]" :comment="connection['commentDecision']" />
 
           </div>
 
@@ -151,9 +141,6 @@ const openSummaryDocument = () => {
   width: 100%;
 }
 
-.application-overview-container {
-  @include applicationOverview();
-}
 
 .side-infos-container {
   @include verticalList(big);

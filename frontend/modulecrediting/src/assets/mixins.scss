@@ -46,18 +46,6 @@
   gap: 0.625rem;
 }
 
-@mixin applicationOverview() {
-  background-color: $white;
-  display: flex;
-  padding: 0.625rem 0.625rem 0.625rem 1.25rem;
-  justify-content: space-between;
-  align-items: center;
-  align-content: center;
-  row-gap: 0.625rem;
-  align-self: stretch;
-  flex-wrap: wrap;
-}
-
 @mixin panelComponent() {
   width: 100%;
   padding: 0.625rem 0rem;

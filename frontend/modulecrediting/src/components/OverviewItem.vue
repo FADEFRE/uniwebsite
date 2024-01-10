@@ -42,7 +42,6 @@ const openDetailView = () => {
 
 .application-overview-container {
   @include verticalListItem($white);
-  @include applicationOverview();
   
 }
 .overview-item:hover {

@@ -123,10 +123,6 @@ const triggerPostApplication = () => {
   width: 100%;
 }
 
-.application-overview-container {
-  @include applicationOverview();
-}
-
 .side-infos-container {
   @include verticalList(big);
   width: min-content;

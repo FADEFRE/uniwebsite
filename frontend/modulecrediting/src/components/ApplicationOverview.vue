@@ -34,9 +34,9 @@ const props = defineProps({
 });
 
 const statusStyle = computed(() => {
-    if(props.status === "NEU") return "status-container greenBackground";
-    if(props.status === "STUDIENBÜRO" || props.status === "PRÜFUNGSAUSSCHUSS") return "status-container yellowBackground";
-    if(props.status === "ABGESCHLOSSEN") return "status-container redBackground";
+    if (props.status === "NEU") return "status-container greenBackground";
+    if (props.status === "STUDIENBÜRO" || props.status === "PRÜFUNGSAUSSCHUSS") return "status-container orangeBackground";
+    if (props.status === "ABGESCHLOSSEN") return "status-container redBackground";
 })
 </script>
 
@@ -74,9 +74,9 @@ const statusStyle = computed(() => {
 
             <!-- Slot study course -->
             <slot>
-              <div class="course-container">
-                <div class="overview-text">{{ course }}</div>
-              </div>
+                <div class="course-container">
+                    <div class="overview-text">{{ course }}</div>
+                </div>
             </slot>
 
         </div>
@@ -88,29 +88,49 @@ const statusStyle = computed(() => {
 @import '../assets/variables.scss';
 
 .application-overview-container {
-    @include applicationOverview();
+    background-color: $white;
+    display: flex;
+    padding: 0.625rem 0.625rem 0.625rem 1.25rem;
+    justify-content: space-between;
+    align-items: center;
+    align-content: center;
+    row-gap: 0.625rem;
+    align-self: stretch;
+    flex-wrap: wrap;
 }
 
+.application-info {
+    display: flex;
+    align-items: center;
+    align-content: center;
+    gap: 0.9375rem;
+    flex-wrap: wrap;
+}
 
 .course-container {
     @include smallHighlightBox();
     background-color: $dark-gray;
     color: $white;
 }
+
 .vorgangsnummer-container {
     @include smallHighlightBox();
     background-color: $gray;
 }
+
 .status-container {
     @include smallHighlightBox();
     color: $white;
 }
+
 .greenBackground {
     background-color: $green;
 }
+
 .orangeBackground {
-    background-color: $red;
+    background-color: $orange;
 }
+
 .redBackground {
     background-color: $red;
 }
@@ -125,5 +145,4 @@ const statusStyle = computed(() => {
     display: flex;
     align-items: center;
     gap: 0.625rem;
-}
-</style>
+}</style>
