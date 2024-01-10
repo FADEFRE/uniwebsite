@@ -27,11 +27,6 @@ const props = defineProps({
   }
 })
 
-const panelCollapsed = ref(true); // Initially collapsed
-const togglePanel = () => {
-  panelCollapsed.value = !panelCollapsed.value; // Toggle panel's collapse state
-};
-
 const panelExternalModules = ref()
 const panelInternalModules = ref()
 const panelComment = ref()
@@ -39,6 +34,8 @@ const panelComment = ref()
 const externalModules = computed(() => panelExternalModules.value?.externalModules)
 const internalModules = computed(() => panelInternalModules.value?.selectedModules)
 const commentApplicant = computed(() => panelComment.value?.comment)
+
+const collapsed = ref(true)
 
 const emit = defineEmits(['deleteSelf'])
 
@@ -52,7 +49,7 @@ defineExpose({
 
 <template>
   <div>
-    <Panel toggleable :collapsed.sync="panelCollapsed">
+    <Panel toggleable :collapsed="collapsed">
       <!-- Header Content -->
       <template #header>
         <PanelHeader :external-modules="externalModules?.map(m => m.name).filter(name => name !== '')"
@@ -61,7 +58,8 @@ defineExpose({
 
       <!-- Icons Slot -->
       <template #icons>
-        <img src="../assets/icons/Trash.svg" @click="emit('deleteSelf')">
+        <img src="@/assets/icons/Trash.svg" @click="emit('deleteSelf')">
+        <img src="@/assets/icons/ArrowRed.svg" @click="collapsed = !collapsed">
       </template>
 
       <!-- Panel Content -->
@@ -74,8 +72,8 @@ defineExpose({
 
 
 <style scoped lang="scss">
-@import '../assets/mixins.scss';
-@import '../assets/variables.scss';
+@import '@/assets/mixins.scss';
+@import '@/assets/variables.scss';
 
 :deep(.p-panel) {
   width: 100%;
@@ -100,8 +98,7 @@ defineExpose({
 }
 
 :deep(.p-panel-toggler) {
-  display: flex;
-  background-image: url("../assets/icons/ArrowDark.svg");
+  display: none;
 }
 
 :deep(.p-panel-content){
