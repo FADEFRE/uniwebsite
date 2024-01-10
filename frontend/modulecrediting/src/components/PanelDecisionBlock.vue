@@ -12,7 +12,7 @@ const props = defineProps({
   displayDecision: {
     type: String,
     validator(value) {
-      return ['accept', 'asExamCertificate', 'denied'].includes(value)
+      return ['accepted', 'asExamCertificate', 'denied'].includes(value)
     }
   },
   comment: {
@@ -28,6 +28,13 @@ const decisionOptions = [
   { value: 'asExamCertificate', label: 'Übungsschein'},
   { value: 'denied', label: 'Ablehnen'}
 ]
+
+const comment = ref()
+
+defineExpose({
+  decision,
+  comment
+})
 </script>
 
 <!-- todo accessibility -->
@@ -36,13 +43,15 @@ const decisionOptions = [
 
     <div>
 
+      {{ displayDecision }}
+
       <div v-if="type === 'edit'">
         <SelectButton :allow-empty="false" v-model="decision" :options="decisionOptions" optionLabel="label" optionValue="value" />
       </div>
 
       <div v-else-if="type === 'readonly'">
 
-        <img v-if="displayDecision === 'accept'" src="../assets/icons/ModuleAccepted.svg">
+        <img v-if="displayDecision === 'accepted'" src="../assets/icons/ModuleAccepted.svg">
         <img v-else src="../assets/icons/ModuleAcceptedGray.svg">
 
         <img v-if="displayDecision === 'asExamCertificate'" src="../assets/icons/ModuleAsExamCertificate.svg">
@@ -55,7 +64,7 @@ const decisionOptions = [
     </div>
 
     <div>
-      <textarea :readonly="type === 'readonly'">{{ comment }}</textarea>
+      <textarea :readonly="type === 'readonly'" ref="comment">{{ props.comment }}</textarea>
     </div>
 
   </div>

@@ -38,12 +38,6 @@ onBeforeMount(() => {
 })
 // todo error handling
 
-const decisionMap = {
-  ANGENOMMEN: 'accept',
-  ÜBUNGSSCHEIN: 'asExamCertificate',
-  ABGELEHNT: 'denied',
-}
-
 const openSummaryDocument = () => {
   window.open(summaryDocumentLink, '_blank')
 }
@@ -75,10 +69,10 @@ const openSummaryDocument = () => {
           </template>
 
           <template #icons>
-            <img v-if="connection['decisionFinal'] === 'ANGENOMMEN'" src="../assets/icons/ModuleAccepted.svg">
-            <img v-else-if="connection['decisionFinal'] === 'ÜBUNGSSCHEIN'"
+            <img v-if="connection['decisionFinal'] === 'accepted'" src="../assets/icons/ModuleAccepted.svg">
+            <img v-else-if="connection['decisionFinal'] === 'asExamCertificate'"
               src="../assets/icons/ModuleAsExamCertificate.svg">
-            <img v-else-if="connection['decisionFinal'] === 'ABGELEHNT'" src="../assets/icons/ModuleDenied.svg">
+            <img v-else-if="connection['decisionFinal'] === 'denied'" src="../assets/icons/ModuleDenied.svg">
           </template>
 
           <div>
@@ -90,8 +84,8 @@ const openSummaryDocument = () => {
             <hr>
             <PanelComment type="readonly" :comment="connection['commentApplicant']" />
             <hr>
-            <PanelDecisionBlock v-if="decisionMap[connection['decisionFinal']]" type="readonly"
-              :display-decision="decisionMap[connection['decisionFinal']]" :comment="connection['commentDecision']" />
+            <PanelDecisionBlock v-if="connection['decisionFinal']" type="readonly"
+              :display-decision="connection['decisionFinal']" :comment="connection['commentDecision']" />
 
           </div>
 

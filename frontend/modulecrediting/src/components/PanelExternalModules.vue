@@ -40,6 +40,13 @@ const props = defineProps({
   }
 })
 
+// custom prop checker
+if (props.type !== 'new') {
+  if (!(props.modulesData.every(m => m.id))) {
+    console.warn("PanelExternalModules: if type is 'edit' or 'readonly' every module in modulesData prop should have property id")
+  }
+}
+
 // checking modulesData prop
 onBeforeMount(() => {
   if (props.type === 'edit' || props.type === 'readonly') {
@@ -95,6 +102,7 @@ defineExpose({
       <PanelExternalModulesItem
           v-for="module in modulesData"
           :type="type"
+          :id="module.id"
           :name="module.name"
           :university="module.university"
           :points="module.points"

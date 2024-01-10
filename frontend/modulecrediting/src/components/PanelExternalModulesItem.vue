@@ -35,6 +35,9 @@ const props = defineProps({
       return ['new', 'edit', 'readonly'].includes(value)
     }
   },
+  id: {
+    type: Number,
+  },
   name: {
     type: String
   },
@@ -51,6 +54,8 @@ const props = defineProps({
     type: Object
   }
 })
+
+const id = props.id ? props.id : undefined
 
 // checking props
 onBeforeMount(() => {
@@ -107,7 +112,7 @@ const dragOverHandler = (e) => {
 }
 
 defineExpose({
-  name, university, points, pointSystem, selectedFile
+  id, name, university, points, pointSystem, selectedFile
 })
 </script>
 

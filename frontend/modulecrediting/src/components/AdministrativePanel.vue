@@ -21,13 +21,14 @@ import { ref, computed } from "vue";
 import PanelStatusIcons from "@/components/PanelStatusIcons.vue";
 import PanelDecision from "@/components/PanelDecision.vue";
 import PanelDecisionBlock from "@/components/PanelDecisionBlock.vue";
+import CustomPanel from "@/components/CustomPanel.vue";
 
 const props = defineProps({
   type: {
     required: true,
     // type: String,
     validator(value) {
-      return ['study-office', 'pav'].includes(value)
+      return ['study-office', 'chairman'].includes(value)
     }
   },
   selectableModules: {
@@ -41,38 +42,47 @@ const props = defineProps({
   }
 })
 
-const p = props.connectionData['moduleApplications']
+const id = props.connectionData['id']
 
-const decisionMap = {
-  ANGENOMMEN: 'accept',
-  ÜBUNGSSCHEIN: 'asExamCertificate',
-  ABGELEHNT: 'denied',
-}
-
-const decisionSuggestion = props.connectionData['decisionSuggestion'] !== 'UNBEARBEITET'
-    ? decisionMap[props.connectionData['decisionSuggestion']] : undefined
-const decisionFinal = props.connectionData['decisionFinal'] !== 'UNBEARBEITET'
-    ? decisionMap[props.connectionData['decisionFinal']] : undefined
+const decisionSuggestion = props.connectionData['decisionSuggestion'] !== 'unedited'
+    ? props.connectionData['decisionSuggestion'] : undefined
+const decisionFinal = props.connectionData['decisionFinal'] !== 'unedited'
+    ? props.connectionData['decisionFinal'] : undefined
 
 const panelExternalModules = ref()
 const panelInternalModules = ref()
-const panelComment = ref()
 
 const externalModules = computed(() => panelExternalModules.value?.externalModules)
 const internalModules = computed(() => panelInternalModules.value?.selectedModules)
-const commentApplicant = computed(() => panelComment.value?.comment)
+
+const studyOfficeDecisionBlock = ref()
+const chairmanDecisionBlock = ref()
+
+/*
+const administrativeData = computed(() => {
+  const data = {}
+  if (props.type === 'study-office') {
+    data['decisionSuggestion'] = studyOfficeDecisionBlock.value.decision
+    data['commentDecision'] = studyOfficeDecisionBlock.value.comment
+  } else if (props.type === 'chairman') {
+    data['decisionFinal'] = chairmanDecisionBlock.value.decision
+    data['commentDecision'] = chairmanDecisionBlock.value.comment
+  }
+  return data
+})
+*/
 
 defineExpose({
+  id,
   externalModules,
   internalModules,
-  commentApplicant
 })
 </script>
 
 <template>
   <div>
 
-    <Panel toggleable>
+    <CustomPanel>
 
       <template #header>
         <PanelHeader :external-modules="externalModules?.map(m => m.name).filter(name => name !== '')" :internal-modules="internalModules" />
@@ -98,7 +108,6 @@ defineExpose({
       <PanelComment
           type="readonly"
           :comment="connectionData['commentApplicant']"
-          ref="panelComment"
       />
       <hr>
       <PanelDecision>
@@ -107,18 +116,21 @@ defineExpose({
               :type="type === 'study-office' ? 'edit' : 'readonly'"
               :display-decision="decisionSuggestion"
               :comment="connectionData['commentStudyOffice']"
+              ref="studyOfficeDecisionBlock"
           />
         </template>
         <template #chairman>
           <PanelDecisionBlock
-              :type="type === 'pav' ? 'edit' : 'readonly'"
+              :type="type === 'chairman' ? 'edit' : 'readonly'"
               :display-decision="decisionFinal"
               :comment="connectionData['commentDecision']"
+              ref="chairmanDecisionBlock"
           />
         </template>
       </PanelDecision>
 
-    </Panel>
+    </CustomPanel>
+
   </div>
 </template>
 
