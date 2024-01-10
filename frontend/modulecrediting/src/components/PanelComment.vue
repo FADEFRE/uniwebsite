@@ -37,16 +37,21 @@ defineExpose({
 </script>
 
 <template>
-  <div>
+  <div class="panel-comment">
     <h3>Kommentar</h3>
-    <textarea
+    <textarea>
         :readonly="!(type === 'new' || type === 'edit')"
         rows="3"
         v-model="comment"
-    />
+    </textarea>
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+@import '@/assets/mixins.scss';
+@import '@/assets/variables.scss';
 
+.panel-comment {
+  @include panelComponent();
+}
 </style>

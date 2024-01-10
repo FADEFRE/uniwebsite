@@ -29,7 +29,7 @@ const props = defineProps({
 </script>
 
 <template>
-  <div>
+  <div class="panel-related-modules">
     <h3>Ähnliche Module:</h3>
     <div v-for="module in relatedModules">
 
@@ -60,6 +60,11 @@ const props = defineProps({
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+@import '@/assets/mixins.scss';
+@import '@/assets/variables.scss';
 
+.panel-related-modules {
+  @include panelComponent();
+}
 </style>
