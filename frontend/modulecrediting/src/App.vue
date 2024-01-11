@@ -1,3 +1,22 @@
+<script setup>
+
+import router from "./router";
+import httpResource from "./http/httpResource";
+import { performLogout } from "./util/utils";
+
+async function logout () {
+  const response = await httpResource.post("/auth/logout");
+  console.log(response)
+  performLogout();
+  const routeData = router.resolve({name: 'login'})
+  window.open(routeData.href, '_top')
+}
+
+</script>
+
+
+
+
 <template>
   <div>
     <header class="header-background">
@@ -7,6 +26,7 @@
         <div class="router-container">
           <router-link to="/" class="router-button">Antrag</router-link>
           <router-link to="/status" class="router-button">Status</router-link>
+          <Button @click="logout">Logout</Button>
         </div>
       </div>
     </header>
