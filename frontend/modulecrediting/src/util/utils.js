@@ -46,8 +46,8 @@ export async function refreshToken() {
 
 export async function getAuthenticatedUser() {
     try {
-        const response = await httpResource.get("/profile/me");
-        if (response.status === 200) {
+        const response = await httpResource.get("/user/me");
+        if (response.data.username !== null) {
             const currentUser = response.data;
             const authUserStore = useAuthStore();
             authUserStore.setCurrentUser(currentUser);
