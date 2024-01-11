@@ -55,27 +55,15 @@ const panelInternalModules = ref()
 const externalModules = computed(() => panelExternalModules.value?.externalModules)
 const internalModules = computed(() => panelInternalModules.value?.selectedModules)
 
-const studyOfficeDecisionBlock = ref()
-const chairmanDecisionBlock = ref()
-
-/*
-const administrativeData = computed(() => {
-  const data = {}
-  if (props.type === 'study-office') {
-    data['decisionSuggestion'] = studyOfficeDecisionBlock.value.decision
-    data['commentDecision'] = studyOfficeDecisionBlock.value.comment
-  } else if (props.type === 'chairman') {
-    data['decisionFinal'] = chairmanDecisionBlock.value.decision
-    data['commentDecision'] = chairmanDecisionBlock.value.comment
-  }
-  return data
-})
-*/
+const studyOfficeDecisionData = ref()
+const chairmanDecisionData = ref()
 
 defineExpose({
   id,
   externalModules,
   internalModules,
+  studyOfficeDecisionData,
+  chairmanDecisionData
 })
 </script>
 
@@ -97,26 +85,23 @@ defineExpose({
           :modules-data="connectionData['moduleApplications']"
           ref="panelExternalModules"
       />
-      <hr>
       <PanelInternalModules
           type="edit"
           :selected-modules="connectionData['modulesLeipzig'].map(m => m['name'])"
           :options="selectableModules"
           ref="panelInternalModules"
       />
-      <hr>
       <PanelComment
           type="readonly"
           :comment="connectionData['commentApplicant']"
       />
-      <hr>
       <PanelDecision>
         <template #study-office>
           <PanelDecisionBlock
               :type="type === 'study-office' ? 'edit' : 'readonly'"
               :display-decision="decisionSuggestion"
               :comment="connectionData['commentStudyOffice']"
-              ref="studyOfficeDecisionBlock"
+              ref="studyOfficeDecisionData"
           />
         </template>
         <template #chairman>
@@ -124,7 +109,7 @@ defineExpose({
               :type="type === 'chairman' ? 'edit' : 'readonly'"
               :display-decision="decisionFinal"
               :comment="connectionData['commentDecision']"
-              ref="chairmanDecisionBlock"
+              ref="chairmanDecisionData"
           />
         </template>
       </PanelDecision>

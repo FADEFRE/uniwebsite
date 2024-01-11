@@ -39,11 +39,11 @@ defineExpose({
 <template>
   <div class="panel-comment">
     <h3>Kommentar</h3>
-    <textarea>
+    <textarea
         :readonly="!(type === 'new' || type === 'edit')"
         rows="3"
         v-model="comment"
-    </textarea>
+    />
   </div>
 </template>
 

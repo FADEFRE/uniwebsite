@@ -26,6 +26,9 @@ onBeforeMount(() => {
         moduleOptions.value = modules
       })
 })
+
+const moduleConnections = ref()
+
 </script>
 
 <template>
@@ -49,7 +52,7 @@ onBeforeMount(() => {
 
       <div v-for="connection in applicationData['modulesConnections']">
 
-        <AdministrativePanel :type="type" :selectable-modules="moduleOptions" :connection-data="connection" />
+        <AdministrativePanel :type="type" :selectable-modules="moduleOptions" :connection-data="connection" ref="moduleConnections" />
 
       </div>
 
