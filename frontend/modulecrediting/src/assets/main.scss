@@ -126,20 +126,34 @@ input {
 .p-dropdown-trigger {
   color: $white;
 }
+
+
 .p-dropdown-panel {
   background-color: $gray;
   border: none;
-  max-width: 100%;
+  width: min-content;
 }
-.p-dropdown-filter-container {
-  
-  background-color: $white;
-  border-left: 2px solid $dark-gray;
 
+.p-dropdown-filter-container {
+  border-left: 3px solid $dark-gray;
+  background-color: $white;
 }
+
+
+.p-dropdown-filter {
+  border: none;
+  border-right: 3px solid $gray;
+}
+
+
+.p-dropdown-filter-icon {
+}
+
+
 .p-dropdown-header {
   border: none;
 }
+
 .p-dropdown-item {
   color: $black;
   font-family: "Jost";
@@ -150,6 +164,7 @@ input {
   
   width: 100%;
   justify-content: flex-start;
+  text-wrap: wrap;
   
   &:focus {
     @include verticalListItem($gray);
@@ -159,3 +174,36 @@ input {
   }
 }
 
+
+
+/* WebKit (Chrome, Safari) */
+::-webkit-scrollbar {
+  width: 3px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: $gray;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: $red;
+}
+
+/* Firefox */
+* {
+  scrollbar-width: 5px;
+  scrollbar-color: $red $gray;
+}
+
+/* Microsoft Edge and Internet Explorer */
+*::-ms-scrollbar {
+  width: 5px;
+}
+
+*::-ms-scrollbar-track {
+  background-color: $red;
+}
+
+*::-ms-scrollbar-thumb {
+  background-color: $gray;
+}

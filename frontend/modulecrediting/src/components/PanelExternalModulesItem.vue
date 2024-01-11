@@ -168,6 +168,10 @@ defineExpose({
   flex-direction: row;
   justify-content: space-between;
   gap: 0.9375rem;
+
+  &:hover{
+    background-color: $mid-gray;
+  }
 }
 
 .screen-split {

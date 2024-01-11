@@ -53,7 +53,11 @@ defineExpose({
 
     <div class="screen-split">
       <div class="module-dropdown" v-if="type === 'new' || type === 'edit'">
-        <Dropdown filter :options="options" placeholder="Modul auswählen" @change="e => addSelectedModule(e.value)" />
+        <Dropdown filter :options="options" placeholder="Modul auswählen" @change="e => addSelectedModule(e.value)">
+          <template #filtericon>
+            <img class="test" src="@/assets/icons/SearchIcon.svg">
+          </template>
+        </Dropdown>
       </div>
 
       <div class="module-list">
@@ -72,6 +76,13 @@ defineExpose({
 <style scoped lang="scss">
 @import '@/assets/mixins.scss';
 @import '@/assets/variables.scss';
+
+.test {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 0.625rem;
+}
 
 .panel-internal-modules {
   @include panelComponent();

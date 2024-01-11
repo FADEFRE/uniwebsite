@@ -38,12 +38,12 @@ defineExpose({
 
 <template>
   <div class="panel-comment">
-    <h3>Kommentar</h3>
-    <textarea
+    <h4>Kommentar</h4>
+    <textarea>
         :readonly="!(type === 'new' || type === 'edit')"
         rows="3"
         v-model="comment"
-    />
+    </textarea>
   </div>
 </template>
 

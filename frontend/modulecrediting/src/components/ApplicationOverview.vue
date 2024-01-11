@@ -73,12 +73,13 @@ const statusStyle = computed(() => {
             </div>
 
             <!-- Slot study course -->
-            <slot>
+            <div>
+                <slot>
                 <div class="course-container">
                     <div class="overview-text">{{ course }}</div>
                 </div>
-            </slot>
-
+                </slot>
+            </div>
         </div>
     </div>
 </template>
@@ -86,6 +87,8 @@ const statusStyle = computed(() => {
 <style scoped lang="scss">
 @import '../assets/mixins.scss';
 @import '../assets/variables.scss';
+
+
 
 .application-overview-container {
     background-color: $white;
