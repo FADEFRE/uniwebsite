@@ -82,11 +82,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserSummary getUserProfile() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
-        User user = userRepository.findByUsername(customUserDetails.getUsername()).orElseThrow(() -> new IllegalArgumentException("User with this username could not be found " + customUserDetails.getUsername()));
-
-        //String username = authentication.getPrincipal().toString();
-        //User user = userRepository.findByUsername(username).orElseThrow(() -> new IllegalArgumentException("User with this username could not be found " + username));
+        User user = new User();
+        Object obj = authentication.getPrincipal();
+        CustomUserDetails customUserDetails = new CustomUserDetails(user);
+        if (customUserDetails.getClass().isInstance(obj)) {
+            customUserDetails = (CustomUserDetails) obj;
+            String username = customUserDetails.getUsername();
+            if (!username.equals("anonymousUser")) {
+                user = userRepository.findByUsername(username).orElseThrow(() -> new IllegalArgumentException("User with this username could not be found " + username));
+            }
+        }
         return user.toUserSummary();
     }
 
@@ -97,4 +102,5 @@ public class UserServiceImpl implements UserService {
     private void addRefreshTokenCookie(HttpHeaders httpHeaders, Token token) {
         httpHeaders.add(HttpHeaders.SET_COOKIE, cookieUtil.createRefreshTokenCookie(token.getTokenValue(), token.getDuration()).toString());
     }
+
 }
