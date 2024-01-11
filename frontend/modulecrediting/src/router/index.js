@@ -17,55 +17,56 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: HomepageView
-    },
-    {
-      path: '/confirmation/:id',
-      name: 'confirmation',
-      component: ApplicationConfirmationView
+      component: HomepageView,
+      meta: { type: 'standard' }
     },
     {
       path: '/antrag',
       name: 'submitApplication',
-      component: SubmitApplicationView
+      component: SubmitApplicationView,
+      meta: { type: 'standard' }
     },
     {
-      path: '/status',
-      name: 'statusSearch',
-      component: StatusSearchView
+      path: '/confirmation/:id',
+      name: 'confirmation',
+      component: ApplicationConfirmationView,
+      meta: { type: 'standard' }
     },
     {
       path: '/status/:id',
       name: 'statusDetail',
-      component: StatusDetailView
+      component: StatusDetailView,
+      meta: { type: 'standard' }
     },
     {
       path: '/login',
       name: 'login',
-      component: LoginView
+      component: LoginView,
+      meta: { type: 'standard' }
     },
     {
-      path: '/study-office',
+      path: '/studienbuero',
       name: 'studyOfficeSelection',
       component: SelectionView,
-      meta: {forward: 'studyOfficeDetail'}
+      meta: { type: 'study-office', forward: 'studyOfficeDetail' }
     },
     {
       path: '/studienbuero/:id',
       name: 'studyOfficeDetail',
       component: AdministrativeDetailView,
-      meta: {type: 'study-office'}
+      meta: { type: 'study-office' }
     },
     {
-      path: '/chairman',
+      path: '/pruefungsausschuss',
       name: 'chairmanSelection',
       component: SelectionView,
-      meta: {forward: 'chairmanDetail'}
+      meta: { type: 'chairman', forward: 'chairmanDetail' }
     },
     {
-      path: '/chairman/:id',
+      path: '/pruefungsausschuss/:id',
       name: 'chairmanDetail',
-      component: ChairmanDetailView
+      component: ChairmanDetailView,
+      meta: { type: 'chairman' }
     }
   ]
 })
