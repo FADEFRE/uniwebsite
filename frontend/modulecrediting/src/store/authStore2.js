@@ -12,7 +12,6 @@ export const useAuthStore = defineStore('authUser',{
     }),
 
     actions: {
-        async login(loginData) {},
         setIsAuthenticated(value) { this.isAuthenticated = value; },
         setIntervalName(intervalName) {this.intervalName = intervalName; },
         //async refresh() {},
