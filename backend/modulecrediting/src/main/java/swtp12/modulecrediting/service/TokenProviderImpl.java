@@ -43,7 +43,7 @@ public class TokenProviderImpl implements TokenProvider {
                 .setExpiration(expiryDate)
                 .signWith(getSignInKey(), SignatureAlgorithm.HS512)
                 .compact();
-        return new Token(Token.TokenType.ACCESS, token, duration, LocalDateTime.ofInstant(expiryDate.toInstant(), ZoneId.systemDefault()));
+        return new Token(Token.TokenType.ACCESS, token, tokenExpirationMsec, LocalDateTime.ofInstant(expiryDate.toInstant(), ZoneId.systemDefault()));
     }
 
     @Override
@@ -57,7 +57,7 @@ public class TokenProviderImpl implements TokenProvider {
                 .setExpiration(expiryDate)
                 .signWith(getSignInKey(), SignatureAlgorithm.HS512)
                 .compact();
-        return new Token(Token.TokenType.REFRESH, token, duration, LocalDateTime.ofInstant(expiryDate.toInstant(), ZoneId.systemDefault()));
+        return new Token(Token.TokenType.REFRESH, token, refreshTokenExpirationMsec, LocalDateTime.ofInstant(expiryDate.toInstant(), ZoneId.systemDefault()));
     }
 
     @Override

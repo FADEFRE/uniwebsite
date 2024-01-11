@@ -5,8 +5,12 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpCookie;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,9 +25,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import swtp12.modulecrediting.dto.LoginRequest;
 import swtp12.modulecrediting.dto.LoginResponse;
+import swtp12.modulecrediting.dto.LogoutResponse;
 import swtp12.modulecrediting.dto.RegisterRequest;
 import swtp12.modulecrediting.model.Role;
 import swtp12.modulecrediting.model.User;
@@ -37,6 +44,13 @@ import swtp12.modulecrediting.util.SecurityCipher;
 @RequestMapping("/auth")
 @CrossOrigin
 public class AuthController {
+    
+    @Value("${app.auth.accessTokenCookieName}")
+    private String accessTokenCookieName;
+
+    @Value("${app.auth.refreshTokenCookieName}")
+    private String refreshTokenCookieName;
+
     @Autowired
     private AuthenticationManager authenticationManager;
 
@@ -72,6 +86,25 @@ public class AuthController {
         String decryptedRefreshToken = SecurityCipher.decrypt(refreshToken);
         return userService.refresh(decryptedAccessToken, decryptedRefreshToken);
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<LogoutResponse> logout(HttpServletRequest request) {      
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals(accessTokenCookieName)) {
+                    HttpCookie httpCookie = ResponseCookie.from(accessTokenCookieName, null).maxAge(0).httpOnly(true).path("/").build();
+                    HttpHeaders responseHeaders = new HttpHeaders();
+                    responseHeaders.add(HttpHeaders.SET_COOKIE, httpCookie.toString());
+                    LogoutResponse logoutResponse = new LogoutResponse(LogoutResponse.SuccessFailure.SUCCESS, "Successfully logged out");
+                    return ResponseEntity.ok().headers(responseHeaders).body(logoutResponse);
+                }
+            }
+        }
+        LogoutResponse logoutResponse = new LogoutResponse(LogoutResponse.SuccessFailure.SUCCESS, "No cookies");
+        return ResponseEntity.ok().body(logoutResponse);
+    }
+    
 
     @PostMapping(value = "/register")
     @PreAuthorize("hasRole('ROLE_ADMIN')")

@@ -15,6 +15,7 @@ public class CookieUtil {
 
     public HttpCookie createAccessTokenCookie(String token, Long duration) {
         String encryptedToken = SecurityCipher.encrypt(token);
+        duration = duration / 1000;
         return ResponseCookie.from(accessTokenCookieName, encryptedToken)
                 .maxAge(duration)
                 .httpOnly(true)
@@ -24,15 +25,12 @@ public class CookieUtil {
 
     public HttpCookie createRefreshTokenCookie(String token, Long duration) {
         String encryptedToken = SecurityCipher.encrypt(token);
+        duration = duration / 1000;
         return ResponseCookie.from(refreshTokenCookieName, encryptedToken)
                 .maxAge(duration)
                 .httpOnly(true)
                 .path("/")
                 .build();
-    }
-
-    public HttpCookie deleteAccessTokenCookie() {
-        return ResponseCookie.from(accessTokenCookieName, "").maxAge(0).httpOnly(true).path("/").build();
     }
 
 }
