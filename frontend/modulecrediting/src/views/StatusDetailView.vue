@@ -78,12 +78,12 @@ const openSummaryDocument = () => {
           <div>
 
             <PanelExternalModules type="edit" :modules-data="connection['moduleApplications']" />
-            <hr>
+
             <PanelInternalModules type="edit" :options="moduleOptions"
               :selected-modules="connection['modulesLeipzig'].map(m => m.name)" />
-            <hr>
+
             <PanelComment type="readonly" :comment="connection['commentApplicant']" />
-            <hr>
+
             <PanelDecisionBlock v-if="connection['decisionFinal']" type="readonly"
               :display-decision="connection['decisionFinal']" :comment="connection['commentDecision']" />
 
