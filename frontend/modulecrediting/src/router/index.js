@@ -12,7 +12,7 @@ const router = createRouter({
     {
       path: '/status',
       name: 'statusSearch',
-      component: () => import('../views/StatusDetailView.vue')
+      component: () => import('../views/StatusSearchView.vue')
     },
     {
       path: '/status/:id',
