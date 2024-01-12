@@ -73,10 +73,6 @@ defineExpose({
 
     <CustomPanel>
 
-      <hr>
-      {{ connectionData }}
-      <hr>
-
       <template #header>
         <PanelHeader :external-modules="externalModules?.map(m => m.name).filter(name => name !== '')" :internal-modules="internalModules" />
       </template>
