@@ -1,23 +1,12 @@
 <script setup>
-import { useRouter } from "vue-router";
-import { defineProps, computed } from 'vue';
+import { computed } from 'vue';
 
 const props = defineProps({
-  routeName: {
-    required: true,
-    type: String
-  },
   primaryButton: {
     type: Boolean,
     default: false
   }
 })
-
-const router = useRouter();
-
-const openLink = () => {
-  router.push({ name: props.routeName });
-}
 
 const style = computed(() => {
   return props.primaryButton ? "button-container primary-button" : "button-container";
@@ -27,8 +16,8 @@ const style = computed(() => {
 
 <template>
   <div>
-    <Button @click="openLink" :class="style">
-      <slot></slot>
+    <Button :class="style">
+      <slot />
       <img src="../assets/icons/ArrowWhite.svg" class="arrow-icon" alt="Arrow Icon">
     </Button>
   </div>
