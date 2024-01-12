@@ -65,7 +65,7 @@ const router = createRouter({
     {
       path: '/pruefungsausschuss/:id',
       name: 'chairmanDetail',
-      component: ChairmanDetailView,
+      component: AdministrativeDetailView,
       meta: { type: 'chairman' }
     }
   ]

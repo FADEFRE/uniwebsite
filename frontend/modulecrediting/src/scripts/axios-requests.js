@@ -164,7 +164,7 @@ function putApplication (userRole, id, courseLeipzig, connectionObjects) {
                 formData.append(`modulesConnections[${connectionIndex}].commentDecision`, connection.commentDecision)
             }
             if (connection.decisionFinal) {
-                formData.append(`modulesConnections[${connectionIndex}].decisionFinal`, connection.chairman.decisionFinal)
+                formData.append(`modulesConnections[${connectionIndex}].decisionFinal`, connection.decisionFinal)
             }
             connection.externalModules.forEach(
                 (externalModule, externalModuleIndex) => {
