@@ -22,6 +22,7 @@ import PanelStatusIcons from "@/components/PanelStatusIcons.vue";
 import PanelDecision from "@/components/PanelDecision.vue";
 import PanelDecisionBlock from "@/components/PanelDecisionBlock.vue";
 import CustomPanel from "@/components/CustomPanel.vue";
+import PanelRelatedModules from "@/components/PanelRelatedModules.vue";
 
 const props = defineProps({
   type: {
@@ -72,6 +73,10 @@ defineExpose({
 
     <CustomPanel>
 
+      <hr>
+      {{ connectionData }}
+      <hr>
+
       <template #header>
         <PanelHeader :external-modules="externalModules?.map(m => m.name).filter(name => name !== '')" :internal-modules="internalModules" />
       </template>
@@ -94,6 +99,9 @@ defineExpose({
       <PanelComment
           type="readonly"
           :comment="connectionData['commentApplicant']"
+      />
+      <PanelRelatedModules
+          :connection-id="connectionData['id']"
       />
       <PanelDecision>
         <template #study-office>
