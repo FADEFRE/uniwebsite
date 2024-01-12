@@ -9,22 +9,21 @@ displays:
 
 <script setup>
 import PanelHeader from "@/components/PanelHeader.vue";
+import { ref, onBeforeMount } from "vue";
+import { getRelatedModuleConnections } from "@/scripts/axios-requests";
 
 const props = defineProps({
-  relatedModules: {
+  connectionId : {
     required: true,
-    type: Array,
-    validator(value) {
-      return value.every((relatedModule) => {
-        return relatedModule.decision
-            && relatedModule.decisionDate
-            && relatedModule.university
-            && relatedModule.course
-            && relatedModule.externalModules
-            && relatedModule.internalModules
-      })
-    }
+    type: Number
   }
+})
+
+const relatedModules = ref()
+
+onBeforeMount(() => {
+  getRelatedModuleConnections(props.connectionId)
+      .then(data => relatedModules.value = data)
 })
 </script>
 
@@ -34,27 +33,31 @@ const props = defineProps({
     <div v-for="module in relatedModules">
 
       <div>
-        <div v-if="module.decision === 'accepted'">
+        <div v-if="module['decisionFinal'] === 'accepted'">
           <img src="../assets/icons/ModuleAccepted.svg">
         </div>
-        <div v-else-if="module.decision === 'asExamCertificate'">
+        <div v-else-if="module['decisionFinal'] === 'asExamCertificate'">
           <img src="../assets/icons/ModuleAsExamCertificate.svg">
         </div>
-        <div v-else-if="module.decision === 'denied'">
+        <div v-else-if="module['decisionFinal'] === 'denied'">
           <img src="../assets/icons/ModuleDenied.svg">
         </div>
       </div>
 
-      <PanelHeader :internal-modules="module.internalModules" :external-modules="module.externalModules" />
+      <PanelHeader
+          :external-modules="module['moduleApplications'].map(m => m.name)"
+          :internal-modules="module['modulesLeipzig'].map(m => m.name)"
+      />
+      <!-- todo PanelHeader should link -->
 
       <div>
         <img src="../assets/icons/DecisionDate.svg">
-        <p>{{ module.decisionDate }}</p>
+        <p>{{ module['application']['decisionDate'] }}</p>
       </div>
 
-      <p>{{ module.university }}</p>
+      <p>{{ module['application']['university'] }}</p>
 
-      <p>{{ module.course }}</p>
+      <p>{{ module['application']['courseLeipzig']['name'] }}</p>
 
     </div>
   </div>

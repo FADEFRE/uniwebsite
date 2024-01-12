@@ -141,6 +141,7 @@ defineExpose({
             <img src="../assets/icons/Upload.svg">
           </div>
         </div>
+        <!-- todo add link button if type readonly -->
 
       </div>
 
