@@ -39,10 +39,8 @@ defineExpose({
 <template>
   <div class="panel-comment">
     <h4>Kommentar</h4>
-    <textarea>
-        :readonly="!(type === 'new' || type === 'edit')"
-        rows="3"
-        v-model="comment"
+    <textarea :readonly="!(type === 'new' || type === 'edit')" rows="3" v-model="comment">
+
     </textarea>
   </div>
 </template>
@@ -53,5 +51,12 @@ defineExpose({
 
 .panel-comment {
   @include panelComponent();
+}
+
+textarea {
+  width: 100%;
+  min-height: 6rem;
+  resize: none;
+  padding: 0.625rem;
 }
 </style>
