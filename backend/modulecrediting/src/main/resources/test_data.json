@@ -28,19 +28,19 @@
         {
             "name": "studyoffice",
             "password": "abc123",
-            "role": "study"
+            "role": "ROLE_STUDY"
         },
             
         {
             "name": "pav",
             "password": "pav123",
-            "role": "pav"
+            "role": "ROLE_CHAIR"
         },
 
         {
             "name": "admin",
             "password": "admin",
-            "role": "admin"
+            "role": "ROLE_ADMIN"
         }
     ],
 
