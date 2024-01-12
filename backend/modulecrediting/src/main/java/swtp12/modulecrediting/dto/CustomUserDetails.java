@@ -1,6 +1,8 @@
 package swtp12.modulecrediting.dto;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -20,7 +22,9 @@ public class CustomUserDetails implements UserDetails{
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return user.getRoles().stream().map(Role::grantedAuthority).collect(Collectors.toList());
+        Set<Role> roles = new HashSet<>();
+        roles.add(user.getRole());
+        return roles.stream().map(Role::grantedAuthority).collect(Collectors.toList()); //To the person this my concern: FCK JAVA
     }
 
     @Override

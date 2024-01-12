@@ -1,7 +1,6 @@
 package swtp12.modulecrediting.model;
 
 import java.io.Serializable;
-import java.util.Set;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -10,7 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,18 +29,14 @@ public class User implements Serializable{
     private String password;
 
     private Boolean enabled;
-/*
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    private AuthProvider provider;
-*/
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
         name = "user_roles",
         joinColumns = {@JoinColumn(name = "userId", referencedColumnName = "userId")},
         inverseJoinColumns = {@JoinColumn(name = "roleId", referencedColumnName = "roleId")}
     )
-    private Set<Role> roles;
+    private Role role;
 
     public User(String username, String password, Boolean enabled) {
         this.username = username;

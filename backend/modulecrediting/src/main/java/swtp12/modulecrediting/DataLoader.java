@@ -5,11 +5,9 @@ import static swtp12.modulecrediting.model.EnumModuleConnectionDecision.ANGENOMM
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -95,9 +93,9 @@ public class DataLoader implements CommandLineRunner {
 
     private void roleCreation() {
         System.out.println("Creating Roles:");
-        Role admin = new Role("admin");
-        Role sb = new Role("studyoffice");
-        Role pav = new Role("chairman");
+        Role admin = new Role("ROLE_ADMIN");
+        Role sb = new Role("ROLE_STUDY");
+        Role pav = new Role("ROLE_CHAIR");
         roleRepository.save(admin);
         roleRepository.save(sb);
         roleRepository.save(pav);
@@ -113,26 +111,7 @@ public class DataLoader implements CommandLineRunner {
             String username = user.get("name").asText();
             String password = user.get("password").asText();
             String roleName = user.get("role").asText();
-            String role = "";
-
-            switch (roleName) {
-                case "study":
-                    role = "studyoffice";
-                    break;
-                    
-                case "pav":
-                    role = "chairman";
-                    break;
-
-                case "admin":
-                    role = "admin";
-                    break;
             
-                default:
-                    System.out.println("the user " + username + " has no role!!");
-                    break;
-            }
-
             Optional<User> userCandidate = userRepository.findByUsername(username);
 
             if (!userCandidate.isPresent()) {
@@ -141,15 +120,13 @@ public class DataLoader implements CommandLineRunner {
                     encoder.encode(password),
                     true
                 );
-                Optional<Role> roleCandidate = roleRepository.findByRoleName(role);
+                Optional<Role> roleCandidate = roleRepository.findByRoleName(roleName);
                 if (roleCandidate.isPresent()) {
-                    if(userCreate.getRoles() == null) {
-                        Set<Role> roles = new HashSet<>();
-                        roles.add(roleCandidate.get());
-                        userCreate.setRoles(roles);
+                    if(userCreate.getRole() == null) {
+                        userCreate.setRole(roleCandidate.get());
                     }
                     else {
-                        userCreate.getRoles().add(roleCandidate.get());
+                        //TODO:check for double role maybe in other class aswell
                     }
                     userRepository.save(userCreate);
                 }

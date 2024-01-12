@@ -1,7 +1,6 @@
 package swtp12.modulecrediting.controller;
 
 import java.util.Optional;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,22 +35,20 @@ public class UserController {
     
 
 
-    @GetMapping("/{username}/highRole")
-    public ResponseEntity<String> getHighestRole(@PathVariable String username) {
-        Optional<User> userCandidate = userRepository.findByUsername(username);
+    @GetMapping("/{id}/role")
+    public ResponseEntity<String> getRole(@PathVariable String id) {
+        if (id.equals("-1")) {
+            return new ResponseEntity<>("Anonymous user", HttpStatus.OK); 
+        }
+        Long idLong = Long.parseLong(id);
+        Optional<User> userCandidate = userRepository.findById(idLong);
         if (userCandidate.isPresent()) {
             User user = userCandidate.get();
-            Set<Role> roles = user.getRoles();
-            String highestRole = "";
-            for (Role role : roles) {
-                role.getRoleName();
-                if (role.getRoleName().equals("admin")) { highestRole = "admin"; }
-                else if (role.getRoleName().equals("chairman")) { highestRole = "chairman"; }
-                else { highestRole = "studyoffice"; }
-            }
-            return new ResponseEntity<>(highestRole, HttpStatus.OK); 
+            Role role = user.getRole();
+            String roleName = role.getRoleName();
+            return new ResponseEntity<>(roleName, HttpStatus.OK); 
         }
-        return new ResponseEntity<>("Username already exists!", HttpStatus.BAD_REQUEST); 
+        return new ResponseEntity<>("User doesnt exists!", HttpStatus.BAD_REQUEST); 
     }
 
 }

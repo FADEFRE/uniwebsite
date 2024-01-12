@@ -1,8 +1,6 @@
 package swtp12.modulecrediting.controller;
 
-import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -120,13 +118,12 @@ public class AuthController {
             );
             Optional<Role> roleCandidate = roleRepository.findByRoleName(registerRequest.getRole().getRoleName());
             if (roleCandidate.isPresent()) {
-                if(user.getRoles() == null) {
-                    Set<Role> roles = new HashSet<>();
-                    roles.add(roleCandidate.get());
-                    user.setRoles(roles);
+                if(user.getRole() == null) {
+                    Role role = new Role();
+                    user.setRole(role);
                 }
                 else {
-                    user.getRoles().add(roleCandidate.get());
+                    user.setRole(roleCandidate.get());
                 }
                 userRepository.save(user);
                 return new ResponseEntity<>("User registered successfully!", HttpStatus.OK);
