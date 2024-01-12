@@ -48,10 +48,6 @@ public class ModuleApplicationService {
             if(ma.getId() == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Module Application id must not be null");
             ModuleApplication moduleApplication = getModuleApplicationById(ma.getId());
 
-            if(ma.getDelete() != null && ma.getDelete()) {
-                deleteModuleApplicationById(ma.getId());
-                return;
-            }
 
             if(ma.getName() != null)
                 moduleApplication.setName(ma.getName());

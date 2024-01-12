@@ -165,7 +165,7 @@ public class DataLoader implements CommandLineRunner {
 
             String vorgangsnummer = applicationService.createApplication(applicationCreateDTO);
             
-
+/*
             // updating the status of those randomGen Applications:
             ApplicationUpdateDTO applicationUpdateDTO = new ApplicationUpdateDTO();
             ModulesConnectionUpdateDTO modulesConnectionDTO;
@@ -217,7 +217,7 @@ public class DataLoader implements CommandLineRunner {
                 System.out.println("Created Dummy Application: " + vorgangsnummer + "as NEW");
                 open--;
                 continue;
-            }
+            }*/
         }
         System.out.println("Dataloader: Testdata successfully loaded into Database"); 
     }

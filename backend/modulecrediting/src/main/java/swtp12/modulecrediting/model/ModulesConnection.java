@@ -112,4 +112,10 @@ public class ModulesConnection {
             this.modulesLeipzig.remove(m);
         }
     }
+    public void removeAllModulesLeipzig() {
+        for(ModuleLeipzig m : modulesLeipzig) {
+            m.getModulesConnections().remove(this);
+        }
+        this.modulesLeipzig = new ArrayList<>();
+    }
 }

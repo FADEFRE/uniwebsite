@@ -32,7 +32,7 @@ public class ModuleApplication {
     @JsonView({Views.ApplicationStudent.class})
     @NotNull(message = "point system must not be null")
     private String pointSystem;
-    @JsonView({Views.ApplicationStudent.class})
+    @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class})
     @NotBlank(message = "university must not be blank (empty String)")
     private String university;
 

@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import swtp12.modulecrediting.dto.ModuleApplicationUpdateDTO;
+import swtp12.modulecrediting.dto.ModuleLeipzigUpdateDTO;
 import swtp12.modulecrediting.dto.ModulesConnectionCreateDTO;
 import swtp12.modulecrediting.dto.ModulesConnectionUpdateDTO;
 import swtp12.modulecrediting.model.EnumModuleConnectionDecision;
@@ -49,16 +51,73 @@ public class ModulesConnectionService {
             }
 
             // handle module applications changes
-            if(mc.getModuleApplications() != null) // changes in module applications
-                moduleApplicationService.updateModuleApplications(mc.getModuleApplications());
+            if(mc.getModuleApplications() == null)  throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You cant delete all Module Applications of a Modules Connection " + mc.getId());
+
+            List<Long> savedIdList = getIdListFromModuleConnection(modulesConnection);
+            List<Long> updatedIdList = getIdListFromModuleConnectionUpdateDTO(mc);
+            List<Long> deleteIdList = new ArrayList<>(savedIdList);
+            deleteIdList.removeAll(updatedIdList);
+
+            removeAllDeletedModuleApplications(deleteIdList);
+            moduleApplicationService.updateModuleApplications(mc.getModuleApplications());
 
             // handle modules leipzig changes
-            if(mc.getModulesLeipzig() != null)
-                moduleLeipzigService.updateModulesLeipzig(modulesConnection, mc.getModulesLeipzig());
+            if(mc.getModulesLeipzig() == null) modulesConnection.removeAllModulesLeipzig(); // remove all module leipzig
 
+            List<String> savedNameList = getModuleLeipzigNameFromModuleConnection(modulesConnection);
+            List<String> updatedNameList = getModuleLeipzigNameFromModuleConnectionUpdateDTO(mc);
+            List<String> deleteNameList = new ArrayList<>(savedNameList);
+            deleteNameList.removeAll(updatedNameList);
+
+            removeAllDeletedModulesLeipzig(modulesConnection, deleteNameList);
+            moduleLeipzigService.updateModulesLeipzig(modulesConnection, mc.getModulesLeipzig());
 
             // modulesConnection will be saved in application service due to cascade all
         }
+    }
+
+    // modules leipzig helper methods
+    void removeAllDeletedModulesLeipzig(ModulesConnection modulesConnection, List<String> deleteIdList) {
+        ArrayList<ModuleLeipzig> modulesLeipzig = new ArrayList<>();
+        for(String name : deleteIdList) {
+            modulesLeipzig.add(moduleLeipzigService.getModuleLeipzigByName(name));
+        }
+        modulesConnection.removeModulesLeipzig(modulesLeipzig);
+    }
+    List<String> getModuleLeipzigNameFromModuleConnection(ModulesConnection modulesConnection) {
+        ArrayList<String> nameList = new ArrayList<>();
+        for(ModuleLeipzig ml : modulesConnection.getModulesLeipzig()) {
+            nameList.add(ml.getName());
+        }
+        return nameList;
+    }
+    List<String> getModuleLeipzigNameFromModuleConnectionUpdateDTO(ModulesConnectionUpdateDTO modulesConnection) {
+        ArrayList<String> nameList = new ArrayList<>();
+        for(ModuleLeipzigUpdateDTO ml : modulesConnection.getModulesLeipzig()) {
+            nameList.add(ml.getName());
+        }
+        return nameList;
+    }
+
+    // module applications helper methos (external modules)
+    void removeAllDeletedModuleApplications(List<Long> deleteIdList) {
+        for(Long id : deleteIdList) {
+            moduleApplicationService.deleteModuleApplicationById(id);
+        }
+    }
+    List<Long> getIdListFromModuleConnection(ModulesConnection modulesConnection) {
+        ArrayList<Long> idList = new ArrayList<>();
+        for(ModuleApplication ma : modulesConnection.getModuleApplications()) {
+            idList.add(ma.getId());
+        }
+        return idList;
+    }
+    List<Long> getIdListFromModuleConnectionUpdateDTO(ModulesConnectionUpdateDTO modulesConnection) {
+        ArrayList<Long> idList = new ArrayList<>();
+        for(ModuleApplicationUpdateDTO ma : modulesConnection.getModuleApplications()) {
+            idList.add(ma.getId());
+        }
+        return idList;
     }
 
     public List<ModulesConnection> createModulesConnections(List<ModulesConnectionCreateDTO> modulesConnectionsDTO) {

@@ -26,12 +26,6 @@ public class ModuleLeipzigService {
         for(ModuleLeipzigUpdateDTO ml : modulesLeipzigDTO) {
             ModuleLeipzig moduleLeipzig = getModuleLeipzigByName(ml.getName());
 
-            // remove from application (modules connection)
-            if(ml.getRemoveFromModulesConnection() != null && ml.getRemoveFromModulesConnection()) {
-                modulesConnection.removeModulesLeipzig(List.of(moduleLeipzig));
-                continue;
-            }
-
             // check if duplicate module leipzig was sent
             if(modulesConnection.getModulesLeipzig().contains(moduleLeipzig))
                 continue;
