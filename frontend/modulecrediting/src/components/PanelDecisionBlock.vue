@@ -20,8 +20,6 @@ const props = defineProps({
   }
 })
 
-const decision = ref()
-if (props.displayDecision) decision.value = props.displayDecision
 
 const decisionOptions = [
   { value: 'accepted', label: 'Annehmen' },
@@ -29,7 +27,8 @@ const decisionOptions = [
   { value: 'denied', label: 'Ablehnen'}
 ]
 
-const comment = ref()
+const decision = ref(props.displayDecision)
+const comment = ref(props.comment)
 
 defineExpose({
   decision,
@@ -42,8 +41,6 @@ defineExpose({
   <div>
 
     <div>
-
-      {{ displayDecision }}
 
       <div v-if="type === 'edit'">
         <SelectButton :allow-empty="false" v-model="decision" :options="decisionOptions" optionLabel="label" optionValue="value" />
@@ -64,7 +61,7 @@ defineExpose({
     </div>
 
     <div>
-      <textarea :readonly="type === 'readonly'" ref="comment">{{ props.comment }}</textarea>
+      <textarea v-model="comment" :readonly="type === 'readonly'" />
     </div>
 
   </div>
