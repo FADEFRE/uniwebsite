@@ -1,9 +1,7 @@
 import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
-import { getAuthenticatedUser } from './util/utils';
 import { createPinia } from 'pinia';
-import { useAuthStore } from './store/authStore2'
 
 // PrimeVue setup
 import PrimeVue from 'primevue/config'
@@ -31,24 +29,4 @@ app.use(PrimeVue)
     .component('SelectButton', SelectButton)
     .component('Checkbox', Checkbox)
 
-
-async function init() {
-    await getAuthenticatedUser();
-    const authUserStore = useAuthStore();
-    router.beforeEach(
-        async (to, from, next) => {
-            if (to.path !== "/login" && !authUserStore.getIsAuthenticated) {
-                try {
-                    const statusCode = await refreshToken();
-                    if (statusCode !== 200) next("/login");
-                    else next();
-                } 
-                catch (error) { next("/login"); }
-            } 
-            else { next(); }
-        }
-    );
-
-    app.mount('#app')
-}
-init();
+app.mount('#app')
