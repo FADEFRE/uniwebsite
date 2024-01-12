@@ -1,50 +1,9 @@
-
 <script setup>
-import router from "../router";
-import httpResource from "../http/httpResource";
-import { parseApierror, performLogout, getAuthenticatedUser} from "../util/utils";
+import { login } from "../router/login";
 import { ref } from "vue";
 
 const login_username = ref();
 const login_password = ref();
-const displayErrorMessage = ref();
-const errorMessage = ref();
-const loginInProcess = ref();
-
-async function login () {
-  loginInProcess.value = true;
-  let canNavigate = false;
-  const loginRequest = {
-    username: login_username.value,
-    password: login_password.value
-  };
-  try {
-    console.log(loginRequest)
-    const response = await httpResource.post("/auth/login", loginRequest);
-    console.log(response)
-    if (response.status === 200) {
-      await getAuthenticatedUser();
-      canNavigate = true;
-      const routeData = router.resolve({name: 'studyOfficeSelection'})
-      window.open(routeData.href, '_top')
-      //Correct routing for usernames -> get request api
-      if (loginRequest.username === "studyoffice") {
-        const routeData = router.resolve({name: 'studyOfficeSelection'})
-        window.open(routeData.href, '_top')
-      }
-    }
-  } catch (error) {
-    performLogout();
-    const apierror = parseApierror(error);
-    displayErrorMessage.value = true;
-    errorMessage.value = apierror.message;
-  }
-  loginInProcess.value = false;
-
-  if (canNavigate) {
-    router.replace("/");
-  }
-}
 </script>
 
 
@@ -70,7 +29,7 @@ async function login () {
         </div>
 
         <div class="button-container">
-          <button @click="login" class="button-login">Anmelden</button>
+          <button @click="login(login_username, login_password)" class="button-login">Anmelden</button>
         </div>
 
       </div>
