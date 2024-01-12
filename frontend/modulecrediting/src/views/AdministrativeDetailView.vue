@@ -1,10 +1,11 @@
 <script setup>
-import {useRoute} from "vue-router";
-import {ref, onBeforeMount } from "vue";
+import { useRoute } from "vue-router";
+import { ref, onBeforeMount } from "vue";
 import ApplicationOverview from "@/components/ApplicationOverview.vue";
 import AdministrativePanel from "@/components/AdministrativePanel.vue";
-import {getApplicationById, getModulesByCourse} from "@/scripts/axios-requests";
-import {parseRequestDate} from "@/scripts/date-utils";
+import ButtonLink from "@/components/ButtonLink.vue";
+import { getApplicationById, getModulesByCourse, putApplication } from "@/scripts/axios-requests";
+import { parseRequestDate } from "@/scripts/date-utils";
 
 const route = useRoute()
 const id = route.params.id
@@ -29,6 +30,36 @@ onBeforeMount(() => {
 
 const moduleConnections = ref()
 
+const triggerPutRequest = () => {
+  // defining userRole
+  let userRole = undefined
+  if (type === 'study-office') userRole = 'study_office'
+  else if (type === 'chairman') userRole = 'chairman'
+  else console.warn('AdministrativeDetailView: userRole is undefined in triggerPutRequest')
+
+  // creation connectionObjects
+  const connectionObjects = []
+
+  for (let connection of moduleConnections.value) {
+    const connectionObj = {
+      id: connection.id,
+      externalModules: connection.externalModules,
+      internalModules: connection.internalModules,
+    }
+    if (type === 'study-office') {
+      if (connection.studyOfficeDecisionData.comment) connectionObj['commentStudyOffice'] = connection.studyOfficeDecisionData.comment
+      if (connection.studyOfficeDecisionData.decision) connectionObj['decisionSuggestion'] = connection.studyOfficeDecisionData.decision
+    }
+    else if (type === 'chairman') {
+      if (connection.chairmanDecisionData.comment) connectionObj['commentDecision'] = connection.chairmanDecisionData.comment
+      if (connection.chairmanDecisionData.decision) connectionObj['decisionFinal'] = connection.chairmanDecisionData.decision
+    }
+    connectionObjects.push(connectionObj)
+  }
+
+  // axios request
+  putApplication(userRole, applicationData.value['id'], applicationData.value['courseLeipzig']['name'], connectionObjects)
+}
 </script>
 
 <template>
@@ -55,6 +86,8 @@ const moduleConnections = ref()
         <AdministrativePanel :type="type" :selectable-modules="moduleOptions" :connection-data="connection" ref="moduleConnections" />
 
       </div>
+
+      <ButtonLink @click="triggerPutRequest">Speichern</ButtonLink>
 
     </div>
 

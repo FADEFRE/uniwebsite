@@ -133,6 +133,61 @@ function postApplication (course, applicationObjects) {
         })
 }
 
+/*
+PUT-Request to '/applications/{id}' endpoints
+updates an existing application (including study-office and chairman data)
+
+parameters:
+    userRole - may be 'stud_office' or 'pav'
+    id - Number, application id
+    courseLeipzig - String, application course name
+    connectionObjects - array of objects, each containing Number id, Array externalModules, Array internalModules, ...
+    ..., optional String commentStudyOffice, optional String decisionSuggestion, ...
+    ..., optional String commentDecision, optional String decisionFinal
+ */
+function putApplication (userRole, id, courseLeipzig, connectionObjects) {
+
+    const formData = new FormData()
+    formData.append('userRole', userRole)
+    formData.append('courseLeipzig', courseLeipzig)
+
+    connectionObjects.forEach(
+        (connection, connectionIndex) => {
+            formData.append(`modulesConnections[${connectionIndex}].id`, connection.id)
+            if (connection.commentStudyOffice) {
+                formData.append(`modulesConnections[${connectionIndex}].commentStudyOffice`, connection.commentStudyOffice)
+            }
+            if (connection.decisionSuggestion) {
+                formData.append(`modulesConnections[${connectionIndex}].decisionSuggestion`, connection.decisionSuggestion)
+            }
+            if (connection.commentDecision) {
+                formData.append(`modulesConnections[${connectionIndex}].commentDecision`, connection.commentDecision)
+            }
+            if (connection.decisionFinal) {
+                formData.append(`modulesConnections[${connectionIndex}].decisionFinal`, connection.chairman.decisionFinal)
+            }
+            connection.externalModules.forEach(
+                (externalModule, externalModuleIndex) => {
+                    formData.append(`modulesConnections[${connectionIndex}].moduleApplications[${externalModuleIndex}].id`, externalModule.id)
+                    formData.append(`modulesConnections[${connectionIndex}].moduleApplications[${externalModuleIndex}].name`, externalModule.name)
+                    formData.append(`modulesConnections[${connectionIndex}].moduleApplications[${externalModuleIndex}].university`, externalModule.university)
+                    formData.append(`modulesConnections[${connectionIndex}].moduleApplications[${externalModuleIndex}].points`, externalModule.points)
+                    formData.append(`modulesConnections[${connectionIndex}].moduleApplications[${externalModuleIndex}].pointSystem`, externalModule.pointSystem)
+                }
+            )
+            connection.internalModules.forEach(
+                (moduleName, moduleIndex) => {
+                    formData.append(`modulesConnections[${connectionIndex}].modulesLeipzig[${moduleIndex}].name`, moduleName)
+                }
+            )
+        })
+
+    console.log('calling applications put request')
+    console.log([...formData])
+    return axios.put(url + '/applications/' + id, formData)
+        .then(response => console.log(response.data))
+}
+
 function putStudyOffice (id, applicationObjects) {
     const formData = new FormData()
     formData.append('userRole', 'study_office')  // todo
@@ -193,6 +248,7 @@ export {
     getApplicationByIdForStatus,
     getRelatedModuleConnections,
     postApplication,
+    putApplication,
     putStudyOffice,
     putChairman
 }
