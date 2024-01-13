@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import swtp12.modulecrediting.dto.CustomUserDetails;
 import swtp12.modulecrediting.dto.LoginRequest;
 import swtp12.modulecrediting.dto.LoginResponse;
+import swtp12.modulecrediting.dto.LogoutResponse;
 import swtp12.modulecrediting.dto.Token;
 import swtp12.modulecrediting.dto.UserSummary;
 import swtp12.modulecrediting.model.User;
@@ -80,6 +81,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public ResponseEntity<LogoutResponse> logout() {
+        HttpHeaders responseHeaders = new HttpHeaders();
+        deleteAccessTokenCookie(responseHeaders);
+        LogoutResponse logoutResponse = new LogoutResponse(LogoutResponse.SuccessFailure.SUCCESS, "Successfully logged out");
+        return ResponseEntity.ok().headers(responseHeaders).body(logoutResponse);
+    }
+
+    @Override
     public UserSummary getUserProfile() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = new User();
@@ -101,6 +110,10 @@ public class UserServiceImpl implements UserService {
 
     private void addRefreshTokenCookie(HttpHeaders httpHeaders, Token token) {
         httpHeaders.add(HttpHeaders.SET_COOKIE, cookieUtil.createRefreshTokenCookie(token.getTokenValue(), token.getDuration()).toString());
+    }
+
+    private void deleteAccessTokenCookie(HttpHeaders httpHeaders) {
+        httpHeaders.add(HttpHeaders.SET_COOKIE, cookieUtil.deleteAccessTokenCookie().toString());
     }
 
 }

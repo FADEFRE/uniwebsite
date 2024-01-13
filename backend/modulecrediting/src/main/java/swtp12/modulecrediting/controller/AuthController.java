@@ -4,11 +4,8 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpCookie;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -91,11 +88,7 @@ public class AuthController {
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals(accessTokenCookieName)) {
-                    HttpCookie httpCookie = ResponseCookie.from(accessTokenCookieName, null).maxAge(0).httpOnly(true).path("/").build();
-                    HttpHeaders responseHeaders = new HttpHeaders();
-                    responseHeaders.add(HttpHeaders.SET_COOKIE, httpCookie.toString());
-                    LogoutResponse logoutResponse = new LogoutResponse(LogoutResponse.SuccessFailure.SUCCESS, "Successfully logged out");
-                    return ResponseEntity.ok().headers(responseHeaders).body(logoutResponse);
+                    return userService.logout();
                 }
             }
         }
