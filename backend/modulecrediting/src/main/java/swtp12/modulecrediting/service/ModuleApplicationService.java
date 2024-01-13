@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import swtp12.modulecrediting.dto.ModuleApplicationCreateDTO;
 import swtp12.modulecrediting.dto.ModuleApplicationUpdateDTO;
-import swtp12.modulecrediting.model.Application;
 import swtp12.modulecrediting.model.ModuleApplication;
 import swtp12.modulecrediting.model.PdfDocument;
 import swtp12.modulecrediting.repository.ModuleApplicationRepository;
