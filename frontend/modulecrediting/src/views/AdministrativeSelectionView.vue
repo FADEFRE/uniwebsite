@@ -11,17 +11,13 @@ import { useRoute } from "vue-router";
 import { ref, onBeforeMount } from "vue"
 import FilterSelector from "@/components/FilterSelector.vue";
 import ApplicationOverview from "@/components/ApplicationOverview.vue";
-import { url } from "@/scripts/url-config"
+import { getApplications } from "@/scripts/axios-requests";
 import { getFormattedDate } from "@/scripts/date-utils";
-import axios from "axios"
 
 let applicationList = ref([])
 onBeforeMount(() => {
-  axios.get(url + '/applications')
-    .then((response) => {
-      applicationList.value = response.data
-    })
-  // todo error catching
+  getApplications()
+      .then(data => applicationList.value = data)
 })
 
 const route = useRoute()
