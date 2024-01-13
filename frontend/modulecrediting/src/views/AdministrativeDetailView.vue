@@ -1,11 +1,12 @@
 <script setup>
 import { useRoute } from "vue-router";
-import { ref, onBeforeMount } from "vue";
+import { ref, computed, onBeforeMount } from "vue";
 import ApplicationOverview from "@/components/ApplicationOverview.vue";
 import AdministrativePanel from "@/components/AdministrativePanel.vue";
 import ButtonLink from "@/components/ButtonLink.vue";
 import { getApplicationById, getModulesByCourse, putApplication } from "@/scripts/axios-requests";
 import { parseRequestDate } from "@/scripts/date-utils";
+import ApplicationConnectionLinks from "@/components/ApplicationConnectionLinks.vue";
 
 const route = useRoute()
 const id = route.params.id
@@ -29,6 +30,20 @@ onBeforeMount(() => {
 })
 
 const moduleConnections = ref()
+
+const connectionsData = computed(() => {
+  const dataArray = []
+  if (moduleConnections.value) {
+    for (let connection of moduleConnections.value) {
+      const connectionObj = {}
+      connectionObj['id'] = connection.id
+      connectionObj['externalModules'] = connection.externalModules.map(m => m.name)
+      connectionObj['internalModules'] = connection.internalModules
+      dataArray.push(connectionObj)
+    }
+  }
+  return dataArray
+})
 
 const triggerPutRequest = () => {
   // defining userRole
@@ -72,6 +87,8 @@ const triggerPutRequest = () => {
 
     <div v-else>
 
+      <ApplicationConnectionLinks :connections-data="connectionsData" />
+
       <ApplicationOverview
           :creation-date="parseRequestDate(applicationData['creationDate'])"
           :last-edited-date="parseRequestDate(applicationData['lastEditedDate'])"
@@ -83,7 +100,13 @@ const triggerPutRequest = () => {
 
       <div v-for="connection in applicationData['modulesConnections']">
 
-        <AdministrativePanel :type="type" :selectable-modules="moduleOptions" :connection-data="connection" ref="moduleConnections" />
+        <AdministrativePanel
+            :type="type"
+            :selectable-modules="moduleOptions"
+            :connection-data="connection"
+            ref="moduleConnections"
+            :id="connection.id"
+        />
 
       </div>
 
