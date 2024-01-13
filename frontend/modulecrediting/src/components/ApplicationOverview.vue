@@ -6,6 +6,7 @@ import LastEditedDate from '@/assets/icons/LastEditedDate.svg';
 import DecisionDate from '@/assets/icons/DecisionDate.svg';
 
 import { computed } from 'vue';
+import router from "@/router";
 
 const props = defineProps({
     creationDate: {
@@ -31,6 +32,9 @@ const props = defineProps({
         type: String,
         required: true,
     },
+   forward: {
+      type: String,
+   }
 });
 
 const statusStyle = computed(() => {
@@ -38,10 +42,16 @@ const statusStyle = computed(() => {
     if (props.status === "STUDIENBÜRO" || props.status === "PRÜFUNGSAUSSCHUSS") return "status-container orangeBackground";
     if (props.status === "ABGESCHLOSSEN") return "status-container redBackground";
 })
+
+const triggerForward = () => {
+  if (props.forward && props.id) {
+    router.push({ name: props.forward, params: { id: props.id } })
+  }
+}
 </script>
 
 <template>
-    <div class="application-overview-container">
+    <div class="application-overview-container" @click="triggerForward">
         <div class="dates">
             <!-- Div-Block Creation Date -->
             <div v-if="creationDate" class="date-block">

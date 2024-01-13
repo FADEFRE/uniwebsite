@@ -7,18 +7,19 @@ functionality:
 -->
 
 <script setup>
-import OverviewItem from "@/components/OverviewItem.vue";
-import FilterSelector from "@/components/FilterSelector.vue";
 import { useRoute } from "vue-router";
 import { ref, onBeforeMount } from "vue"
+import FilterSelector from "@/components/FilterSelector.vue";
+import ApplicationOverview from "@/components/ApplicationOverview.vue";
 import { url } from "@/scripts/url-config"
+import { getFormattedDate } from "@/scripts/date-utils";
 import axios from "axios"
 
-let applicationsData = ref()
+let applicationList = ref([])
 onBeforeMount(() => {
   axios.get(url + '/applications')
     .then((response) => {
-      applicationsData.value = response.data
+      applicationList.value = response.data
     })
   // todo error catching
 })
@@ -30,7 +31,17 @@ const route = useRoute()
   <div class="main">
     <FilterSelector></FilterSelector>
     <div class="overview-list">
-      <OverviewItem v-for="application of applicationsData" :data="application" :forward="route.meta.forward" />
+      <div v-for="application in applicationList">
+        <ApplicationOverview
+            :id="application['id']"
+            :status="application['fullStatus']"
+            :course="application['courseLeipzig']['name']"
+            :creation-date="getFormattedDate(new Date(application['creationDate']))"
+            :last-edited-date="getFormattedDate(new Date(application['lastEditedDate']))"
+            :decision-date="getFormattedDate(new Date(application['decisionDate']))"
+            :forward="route.meta['forward']"
+        />
+      </div>
     </div>
   </div>
 </template>
