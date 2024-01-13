@@ -85,7 +85,7 @@ const pointSystem = ref(props.pointSystem || "")
 const selectedFile = ref(props.selectedFile)
 
 const dropHandler = (e) => {
-  if (props.type === 'new') {
+  if (props.type === 'new' || props.type === 'edit') {
     console.log("executing drop handler")
     e.preventDefault()
     if (e.dataTransfer.items) {
@@ -106,7 +106,7 @@ const dropHandler = (e) => {
 }
 
 const dragOverHandler = (e) => {
-  if (props.type === 'new') {
+  if (props.type === 'new' || props.type === 'edit') {
     e.preventDefault()
   }
 }
@@ -147,7 +147,7 @@ defineExpose({
 
     </div>
 
-    <div v-if="type === 'new'">
+    <div v-if="type === 'new' || type === 'edit'">
       <img src="../assets/icons/Trash.svg" @click="emit('deleteSelf')">
     </div>
 
