@@ -7,9 +7,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.http.HttpMethod.PUT;
-import static org.springframework.http.HttpMethod.PATCH;
 import static org.springframework.http.HttpMethod.DELETE;
-import static org.springframework.http.HttpMethod.OPTIONS;
 
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer{
@@ -18,8 +16,8 @@ public class WebMvcConfig implements WebMvcConfigurer{
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:8090", "http://localhost:5173")
-                .allowedMethods(GET.name(), POST.name(), PUT.name(), PATCH.name(), DELETE.name(), OPTIONS.name())
+                .allowedOrigins( "http://localhost:5173") //TODO remove after correct proxy from frontend
+                .allowedMethods(GET.name(), POST.name(), PUT.name(), DELETE.name())
                 .allowedHeaders("*")
                 .allowCredentials(true)
                 .maxAge(MAXAGESECS);
