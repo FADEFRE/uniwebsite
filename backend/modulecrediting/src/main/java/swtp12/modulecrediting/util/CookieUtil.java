@@ -19,6 +19,8 @@ public class CookieUtil {
         return ResponseCookie.from(accessTokenCookieName, encryptedToken)
                 .maxAge(duration)
                 .httpOnly(true)
+                //.secure(true)
+                .sameSite("Strict")
                 .path("/")
                 .build();
     }
@@ -29,6 +31,18 @@ public class CookieUtil {
         return ResponseCookie.from(refreshTokenCookieName, encryptedToken)
                 .maxAge(duration)
                 .httpOnly(true)
+                //.secure(true)
+                .sameSite("Strict")
+                .path("/")
+                .build();
+    }
+
+    public HttpCookie deleteAccessTokenCookie() {
+        return ResponseCookie.from(accessTokenCookieName, null)
+                .maxAge(0)
+                .httpOnly(true)
+                //.secure(true)
+                .sameSite("Strict")
                 .path("/")
                 .build();
     }
