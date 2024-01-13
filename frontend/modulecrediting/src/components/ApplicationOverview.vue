@@ -15,11 +15,9 @@ const props = defineProps({
     },
     lastEditedDate: {
         type: String,
-        required: true,
     },
     decisionDate: {
         type: String,
-        required: true,
     },
     id: {
         type: String,
