@@ -13,7 +13,7 @@ const props = defineProps({
     required: true,
     type: Array,
     validator(value) {
-      return value.every(obj => obj.id && obj.externalModules && obj.internalModules)
+      return value.every(obj => obj.id && obj.externalModules)
     }
   }
 })
@@ -27,10 +27,12 @@ const props = defineProps({
     <div>
       <div v-for="connection in connectionsData">
         <a :href="'#'+connection.id">
-          <PanelHeader
-              :external-modules="connection.externalModules"
-              :internal-modules="connection.internalModules"
-          />
+          <div>
+            <p>{{ connection.externalModules.join(', ') }}</p>
+          </div>
+          <div>
+            <img src="@/assets/icons/ArrowRed.svg" alt="">
+          </div>
         </a>
       </div>
     </div>

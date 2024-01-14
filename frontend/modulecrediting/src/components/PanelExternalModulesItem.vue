@@ -147,7 +147,7 @@ defineExpose({
 
     </div>
 
-    <div v-if="type === 'new' || type === 'edit'">
+    <div v-if="type === 'new'">
       <img src="../assets/icons/Trash.svg" @click="emit('deleteSelf')">
     </div>
 
