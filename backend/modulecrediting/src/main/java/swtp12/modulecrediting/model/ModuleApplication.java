@@ -22,7 +22,7 @@ public class ModuleApplication {
     @GeneratedValue
     @JsonView(Views.ApplicationLogin.class)
     private Long id;
-    @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class})
+    @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class,Views.ApplicationOverview.class})
     @NotBlank(message = "moduleName must not be blank (empty String)")
     private String name;
     @JsonView({Views.ApplicationStudent.class})
@@ -31,7 +31,7 @@ public class ModuleApplication {
     @JsonView({Views.ApplicationStudent.class})
     @NotNull(message = "point system must not be null")
     private String pointSystem;
-    @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class})
+    @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class,Views.ApplicationOverview.class})
     @NotBlank(message = "university must not be blank (empty String)")
     private String university;
 
