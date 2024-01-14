@@ -16,7 +16,7 @@ public class WebMvcConfig implements WebMvcConfigurer{
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins( "http://localhost:5173") //TODO add correct frontend domain for prod
+                .allowedOrigins( "http://localhost:5173", "http://172.26.92.91:8090") //TODO add correct frontend domain for prod
                 .allowedMethods(GET.name(), POST.name(), PUT.name(), DELETE.name())
                 .allowedHeaders("*")
                 .allowCredentials(true)
