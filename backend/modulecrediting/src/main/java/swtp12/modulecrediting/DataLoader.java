@@ -144,10 +144,10 @@ public class DataLoader implements CommandLineRunner {
             listOfCourseLeipzig.add(courseLeipzig);
         }
         
+
         System.out.println("Dataloader: Generating random Dummy Applications:");
         for (CourseLeipzig cL : listOfCourseLeipzig) {
             List<ModulesConnectionCreateDTO> listModuleCreateDTO = new ArrayList<>();
-            List<ModulesConnectionUpdateDTO> listModuleUpdateDTO = new ArrayList<>();
 
             ApplicationCreateDTO applicationCreateDTO = new ApplicationCreateDTO();
 
@@ -157,67 +157,50 @@ public class DataLoader implements CommandLineRunner {
             for (int i = 0; i < rIdx; i++) {
                 ModulesConnectionCreateDTO modulesConnection = createModulesConnectionDTO(cL, moduleSettingsNode);
                 listModuleCreateDTO.add(modulesConnection);
-                ModulesConnectionUpdateDTO mUdto = new ModulesConnectionUpdateDTO();
-                listModuleUpdateDTO.add(mUdto);
             }
 
             applicationCreateDTO.setModulesConnections(listModuleCreateDTO);
 
             String vorgangsnummer = applicationService.createApplication(applicationCreateDTO);
             
-/*
+
             // updating the status of those randomGen Applications:
             ApplicationUpdateDTO applicationUpdateDTO = new ApplicationUpdateDTO();
-            ModulesConnectionUpdateDTO modulesConnectionDTO;
             Application application = applicationService.getApplicationById(vorgangsnummer);
 
-
+            String updatedData = "";
             if (closed > 0) { // update application to ABGESCHLOSSEN
-                List<ModulesConnection> connectionsCopy = new ArrayList<>(application.getModulesConnections());
-                for (ModulesConnection mc : connectionsCopy) {
-                    applicationUpdateDTO.setUserRole("pav");
-                    modulesConnectionDTO = updateModulesConnectionDTO(mc.getId(), ABGESCHLOSSEN);
-                    applicationUpdateDTO.setModulesConnections(List.of(modulesConnectionDTO));
-                    applicationService.updateApplication(vorgangsnummer, applicationUpdateDTO);
-                }
-
-
-                System.out.println("Created Dummy Application: " + vorgangsnummer + " as ABGESCHLOSSEN");
+                applicationUpdateDTO.setUserRole("pav");
+                List<ModulesConnectionUpdateDTO> mcuDTO = new ArrayList<>();
+                mcuDTO = updateModulesConnectionDTO(ABGESCHLOSSEN, application);
+                applicationUpdateDTO.setModulesConnections(mcuDTO);
+                applicationService.updateApplication(vorgangsnummer, applicationUpdateDTO);
+                updatedData = "closed";
                 closed--;
-                continue;
             }
-            if (pav > 0) { // update application to PRUEFUNGSAUSSCHUSS
-                List<ModulesConnection> connectionsCopy = new ArrayList<>(application.getModulesConnections());
-                for (ModulesConnection mc : connectionsCopy) {
-                    applicationUpdateDTO.setUserRole("study-office");
-                    modulesConnectionDTO = updateModulesConnectionDTO(mc.getId(), PRÜFUNGSAUSSCHUSS);
-                    applicationUpdateDTO.setModulesConnections(List.of(modulesConnectionDTO));
-                    applicationService.updateApplication(vorgangsnummer, applicationUpdateDTO);
-                }
-
-                System.out.println("Updated Application: " + vorgangsnummer + " to PRUEFUNGSAUSSCHUSS");
+            else if (pav > 0) { // update application to PRUEFUNGSAUSSCHUSS
+                applicationUpdateDTO.setUserRole("study-office");
+                List<ModulesConnectionUpdateDTO> mcuDTO = new ArrayList<>();
+                mcuDTO = updateModulesConnectionDTO(PRÜFUNGSAUSSCHUSS, application);
+                applicationUpdateDTO.setModulesConnections(mcuDTO);
+                applicationService.updateApplication(vorgangsnummer, applicationUpdateDTO);
+                updatedData = "pav";
                 pav--;
-                continue;
             }
-
-            if (studyOffice > 0) { // update application to STUDIENBUERO
-                List<ModulesConnection> connectionsCopy = new ArrayList<>(application.getModulesConnections());
-                for (ModulesConnection mc : connectionsCopy) {
-                    applicationUpdateDTO.setUserRole("study-office");
-                    modulesConnectionDTO = updateModulesConnectionDTO(mc.getId(), STUDIENBÜRO);
-                    applicationUpdateDTO.setModulesConnections(List.of(modulesConnectionDTO));
-                    applicationService.updateApplication(vorgangsnummer, applicationUpdateDTO);
-                }
-
-                System.out.println("Updated Application: " + vorgangsnummer + " to STUDIENBUERO");
+            else if (studyOffice > 0) { // update application to STUDIENBUERO
+                applicationUpdateDTO.setUserRole("study-office");
+                List<ModulesConnectionUpdateDTO> mcuDTO = new ArrayList<>();
+                mcuDTO = updateModulesConnectionDTO(STUDIENBÜRO, application);
+                applicationUpdateDTO.setModulesConnections(mcuDTO);
+                applicationService.updateApplication(vorgangsnummer, applicationUpdateDTO);
+                updatedData = "studyOffice";
                 studyOffice--;
-                continue;
             }
-            if (open > 0) { // update application to ABGESCHLOSSEN
-                System.out.println("Created Dummy Application: " + vorgangsnummer + "as NEW");
+            else if (open > 0) { // update application to ABGESCHLOSSEN
+                updatedData = "open";
                 open--;
-                continue;
-            }*/
+            }
+            System.out.println("Created Dummy Application: " + vorgangsnummer + " as: " + updatedData);
         }
         System.out.println("Dataloader: Testdata successfully loaded into Database"); 
     }
@@ -277,8 +260,6 @@ public class DataLoader implements CommandLineRunner {
      * properties: name, university, points, pointsystem, comment.
      * @return The method is returning a ModuleBlockCreateDTO object.
      */
-
-
     private ModulesConnectionCreateDTO createModulesConnectionDTO(CourseLeipzig cL, JsonNode moduleSettingNode) {
         ModulesConnectionCreateDTO modulesConnectionCreateDTO = new ModulesConnectionCreateDTO();
         Random rdm = new Random();
@@ -307,8 +288,8 @@ public class DataLoader implements CommandLineRunner {
         ModuleApplicationCreateDTO moduleApplicationCreateDTO = new ModuleApplicationCreateDTO();
 
         Random rdm = new Random();
-        moduleApplicationCreateDTO.setName(moduleSettingNode.get("name").asText());
-        moduleApplicationCreateDTO.setUniversity(moduleSettingNode.get("uni").asText());
+        moduleApplicationCreateDTO.setName(getRandValueOfNode(moduleSettingNode, "name", rdm));
+        moduleApplicationCreateDTO.setUniversity(getRandValueOfNode(moduleSettingNode, "uni", rdm));
         moduleApplicationCreateDTO.setPoints(Integer.parseInt(getRandValueOfNode(moduleSettingNode, "points", rdm)));
         moduleApplicationCreateDTO.setPointSystem(getRandValueOfNode(moduleSettingNode, "pointSystem", rdm));
 
@@ -336,33 +317,71 @@ public class DataLoader implements CommandLineRunner {
         return valueNode.get(rdmIdx).asText();
     }
 
-    private ModulesConnectionUpdateDTO updateModulesConnectionDTO(Long modulesConnectionId, EnumApplicationStatus status) {
-        ModulesConnectionUpdateDTO modulesConnection = new ModulesConnectionUpdateDTO();
-        modulesConnection.setId(modulesConnectionId);
+    private List<ModulesConnectionUpdateDTO> updateModulesConnectionDTO(EnumApplicationStatus status, Application application) {
+        
+        List<ModulesConnectionUpdateDTO> mcuDTO = new ArrayList<>();
 
-        if(status == STUDIENBÜRO) {
-            modulesConnection.setDecisionSuggestion(generateDecision(50));
-            modulesConnection.setCommentStudyOffice("comment study office");
+        for (ModulesConnection modCon : application.getModulesConnections()) { 
+            //Modul listen
+            ModulesConnectionUpdateDTO modulesConnectionDTO = new ModulesConnectionUpdateDTO();
+
+            modulesConnectionDTO.setId(modCon.getId());
+            
+            for (ModuleLeipzig mL : modCon.getModulesLeipzig()) {
+                ModuleLeipzigUpdateDTO mluDTO = new ModuleLeipzigUpdateDTO();
+                mluDTO.setName(mL.getName());
+                if (modulesConnectionDTO.getModulesLeipzig() == null) {
+                    List<ModuleLeipzigUpdateDTO> mluDTOs = new ArrayList<>();
+                    mluDTOs.add(mluDTO);
+                    modulesConnectionDTO.setModulesLeipzig(mluDTOs);
+                }
+                else modulesConnectionDTO.getModulesLeipzig().add(mluDTO);
+            }
+
+            for (ModuleApplication mA : modCon.getModuleApplications()) {
+                ModuleApplicationUpdateDTO mauDTO = new ModuleApplicationUpdateDTO();
+                mauDTO.setId(mA.getId());
+                mauDTO.setName(mA.getName());
+                mauDTO.setUniversity(mA.getUniversity());
+                mauDTO.setPoints(mA.getPoints());
+                mauDTO.setPointSystem(mA.getPointSystem());
+                if (modulesConnectionDTO.getModuleApplications() == null) {
+                    List<ModuleApplicationUpdateDTO> mauDTOs = new ArrayList<>();
+                    mauDTOs.add(mauDTO);
+                    modulesConnectionDTO.setModuleApplications(mauDTOs);
+                }
+                else modulesConnectionDTO.getModuleApplications().add(mauDTO);
+            }
+
+            //comments and decisions
+            if(status == STUDIENBÜRO) {
+                modulesConnectionDTO.setDecisionSuggestion(generateDecision(50));
+                modulesConnectionDTO.setCommentStudyOffice("comment study office");
+            }
+
+            if(status == PRÜFUNGSAUSSCHUSS) {
+                modulesConnectionDTO.setDecisionSuggestion(generateDecision(0));
+                modulesConnectionDTO.setCommentStudyOffice("comment study office");
+
+                modulesConnectionDTO.setDecisionFinal(generateDecision(70));
+                modulesConnectionDTO.setCommentDecision("comment pav");
+            }
+
+            if(status == ABGESCHLOSSEN) {
+                modulesConnectionDTO.setDecisionSuggestion(generateDecision(0));
+                modulesConnectionDTO.setCommentStudyOffice("comment study office");
+
+                modulesConnectionDTO.setDecisionFinal(generateDecision(0));
+                modulesConnectionDTO.setCommentDecision("comment pav");
+            }
+
+            mcuDTO.add(modulesConnectionDTO);
+
         }
-
-        if(status == PRÜFUNGSAUSSCHUSS) {
-            modulesConnection.setDecisionSuggestion(generateDecision(0));
-            modulesConnection.setCommentStudyOffice("comment study office");
-
-            modulesConnection.setDecisionFinal(generateDecision(70));
-            modulesConnection.setCommentDecision("comment pav");
-        }
-
-        if(status == ABGESCHLOSSEN) {
-            modulesConnection.setDecisionSuggestion(generateDecision(0));
-            modulesConnection.setCommentStudyOffice("comment study office");
-
-            modulesConnection.setDecisionFinal(generateDecision(0));
-            modulesConnection.setCommentDecision("comment pav");
-        }
-
-        return modulesConnection;
+        
+        return mcuDTO;
     }
+
 
     public EnumModuleConnectionDecision generateDecision(double probabilityUnbearbeitet) {
         Random rand = new Random();
