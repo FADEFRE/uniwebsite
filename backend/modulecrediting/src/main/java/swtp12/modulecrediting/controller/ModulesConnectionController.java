@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/modules-connection")
+@RequestMapping("/api/modules-connection")
 public class ModulesConnectionController {
     @Autowired
     ModulesConnectionService modulesConnectionService;
