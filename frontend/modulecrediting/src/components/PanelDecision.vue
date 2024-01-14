@@ -4,9 +4,11 @@
 
 <template>
   <div class="panel-decision">
-    <h2>Entscheidung</h2>
-    <slot name="study-office" />
-    <slot name="chairman" />
+    <h4>Entscheidung</h4>
+    <div class="decision-block-container">
+      <slot name="study-office" />
+      <slot name="chairman" />
+    </div>
   </div>
 </template>
 
@@ -16,5 +18,10 @@
 
 .panel-decision {
   @include panelComponent();
+}
+
+.decision-block-container {
+  @include screenSplit();
+  width: 100%;
 }
 </style>
