@@ -15,7 +15,7 @@ import axios from "axios"
 
 let applicationsData = ref()
 onBeforeMount(() => {
-  axios.get(url + '/applications')
+  axios.get(url + '/api/applications')
       .then((response) => {
         applicationsData.value = response.data
       })

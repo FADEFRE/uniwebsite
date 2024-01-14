@@ -33,20 +33,20 @@ export function performLogout() {
 
 export async function refreshTokenInternal() {
     try {
-        const response = await httpResource.post("/auth/refresh");
+        const response = await httpResource.post("/api/auth/refresh");
         if (response.status !== 200) performLogout();
     } 
     catch (error) { performLogout(); }
 }
 
 export async function refreshToken() {
-    const response = await httpResource.post("/auth/refresh");
+    const response = await httpResource.post("/api/auth/refresh");
     return response.status;
 }
 
 export async function getAuthenticatedUser() {
     try {
-        const response = await httpResource.get("/user/me");
+        const response = await httpResource.get("/api/user/me");
         if (response.data.username !== null) {
             const currentUser = response.data;
             const authUserStore = useAuthStore();

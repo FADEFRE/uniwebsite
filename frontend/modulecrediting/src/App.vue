@@ -5,7 +5,7 @@ import httpResource from "./http/httpResource";
 import { performLogout } from "./util/utils";
 
 async function logout () {
-  const response = await httpResource.post("/auth/logout");
+  const response = await httpResource.post("/api/auth/logout");
   console.log(response)
   performLogout();
   const routeData = router.resolve({name: 'login'})

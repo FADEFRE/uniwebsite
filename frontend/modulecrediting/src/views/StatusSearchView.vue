@@ -20,7 +20,7 @@ const isInvalid = ref(false)
 
 const id = ref()
 const openDetailView = () => {
-  axios.get(url + `/applications/${id.value}/exists`)
+  axios.get(url + `/api/applications/${id.value}/exists`)
       .then(response => {
         if (response.data) {
           // routes to status detail view
