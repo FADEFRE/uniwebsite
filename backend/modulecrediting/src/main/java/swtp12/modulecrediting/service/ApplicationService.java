@@ -9,6 +9,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.scheduling.support.SimpleTriggerContext;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -18,6 +19,7 @@ import swtp12.modulecrediting.dto.ApplicationCreateDTO;
 import swtp12.modulecrediting.dto.ApplicationUpdateDTO;
 import swtp12.modulecrediting.model.Application;
 import swtp12.modulecrediting.model.CourseLeipzig;
+import swtp12.modulecrediting.model.EnumApplicationStatus;
 import swtp12.modulecrediting.model.ModulesConnection;
 import swtp12.modulecrediting.repository.ApplicationRepository;
 
@@ -42,14 +44,14 @@ public class ApplicationService {
             modulesConnectionService.updateModulesConnection(applicationDTO.getModulesConnections(), applicationDTO.getUserRole());
         }
         application.setLastEditedDate(LocalDateTime.now());
-        updateApplicationStatus(application);
 
         applicationRepository.save(application);
         return id;
     }
 
     // FUNCTION TO UPDADTE APPLICATION STATUS ON UPDATE
-    public void updateApplicationStatus(Application application) {
+    public EnumApplicationStatus updateApplicationStatus(String id) {
+        Application application = getApplicationById(id);
         
         boolean noDecisionSuggestionCompleted = true;
         boolean allDecisionsSuggestionsCompleted = true;
@@ -68,8 +70,9 @@ public class ApplicationService {
         }
         else if(allDecisionsSuggestionsCompleted) { application.setFullStatus(PRÜFUNGSAUSSCHUSS); }
         else if(!noDecisionSuggestionCompleted) { application.setFullStatus(STUDIENBÜRO); }
-        
-        
+
+        applicationRepository.save(application);
+        return application.getFullStatus();
     }
 
     public String createApplication(ApplicationCreateDTO applicationDTO) {

@@ -178,6 +178,7 @@ public class DataLoader implements CommandLineRunner {
                 applicationService.updateApplication(vorgangsnummer, applicationUpdateDTO);
                 applicationUpdateDTO.setUserRole("pav");
                 applicationService.updateApplication(vorgangsnummer, applicationUpdateDTO);
+                applicationService.updateApplicationStatus(vorgangsnummer);
                 updatedData = "closed";
                 closed--;
             }
@@ -190,6 +191,7 @@ public class DataLoader implements CommandLineRunner {
                 applicationService.updateApplication(vorgangsnummer, applicationUpdateDTO);
                 applicationUpdateDTO.setUserRole("pav");
                 applicationService.updateApplication(vorgangsnummer, applicationUpdateDTO);
+                applicationService.updateApplicationStatus(vorgangsnummer);
 
                 updatedData = "pav";
                 pav--;
@@ -200,6 +202,7 @@ public class DataLoader implements CommandLineRunner {
                 mcuDTO = updateModulesConnectionDTO(STUDIENBÜRO, application);
                 applicationUpdateDTO.setModulesConnections(mcuDTO);
                 applicationService.updateApplication(vorgangsnummer, applicationUpdateDTO);
+                applicationService.updateApplicationStatus(vorgangsnummer);
                 updatedData = "studyOffice";
                 studyOffice--;
             }

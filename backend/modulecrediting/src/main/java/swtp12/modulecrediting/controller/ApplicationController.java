@@ -17,6 +17,7 @@ import com.itextpdf.text.DocumentException;
 import swtp12.modulecrediting.dto.ApplicationCreateDTO;
 import swtp12.modulecrediting.dto.ApplicationUpdateDTO;
 import swtp12.modulecrediting.model.Application;
+import swtp12.modulecrediting.model.EnumApplicationStatus;
 import swtp12.modulecrediting.model.Views;
 import swtp12.modulecrediting.service.ApplicationService;
 import swtp12.modulecrediting.service.GeneratedPdfService;
@@ -41,6 +42,11 @@ public class ApplicationController {
         }
 
         return ResponseEntity.ok(applicationService.updateApplication(id, applicationUpdateDTO));
+    }
+
+    @PutMapping("/{id}/update-status")
+    public ResponseEntity<EnumApplicationStatus> updateApplicationStatus(@PathVariable String id) {
+        return ResponseEntity.ok(applicationService.updateApplicationStatus(id));
     }
 
     @PostMapping
