@@ -34,10 +34,10 @@ const statusClosed = ref(true)
 
 const statusTypes = computed(() => {
   const statusList = []
-  if (statusNew.value) statusList.push('new')
-  if (statusStudyOffice.value) statusList.push('studyOffice')
-  if (statusChairman.value) statusList.push('chairman')
-  if (statusClosed.value) statusList.push('closed')
+  if (statusNew.value) statusList.push('NEU')
+  if (statusStudyOffice.value) statusList.push('STUDIENBÜRO')
+  if (statusChairman.value) statusList.push('PRÜFUNGSAUSSCHUSS')
+  if (statusClosed.value) statusList.push('ABGESCHLOSSEN')
   return statusList
 })
 
@@ -65,7 +65,7 @@ defineExpose({
       <InputText v-model="searchString" placeholder="Antrag suchen">
         <!-- todo place search icon -->
       </InputText>
-      <small>Suchen nach: Vorgangsnummer, Modulname, Universität</small>
+      <small>Suchen nach: Vorgangsnummer</small>
     </div>
 
     <div>
