@@ -88,6 +88,7 @@ const dropHandler = (e) => {
   if (props.type === 'new' || props.type === 'edit') {
     console.log("executing drop handler")
     e.preventDefault()
+    e.currentTarget.classList.remove('file-drop-highlight');
     if (e.dataTransfer.items) {
       const f = e.dataTransfer.items[0].getAsFile()
       if (f.type !== "application/pdf") {
@@ -108,8 +109,20 @@ const dropHandler = (e) => {
 const dragOverHandler = (e) => {
   if (props.type === 'new' || props.type === 'edit') {
     e.preventDefault()
+    e.currentTarget.classList.add('file-drop-highlight');
   }
 }
+
+const dragEnterHandler = (e) => {
+  if (props.type === 'new' || props.type === 'edit') {
+    e.currentTarget.classList.add('file-drop-highlight');
+  }
+}
+const dragLeaveHandler = (e) => {
+  if (props.type === 'new' || props.type === 'edit') {
+    e.currentTarget.classList.remove('file-drop-highlight');
+  }
+};
 
 defineExpose({
   id, name, university, points, pointSystem, selectedFile
@@ -131,7 +144,7 @@ defineExpose({
           <InputText :readonly="readonly" type="text" v-model="pointSystem" placeholder="Punktesystem" />
         </div>
 
-        <div class="file-drop-container" @dragover="dragOverHandler" @drop="dropHandler">
+        <div class="file-drop-container" @dragover="dragOverHandler" @dragleave="dragLeaveHandler" @drop="dropHandler">
           <!-- todo add file dialog on click -->
           <div v-if="selectedFile?.name">
             <p>{{ selectedFile.name }}</p>
@@ -212,4 +225,7 @@ defineExpose({
   gap: 0.625rem;
 }
 
+.file-drop-highlight {
+  background-color: $white;
+}
 </style>
