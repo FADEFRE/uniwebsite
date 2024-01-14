@@ -28,23 +28,21 @@ const earliestDate = computed(() => {
 })
 
 const statusNew = ref(true)
-const statusOpen = ref(true)
 const statusStudyOffice = ref(true)
-const statusPav = ref(true)
+const statusChairman = ref(true)
 const statusClosed = ref(true)
 
 const statusTypes = computed(() => {
   const statusList = []
   if (statusNew.value) statusList.push('new')
-  if (statusOpen.value) statusList.push('open')
   if (statusStudyOffice.value) statusList.push('studyOffice')
-  if (statusPav.value) statusList.push('pav')
+  if (statusChairman.value) statusList.push('chairman')
   if (statusClosed.value) statusList.push('closed')
   return statusList
 })
 
 let courses = ref([])
-const selectedCourse = ref()
+const course = ref()
 
 onBeforeMount(() => {
   getCoursesLeipzig()
@@ -52,7 +50,7 @@ onBeforeMount(() => {
 })
 
 defineExpose({
-  searchString, dateType, earliestDate, statusTypes, selectedCourse
+  searchString, dateType, earliestDate, statusTypes, course
 })
 
 </script>
@@ -97,13 +95,10 @@ defineExpose({
       <div :class="{ 'selected': statusNew }" @click="statusNew ? statusNew=false : statusNew=true">
         <p>NEU</p>
       </div>
-      <div :class="{ 'selected': statusOpen }" @click="statusOpen ? statusOpen=false : statusOpen=true">
-        <p>OFFEN</p>
-      </div>
       <div :class="{ 'selected': statusStudyOffice }" @click="statusStudyOffice ? statusStudyOffice=false : statusStudyOffice=true">
         <p>STUDIENBÜRO</p>
       </div>
-      <div :class="{ 'selected': statusPav }" @click="statusPav ? statusPav=false : statusPav=true">
+      <div :class="{ 'selected': statusChairman }" @click="statusChairman ? statusChairman=false : statusChairman=true">
         <p>PRÜFUNGSAUSSCHUSS</p>
       </div>
       <div :class="{ 'selected': statusClosed }" @click="statusClosed ? statusClosed=false : statusClosed=true">
@@ -114,7 +109,7 @@ defineExpose({
     <div>
       <h4>Studiengang</h4>
       <Dropdown show-clear
-          v-model="selectedCourse"
+          v-model="course"
           :options="courses"
           placeholder="Studiengang auswählen"
       />

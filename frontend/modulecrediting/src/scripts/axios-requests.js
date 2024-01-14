@@ -48,6 +48,18 @@ function getModulesByCourse (course) {
 }
 
 /*
+GET-Request to '/applications' endpoint
+returns list of applications (only data needed for overview)
+
+parameters:
+    none
+ */
+function getApplications () {
+    return axios.get(url + '/applications')
+        .then(response => response.data)
+}
+
+/*
 GET-Request to '/applications/{id}' endpoint
 returns data of the related application
 
@@ -244,6 +256,7 @@ export {
     getCoursesLeipzig,
     getCourseData,
     getModulesByCourse,
+    getApplications,
     getApplicationById,
     getApplicationByIdForStatus,
     getRelatedModuleConnections,
