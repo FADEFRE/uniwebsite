@@ -5,9 +5,14 @@ slots header, icons and default are passed on to PrimeVue Panel
 -->
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 
 const collapsed = ref()
+
+const arrowStyle = computed(() =>{
+  if(!collapsed.value) return "arrow-icon arrow-up";
+  return "arrow-icon"; 
+})
 </script>
 
 <template>
@@ -17,7 +22,7 @@ const collapsed = ref()
     </template>
     <template #icons>
       <slot name="icons"></slot>
-      <img src="@/assets/icons/ArrowRed.svg" @click="collapsed = !collapsed">
+      <img src="@/assets/icons/ArrowRed.svg" @click="collapsed = !collapsed" :class="arrowStyle">
 
     </template>
     <slot></slot>
@@ -66,5 +71,12 @@ const collapsed = ref()
 
   @include verticalList(small);
 
+}
+
+.arrow-icon {
+  transition: 0.2s ease-in-out;
+}
+.arrow-up {
+  transform: rotate(180deg);
 }
 </style>
