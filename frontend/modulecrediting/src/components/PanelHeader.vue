@@ -10,20 +10,30 @@ displays:
 -->
 
 <script setup>
+import { computed } from "vue";
+
 const props = defineProps({
   externalModules: {
     type: Array
   },
   internalModules: {
     type: Array
+  },
+  relatedModules: {
+    type: Boolean
   }
 });
+
+const textStyle = computed(() => {
+  if (props.relatedModules) return "overview-text";
+  return "";
+})
 </script>
 
 <template>
   <div class="panel-header">
     <div class="external-modules">
-      <h3 v-if="externalModules && externalModules.length">{{ externalModules.join(', ') }}</h3>
+      <h3 v-if="externalModules && externalModules.length" :class="textStyle">{{ externalModules.join(', ') }}</h3>
       <h3 v-else>...</h3>
     </div>
 
@@ -32,7 +42,7 @@ const props = defineProps({
     </div>
 
     <div class="internal-modules">
-      <h3 v-if="internalModules && internalModules.length">{{ internalModules.join(', ') }}</h3>
+      <h3 v-if="internalModules && internalModules.length" :class="textStyle">{{ internalModules.join(', ') }}</h3>
       <h3 v-else>...</h3>
     </div>
   </div>
@@ -45,10 +55,15 @@ const props = defineProps({
 .panel-header {
   display: flex;
   align-items: center;
+  justify-content: flex-start;
   gap: 0.625rem;
 }
 
 .arrow-icon {
   @include rightArrow();
 }
+.overview-text {
+  text-transform: none;
+}
+
 </style>

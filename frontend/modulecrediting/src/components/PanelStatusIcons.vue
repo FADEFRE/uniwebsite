@@ -36,7 +36,7 @@ const props = defineProps({
       <img v-else src="@/assets/icons/moduleUnedited.svg">
     </div>
 
-    <img src="../assets/icons/ArrowDark.svg">
+    <img src="../assets/icons/ArrowDark.svg" class="arrow-icon">
 
     <div>
       <img v-if="decisionFinal === 'accepted'" src="@/assets/icons/ModuleAccepted.svg">

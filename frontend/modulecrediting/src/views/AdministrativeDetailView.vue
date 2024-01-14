@@ -78,14 +78,14 @@ const triggerPutRequest = () => {
 </script>
 
 <template>
-  <div>
+  <div class="main">
 
     <!-- request pending -->
     <div v-if="!applicationData">
       <p>Lade Daten ...</p>
     </div>
 
-    <div v-else>
+    <div v-else class="administrative-detail-container">
 
       <ApplicationConnectionLinks :connections-data="connectionsData" />
 
@@ -117,6 +117,20 @@ const triggerPutRequest = () => {
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+@import '../assets/variables.scss';
+@import '../assets/mixins.scss';
+.main {
+  @include main();
+}
 
+.administrative-detail-container {
+  @include verticalList(small);
+  width: 100%;
+}
+
+.side-infos-container {
+  @include verticalList(big);
+  width: min-content;
+}
 </style>
