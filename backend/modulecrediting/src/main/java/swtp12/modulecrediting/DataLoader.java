@@ -153,7 +153,7 @@ public class DataLoader implements CommandLineRunner {
 
             applicationCreateDTO.setCourseLeipzig(cL.getName());
 
-            int rIdx = rand.nextInt(3) + 1;
+            int rIdx = rand.nextInt(3) + 2;
             for (int i = 0; i < rIdx; i++) {
                 ModulesConnectionCreateDTO modulesConnection = createModulesConnectionDTO(cL, moduleSettingsNode);
                 listModuleCreateDTO.add(modulesConnection);
@@ -170,20 +170,27 @@ public class DataLoader implements CommandLineRunner {
 
             String updatedData = "";
             if (closed > 0) { // update application to ABGESCHLOSSEN
-                applicationUpdateDTO.setUserRole("pav");
                 List<ModulesConnectionUpdateDTO> mcuDTO = new ArrayList<>();
                 mcuDTO = updateModulesConnectionDTO(ABGESCHLOSSEN, application);
                 applicationUpdateDTO.setModulesConnections(mcuDTO);
+                
+                applicationUpdateDTO.setUserRole("study-office"); //needs this otherwise testdata wont show comment studyoofice
+                applicationService.updateApplication(vorgangsnummer, applicationUpdateDTO);
+                applicationUpdateDTO.setUserRole("pav");
                 applicationService.updateApplication(vorgangsnummer, applicationUpdateDTO);
                 updatedData = "closed";
                 closed--;
             }
             else if (pav > 0) { // update application to PRUEFUNGSAUSSCHUSS
-                applicationUpdateDTO.setUserRole("study-office");
                 List<ModulesConnectionUpdateDTO> mcuDTO = new ArrayList<>();
                 mcuDTO = updateModulesConnectionDTO(PRÜFUNGSAUSSCHUSS, application);
                 applicationUpdateDTO.setModulesConnections(mcuDTO);
+
+                applicationUpdateDTO.setUserRole("study-office"); //needs this otherwise testdata wont show comment studyoofice
                 applicationService.updateApplication(vorgangsnummer, applicationUpdateDTO);
+                applicationUpdateDTO.setUserRole("pav");
+                applicationService.updateApplication(vorgangsnummer, applicationUpdateDTO);
+
                 updatedData = "pav";
                 pav--;
             }
@@ -320,7 +327,8 @@ public class DataLoader implements CommandLineRunner {
     private List<ModulesConnectionUpdateDTO> updateModulesConnectionDTO(EnumApplicationStatus status, Application application) {
         
         List<ModulesConnectionUpdateDTO> mcuDTO = new ArrayList<>();
-
+        boolean studyBool = true;
+        boolean pavBool = true;
         for (ModulesConnection modCon : application.getModulesConnections()) { 
             //Modul listen
             ModulesConnectionUpdateDTO modulesConnectionDTO = new ModulesConnectionUpdateDTO();
@@ -352,49 +360,49 @@ public class DataLoader implements CommandLineRunner {
                 }
                 else modulesConnectionDTO.getModuleApplications().add(mauDTO);
             }
-
             //comments and decisions
             if(status == STUDIENBÜRO) {
-                modulesConnectionDTO.setDecisionSuggestion(generateDecision(50));
-                modulesConnectionDTO.setCommentStudyOffice("comment study office");
+                if (studyBool) { 
+                    modulesConnectionDTO.setDecisionSuggestion(unedited); 
+                    studyBool = false;
+                }
+                else { modulesConnectionDTO.setDecisionSuggestion(generateDecision()); }
+                
+                modulesConnectionDTO.setCommentStudyOffice("liegt beim study office");
             }
 
             if(status == PRÜFUNGSAUSSCHUSS) {
-                modulesConnectionDTO.setDecisionSuggestion(generateDecision(0));
+                modulesConnectionDTO.setDecisionSuggestion(generateDecision());
                 modulesConnectionDTO.setCommentStudyOffice("comment study office");
 
-                modulesConnectionDTO.setDecisionFinal(generateDecision(70));
-                modulesConnectionDTO.setCommentDecision("comment pav");
+                if (pavBool) { 
+                    modulesConnectionDTO.setDecisionFinal(unedited); 
+                    pavBool = false;
+                }
+                else { modulesConnectionDTO.setDecisionFinal(generateDecision()); }
+                
+                modulesConnectionDTO.setCommentDecision("liegt beim pav");
             }
 
             if(status == ABGESCHLOSSEN) {
-                modulesConnectionDTO.setDecisionSuggestion(generateDecision(0));
+                modulesConnectionDTO.setDecisionSuggestion(generateDecision());
                 modulesConnectionDTO.setCommentStudyOffice("comment study office");
 
-                modulesConnectionDTO.setDecisionFinal(generateDecision(0));
+                modulesConnectionDTO.setDecisionFinal(generateDecision());
                 modulesConnectionDTO.setCommentDecision("comment pav");
             }
-
             mcuDTO.add(modulesConnectionDTO);
 
         }
-        
         return mcuDTO;
     }
 
 
-    public EnumModuleConnectionDecision generateDecision(double probabilityUnbearbeitet) {
+    public EnumModuleConnectionDecision generateDecision() {
         Random rand = new Random();
-        double chooseUnbearbeitet = rand.nextDouble() * 100;
-
-        if (chooseUnbearbeitet < probabilityUnbearbeitet) {
-            return unedited;
-        } else {
-            int index = rand.nextInt(3);
-
-            if (index == 0) return accepted;
-            if(index == 1) return asExamCertificate;
-            return denied;
-        }
+        int index = rand.nextInt(3);
+        if (index == 0) return accepted;
+        if(index == 1) return asExamCertificate;
+        return denied;
     }
 }
