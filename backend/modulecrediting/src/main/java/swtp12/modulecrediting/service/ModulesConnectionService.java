@@ -28,48 +28,48 @@ public class ModulesConnectionService {
 
 
     public void updateModulesConnection(List<ModulesConnectionUpdateDTO> modulesConnectionsDTO, String userRole) {
-        for(ModulesConnectionUpdateDTO mc : modulesConnectionsDTO) {
-            if(mc.getId() == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Modules Connection id must not be null");
-            ModulesConnection modulesConnection = getModulesConnectionById(mc.getId());
+        for(ModulesConnectionUpdateDTO mcuDTO : modulesConnectionsDTO) {
+            if(mcuDTO.getId() == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Modules Connection id must not be null");
+            ModulesConnection modulesConnection = getModulesConnectionById(mcuDTO.getId());
 
             // handle decision block
             if(userRole.equals("study-office")) {
-                if (mc.getCommentStudyOffice() != null)
-                    modulesConnection.setCommentStudyOffice(mc.getCommentStudyOffice());
+                if (mcuDTO.getCommentStudyOffice() != null)
+                    modulesConnection.setCommentStudyOffice(mcuDTO.getCommentStudyOffice());
 
-                if (mc.getDecisionSuggestion() != null)
-                    modulesConnection.setDecisionSuggestion(mc.getDecisionSuggestion());
+                if (mcuDTO.getDecisionSuggestion() != null)
+                    modulesConnection.setDecisionSuggestion(mcuDTO.getDecisionSuggestion());
             }
 
             if(userRole.equals("pav")) {
-                if (mc.getCommentDecision() != null)
-                    modulesConnection.setCommentDecision(mc.getCommentDecision());
+                if (mcuDTO.getCommentDecision() != null)
+                    modulesConnection.setCommentDecision(mcuDTO.getCommentDecision());
 
-                if (mc.getDecisionFinal() != null)
-                    modulesConnection.setDecisionFinal(mc.getDecisionFinal());
+                if (mcuDTO.getDecisionFinal() != null)
+                    modulesConnection.setDecisionFinal(mcuDTO.getDecisionFinal());
             }
 
             // handle module applications changes
-            if(mc.getModuleApplications() == null)  throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You cant delete all Module Applications of a Modules Connection " + mc.getId());
+            if(mcuDTO.getModuleApplications() == null)  throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You cant delete all Module Applications of a Modules Connection " + mcuDTO.getId());
 
             List<Long> savedIdList = getIdListFromModuleConnection(modulesConnection);
-            List<Long> updatedIdList = getIdListFromModuleConnectionUpdateDTO(mc);
+            List<Long> updatedIdList = getIdListFromModuleConnectionUpdateDTO(mcuDTO);
             List<Long> deleteIdList = new ArrayList<>(savedIdList);
             deleteIdList.removeAll(updatedIdList);
 
             removeAllDeletedModuleApplications(deleteIdList);
-            moduleApplicationService.updateModuleApplications(mc.getModuleApplications());
+            moduleApplicationService.updateModuleApplications(mcuDTO.getModuleApplications());
 
             // handle modules leipzig changes
-            if(mc.getModulesLeipzig() == null) modulesConnection.removeAllModulesLeipzig(); // remove all module leipzig
+            if(mcuDTO.getModulesLeipzig() == null) modulesConnection.removeAllModulesLeipzig(); // remove all module leipzig
 
             List<String> savedNameList = getModuleLeipzigNameFromModuleConnection(modulesConnection);
-            List<String> updatedNameList = getModuleLeipzigNameFromModuleConnectionUpdateDTO(mc);
+            List<String> updatedNameList = getModuleLeipzigNameFromModuleConnectionUpdateDTO(mcuDTO);
             List<String> deleteNameList = new ArrayList<>(savedNameList);
             deleteNameList.removeAll(updatedNameList);
 
             removeAllDeletedModulesLeipzig(modulesConnection, deleteNameList);
-            moduleLeipzigService.updateModulesLeipzig(modulesConnection, mc.getModulesLeipzig());
+            moduleLeipzigService.updateModulesLeipzig(modulesConnection, mcuDTO.getModulesLeipzig());
 
             // modulesConnection will be saved in application service due to cascade all
         }
