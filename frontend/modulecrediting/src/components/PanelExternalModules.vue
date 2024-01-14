@@ -96,8 +96,6 @@ defineExpose({
 
     <h4>Anzurechnende Module</h4>
 
-    {{externalModulesList}}
-
     <div v-if="type === 'new'" class="external-modules-list">
       <PanelExternalModulesItem
           v-for="i in externalModulesList"

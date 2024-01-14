@@ -8,36 +8,49 @@ functionality:
 
 <script setup>
 import { useRoute } from "vue-router";
-import { ref, onBeforeMount } from "vue"
+import { ref, computed, onBeforeMount } from "vue"
 import FilterSelector from "@/components/FilterSelector.vue";
 import ApplicationOverview from "@/components/ApplicationOverview.vue";
 import { getApplications } from "@/scripts/axios-requests";
-import { getFormattedDate } from "@/scripts/date-utils";
-
-let applicationList = ref([])
-onBeforeMount(() => {
-  getApplications()
-      .then(data => applicationList.value = data)
-})
+import { parseRequestDate } from "@/scripts/date-utils";
+import { filterApplications } from "@/scripts/applications-filter";
 
 const route = useRoute()
+
+let allApplications = ref([])
+onBeforeMount(() => {
+  getApplications()
+      .then(data => allApplications.value = data)
+})
+
+const filter = ref()
+
+const filteredApplications = computed(() => {
+  if (filter.value) {
+    return filterApplications(filter.value, allApplications.value)
+  } else {
+    return allApplications.value
+  }
+})
 </script>
 
 <template>
   <div class="main">
-    <FilterSelector></FilterSelector>
+    <FilterSelector ref="filter" />
     <div class="overview-list">
-      <div v-for="application in applicationList">
+
+      <div v-for="application in filteredApplications">
         <ApplicationOverview
             :id="application['id']"
             :status="application['fullStatus']"
             :course="application['courseLeipzig']['name']"
-            :creation-date="getFormattedDate(new Date(application['creationDate']))"
-            :last-edited-date="getFormattedDate(new Date(application['lastEditedDate']))"
-            :decision-date="getFormattedDate(new Date(application['decisionDate']))"
+            :creation-date="parseRequestDate(application['creationDate'])"
+            :last-edited-date="parseRequestDate(application['lastEditedDate'])"
+            :decision-date="parseRequestDate(application['decisionDate'])"
             :forward="route.meta['forward']"
         />
       </div>
+
     </div>
   </div>
 </template>
