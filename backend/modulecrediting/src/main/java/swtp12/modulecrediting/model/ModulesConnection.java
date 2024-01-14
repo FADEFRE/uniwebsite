@@ -42,7 +42,7 @@ public class ModulesConnection {
     //Relation ModulesConnection <-> ModuleApplication (Setter in ModuleApplication)
     @OneToMany(mappedBy = "modulesConnection", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JsonManagedReference
-    @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class})
+    @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class,Views.ApplicationOverview.class})
     private List<ModuleApplication> moduleApplications = new ArrayList<>();
 
     //Relation ModulesConnection <-> ModuleLeipzig
