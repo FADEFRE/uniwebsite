@@ -9,7 +9,7 @@ exposes:
 -->
 
 <script setup>
-import {ref, computed, onBeforeMount} from "vue";
+import { ref, computed, onBeforeMount } from "vue";
 import { getWeekAgo, getMonthAgo, getSixMonthAgo, getYearAgo } from "@/scripts/date-utils";
 import { getCoursesLeipzig } from "@/scripts/axios-requests";
 
@@ -46,7 +46,7 @@ const course = ref()
 
 onBeforeMount(() => {
   getCoursesLeipzig()
-      .then(data => courses.value = data)
+    .then(data => courses.value = data)
 })
 
 defineExpose({
@@ -60,7 +60,7 @@ defineExpose({
 
     <h3>Filteroptionen</h3>
 
-    <div>
+    <div class="search-container">
       <h4>Suchen</h4>
       <InputText v-model="searchString" placeholder="Antrag suchen">
         <!-- todo place search icon -->
@@ -68,18 +68,18 @@ defineExpose({
       <small>Suchen nach: Vorgangsnummer, Modulname, Universität</small>
     </div>
 
-    <div>
+    <div class="general-container">
       <h4>Allgemein</h4>
-      <div>
-        <div @click="dateType = 'creation'">
+      <div class="date-filter-container">
+        <div @click="dateType = 'creation'" class="date-block" :class="{ 'selected': dateType==='creation'}">
           <img src="../assets/icons/CreationDate.svg">
           <p v-if="dateType === 'creation'">Erstellt</p>
         </div>
-        <div @click="dateType = 'lastEdit'">
+        <div @click="dateType = 'lastEdit'" class="date-block" :class="{ 'selected': dateType === 'lastEdit' }">
           <img src="../assets/icons/LastEditedDate.svg">
           <p v-if="dateType === 'lastEdit'">Zuletzt bearbeitet</p>
         </div>
-        <div @click="dateType = 'decision'">
+        <div @click="dateType = 'decision'" class="date-block" :class="{ 'selected': dateType === 'decision' }">
           <img src="../assets/icons/DecisionDate.svg">
           <p v-if="dateType === 'decision'">Beschlossen</p>
         </div>
@@ -89,30 +89,30 @@ defineExpose({
       </div>
     </div>
 
-    <div>
+    <div class="status-list-container">
       <!-- todo add correct styles -->
       <h4>Status</h4>
-      <div :class="{ 'selected': statusNew }" @click="statusNew ? statusNew=false : statusNew=true">
-        <p>NEU</p>
+      <div :class="{ 'selected': statusNew }" class="statusNew status-container"
+        @click="statusNew ? statusNew = false : statusNew = true">
+        <p class="overview-text">NEU</p>
       </div>
-      <div :class="{ 'selected': statusStudyOffice }" @click="statusStudyOffice ? statusStudyOffice=false : statusStudyOffice=true">
-        <p>STUDIENBÜRO</p>
+      <div :class="{ 'selected': statusStudyOffice }" class="statusStudyOffice status-container"
+        @click="statusStudyOffice ? statusStudyOffice = false : statusStudyOffice = true">
+        <p class="overview-text">STUDIENBÜRO</p>
       </div>
-      <div :class="{ 'selected': statusChairman }" @click="statusChairman ? statusChairman=false : statusChairman=true">
-        <p>PRÜFUNGSAUSSCHUSS</p>
+      <div :class="{ 'selected': statusChairman }" class="statusChairman status-container"
+        @click="statusChairman ? statusChairman = false : statusChairman = true">
+        <p class="overview-text">PRÜFUNGSAUSSCHUSS</p>
       </div>
-      <div :class="{ 'selected': statusClosed }" @click="statusClosed ? statusClosed=false : statusClosed=true">
-        <p>ABGESCHLOSSEN</p>
+      <div :class="{ 'selected': statusClosed }" class="statusClosed status-container"
+        @click="statusClosed ? statusClosed = false : statusClosed = true">
+        <p class="overview-text">ABGESCHLOSSEN</p>
       </div>
     </div>
 
-    <div>
+    <div class="course-container">
       <h4>Studiengang</h4>
-      <Dropdown show-clear
-          v-model="course"
-          :options="courses"
-          placeholder="Studiengang auswählen"
-      />
+      <Dropdown show-clear v-model="course" :options="courses" placeholder="Studiengang auswählen" />
     </div>
 
   </div>
@@ -124,8 +124,68 @@ defineExpose({
 
 .filter-container {
   @include basicContainer();
+  width: 30%;
 }
+
+.general-container {
+  @include verticalList(small);
+  width: 100%;
+}
+.course-container {
+  width: 100%;
+}
+
+.status-list-container {
+  @include verticalList(small);
+  gap: 0.2rem;
+  width: 100%;
+}
+
+.date-filter-container {
+  border: 1px $dark-gray solid;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  align-self: stretch;
+}
+.date-block {
+  @include smallHighlightBox();
+
+  &.selected {
+    background-color: $gray;
+  }
+}
+
+.status-container {
+  @include smallHighlightBox();
+  background-color: $gray;
+  width: 100%;
+}
+
+.overview-text {
+  color: $dark-gray;
+}
+
 .selected {
-  background-color: salmon;
+  & .overview-text {
+    color: $white;
+  }
+
+  &.statusNew {
+    background-color: $green;
+  }
+
+  &.statusStudyOffice {
+    background-color: $orange;
+  }
+
+  &.statusChairman {
+    background-color: $orange;
+  }
+
+  &.statusClosed {
+    background-color: $red;
+  }
 }
 </style>

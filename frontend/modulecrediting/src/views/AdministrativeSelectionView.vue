@@ -65,5 +65,6 @@ const filteredApplications = computed(() => {
 
 .overview-list {
   @include verticalList(big);
+  width: 70%;
 }
 </style>
