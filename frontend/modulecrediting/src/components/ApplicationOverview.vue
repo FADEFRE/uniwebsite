@@ -46,10 +46,15 @@ const triggerForward = () => {
         router.push({ name: props.forward, params: { id: props.id } })
     }
 }
+
+const containerStyle = computed(() => {
+    if (props.forward) return "application-overview-container selection-view";
+    return "application-overview-container";
+});
 </script>
 
 <template>
-    <div class="application-overview-container" @click="triggerForward">
+    <div :class="containerStyle" @click="triggerForward">
         <div class="dates">
             <!-- Div-Block Creation Date -->
             <div v-if="creationDate" class="date-block">
@@ -106,19 +111,21 @@ const triggerForward = () => {
     display: flex;
     padding: 0.625rem 0.625rem 0.625rem 1.25rem;
     justify-content: space-between;
-    align-items: center;
-    align-content: center;
     row-gap: 0.625rem;
     align-self: stretch;
-    flex-wrap: wrap;
+    flex-wrap: wrap;    
 }
+.selection-view {
+    flex-direction: column;
+}
+
 
 .application-info {
     display: flex;
     align-items: center;
     align-content: center;
     gap: 0.9375rem;
-    flex-wrap: wrap;
+    max-width: max-content;
 }
 
 .course-container {
