@@ -5,25 +5,29 @@ slots header, icons and default are passed on to PrimeVue Panel
 -->
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref } from "vue";
 
-const collapsed = ref()
+const arrowStyle = ref('arrow-icon arrow-up')
 
-const arrowStyle = computed(() =>{
-  if(!collapsed.value) return "arrow-icon arrow-up";
-  return "arrow-icon"; 
-})
+const toggleArrowStyle = (collapsed) => {
+  if (collapsed) {
+    arrowStyle.value = 'arrow-icon'
+  } else {
+    arrowStyle.value = 'arrow-icon arrow-up'
+  }
+}
 </script>
 
 <template>
-  <Panel toggleable :collapsed="collapsed">
+  <Panel toggleable @update:collapsed="toggleArrowStyle">
     <template #header>
       <slot name="header"></slot>
     </template>
     <template #icons>
       <slot name="icons"></slot>
-      <img src="@/assets/icons/ArrowRed.svg" @click="collapsed = !collapsed" :class="arrowStyle">
-
+    </template>
+    <template #togglericon>
+      <img src="@/assets/icons/ArrowRed.svg" :class="arrowStyle">
     </template>
     <slot></slot>
   </Panel>
@@ -60,10 +64,6 @@ const arrowStyle = computed(() =>{
   margin-left: 0.625rem;
 }
 
-:deep(.p-panel-toggler) {
-  display: none !important;
-}
-
 :deep(.p-panel-content) {
   border: none;
   padding: 1.25rem 6.25rem;
@@ -76,6 +76,7 @@ const arrowStyle = computed(() =>{
 .arrow-icon {
   transition: 0.2s ease-in-out;
 }
+
 .arrow-up {
   transform: rotate(180deg);
 }
