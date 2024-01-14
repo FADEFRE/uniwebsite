@@ -65,7 +65,7 @@ defineExpose({
       <InputText v-model="searchString" placeholder="Antrag suchen">
         <!-- todo place search icon -->
       </InputText>
-      <small>Suchen nach: Vorgangsnummer</small>
+      <small>Suchen nach: Vorgangsnummer, Modulname, Universität</small>
     </div>
 
     <div>
