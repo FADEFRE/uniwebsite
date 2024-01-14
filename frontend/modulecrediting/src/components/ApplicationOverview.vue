@@ -30,9 +30,9 @@ const props = defineProps({
         type: String,
         required: true,
     },
-   forward: {
-      type: String,
-   }
+    forward: {
+        type: String,
+    }
 });
 
 const statusStyle = computed(() => {
@@ -42,9 +42,9 @@ const statusStyle = computed(() => {
 })
 
 const triggerForward = () => {
-  if (props.forward && props.id) {
-    router.push({ name: props.forward, params: { id: props.id } })
-  }
+    if (props.forward && props.id) {
+        router.push({ name: props.forward, params: { id: props.id } })
+    }
 }
 </script>
 
@@ -76,18 +76,21 @@ const triggerForward = () => {
                 <div class="vorgangsnummer-text overview-text">Vorgangsnummer: {{ id || 'Placeholder for Vorgangsnummer' }}
                 </div>
             </div>
-            <div :class="statusStyle">
-                <div class="status-text overview-text">Status: {{ status || 'Placeholder for Status' }}</div>
-            </div>
 
             <!-- Slot study course -->
             <div>
                 <slot>
-                <div class="course-container">
-                    <div class="overview-text">{{ course }}</div>
-                </div>
+                    <div class="course-container">
+                        <div class="overview-text">{{ course }}</div>
+                    </div>
                 </slot>
             </div>
+
+            <div :class="statusStyle">
+                <div class="status-text overview-text">Status: {{ status || 'Placeholder for Status' }}</div>
+            </div>
+
+
         </div>
     </div>
 </template>
@@ -156,4 +159,5 @@ const triggerForward = () => {
     display: flex;
     align-items: center;
     gap: 0.625rem;
-}</style>
+}
+</style>
