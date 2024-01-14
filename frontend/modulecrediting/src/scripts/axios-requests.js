@@ -9,7 +9,7 @@ parameters:
     none
  */
 function getCoursesLeipzig () {
-    return axios.get(url + '/courses-leipzig')
+    return axios.get(url + '/api/courses-leipzig')
         .then(response => {
             const courses = response.data.map(obj => obj.name)
             console.log(courses)
@@ -25,7 +25,7 @@ parameters:
     none
  */
 function getCourseData () {
-    return axios.get(url + '/courses-leipzig')
+    return axios.get(url + '/api/courses-leipzig')
         .then(response => {
             console.log(response.data)
             return response.data
@@ -40,7 +40,7 @@ parameters:
     course - String, course name
  */
 function getModulesByCourse (course) {
-    return axios.get(url + '/courses-leipzig')
+    return axios.get(url + '/api/courses-leipzig')
         .then(response => {
             const courseObject = response.data.find(obj => obj.name === course)
             return courseObject.modulesLeipzigCourse.map(obj => obj.name)
@@ -55,7 +55,7 @@ parameters:
     none
  */
 function getApplications () {
-    return axios.get(url + '/applications')
+    return axios.get(url + '/api/applications')
         .then(response => response.data)
 }
 
@@ -67,7 +67,7 @@ parameters:
     id - Number, application id
  */
 function getApplicationById (id) {
-    return axios.get(url + '/applications/' + id)
+    return axios.get(url + '/api/applications/' + id)
         .then(response => {
             return response.data
         })
@@ -81,7 +81,7 @@ parameters:
     id - Number, application id
  */
 function getApplicationByIdForStatus (id) {
-    return axios.get(url + '/applications/student/' + id)
+    return axios.get(url + '/api/applications/student/' + id)
         .then(response => {
             return response.data
         })
@@ -95,7 +95,7 @@ parameters:
     moduleConnectionId - Number, module connection id
  */
 function getRelatedModuleConnections (moduleConnectionId) {
-    return axios.get(url + '/modules-connection/' + moduleConnectionId + '/related')
+    return axios.get(url + '/api/modules-connection/' + moduleConnectionId + '/related')
         .then(response => {
             return response.data
         })
@@ -138,7 +138,7 @@ function postApplication (course, applicationObjects) {
     console.log('post request to /applications')
     console.log([...formData])
 
-    return axios.post(url + '/applications', formData)
+    return axios.post(url + '/api/applications', formData)
         .then(response => {
             console.log('post application successful, data returned: ' + response.data)
             return response.data
@@ -196,7 +196,7 @@ function putApplication (userRole, id, courseLeipzig, connectionObjects) {
 
     console.log('calling applications put request')
     console.log([...formData])
-    return axios.put(url + '/applications/' + id, formData)
+    return axios.put(url + '/api/applications/' + id, formData)
         .then(response => console.log(response.data))
 }
 
@@ -222,7 +222,7 @@ function putStudyOffice (id, applicationObjects) {
         }
     )
     console.log([...formData])
-    return axios.put(url + '/applications/' + id, formData)
+    return axios.put(url + '/api/applications/' + id, formData)
         .then(response => console.log(response.data))
 }
 
@@ -248,7 +248,7 @@ function putChairman (id, applicationObjects) {
         }
     )
     console.log([...formData])
-    return axios.put(url + '/applications/' + id, formData)
+    return axios.put(url + '/api/applications/' + id, formData)
         .then(response => console.log(response.data))
 }
 

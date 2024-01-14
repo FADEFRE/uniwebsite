@@ -25,7 +25,7 @@ onBeforeMount(() => {
 });
 
 const openDetailView = () => {
-    axios.get(`${url}/applications/${id}/exists`)
+    axios.get(`${url}/api/applications/${id}/exists`)
         .then(response => {
             if (response.data) {
                 const routeData = router.resolve({ name: 'statusDetail', params: { id: id } });
