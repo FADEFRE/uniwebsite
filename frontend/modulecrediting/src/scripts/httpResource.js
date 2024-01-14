@@ -1,5 +1,5 @@
 import axios from "axios";
-import { url } from "../scripts/url-config";
+import { url } from "./url-config";
 
 const isHandlerEnabled = (config = {}) => {
     return config.hasOwnProperty("handlerEnabled") && !config.handlerEnabled

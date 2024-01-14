@@ -1,7 +1,7 @@
 <script setup>
 
 import router from "./router";
-import httpResource from "./http/httpResource";
+import httpResource from "./scripts/httpResource"
 import { performLogout } from "./util/utils";
 
 async function logout () {

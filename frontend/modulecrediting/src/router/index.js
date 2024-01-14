@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import SubmitApplicationView from '../views/SubmitApplicationView.vue'
 import { getAuthenticatedUser } from '../util/utils';
 import { useAuthStore } from '../store/authStore2';
-import httpResource from "../http/httpResource";
+import httpResource from "../scripts/httpResource";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
