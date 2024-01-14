@@ -57,23 +57,13 @@ onBeforeMount(() => {
 })
 
 // connection handling
-const modifiedModulesData = ref(props.modulesData || [{ id: "", name: "", points: "", pointSystem: "" }])
-
-const externalModulesList = ref()
-if (props.modulesData) {
-  externalModulesList.value = [...Array(props.modulesData.length).keys()].map(i => i)
-} else {
-  externalModulesList.value = [0]
-}
+const externalModulesList = ref([0])
 
 const addExternalModule = () => {
-  const emptyModule = { id: "", name: "", points: "", pointSystem: "" }
   if (externalModulesList.value.length > 0) {
     const nextIndex = Math.max(...externalModulesList.value) + 1
-    modifiedModulesData.value.push(emptyModule)
     externalModulesList.value.push(nextIndex)
   } else {
-    modifiedModulesData.value = [emptyModule]
     externalModulesList.value.push(0)
   }
 }
@@ -108,26 +98,7 @@ defineExpose({
       <small>Anrechnung mehrerer externer Module auf Module der Universität Leipzig</small>
     </div>
 
-    <div v-else-if="type === 'edit'" class="external-modules-list">
-      <PanelExternalModulesItem
-          v-for="i in externalModulesList"
-          :key="i"
-          :type="type"
-          :id="modifiedModulesData[i].id"
-          :name="modifiedModulesData[i].name"
-          :university="modifiedModulesData[i].university"
-          :points="modifiedModulesData[i].points"
-          :point-system="modifiedModulesData[i].pointSystem"
-          :selected-file="modifiedModulesData[i]['pdfDocument']"
-          ref="externalModules"
-          @delete-self="deleteExternalModule(i)"
-      />
-      <ButtonAdd @click="addExternalModule">Fremdmodul hinzufuegen</ButtonAdd>
-      <small>Anrechnung mehrerer externer Module auf Module der Universität Leipzig</small>
-    </div>
-
-
-    <div v-else-if="type === 'readonly'" class="external-modules-list">
+    <div v-else-if="type === 'edit' || type === 'readonly'" class="external-modules-list">
       <PanelExternalModulesItem
           v-for="module in modulesData"
           :type="type"
