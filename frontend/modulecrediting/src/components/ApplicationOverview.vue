@@ -60,13 +60,13 @@ const triggerForward = () => {
             <!-- Div-Block Last edited Date -->
             <div v-if="lastEditedDate" class="date-block">
                 <img :src="LastEditedDate" alt="LastEdited Date Icon" />
-                <p>{{ creationDate }}</p>
+                <p>{{ lastEditedDate }}</p>
             </div>
 
             <!-- Div-Block Decision Date -->
             <div v-if="decisionDate" class="date-block">
                 <img :src="DecisionDate" alt="Decision Date Icon" />
-                <p>{{ creationDate }}</p>
+                <p>{{ decisionDate }}</p>
             </div>
         </div>
 
