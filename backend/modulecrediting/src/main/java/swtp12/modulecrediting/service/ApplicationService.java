@@ -37,12 +37,10 @@ public class ApplicationService {
     public String updateApplication(String id, ApplicationUpdateDTO applicationDTO) {
         Application application = getApplicationById(id);
 
-        if(applicationDTO.getModulesConnections() != null) // check if any changes were made
-            modulesConnectionService.updateModulesConnection(
-                    applicationDTO.getModulesConnections(),
-                    applicationDTO.getUserRole()
-            );
-
+        // check if any changes were made
+        if(applicationDTO.getModulesConnections() != null) {
+            modulesConnectionService.updateModulesConnection(applicationDTO.getModulesConnections(), applicationDTO.getUserRole());
+        }
         application.setLastEditedDate(LocalDateTime.now());
         updateApplicationStatus(application);
 
@@ -52,23 +50,26 @@ public class ApplicationService {
 
     // FUNCTION TO UPDADTE APPLICATION STATUS ON UPDATE
     public void updateApplicationStatus(Application application) {
+        
         boolean noDecisionSuggestionCompleted = true;
         boolean allDecisionsSuggestionsCompleted = true;
         boolean allDecisionsFinalCompleted = true;
 
 
         for(ModulesConnection m : application.getModulesConnections()) {
-            if(m.getDecisionSuggestion() == unedited) allDecisionsSuggestionsCompleted = false;
-            if(m.getDecisionSuggestion() == accepted || m.getDecisionSuggestion() == accepted) noDecisionSuggestionCompleted = false;
-            if(m.getDecisionFinal() == asExamCertificate) allDecisionsFinalCompleted = false;
+            if(m.getDecisionSuggestion() == unedited) { allDecisionsSuggestionsCompleted = false; }
+            else { noDecisionSuggestionCompleted = false; }
+            if(m.getDecisionFinal() == unedited) { allDecisionsFinalCompleted = false; }
         }
 
-        if(!noDecisionSuggestionCompleted) application.setFullStatus(STUDIENBÜRO);
-        if(allDecisionsSuggestionsCompleted) application.setFullStatus(PRÜFUNGSAUSSCHUSS);
         if(allDecisionsFinalCompleted) {
             application.setFullStatus(ABGESCHLOSSEN);
             application.setDecisionDate(LocalDateTime.now());
         }
+        else if(allDecisionsSuggestionsCompleted) { application.setFullStatus(PRÜFUNGSAUSSCHUSS); }
+        else if(!noDecisionSuggestionCompleted) { application.setFullStatus(STUDIENBÜRO); }
+        
+        
     }
 
     public String createApplication(ApplicationCreateDTO applicationDTO) {
