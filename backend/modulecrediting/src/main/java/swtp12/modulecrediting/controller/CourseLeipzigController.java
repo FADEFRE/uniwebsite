@@ -17,7 +17,7 @@ import swtp12.modulecrediting.service.CourseLeipzigService;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/courses-leipzig")
+@RequestMapping("/api/courses-leipzig")
 public class CourseLeipzigController {
     @Autowired
     CourseLeipzigService service;

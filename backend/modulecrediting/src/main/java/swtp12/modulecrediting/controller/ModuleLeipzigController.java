@@ -16,7 +16,7 @@ import swtp12.modulecrediting.model.Views;
 import swtp12.modulecrediting.repository.ModuleLeipzigRepository;
 
 @RestController
-@RequestMapping("/modules-leipzig")
+@RequestMapping("/api/modules-leipzig")
 @CrossOrigin
 public class ModuleLeipzigController {
     @Autowired

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import swtp12.modulecrediting.service.PdfDocumentService;
 
 @RestController
-@RequestMapping("/pdf-documents")
+@RequestMapping("/api/pdf-documents")
 @CrossOrigin
 public class PdfDocumentContoller {
     @Autowired

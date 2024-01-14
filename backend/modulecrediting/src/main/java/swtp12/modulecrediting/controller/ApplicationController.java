@@ -33,7 +33,7 @@ import swtp12.modulecrediting.service.GeneratedPdfService;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/applications")
+@RequestMapping("/api/applications")
 public class ApplicationController {
     @Autowired
     private ApplicationService applicationService;

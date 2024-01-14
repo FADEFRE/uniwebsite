@@ -36,7 +36,7 @@ import swtp12.modulecrediting.util.SecurityCipher;
 
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 @CrossOrigin
 public class AuthController {
     
