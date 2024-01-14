@@ -38,7 +38,6 @@ const connectionsData = computed(() => {
       const connectionObj = {}
       connectionObj['id'] = connection.id
       connectionObj['externalModules'] = connection.externalModules.map(m => m.name)
-      connectionObj['internalModules'] = connection.internalModules
       dataArray.push(connectionObj)
     }
   }
