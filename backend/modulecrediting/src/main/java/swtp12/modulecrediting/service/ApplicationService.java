@@ -49,6 +49,25 @@ public class ApplicationService {
         return id;
     }
 
+    public Boolean updateApplicationStatusAllowed(String id) {
+        Application application = getApplicationById(id);
+
+        boolean noDecisionSuggestionCompleted = true;
+        boolean allDecisionsSuggestionsCompleted = true;
+        boolean allDecisionsFinalCompleted = true;
+
+
+        for(ModulesConnection m : application.getModulesConnections()) {
+            if(m.getDecisionSuggestion() == unedited) { allDecisionsSuggestionsCompleted = false; }
+            else { noDecisionSuggestionCompleted = false; }
+            if(m.getDecisionFinal() == unedited) { allDecisionsFinalCompleted = false; }
+        }
+
+        if(allDecisionsFinalCompleted) return true;
+        if(allDecisionsSuggestionsCompleted) return true;
+
+        return false;
+    }
     // FUNCTION TO UPDADTE APPLICATION STATUS ON UPDATE
     public EnumApplicationStatus updateApplicationStatus(String id) {
         Application application = getApplicationById(id);
@@ -121,4 +140,6 @@ public class ApplicationService {
     public boolean applicationExists(String id) {
         return applicationRepository.existsById(id);
     }
+
+
 }

@@ -44,6 +44,10 @@ public class ApplicationController {
         return ResponseEntity.ok(applicationService.updateApplication(id, applicationUpdateDTO));
     }
 
+    @GetMapping("/{id}/update-status-allowed")
+    public ResponseEntity<Boolean> updateApplicationStatusAllowed(@PathVariable String id) {
+        return ResponseEntity.ok(applicationService.updateApplicationStatusAllowed(id));
+    }
     @PutMapping("/{id}/update-status")
     public ResponseEntity<EnumApplicationStatus> updateApplicationStatus(@PathVariable String id) {
         return ResponseEntity.ok(applicationService.updateApplicationStatus(id));
