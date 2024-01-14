@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import SubmitApplicationView from '../views/SubmitApplicationView.vue'
-import { getAuthenticatedUser } from '../util/utils';
+import { getAuthenticatedUser } from '../scripts/utils';
 import { useAuthStore } from '../store/authStore2';
 import httpResource from "../scripts/httpResource";
 

@@ -1,6 +1,6 @@
 import router from "../router";
 import httpResource from "../scripts/httpResource";
-import { parseApierror, performLogout, getAuthenticatedUser} from "../util/utils";
+import { parseApierror, performLogout, getAuthenticatedUser} from "../scripts/utils";
 import { ref } from "vue";
 import { useAuthStore } from '../store/authStore2';
 
