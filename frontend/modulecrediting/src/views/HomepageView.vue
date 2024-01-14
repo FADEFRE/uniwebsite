@@ -27,6 +27,12 @@ const openDetailView = () => {
 const goToSubmitApplication = () => {
     router.push({ name: 'submitApplication' })
 }
+
+const handleEnterKey = (event) => {
+    if (event.key === 'Enter') {
+        openDetailView();
+    }
+}
 </script>
 
 <template>
@@ -41,7 +47,7 @@ const goToSubmitApplication = () => {
             <!-- HomepageContainer StatusView -->
             <HomepageContainer :header="'Status einsehen'"
                 :text="'Sehen Sie den Status von bereits gestellten Anträgen über die 6-stellige Vorgangsnummer ein.'">
-                <InputText v-model="id" :class="{ 'p-invalid': isInvalid }" placeholder="0-0-0-0-0-0" />
+                <InputText v-model="id" :class="{ 'p-invalid': isInvalid }" placeholder="0-0-0-0-0-0" @keydown.enter.prevent="openDetailView" />
                 <ButtonLink @click="openDetailView" class="p-button-primary">Status einsehen</ButtonLink>
             </HomepageContainer>
         </div>
