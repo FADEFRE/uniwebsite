@@ -33,6 +33,10 @@ const handleEnterKey = (event) => {
         openDetailView();
     }
 }
+
+const validateInput = () => {
+    id.value = id.value.replace(/[^0-9]/g, '');
+}
 </script>
 
 <template>
@@ -47,7 +51,7 @@ const handleEnterKey = (event) => {
             <!-- HomepageContainer StatusView -->
             <HomepageContainer :header="'Status einsehen'"
                 :text="'Sehen Sie den Status von bereits gestellten Anträgen über die 6-stellige Vorgangsnummer ein.'">
-                <InputText v-model="id" :class="{ 'p-invalid': isInvalid }" placeholder="0-0-0-0-0-0" @keydown.enter.prevent="openDetailView" />
+                <InputText v-model="id" :class="{ 'p-invalid': isInvalid }" placeholder="0-0-0-0-0-0" @keydown.enter.prevent="openDetailView" @input="validateInput" />
                 <ButtonLink @click="openDetailView" class="p-button-primary">Status einsehen</ButtonLink>
             </HomepageContainer>
         </div>
