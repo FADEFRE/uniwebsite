@@ -29,7 +29,7 @@ const props = defineProps({
     required: true,
     // type: String,
     validator(value) {
-      return ['study-office', 'chairman'].includes(value)
+      return ['study-office', 'chairman', 'readonly'].includes(value)
     }
   },
   selectableModules: {
@@ -82,12 +82,12 @@ defineExpose({
       </template>
 
       <PanelExternalModules
-          type="edit"
+          :type="type !== 'readonly' ? 'edit' : 'readonly'"
           :modules-data="connectionData['moduleApplications']"
           ref="panelExternalModules"
       />
       <PanelInternalModules
-          type="edit"
+          :type="type !== 'readonly' ? 'edit' : 'readonly'"
           :selected-modules="connectionData['modulesLeipzig'].map(m => m['name'])"
           :options="selectableModules"
           ref="panelInternalModules"

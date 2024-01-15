@@ -11,7 +11,8 @@ import ApplicationConnectionLinks from "@/components/ApplicationConnectionLinks.
 
 const route = useRoute()
 const id = route.params.id
-const type = route.meta['type']
+const routeType = route.meta['type']
+const editType = ref('readonly')
 
 const applicationData = ref()
 const moduleOptions = ref([])
@@ -20,8 +21,15 @@ const passOnPossible = ref(false)
 onBeforeMount(() => {
   getApplicationById(id)
     .then(data => {
+      // applicationData
       data['modulesConnections'].sort((a, b) => a.id - b.id)
       applicationData.value = data
+      // editType
+      if (routeType === 'study-office' && (data['fullStatus'] === 'NEU' || data['fullStatus'] === 'STUDIENBÜRO')) {
+        editType.value = 'study-office'
+      } else if (routeType === 'chairman' && (data['fullStatus'] === 'STUDIENBÜRO' || data['fullStatus'] === 'PRÜFUNGSAUSSCHUSS')) {
+        editType.value = 'chairman'
+      }
       return data
     })
     .then(data => {
@@ -60,8 +68,8 @@ const discardChanges = () => {
 const saveChanges = () => {
   // defining userRole
   let userRole = undefined
-  if (type === 'study-office') userRole = 'study-office'
-  else if (type === 'chairman') userRole = 'pav'
+  if (routeType === 'study-office') userRole = 'study-office'
+  else if (routeType === 'chairman') userRole = 'pav'
   else console.warn('AdministrativeDetailView: userRole is undefined in triggerPutRequest')
 
   // creation connectionObjects
@@ -73,11 +81,10 @@ const saveChanges = () => {
       externalModules: connection.externalModules,
       internalModules: connection.internalModules,
     }
-    if (type === 'study-office') {
+    if (routeType === 'study-office') {
       if (connection.studyOfficeDecisionData.comment) connectionObj['commentStudyOffice'] = connection.studyOfficeDecisionData.comment
       if (connection.studyOfficeDecisionData.decision) connectionObj['decisionSuggestion'] = connection.studyOfficeDecisionData.decision
-    }
-    else if (type === 'chairman') {
+    } else if (routeType === 'chairman') {
       if (connection.chairmanDecisionData.comment) connectionObj['commentDecision'] = connection.chairmanDecisionData.comment
       if (connection.chairmanDecisionData.decision) connectionObj['decisionFinal'] = connection.chairmanDecisionData.decision
     }
@@ -122,15 +129,19 @@ const triggerPassOn = () => {
 
       <div v-for="connection in applicationData['modulesConnections']">
 
-        <AdministrativePanel :type="type" :selectable-modules="moduleOptions" :connection-data="connection"
+        <AdministrativePanel :type="editType" :selectable-modules="moduleOptions" :connection-data="connection"
           ref="moduleConnections" :id="connection.id" />
 
       </div>
 
-      <ButtonLink @click="discardChanges">Änderungen verwerfen</ButtonLink>
-      <ButtonLink @click="saveChanges">Speichern</ButtonLink>
-      <ButtonLink @click="triggerPassOn" :class="{ 'pass-on-not-possible': !passOnPossible }" primaryButton="true">
-        Weitergeben</ButtonLink>
+      <div v-if="editType !== 'readonly'">
+        <ButtonLink @click="discardChanges">Änderungen verwerfen</ButtonLink>
+        <ButtonLink @click="saveChanges">Speichern</ButtonLink>
+        <ButtonLink @click="triggerPassOn" :class="{ 'pass-on-not-possible': !passOnPossible }" primaryButton="true">
+          Weitergeben
+        </ButtonLink>
+      </div>
+
 
     </div>
 
