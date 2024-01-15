@@ -52,19 +52,17 @@ public class ApplicationService {
     public Boolean updateApplicationStatusAllowed(String id) {
         Application application = getApplicationById(id);
 
-        boolean noDecisionSuggestionCompleted = true;
         boolean allDecisionsSuggestionsCompleted = true;
         boolean allDecisionsFinalCompleted = true;
 
-
         for(ModulesConnection m : application.getModulesConnections()) {
-            if(m.getDecisionSuggestion() == unedited) { allDecisionsSuggestionsCompleted = false; }
-            else { noDecisionSuggestionCompleted = false; }
-            if(m.getDecisionFinal() == unedited) { allDecisionsFinalCompleted = false; }
+            if(m.getDecisionSuggestion() == unedited) allDecisionsSuggestionsCompleted = false;
+            if(m.getDecisionFinal() == unedited) allDecisionsFinalCompleted = false;
         }
 
-        if(allDecisionsFinalCompleted) return true;
-        if(allDecisionsSuggestionsCompleted) return true;
+        if(application.getFullStatus() == ABGESCHLOSSEN) return false;
+        if(allDecisionsFinalCompleted && application.getFullStatus() == PRÜFUNGSAUSSCHUSS) return true;
+        if(allDecisionsSuggestionsCompleted && application.getFullStatus() == STUDIENBÜRO) return true;
 
         return false;
     }
@@ -78,9 +76,9 @@ public class ApplicationService {
 
 
         for(ModulesConnection m : application.getModulesConnections()) {
-            if(m.getDecisionSuggestion() == unedited) { allDecisionsSuggestionsCompleted = false; }
-            else { noDecisionSuggestionCompleted = false; }
-            if(m.getDecisionFinal() == unedited) { allDecisionsFinalCompleted = false; }
+            if(m.getDecisionSuggestion() == unedited)  allDecisionsSuggestionsCompleted = false;
+            else noDecisionSuggestionCompleted = false;
+            if(m.getDecisionFinal() == unedited) allDecisionsFinalCompleted = false;
         }
 
         if(allDecisionsFinalCompleted) {
