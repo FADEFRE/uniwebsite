@@ -4,7 +4,7 @@ import { ref, computed, onBeforeMount } from "vue";
 import ApplicationOverview from "@/components/ApplicationOverview.vue";
 import AdministrativePanel from "@/components/AdministrativePanel.vue";
 import ButtonLink from "@/components/ButtonLink.vue";
-import { getApplicationById, getModulesByCourse, putApplication } from "@/scripts/axios-requests";
+import { getApplicationById, getModulesByCourse, putApplication, updateStatus } from "@/scripts/axios-requests";
 import { parseRequestDate } from "@/scripts/date-utils";
 import ApplicationConnectionLinks from "@/components/ApplicationConnectionLinks.vue";
 
@@ -14,10 +14,22 @@ const type = route.meta['type']
 
 const applicationData = ref()
 const moduleOptions = ref([])
+const passOnPossible = ref(false)
+
+const checkPassOnPossibility = (data) => {
+  let decisionKey = undefined
+  if (type === 'study-office') {
+    decisionKey = 'decisionSuggestion'
+  } else if (type === 'chairman'){
+    decisionKey = 'decisionFinal'
+  }
+  return data['modulesConnections'].every(c => c[decisionKey] !== 'unedited')
+}
 
 onBeforeMount(() => {
   getApplicationById(id)
       .then(data => {
+        passOnPossible.value = checkPassOnPossibility(data)
         applicationData.value = data
         return data
       })
@@ -44,7 +56,11 @@ const connectionsData = computed(() => {
   return dataArray
 })
 
-const triggerPutRequest = () => {
+const discardChanges = () => {
+  location.reload()
+}
+
+const saveChanges = () => {
   // defining userRole
   let userRole = undefined
   if (type === 'study-office') userRole = 'study_office'
@@ -73,6 +89,18 @@ const triggerPutRequest = () => {
 
   // axios request
   putApplication(userRole, applicationData.value['id'], applicationData.value['courseLeipzig']['name'], connectionObjects)
+      .then(_ => location.reload())
+}
+
+const triggerPassOn = () => {
+  updateStatus(id)
+      .then(data => {
+        if (!data) {
+          alert('Fehler beim Weitergeben!')
+        } else {
+          location.reload()
+        }
+      })
 }
 </script>
 
@@ -109,7 +137,9 @@ const triggerPutRequest = () => {
 
       </div>
 
-      <ButtonLink @click="triggerPutRequest">Speichern</ButtonLink>
+      <ButtonLink @click="discardChanges">Änderungen verwerfen</ButtonLink>
+      <ButtonLink @click="saveChanges">Speichern</ButtonLink>
+      <ButtonLink @click="triggerPassOn" :class="{ 'pass-on-possible': passOnPossible }">Weitergeben</ButtonLink>
 
     </div>
 
@@ -131,5 +161,9 @@ const triggerPutRequest = () => {
 .side-infos-container {
   @include verticalList(big);
   width: min-content;
+}
+
+.pass-on-possible {
+  background-color: salmon ;
 }
 </style>

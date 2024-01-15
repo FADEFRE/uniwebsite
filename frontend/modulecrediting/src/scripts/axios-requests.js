@@ -226,6 +226,19 @@ function putStudyOffice (id, applicationObjects) {
         .then(response => console.log(response.data))
 }
 
+function updateStatus (id) {
+    console.log('updating status for applications: ' + id)
+    return axios.put(url + '/api/applications/' + id + '/update-status')
+        .then(response => {
+            if (response.data) {
+                console.log('update successful')
+            } else {
+                console.log('update was not successful')
+            }
+            return response.data
+        })
+}
+
 function putChairman (id, applicationObjects) {
     const formData = new FormData()
     formData.append('userRole', 'pav')  // todo
@@ -262,6 +275,7 @@ export {
     getRelatedModuleConnections,
     postApplication,
     putApplication,
+    updateStatus,
     putStudyOffice,
     putChairman
 }
