@@ -61,8 +61,8 @@ public class ApplicationService {
         }
 
         if(application.getFullStatus() == ABGESCHLOSSEN) return false;
-        if(allDecisionsFinalCompleted && application.getFullStatus() == PRÜFUNGSAUSSCHUSS) return true;
-        if(allDecisionsSuggestionsCompleted && application.getFullStatus() == STUDIENBÜRO) return true;
+        if(allDecisionsFinalCompleted && (application.getFullStatus() == PRÜFUNGSAUSSCHUSS || application.getFullStatus() == STUDIENBÜRO || application.getFullStatus() == NEU)) return true;
+        if(allDecisionsSuggestionsCompleted && (application.getFullStatus() == STUDIENBÜRO || application.getFullStatus() == NEU)) return true;
 
         return false;
     }
