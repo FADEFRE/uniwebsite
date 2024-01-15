@@ -4,7 +4,8 @@ import { ref, computed, onBeforeMount } from "vue";
 import ApplicationOverview from "@/components/ApplicationOverview.vue";
 import AdministrativePanel from "@/components/AdministrativePanel.vue";
 import ButtonLink from "@/components/ButtonLink.vue";
-import { getApplicationById, getModulesByCourse, putApplication, updateStatus } from "@/scripts/axios-requests";
+import { getApplicationById, getModulesByCourse, putApplication,
+  getUpdateStatusAllowed, updateStatus } from "@/scripts/axios-requests";
 import { parseRequestDate } from "@/scripts/date-utils";
 import ApplicationConnectionLinks from "@/components/ApplicationConnectionLinks.vue";
 
@@ -16,20 +17,9 @@ const applicationData = ref()
 const moduleOptions = ref([])
 const passOnPossible = ref(false)
 
-const checkPassOnPossibility = (data) => {
-  let decisionKey = undefined
-  if (type === 'study-office') {
-    decisionKey = 'decisionSuggestion'
-  } else if (type === 'chairman') {
-    decisionKey = 'decisionFinal'
-  }
-  return data['modulesConnections'].every(c => c[decisionKey] !== 'unedited')
-}
-
 onBeforeMount(() => {
   getApplicationById(id)
     .then(data => {
-      passOnPossible.value = checkPassOnPossibility(data)
       applicationData.value = data
       return data
     })
@@ -38,6 +28,12 @@ onBeforeMount(() => {
     })
     .then(modules => {
       moduleOptions.value = modules
+    })
+    .then(_ => {
+        return getUpdateStatusAllowed(id)
+    })
+    .then(updateAllowed => {
+      passOnPossible.value = updateAllowed
     })
 })
 

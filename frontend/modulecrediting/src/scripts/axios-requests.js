@@ -226,6 +226,25 @@ function putStudyOffice (id, applicationObjects) {
         .then(response => console.log(response.data))
 }
 
+/*
+GET-Request to /applications/{id}/update-status-allowed endpoint
+returns true/false if updating application status is allowed
+
+parameters:
+    - id, Number application id
+ */
+function getUpdateStatusAllowed (id) {
+    return axios.get(url + '/api/applications/' + id + '/update-status-allowed')
+        .then(response => response.data)
+}
+
+/*
+PUT-Request to /applications/{id}/update-status endpoint
+updates application status if possible
+
+parameters:
+    - id, Number application id
+ */
 function updateStatus (id) {
     console.log('updating status for applications: ' + id)
     return axios.put(url + '/api/applications/' + id + '/update-status')
@@ -275,6 +294,7 @@ export {
     getRelatedModuleConnections,
     postApplication,
     putApplication,
+    getUpdateStatusAllowed,
     updateStatus,
     putStudyOffice,
     putChairman
