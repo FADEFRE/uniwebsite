@@ -15,12 +15,10 @@ const style = computed(() => {
 
 
 <template>
-  <div>
     <Button :class="style">
       <slot />
       <img src="../assets/icons/ArrowWhite.svg" class="arrow-icon" alt="Arrow Icon">
     </Button>
-  </div>
 </template>
 
 <style scoped lang="scss">
@@ -44,9 +42,26 @@ const style = computed(() => {
 
 .primary-button {
   background-color: $red;
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
 
   &:hover {
     background-color: $dark-red;
+  }
+}
+
+.pass-on-not-possible {
+  background-color: $mid-gray;
+  color: rgb(163, 163, 163);
+
+  & .arrow-icon {
+    display: none;
+  }
+
+  &:hover {
+    background-color: $mid-gray;
+    color: rgb(182, 182, 182);
   }
 }
 </style>

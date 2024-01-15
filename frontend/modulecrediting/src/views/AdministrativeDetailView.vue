@@ -20,7 +20,7 @@ const checkPassOnPossibility = (data) => {
   let decisionKey = undefined
   if (type === 'study-office') {
     decisionKey = 'decisionSuggestion'
-  } else if (type === 'chairman'){
+  } else if (type === 'chairman') {
     decisionKey = 'decisionFinal'
   }
   return data['modulesConnections'].every(c => c[decisionKey] !== 'unedited')
@@ -28,17 +28,17 @@ const checkPassOnPossibility = (data) => {
 
 onBeforeMount(() => {
   getApplicationById(id)
-      .then(data => {
-        passOnPossible.value = checkPassOnPossibility(data)
-        applicationData.value = data
-        return data
-      })
-      .then(data => {
-        return getModulesByCourse(data['courseLeipzig']['name'])
-      })
-      .then(modules => {
-        moduleOptions.value = modules
-      })
+    .then(data => {
+      passOnPossible.value = checkPassOnPossibility(data)
+      applicationData.value = data
+      return data
+    })
+    .then(data => {
+      return getModulesByCourse(data['courseLeipzig']['name'])
+    })
+    .then(modules => {
+      moduleOptions.value = modules
+    })
 })
 
 const moduleConnections = ref()
@@ -63,8 +63,8 @@ const discardChanges = () => {
 const saveChanges = () => {
   // defining userRole
   let userRole = undefined
-  if (type === 'study-office') userRole = 'study_office'
-  else if (type === 'chairman') userRole = 'chairman'
+  if (type === 'study-office') userRole = 'study-office'
+  else if (type === 'chairman') userRole = 'pav'
   else console.warn('AdministrativeDetailView: userRole is undefined in triggerPutRequest')
 
   // creation connectionObjects
@@ -89,18 +89,20 @@ const saveChanges = () => {
 
   // axios request
   putApplication(userRole, applicationData.value['id'], applicationData.value['courseLeipzig']['name'], connectionObjects)
-      .then(_ => location.reload())
+    .then(_ => {
+      location.reload()
+    })
 }
 
 const triggerPassOn = () => {
   updateStatus(id)
-      .then(data => {
-        if (!data) {
-          alert('Fehler beim Weitergeben!')
-        } else {
-          location.reload()
-        }
-      })
+    .then(data => {
+      if (!data) {
+        alert('Fehler beim Weitergeben!')
+      } else {
+        location.reload()
+      }
+    })
 }
 </script>
 
@@ -116,30 +118,22 @@ const triggerPassOn = () => {
 
       <ApplicationConnectionLinks :connections-data="connectionsData" />
 
-      <ApplicationOverview
-          :creation-date="parseRequestDate(applicationData['creationDate'])"
-          :last-edited-date="parseRequestDate(applicationData['lastEditedDate'])"
-          :decision-date="parseRequestDate(applicationData['decisionDate'])"
-          :id="applicationData['id']"
-          :course="applicationData['courseLeipzig']['name']"
-          :status="applicationData['fullStatus']"
-      />
+      <ApplicationOverview :creation-date="parseRequestDate(applicationData['creationDate'])"
+        :last-edited-date="parseRequestDate(applicationData['lastEditedDate'])"
+        :decision-date="parseRequestDate(applicationData['decisionDate'])" :id="applicationData['id']"
+        :course="applicationData['courseLeipzig']['name']" :status="applicationData['fullStatus']" />
 
       <div v-for="connection in applicationData['modulesConnections']">
 
-        <AdministrativePanel
-            :type="type"
-            :selectable-modules="moduleOptions"
-            :connection-data="connection"
-            ref="moduleConnections"
-            :id="connection.id"
-        />
+        <AdministrativePanel :type="type" :selectable-modules="moduleOptions" :connection-data="connection"
+          ref="moduleConnections" :id="connection.id" />
 
       </div>
 
       <ButtonLink @click="discardChanges">Änderungen verwerfen</ButtonLink>
       <ButtonLink @click="saveChanges">Speichern</ButtonLink>
-      <ButtonLink @click="triggerPassOn" :class="{ 'pass-on-possible': passOnPossible }">Weitergeben</ButtonLink>
+      <ButtonLink @click="triggerPassOn" :class="{ 'pass-on-not-possible': !passOnPossible }" primaryButton="true">
+        Weitergeben</ButtonLink>
 
     </div>
 
@@ -149,6 +143,7 @@ const triggerPassOn = () => {
 <style scoped lang="scss">
 @import '../assets/variables.scss';
 @import '../assets/mixins.scss';
+
 .main {
   @include main();
 }
@@ -163,7 +158,5 @@ const triggerPassOn = () => {
   width: min-content;
 }
 
-.pass-on-possible {
-  background-color: salmon ;
-}
+
 </style>
