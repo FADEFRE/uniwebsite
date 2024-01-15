@@ -142,7 +142,7 @@ defineExpose({
 }
 
 .date-filter-container {
-  border: 1px $dark-gray solid;
+  border: 2px $dark-gray solid;
 
   display: flex;
   justify-content: space-between;
@@ -151,9 +151,12 @@ defineExpose({
 }
 .date-block {
   @include smallHighlightBox();
+  width: 20%;
+  display: flex;
 
   &.selected {
     background-color: $gray;
+    width: 60%;
   }
 }
 
