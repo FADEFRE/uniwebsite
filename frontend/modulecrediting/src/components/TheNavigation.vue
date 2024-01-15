@@ -10,8 +10,8 @@ const routeType = computed(() => route.meta['type'])
   <div class="navigation-container">
 
     <div v-if="routeType === 'standard'" class="links-container">
-      <router-link :to="{ name: 'home' }">Startseite</router-link>
-      <router-link :to="{ name: 'login' }">Log-in Intern</router-link>
+      <router-link :to="{ name: 'home' }">{{$t('home page')}}</router-link>
+      <router-link :to="{ name: 'login' }">{{$t('log-in internally')}}</router-link>
     </div>
 
     <div v-else-if="routeType === 'study-office' || routeType === 'chairman'" class="links-container">
