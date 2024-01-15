@@ -20,6 +20,10 @@ function filterByCourse (course, applications) {
     return applications.filter(a => a['courseLeipzig']['name'] === course)
 }
 
+function sortByDate (applications) {
+    applications.sort((a, b) => new Date(b['creationDate']).getTime() - new Date(a['creationDate']).getTime())
+}
+
 function filterApplications (filter, applications) {
     let filteredApplications = applications
 
@@ -43,6 +47,9 @@ function filterApplications (filter, applications) {
     if (filter.course) {
         filteredApplications = filterByCourse(filter.course, filteredApplications)
     }
+
+    // sorting
+    sortByDate(filteredApplications)
 
     return filteredApplications
 }
