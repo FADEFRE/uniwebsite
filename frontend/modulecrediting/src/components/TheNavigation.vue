@@ -1,6 +1,7 @@
 <script setup>
 import { useRoute } from "vue-router";
 import { computed } from "vue";
+import { logout } from "../router/logout";
 
 const route = useRoute()
 const routeType = computed(() => route.meta['authType'])
@@ -24,7 +25,7 @@ const routeType = computed(() => route.meta['authType'])
         <router-link :to="{ name: 'chairmanSelection' }">Übersicht</router-link>
       </div>
 
-      <router-link to="">Log-Out</router-link> <!-- todo replace with logout link -->
+      <Button @click="logout">Logout</Button>
     </div>
 
   </div>
