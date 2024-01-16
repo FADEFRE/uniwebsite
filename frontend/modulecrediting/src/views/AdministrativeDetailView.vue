@@ -142,7 +142,7 @@ const triggerPassOn = () => {
       <div v-if="!readonly">
         <ButtonLink @click="discardChanges">Änderungen verwerfen</ButtonLink>
         <ButtonLink @click="saveChanges">Speichern</ButtonLink>
-        <ButtonLink @click="triggerPassOn" :class="{ 'pass-on-not-possible': !passOnPossible }" primaryButton="true">
+        <ButtonLink @click="triggerPassOn" :class="{ 'pass-on-not-possible': !passOnPossible }" :primaryButton="true">
           Weitergeben
         </ButtonLink>
       </div>

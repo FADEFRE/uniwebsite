@@ -25,7 +25,8 @@ displays:
 -->
 
 <script setup>
-import { ref, onBeforeMount } from "vue";
+import { ref, computed, onBeforeMount } from "vue";
+import FileInput from "@/components/FileInput.vue";
 
 const props = defineProps({
   type: {
@@ -81,48 +82,8 @@ const university = ref(props.university || "")
 const points = ref(props.points || "")
 const pointSystem = ref(props.pointSystem || "")
 
-// file drop div
-const selectedFile = ref(props.selectedFile)
-
-const dropHandler = (e) => {
-  if (props.type === 'new' || props.type === 'edit') {
-    console.log("executing drop handler")
-    e.preventDefault()
-    e.currentTarget.classList.remove('file-drop-highlight');
-    if (e.dataTransfer.items) {
-      const f = e.dataTransfer.items[0].getAsFile()
-      if (f.type !== "application/pdf") {
-        console.log("file type is not pdf")
-        alert("Es muss eine PDF-Datei ausgewählt werden.")
-      } else if (f.size > 10000000) {
-        console.log("file size is greater than 10 MB")
-        alert("Die Datei darf nicht größer als 10 MB sein.")
-      } else {
-        selectedFile.value = e.dataTransfer.items[0].getAsFile()
-        console.log(`selected '${selectedFile.value.name}'`)
-
-      }
-    }
-  }
-}
-
-const dragOverHandler = (e) => {
-  if (props.type === 'new' || props.type === 'edit') {
-    e.preventDefault()
-    e.currentTarget.classList.add('file-drop-highlight');
-  }
-}
-
-const dragEnterHandler = (e) => {
-  if (props.type === 'new' || props.type === 'edit') {
-    e.currentTarget.classList.add('file-drop-highlight');
-  }
-}
-const dragLeaveHandler = (e) => {
-  if (props.type === 'new' || props.type === 'edit') {
-    e.currentTarget.classList.remove('file-drop-highlight');
-  }
-};
+const fileInput = ref()
+const selectedFile = computed(() => fileInput.value?.selectedFile)
 
 defineExpose({
   id, name, university, points, pointSystem, selectedFile
@@ -144,17 +105,7 @@ defineExpose({
           <InputText :readonly="readonly" type="text" v-model="pointSystem" placeholder="Punktesystem" />
         </div>
 
-        <div class="file-drop-container" @dragover="dragOverHandler" @dragleave="dragLeaveHandler" @drop="dropHandler">
-          <!-- todo add file dialog on click -->
-          <div v-if="selectedFile?.name">
-            <p>{{ selectedFile.name }}</p>
-          </div>
-          <div v-else class="file-drop-unselected">
-            <p>Modulbeschreibung hochladen</p>
-            <img src="../assets/icons/Upload.svg">
-          </div>
-        </div>
-        <!-- todo add link button if type readonly -->
+        <FileInput :readonly="type === 'edit' || type === 'readonly'" :selected-file="props.selectedFile" ref="fileInput" />
 
       </div>
 
@@ -210,22 +161,5 @@ defineExpose({
 .point-container {
   display: flex;
   gap: 0.625rem;
-}
-
-.file-drop-container {
-  border: 1px dashed $black;
-
-  display: flex;
-  padding: 0.625rem 0rem;
-  justify-content: center;
-}
-
-.file-drop-unselected {
-  display: flex;
-  gap: 0.625rem;
-}
-
-.file-drop-highlight {
-  background-color: $white;
 }
 </style>
