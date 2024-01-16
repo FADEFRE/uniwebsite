@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 
 const props = defineProps({
     id: {
@@ -10,8 +10,10 @@ const props = defineProps({
 
 const formattedId = computed(() => formatId(props.id));
 
+const iconClicked = ref(false);
 const copyId = () => {
     navigator.clipboard.writeText(props.id);
+    iconClicked.value = true;
 };
 
 function formatId(id) {
@@ -24,7 +26,7 @@ function formatId(id) {
         <div class="id-section">
             <div class="id-container">
                 <h2 class="id">{{ formattedId }}</h2>
-                <img @click="copyId" class="copy-icon" src="@/assets/icons/CopyIcon.svg" alt="Copy Icon">
+                <img @click="copyId" :class="{ 'icon-clicked': iconClicked }" class="copy-icon" src="@/assets/icons/CopyIcon.svg" alt="Copy Icon">
             </div>
             <p class="description-text">Mit der Vorgangsnummer kannst du immer den Status deines Antrags überprüfen</p>
         </div>
@@ -45,6 +47,7 @@ function formatId(id) {
 .button-container {
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 0.9rem;
 }
 
@@ -73,6 +76,17 @@ function formatId(id) {
     position: absolute;
     top: 0.5rem;
     right: 0.5rem;
+
+    transition: 0.05s ease-in-out;
+
+    &:hover {
+        transform: scale(1.1);
+    }
+
+    &.icon-clicked {
+        opacity: 0.5;
+        transform: scale(1);
+    }
 }
 
 .description-text {
