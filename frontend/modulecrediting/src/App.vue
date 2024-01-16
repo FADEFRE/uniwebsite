@@ -79,7 +79,7 @@ body {
   background-color: white;
 }
 
-.logo {
+.logo-responsive {
   height: 150%;
   width: auto;
 }
