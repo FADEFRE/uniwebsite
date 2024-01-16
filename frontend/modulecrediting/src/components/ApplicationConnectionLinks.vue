@@ -40,7 +40,7 @@ const props = defineProps({
 
 .application-connection-links-container {
   @include basicContainer();
-  width: 20%;
+  width: 22%;
 }
 
 .connection-link-container {
@@ -66,6 +66,7 @@ const props = defineProps({
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  
 }
 
 .arrow-icon {

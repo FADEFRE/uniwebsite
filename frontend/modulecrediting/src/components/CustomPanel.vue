@@ -73,6 +73,16 @@ const toggleArrowStyle = (collapsed) => {
 
 }
 
+
+:deep(.p-panel-header-icon) {
+  @include smallHighlightBox();
+  background-color: $white;
+
+  &:hover {
+    background-color: $gray;
+  }
+}
+
 .arrow-icon {
   transition: 0.2s ease-in-out;
 }
