@@ -13,16 +13,19 @@ const isInvalid = ref(false)
 const id = ref('')
 
 const openDetailView = () => {
-    axios.get(url + `/api/applications/${id.value}/exists`)
+    const formattedId = getFormattedId();
+    axios.get(url + `/api/applications/${formattedId}/exists`)
         .then(response => {
             if (response.data) {
-                const routeData = router.resolve({ name: 'statusDetail', params: { id: id.value } })
-                window.open(routeData.href, '_top')
+                const routeData = router.resolve({ name: 'statusDetail', params: { id: formattedId } });
+                window.open(routeData.href, '_top');
             } else {
                 isInvalid.value = true
             }
         })
 }
+
+
 
 const goToSubmitApplication = () => {
     router.push({ name: 'submitApplication' })
@@ -36,7 +39,13 @@ const handleEnterKey = (event) => {
 
 const validateInput = () => {
     id.value = id.value.replace(/[^0-9]/g, '');
+    id.value = id.value.replace(/(\d)(?=(\d{1,5})+$)/g, '$1-');
 }
+
+const getFormattedId = () => {
+    return id.value.replace(/-/g, '');
+}
+
 </script>
 
 <template>
@@ -59,15 +68,15 @@ const validateInput = () => {
         <div class="side-infos-container">
             <!--SideInfoContainerfür Antragprozess -->
             <SideInfoContainer :heading="$t('application process')">
-            <ul class="list-container">
-                <li class="list-item">{{$t('submit an application online')}}</li>
-                <li class="list-item">{{$t('view status online using process number')}}</li>
-                <li class="list-item">{{$t('wait for the PAV`s decision')}}</li>
-                <li class="list-item">{{$t('go to the study office with the completed application')}}</li>
-            </ul>
+                <ul class="list-container">
+                    <li class="list-item">{{$t('submit an application online')}}</li>
+                    <li class="list-item">{{$t('view status online using process number')}}</li>
+                    <li class="list-item">{{$t('wait for the PAV`s decision')}}</li>
+                    <li class="list-item">{{$t('go to the study office with the completed application')}}</li>
+                </ul>
             </SideInfoContainer>
         </div>
-        
+
     </div>
 </template>
 
@@ -86,7 +95,7 @@ const validateInput = () => {
 }
 
 .side-infos-container {
-  @include verticalList(big);
-  width: min-content;
+    @include verticalList(big);
+    width: min-content;
 }
 </style>
