@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import SubmitApplicationView from '../views/SubmitApplicationView.vue'
 import { getAuthenticatedUser } from '../util/utils';
 import { useAuthStore } from '../store/authStore2';
 import httpResource from "../http/httpResource";
@@ -31,14 +30,10 @@ const router = createRouter({
       name: 'statusDetail',
       component: () => import('../views/StatusDetailView.vue'),
       meta: { authType: 'standard' }
-      component: () => import('../views/StatusDetailView.vue'),
-      meta: { authType: 'standard' }
     },
     {
       path: '/login',
       name: 'login',
-      component: () => import('../views/LoginView.vue'),
-      meta: { authType: 'standard' }
       component: () => import('../views/LoginView.vue'),
       meta: { authType: 'standard' }
     },
