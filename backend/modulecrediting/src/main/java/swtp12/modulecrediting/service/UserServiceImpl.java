@@ -97,7 +97,7 @@ public class UserServiceImpl implements UserService {
         if (customUserDetails.getClass().isInstance(obj)) {
             customUserDetails = (CustomUserDetails) obj;
             String username = customUserDetails.getUsername();
-            if (!username.equals("anonymousUser")) {
+            if (!username.equals("anonymousUser")) { //TODO : Check if this is the same for all browsers
                 user = userRepository.findByUsername(username).orElseThrow(() -> new IllegalArgumentException("User with this username could not be found " + username));
             }
         }
