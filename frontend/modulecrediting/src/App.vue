@@ -1,5 +1,10 @@
 <script setup>
+import TheNavigation from "@/components/TheNavigation.vue";
+import { onMounted } from "vue";
 
+onMounted(() => {
+    document.cookie='locale=DE'
+})
 </script>
 
 
@@ -67,12 +72,3 @@
 
 
 </style>
-
-<script setup>
-import TheNavigation from "@/components/TheNavigation.vue";
-import { onMounted } from "vue";
-
-onMounted(() => {
-    document.cookie='locale=DE'
-})
-</script>
