@@ -1,5 +1,6 @@
 <script setup>
 import TheNavigation from "@/components/TheNavigation.vue";
+import TheLanguageSelection from "@/components/TheLanguageSelection.vue";
 import { onMounted } from "vue";
 
 onMounted(() => {
@@ -17,8 +18,9 @@ onMounted(() => {
         <a href="/" class="logo">
           <img class="logo-responsive" src="./assets/Universität_Leipzig_logo.svg" alt="Logo der Universität Leipzig" />
         </a>
-        <v-btn @click="$i18n.locale = 'EN'" class="language-button">EN</v-btn>
-        <v-btn @click="$i18n.locale = 'DE'" class="language-button">DE</v-btn>
+        <TheLanguageSelection>
+
+        </TheLanguageSelection>
         <div class="router-container">
           <TheNavigation />
         </div>
@@ -53,20 +55,6 @@ onMounted(() => {
   height: 11.25rem;
 }
 
-.language-button {
-    background-color: grey;
-    width: 2.54cm;
-    height: 1cm;
-
-    &:hover {
-        cursor: pointer;
-        background-color: darkgrey;
-    }
-
-    &:active {
-        transform: scale(0.95);
-    }
-}
 
 
 
