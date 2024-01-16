@@ -1,5 +1,6 @@
 import { createApp } from 'vue'
 import { createI18n } from 'vue-i18n'
+import { createPinia } from 'pinia'
 import EN from './locale/en.json'
 import DE from './locale/de.json'
 import App from './App.vue'
@@ -7,6 +8,7 @@ import router from './router'
 
 const app = createApp(App)
     .use(router)
+    .use(createPinia())
 
 // PrimeVue setup
 import PrimeVue from 'primevue/config'
