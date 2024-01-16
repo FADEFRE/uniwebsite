@@ -1,11 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import SubmitApplicationView from '../views/SubmitApplicationView.vue'
-import StatusDetailView from "@/views/StatusDetailView.vue";
-import LoginView from "@/views/LoginView.vue";
 import HomepageView from "@/views/HomepageView.vue"
-import ApplicationConfirmationView from "@/views/ApplicationConfirmationView.vue"
-import AdministrativeDetailView from "@/views/AdministrativeDetailView.vue";
-import AdministrativeSelectionView from "@/views/AdministrativeSelectionView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -19,49 +13,49 @@ const router = createRouter({
     {
       path: '/antrag',
       name: 'submitApplication',
-      component: SubmitApplicationView,
+      component: () => import('../views/SubmitApplicationView.vue'),
       meta: { type: 'standard' }
     },
     {
       path: '/confirmation/:id',
       name: 'confirmation',
-      component: ApplicationConfirmationView,
+      component: () => import('../views/ApplicationConfirmationView.vue'),
       meta: { type: 'standard' }
     },
     {
       path: '/status/:id',
       name: 'statusDetail',
-      component: StatusDetailView,
+      component: () => import('../views/StatusDetailView.vue'),
       meta: { type: 'standard' }
     },
     {
       path: '/login',
       name: 'login',
-      component: LoginView,
+      component: () => import('../views/StatusDetailView.vue'),
       meta: { type: 'standard' }
     },
     {
       path: '/studienbuero',
       name: 'studyOfficeSelection',
-      component: AdministrativeSelectionView,
+      component: () => import('../views/AdministrativeSelectionView.vue'),
       meta: { type: 'study-office', forward: 'studyOfficeDetail' }
     },
     {
       path: '/studienbuero/:id',
       name: 'studyOfficeDetail',
-      component: AdministrativeDetailView,
+      component: () => import('../views/AdministrativeDetailView.vue'),
       meta: { type: 'study-office' }
     },
     {
       path: '/pruefungsausschuss',
       name: 'chairmanSelection',
-      component: AdministrativeSelectionView,
+      component: () => import('../views/AdministrativeSelectionView.vue'),
       meta: { type: 'chairman', forward: 'chairmanDetail' }
     },
     {
       path: '/pruefungsausschuss/:id',
       name: 'chairmanDetail',
-      component: AdministrativeDetailView,
+      component: () => import('../views/AdministrativeDetailView.vue'),
       meta: { type: 'chairman' }
     }
   ]
