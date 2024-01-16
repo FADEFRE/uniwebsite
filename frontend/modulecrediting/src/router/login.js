@@ -18,7 +18,7 @@ async function login (login_username, login_password) {
     };
     try {
         console.log(loginRequest)
-        const response = await httpResource.post("/auth/login", loginRequest);
+        const response = await httpResource.post("/api/auth/login", loginRequest);
         console.log(response)
         if (response.status === 200) {
             await getAuthenticatedUser();
@@ -26,7 +26,7 @@ async function login (login_username, login_password) {
 
             const authUserStore = useAuthStore();
             const id = authUserStore.getCurrentUserId;
-            const response = await httpResource.get(`/user/${id}/role`)
+            const response = await httpResource.get(`/api/user/${id}/role`)
             switch (response.data) {
                 case "ROLE_STUDY":
                     const routeData = router.resolve({name: 'studyOfficeSelection'})
