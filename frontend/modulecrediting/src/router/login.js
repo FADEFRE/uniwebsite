@@ -2,7 +2,7 @@ import router from "../router";
 import httpResource from "../scripts/httpResource";
 import { parseApierror, performLogout, getAuthenticatedUser} from "../scripts/utils";
 import { ref } from "vue";
-import { useAuthStore } from '../store/authStore2';
+import { useAuthStore } from '../store/authStore';
 
 
 const displayErrorMessage = ref();
