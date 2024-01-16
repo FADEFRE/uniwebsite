@@ -1,24 +1,11 @@
 <script setup>
-import { useRouter } from "vue-router";
+import { login } from "../router/login";
 import { ref } from "vue";
-
-const user = ref('');
 const styleInvalid = ref(false);
-const password = ref('');
 
-const router = useRouter();
+const login_username = ref();
+const login_password = ref();
 
-const login = () => {
-    if (user.value === 'studienbüro' && password.value) {
-        const routeData = router.resolve({ name: 'studyOfficeSelection' });
-        window.open(routeData.href, '_top');
-    } else if (user.value === 'pav' && password.value) {
-        const routeData = router.resolve({ name: 'chairmanSelection' });
-        window.open(routeData.href, '_top');
-    } else {
-        styleInvalid.value = true;
-    }
-};
 </script>
 
 <template>
@@ -30,15 +17,15 @@ const login = () => {
             <h2 class="login-heading">ANMELDUNG</h2>
 
             <div class="input-container">
-                <input type="text" placeholder="Benutzername" v-model="user" class="input-text"
+                <input type="text" placeholder="Benutzername" v-model="login_username" class="input-text"
                     :class="{ 'invalid': styleInvalid }" />
 
-                <input type="password" placeholder="Passwort" v-model="password" class="input-text"
+                <input type="password" placeholder="Passwort" v-model="login_password" class="input-text"
                     :class="{ 'invalid': styleInvalid }" />
             </div>
 
             <div class="button-container">
-                <Button @click="login" class="button-login">Anmelden</Button>
+                <Button @click="login(login_username, login_password)" class="button-login">Anmelden</Button>
             </div>
 
             <p v-if="styleInvalid" class="error-message">Ungültige Anmeldeinformationen. Bitte versuche es erneut.</p>
