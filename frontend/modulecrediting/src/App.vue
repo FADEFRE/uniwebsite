@@ -21,7 +21,9 @@ async function logout () {
   <div>
     <header class="header-background">
       <div class="header-container">
-        <img src="./assets/Universität_Leipzig_logo.svg" alt="Logo der Universität Leipzig" class="logo" />
+        <a href="/" class="logo">
+          <img class="logo-responsive" src="./assets/Universität_Leipzig_logo.svg" alt="Logo der Universität Leipzig" />
+        </a>
         <div class="spacer"></div>
         <div class="router-container">
           <router-link to="/" class="router-button">Antrag</router-link>
@@ -73,6 +75,9 @@ body {
 
 }
 
+.logo {
+  background-color: white;
+}
 
 .logo {
   height: 150%;
