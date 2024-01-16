@@ -15,16 +15,29 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.transaction.Transactional;
-import swtp12.modulecrediting.dto.*;
-import swtp12.modulecrediting.model.*;
+
+
+import swtp12.modulecrediting.dto.ApplicationCreateDTO;
+import swtp12.modulecrediting.dto.ApplicationUpdateDTO;
+import swtp12.modulecrediting.dto.ModuleBlockCreateDTO;
+import swtp12.modulecrediting.dto.ModuleBlockUpdateDTO;
+import swtp12.modulecrediting.model.Application;
+import swtp12.modulecrediting.model.Role;
+import swtp12.modulecrediting.model.CourseLeipzig;
+import swtp12.modulecrediting.model.ModuleLeipzig;
+import swtp12.modulecrediting.model.ModulesConnection;
+import swtp12.modulecrediting.model.User;
+import swtp12.modulecrediting.repository.RoleRepository;
 import swtp12.modulecrediting.repository.CourseLeipzigRepository;
 import swtp12.modulecrediting.repository.ModuleLeipzigRepository;
+import swtp12.modulecrediting.repository.UserRepository;
 import swtp12.modulecrediting.service.ApplicationService;
 
 
@@ -41,6 +54,15 @@ public class DataLoader implements CommandLineRunner {
 
     @Autowired
     private ApplicationService applicationService;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
+    
+    @Autowired
+    private PasswordEncoder encoder;
 
     private final ObjectMapper objectMapper;
 
@@ -60,10 +82,63 @@ public class DataLoader implements CommandLineRunner {
         String moduleLeipzigData = "/module_liste.json";
         String testData = "/test_data.json";
 
+        roleCreation();
+
+        userCreation(testData);
+
         leipzigDataLoader(moduleLeipzigData);
 
         createTestData(testData);
     }
+
+
+    private void roleCreation() {
+        System.out.println("Creating Roles:");
+        Role admin = new Role("ROLE_ADMIN");
+        Role sb = new Role("ROLE_STUDY");
+        Role pav = new Role("ROLE_CHAIR");
+        roleRepository.save(admin);
+        roleRepository.save(sb);
+        roleRepository.save(pav);
+    }
+
+
+
+    //creates users defined in filename (test data)
+    private void userCreation(String fileName) {
+        System.out.println("Creating Users:");
+        JsonNode userSettings = grabFirstNodeFromJson(fileName, "users");
+        for (JsonNode user : userSettings) {
+            String username = user.get("name").asText();
+            String password = user.get("password").asText();
+            String roleName = user.get("role").asText();
+            
+            Optional<User> userCandidate = userRepository.findByUsername(username);
+
+            if (!userCandidate.isPresent()) {
+                User userCreate = new User(
+                    username,
+                    encoder.encode(password),
+                    true
+                );
+                Optional<Role> roleCandidate = roleRepository.findByRoleName(roleName);
+                if (roleCandidate.isPresent()) {
+                    if(userCreate.getRole() == null) {
+                        userCreate.setRole(roleCandidate.get());
+                    }
+                    else {
+                        //TODO:check for double role maybe in other class aswell
+                    }
+                    userRepository.save(userCreate);
+                }
+            }
+        }
+    }
+
+
+
+
+
 
 
     //the two dataloader functions (leipzigData/ testData):

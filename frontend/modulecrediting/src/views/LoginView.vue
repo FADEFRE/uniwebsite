@@ -2,6 +2,7 @@
 import LoginContainer from '../components/LoginContainer.vue';
 </script>
 
+
 <template>
   <div class="main">
     <LoginContainer />

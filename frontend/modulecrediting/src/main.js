@@ -42,5 +42,4 @@ app.use(PrimeVue)
     .component('SelectButton', SelectButton)
     .component('Checkbox', Checkbox)
 
-// app mounting
 app.mount('#app')
