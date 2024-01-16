@@ -3,7 +3,7 @@ import { useRoute } from "vue-router";
 import { computed } from "vue";
 
 const route = useRoute()
-const routeType = computed(() => route.meta['type'])
+const routeType = computed(() => route.meta['authType'])
 </script>
 
 <template>

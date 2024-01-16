@@ -11,7 +11,7 @@ import ApplicationConnectionLinks from "@/components/ApplicationConnectionLinks.
 
 const route = useRoute()
 const id = route.params.id
-const type = route.meta['type']
+const type = route.meta['authType']
 const readonly = ref(true)
 
 const applicationData = ref()

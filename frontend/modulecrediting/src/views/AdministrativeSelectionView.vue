@@ -31,7 +31,7 @@ const filteredApplications = computed(() => {
   } else {
     return allApplications.value
   }
-})
+})                  //:forward="route.matched.some(route => route.meta['forward'])"
 </script>
 
 <template>
