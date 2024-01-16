@@ -1,4 +1,6 @@
 <script setup>
+import { computed } from 'vue';
+
 const props = defineProps({
     id: {
         type: String,
@@ -6,16 +8,22 @@ const props = defineProps({
     }
 });
 
+const formattedId = computed(() => formatId(props.id));
+
 const copyId = () => {
     navigator.clipboard.writeText(props.id);
 };
+
+function formatId(id) {
+    return id.replace(/(\d)(?=(\d{1,5})+$)/g, '$1-');
+}
 </script>
 
 <template>
     <div class="confirmation-container">
         <div class="id-section">
             <div class="id-container">
-                <h2 class="id"> 3-4-5-6-7-8</h2>
+                <h2 class="id">{{ formattedId }}</h2>
                 <img @click="copyId" class="copy-icon" src="@/assets/icons/CopyIcon.svg" alt="Copy Icon">
             </div>
             <p class="description-text">Mit der Vorgangsnummer kannst du immer den Status deines Antrags überprüfen</p>
