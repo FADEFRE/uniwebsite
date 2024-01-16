@@ -27,10 +27,14 @@ import PanelRelatedModules from "@/components/PanelRelatedModules.vue";
 const props = defineProps({
   type: {
     required: true,
-    // type: String,
+    type: String,
     validator(value) {
-      return ['study-office', 'chairman', 'readonly'].includes(value)
+      return ['study-office', 'chairman'].includes(value)
     }
+  },
+  readonly: {
+    required: true,
+    type: Boolean
   },
   selectableModules: {
     required: true,
@@ -82,12 +86,12 @@ defineExpose({
       </template>
 
       <PanelExternalModules
-          :type="type !== 'readonly' ? 'edit' : 'readonly'"
+          :type="readonly ? 'readonly' : 'edit'"
           :modules-data="connectionData['moduleApplications']"
           ref="panelExternalModules"
       />
       <PanelInternalModules
-          :type="type !== 'readonly' ? 'edit' : 'readonly'"
+          :type="readonly ? 'readonly' : 'edit'"
           :selected-modules="connectionData['modulesLeipzig'].map(m => m['name'])"
           :options="selectableModules"
           ref="panelInternalModules"
@@ -102,7 +106,7 @@ defineExpose({
       <PanelDecision>
         <template #study-office>
           <PanelDecisionBlock
-              :type="type === 'study-office' ? 'edit' : 'readonly'"
+              :type="(type === 'study-office' && !readonly) ? 'edit' : 'readonly'"
               :display-decision="decisionSuggestion"
               :comment="connectionData['commentStudyOffice']"
               ref="studyOfficeDecisionData"
@@ -110,7 +114,7 @@ defineExpose({
         </template>
         <template #chairman>
           <PanelDecisionBlock
-              :type="type === 'chairman' ? 'edit' : 'readonly'"
+              :type="(type === 'chairman' && !readonly) ? 'edit' : 'readonly'"
               :display-decision="decisionFinal"
               :comment="connectionData['commentDecision']"
               ref="chairmanDecisionData"
