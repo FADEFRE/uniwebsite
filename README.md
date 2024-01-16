@@ -28,6 +28,21 @@ spring.jpa.hibernate.ddl-auto=create-drop
 
 !! Always stop programm with CTRL+C inside your IDE terminal/console, otherwise DB-tables won't be dropped !!
 
+## Login Daten 
+
+Studienbüro:
+    username: studyoffice
+    password: abc123
+
+Prüfungsausschuss:
+    username: pav
+    password: pav123
+
+Admin:
+    username: admin
+    password: admin
+
+
 ## API ENDPOINTS
 
 http://localhost:8090/courses-leipzig
