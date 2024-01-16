@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { getAuthenticatedUser } from '../scripts/utils';
-import { useAuthStore } from '../store/authStore2';
-import httpResource from "../http/httpResource";
+import { useAuthStore } from '../store/authStore';
+import httpResource from "../scripts/httpResource";
 import HomepageView from "@/views/HomepageView.vue"
 
 const router = createRouter({
