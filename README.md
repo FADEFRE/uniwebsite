@@ -31,14 +31,17 @@ spring.jpa.hibernate.ddl-auto=create-drop
 ## Login Daten 
 
 Studienbüro:
+
     username: studyoffice
     password: abc123
 
 Prüfungsausschuss:
+
     username: pav
     password: pav123
 
 Admin:
+
     username: admin
     password: admin
 
