@@ -24,6 +24,25 @@
         }
     ],
 
+    "users": [
+        {
+            "name": "studyoffice",
+            "password": "abc123",
+            "role": "ROLE_STUDY"
+        },
+            
+        {
+            "name": "pav",
+            "password": "pav123",
+            "role": "ROLE_CHAIR"
+        },
+
+        {
+            "name": "admin",
+            "password": "admin",
+            "role": "ROLE_ADMIN"
+        }
+    ],
 
     "courses": [
         {
