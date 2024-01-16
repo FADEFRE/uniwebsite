@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { getAuthenticatedUser } from '../util/utils';
+import { getAuthenticatedUser } from '../scripts/utils';
 import { useAuthStore } from '../store/authStore2';
 import httpResource from "../http/httpResource";
 import HomepageView from "@/views/HomepageView.vue"

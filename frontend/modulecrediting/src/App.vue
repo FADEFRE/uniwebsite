@@ -1,17 +1,5 @@
 <script setup>
 
-import router from "./router";
-import httpResource from "./http/httpResource";
-import { performLogout } from "./util/utils";
-
-async function logout () {
-  const response = await httpResource.post("/auth/logout");
-  console.log(response)
-  performLogout();
-  const routeData = router.resolve({name: 'login'})
-  window.open(routeData.href, '_top')
-}
-
 </script>
 
 
