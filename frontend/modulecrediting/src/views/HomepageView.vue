@@ -43,27 +43,27 @@ const validateInput = () => {
     <div class="main">
         <div class="homepage-content">
             <!-- HomepageContainer Application -->
-            <HomepageContainer :header="'Antrag stellen'"
-                :text="'Erstellen Sie einen Antrag, um Module anderer Universitäten an der Universität Leipzig anzurechnen lassen.'">
-                <ButtonLink @click="goToSubmitApplication" class="p-button-success">Antrag stellen</ButtonLink>
+            <HomepageContainer :header="$t('make application')"
+                :text="$t('create an application to have modules from other universities recognized at the University of Leipzig.')">
+                <ButtonLink @click="goToSubmitApplication" class="p-button-success">{{$t('make application')}}</ButtonLink>
             </HomepageContainer>
 
             <!-- HomepageContainer StatusView -->
-            <HomepageContainer :header="'Status einsehen'"
-                :text="'Sehen Sie den Status von bereits gestellten Anträgen über die 6-stellige Vorgangsnummer ein.'">
+            <HomepageContainer :header="$t('view status')"
+                :text="$t('view the status of applications that have already been submitted using the 6-digit process number.')">
                 <InputText v-model="id" :class="{ 'p-invalid': isInvalid }" placeholder="0-0-0-0-0-0" @keydown.enter.prevent="openDetailView" @input="validateInput" />
-                <ButtonLink @click="openDetailView" class="p-button-primary">Status einsehen</ButtonLink>
+                <ButtonLink @click="openDetailView" class="p-button-primary">{{$t('view status')}}</ButtonLink>
             </HomepageContainer>
         </div>
 
         <div class="side-infos-container">
             <!--SideInfoContainerfür Antragprozess -->
-            <SideInfoContainer :heading="'ANTRAGSPROZESS'">
+            <SideInfoContainer :heading="$t('application process')">
             <ul class="list-container">
-                <li class="list-item">Antrag online stellen</li>
-                <li class="list-item">Über Vorgangsnummer online Status einsehen</li>
-                <li class="list-item">Auf Entscheidung des PAV warten</li>
-                <li class="list-item">Mit abgeschlossenem Antrag zum Studienbüro gehen</li>
+                <li class="list-item">{{$t('submit an application online')}}</li>
+                <li class="list-item">{{$t('view status online using process number')}}</li>
+                <li class="list-item">{{$t('wait for the PAV`s decision')}}</li>
+                <li class="list-item">{{$t('go to the study office with the completed application')}}</li>
             </ul>
             </SideInfoContainer>
         </div>

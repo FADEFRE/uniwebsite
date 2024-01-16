@@ -1,17 +1,18 @@
 <script setup>
 import { useRoute } from "vue-router";
 import { computed } from "vue";
+import { logout } from "../router/logout";
 
 const route = useRoute()
-const routeType = computed(() => route.meta['type'])
+const routeType = computed(() => route.meta['authType'])
 </script>
 
 <template>
   <div class="navigation-container">
 
     <div v-if="routeType === 'standard'" class="links-container">
-      <router-link :to="{ name: 'home' }">Startseite</router-link>
-      <router-link :to="{ name: 'login' }">Log-in Intern</router-link>
+      <router-link :to="{ name: 'home' }">{{$t('home page')}}</router-link>
+      <router-link :to="{ name: 'login' }">{{$t('log-in internally')}}</router-link>
     </div>
 
     <div v-else-if="routeType === 'study-office' || routeType === 'chairman'" class="links-container">
@@ -24,7 +25,7 @@ const routeType = computed(() => route.meta['type'])
         <router-link :to="{ name: 'chairmanSelection' }">Übersicht</router-link>
       </div>
 
-      <router-link to="">Log-Out</router-link> <!-- todo replace with logout link -->
+      <Button @click="logout">Logout</Button>
     </div>
 
   </div>

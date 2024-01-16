@@ -15,7 +15,7 @@ let pdfDataLink = undefined;
 
 onBeforeMount(() => {
     id = route.params.id;
-    pdfDataLink = `${url}/applications/pdf-data/${id}`;
+    pdfDataLink = `${url}/api/applications/pdf-data/${id}`;
     getApplicationByIdForStatus(id)
         .then(data => applicationData.value = data)
         .catch(error => {

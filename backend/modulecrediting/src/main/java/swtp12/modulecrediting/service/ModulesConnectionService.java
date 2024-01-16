@@ -179,8 +179,7 @@ public class ModulesConnectionService {
         LevenshteinDistance levenshteinDistance = new LevenshteinDistance();
         String name1Clean = name1.toLowerCase().replaceAll(" ", "");
         String name2Clean = name2.toLowerCase().replaceAll(" ", "");
-        System.out.println(name1Clean + "   " + name2Clean);
-        return levenshteinDistance.apply(name1, name1);
+        return levenshteinDistance.apply(name1Clean, name2Clean);
     }
 
 

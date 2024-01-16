@@ -4,33 +4,32 @@ import { ref, computed, onBeforeMount } from "vue";
 import ApplicationOverview from "@/components/ApplicationOverview.vue";
 import AdministrativePanel from "@/components/AdministrativePanel.vue";
 import ButtonLink from "@/components/ButtonLink.vue";
-import { getApplicationById, getModulesByCourse, putApplication, updateStatus } from "@/scripts/axios-requests";
+import { getApplicationById, getModulesByCourse, putApplication,
+  getUpdateStatusAllowed, updateStatus } from "@/scripts/axios-requests";
 import { parseRequestDate } from "@/scripts/date-utils";
 import ApplicationConnectionLinks from "@/components/ApplicationConnectionLinks.vue";
 
 const route = useRoute()
 const id = route.params.id
-const type = route.meta['type']
+const type = route.meta['authType']
+const readonly = ref(true)
 
 const applicationData = ref()
 const moduleOptions = ref([])
 const passOnPossible = ref(false)
 
-const checkPassOnPossibility = (data) => {
-  let decisionKey = undefined
-  if (type === 'study-office') {
-    decisionKey = 'decisionSuggestion'
-  } else if (type === 'chairman') {
-    decisionKey = 'decisionFinal'
-  }
-  return data['modulesConnections'].every(c => c[decisionKey] !== 'unedited')
-}
-
 onBeforeMount(() => {
   getApplicationById(id)
     .then(data => {
-      passOnPossible.value = checkPassOnPossibility(data)
+      // applicationData
+      data['modulesConnections'].sort((a, b) => a.id - b.id)
       applicationData.value = data
+      // readonly
+      if (type === 'study-office' && (data['fullStatus'] === 'NEU' || data['fullStatus'] === 'STUDIENBÜRO')) {
+        readonly.value = false
+      } else if (type === 'chairman' && data['fullStatus'] !== 'ABGESCHLOSSEN') {
+        readonly.value = false
+      }
       return data
     })
     .then(data => {
@@ -38,6 +37,12 @@ onBeforeMount(() => {
     })
     .then(modules => {
       moduleOptions.value = modules
+    })
+    .then(_ => {
+        return getUpdateStatusAllowed(id)
+    })
+    .then(updateAllowed => {
+      passOnPossible.value = updateAllowed
     })
 })
 
@@ -79,8 +84,7 @@ const saveChanges = () => {
     if (type === 'study-office') {
       if (connection.studyOfficeDecisionData.comment) connectionObj['commentStudyOffice'] = connection.studyOfficeDecisionData.comment
       if (connection.studyOfficeDecisionData.decision) connectionObj['decisionSuggestion'] = connection.studyOfficeDecisionData.decision
-    }
-    else if (type === 'chairman') {
+    } else if (type === 'chairman') {
       if (connection.chairmanDecisionData.comment) connectionObj['commentDecision'] = connection.chairmanDecisionData.comment
       if (connection.chairmanDecisionData.decision) connectionObj['decisionFinal'] = connection.chairmanDecisionData.decision
     }
@@ -107,17 +111,16 @@ const triggerPassOn = () => {
 </script>
 
 <template>
-  <div class="main">
+  <!-- request pending -->
+  <div v-if="!applicationData" class="main">
+    <p>Lade Daten ...</p>
+  </div>
 
-    <!-- request pending -->
-    <div v-if="!applicationData">
-      <p>Lade Daten ...</p>
-    </div>
+  <div v-else class="main">
 
-    <div v-else class="administrative-detail-container">
+    <ApplicationConnectionLinks :connections-data="connectionsData" />
 
-      <ApplicationConnectionLinks :connections-data="connectionsData" />
-
+    <div class="administrative-detail-container">
       <ApplicationOverview :creation-date="parseRequestDate(applicationData['creationDate'])"
         :last-edited-date="parseRequestDate(applicationData['lastEditedDate'])"
         :decision-date="parseRequestDate(applicationData['decisionDate'])" :id="applicationData['id']"
@@ -125,18 +128,27 @@ const triggerPassOn = () => {
 
       <div v-for="connection in applicationData['modulesConnections']">
 
-        <AdministrativePanel :type="type" :selectable-modules="moduleOptions" :connection-data="connection"
-          ref="moduleConnections" :id="connection.id" />
+        <AdministrativePanel
+            :type="type"
+            :readonly="readonly"
+            :selectable-modules="moduleOptions"
+            :id="connection.id"
+            :connection-data="connection"
+            ref="moduleConnections"
+        />
 
       </div>
 
-      <ButtonLink @click="discardChanges">Änderungen verwerfen</ButtonLink>
-      <ButtonLink @click="saveChanges">Speichern</ButtonLink>
-      <ButtonLink @click="triggerPassOn" :class="{ 'pass-on-not-possible': !passOnPossible }" primaryButton="true">
-        Weitergeben</ButtonLink>
+      <div v-if="!readonly">
+        <ButtonLink @click="discardChanges">Änderungen verwerfen</ButtonLink>
+        <ButtonLink @click="saveChanges">Speichern</ButtonLink>
+        <ButtonLink @click="triggerPassOn" :class="{ 'pass-on-not-possible': !passOnPossible }" primaryButton="true">
+          Weitergeben
+        </ButtonLink>
+      </div>
+
 
     </div>
-
   </div>
 </template>
 
@@ -152,11 +164,4 @@ const triggerPassOn = () => {
   @include verticalList(small);
   width: 100%;
 }
-
-.side-infos-container {
-  @include verticalList(big);
-  width: min-content;
-}
-
-
 </style>
