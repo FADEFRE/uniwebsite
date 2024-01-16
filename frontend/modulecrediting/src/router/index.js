@@ -69,11 +69,11 @@ router.beforeEach(
     await getAuthenticatedUser();
     const authUserStore = useAuthStore();
     const id = authUserStore.getCurrentUserId;
-    const response = await httpResource.get(`/user/${id}/role`)
+    const response = await httpResource.get(`/api/user/${id}/role`)
     switch (to.meta.authType) {
       case "standard":
         return true;
-      case "studyoffice":
+      case "study-office":
         if (response.data === "ROLE_STUDY") { return true; }
         return { name: 'login' };
       case "chairman":
