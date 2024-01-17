@@ -61,6 +61,12 @@ const connectionsData = computed(() => {
   return dataArray
 })
 
+const unsaved = ref(false)
+
+const setUnsaved = () => {
+  unsaved.value = true
+}
+
 const discardChanges = () => {
   location.reload()
 }
@@ -135,6 +141,7 @@ const triggerPassOn = () => {
             :id="connection.id"
             :connection-data="connection"
             ref="moduleConnections"
+            @change="setUnsaved"
         />
 
       </div>
@@ -147,6 +154,11 @@ const triggerPassOn = () => {
         </ButtonLink>
       </div>
 
+      <div v-if="unsaved">
+        <Button>
+          <img src="@/assets/icons/ModuleDenied.svg">  <!-- todo replace with unsaved icon -->
+        </Button>
+      </div>
 
     </div>
   </div>

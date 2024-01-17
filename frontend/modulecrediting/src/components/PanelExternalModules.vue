@@ -40,6 +40,8 @@ const props = defineProps({
   }
 })
 
+const emit = defineEmits(['change'])
+
 // custom prop checker
 if (props.type !== 'new') {
   if (!(props.modulesData.every(m => m.id))) {
@@ -109,6 +111,7 @@ defineExpose({
           :point-system="module.pointSystem"
           :selected-file="module['pdfDocument']"
           ref="externalModules"
+          @change="emit('change')"
           />
     </div>
 

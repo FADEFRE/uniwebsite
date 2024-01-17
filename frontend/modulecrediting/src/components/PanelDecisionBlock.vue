@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 const props = defineProps({
   type: {
     required: true,
@@ -19,6 +19,7 @@ const props = defineProps({
   }
 })
 
+const emit = defineEmits(['change'])
 
 const decisionOptions = [
   { value: 'accepted', label: 'Annehmen', class: 'highlight-accepted' },
@@ -28,6 +29,8 @@ const decisionOptions = [
 
 const decision = ref(props.displayDecision);
 const comment = ref(props.comment);
+
+watch([comment, decision], () => emit('change'))
 
 defineExpose({
   decision,
@@ -41,8 +44,13 @@ defineExpose({
 
 
     <div v-if="type === 'edit'">
-      <SelectButton :allow-empty="false" v-model="decision" :options="decisionOptions" optionLabel="label"
-        optionValue="value">
+      <SelectButton
+          :allow-empty="false"
+          :options="decisionOptions"
+          optionLabel="label"
+          optionValue="value"
+          v-model="decision"
+      >
         <template #option="optionProps">
           <div :class="optionProps.option.class">{{ optionProps.option.label }}</div>
         </template>
@@ -66,7 +74,7 @@ defineExpose({
       </div>
     </div>
 
-    <textarea v-model="comment" :readonly="type === 'readonly'"></textarea>
+    <textarea :readonly="type === 'readonly'" v-model="comment" @change="emit('change')"></textarea>
   </div>
 </template>
 

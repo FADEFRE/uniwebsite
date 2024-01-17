@@ -47,6 +47,8 @@ const props = defineProps({
   }
 })
 
+const emit = defineEmits(['change'])
+
 const id = props.connectionData['id']
 
 const decisionSuggestion = props.connectionData['decisionSuggestion'] !== 'unedited'
@@ -89,12 +91,14 @@ defineExpose({
           :type="readonly ? 'readonly' : 'edit'"
           :modules-data="connectionData['moduleApplications']"
           ref="panelExternalModules"
+          @change="emit('change')"
       />
       <PanelInternalModules
           :type="readonly ? 'readonly' : 'edit'"
           :selected-modules="connectionData['modulesLeipzig'].map(m => m['name'])"
           :options="selectableModules"
           ref="panelInternalModules"
+          @change="emit('change')"
       />
       <PanelComment
           type="readonly"
@@ -110,6 +114,7 @@ defineExpose({
               :display-decision="decisionSuggestion"
               :comment="connectionData['commentStudyOffice']"
               ref="studyOfficeDecisionData"
+              @change="emit('change')"
           />
         </template>
         <template #chairman>
@@ -118,6 +123,7 @@ defineExpose({
               :display-decision="decisionFinal"
               :comment="connectionData['commentDecision']"
               ref="chairmanDecisionData"
+              @change="emit('change')"
           />
         </template>
       </PanelDecision>

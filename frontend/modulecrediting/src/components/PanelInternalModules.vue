@@ -31,14 +31,18 @@ const props = defineProps({
   }
 })
 
+const emit = defineEmits(['change'])
+
 const selectedModules = ref(props.selectedModules || [])
 const addSelectedModule = (module) => {
   if (!selectedModules.value.includes(module)) {
     selectedModules.value.push(module)
+    emit('change')
   }
 }
 const removeSelectedModule = (index) => {
   selectedModules.value.splice(index, 1)
+  emit('change')
 }
 
 defineExpose({

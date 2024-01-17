@@ -25,7 +25,7 @@ displays:
 -->
 
 <script setup>
-import { ref, computed, onBeforeMount } from "vue";
+import { ref, computed, watch, onBeforeMount } from "vue";
 import FileInput from "@/components/FileInput.vue";
 
 const props = defineProps({
@@ -56,6 +56,8 @@ const props = defineProps({
   }
 })
 
+const emit = defineEmits(['deleteSelf', 'change'])
+
 const id = props.id ? props.id : undefined
 
 // checking props
@@ -73,8 +75,6 @@ onBeforeMount(() => {
   }
 })
 
-const emit = defineEmits(['deleteSelf'])
-
 const readonly = props.type === 'readonly'
 
 const name = ref(props.name || "")
@@ -85,6 +85,8 @@ const pointSystem = ref(props.pointSystem || "")
 const fileInput = ref()
 const selectedFile = computed(() => fileInput.value?.selectedFile)
 
+watch([name, university, points, pointSystem], () => emit('change'))
+
 defineExpose({
   id, name, university, points, pointSystem, selectedFile
 })
@@ -94,15 +96,15 @@ defineExpose({
   <div class="external-modules-item">
     <div class="screen-split">
       <div class="left-side">
-        <InputText :readonly="readonly" type="text" v-model="name" placeholder="Modulname" />
-        <InputText :readonly="readonly" type="text" v-model="university" placeholder="Universität"/>
+        <InputText :readonly="readonly" type="text" placeholder="Modulname" v-model="name" />
+        <InputText :readonly="readonly" type="text" placeholder="Universität" v-model="university" />
       </div>
 
       <div class="right-side">
 
         <div class="point-container">
-          <InputText :readonly="readonly" type="text" v-model="points" placeholder="Punkte" />
-          <InputText :readonly="readonly" type="text" v-model="pointSystem" placeholder="Punktesystem" />
+          <InputText :readonly="readonly" type="text" placeholder="Punkte" v-model="points" />
+          <InputText :readonly="readonly" type="text" placeholder="Punktesystem" v-model="pointSystem" />
         </div>
 
         <FileInput :readonly="type === 'edit' || type === 'readonly'" :selected-file="props.selectedFile" ref="fileInput" />
