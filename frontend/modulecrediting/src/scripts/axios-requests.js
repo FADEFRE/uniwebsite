@@ -43,7 +43,10 @@ function getModulesByCourse (course) {
     return axios.get(url + '/api/courses-leipzig')
         .then(response => {
             const courseObject = response.data.find(obj => obj.name === course)
-            return courseObject.modulesLeipzigCourse.map(obj => obj.name)
+            return courseObject.modulesLeipzigCourse
+                .filter(m => m.isActive)
+                .map(obj => obj.name)
+                .sort()
         })
 }
 
