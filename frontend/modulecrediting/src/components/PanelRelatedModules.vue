@@ -51,8 +51,10 @@ const openRelatedModule = (module) => {
 
 <template>
   <div class="panel-related-modules">
+
     <h4>Ähnliche Module:</h4>
-    <div class="related-modules-list-container">
+
+    <div v-if="relatedModules && relatedModules.length > 0" class="related-modules-list-container">
       <div v-for="module in relatedModules" class="single-related-module-container">
         <div class="left-side">
 
@@ -86,6 +88,11 @@ const openRelatedModule = (module) => {
 
       </div>
     </div>
+
+    <div v-else>
+      <p>Es wurden keine ähnlichen Module gefunden.</p>
+    </div>
+
   </div>
 </template>
 
