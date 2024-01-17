@@ -64,7 +64,7 @@ defineExpose({
         </Dropdown>
       </div>
 
-      <div class="module-list" :class="{ 'module-list-full': type !== 'new' }">
+      <div class="module-list" :class="{ 'module-list-full': type === 'readonly' }">
         <div v-for="(module, index) in selectedModules" class="module-list-item">
           <p>{{ module }}</p>
           <div v-if="type === 'new' || type === 'edit'">
