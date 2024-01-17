@@ -14,6 +14,7 @@ import swtp12.modulecrediting.dto.ModuleLeipzigUpdateDTO;
 import swtp12.modulecrediting.model.ModuleLeipzig;
 import swtp12.modulecrediting.model.ModulesConnection;
 import swtp12.modulecrediting.repository.ModuleLeipzigRepository;
+import swtp12.modulecrediting.repository.ModulesConnectionRepository;
 
 
 
@@ -21,6 +22,10 @@ import swtp12.modulecrediting.repository.ModuleLeipzigRepository;
 public class ModuleLeipzigService {
     @Autowired
     private ModuleLeipzigRepository moduleLeipzigRepository;
+
+    @Autowired
+    private ModulesConnectionRepository modulesConnectionRepository;
+
 
     public void updateModulesLeipzig(ModulesConnection modulesConnection, List<ModuleLeipzigUpdateDTO> modulesLeipzigDTO) {
         for(ModuleLeipzigUpdateDTO ml : modulesLeipzigDTO) {
@@ -55,5 +60,48 @@ public class ModuleLeipzigService {
 
     public void createModuleLeipzig(ModuleLeipzigCreateDTO moduleLeipzigCreateDTO) {
         if(moduleLeipzigCreateDTO.getName() == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Module Name is required");
+    }
+
+    public Boolean deleteModulesLeipzig(String id) {
+        ModuleLeipzig moduleLeipzig = getModuleLeipzigById(id);
+        if (!moduleLeipzig.getIsActive())
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Module Leipzig is already deactivated with id: " + id);
+        moduleLeipzig.setIsActive(false);
+        if (checkIfDeletionIsPossible(moduleLeipzig)) {
+            moduleLeipzigRepository.deleteById(id);
+            return true;
+        }
+        else return false;
+    }
+
+    private Boolean checkIfDeletionIsPossible(ModuleLeipzig moduleLeipzig) {
+        List<ModulesConnection> allModulesConnections = modulesConnectionRepository.findAll();
+        if (allModulesConnections.isEmpty()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "There are no connections in the database");
+        Boolean check = false;
+        for (ModulesConnection modulesConnection : allModulesConnections) {
+            List<ModuleLeipzig> listOfModuleLeipzig = modulesConnection.getModulesLeipzig();
+            for (ModuleLeipzig connectionsModuleLeipzig : listOfModuleLeipzig) {
+                if (!connectionsModuleLeipzig.equals(moduleLeipzig)) { check = true; }
+                else check = false;
+            }
+        }
+        return check;
+    }
+
+    public ModuleLeipzig getModuleLeipzigById(String id) {
+        Optional<ModuleLeipzig> moduleLeipzig = moduleLeipzigRepository.findById(id);
+        if(moduleLeipzig.isPresent()) 
+            return moduleLeipzig.get();
+
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Module Leipzig not found with given id: " + id);
+    }
+
+    public Boolean getModuleLeipzigState(String id) {
+        ModuleLeipzig moduleLeipzig = getModuleLeipzigById(id);
+        return moduleLeipzig.getIsActive();
+    }
+
+    public List<ModuleLeipzig> getAllModulesLeipzig() {
+        return moduleLeipzigRepository.findAll();
     }
 }
