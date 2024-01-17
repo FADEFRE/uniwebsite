@@ -161,7 +161,7 @@ public class DataLoader implements CommandLineRunner {
         
         JsonNode courseNodes = grabFirstNodeFromJson(fileName, "courses");
         for (JsonNode courseNode : courseNodes) {
-            CourseLeipzig courseLeipzig = new CourseLeipzig(courseNode.get("name").asText());
+            CourseLeipzig courseLeipzig = new CourseLeipzig(courseNode.get("name").asText(), true);
             if (courseLeipzigRepo.existsById(courseLeipzig.getName()) == false) {
                 courseLeipzigRepo.save(courseLeipzig);
             }
@@ -170,7 +170,7 @@ public class DataLoader implements CommandLineRunner {
             for (JsonNode module : modules) {
                 String name = module.get("name").asText();
                 String number = module.get("number").asText();
-                ModuleLeipzig moduleLeipzig = new ModuleLeipzig(name, number);
+                ModuleLeipzig moduleLeipzig = new ModuleLeipzig(name, number, true);
                 if (modulLeipzigRepo.existsById(moduleLeipzig.getName()) == false) {
                     modulLeipzigRepo.save(moduleLeipzig);
                 }
