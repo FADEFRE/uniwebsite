@@ -10,6 +10,7 @@ props:
   - points (should be given if type is 'edit' or 'readonly')
   - pointSystem (should be given if type is 'edit' or 'readonly')
   - selectedFile (should be given if type is 'edit' or 'readonly')
+  - allowDelete (Boolean, defaults to false)
 emits:
   - deleteSelf (called on trash button click)
 exposes:
@@ -53,6 +54,10 @@ const props = defineProps({
   },
   selectedFile: {
     type: Object
+  },
+  allowDelete: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -114,7 +119,7 @@ defineExpose({
     </div>
 
     <div v-if="type === 'new'">
-      <img src="../assets/icons/Trash.svg" @click="emit('deleteSelf')">
+      <img v-if="allowDelete" src="../assets/icons/Trash.svg" @click="emit('deleteSelf')">
     </div>
 
   </div>

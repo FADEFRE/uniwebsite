@@ -1,11 +1,12 @@
 <!--
 panel representing one module connection, usable for application
 props:
-  - selectableModules (array of internal modules that could be selected
+  - selectableModules (array of internal modules that could be selected)
+  - allowDelete (Boolean, defaults to false)
 emits:
   - deleteSelf (called on trash icon click)
 exposes:
-  - externalModules (array of objects describing externalModules
+  - externalModules (array of objects describing externalModules)
   - internalModules (array module names)
   - applicantComment (String)
 displays:
@@ -25,6 +26,10 @@ const props = defineProps({
   selectableModules: {
     required: true,
     type: Array
+  },
+  allowDelete: {
+    required: true,
+    type: Boolean
   }
 })
 
@@ -57,7 +62,7 @@ defineExpose({
 
       <!-- Icons Slot -->
       <template #icons>
-        <img src="@/assets/icons/Trash.svg" @click="emit('deleteSelf')">
+        <img v-if="allowDelete" src="@/assets/icons/Trash.svg" @click="emit('deleteSelf')">
       </template>
 
       <!-- Panel Content -->

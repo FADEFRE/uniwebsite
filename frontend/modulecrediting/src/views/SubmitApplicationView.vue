@@ -79,11 +79,17 @@ const triggerPostApplication = () => {
         />
       </ApplicationOverview>
 
-      <ApplicationPanel :selectable-modules="selectableModules" v-for="item in moduleConnections" :key="item"
-        @delete-self="deleteModuleConnection(item)" ref="moduleConnectionsRef" />
+      <ApplicationPanel
+          v-for="item in moduleConnections"
+          :key="item"
+          :selectable-modules="selectableModules"
+          :allow-delete="moduleConnections.length > 1"
+          ref="moduleConnectionsRef"
+          @delete-self="deleteModuleConnection(item)"
+      />
 
       <ButtonAdd @click="addModuleConnection">Modulzuweisung hinzufügen</ButtonAdd>
-      <ButtonLink @click="triggerPostApplication" primaryButton="true">Absenden</ButtonLink>
+      <ButtonLink @click="triggerPostApplication" :primaryButton="true">Absenden</ButtonLink>
     </div>
 
     <div class="side-infos-container">

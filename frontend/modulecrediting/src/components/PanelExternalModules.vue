@@ -71,10 +71,7 @@ const addExternalModule = () => {
 }
 
 const deleteExternalModule = (key) => {
-  const filteredModulesList = externalModulesList.value.filter(el => el !== key)
-  if (filteredModulesList.length > 0) {
-    externalModulesList.value = filteredModulesList
-  }
+  externalModulesList.value = externalModulesList.value.filter(el => el !== key)
 }
 
 // data ref
@@ -95,6 +92,7 @@ defineExpose({
           v-for="i in externalModulesList"
           :key="i"
           :type="type"
+          :allow-delete="externalModulesList.length > 1"
           ref="externalModules"
           @delete-self="deleteExternalModule(i)"
       />
