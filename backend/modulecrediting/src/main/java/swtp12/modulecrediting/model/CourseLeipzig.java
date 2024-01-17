@@ -29,7 +29,7 @@ public class CourseLeipzig {
     @JsonView({Views.coursesWithModules.class, Views.ApplicationOverview.class,Views.RelatedModulesConnection.class})
     @NotBlank(message = "Name may not be blank")
     private String name;
-
+    @JsonView({Views.coursesWithModules.class})
     private Boolean isActive;
 
     //Relation CourseLeipzig <-> ModuleLeipzig

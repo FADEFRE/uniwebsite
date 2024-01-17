@@ -48,7 +48,7 @@ public class CourseLeipzigService {
     public Boolean deleteCourseLeipzig(String id) {
         CourseLeipzig courseLeipzig = getCourseLeipzigById(id);
         if (!courseLeipzig.getIsActive())
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Module Leipzig is already deactivated with id: " + id);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Course Leipzig is already deactivated with id: " + id);
         courseLeipzig.setIsActive(false);
         if (checkIfDeletionIsPossible(courseLeipzig)) {
             courseLeipzigRepository.deleteById(id);

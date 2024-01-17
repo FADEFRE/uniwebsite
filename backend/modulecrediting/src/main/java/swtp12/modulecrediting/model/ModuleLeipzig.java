@@ -26,7 +26,7 @@ public class ModuleLeipzig {
     private String name;
     @JsonView({Views.coursesWithModules.class, Views.modulesWithoutCourse.class})
     private String code;
-
+    @JsonView({Views.coursesWithModules.class,Views.modulesWithoutCourse.class})
     private Boolean isActive;
 
     //Relation ModuleLeipzig <-> ModulesConnection
