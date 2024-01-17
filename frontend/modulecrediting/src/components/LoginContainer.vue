@@ -1,5 +1,5 @@
 <script setup>
-import { login } from "../router/login";
+import { login } from "@/router/login";
 import { ref } from "vue";
 const styleInvalid = ref(false);
 
