@@ -10,7 +10,7 @@ import static org.springframework.http.HttpMethod.PUT;
 import static org.springframework.http.HttpMethod.DELETE;
 
 @Configuration
-public class WebMvcConfig implements WebMvcConfigurer{
+public class WebConfig implements WebMvcConfigurer{
     private static final long MAXAGESECS = 3600;
 
     @Override
