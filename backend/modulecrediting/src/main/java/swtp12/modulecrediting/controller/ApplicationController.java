@@ -1,18 +1,14 @@
 package swtp12.modulecrediting.controller;
 
-import java.io.IOException;
 import java.util.List;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.itextpdf.text.DocumentException;
 
 import swtp12.modulecrediting.dto.ApplicationCreateDTO;
 import swtp12.modulecrediting.dto.ApplicationUpdateDTO;
@@ -20,7 +16,6 @@ import swtp12.modulecrediting.model.Application;
 import swtp12.modulecrediting.model.EnumApplicationStatus;
 import swtp12.modulecrediting.model.Views;
 import swtp12.modulecrediting.service.ApplicationService;
-import swtp12.modulecrediting.service.GeneratedPdfService;
 
 
 @RestController
@@ -29,9 +24,6 @@ import swtp12.modulecrediting.service.GeneratedPdfService;
 public class ApplicationController {
     @Autowired
     private ApplicationService applicationService;
-
-    @Autowired
-    private GeneratedPdfService generatedPdfService;
 
     @PutMapping("/{id}")
     public ResponseEntity<String> updateApplication(@PathVariable String id,
@@ -82,18 +74,5 @@ public class ApplicationController {
         return ResponseEntity.ok(applicationService.applicationExists(id));
     }
 
-    @GetMapping("/pdf-data/{id}")
-    public ResponseEntity<byte[]> generatePdf(@PathVariable String id) throws DocumentException, IOException {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_PDF);
-
-        headers.setContentDispositionFormData("att", "Antrag.pdf");
-        byte[] pdfBytes = generatedPdfService.generatePdfDataDocument(id);
-
-        return ResponseEntity.ok()
-                .headers(headers)
-                .contentLength(pdfBytes.length)
-                .body(pdfBytes);
-
-    }
+    
 }

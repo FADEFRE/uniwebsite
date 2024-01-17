@@ -26,7 +26,7 @@ const props = defineProps({
 })
 
 const openFile = () => {
-  const fileLink = url + '/api/pdf-documents/' + props.selectedFile.id
+  const fileLink = url + '/file/pdf-documents/' + props.selectedFile.id
   window.open(fileLink)
 }
 

@@ -48,13 +48,13 @@ Admin:
 
 ## API ENDPOINTS
 
-http://localhost:8090/courses-leipzig
+http://localhost:8090/api/courses-leipzig
  -> GET: all internal courses leipzig with their modules
 
-http://localhost:8090/modules-leipzig
+http://localhost:8090/api/modules-leipzig
  -> GET: all internal modules leipzig
 
-http://localhost:8090/applications
+http://localhost:8090/api/applications
 
  -> POST: post new application   Content-Type: multipart/form-data
     
@@ -70,18 +70,18 @@ http://localhost:8090/applications
     - moduleBlockCreateDTOList[1].moduleName: ...
     ...
 
-http://localhost:8090/applications
+http://localhost:8090/api/applications
  -> GET: getAllApplications requestparam: limit (default = 10), optional status,
     enum status:
         - OFFEN
         - IN_BEARBEITUNG
         - ABGESCHLOSSEN
 
-http://localhost:8090/applications/{id}
+http://localhost:8090/api/applications/{id}
  -> GET: getApplicationById (full applicaiton for sutdienbuero and pav)
     (pdf id is included: use for retrieving pdf data over seperate api endpoint)
 
-http://localhost:8090/applications/{id}
+http://localhost:8090/api/applications/{id}
  -> PUT: update applicaiton
     - moduleBlockUpdateDTOList[0].moduleName: ...
     - moduleBlockUpdateDTOList[0].university: ...
@@ -93,22 +93,22 @@ http://localhost:8090/applications/{id}
     - moduleBlockUpdateDTOList[0].comment: ...
     - moduleBlockUpdateDTOList[1].moduleName: ...
 
-http://localhost:8090/applications/{id}/exists
+http://localhost:8090/api/applications/{id}/exists
  -> GET: boolean if application with id exists
 
-http://localhost:8090/applications/student/{id}
+http://localhost:8090/api/applications/student/{id}
  -> GET: getApplicationById (limited info)
     (pdf id is included: use for retrieving pdf data over seperate api endpoint)
 
-http://localhost:8090/pdf-documents/{id}
+http://localhost:8090/file/pdf-documents/{id}
 
  -> GET: get single pdf file
 
-http://localhost:8090/applications/pdf-data/{id}
+http://localhost:8090/file/pdf-documents/application/${id}
  -> GET: generated PDF Document with application Data
 
 
-http://localhost:8090/modules-connection/{id}/related
+http://localhost:8090/api/modules-connection/{id}/related
 
 -> GET: all related modules-connections of a module connection 
 

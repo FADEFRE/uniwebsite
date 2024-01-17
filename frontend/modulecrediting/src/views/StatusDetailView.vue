@@ -18,7 +18,7 @@ import { getApplicationByIdForStatus, getModulesByCourse } from "@/scripts/axios
 import { parseRequestDate } from "@/scripts/date-utils";
 
 const id = useRoute().params.id
-const summaryDocumentLink = `${url}/api/applications/pdf-data/${id}`
+const summaryDocumentLink = `${url}/file/pdf-documents/application/${id}`
 
 const applicationData = ref()
 const moduleOptions = ref([])
