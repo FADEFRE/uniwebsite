@@ -27,6 +27,8 @@ public class ModuleLeipzig {
     @JsonView({Views.coursesWithModules.class, Views.modulesWithoutCourse.class})
     private String code;
 
+    private Boolean isActive;
+
     //Relation ModuleLeipzig <-> ModulesConnection
     @ManyToMany(mappedBy = "modulesLeipzig")
     @JsonBackReference
@@ -38,9 +40,10 @@ public class ModuleLeipzig {
     private List<CourseLeipzig> coursesLeipzig = new ArrayList<>();
 
 
-    public ModuleLeipzig(String name, String code) {
+    public ModuleLeipzig(String name, String code, Boolean isActive) {
         this.name = name;
         this.code = code;
+        this.isActive = isActive;
     }
 
 }

@@ -30,6 +30,8 @@ public class CourseLeipzig {
     @NotBlank(message = "Name may not be blank")
     private String name;
 
+    private Boolean isActive;
+
     //Relation CourseLeipzig <-> ModuleLeipzig
     @ManyToMany (cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
@@ -47,8 +49,9 @@ public class CourseLeipzig {
     private List<Application> applications = new ArrayList<>();
 
 
-    public CourseLeipzig(String name) {
+    public CourseLeipzig(String name, Boolean isActive) {
         this.name = name;
+        this.isActive = isActive;
     }
 
 
