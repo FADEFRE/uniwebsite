@@ -71,8 +71,10 @@ const addExternalModule = () => {
 }
 
 const deleteExternalModule = (key) => {
-  console.log(key)
-  externalModulesList.value = externalModulesList.value.filter(el => el !== key)
+  const filteredModulesList = externalModulesList.value.filter(el => el !== key)
+  if (filteredModulesList.length > 0) {
+    externalModulesList.value = filteredModulesList
+  }
 }
 
 // data ref
