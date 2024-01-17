@@ -5,6 +5,10 @@ const props = defineProps({
   primaryButton: {
     type: Boolean,
     default: false
+  },
+  disabled: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -15,7 +19,7 @@ const style = computed(() => {
 
 
 <template>
-    <Button :class="style">
+    <Button :disabled="disabled" :class="{ 'button-container primary-button': primaryButton, 'disabled': disabled }">
       <slot />
       <img src="../assets/icons/ArrowWhite.svg" class="arrow-icon" alt="Arrow Icon">
     </Button>
@@ -51,7 +55,7 @@ const style = computed(() => {
   }
 }
 
-.pass-on-not-possible {
+.disabled {
   background-color: $mid-gray;
   color: rgb(163, 163, 163);
 

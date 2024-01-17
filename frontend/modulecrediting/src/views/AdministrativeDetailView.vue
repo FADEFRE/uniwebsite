@@ -105,14 +105,7 @@ const saveChanges = () => {
 }
 
 const triggerPassOn = () => {
-  updateStatus(id)
-    .then(data => {
-      if (!data) {
-        alert('Fehler beim Weitergeben!')
-      } else {
-        location.reload()
-      }
-    })
+  if (passOnPossible) updateStatus(id).then(_ => location.reload())
 }
 </script>
 
@@ -149,7 +142,7 @@ const triggerPassOn = () => {
       <div v-if="!readonly">
         <ButtonLink @click="discardChanges">Änderungen verwerfen</ButtonLink>
         <ButtonLink @click="saveChanges">Speichern</ButtonLink>
-        <ButtonLink @click="triggerPassOn" :class="{ 'pass-on-not-possible': !passOnPossible }" :primaryButton="true">
+        <ButtonLink :disabled="!passOnPossible" :primaryButton="true" @click="triggerPassOn">
           Weitergeben
         </ButtonLink>
       </div>
