@@ -1,7 +1,7 @@
 <script setup>
+import { logout } from "@/router/logout";
 import { useRoute } from "vue-router";
 import { computed } from "vue";
-import { logout } from "../router/logout";
 
 const route = useRoute()
 const routeType = computed(() => route.meta['authType'])
