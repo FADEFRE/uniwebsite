@@ -8,9 +8,6 @@ onMounted(() => {
 })
 </script>
 
-
-
-
 <template>
   <div>
     <header class="header-background">
@@ -18,9 +15,7 @@ onMounted(() => {
         <a href="/" class="logo">
           <img class="logo-responsive" src="./assets/Universität_Leipzig_logo.svg" alt="Logo der Universität Leipzig" />
         </a>
-        <TheLanguageSelection>
-
-        </TheLanguageSelection>
+        <TheLanguageSelection />
         <div class="router-container">
           <TheNavigation />
         </div>
@@ -42,7 +37,6 @@ onMounted(() => {
   align-items: center;
   align-self: stretch;
 
-
   background-color: $white;
 }
 
@@ -54,9 +48,4 @@ onMounted(() => {
   width: 27.42188rem;
   height: 11.25rem;
 }
-
-
-
-
-
 </style>
