@@ -9,9 +9,11 @@ displays:
 
 <script setup>
 import PanelHeader from "@/components/PanelHeader.vue";
-import { ref, onBeforeMount, computed } from "vue";
+import { useRoute } from "vue-router";
+import { ref, onBeforeMount } from "vue";
 import { getRelatedModuleConnections } from "@/scripts/axios-requests";
 import { parseRequestDate } from "@/scripts/date-utils";
+import router from "@/router";
 
 const props = defineProps({
   connectionId: {
@@ -27,6 +29,24 @@ onBeforeMount(() => {
     .then(data => relatedModules.value = data)
 })
 
+const route = useRoute()
+const type = route.meta['authType']
+
+let redirectRouteName = undefined
+if (type === 'study-office') {
+  redirectRouteName = 'studyOfficeDetailHighlight'
+} else if (type === 'chairman') {
+  redirectRouteName = 'chairmanDetailHighlight'
+} else {
+  console.warn("PanelRelatedModules: component should only be used with route types 'study-office' or 'chairman'")
+}
+
+const openRelatedModule = (module) => {
+  const connectionId = module['id']
+  const routeData = router.resolve({ name: redirectRouteName, params: { id: module['application']['id'], connection: connectionId } })
+  window.open(routeData.href, '_blank')
+}
+
 </script>
 
 <template>
@@ -35,30 +55,35 @@ onBeforeMount(() => {
     <div class="related-modules-list-container">
       <div v-for="module in relatedModules" class="single-related-module-container">
         <div class="left-side">
-          <div>
-            <div v-if="module['decisionFinal'] === 'accepted'">
-              <img src="../assets/icons/ModuleAccepted.svg">
+
+          <div @click="openRelatedModule(module)">
+
+            <div>
+              <div v-if="module['decisionFinal'] === 'accepted'">
+                <img src="../assets/icons/ModuleAccepted.svg">
+              </div>
+              <div v-else-if="module['decisionFinal'] === 'asExamCertificate'">
+                <img src="../assets/icons/ModuleAsExamCertificate.svg">
+              </div>
+              <div v-else-if="module['decisionFinal'] === 'denied'">
+                <img src="../assets/icons/ModuleDenied.svg">
+              </div>
             </div>
-            <div v-else-if="module['decisionFinal'] === 'asExamCertificate'">
-              <img src="../assets/icons/ModuleAsExamCertificate.svg">
-            </div>
-            <div v-else-if="module['decisionFinal'] === 'denied'">
-              <img src="../assets/icons/ModuleDenied.svg">
-            </div>
+            <PanelHeader :external-modules="module['moduleApplications'].map(m => m.name)"
+                         :internal-modules="module['modulesLeipzig'].map(m => m.name)" :relatedModules="true" />
           </div>
 
-          <PanelHeader :external-modules="module['moduleApplications'].map(m => m.name)"
-            :internal-modules="module['modulesLeipzig'].map(m => m.name)" :relatedModules="true" />
-          <!-- todo PanelHeader should link -->
-        </div>
-        <div class="right-side">
-          <div class="date-block">
-            <img src="../assets/icons/DecisionDate.svg" alt="DecisionDate">
-            <p>{{ parseRequestDate(module['application']['decisionDate']) }}</p>
+          <div class="right-side">
+            <div class="date-block">
+              <img src="../assets/icons/DecisionDate.svg" alt="DecisionDate">
+              <p>{{ parseRequestDate(module['application']['decisionDate']) }}</p>
+            </div>
+
+            <p class="course">{{ module['application']['courseLeipzig']['name'] }}</p>
           </div>
 
-          <p class="course">{{ module['application']['courseLeipzig']['name'] }}</p>
         </div>
+
       </div>
     </div>
   </div>

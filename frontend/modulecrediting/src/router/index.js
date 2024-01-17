@@ -50,6 +50,12 @@ const router = createRouter({
       meta: { authType: 'study-office' }
     },
     {
+      path: '/studienbuero/:id/:connection',
+      name: 'studyOfficeDetailHighlight',
+      component: () => import('../views/AdministrativeDetailView.vue'),
+      meta: { authType: 'study-office' }
+    },
+    {
       path: '/pruefungsausschuss',
       name: 'chairmanSelection',
       component: () => import('../views/AdministrativeSelectionView.vue'),
@@ -58,6 +64,12 @@ const router = createRouter({
     {
       path: '/pruefungsausschuss/:id',
       name: 'chairmanDetail',
+      component: () => import('../views/AdministrativeDetailView.vue'),
+      meta: { authType: 'chairman' }
+    },
+    {
+      path: '/pruefungsausschuss/:id/:connection',
+      name: 'chairmanDetailHighlight',
       component: () => import('../views/AdministrativeDetailView.vue'),
       meta: { authType: 'chairman' }
     }

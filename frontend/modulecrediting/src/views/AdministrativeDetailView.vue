@@ -11,6 +11,7 @@ import ApplicationConnectionLinks from "@/components/ApplicationConnectionLinks.
 
 const route = useRoute()
 const id = route.params.id
+const connectionHighlightId = route.params.connection
 const type = route.meta['authType']
 const readonly = ref(true)
 
@@ -131,9 +132,10 @@ const triggerPassOn = () => {
             :type="type"
             :readonly="readonly"
             :selectable-modules="moduleOptions"
-            :id="connection.id"
             :connection-data="connection"
             ref="moduleConnections"
+            :class="{ 'connection-highlight': connection.id == connectionHighlightId }"
+            :id="connection.id"
             @change="setUnsaved"
         />
 
@@ -169,5 +171,10 @@ const triggerPassOn = () => {
 .administrative-detail-container {
   @include verticalList(small);
   width: 100%;
+}
+
+.connection-highlight {
+  border-left-style: solid;
+  border-left-width: 15px;
 }
 </style>
