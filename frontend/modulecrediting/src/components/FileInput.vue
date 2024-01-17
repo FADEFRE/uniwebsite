@@ -14,6 +14,7 @@ displays:
 import { ref } from "vue";
 import { url } from "@/scripts/url-config";
 import ButtonLink from "@/components/ButtonLink.vue";
+import ButtonAdd from "@/components/ButtonAdd.vue";
 
 const props = defineProps({
   readonly: {
@@ -24,6 +25,10 @@ const props = defineProps({
     type: Object
   }
 })
+
+if (props.readonly && !props.selectedFile) {
+  console.warn("FileInput: prop selectedFile should be given if prop readonly is true")
+}
 
 const openFile = () => {
   const fileLink = url + '/file/pdf-documents/' + props.selectedFile.id
@@ -96,9 +101,13 @@ defineExpose({
         :class="{ 'cursor-pointer': !props.readonly }"
     >
 
-      <div v-if="selectedFile?.name">
-        <p>{{ selectedFile.name }}</p>
+      <div v-if="readonly">
+        <p>{{ selectedFile?.name }}</p>
         <ButtonLink @click="openFile">PDF öffnen</ButtonLink>
+      </div>
+
+      <div v-else-if="selectedFile?.name">
+        <p>{{ selectedFile?.name }}</p>
       </div>
 
       <div v-else class="file-drop-unselected">
