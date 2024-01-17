@@ -64,7 +64,7 @@ defineExpose({
         </Dropdown>
       </div>
 
-      <div class="module-list">
+      <div class="module-list" :class="{ 'module-list-full': type !== 'new' }">
         <div v-for="(module, index) in selectedModules" class="module-list-item">
           <p>{{ module }}</p>
           <div v-if="type === 'new' || type === 'edit'">
@@ -102,6 +102,9 @@ defineExpose({
   justify-content: space-between;
   align-self: stretch;
   width: 50%;
+}
+.module-list-full {
+  width: 100%
 }
 .module-list-item {
   @include smallHighlightBox();
