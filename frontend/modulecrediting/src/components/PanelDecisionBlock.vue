@@ -52,7 +52,7 @@ defineExpose({
           v-model="decision"
       >
         <template #option="optionProps">
-          <div :class="optionProps.option.class">{{ optionProps.option.label }}</div>
+          <div class="select-button" :class="optionProps.option.class">{{ optionProps.option.label }}</div>
         </template>
       </SelectButton>
     </div>
@@ -108,15 +108,27 @@ textarea {
   width: 100%;
 }
 
-.highlight-accepted {
-  background-color: $green;
+:deep(.p-selectbutton > .p-button) {
+  padding: 0;
+  height: 100%;
 }
 
-.highlight-asExamCertificate {
-  background-color: $orange;
+.select-button {
+  @include smallHighlightBox();
+  width: 100%;
 }
 
-.highlight-denied {
-  background-color: $red;
+:deep(.p-highlight) {
+  & .highlight-accepted {
+    background-color: $green;
+  }
+
+  & .highlight-asExamCertificate {
+    background-color: $orange;
+  }
+
+  & .highlight-denied {
+    background-color: $red;
+  }
 }
 </style>
