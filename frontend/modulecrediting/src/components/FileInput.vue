@@ -14,7 +14,6 @@ displays:
 import { ref } from "vue";
 import { url } from "@/scripts/url-config";
 import ButtonLink from "@/components/ButtonLink.vue";
-import ButtonAdd from "@/components/ButtonAdd.vue";
 
 const props = defineProps({
   readonly: {
@@ -63,12 +62,15 @@ const handleFiles = (e) => {
     const file = e.target.files[0]
     if (checkFile(file)) {
       selectedFile.value = file
+
+      console.log(selectedFile.value);
     }
   }
 }
 
 const dragOverHandler = (e) => {
   if (!props.readonly) e.currentTarget.classList.add('file-drop-highlight')
+  console.log(selectedFile.value);
 }
 
 const dragLeaveHandler = (e) => {
@@ -83,6 +85,7 @@ const dropHandler = (e) => {
     }
     e.currentTarget.classList.remove('file-drop-highlight')
   }
+  console.log(selectedFile.value);
 }
 
 defineExpose({
@@ -98,10 +101,10 @@ defineExpose({
         @dragleave.prevent="dragLeaveHandler"
         @drop.prevent="dropHandler"
         class="file-drop-container"
-        :class="{ 'cursor-pointer': !props.readonly }"
+        :class="{ 'cursor-pointer': !props.readonly, 'read-only-border': props.readonly }"
     >
 
-      <div v-if="readonly">
+      <div v-if="readonly" :class="{ 'read-only-container': props.readonly }">
         <p>{{ selectedFile?.name }}</p>
         <ButtonLink @click="openFile">PDF öffnen</ButtonLink>
       </div>
@@ -133,11 +136,16 @@ input {
 }
 
 .file-drop-container {
-  border: 1px dashed $black;
+  border: 2px dashed $black;
 
   display: flex;
   padding: 0.625rem 0rem;
   justify-content: center;
+}
+
+.read-only-border {
+  border: 2px solid $black;
+  padding: 0;
 }
 
 .file-drop-unselected {
@@ -147,5 +155,13 @@ input {
 
 .file-drop-highlight {
   background-color: $white;
+}
+
+.read-only-container {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 1.25rem;
 }
 </style>
