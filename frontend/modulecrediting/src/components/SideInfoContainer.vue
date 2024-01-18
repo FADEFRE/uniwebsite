@@ -4,7 +4,7 @@ const props = defineProps(['heading'])
 
 <template>
     <div class="sideinfo-container">
-        <h3>{{ heading }}</h3>
+        <h3 class="heading">{{ heading }}</h3>
         <div>
             <slot></slot>
         </div>
@@ -17,7 +17,11 @@ const props = defineProps(['heading'])
 
 .sideinfo-container {
     @include basicContainer();
-    
+    width: min-content;
+}
+
+.heading {
+    width: max-content;
 }
 
 :slotted(.list-container) {
@@ -31,6 +35,7 @@ const props = defineProps(['heading'])
   position: relative;
   padding-left: 1rem;
   list-style: none;
+  width: 100%;
 }
 
 :slotted(.list-item::after) {

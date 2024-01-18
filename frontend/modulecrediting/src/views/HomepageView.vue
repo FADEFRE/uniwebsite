@@ -98,6 +98,6 @@ const getFormattedId = () => {
 
 .side-infos-container {
     @include verticalList(big);
-    width: min-content;
+    
 }
 </style>
