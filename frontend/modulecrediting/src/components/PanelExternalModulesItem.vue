@@ -168,5 +168,8 @@ defineExpose({
 .point-container {
   display: flex;
   gap: 0.625rem;
+  & .p-inputtext {
+    width: 100%;
+  }
 }
 </style>
