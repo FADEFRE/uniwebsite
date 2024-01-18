@@ -137,20 +137,18 @@ const triggerPassOn = () => {
 
       </div>
 
-      <div v-if="!readonly">
+      <div v-if="!readonly" class="saving-buttons-container">
         <ButtonLink @click="discardChanges">Änderungen verwerfen</ButtonLink>
         <ButtonLink @click="saveChanges">Speichern</ButtonLink>
-        <ButtonLink :disabled="!passOnPossible" :primaryButton="true" @click="triggerPassOn">
-          Weitergeben
-        </ButtonLink>
       </div>
 
       <div v-if="unsaved">
-        <Button class="unsaved-bitton">
-          <h3 class="unsaved-button-text">!</h3>
-        </Button>
-      </div>
+          <Button class="unsaved-button">
+            <h3 class="unsaved-button-text">!</h3>
+          </Button>
+        </div>
 
+      <ButtonLink :disabled="!passOnPossible" :primaryButton="true" @click="triggerPassOn">Weitergeben</ButtonLink>
     </div>
   </div>
 </template>
@@ -173,12 +171,17 @@ const triggerPassOn = () => {
   border-left: 1rem solid $dark-gray;
 }
 
-.unsaved-bitton {
+.saving-buttons-container {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+}
+
+.unsaved-button {
   background-color: $red;
   width: 3.125rem;
   height: 3.125rem;
 }
-
 .unsaved-button-text {
   color: $white;
 }

@@ -141,6 +141,10 @@ input {
   display: flex;
   padding: 0.625rem 0rem;
   justify-content: center;
+
+  &:hover {
+    background-color: $white;
+  }
 }
 
 .read-only-border {
