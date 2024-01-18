@@ -5,6 +5,7 @@ import { getApplicationByIdForStatus } from '@/scripts/axios-requests';
 import { url } from '@/scripts/url-config';
 import axios from 'axios';
 import ConfirmationContainer from '../components/ConfirmationContainer.vue';
+import ButtonLink from "@/components/ButtonLink.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -46,8 +47,8 @@ const openPdf = () => {
 <template>
     <div class="main" v-if="applicationData">
         <ConfirmationContainer :id="id">
-            <Button @click="openPdf" class="pdf-button">Antrag herunterladen</Button>
-            <Button @click="openDetailView" class="status-button">Status einsehen</Button>
+            <ButtonLink @click="openPdf" class="pdf-button">Antrag herunterladen</ButtonLink>
+            <ButtonLink @click="openDetailView" class="status-button">Status einsehen</ButtonLink>
         </ConfirmationContainer>
     </div>
 </template>
