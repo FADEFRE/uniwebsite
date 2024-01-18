@@ -15,8 +15,9 @@ const props = defineProps(['header', 'text'])
             <p>Platzhalter Text</p>
         </div>
         <div class="input-button-container">
-            <slot></slot>
+            <slot></slot>    
         </div>
+        
     </div>
 </template>
 
@@ -37,8 +38,10 @@ const props = defineProps(['header', 'text'])
 }
 
 .input-button-container{
+    width: 100%;
     display: flex;
-    flex-direction: row;
+
+    
 }
 
 :deep(.p-inputtext) {

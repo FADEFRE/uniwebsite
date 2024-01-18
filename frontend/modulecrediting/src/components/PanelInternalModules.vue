@@ -57,7 +57,7 @@ defineExpose({
 
     <div class="screen-split">
       <div class="module-dropdown" v-if="type === 'new' || type === 'edit'">
-        <Dropdown filter :options="options" placeholder="Modul auswählen" @change="e => addSelectedModule(e.value)">
+        <Dropdown filter :options="options" placeholder="Modul auswählen" emptyMessage="Studiengang auswählen" emptyFilterMessage="Modul nicht gefunden" @change="e => addSelectedModule(e.value)">
           <template #filtericon>
             <img class="test" src="@/assets/icons/SearchIcon.svg">
           </template>

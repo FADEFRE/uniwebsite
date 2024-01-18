@@ -65,6 +65,7 @@ Button, .p-button {
   font-family: "Jost";
   text-transform: uppercase;
   text-decoration: none;
+  width: max-content;
 
   color: $white;
   font-size: 1.125rem;
@@ -86,7 +87,6 @@ input {
   border: 2px solid $dark-gray;
   background-color: transparent;
   padding: 0.625rem;
-  width: 100%;
 
   color: $black;
   font-family: "Jost";

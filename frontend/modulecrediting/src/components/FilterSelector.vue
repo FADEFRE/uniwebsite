@@ -197,6 +197,9 @@ defineExpose({
   color: $dark-gray;
 }
 
+.p-inputtext {
+  width: 100%;
+}
 .selected {
   & .overview-text {
     color: $white;

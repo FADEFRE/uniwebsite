@@ -65,5 +65,9 @@ const login_password = ref();
     justify-content: center;
     align-items: center;
     gap: 0.625rem;
+
+    & .p-inputtext {
+        width: 100%;
+    }
 }
 </style>

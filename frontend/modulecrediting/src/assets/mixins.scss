@@ -7,6 +7,11 @@
   justify-content: center;
   align-items: flex-start;
   gap: 1.875rem;
+
+  @media only screen and (max-width: 1000px) {
+    flex-wrap: wrap;
+    padding: 1.5rem 1.5rem;
+  }
 }
 
 @mixin verticalList($gapSize) {

@@ -17,11 +17,12 @@ const props = defineProps(['heading'])
 
 .sideinfo-container {
     @include basicContainer();
-    width: min-content;
+    width: 100%;
 }
 
 .heading {
     width: max-content;
+    text-transform: uppercase;
 }
 
 :slotted(.list-container) {

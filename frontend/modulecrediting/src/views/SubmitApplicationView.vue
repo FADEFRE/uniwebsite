@@ -116,12 +116,16 @@ const triggerPostApplication = () => {
 
 .submit-application-container {
   @include verticalList(small);
-  width: 100%;
+  align-self: stretch
 }
 
 .side-infos-container {
   @include verticalList(big);
-  width: min-content;
+  
+
+  @media only screen and (max-width: 1000px) {
+    width: 100%;
+  }
 }
 </style>
 

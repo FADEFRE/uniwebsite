@@ -16,9 +16,7 @@ onMounted(() => {
           <img class="logo-responsive" src="./assets/Universität_Leipzig_logo.svg" alt="Logo der Universität Leipzig" />
         </a>
         <TheLanguageSelection />
-        <div class="router-container">
           <TheNavigation />
-        </div>
       </div>
     </header>
     <router-view class="main-content" />
@@ -30,6 +28,11 @@ onMounted(() => {
 @import './assets/variables.scss';
 @import './assets/main.scss';
 
+.header-background {
+  background-color: $white;
+  
+}
+
 .header-container {
 
   display: flex;
@@ -37,11 +40,19 @@ onMounted(() => {
   align-items: center;
   align-self: stretch;
 
-  background-color: $white;
+  background-image: url(assets/icons/HeaderBackground.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: right;
+
+  
 }
 
 .logo {
   background-color: $white;
+  padding: 0;
+  margin: 0;
+
 }
 
 .logo-responsive {

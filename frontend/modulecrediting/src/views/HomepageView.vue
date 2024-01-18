@@ -56,14 +56,14 @@ const getFormattedId = () => {
             <!-- HomepageContainer Application -->
             <HomepageContainer :header="$t('make application')"
                 :text="$t('create an application to have modules from other universities recognized at the University of Leipzig.')">
-                <ButtonLink @click="goToSubmitApplication" class="p-button-success">{{$t('make application')}}</ButtonLink>
+                <ButtonLink @click="goToSubmitApplication">{{$t('make application')}}</ButtonLink>
             </HomepageContainer>
 
             <!-- HomepageContainer StatusView -->
             <HomepageContainer :header="$t('view status')"
                 :text="$t('view the status of applications that have already been submitted using the 6-digit process number.')">
                 <InputText v-model="id" :class="{ 'p-invalid': isInvalid }" placeholder="0-0-0-0-0-0" @keydown.enter.prevent="openDetailView" @input="validateInput" />
-                <ButtonLink @click="openDetailView" class="p-button-primary">{{$t('view status')}}</ButtonLink>
+                <ButtonLink @click="openDetailView">{{$t('view status')}}</ButtonLink>
             </HomepageContainer>
         </div>
 
@@ -99,5 +99,8 @@ const getFormattedId = () => {
 .side-infos-container {
     @include verticalList(big);
     
+    @media only screen and (max-width: 1000px) {
+    width: 100%;
+  }
 }
 </style>
