@@ -60,4 +60,9 @@ public class CourseLeipzig {
         this.modulesLeipzigCourse.add(moduleLeipzig);
         moduleLeipzig.getCoursesLeipzig().add(this);
     }
+
+    public void removeCourseToModulesLeipzig(ModuleLeipzig moduleLeipzig) {
+        this.modulesLeipzigCourse.remove(moduleLeipzig);
+        moduleLeipzig.getCoursesLeipzig().remove(this);
+    }
 }
