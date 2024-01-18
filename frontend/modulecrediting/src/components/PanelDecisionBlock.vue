@@ -44,13 +44,8 @@ defineExpose({
 
 
     <div v-if="type === 'edit'">
-      <SelectButton
-          :allow-empty="false"
-          :options="decisionOptions"
-          optionLabel="label"
-          optionValue="value"
-          v-model="decision"
-      >
+      <SelectButton :allow-empty="false" :options="decisionOptions" optionLabel="label" optionValue="value"
+        v-model="decision">
         <template #option="optionProps">
           <div class="select-button" :class="optionProps.option.class">{{ optionProps.option.label }}</div>
         </template>
@@ -59,16 +54,16 @@ defineExpose({
 
     <div v-else-if="type === 'readonly'" class="readonly-decision-container">
 
-      <div class="icon-container">
+      <div class="icon-container" :class="{ 'highlight': displayDecision === 'accepted' }">
         <img v-if="displayDecision === 'accepted'" src="../assets/icons/ModuleAccepted.svg">
         <img v-else src="../assets/icons/ModuleAcceptedGray.svg">
       </div>
 
-      <div class="icon-container">
+      <div class="icon-container" :class="{ 'highlight': displayDecision === 'asExamCertificate' }">
         <img v-if="displayDecision === 'asExamCertificate'" src="../assets/icons/ModuleAsExamCertificate.svg">
         <img v-else src="../assets/icons/ModuleAsExamCertificateGray.svg">
       </div>
-      <div class="icon-container">
+      <div class="icon-container" :class="{ 'highlight': displayDecision === 'denied' }">
         <img v-if="displayDecision === 'denied'" src="../assets/icons/ModuleDenied.svg">
         <img v-else src="../assets/icons/ModuleDeniedGray.svg">
       </div>
@@ -86,22 +81,43 @@ defineExpose({
 .panel-decision-block {
   display: flex;
   width: 100%;
-  align-self: stretch;
+  height: 100%;
 }
 
 .readonly-decision-container {
   display: flex;
   flex-direction: column;
 }
+
+
 .icon-container {
   @include smallHighlightBox();
-  border: 1px $dark-gray solid;
+  border-right: 2px solid $black;
+
+  &.highlight {
+    background-color: $gray;
+  }
+
+  &:first-child {
+    border-top: 2px solid $black;
+    border-left: 2px solid $black;
+  }
+
+  &:nth-child(2) {
+    border-left: 2px solid $black;
+  }
+
+  &:last-child {
+    border-bottom: 2px solid $black;
+    border-left: 2px solid $black;
+  }
 }
+
 
 textarea {
   width: 100%;
   resize: none;
-  padding: 0.625rem;
+  border-left: none;
 }
 
 :deep(.p-button) {

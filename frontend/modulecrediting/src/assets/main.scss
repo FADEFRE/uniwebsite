@@ -96,7 +96,7 @@ small {
 }
 
 .p-inputtext,
-input {
+input, textarea {
   border: 2px solid $dark-gray;
   background-color: transparent;
   padding: 0.625rem;
@@ -142,7 +142,6 @@ input {
   color: $white;
 }
 
-
 .p-dropdown-panel {
   background-color: $gray;
   border: none;
@@ -159,11 +158,6 @@ input {
   border: none;
   border-right: 3px solid $gray;
 }
-
-
-.p-dropdown-filter-icon {
-}
-
 
 .p-dropdown-header {
   border: none;

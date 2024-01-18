@@ -57,6 +57,5 @@ textarea {
   width: 100%;
   min-height: 6rem;
   resize: none;
-  padding: 0.625rem;
 }
 </style>
