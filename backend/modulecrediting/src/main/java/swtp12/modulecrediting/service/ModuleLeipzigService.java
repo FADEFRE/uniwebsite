@@ -62,13 +62,13 @@ public class ModuleLeipzigService {
         if(moduleLeipzigCreateDTO.getName() == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Module Name is required");
     }
 
-    public Boolean deleteModulesLeipzig(String id) {
-        ModuleLeipzig moduleLeipzig = getModuleLeipzigById(id);
+    public Boolean deleteModulesLeipzig(String name) {
+        ModuleLeipzig moduleLeipzig = getModuleLeipzigByName(name);
         if (!moduleLeipzig.getIsActive())
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Module Leipzig is already deactivated with id: " + id);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Module Leipzig is already deactivated with name: " + name);
         moduleLeipzig.setIsActive(false);
         if (checkIfDeletionIsPossible(moduleLeipzig)) {
-            moduleLeipzigRepository.deleteById(id);
+            moduleLeipzigRepository.deleteById(name);
             return true;
         }
         else return false;
@@ -88,16 +88,8 @@ public class ModuleLeipzigService {
         return check;
     }
 
-    public ModuleLeipzig getModuleLeipzigById(String id) {
-        Optional<ModuleLeipzig> moduleLeipzig = moduleLeipzigRepository.findById(id);
-        if(moduleLeipzig.isPresent()) 
-            return moduleLeipzig.get();
-
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Module Leipzig not found with given id: " + id);
-    }
-
-    public Boolean getModuleLeipzigState(String id) {
-        ModuleLeipzig moduleLeipzig = getModuleLeipzigById(id);
+    public Boolean getModuleLeipzigState(String name) {
+        ModuleLeipzig moduleLeipzig = getModuleLeipzigByName(name);
         return moduleLeipzig.getIsActive();
     }
 

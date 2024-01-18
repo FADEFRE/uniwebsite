@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,7 +15,6 @@ import com.fasterxml.jackson.annotation.JsonView;
 
 import swtp12.modulecrediting.model.ModuleLeipzig;
 import swtp12.modulecrediting.model.Views;
-import swtp12.modulecrediting.service.CourseLeipzigService;
 import swtp12.modulecrediting.service.ModuleLeipzigService;
 
 
@@ -28,47 +26,29 @@ public class ModuleLeipzigController {
     @Autowired
     private ModuleLeipzigService moduleLeipzigService;
 
-    @Autowired
-    private CourseLeipzigService courseLeipzigService;
-
     @GetMapping
     @JsonView(Views.modulesWithoutCourse.class)
     ResponseEntity<List<ModuleLeipzig>> getAllModulesLeipzig() {
         return ResponseEntity.ok(moduleLeipzigService.getAllModulesLeipzig());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ModuleLeipzig> getSingleModulesLeipzig(@PathVariable String id) {
-        return ResponseEntity.ok(moduleLeipzigService.getModuleLeipzigById(id));
+    @GetMapping("/{name}")
+    public ResponseEntity<ModuleLeipzig> getSingleModulesLeipzig(@PathVariable String name) {
+        return ResponseEntity.ok(moduleLeipzigService.getModuleLeipzigByName(name));
     }
 
 
-    @DeleteMapping("/{id}/delete")
-    public ResponseEntity<String> deleteModulesLeipzig(@PathVariable String id) {
-        if (moduleLeipzigService.deleteModulesLeipzig(id)) {
+    @DeleteMapping("/{name}/delete")
+    public ResponseEntity<String> deleteModulesLeipzig(@PathVariable String name) {
+        if (moduleLeipzigService.deleteModulesLeipzig(name)) {
             return ResponseEntity.ok("DELETED");
         }
         else return ResponseEntity.ok("DEACTIVATED");
     }
 
-    @GetMapping("/{id}/state")
-    public ResponseEntity<Boolean> getModuleLeipzigState(@PathVariable String id) {
-        return ResponseEntity.ok(moduleLeipzigService.getModuleLeipzigState(id));
+    @GetMapping("/{name}/state")
+    public ResponseEntity<Boolean> getModuleLeipzigState(@PathVariable String name) {
+        return ResponseEntity.ok(moduleLeipzigService.getModuleLeipzigState(name));
     }
     
-
-    //TODO Frage: api call nur -> Course/{courseId}/modifyModuleLeipzig/{moduleId}/{method} ?
-
-    //this function exists double, thats why courseleipzig service is called :: Maybe delete and check for correct api call in Frontend
-    @DeleteMapping("/{moduleLeipzigId}/removeCourse/{courseId}")
-    public ResponseEntity<Boolean> removeModuleFromCourse(@PathVariable("moduleLeipzigId") String moduleLeipzigId, @PathVariable("courseId") String courseId) {
-        return ResponseEntity.ok(courseLeipzigService.modifyModuleLeipzig(courseId, moduleLeipzigId, "delete")); //
-    }
-
-    //this function exists double, thats why courseleipzig service is called :: Maybe delete and check for correct api call in Frontend
-    @PostMapping("/{moduleLeipzigId}/addCourse/{courseId}")
-    ResponseEntity<Boolean> addModuleToCourse(@PathVariable("moduleLeipzigId") String moduleLeipzigId, @PathVariable("courseId") String courseId) {
-        return ResponseEntity.ok(courseLeipzigService.modifyModuleLeipzig(courseId, moduleLeipzigId, "add"));
-    }
-
 }

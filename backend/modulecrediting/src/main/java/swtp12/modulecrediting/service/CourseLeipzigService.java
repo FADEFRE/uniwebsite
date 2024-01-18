@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import swtp12.modulecrediting.dto.EditCourseDTO;
 import swtp12.modulecrediting.model.Application;
 import swtp12.modulecrediting.model.CourseLeipzig;
 import swtp12.modulecrediting.model.ModuleLeipzig;
@@ -30,33 +31,23 @@ public class CourseLeipzigService {
     private ModuleLeipzigRepository moduleLeipzigRepository;
 
     public CourseLeipzig getCourseLeipzigByName(String name) {
-        Optional<CourseLeipzig> courseLeipzig = courseLeipzigRepository.findByName(name);
-        if(courseLeipzig.isPresent()) {
-            return courseLeipzig.get();
-        }else{
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Course Leipzig not found with moduleName: " + name);
-        }
+        Optional<CourseLeipzig> courseLeipzig = courseLeipzigRepository.findById(name);
+        if(!courseLeipzig.isPresent()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Course Leipzig not found with moduleName: " + name);
+        
+        return courseLeipzig.get();
     }
 
     public List<CourseLeipzig> getAllCoursesLeipzig() {
         return courseLeipzigRepository.findAll();
     }
 
-    public CourseLeipzig getCourseLeipzigById(String id) {
-        Optional<CourseLeipzig> courseLeipzig = courseLeipzigRepository.findById(id);
-        if(courseLeipzig.isPresent()) 
-            return courseLeipzig.get();
-
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Course Leipzig not found with given id: " + id);
-    }
-
-    public Boolean deleteCourseLeipzig(String id) {
-        CourseLeipzig courseLeipzig = getCourseLeipzigById(id);
+    public Boolean deleteCourseLeipzig(String name) {
+        CourseLeipzig courseLeipzig = getCourseLeipzigByName(name);
         if (!courseLeipzig.getIsActive())
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Course Leipzig is already deactivated with id: " + id);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Course Leipzig is already deactivated with name: " + name);
         courseLeipzig.setIsActive(false);
         if (checkIfDeletionIsPossible(courseLeipzig)) {
-            courseLeipzigRepository.deleteById(id);
+            courseLeipzigRepository.deleteById(name);
             return true;
         }
         else return false;
@@ -75,29 +66,38 @@ public class CourseLeipzigService {
         return check;
     }
 
-    public Boolean getCourseLeipzigState(String id) {
-        CourseLeipzig courseLeipzig = getCourseLeipzigById(id);
+    public Boolean getCourseLeipzigState(String name) {
+        CourseLeipzig courseLeipzig = getCourseLeipzigByName(name);
         return courseLeipzig.getIsActive();
     }
 
-    public Boolean modifyModuleLeipzig(String courseId, String moduleLeipzigId, String method) {
-        Optional<CourseLeipzig> cL = courseLeipzigRepository.findById(courseId);
-        Optional<ModuleLeipzig> mL = moduleLeipzigRepository.findById(moduleLeipzigId);
-        if(!cL.isPresent()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Course Leipzig not found with given id: " + courseId);
-        if(!mL.isPresent()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Module Leipzig not found with given id: " + moduleLeipzigId);
+    public Boolean editCourse(String courseName, EditCourseDTO editCourseDTO) {
+        if (editCourseDTO == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No data given");
+        if (editCourseDTO.getModuleId().isBlank()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No module name given");
+        String moduleName = editCourseDTO.getModuleId();
+        String action = editCourseDTO.getAction();
+        Optional<CourseLeipzig> cL = courseLeipzigRepository.findById(courseName);
+        Optional<ModuleLeipzig> mL = moduleLeipzigRepository.findById(moduleName);
+        if(!cL.isPresent()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Course Leipzig not found with given name: " + courseName);
+        if(!mL.isPresent()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Module Leipzig not found with given name: " + moduleName);
 
         CourseLeipzig courseLeipzig = cL.get();
         ModuleLeipzig moduleLeipzig = mL.get();
 
-        switch (method) {
+        switch (action) {
             case "delete":
-                courseLeipzig.getModulesLeipzigCourse().remove(moduleLeipzig);
-                moduleLeipzig.getCoursesLeipzig().remove(courseLeipzig);
+                courseLeipzig.removeCourseToModulesLeipzig(moduleLeipzig);
+                courseLeipzigRepository.save(courseLeipzig);
+                moduleLeipzigRepository.save(moduleLeipzig);
                 return true;
             case "add":
-                courseLeipzig.getModulesLeipzigCourse().add(moduleLeipzig);
-                moduleLeipzig.getCoursesLeipzig().add(courseLeipzig);
+                if (courseLeipzig.getModulesLeipzigCourse().contains(moduleLeipzig)) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, moduleName + " already exits in " + courseName);
+                courseLeipzig.addCourseToModulesLeipzig(moduleLeipzig);
+                courseLeipzigRepository.save(courseLeipzig);
+                moduleLeipzigRepository.save(moduleLeipzig);
                 return true;
+            case "":
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No correct action given");
             default:
                 break;
         }

@@ -7,13 +7,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
+import swtp12.modulecrediting.dto.EditCourseDTO;
 import swtp12.modulecrediting.model.CourseLeipzig;
 import swtp12.modulecrediting.model.Views;
 import swtp12.modulecrediting.service.CourseLeipzigService;
@@ -32,33 +34,29 @@ public class CourseLeipzigController {
     }
 
 
-    @GetMapping("/{id}")
-    public ResponseEntity<CourseLeipzig> getSingleCourseLeipzig(@PathVariable String id) {
-        return ResponseEntity.ok(courseLeipzigService.getCourseLeipzigById(id));
+    @GetMapping("/{name}")
+    public ResponseEntity<CourseLeipzig> getSingleCourseLeipzig(@PathVariable String name) {
+        return ResponseEntity.ok(courseLeipzigService.getCourseLeipzigByName(name));
     }
 
 
-    @DeleteMapping("/{id}/delete")
-    public ResponseEntity<String> deleteCourseLeipzig(@PathVariable String id) {
-        if (courseLeipzigService.deleteCourseLeipzig(id)) {
+    @DeleteMapping("/{name}/delete")
+    public ResponseEntity<String> deleteCourseLeipzig(@PathVariable String name) {
+        if (courseLeipzigService.deleteCourseLeipzig(name)) {
             return ResponseEntity.ok("DELETED");
         }
         else return ResponseEntity.ok("DEACTIVATED");
     }
 
-    @GetMapping("/{id}/state")
-    public ResponseEntity<Boolean> getCourseLeipzigState(@PathVariable String id) {
-        return ResponseEntity.ok(courseLeipzigService.getCourseLeipzigState(id));
-    }
-
-    @DeleteMapping("/{courseId}/removeModule/{moduleLeipzigId}")
-    public ResponseEntity<Boolean> removeModuleFromCourse(@PathVariable("courseId") String courseId, @PathVariable("moduleLeipzigId") String moduleLeipzigId) {
-        return ResponseEntity.ok(courseLeipzigService.modifyModuleLeipzig(courseId, moduleLeipzigId, "delete"));
-    }
-
-    @PostMapping("/{courseId}/addModule/{moduleLeipzigId}")
-    ResponseEntity<Boolean> addModuleToCourse(@PathVariable("courseId") String courseId, @PathVariable("moduleLeipzigId") String moduleLeipzigId) {
-        return ResponseEntity.ok(courseLeipzigService.modifyModuleLeipzig(courseId, moduleLeipzigId, "add"));
+    @GetMapping("/{name}/state")
+    public ResponseEntity<Boolean> getCourseLeipzigState(@PathVariable String name) {
+        return ResponseEntity.ok(courseLeipzigService.getCourseLeipzigState(name));
     }
     
+    @PutMapping("/{name}/edit")
+    public ResponseEntity<Boolean> editCourse(@PathVariable String name, @ModelAttribute EditCourseDTO editCourseDTO) {
+        System.out.println("------------------------------------");
+        return ResponseEntity.ok(courseLeipzigService.editCourse(name, editCourseDTO));
+    }
+
 }
