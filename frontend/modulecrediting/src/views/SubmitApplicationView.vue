@@ -65,28 +65,18 @@ const triggerPostApplication = () => {
 
     <div class="submit-application-container">
 
-      <ApplicationOverview
-          :creation-date="getFormattedDate(creationDate)"
-          :last-edited-date="undefined"
-          :decision-date="undefined"
-          status="NEU"
-      >
-        <Dropdown
-            v-model="selectedCourse"
-            :options="courses"
-            placeholder="Studiengang wählen"
-            @change="setSelectableModules"
-        />
+      <ApplicationOverview :creation-date="getFormattedDate(creationDate)" :last-edited-date="undefined"
+        :decision-date="undefined" status="NEU">
+        <Dropdown v-model="selectedCourse" :options="courses" placeholder="Studiengang wählen" @change="setSelectableModules">
+          <template #dropdownicon>
+            <img src="../assets/icons/ArrowWhite.svg">
+          </template>
+        </Dropdown>
       </ApplicationOverview>
 
-      <ApplicationPanel
-          v-for="item in moduleConnections"
-          :key="item"
-          :selectable-modules="selectableModules"
-          :allow-delete="moduleConnections.length > 1"
-          ref="moduleConnectionsRef"
-          @delete-self="deleteModuleConnection(item)"
-      />
+      <ApplicationPanel v-for="item in moduleConnections" :key="item" :selectable-modules="selectableModules"
+        :allow-delete="moduleConnections.length > 1" ref="moduleConnectionsRef"
+        @delete-self="deleteModuleConnection(item)" />
 
       <ButtonAdd @click="addModuleConnection">Modulzuweisung hinzufügen</ButtonAdd>
       <ButtonLink @click="triggerPostApplication" :primaryButton="true">Absenden</ButtonLink>

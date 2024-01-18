@@ -44,6 +44,10 @@ const statusTypes = computed(() => {
 let courses = ref([])
 const course = ref()
 
+const deleteCourse = (e) => {
+  course.value = null;
+}
+
 onBeforeMount(() => {
   getCoursesLeipzig()
     .then(data => courses.value = data)
@@ -71,7 +75,7 @@ defineExpose({
     <div class="general-container">
       <h4>Allgemein</h4>
       <div class="date-filter-container">
-        <div @click="dateType = 'creation'" class="date-block" :class="{ 'selected': dateType==='creation'}">
+        <div @click="dateType = 'creation'" class="date-block" :class="{ 'selected': dateType === 'creation' }">
           <img src="../assets/icons/CreationDate.svg">
           <p v-if="dateType === 'creation'">Erstellt</p>
         </div>
@@ -112,7 +116,14 @@ defineExpose({
 
     <div class="course-container">
       <h4>Studiengang</h4>
-      <Dropdown show-clear v-model="course" :options="courses" placeholder="Studiengang auswählen" />
+      <Dropdown show-clear v-model="course" :options="courses" placeholder="Studiengang auswählen">
+              <template #clearicon>
+                <img src="@/assets/icons/TrashWhite.svg" class="clear-icon" @click="deleteCourse">
+              </template>
+              <template #dropdownicon>
+                  <img src="../assets/icons/ArrowWhite.svg">
+              </template>
+      </Dropdown>
     </div>
 
   </div>
@@ -122,6 +133,20 @@ defineExpose({
 @import '../assets/mixins.scss';
 @import '../assets/variables.scss';
 
+.clear-icon {
+  opacity: 0.9;
+  transition: 0.1s ease-in-out;
+  &:hover{
+    opacity: 1;
+  }
+}
+.arrow-icon {
+  opacity: 0.9;
+  transition: 0.1s ease-in-out;
+  &:hover{
+    opacity: 1;
+  }
+}
 .filter-container {
   @include basicContainer();
   width: 30%;
@@ -131,6 +156,7 @@ defineExpose({
   @include verticalList(small);
   width: 100%;
 }
+
 .course-container {
   width: 100%;
 }
@@ -149,6 +175,7 @@ defineExpose({
   align-items: flex-start;
   align-self: stretch;
 }
+
 .date-block {
   @include smallHighlightBox();
   width: 20%;

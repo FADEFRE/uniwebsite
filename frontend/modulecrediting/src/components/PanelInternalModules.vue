@@ -61,6 +61,9 @@ defineExpose({
           <template #filtericon>
             <img class="test" src="@/assets/icons/SearchIcon.svg">
           </template>
+          <template #dropdownicon>
+              <img src="../assets/icons/ArrowWhite.svg">
+            </template>
         </Dropdown>
       </div>
 
