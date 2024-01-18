@@ -4,8 +4,10 @@ import { ref, computed, onBeforeMount } from "vue";
 import ApplicationOverview from "@/components/ApplicationOverview.vue";
 import AdministrativePanel from "@/components/AdministrativePanel.vue";
 import ButtonLink from "@/components/ButtonLink.vue";
-import { getApplicationById, getModulesByCourse, putApplication,
-  getUpdateStatusAllowed, updateStatus } from "@/scripts/axios-requests";
+import {
+  getApplicationById, getModulesByCourse, putApplication,
+  getUpdateStatusAllowed, updateStatus
+} from "@/scripts/axios-requests";
 import { parseRequestDate } from "@/scripts/date-utils";
 import ApplicationConnectionLinks from "@/components/ApplicationConnectionLinks.vue";
 
@@ -40,7 +42,7 @@ onBeforeMount(() => {
       moduleOptions.value = modules
     })
     .then(_ => {
-        return getUpdateStatusAllowed(id)
+      return getUpdateStatusAllowed(id)
     })
     .then(updateAllowed => {
       passOnPossible.value = updateAllowed
@@ -128,16 +130,10 @@ const triggerPassOn = () => {
 
       <div v-for="connection in applicationData['modulesConnections']">
 
-        <AdministrativePanel
-            :type="type"
-            :readonly="readonly"
-            :selectable-modules="moduleOptions"
-            :connection-data="connection"
-            ref="moduleConnections"
-            :class="{ 'connection-highlight': connection.id == connectionHighlightId }"
-            :id="connection.id"
-            @change="setUnsaved"
-        />
+        <AdministrativePanel :type="type" :readonly="readonly" :selectable-modules="moduleOptions"
+          :connection-data="connection" ref="moduleConnections"
+          :class="{ 'connection-highlight': connection.id == connectionHighlightId }" :id="connection.id"
+          @change="setUnsaved" />
 
       </div>
 
@@ -150,8 +146,8 @@ const triggerPassOn = () => {
       </div>
 
       <div v-if="unsaved">
-        <Button>
-          <img src="@/assets/icons/ModuleDenied.svg">  <!-- todo replace with unsaved icon -->
+        <Button class="unsaved-bitton">
+          <h3 class="unsaved-button-text">!</h3>
         </Button>
       </div>
 
@@ -176,5 +172,15 @@ const triggerPassOn = () => {
 .connection-highlight {
   border-left-style: solid;
   border-left-width: 15px;
+}
+
+.unsaved-bitton {
+  background-color: $red;
+  width: 3.125rem;
+  height: 3.125rem;
+}
+
+.unsaved-button-text {
+  color: $white;
 }
 </style>
