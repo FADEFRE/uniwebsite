@@ -177,35 +177,44 @@ input {
 }
 
 
+// STYLING SCROLLBAR
 
 /* WebKit (Chrome, Safari) */
-::-webkit-scrollbar {
+textarea::-webkit-scrollbar,
+.p-dropdown-items-wrapper::-webkit-scrollbar {
   width: 3px;
 }
 
-::-webkit-scrollbar-track {
+textarea::-webkit-scrollbar-track,
+.p-dropdown-items-wrapper::-webkit-scrollbar-track {
   background-color: $gray;
 }
 
-::-webkit-scrollbar-thumb {
+textarea::-webkit-scrollbar-thumb,
+.p-dropdown-items-wrapper::-webkit-scrollbar-thumb {
   background-color: $red;
 }
 
 /* Firefox */
-* {
-  scrollbar-width: 5px;
+textarea,
+.p-dropdown-items-wrapper {
+  scrollbar-width: thin; /* 'auto', 'thin', or 'none' */
   scrollbar-color: $red $gray;
 }
 
-/* Microsoft Edge and Internet Explorer */
-*::-ms-scrollbar {
+/* Microsoft Edge and Internet Explorer (Legacy) */
+/* Note: These styles are for older versions of IE and Edge and may not be necessary anymore. */
+textarea::-ms-scrollbar,
+.p-dropdown-items-wrapper::-ms-scrollbar {
   width: 5px;
 }
 
-*::-ms-scrollbar-track {
+textarea::-ms-scrollbar-track,
+.p-dropdown-items-wrapper::-ms-scrollbar-track {
   background-color: $red;
 }
 
-*::-ms-scrollbar-thumb {
+textarea::-ms-scrollbar-thumb,
+.p-dropdown-items-wrapper::-ms-scrollbar-thumb {
   background-color: $gray;
 }
