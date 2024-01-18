@@ -62,14 +62,14 @@ public class ModulesConnectionService {
 
             // handle modules leipzig changes
             if(mcuDTO.getModulesLeipzig() == null) modulesConnection.removeAllModulesLeipzig(); // remove all module leipzig
-
-            List<String> savedNameList = getModuleLeipzigNameFromModuleConnection(modulesConnection);
-            List<String> updatedNameList = getModuleLeipzigNameFromModuleConnectionUpdateDTO(mcuDTO);
-            List<String> deleteNameList = new ArrayList<>(savedNameList);
-            deleteNameList.removeAll(updatedNameList);
-
-            removeAllDeletedModulesLeipzig(modulesConnection, deleteNameList);
-            moduleLeipzigService.updateModulesLeipzig(modulesConnection, mcuDTO.getModulesLeipzig());
+            else{
+                List<String> savedNameList = getModuleLeipzigNameFromModuleConnection(modulesConnection);
+                List<String> updatedNameList = getModuleLeipzigNameFromModuleConnectionUpdateDTO(mcuDTO);
+                List<String> deleteNameList = new ArrayList<>(savedNameList);
+                deleteNameList.removeAll(updatedNameList);
+                removeAllDeletedModulesLeipzig(modulesConnection, deleteNameList);
+                moduleLeipzigService.updateModulesLeipzig(modulesConnection, mcuDTO.getModulesLeipzig());
+            }
 
             // modulesConnection will be saved in application service due to cascade all
         }
