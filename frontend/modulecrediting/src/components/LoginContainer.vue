@@ -1,11 +1,17 @@
 <script setup>
 import { login } from "@/router/login";
 import { ref } from "vue";
-const styleInvalid = ref(false);
 
+const styleInvalid = ref(false);
 const login_username = ref();
 const login_password = ref();
+const errorMessage = ref("");
 
+const attemptLogin = () => {
+    login(login_username.value, login_password.value)
+        .then((success) => {
+        });
+};
 </script>
 
 <template>
@@ -21,14 +27,13 @@ const login_password = ref();
                     :class="{ 'p-invalid': styleInvalid }" />
 
                 <InputText type="password" placeholder="Passwort" v-model="login_password" class="input-text"
-                    :class="{ 'invalid': styleInvalid }" />
+                    :class="{ 'p-invalid': styleInvalid }" @keydown.enter.prevent="attemptLogin" />
             </div>
 
             <div class="button-container">
                 <Button @click="login(login_username, login_password)" class="button-login">Anmelden</Button>
             </div>
 
-            <p v-if="styleInvalid" class="error-message">Ungültige Anmeldeinformationen. Bitte versuche es erneut.</p>
         </div>
     </div>
 </template>
