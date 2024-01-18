@@ -13,30 +13,34 @@ const props = defineProps({
 })
 
 const style = computed(() => {
-  return props.primaryButton ? "button-container primary-button" : "button-container";
+  return props.primaryButton ? "button-link-container primary-button" : "button-link-container";
 });
 </script>
 
 
 <template>
-    <Button :disabled="disabled" :class="{ 'button-container primary-button': primaryButton, 'disabled': disabled }">
+  <div class="button-link-container">
+    <Button :disabled="disabled" :class="{ ' primary-button': primaryButton, 'disabled': disabled }">
       <slot />
       <img src="../assets/icons/ArrowWhite.svg" class="arrow-icon" alt="Arrow Icon">
     </Button>
+  </div>
 </template>
 
 <style scoped lang="scss">
 @import '../assets/variables.scss';
 
-.button-container {
-  display: flex;
-  gap: 0.625rem;
-
+.button-link-container {
   &:hover {
     .arrow-icon {
       transform: translate(0.15rem) rotate(-90deg);
     }
   }
+}
+
+.p-button {
+  display: flex;
+  gap: 0.625rem;
 }
 
 .arrow-icon {
