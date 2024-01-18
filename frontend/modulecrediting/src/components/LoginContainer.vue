@@ -17,10 +17,10 @@ const login_password = ref();
             <h2 class="login-heading">ANMELDUNG</h2>
 
             <div class="input-container">
-                <input type="text" placeholder="Benutzername" v-model="login_username" class="input-text"
-                    :class="{ 'invalid': styleInvalid }" />
+                <InputText type="text" placeholder="Benutzername" v-model="login_username" class="input-text"
+                    :class="{ 'p-invalid': styleInvalid }" />
 
-                <input type="password" placeholder="Passwort" v-model="login_password" class="input-text"
+                <InputText type="password" placeholder="Passwort" v-model="login_password" class="input-text"
                     :class="{ 'invalid': styleInvalid }" />
             </div>
 

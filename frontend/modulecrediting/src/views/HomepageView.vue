@@ -38,8 +38,10 @@ const handleEnterKey = (event) => {
 }
 
 const validateInput = () => {
+    
     id.value = id.value.replace(/[^0-9]/g, '');
     id.value = id.value.replace(/(\d)(?=(\d{1,5})+$)/g, '$1-');
+    id.value = id.value.slice(0, 11);
 }
 
 const getFormattedId = () => {
