@@ -170,8 +170,7 @@ const triggerPassOn = () => {
 }
 
 .connection-highlight {
-  border-left-style: solid;
-  border-left-width: 15px;
+  border-left: 1rem solid $dark-gray;
 }
 
 .unsaved-bitton {
