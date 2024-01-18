@@ -10,8 +10,10 @@ import org.springframework.web.server.ResponseStatusException;
 
 import swtp12.modulecrediting.model.Application;
 import swtp12.modulecrediting.model.CourseLeipzig;
+import swtp12.modulecrediting.model.ModuleLeipzig;
 import swtp12.modulecrediting.model.ModulesConnection;
 import swtp12.modulecrediting.repository.CourseLeipzigRepository;
+import swtp12.modulecrediting.repository.ModuleLeipzigRepository;
 import swtp12.modulecrediting.repository.ModulesConnectionRepository;
 
 
@@ -23,6 +25,9 @@ public class CourseLeipzigService {
     
     @Autowired
     private ModulesConnectionRepository modulesConnectionRepository;
+
+    @Autowired
+    private ModuleLeipzigRepository moduleLeipzigRepository;
 
     public CourseLeipzig getCourseLeipzigByName(String name) {
         Optional<CourseLeipzig> courseLeipzig = courseLeipzigRepository.findByName(name);
@@ -73,5 +78,29 @@ public class CourseLeipzigService {
     public Boolean getCourseLeipzigState(String id) {
         CourseLeipzig courseLeipzig = getCourseLeipzigById(id);
         return courseLeipzig.getIsActive();
+    }
+
+    public Boolean modifyModuleLeipzig(String courseId, String moduleLeipzigId, String method) {
+        Optional<CourseLeipzig> cL = courseLeipzigRepository.findById(courseId);
+        Optional<ModuleLeipzig> mL = moduleLeipzigRepository.findById(moduleLeipzigId);
+        if(!cL.isPresent()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Course Leipzig not found with given id: " + courseId);
+        if(!mL.isPresent()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Module Leipzig not found with given id: " + moduleLeipzigId);
+
+        CourseLeipzig courseLeipzig = cL.get();
+        ModuleLeipzig moduleLeipzig = mL.get();
+
+        switch (method) {
+            case "delete":
+                courseLeipzig.getModulesLeipzigCourse().remove(moduleLeipzig);
+                moduleLeipzig.getCoursesLeipzig().remove(courseLeipzig);
+                return true;
+            case "add":
+                courseLeipzig.getModulesLeipzigCourse().add(moduleLeipzig);
+                moduleLeipzig.getCoursesLeipzig().add(courseLeipzig);
+                return true;
+            default:
+                break;
+        }
+        return false;
     }
 }

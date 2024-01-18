@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,6 +16,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 
 import swtp12.modulecrediting.model.ModuleLeipzig;
 import swtp12.modulecrediting.model.Views;
+import swtp12.modulecrediting.service.CourseLeipzigService;
 import swtp12.modulecrediting.service.ModuleLeipzigService;
 
 
@@ -25,6 +27,9 @@ public class ModuleLeipzigController {
 
     @Autowired
     private ModuleLeipzigService moduleLeipzigService;
+
+    @Autowired
+    private CourseLeipzigService courseLeipzigService;
 
     @GetMapping
     @JsonView(Views.modulesWithoutCourse.class)
@@ -52,5 +57,18 @@ public class ModuleLeipzigController {
     }
     
 
+    //TODO Frage: api call nur -> Course/{courseId}/modifyModuleLeipzig/{moduleId}/{method} ?
+
+    //this function exists double, thats why courseleipzig service is called :: Maybe delete and check for correct api call in Frontend
+    @DeleteMapping("/{moduleLeipzigId}/removeCourse/{courseId}")
+    public ResponseEntity<Boolean> removeModuleFromCourse(@PathVariable("moduleLeipzigId") String moduleLeipzigId, @PathVariable("courseId") String courseId) {
+        return ResponseEntity.ok(courseLeipzigService.modifyModuleLeipzig(courseId, moduleLeipzigId, "delete")); //
+    }
+
+    //this function exists double, thats why courseleipzig service is called :: Maybe delete and check for correct api call in Frontend
+    @PostMapping("/{moduleLeipzigId}/addCourse/{courseId}")
+    ResponseEntity<Boolean> addModuleToCourse(@PathVariable("moduleLeipzigId") String moduleLeipzigId, @PathVariable("courseId") String courseId) {
+        return ResponseEntity.ok(courseLeipzigService.modifyModuleLeipzig(courseId, moduleLeipzigId, "add"));
+    }
 
 }

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -48,6 +49,16 @@ public class CourseLeipzigController {
     @GetMapping("/{id}/state")
     public ResponseEntity<Boolean> getCourseLeipzigState(@PathVariable String id) {
         return ResponseEntity.ok(courseLeipzigService.getCourseLeipzigState(id));
+    }
+
+    @DeleteMapping("/{courseId}/removeModule/{moduleLeipzigId}")
+    public ResponseEntity<Boolean> removeModuleFromCourse(@PathVariable("courseId") String courseId, @PathVariable("moduleLeipzigId") String moduleLeipzigId) {
+        return ResponseEntity.ok(courseLeipzigService.modifyModuleLeipzig(courseId, moduleLeipzigId, "delete"));
+    }
+
+    @PostMapping("/{courseId}/addModule/{moduleLeipzigId}")
+    ResponseEntity<Boolean> addModuleToCourse(@PathVariable("courseId") String courseId, @PathVariable("moduleLeipzigId") String moduleLeipzigId) {
+        return ResponseEntity.ok(courseLeipzigService.modifyModuleLeipzig(courseId, moduleLeipzigId, "add"));
     }
     
 }
