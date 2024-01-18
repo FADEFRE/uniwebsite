@@ -53,6 +53,64 @@ onBeforeMount(() => {
     .then(data => courses.value = data)
 })
 
+const setDateTypeCreation = () => {
+  // setting dateType
+  dateType.value = 'creation'
+  // setting status
+  statusNew.value = true
+  statusStudyOffice.value = true
+  statusChairman.value = true
+  statusClosed.value = true
+}
+
+const setDateTypeLastEdit = () => {
+  // setting dateType
+  dateType.value = 'lastEdit'
+  // setting status
+  statusNew.value = false
+  statusStudyOffice.value = true
+  statusChairman.value = true
+  statusClosed.value = true
+}
+
+const setDateTypeDecision = () => {
+  // setting dateType
+  dateType.value = 'decision'
+  // setting status
+  statusNew.value = false
+  statusStudyOffice.value = false
+  statusChairman.value = false
+  statusClosed.value = true
+}
+
+const toggleStatusNew = () => {
+  statusNew.value = !statusNew.value
+  // change dateType if necessary
+  if (dateType.value === 'decision' || dateType.value === 'lastEdit') {
+    dateType.value = 'creation'
+  }
+}
+
+const toggleStatusStudyOffice = () => {
+  statusStudyOffice.value = !statusStudyOffice.value
+  // change dateType if necessary
+  if (dateType.value === 'decision') {
+    dateType.value = 'lastEdit'
+  }
+}
+
+const toggleStatusChairman = () => {
+  statusChairman.value = !statusChairman.value
+  // change dateType if necessary
+  if (dateType.value === 'decision') {
+    dateType.value = 'lastEdit'
+  }
+}
+
+const toggleStatusClosed = () => {
+  statusClosed.value = !statusClosed.value
+}
+
 defineExpose({
   searchString, dateType, earliestDate, statusTypes, course
 })
@@ -75,15 +133,15 @@ defineExpose({
     <div class="general-container">
       <h4>Allgemein</h4>
       <div class="date-filter-container">
-        <div @click="dateType = 'creation'" class="date-block" :class="{ 'selected': dateType === 'creation' }">
+        <div @click="setDateTypeCreation" class="date-block" :class="{ 'selected': dateType==='creation'}">
           <img src="../assets/icons/CreationDate.svg">
           <p v-if="dateType === 'creation'">Erstellt</p>
         </div>
-        <div @click="dateType = 'lastEdit'" class="date-block" :class="{ 'selected': dateType === 'lastEdit' }">
+        <div @click="setDateTypeLastEdit" class="date-block" :class="{ 'selected': dateType === 'lastEdit' }">
           <img src="../assets/icons/LastEditedDate.svg">
           <p v-if="dateType === 'lastEdit'">Zuletzt bearbeitet</p>
         </div>
-        <div @click="dateType = 'decision'" class="date-block" :class="{ 'selected': dateType === 'decision' }">
+        <div @click="setDateTypeDecision" class="date-block" :class="{ 'selected': dateType === 'decision' }">
           <img src="../assets/icons/DecisionDate.svg">
           <p v-if="dateType === 'decision'">Beschlossen</p>
         </div>
@@ -97,19 +155,19 @@ defineExpose({
       <!-- todo add correct styles -->
       <h4>Status</h4>
       <div :class="{ 'selected': statusNew }" class="statusNew status-container"
-        @click="statusNew ? statusNew = false : statusNew = true">
+        @click="toggleStatusNew">
         <p class="overview-text">NEU</p>
       </div>
       <div :class="{ 'selected': statusStudyOffice }" class="statusStudyOffice status-container"
-        @click="statusStudyOffice ? statusStudyOffice = false : statusStudyOffice = true">
+        @click="toggleStatusStudyOffice">
         <p class="overview-text">STUDIENBÜRO</p>
       </div>
       <div :class="{ 'selected': statusChairman }" class="statusChairman status-container"
-        @click="statusChairman ? statusChairman = false : statusChairman = true">
+        @click="toggleStatusChairman">
         <p class="overview-text">PRÜFUNGSAUSSCHUSS</p>
       </div>
       <div :class="{ 'selected': statusClosed }" class="statusClosed status-container"
-        @click="statusClosed ? statusClosed = false : statusClosed = true">
+        @click="toggleStatusClosed">
         <p class="overview-text">ABGESCHLOSSEN</p>
       </div>
     </div>
