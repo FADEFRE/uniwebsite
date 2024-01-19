@@ -51,15 +51,30 @@ public class ModuleLeipzigService {
     }
 
     public ModuleLeipzig getModuleLeipzigByName(String name) {
-        Optional<ModuleLeipzig> moduleLeipzig = moduleLeipzigRepository.findByName(name);
+        Optional<ModuleLeipzig> moduleLeipzig = moduleLeipzigRepository.findById(name);
         if(moduleLeipzig.isPresent())
             return moduleLeipzig.get();
 
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Module Leipzig not found with moduleName: " + name);
     }
 
-    public void createModuleLeipzig(ModuleLeipzigCreateDTO moduleLeipzigCreateDTO) {
-        if(moduleLeipzigCreateDTO.getName() == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Module Name is required");
+    public String createModuleLeipzig(ModuleLeipzigCreateDTO moduleLeipzigCreateDTO) {
+        if (moduleLeipzigCreateDTO == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No data given");
+        if (moduleLeipzigCreateDTO.getName().isBlank()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No module name given");
+        if (moduleLeipzigCreateDTO.getCode().isBlank()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No moduel code given");
+        String moduleName = moduleLeipzigCreateDTO.getName();
+        String moduelCode = moduleLeipzigCreateDTO.getCode();
+        Optional<ModuleLeipzig> mL = moduleLeipzigRepository.findById(moduleName);
+        if (mL.isPresent() && mL.get().getCode().equals(moduelCode)) {
+            if (mL.get().getIsActive()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Course with this name already exists: " + moduleName);
+            mL.get().setIsActive(true);
+            moduleLeipzigRepository.save(mL.get());
+            return "REACTIVATED";
+        }
+
+        ModuleLeipzig moduleLeipzig = new ModuleLeipzig(moduleName, moduelCode, true);
+        moduleLeipzigRepository.save(moduleLeipzig);
+        return moduleName;
     }
 
     public Boolean deleteModulesLeipzig(String name) {
