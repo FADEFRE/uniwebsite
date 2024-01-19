@@ -1,8 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { getAuthenticatedUser } from '../scripts/utils';
-import { useAuthStore } from '../store/authStore';
-import httpResource from "../scripts/httpResource";
+import { getAuthenticatedUser } from '@/scripts/utils';
+import { useAuthStore } from '@/store/authStore';
+import httpResource from "@/scripts/httpResource";
 import HomepageView from "@/views/HomepageView.vue"
+import { ref } from 'vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -75,6 +76,12 @@ const router = createRouter({
     }
   ]
 })
+
+const roleName = ref();
+
+export function getRole () {
+  return roleName;
+}
 
 router.beforeEach(
   async (to) => {

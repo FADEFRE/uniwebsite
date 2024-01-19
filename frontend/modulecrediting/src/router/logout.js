@@ -1,6 +1,6 @@
-import router from "../router";
-import httpResource from "../scripts/httpResource"
-import { performLogout } from "../scripts/utils"
+import router from "@/router";
+import httpResource from "@/scripts/httpResource"
+import { performLogout } from "@/scripts/utils"
 
 async function logout () {
   const response = await httpResource.post("/api/auth/logout");

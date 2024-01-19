@@ -1,5 +1,5 @@
 import httpResource from "./httpResource";
-import { useAuthStore } from '../store/authStore';
+import { useAuthStore } from '@/store/authStore';
 
 export function parseApierror(error) {
     console.log("parseapierror", error);
