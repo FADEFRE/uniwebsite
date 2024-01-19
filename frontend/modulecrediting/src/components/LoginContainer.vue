@@ -10,9 +10,14 @@ const errorMessage = ref("");
 const attemptLogin = () => {
     login(login_username.value, login_password.value)
         .then((success) => {
+        })
+        .catch((error) => {
+            styleInvalid.value = true;
+            errorMessage.value = "Ungültige Anmeldedaten. Bitte versuche es erneut.";
         });
 };
 </script>
+
 
 <template>
     <div class="login-container">
@@ -31,10 +36,10 @@ const attemptLogin = () => {
             </div>
 
             <div class="button-container">
-                <Button @click="login(login_username, login_password)" class="button-login">Anmelden</Button>
+                <Button @click="attemptLogin" class="button-login">Anmelden</Button>
             </div>
-
-        </div>
+                <p v-if="styleInvalid" class="error-message">{{ errorMessage }}</p>
+            </div>
     </div>
 </template>
 
@@ -74,5 +79,10 @@ const attemptLogin = () => {
     & .p-inputtext {
         width: 100%;
     }
+}
+
+.error-message {
+    color: red;
+    margin-top: 0.625rem;
 }
 </style>
