@@ -156,16 +156,16 @@ const triggerPassOn = () => {
 
       <div v-if="unsaved">
         <Button class="unsaved-button">
-          <h3 class="unsaved-button-text">!</h3> <!-- todo replace with icon -->
+          <img src="@/assets/icons/NotSaved.svg">
         </Button>
       </div>
 
       <div>
-        <Button @click="collapseAll">
-          Collapse all <!-- todo replace with icon -->
+        <Button @click="collapseAll" class="collapse-expand-button">
+          <img src="@/assets/icons/CollapseAll.svg">
         </Button>
-        <Button @click="unCollapseAll">
-          Uncollapse all <!-- todo replace with icon -->
+        <Button @click="unCollapseAll" class="collapse-expand-button">
+          <img src="@/assets/icons/ExpandAll.svg">
         </Button>
       </div>
 
@@ -205,5 +205,10 @@ const triggerPassOn = () => {
 }
 .unsaved-button-text {
   color: $white;
+}
+
+.collapse-expand-button {
+  width: 3.125rem;
+  height: 3.125rem;
 }
 </style>
