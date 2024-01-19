@@ -65,19 +65,26 @@ const internalModules = computed(() => panelInternalModules.value?.selectedModul
 const studyOfficeDecisionData = ref()
 const chairmanDecisionData = ref()
 
+const panel = ref()
+
+const setCollapsed = (value) => {
+  panel.value.setCollapsed(value)
+}
+
 defineExpose({
   id,
   externalModules,
   internalModules,
   studyOfficeDecisionData,
-  chairmanDecisionData
+  chairmanDecisionData,
+  setCollapsed
 })
 </script>
 
 <template>
   <div>
 
-    <CustomPanel>
+    <CustomPanel ref="panel">
 
       <template #header>
         <PanelHeader :external-modules="externalModules?.map(m => m.name).filter(name => name !== '')" :internal-modules="internalModules" />

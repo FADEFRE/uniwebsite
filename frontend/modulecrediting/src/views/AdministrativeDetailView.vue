@@ -64,6 +64,18 @@ const connectionsData = computed(() => {
   return dataArray
 })
 
+const collapseAll = () => {
+  for (let panel of moduleConnections.value) {
+    panel.setCollapsed(true)
+  }
+}
+
+const unCollapseAll = () => {
+  for (let panel of moduleConnections.value) {
+    panel.setCollapsed(false)
+  }
+}
+
 const unsaved = ref(false)
 
 const setUnsaved = () => {
@@ -143,10 +155,19 @@ const triggerPassOn = () => {
       </div>
 
       <div v-if="unsaved">
-          <Button class="unsaved-button">
-            <h3 class="unsaved-button-text">!</h3>
-          </Button>
-        </div>
+        <Button class="unsaved-button">
+          <h3 class="unsaved-button-text">!</h3> <!-- todo replace with icon -->
+        </Button>
+      </div>
+
+      <div>
+        <Button @click="collapseAll">
+          Collapse all <!-- todo replace with icon -->
+        </Button>
+        <Button @click="unCollapseAll">
+          Uncollapse all <!-- todo replace with icon -->
+        </Button>
+      </div>
 
       <ButtonLink :disabled="!passOnPossible" :primaryButton="true" @click="triggerPassOn">Weitergeben</ButtonLink>
     </div>

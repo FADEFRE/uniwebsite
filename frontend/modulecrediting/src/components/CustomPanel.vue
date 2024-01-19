@@ -5,21 +5,22 @@ slots header, icons and default are passed on to PrimeVue Panel
 -->
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 
-const arrowStyle = ref('arrow-icon arrow-up')
+const d_collapsed = ref(false)
+const arrowStyle = computed(() => d_collapsed.value ? 'arrow-icon' : 'arrow-icon arrow-up')
 
-const toggleArrowStyle = (collapsed) => {
-  if (collapsed) {
-    arrowStyle.value = 'arrow-icon'
-  } else {
-    arrowStyle.value = 'arrow-icon arrow-up'
-  }
+const setCollapsed = (value) => {
+  d_collapsed.value = value
 }
+
+defineExpose({
+  setCollapsed
+})
 </script>
 
 <template>
-  <Panel toggleable @update:collapsed="toggleArrowStyle">
+  <Panel toggleable v-model:collapsed="d_collapsed">
     <template #header>
       <slot name="header"></slot>
     </template>
