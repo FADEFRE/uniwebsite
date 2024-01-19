@@ -53,7 +53,7 @@ defineExpose({
 
 <template>
   <div>
-    <CustomPanel>
+    <CustomPanel :initial-collapsed-state="false">
       <!-- Header Content -->
       <template #header>
         <PanelHeader :external-modules="externalModules?.map(m => m.name).filter(name => name !== '')"

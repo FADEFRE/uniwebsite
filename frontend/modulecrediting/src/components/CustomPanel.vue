@@ -7,7 +7,14 @@ slots header, icons and default are passed on to PrimeVue Panel
 <script setup>
 import { ref, computed } from "vue";
 
-const d_collapsed = ref(false)
+const props = defineProps({
+  initialCollapsedState: {
+    type: Boolean,
+    default: true
+  }
+})
+
+const d_collapsed = ref(props.initialCollapsedState)
 const arrowStyle = computed(() => d_collapsed.value ? 'arrow-icon' : 'arrow-icon arrow-up')
 
 const setCollapsed = (value) => {
