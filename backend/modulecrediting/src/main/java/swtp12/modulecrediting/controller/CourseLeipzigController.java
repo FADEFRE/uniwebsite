@@ -9,12 +9,14 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
+import swtp12.modulecrediting.dto.CourseLeipzigCreateDTO;
 import swtp12.modulecrediting.dto.EditCourseDTO;
 import swtp12.modulecrediting.model.CourseLeipzig;
 import swtp12.modulecrediting.model.Views;
@@ -42,9 +44,7 @@ public class CourseLeipzigController {
 
     @DeleteMapping("/{name}/delete")
     public ResponseEntity<String> deleteCourseLeipzig(@PathVariable String name) {
-        if (courseLeipzigService.deleteCourseLeipzig(name)) {
-            return ResponseEntity.ok("DELETED");
-        }
+        if (courseLeipzigService.deleteCourseLeipzig(name)) return ResponseEntity.ok("DELETED");
         else return ResponseEntity.ok("DEACTIVATED");
     }
 
@@ -55,8 +55,12 @@ public class CourseLeipzigController {
     
     @PutMapping("/{name}/edit")
     public ResponseEntity<Boolean> editCourse(@PathVariable String name, @ModelAttribute EditCourseDTO editCourseDTO) {
-        System.out.println("------------------------------------");
         return ResponseEntity.ok(courseLeipzigService.editCourse(name, editCourseDTO));
+    }
+
+    @PostMapping("/create")
+    public ResponseEntity<String> createCourseLeipzig(@ModelAttribute CourseLeipzigCreateDTO courseLeipzigCreateDTO) {
+        return ResponseEntity.ok(courseLeipzigService.createApplication(courseLeipzigCreateDTO));
     }
 
 }
