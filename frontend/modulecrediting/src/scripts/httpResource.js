@@ -1,5 +1,6 @@
 import axios from "axios";
 import { url } from "./url-config";
+import { performLogout } from "@/scripts/utils";
 
 const isHandlerEnabled = (config = {}) => {
     return config.hasOwnProperty("handlerEnabled") && !config.handlerEnabled
