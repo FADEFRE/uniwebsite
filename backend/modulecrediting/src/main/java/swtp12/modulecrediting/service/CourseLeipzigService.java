@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import swtp12.modulecrediting.dto.CourseLeipzigCreateDTO;
 import swtp12.modulecrediting.dto.EditCourseDTO;
 import swtp12.modulecrediting.model.Application;
 import swtp12.modulecrediting.model.CourseLeipzig;
@@ -102,5 +103,17 @@ public class CourseLeipzigService {
                 break;
         }
         return false;
+    }
+
+    public String createApplication(CourseLeipzigCreateDTO courseLeipzigCreateDTO) {
+        if (courseLeipzigCreateDTO == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No data given");
+        if (courseLeipzigCreateDTO.getCourseName().isBlank()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No course name given");
+        String courseName = courseLeipzigCreateDTO.getCourseName();
+        Optional<CourseLeipzig> cL = courseLeipzigRepository.findById(courseName);
+        if (cL.isPresent()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Course with this name already exists: " + courseName);
+
+        CourseLeipzig courseLeipzig = new CourseLeipzig(courseName, true);
+        courseLeipzigRepository.save(courseLeipzig);
+        return courseName;
     }
 }
