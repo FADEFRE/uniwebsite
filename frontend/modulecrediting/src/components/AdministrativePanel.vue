@@ -13,11 +13,11 @@ displays:
 -->
 
 <script setup>
+import { ref, computed } from "vue";
 import PanelHeader from "@/components/PanelHeader.vue";
 import PanelComment from "@/components/PanelComment.vue";
 import PanelExternalModules from "@/components/PanelExternalModules.vue";
 import PanelInternalModules from "@/components/PanelInternalModules.vue";
-import { ref, computed } from "vue";
 import PanelStatusIcons from "@/components/PanelStatusIcons.vue";
 import PanelDecision from "@/components/PanelDecision.vue";
 import PanelDecisionBlock from "@/components/PanelDecisionBlock.vue";
@@ -114,7 +114,7 @@ defineExpose({
       <PanelRelatedModules
           :connection-id="connectionData['id']"
       />
-      <PanelDecision>
+      <PanelDecision type="study-office-chairman">
         <template #study-office>
           <PanelDecisionBlock
               :type="(type === 'study-office' && !readonly) ? 'edit' : 'readonly'"
