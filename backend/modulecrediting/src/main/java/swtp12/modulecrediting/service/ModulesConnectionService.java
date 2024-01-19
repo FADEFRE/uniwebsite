@@ -41,7 +41,7 @@ public class ModulesConnectionService {
                     modulesConnection.setDecisionSuggestion(mcuDTO.getDecisionSuggestion());
             }
 
-            if(userRole.equals("pav")) {
+            if(userRole.equals("chairman")) {
                 if (mcuDTO.getCommentDecision() != null)
                     modulesConnection.setCommentDecision(mcuDTO.getCommentDecision());
 

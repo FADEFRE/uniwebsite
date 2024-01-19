@@ -35,12 +35,12 @@ public class ApplicationService {
 
 
     @Transactional
-    public String updateApplication(String id, ApplicationUpdateDTO applicationDTO) {
+    public String updateApplication(String id, ApplicationUpdateDTO applicationDTO, String userRole) {
         Application application = getApplicationById(id);
 
         // check if any changes were made
         if(applicationDTO.getModulesConnections() != null) {
-            modulesConnectionService.updateModulesConnection(applicationDTO.getModulesConnections(), applicationDTO.getUserRole());
+            modulesConnectionService.updateModulesConnection(applicationDTO.getModulesConnections(), userRole);
         }
         application.setLastEditedDate(LocalDateTime.now());
 

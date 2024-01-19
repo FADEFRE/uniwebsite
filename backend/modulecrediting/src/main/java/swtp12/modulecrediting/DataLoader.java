@@ -254,11 +254,9 @@ public class DataLoader implements CommandLineRunner {
                 List<ModulesConnectionUpdateDTO> mcuDTO = new ArrayList<>();
                 mcuDTO = updateModulesConnectionDTO(ABGESCHLOSSEN, application);
                 applicationUpdateDTO.setModulesConnections(mcuDTO);
-                
-                applicationUpdateDTO.setUserRole("study-office"); //needs this otherwise testdata wont show comment studyoofice
-                applicationService.updateApplication(vorgangsnummer, applicationUpdateDTO);
-                applicationUpdateDTO.setUserRole("pav");
-                applicationService.updateApplication(vorgangsnummer, applicationUpdateDTO);
+
+                applicationService.updateApplication(vorgangsnummer, applicationUpdateDTO, "study-office");
+                applicationService.updateApplication(vorgangsnummer, applicationUpdateDTO, "chairman");
                 applicationService.updateApplicationStatus(vorgangsnummer);
                 updatedData = "closed";
                 closed--;
@@ -268,21 +266,18 @@ public class DataLoader implements CommandLineRunner {
                 mcuDTO = updateModulesConnectionDTO(PRÜFUNGSAUSSCHUSS, application);
                 applicationUpdateDTO.setModulesConnections(mcuDTO);
 
-                applicationUpdateDTO.setUserRole("study-office"); //needs this otherwise testdata wont show comment studyoofice
-                applicationService.updateApplication(vorgangsnummer, applicationUpdateDTO);
-                applicationUpdateDTO.setUserRole("pav");
-                applicationService.updateApplication(vorgangsnummer, applicationUpdateDTO);
+                applicationService.updateApplication(vorgangsnummer, applicationUpdateDTO, "study-office");
+                applicationService.updateApplication(vorgangsnummer, applicationUpdateDTO, "chairman");
                 applicationService.updateApplicationStatus(vorgangsnummer);
 
                 updatedData = "pav";
                 pav--;
             }
             else if (studyOffice > 0) { // update application to STUDIENBUERO
-                applicationUpdateDTO.setUserRole("study-office");
                 List<ModulesConnectionUpdateDTO> mcuDTO = new ArrayList<>();
                 mcuDTO = updateModulesConnectionDTO(STUDIENBÜRO, application);
                 applicationUpdateDTO.setModulesConnections(mcuDTO);
-                applicationService.updateApplication(vorgangsnummer, applicationUpdateDTO);
+                applicationService.updateApplication(vorgangsnummer, applicationUpdateDTO, "study-office");
                 applicationService.updateApplicationStatus(vorgangsnummer);
                 updatedData = "studyOffice";
                 studyOffice--;

@@ -25,16 +25,32 @@ public class ApplicationController {
     @Autowired
     private ApplicationService applicationService;
 
-    @PutMapping("/{id}")
-    public ResponseEntity<String> updateApplication(@PathVariable String id,
+    //TODO: add auth study-office put request
+    @PutMapping("/study-office/{id}")
+    public ResponseEntity<String> updateApplicationStudyOffice(@PathVariable String id,
                                                     @Valid @ModelAttribute ApplicationUpdateDTO applicationUpdateDTO,
                                                     BindingResult result) {
-        if (result.hasErrors()) {
-            return ResponseEntity.badRequest().body("Validation failed: " + result.getAllErrors());
-        }
-
-        return ResponseEntity.ok(applicationService.updateApplication(id, applicationUpdateDTO));
+        if (result.hasErrors()) return ResponseEntity.badRequest().body("Validation failed: " + result.getAllErrors());
+        return ResponseEntity.ok(applicationService.updateApplication(id, applicationUpdateDTO, "study-office"));
     }
+    //TODO: add auth chairman put request
+    @PutMapping("/chairman/{id}")
+    public ResponseEntity<String> updateApplicationChairman(@PathVariable String id,
+                                                    @Valid @ModelAttribute ApplicationUpdateDTO applicationUpdateDTO,
+                                                    BindingResult result) {
+        if (result.hasErrors()) return ResponseEntity.badRequest().body("Validation failed: " + result.getAllErrors());
+        return ResponseEntity.ok(applicationService.updateApplication(id, applicationUpdateDTO, "chairman"));
+    }
+    //TODO: add auth standard put request? if needed.
+    @PutMapping("/standard/{id}")
+    public ResponseEntity<String> updateApplicationStandard(@PathVariable String id,
+                                                    @Valid @ModelAttribute ApplicationUpdateDTO applicationUpdateDTO,
+                                                    BindingResult result) {
+        if (result.hasErrors()) return ResponseEntity.badRequest().body("Validation failed: " + result.getAllErrors());
+        return ResponseEntity.ok(applicationService.updateApplication(id, applicationUpdateDTO, "standard"));
+    }
+
+
 
     @GetMapping("/{id}/update-status-allowed")
     public ResponseEntity<Boolean> updateApplicationStatusAllowed(@PathVariable String id) {

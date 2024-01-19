@@ -10,7 +10,6 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class ApplicationUpdateDTO {
-    private String userRole; // "study_office" / "pav"
     private String courseLeipzig;
     private List<ModulesConnectionUpdateDTO> modulesConnections;
 }
