@@ -7,12 +7,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
+import swtp12.modulecrediting.dto.ModuleLeipzigCreateDTO;
 import swtp12.modulecrediting.model.ModuleLeipzig;
 import swtp12.modulecrediting.model.Views;
 import swtp12.modulecrediting.service.ModuleLeipzigService;
@@ -49,6 +52,11 @@ public class ModuleLeipzigController {
     @GetMapping("/{name}/state")
     public ResponseEntity<Boolean> getModuleLeipzigState(@PathVariable String name) {
         return ResponseEntity.ok(moduleLeipzigService.getModuleLeipzigState(name));
+    }
+
+    @PostMapping("/create")
+    public ResponseEntity<String> createModuleLeipzig(@ModelAttribute ModuleLeipzigCreateDTO moduleLeipzigCreateDTO) {
+        return ResponseEntity.ok(moduleLeipzigService.createModuleLeipzig(moduleLeipzigCreateDTO));
     }
     
 }
