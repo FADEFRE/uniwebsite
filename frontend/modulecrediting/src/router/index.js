@@ -73,6 +73,12 @@ const router = createRouter({
       name: 'chairmanDetailHighlight',
       component: () => import('../views/AdministrativeDetailView.vue'),
       meta: { authType: 'chairman' }
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'notFound',
+      component: () => import ('../views/ErrorView.vue'),
+      meta: { authType: 'standard' }
     }
   ]
 })
