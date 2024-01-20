@@ -34,6 +34,13 @@ public class ModulesConnection {
     @JsonView(Views.ApplicationStudent.class)
     @NotNull(message = "commentStudyOffice must not be null")
     private String commentStudyOffice;
+    @JsonView(Views.ApplicationStudent.class)
+    @NotNull(message = "formalRejection must not be null")
+    private Boolean formalRejection;
+    @JsonView(Views.ApplicationStudent.class)
+
+    @NotNull(message = "formalRejectionComment must not be null")
+    private String formalRejectionComment;
 
     @JsonView({Views.ApplicationStudent.class})
     @NotNull(message = "comment applicant must not be null")
@@ -68,6 +75,8 @@ public class ModulesConnection {
         decisionSuggestion = unedited;
         commentDecision = "";
         commentStudyOffice = "";
+        formalRejection = false;
+        formalRejectionComment = "";
     }
 
 

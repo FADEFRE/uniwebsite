@@ -39,6 +39,18 @@ public class ModulesConnectionService {
 
                 if (mcuDTO.getDecisionSuggestion() != null)
                     modulesConnection.setDecisionSuggestion(mcuDTO.getDecisionSuggestion());
+
+                if(mcuDTO.getFormalRejection() != null) {
+                    modulesConnection.setFormalRejection(mcuDTO.getFormalRejection());
+                    if(mcuDTO.getFormalRejection() == true) {
+                        modulesConnection.setDecisionSuggestion(EnumModuleConnectionDecision.unedited);
+                        modulesConnection.setCommentStudyOffice("");
+                    }
+                }
+
+
+                if(mcuDTO.getFormalRejectionComment() != null)
+                    modulesConnection.setFormalRejectionComment(mcuDTO.getFormalRejectionComment());
             }
 
             if(userRole.equals("chairman")) {
@@ -48,6 +60,13 @@ public class ModulesConnectionService {
                 if (mcuDTO.getDecisionFinal() != null)
                     modulesConnection.setDecisionFinal(mcuDTO.getDecisionFinal());
             }
+
+            if(userRole.equals("standard")) {
+                // when user corrects application, the status of connection goes back to non rejecting
+                modulesConnection.setFormalRejection(false);
+                modulesConnection.setFormalRejectionComment("");
+            }
+
 
             // handle module applications changes
             if(mcuDTO.getModuleApplications() == null)  throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You cant delete all Module Applications of a Modules Connection " + mcuDTO.getId());

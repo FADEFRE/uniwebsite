@@ -2,6 +2,7 @@ package swtp12.modulecrediting.service;
 
 import static swtp12.modulecrediting.model.EnumApplicationStatus.*;
 import static swtp12.modulecrediting.model.EnumModuleConnectionDecision.*;
+import static swtp12.modulecrediting.dto.EnumStatusChange.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,6 +17,7 @@ import jakarta.transaction.Transactional;
 
 import swtp12.modulecrediting.dto.ApplicationCreateDTO;
 import swtp12.modulecrediting.dto.ApplicationUpdateDTO;
+import swtp12.modulecrediting.dto.EnumStatusChange;
 import swtp12.modulecrediting.model.Application;
 import swtp12.modulecrediting.model.CourseLeipzig;
 import swtp12.modulecrediting.model.EnumApplicationStatus;
@@ -44,52 +46,78 @@ public class ApplicationService {
         }
         application.setLastEditedDate(LocalDateTime.now());
 
+        if(userRole.equals("standard")) updateApplicationStatus(id);
+
         applicationRepository.save(application);
         return id;
     }
 
-    public Boolean updateApplicationStatusAllowed(String id) {
+
+    public EnumStatusChange updateApplicationStatusAllowed(String id) {
         Application application = getApplicationById(id);
 
-        boolean allDecisionsSuggestionsCompleted = true;
-        boolean allDecisionsFinalCompleted = true;
+        boolean allDecisionSuggestionEdited = allDecisionSuggestionEdited(application);
+        boolean allDecisionsFinalEdited = allDecisionsFinalEdited(application);
+        boolean containsFormalRejection = containsFormalRejection(application);
 
-        for(ModulesConnection m : application.getModulesConnections()) {
-            if(m.getDecisionSuggestion() == unedited) allDecisionsSuggestionsCompleted = false;
-            if(m.getDecisionFinal() == unedited) allDecisionsFinalCompleted = false;
-        }
+        if(application.getFullStatus() == STUDIENBÜRO && containsFormalRejection) return REJECT;
+        if(application.getFullStatus() == ABGESCHLOSSEN) return NOT_ALLOWED;
+        if(allDecisionsFinalEdited && (application.getFullStatus() == PRÜFUNGSAUSSCHUSS || application.getFullStatus() == STUDIENBÜRO || application.getFullStatus() == NEU)) return PASSON;
+        if(allDecisionSuggestionEdited && (application.getFullStatus() == STUDIENBÜRO || application.getFullStatus() == NEU)) return PASSON;
 
-        if(application.getFullStatus() == ABGESCHLOSSEN) return false;
-        if(allDecisionsFinalCompleted && (application.getFullStatus() == PRÜFUNGSAUSSCHUSS || application.getFullStatus() == STUDIENBÜRO || application.getFullStatus() == NEU)) return true;
-        if(allDecisionsSuggestionsCompleted && (application.getFullStatus() == STUDIENBÜRO || application.getFullStatus() == NEU)) return true;
-
-        return false;
+        // base case
+        return NOT_ALLOWED;
     }
     // FUNCTION TO UPDADTE APPLICATION STATUS ON UPDATE
     public EnumApplicationStatus updateApplicationStatus(String id) {
         Application application = getApplicationById(id);
         
-        boolean noDecisionSuggestionCompleted = true;
-        boolean allDecisionsSuggestionsCompleted = true;
-        boolean allDecisionsFinalCompleted = true;
+        boolean allDecisionSuggestionUnedited = allDecisionSuggestionUnedited(application);
+        boolean allDecisionSuggestionEdited = allDecisionSuggestionEdited(application);
+        boolean allDecisionsFinalEdited = allDecisionsFinalEdited(application);
+        boolean containsFormalRejection = containsFormalRejection(application);
 
-
-        for(ModulesConnection m : application.getModulesConnections()) {
-            if(m.getDecisionSuggestion() == unedited)  allDecisionsSuggestionsCompleted = false;
-            else noDecisionSuggestionCompleted = false;
-            if(m.getDecisionFinal() == unedited) allDecisionsFinalCompleted = false;
-        }
-
-        if(allDecisionsFinalCompleted) {
+        if(containsFormalRejection) application.setFullStatus(FORMFEHLER);
+        else if(application.getFullStatus() == FORMFEHLER) application.setFullStatus(STUDIENBÜRO);
+        else if(allDecisionsFinalEdited) {
             application.setFullStatus(ABGESCHLOSSEN);
             application.setDecisionDate(LocalDateTime.now());
-        }
-        else if(allDecisionsSuggestionsCompleted) { application.setFullStatus(PRÜFUNGSAUSSCHUSS); }
-        else if(!noDecisionSuggestionCompleted) { application.setFullStatus(STUDIENBÜRO); }
+        } else if(allDecisionSuggestionEdited) application.setFullStatus(PRÜFUNGSAUSSCHUSS);
+        else if(!allDecisionSuggestionUnedited) application.setFullStatus(STUDIENBÜRO);
 
         applicationRepository.save(application);
         return application.getFullStatus();
     }
+
+    boolean allDecisionSuggestionUnedited(Application application) {
+        boolean allDecisionSuggestionUnedited = true;
+        for(ModulesConnection m : application.getModulesConnections()) {
+            if(m.getDecisionSuggestion() != unedited)  allDecisionSuggestionUnedited = false;
+        }
+        return allDecisionSuggestionUnedited;
+    }
+    boolean allDecisionSuggestionEdited(Application application) {
+        boolean allDecisionSuggestionEdited = true;
+        for(ModulesConnection m : application.getModulesConnections()) {
+            if(m.getDecisionSuggestion() == unedited)  allDecisionSuggestionEdited = false;
+        }
+        return allDecisionSuggestionEdited;
+    }
+    boolean allDecisionsFinalEdited(Application application) {
+        boolean allDecisionsFinalEdited = true;
+        for(ModulesConnection m : application.getModulesConnections()) {
+            if(m.getDecisionFinal() == unedited) allDecisionsFinalEdited = false;
+        }
+        return allDecisionsFinalEdited;
+    }
+    boolean containsFormalRejection(Application application) {
+        boolean containsFormalRejection = false;
+        for(ModulesConnection m : application.getModulesConnections()) {
+            if(m.getFormalRejection()) containsFormalRejection = true;
+        }
+        return containsFormalRejection;
+    }
+
 
     public String createApplication(ApplicationCreateDTO applicationDTO) {
         Application application = new Application(generateValidApplicationId());

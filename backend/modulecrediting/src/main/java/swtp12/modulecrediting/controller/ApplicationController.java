@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 
 import swtp12.modulecrediting.dto.ApplicationCreateDTO;
 import swtp12.modulecrediting.dto.ApplicationUpdateDTO;
+import swtp12.modulecrediting.dto.EnumStatusChange;
 import swtp12.modulecrediting.model.Application;
 import swtp12.modulecrediting.model.EnumApplicationStatus;
 import swtp12.modulecrediting.model.Views;
@@ -53,7 +54,7 @@ public class ApplicationController {
 
 
     @GetMapping("/{id}/update-status-allowed")
-    public ResponseEntity<Boolean> updateApplicationStatusAllowed(@PathVariable String id) {
+    public ResponseEntity<EnumStatusChange> updateApplicationStatusAllowed(@PathVariable String id) {
         return ResponseEntity.ok(applicationService.updateApplicationStatusAllowed(id));
     }
     @PutMapping("/{id}/update-status")

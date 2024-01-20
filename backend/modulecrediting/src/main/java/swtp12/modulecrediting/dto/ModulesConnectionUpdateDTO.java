@@ -12,10 +12,10 @@ import java.util.List;
 @NoArgsConstructor
 public class ModulesConnectionUpdateDTO {
     private Long id;
-
+    private Boolean formalRejection;
+    private String formalRejectionComment;
     private String commentStudyOffice;
     private EnumModuleConnectionDecision decisionSuggestion;
-
     private String commentDecision;
     private EnumModuleConnectionDecision decisionFinal;
 
