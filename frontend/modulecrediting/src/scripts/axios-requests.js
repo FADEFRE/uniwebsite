@@ -19,21 +19,6 @@ function getCoursesLeipzig () {
 
 /*
 GET-Request to '/courses-leipzig' endpoint
-returns todo
-
-parameters:
-    none
- */
-function getCourseData () {
-    return axios.get(url + '/api/courses-leipzig')
-        .then(response => {
-            console.log(response.data)
-            return response.data
-        })
-}
-
-/*
-GET-Request to '/courses-leipzig' endpoint
 returns a list containing all modules related to a specific course
 
 parameters:
@@ -203,32 +188,6 @@ function putApplication (userRole, id, courseLeipzig, connectionObjects) {
         .then(response => console.log(response.data))
 }
 
-function putStudyOffice (id, applicationObjects) {
-    const formData = new FormData()
-    formData.append('userRole', 'study_office')  // todo
-    applicationObjects.forEach(
-        (object, index) => {
-            // application data
-            formData.append(`moduleBlockUpdateDTOList[${index}].moduleName`, object.moduleName)
-            formData.append(`moduleBlockUpdateDTOList[${index}].university`, object.university)
-            formData.append(`moduleBlockUpdateDTOList[${index}].points`, object.creditPoints)
-            formData.append(`moduleBlockUpdateDTOList[${index}].pointSystem`, object.pointSystem)
-            formData.append(`moduleBlockUpdateDTOList[${index}].asExamCertificate`, object.asExamCertificate)
-            object.selectedInternalModules.forEach(
-                (moduleName, moduleIndex) => {
-                    formData.append(`moduleBlockUpdateDTOList[${index}].moduleNamesLeipzig[${moduleIndex}]`, moduleName)
-                }
-            )
-            // study office data
-            formData.append(`moduleBlockUpdateDTOList[${index}].decisionSuggestion`, object.decisionSuggestion)
-            formData.append(`moduleBlockUpdateDTOList[${index}].commentStudyOffice`, object.commentStudyOffice)
-        }
-    )
-    console.log([...formData])
-    return axios.put(url + '/api/applications/' + id, formData)
-        .then(response => console.log(response.data))
-}
-
 /*
 GET-Request to /applications/{id}/update-status-allowed endpoint
 returns true/false if updating application status is allowed
@@ -261,35 +220,8 @@ function updateStatus (id) {
         })
 }
 
-function putChairman (id, applicationObjects) {
-    const formData = new FormData()
-    formData.append('userRole', 'pav')  // todo
-    applicationObjects.forEach(
-        (object, index) => {
-            // application data
-            formData.append(`moduleBlockUpdateDTOList[${index}].moduleName`, object.moduleName)
-            formData.append(`moduleBlockUpdateDTOList[${index}].university`, object.university)
-            formData.append(`moduleBlockUpdateDTOList[${index}].points`, object.creditPoints)
-            formData.append(`moduleBlockUpdateDTOList[${index}].pointSystem`, object.pointSystem)
-            formData.append(`moduleBlockUpdateDTOList[${index}].asExamCertificate`, object.asExamCertificate)
-            object.selectedInternalModules.forEach(
-                (moduleName, moduleIndex) => {
-                    formData.append(`moduleBlockUpdateDTOList[${index}].moduleNamesLeipzig[${moduleIndex}]`, moduleName)
-                }
-            )
-            // chairman data
-            formData.append(`moduleBlockUpdateDTOList[${index}].decisionFinal`, object.decisionFinal)
-            formData.append(`moduleBlockUpdateDTOList[${index}].commentDecision`, object.commentDecision)
-        }
-    )
-    console.log([...formData])
-    return axios.put(url + '/api/applications/' + id, formData)
-        .then(response => console.log(response.data))
-}
-
 export {
     getCoursesLeipzig,
-    getCourseData,
     getModulesByCourse,
     getApplications,
     getApplicationById,
@@ -299,6 +231,4 @@ export {
     putApplication,
     getUpdateStatusAllowed,
     updateStatus,
-    putStudyOffice,
-    putChairman
 }
