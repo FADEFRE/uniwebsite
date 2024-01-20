@@ -1,247 +1,49 @@
 package swtp12.modulecrediting.service;
 
-import static com.itextpdf.text.FontFactory.*;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
-import java.util.Objects;
 
+import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.lowagie.text.DocumentException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.xhtmlrenderer.pdf.ITextRenderer;
+import org.xhtmlrenderer.layout.SharedContext;
 
-import com.itextpdf.text.*;
-import com.itextpdf.text.pdf.*;
-
-import swtp12.modulecrediting.model.Application;
-import swtp12.modulecrediting.model.ModuleApplication;
-import swtp12.modulecrediting.model.ModulesConnection;
 
 @Service
 public class GeneratedPdfService {
     @Autowired
     private ApplicationService applicationService;
 
-    public byte[] generatePdfDataDocument(String id) throws IOException, DocumentException {
-        Application application = applicationService.getApplicationById(id);
-        List<ModulesConnection> modulesConnections = application.getModulesConnections();
 
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        Document document = new Document(PageSize.A4);
-        PdfWriter.getInstance(document, baos);
-        document.open();
-        document.newPage();
-
-        //Font
-        Font jostRegular = getJostRegular();
-        Font jostSemiBold = getJostSemiBold();
-        Font jostReallySmall = getJostReallySmall();
-
-        //uni-leipzig icon
-        Image uniLeipzigIcon = Image.getInstance(Objects.requireNonNull(getClass().getResource("/Universität_Leipzig_Logo.png")));
-        float maxWidth = 300f;
-        float maxHeight = 300f;
-        uniLeipzigIcon.scaleToFit(maxWidth, maxHeight);
-        float iconX = 36;
-        float iconY = PageSize.A4.getHeight() - 36 - uniLeipzigIcon.getScaledHeight();
-        uniLeipzigIcon.setAbsolutePosition(iconX, iconY);
-        document.add(uniLeipzigIcon);
-
-        //Title
-        String titleText = "ANTRAG ZUR MODULANRECHNUNG";
-        String titleText1 = "FAKULTÄT MATHEMATIK UND INFORMATIK";
-        Paragraph title = new Paragraph(titleText, jostSemiBold);
-        Paragraph title1 = new Paragraph(titleText1, jostRegular);
-        title.setAlignment(Element.ALIGN_LEFT);
-        title1.setAlignment(Element.ALIGN_LEFT);
-        title.setIndentationLeft(30f);
-        title1.setIndentationLeft(30f);
-        float Spacing = 150f; // Abstand zwischen Icon und Titel
-        title.setSpacingBefore(Spacing);
-        title1.setSpacingAfter(30);
-        document.add(title);
-        document.add(title1);
-
-        // Generelle Antragsdaten
-        addTable(document, "Vorgangsnummer", String.valueOf(id));
-        addTable(document, "Status", (application.getFullStatus() != null) ? application.getFullStatus().toString() : "");
-        addTable(document, "Erstellungsdatum", (application.getCreationDate() != null) ? application.getCreationDate().toString() : "");
-        addTable(document, "Entscheidungsdatum", (application.getDecisionDate() != null) ? application.getDecisionDate().toString() : "");
-
-        String addressText = "Universität Leipzig\n" +
-                "Studienbüro Fakultät für Mathematik und Informatik\n" +
-                "Neues Augusteum\n" +
-                "04109 Leipzig\n\n" +
-                "Leitung: Marco Neumann\n\n" +
-                "Telefon: +49 341 97-32165\n" +
-                "Telefax: +49 341 97-32193\n" +
-                "Email-Adresse: studienbuero@math.uni-leipzig.de\n\n" +
-                "Die aktuellen Sprechzeiten entnehmen\n" +
-                "Sie bitte der Homepage:\n" +
-                "www.mathcs.uni-leipzig.de/studium/studienbuero\n";
-
-        PdfPTable addressTable = new PdfPTable(1);
-        addressTable.setWidthPercentage(88);
-        addressTable.getDefaultCell().setBorder(Rectangle.NO_BORDER);
-
-        PdfPCell addressCell = new PdfPCell(new Paragraph(addressText, jostReallySmall));
-        addressCell.setHorizontalAlignment(Element.ALIGN_LEFT);
-        addressCell.setBorder(Rectangle.NO_BORDER);
+    public byte[] generatePdfFromHtml() throws DocumentException, IOException {
+        try (OutputStream os = new ByteArrayOutputStream()) {
+            ClassLoader classLoader = getClass().getClassLoader();
+            InputStream inputStream = classLoader.getResourceAsStream("PDF.html");
 
 
-        addressTable.addCell(addressCell);
-        addressTable.setSpacingBefore(50f);
-        document.add(addressTable);
-
-
-
-
-        for (int i = 0; i < modulesConnections.size(); i+=2) {
-            document.newPage();
-
-            //uni-leipzig icon
-            document.add(uniLeipzigIcon);
-
-            ModulesConnection modulesConnection1 = modulesConnections.get(i);
-            List<ModuleApplication> moduleApplications1 = modulesConnection1.getModuleApplications();
-
-            for (int j = 0; j < moduleApplications1.size(); j++) {
-                ModuleApplication moduleApplication1 = moduleApplications1.get(j);
-
-                //Title
-                String titleText2 = "MODUL";
-                Paragraph title2 = new Paragraph(titleText2, jostSemiBold);
-                Paragraph title3 = new Paragraph(moduleApplication1.getName().toUpperCase(), jostRegular);
-                title2.setAlignment(Element.ALIGN_LEFT);
-                title3.setAlignment(Element.ALIGN_LEFT);
-                title2.setIndentationLeft(30f);
-                title3.setIndentationLeft(30f);
-                float Spacing1 = 150f; // Abstand zwischen Icon und Titel
-                title2.setSpacingBefore(Spacing1);
-                title3.setSpacingAfter(30);
-                document.add(title2);
-                document.add(title3);
-
-                // Module-Anwendungsdaten
-                addTable(document, "Punkte", (moduleApplication1.getPoints() != null) ? String.valueOf(moduleApplication1.getPoints()) : "");
-                addTable(document, "Punktesystem", (moduleApplication1.getPointSystem() != null) ? moduleApplication1.getPointSystem() : "");
-                addTable(document, "Universität", (moduleApplication1.getUniversity() != null) ? moduleApplication1.getUniversity() : "");
-
-                //Studibüro daten
-                addTable(document, "Finale Entscheidung", (modulesConnection1.getDecisionFinal() != null) ? String.valueOf(modulesConnection1.getDecisionFinal()) : "");
-                addTable(document, "Kommentar zur Entscheidung", (modulesConnection1.getCommentDecision() != null) ? modulesConnection1.getCommentDecision() : "");
-
-                if (i + 1 < modulesConnections.size()) {
-
-                    document.add(uniLeipzigIcon);
-
-                    ModulesConnection modulesConnection2 = modulesConnections.get(i + 1);
-                    List<ModuleApplication> moduleApplications2 = modulesConnection2.getModuleApplications();
-
-
-                    if(j + 1 < moduleApplications2.size()) {
-                        document.add(uniLeipzigIcon);
-
-                        ModuleApplication moduleApplication2 = moduleApplications2.get(j + 1);
-                        String titleText4 = "MODUL";
-                        Paragraph title4 = new Paragraph(titleText4, jostSemiBold);
-                        Paragraph title5 = new Paragraph(moduleApplication2.getName().toUpperCase(), jostRegular);
-                        title4.setAlignment(Element.ALIGN_LEFT);
-                        title5.setAlignment(Element.ALIGN_LEFT);
-                        title4.setIndentationLeft(30f);
-                        title5.setIndentationLeft(30f);
-                        float Spacing2 = 100f; // Abstand zwischen Icon und Titel
-                        title4.setSpacingBefore(Spacing2);
-                        title5.setSpacingAfter(50);
-                        document.add(title4);
-                        document.add(title5);
-
-                        // Module-Anwendungsdaten
-                        addTable(document, "Punkte", (moduleApplication2.getPoints() != null) ? String.valueOf(moduleApplication2.getPoints()) : "");
-                        addTable(document, "Punktesystem", (moduleApplication2.getPointSystem() != null) ? moduleApplication2.getPointSystem() : "");
-                        addTable(document, "Universität", (moduleApplication2.getUniversity() != null) ? moduleApplication2.getUniversity() : "");
-
-                        //Studibüro daten
-                        addTable(document, "Finale Entscheidung", (modulesConnection2.getDecisionFinal() != null) ? String.valueOf(modulesConnection2.getDecisionFinal()) : "");
-                        addTable(document, "Kommentar zur Entscheidung", (modulesConnection2.getCommentDecision() != null) ? modulesConnection2.getCommentDecision() : "");
-                    }
-                }
+            if (inputStream == null) {
+                throw new FileNotFoundException("PDF.html konnte nicht gefunden werden");
             }
+            String htmlContent = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
+
+            Document doc = Jsoup.parse(htmlContent);
+            doc.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
+
+            ITextRenderer renderer = new ITextRenderer();
+            SharedContext context = renderer.getSharedContext();
+            context.setPrint(true);
+            context.setInteractive(false);
+
+            String baseUrl = classLoader.getResource("PDF.html").toString();
+            renderer.setDocumentFromString(doc.html(), baseUrl);
+            renderer.layout();
+            renderer.createPDF(os);
+
+            return ((ByteArrayOutputStream) os).toByteArray();
         }
-        document.close();
-        return baos.toByteArray();
     }
-
-    private void addTable(Document document, String label, String value) throws DocumentException, IOException {
-        PdfPTable table = new PdfPTable(2);
-        table.setWidthPercentage(88);
-
-        //Font
-        Font jostSmall = getJostSmall();
-        Font jostSmallBold = getJostSmallBold();
-
-        Font valueFont = getFont(FontFactory.HELVETICA_BOLD, 12);
-
-        PdfPCell labelCell = new PdfPCell(new Phrase(label, jostSmall));
-        PdfPCell valueCell = new PdfPCell(new Phrase(String.valueOf(value), jostSmallBold));
-
-
-        labelCell.setBorderColorLeft(BaseColor.BLACK);
-        valueCell.setBorderColorLeft(BaseColor.BLACK);
-
-        labelCell.setBorderColorRight(BaseColor.BLACK);
-        valueCell.setBorderColorRight(BaseColor.BLACK);
-
-        labelCell.setBorderColor(BaseColor.WHITE);
-        valueCell.setBorderColor(BaseColor.WHITE);
-
-        labelCell.setBorderWidth(0);
-        valueCell.setBorderWidth(0);
-
-        table.addCell(labelCell);
-        table.addCell(valueCell);
-
-        float spacingBetweenTable = 5f;
-        table.setSpacingAfter(spacingBetweenTable);
-
-        document.add(table);
-    }
-
-    private Font getJostRegular() throws DocumentException, IOException {
-        InputStream fontStream = getClass().getClassLoader().getResourceAsStream("Jost-Regular.ttf");
-        BaseFont customBaseFont = BaseFont.createFont("Jost-Regular.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED, true, null, fontStream.readAllBytes());
-
-        return new Font(customBaseFont, 15, Font.NORMAL, BaseColor.BLACK);
-    }
-
-    private Font getJostSemiBold() throws DocumentException, IOException {
-        InputStream fontStream = getClass().getClassLoader().getResourceAsStream("Jost-SemiBold.ttf");
-        BaseFont customBaseFont = BaseFont.createFont("Jost-SemiBold.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED, true, null, fontStream.readAllBytes());
-
-        return new Font(customBaseFont, 15, Font.NORMAL, BaseColor.BLACK);
-    }
-
-    private Font getJostSmall() throws DocumentException, IOException {
-        InputStream fontStream = getClass().getClassLoader().getResourceAsStream("Jost-Regular.ttf");
-        BaseFont customBaseFont = BaseFont.createFont("Jost-Regular.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED, true, null, fontStream.readAllBytes());
-
-        return new Font(customBaseFont, 12, Font.NORMAL, BaseColor.BLACK);
-    }
-
-    private Font getJostSmallBold() throws DocumentException, IOException {
-        InputStream fontStream = getClass().getClassLoader().getResourceAsStream("Jost-SemiBold.ttf");
-        BaseFont customBaseFont = BaseFont.createFont("Jost-SemiBold.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED, true, null, fontStream.readAllBytes());
-
-        return new Font(customBaseFont, 12, Font.NORMAL, BaseColor.BLACK);
-    }
-
-    private Font getJostReallySmall() throws DocumentException, IOException {
-        InputStream fontStream = getClass().getClassLoader().getResourceAsStream("Jost-Regular.ttf");
-        BaseFont customBaseFont = BaseFont.createFont("Jost-Regular.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED, true, null, fontStream.readAllBytes());
-
-        return new Font(customBaseFont, 10, Font.NORMAL, BaseColor.BLACK);
-    }
-
-
-
 }

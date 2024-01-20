@@ -1,9 +1,13 @@
 package swtp12.modulecrediting.controller;
 
+import java.io.IOException;
 import java.util.List;
 
+import com.itextpdf.text.DocumentException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +21,7 @@ import swtp12.modulecrediting.model.Application;
 import swtp12.modulecrediting.model.EnumApplicationStatus;
 import swtp12.modulecrediting.model.Views;
 import swtp12.modulecrediting.service.ApplicationService;
+import swtp12.modulecrediting.service.GeneratedPdfService;
 
 
 @RestController
@@ -25,6 +30,8 @@ import swtp12.modulecrediting.service.ApplicationService;
 public class ApplicationController {
     @Autowired
     private ApplicationService applicationService;
+    @Autowired
+    private GeneratedPdfService generatedPdfService;
 
     //TODO: add auth study-office put request
     @PutMapping("/study-office/{id}")
@@ -91,5 +98,18 @@ public class ApplicationController {
         return ResponseEntity.ok(applicationService.applicationExists(id));
     }
 
+    @GetMapping("/summary/{id}")
+    public ResponseEntity<byte[]> generatePdf(@PathVariable String id) throws DocumentException, IOException {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDispositionFormData("attachment", "Antrag.pdf");
+
+        byte[] pdfBytes = generatedPdfService.generatePdfFromHtml();
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentLength(pdfBytes.length)
+                .body(pdfBytes);
+    }
     
 }

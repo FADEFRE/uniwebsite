@@ -31,19 +31,4 @@ public class PdfDocumentContoller {
     public ResponseEntity<byte[]> getPdfDocumentById(@PathVariable Long id) {
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_PDF).body(pdfDocumentService.getPdfDocumentDataById(id));
     }
-
-    @GetMapping("/application/{id}")
-    public ResponseEntity<byte[]> generatePdf(@PathVariable String id) throws DocumentException, IOException {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_PDF);
-
-        headers.setContentDispositionFormData("att", "Antrag.pdf");
-        byte[] pdfBytes = generatedPdfService.generatePdfDataDocument(id);
-
-        return ResponseEntity.ok()
-                .headers(headers)
-                .contentLength(pdfBytes.length)
-                .body(pdfBytes);
-
-    }
 }
