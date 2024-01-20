@@ -32,8 +32,12 @@ const textStyle = computed(() => {
 
 <template>
   <div class="panel-header">
-    <div class="external-modules">
-      <h3 v-if="externalModules && externalModules.length" :class="textStyle">{{ externalModules.join(', ') }}</h3>
+    <div class="modules-container">
+      <template v-if="externalModules && externalModules.length">
+        <h3 v-for="(externalModule, index) in externalModules" :class="textStyle" class="single-module" :key="index">
+          {{ externalModule }}<span v-if="index < externalModules.length - 1">,</span>
+        </h3>
+      </template>
       <h3 v-else>...</h3>
     </div>
 
@@ -41,10 +45,14 @@ const textStyle = computed(() => {
       <img src="@/assets/icons/ArrowRed.svg" alt="Arrow Icon" />
     </div>
 
-    <div class="internal-modules">
-      <h3 v-if="internalModules && internalModules.length" :class="textStyle">{{ internalModules.join(', ') }}</h3>
-      <h3 v-else>...</h3>
-    </div>
+    <div class="modules-container">
+        <template v-if="internalModules && internalModules.length">
+          <h3 v-for="(internalModule, index) in internalModules" :class="textStyle" class="single-module" :key="index">
+            {{ internalModule }}<span v-if="index < internalModules.length - 1">,</span>
+          </h3>
+        </template>
+        <h3 v-else>...</h3>
+      </div>
   </div>
 </template>
 
@@ -59,11 +67,21 @@ const textStyle = computed(() => {
   gap: 0.625rem;
 }
 
+.modules-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.single-module {
+}
+
 .arrow-icon {
   @include rightArrow();
+  // Ensure the arrow icon doesn't cause unnecessary wrapping
 }
+
 .overview-text {
   text-transform: none;
 }
-
 </style>
