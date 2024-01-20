@@ -1,4 +1,5 @@
 <script setup>
+import ButtonLink from "@/components/ButtonLink.vue";
 import { login } from "@/router/login";
 import { ref } from "vue";
 
@@ -36,7 +37,7 @@ const attemptLogin = () => {
             </div>
 
             <div class="button-container">
-                <Button @click="attemptLogin" class="button-login">Anmelden</Button>
+                <ButtonLink @click="attemptLogin" class="button-login">Anmelden</ButtonLink>
             </div>
                 <p v-if="styleInvalid" class="error-message">{{ errorMessage }}</p>
             </div>
@@ -82,7 +83,9 @@ const attemptLogin = () => {
 }
 
 .error-message {
-    color: red;
+    color: $red;
     margin-top: 0.625rem;
 }
+
+
 </style>

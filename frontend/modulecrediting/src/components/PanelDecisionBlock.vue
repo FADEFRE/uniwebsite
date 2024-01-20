@@ -81,35 +81,24 @@ defineExpose({
 .panel-decision-block {
   display: flex;
   width: 100%;
-  height: 100%;
+  align-self: stretch;
+
+  border: 2px solid $dark-gray;
 }
 
 .readonly-decision-container {
   display: flex;
   flex-direction: column;
+  justify-content: space-around;
 }
 
 
 .icon-container {
-  @include smallHighlightBox();
+  padding: 0.49rem 1.25rem;
   border-right: 2px solid $black;
 
   &.highlight {
     background-color: $gray;
-  }
-
-  &:first-child {
-    border-top: 2px solid $black;
-    border-left: 2px solid $black;
-  }
-
-  &:nth-child(2) {
-    border-left: 2px solid $black;
-  }
-
-  &:last-child {
-    border-bottom: 2px solid $black;
-    border-left: 2px solid $black;
   }
 }
 
@@ -117,7 +106,7 @@ defineExpose({
 textarea {
   width: 100%;
   resize: none;
-  border-left: none;
+  border: none;
 }
 
 :deep(.p-button) {
@@ -126,12 +115,12 @@ textarea {
 
 :deep(.p-selectbutton > .p-button) {
   padding: 0;
-  height: 100%;
 }
 
 .select-button {
   @include smallHighlightBox();
   width: 100%;
+  
 }
 
 :deep(.p-highlight) {

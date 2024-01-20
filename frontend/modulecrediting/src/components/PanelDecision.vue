@@ -23,18 +23,16 @@ const props = defineProps({
 <template>
   <div class="panel-decision">
     <h4>Entscheidung</h4>
-    <div class="decision-block-container">
 
-      <div v-if="type === 'single'">
-        <slot />
-      </div>
-
-      <div v-else-if="type === 'study-office-chairman'">
-        <slot name="study-office" />
-        <slot name="chairman" />
-      </div>
-
+    <div v-if="type === 'single'" class="decision-container">
+      <slot />
     </div>
+
+    <div v-else-if="type === 'study-office-chairman'" class="decision-split-container">
+      <slot name="study-office" />
+      <slot name="chairman" />
+    </div>
+
   </div>
 </template>
 
@@ -46,8 +44,14 @@ const props = defineProps({
   @include panelComponent();
 }
 
-.decision-block-container {
+.decision-split-container {
   @include screenSplit();
   width: 100%;
+  height: min-content;
+}
+
+.decision-container {
+  width: 100%;
+  height: min-content;
 }
 </style>
