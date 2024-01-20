@@ -18,20 +18,9 @@ public class ModulesConnectionUpdateDTO {
     private EnumModuleConnectionDecision decisionSuggestion;
     private String commentDecision;
     private EnumModuleConnectionDecision decisionFinal;
+    private String commentApplicant;
 
     private List<ModuleApplicationUpdateDTO> moduleApplications;
     private List<ModuleLeipzigUpdateDTO> modulesLeipzig;
 
-    @Override
-    public String toString() {
-        return "ModulesConnectionUpdateDTO{" +
-                "id=" + id +
-                ", commentStudyOffice='" + commentStudyOffice + '\'' +
-                ", decisionSuggestion=" + decisionSuggestion +
-                ", commentDecision='" + commentDecision + '\'' +
-                ", decisionFinal=" + decisionFinal +
-                ", moduleApplications=" + moduleApplications +
-                ", modulesLeipzig=" + modulesLeipzig +
-                '}';
-    }
 }

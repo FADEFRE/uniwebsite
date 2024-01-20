@@ -65,6 +65,9 @@ public class ModulesConnectionService {
                 // when user corrects application, the status of connection goes back to non rejecting
                 modulesConnection.setFormalRejection(false);
                 modulesConnection.setFormalRejectionComment("");
+
+                if(mcuDTO.getCommentApplicant() != null)
+                    modulesConnection.setCommentApplicant(mcuDTO.getCommentApplicant());
             }
 
 
