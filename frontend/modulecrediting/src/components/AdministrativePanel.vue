@@ -13,16 +13,17 @@ displays:
 -->
 
 <script setup>
+import { ref, computed } from "vue";
 import PanelHeader from "@/components/PanelHeader.vue";
 import PanelComment from "@/components/PanelComment.vue";
 import PanelExternalModules from "@/components/PanelExternalModules.vue";
 import PanelInternalModules from "@/components/PanelInternalModules.vue";
-import { ref, computed } from "vue";
 import PanelStatusIcons from "@/components/PanelStatusIcons.vue";
 import PanelDecision from "@/components/PanelDecision.vue";
 import PanelDecisionBlock from "@/components/PanelDecisionBlock.vue";
 import CustomPanel from "@/components/CustomPanel.vue";
 import PanelRelatedModules from "@/components/PanelRelatedModules.vue";
+import PanelFormalRejectionBlock from "@/components/PanelFormalRejectionBlock.vue";
 
 const props = defineProps({
   type: {
@@ -62,6 +63,25 @@ const panelInternalModules = ref()
 const externalModules = computed(() => panelExternalModules.value?.externalModules)
 const internalModules = computed(() => panelInternalModules.value?.selectedModules)
 
+const formalRejection = ref(false)  // todo add initial value from response
+const formalRejectionRef = ref()
+const formalRejectionData = computed(() => {
+  return {
+    formalRejection: formalRejection.value,
+    comment: formalRejectionData.value?.comment
+  }
+})
+
+const setFormalRejection = () => {
+  formalRejection.value = true;
+  emit('change')
+}
+
+const unsetFormalRejection = () => {
+  formalRejection.value = false;
+  emit('change')
+}
+
 const studyOfficeDecisionData = ref()
 const chairmanDecisionData = ref()
 
@@ -75,6 +95,7 @@ defineExpose({
   id,
   externalModules,
   internalModules,
+  formalRejectionData,
   studyOfficeDecisionData,
   chairmanDecisionData,
   setCollapsed
@@ -114,26 +135,37 @@ defineExpose({
       <PanelRelatedModules
           :connection-id="connectionData['id']"
       />
-      <PanelDecision>
-        <template #study-office>
-          <PanelDecisionBlock
-              :type="(type === 'study-office' && !readonly) ? 'edit' : 'readonly'"
-              :display-decision="decisionSuggestion"
-              :comment="connectionData['commentStudyOffice']"
-              ref="studyOfficeDecisionData"
-              @change="emit('change')"
-          />
-        </template>
-        <template #chairman>
-          <PanelDecisionBlock
-              :type="(type === 'chairman' && !readonly) ? 'edit' : 'readonly'"
-              :display-decision="decisionFinal"
-              :comment="connectionData['commentDecision']"
-              ref="chairmanDecisionData"
-              @change="emit('change')"
-          />
-        </template>
-      </PanelDecision>
+
+      <div v-if="formalRejection">
+        <PanelDecision type="single">
+          <PanelFormalRejectionBlock type="edit" ref="formalRejectionRef" />
+        </PanelDecision>
+        <Button @click="unsetFormalRejection">Formfehler zurücknehmen</Button>
+      </div>
+
+      <div v-else>
+        <PanelDecision type="study-office-chairman">
+          <template #study-office>
+            <PanelDecisionBlock
+                :type="(type === 'study-office' && !readonly) ? 'edit' : 'readonly'"
+                :display-decision="decisionSuggestion"
+                :comment="connectionData['commentStudyOffice']"
+                ref="studyOfficeDecisionData"
+                @change="emit('change')"
+            />
+          </template>
+          <template #chairman>
+            <PanelDecisionBlock
+                :type="(type === 'chairman' && !readonly) ? 'edit' : 'readonly'"
+                :display-decision="decisionFinal"
+                :comment="connectionData['commentDecision']"
+                ref="chairmanDecisionData"
+                @change="emit('change')"
+            />
+          </template>
+        </PanelDecision>
+        <Button @click="setFormalRejection">Als Formfehler markieren</Button>
+      </div>
 
     </CustomPanel>
 

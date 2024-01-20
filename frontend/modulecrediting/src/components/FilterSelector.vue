@@ -28,6 +28,7 @@ const earliestDate = computed(() => {
 })
 
 const statusNew = ref(true)
+const statusFormalRejection = ref(true)
 const statusStudyOffice = ref(true)
 const statusChairman = ref(true)
 const statusClosed = ref(true)
@@ -35,6 +36,7 @@ const statusClosed = ref(true)
 const statusTypes = computed(() => {
   const statusList = []
   if (statusNew.value) statusList.push('NEU')
+  if (statusFormalRejection.value) statusList.push('FORMFEHLER')
   if (statusStudyOffice.value) statusList.push('STUDIENBÜRO')
   if (statusChairman.value) statusList.push('PRÜFUNGSAUSSCHUSS')
   if (statusClosed.value) statusList.push('ABGESCHLOSSEN')
@@ -58,6 +60,7 @@ const setDateTypeCreation = () => {
   dateType.value = 'creation'
   // setting status
   statusNew.value = true
+  statusFormalRejection.value = true
   statusStudyOffice.value = true
   statusChairman.value = true
   statusClosed.value = true
@@ -68,6 +71,7 @@ const setDateTypeLastEdit = () => {
   dateType.value = 'lastEdit'
   // setting status
   statusNew.value = false
+  statusFormalRejection.value = true
   statusStudyOffice.value = true
   statusChairman.value = true
   statusClosed.value = true
@@ -78,6 +82,7 @@ const setDateTypeDecision = () => {
   dateType.value = 'decision'
   // setting status
   statusNew.value = false
+  statusFormalRejection.value = false
   statusStudyOffice.value = false
   statusChairman.value = false
   statusClosed.value = true
@@ -88,6 +93,14 @@ const toggleStatusNew = () => {
   // change dateType if necessary
   if (dateType.value === 'decision' || dateType.value === 'lastEdit') {
     dateType.value = 'creation'
+  }
+}
+
+const toggleStatusFormalRejection = () => {
+  statusFormalRejection.value = !statusFormalRejection.value
+  // change dateType if necessary
+  if (dateType.value === 'decision') {
+    dateType.value = 'lastEdit'
   }
 }
 
@@ -152,11 +165,14 @@ defineExpose({
     </div>
 
     <div class="status-list-container">
-      <!-- todo add correct styles -->
       <h4>Status</h4>
       <div :class="{ 'selected': statusNew }" class="statusNew status-container"
         @click="toggleStatusNew">
         <p class="overview-text">NEU</p>
+      </div>
+      <div :class="{ 'selected': statusFormalRejection }" class="statusFormalRejection status-container"
+           @click="toggleStatusFormalRejection">
+        <p class="overview-text">FORMFEHLER</p>
       </div>
       <div :class="{ 'selected': statusStudyOffice }" class="statusStudyOffice status-container"
         @click="toggleStatusStudyOffice">
@@ -175,12 +191,12 @@ defineExpose({
     <div class="course-container">
       <h4>Studiengang</h4>
       <Dropdown show-clear v-model="course" :options="courses" placeholder="Studiengang auswählen">
-              <template #clearicon>
-                <img src="@/assets/icons/TrashWhite.svg" class="clear-icon" @click="deleteCourse">
-              </template>
-              <template #dropdownicon>
-                  <img src="../assets/icons/ArrowWhite.svg">
-              </template>
+        <template #clearicon>
+          <img src="@/assets/icons/TrashWhite.svg" class="clear-icon" @click="deleteCourse">
+        </template>
+        <template #dropdownicon>
+            <img src="../assets/icons/ArrowWhite.svg">
+        </template>
       </Dropdown>
     </div>
 
@@ -265,6 +281,10 @@ defineExpose({
 
   &.statusNew {
     background-color: $green;
+  }
+
+  &.statusFormalRejection {
+    background-color: salmon;  // todo change color
   }
 
   &.statusStudyOffice {
