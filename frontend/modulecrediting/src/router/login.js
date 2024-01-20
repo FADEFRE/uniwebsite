@@ -44,18 +44,22 @@ async function login (login_username, login_password) {
                     break;
             }
         }
-    } 
-    catch (error) {
-        performLogout();
-        const apierror = parseApierror(error);
-        displayErrorMessage.value = true;
-        errorMessage.value = apierror.message;
     }
+    catch (error) {
+        if (response.status === 401) {
+            const apierror = parseApierror(error);
+            displayErrorMessage.value = true;
+            errorMessage.value = apierror.message;
+            performLogout();
+        }
+    }
+
     loginInProcess.value = false;
 
     if (canNavigate) {
         router.replace("/");
     }
+
 }
 
 export { login } 
