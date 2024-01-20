@@ -68,7 +68,7 @@ const formalRejectionRef = ref()
 const formalRejectionData = computed(() => {
   return {
     formalRejection: formalRejection.value,
-    comment: formalRejectionData.value?.comment
+    comment: formalRejectionRef.value?.comment
   }
 })
 
