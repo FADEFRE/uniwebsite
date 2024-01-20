@@ -53,6 +53,9 @@ onMounted(() => {
   padding: 0;
   margin: 0;
 
+  &:hover {
+    background-color: $white;
+  }
 }
 
 .logo-responsive {
