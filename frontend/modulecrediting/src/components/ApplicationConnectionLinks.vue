@@ -66,7 +66,6 @@ const props = defineProps({
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  
 }
 
 .arrow-icon {

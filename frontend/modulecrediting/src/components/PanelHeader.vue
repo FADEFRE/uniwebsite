@@ -31,14 +31,12 @@ const textStyle = computed(() => {
 </script>
 
 <template>
-  <div class="panel-header">
+  <div class="panel-heading-container">
     <div class="modules-container">
-      <template v-if="externalModules && externalModules.length">
-        <h3 v-for="(externalModule, index) in externalModules" :class="textStyle" class="single-module" :key="index">
-          {{ externalModule }}<span v-if="index < externalModules.length - 1">,</span>
+      <h3 v-if="externalModules && externalModules.length" :class="textStyle" class="single-module">
+          {{ externalModules.join(', ') }}
         </h3>
-      </template>
-      <h3 v-else>...</h3>
+        <h3 v-else>...</h3>
     </div>
 
     <div class="arrow-icon">
@@ -46,13 +44,11 @@ const textStyle = computed(() => {
     </div>
 
     <div class="modules-container">
-        <template v-if="internalModules && internalModules.length">
-          <h3 v-for="(internalModule, index) in internalModules" :class="textStyle" class="single-module" :key="index">
-            {{ internalModule }}<span v-if="index < internalModules.length - 1">,</span>
-          </h3>
-        </template>
-        <h3 v-else>...</h3>
-      </div>
+      <h3 v-if="internalModules && internalModules.length" :class="textStyle" class="single-module">
+        {{ internalModules.join(', ') }}
+      </h3>
+      <h3 v-else>...</h3>
+    </div>
   </div>
 </template>
 
@@ -60,20 +56,25 @@ const textStyle = computed(() => {
 @import '../assets/mixins.scss';
 @import '../assets/variables.scss';
 
-.panel-header {
+.panel-heading-container {
   display: flex;
   align-items: center;
   justify-content: flex-start;
   gap: 0.625rem;
+  width: 100%;
+  overflow: hidden;
 }
 
 .modules-container {
   display: flex;
-  flex-wrap: wrap;
   gap: 0.3rem;
+  overflow: hidden;
 }
 
 .single-module {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .arrow-icon {
