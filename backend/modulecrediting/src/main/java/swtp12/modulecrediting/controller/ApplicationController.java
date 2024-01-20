@@ -97,19 +97,5 @@ public class ApplicationController {
     public ResponseEntity<Boolean> applicationExists(@PathVariable String id) {
         return ResponseEntity.ok(applicationService.applicationExists(id));
     }
-
-    @GetMapping("/summary/{id}")
-    public ResponseEntity<byte[]> generatePdf(@PathVariable String id) throws DocumentException, IOException {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_PDF);
-        headers.setContentDispositionFormData("attachment", "Antrag.pdf");
-
-        byte[] pdfBytes = generatedPdfService.generatePdfFromHtml();
-
-        return ResponseEntity.ok()
-                .headers(headers)
-                .contentLength(pdfBytes.length)
-                .body(pdfBytes);
-    }
     
 }
