@@ -180,7 +180,6 @@ const triggerPassOn = () => {
 
 .main {
   @include main();
-  max-width: 1600px;
 }
 
 .administrative-detail-container {

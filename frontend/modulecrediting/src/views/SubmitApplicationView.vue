@@ -136,7 +136,7 @@ const triggerPostApplication = () => {
 
 .submit-application-container {
   @include verticalList(small);
-  align-self: stretch
+  width: 100%
 }
 
 .side-infos-container {
