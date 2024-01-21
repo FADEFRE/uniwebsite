@@ -115,6 +115,7 @@ const openSummaryDocument = () => {
 .status-detail-container {
   @include verticalList(small);
   width: 100%;
+  overflow: hidden;
 }
 
 
