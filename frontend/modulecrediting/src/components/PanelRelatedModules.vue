@@ -55,37 +55,26 @@ const openRelatedModule = (module) => {
     <h4>Ähnliche Module:</h4>
 
     <div v-if="relatedModules && relatedModules.length > 0" class="related-modules-list-container">
-      <div v-for="module in relatedModules" class="single-related-module-container">
-        <div class="left-side">
+      <div v-for="module in relatedModules" class="single-related-module-container" @click="openRelatedModule(module)">
 
-          <div @click="openRelatedModule(module)">
+        <div v-if="module['decisionFinal'] === 'accepted'">
+          <img src="../assets/icons/ModuleAccepted.svg">
+        </div>
+        <div v-else-if="module['decisionFinal'] === 'asExamCertificate'">
+          <img src="../assets/icons/ModuleAsExamCertificate.svg">
+        </div>
+        <div v-else-if="module['decisionFinal'] === 'denied'">
+          <img src="../assets/icons/ModuleDenied.svg">
+        </div>
+        <PanelHeader :external-modules="module['moduleApplications'].map(m => m.name)"
+          :internal-modules="module['modulesLeipzig'].map(m => m.name)" :relatedModules="true" />
 
-            <div>
-              <div v-if="module['decisionFinal'] === 'accepted'">
-                <img src="../assets/icons/ModuleAccepted.svg">
-              </div>
-              <div v-else-if="module['decisionFinal'] === 'asExamCertificate'">
-                <img src="../assets/icons/ModuleAsExamCertificate.svg">
-              </div>
-              <div v-else-if="module['decisionFinal'] === 'denied'">
-                <img src="../assets/icons/ModuleDenied.svg">
-              </div>
-            </div>
-            <PanelHeader :external-modules="module['moduleApplications'].map(m => m.name)"
-                         :internal-modules="module['modulesLeipzig'].map(m => m.name)" :relatedModules="true" />
-          </div>
-
-          <div class="right-side">
-            <div class="date-block">
-              <img src="../assets/icons/DecisionDate.svg" alt="DecisionDate">
-              <p>{{ parseRequestDate(module['application']['decisionDate']) }}</p>
-            </div>
-
-            <p class="course">{{ module['application']['courseLeipzig']['name'] }}</p>
-          </div>
-
+        <div class="date-block">
+          <img src="../assets/icons/DecisionDate.svg" alt="DecisionDate">
+          <p>{{ parseRequestDate(module['application']['decisionDate']) }}</p>
         </div>
 
+        <p class="course">{{ module['application']['courseLeipzig']['name'] }}</p>
       </div>
     </div>
 
@@ -107,6 +96,8 @@ const openRelatedModule = (module) => {
 
 .related-modules-list-container {
   @include verticalList(small);
+  width: 100%;
+  overflow: hidden;
 }
 
 .single-related-module-container {
@@ -119,9 +110,12 @@ const openRelatedModule = (module) => {
   align-items: center;
   justify-content: space-between;
   gap: 0.965rem;
+
+  overflow: hidden;
 }
 
-.left-side, .right-side{
+.left-side,
+.right-side {
   display: flex;
   gap: 0.625rem;
   align-items: center;
