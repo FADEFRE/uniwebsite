@@ -1,5 +1,4 @@
-import { url } from "@/scripts/url-config.js"
-import axios from "axios";
+import {url} from "@/scripts/url-config.js"
 import httpResource from "@/scripts/httpResource";
 
 /*
@@ -14,8 +13,7 @@ function getCoursesLeipzig () {
 
     return httpResource.get('/api/courses-leipzig')
         .then(response => {
-            const courses = response.data.map(obj => obj.name)
-            return courses
+            return response.data.map(obj => obj.name)
         })
 }
 
@@ -67,7 +65,6 @@ function getApplicationById (id) {
         .then(response => {
             response.data['modulesConnections'].sort((a, b) => a.id - b.id)
             response.data['modulesConnections'].forEach(connection => {
-                console.log(connection)
                 connection['externalModules'].sort((a, b) => a.id - b.id)
             })
             return response.data
@@ -144,12 +141,8 @@ function postApplication (course, applicationObjects) {
         }
     )
 
-    console.log('post request to /applications')
-    console.log([...formData])
-
     return httpResource.post('/api/applications', formData)
         .then(response => {
-            console.log('post application successful, data returned: ' + response.data)
             return response.data
         })
 }
@@ -191,8 +184,6 @@ function putApplicationStandard (applicationId, courseLeipzig, connectionObjects
 function putApplicationStudyOffice (applicationId, courseLeipzig, connectionObjects) {
     console.debug("%c"+ "putApplicationStudyOffice (applicationId: " + applicationId + ", courseLeipzig: " + courseLeipzig + ", connectionsObjects: " + connectionObjects + ")", "color:yellow")
 
-    console.log(connectionObjects)
-
     const formData = createBasicFormData(courseLeipzig, connectionObjects)
 
     connectionObjects.forEach((connection, connectionIndex) => {
@@ -209,8 +200,6 @@ function putApplicationStudyOffice (applicationId, courseLeipzig, connectionObje
         }
     })
 
-    console.log('put study office')
-    console.log([...formData])
     return httpResource.put('/api/applications/study-office/' + applicationId, formData)
         .then(response => response.data)
 }
@@ -239,7 +228,6 @@ parameters:
 function updateStatus (id) {
     console.debug("%c"+ "updateStatus (id: " + id + ")", "color:yellow")
 
-    console.log('updating status for applications: ' + id)
     return httpResource.put('/api/applications/' + id + '/update-status')
         .then(response => {
             if (response.data) {
