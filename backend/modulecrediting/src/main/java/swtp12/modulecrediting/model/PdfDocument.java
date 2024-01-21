@@ -30,11 +30,11 @@ public class PdfDocument {
     @JsonIgnore
     private byte[] pdfData;
 
-    //Relation PdfDocument <-> ModuleApplication (Setter in ModuleApplication)
+    //Relation PdfDocument <-> ExternalModule (Setter in ExternalModule)
     @OneToOne(mappedBy = "pdfDocument")
     @JsonBackReference
     @EqualsAndHashCode.Exclude
-    private ModuleApplication moduleApplication;
+    private ExternalModule externalModule;
 
 
     //Constructer

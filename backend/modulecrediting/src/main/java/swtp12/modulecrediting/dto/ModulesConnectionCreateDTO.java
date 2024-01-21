@@ -11,6 +11,6 @@ import java.util.List;
 @NoArgsConstructor
 public class ModulesConnectionCreateDTO {
     private String commentApplicant;
-    private List<ModuleApplicationCreateDTO> moduleApplications;
+    private List<ExternalModuleCreateDTO> externalModules;
     private List<String> modulesLeipzig;
 }

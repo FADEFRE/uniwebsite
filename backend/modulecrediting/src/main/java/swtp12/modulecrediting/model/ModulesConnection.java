@@ -46,11 +46,11 @@ public class ModulesConnection {
     @NotNull(message = "comment applicant must not be null")
     private String commentApplicant;
 
-    //Relation ModulesConnection <-> ModuleApplication (Setter in ModuleApplication)
+    //Relation ModulesConnection <-> ExternalModule (Setter in ExternalModule)
     @OneToMany(mappedBy = "modulesConnection", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JsonManagedReference
     @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class,Views.ApplicationOverview.class})
-    private List<ModuleApplication> moduleApplications = new ArrayList<>();
+    private List<ExternalModule> externalModules = new ArrayList<>();
 
     //Relation ModulesConnection <-> ModuleLeipzig
     @ManyToMany
@@ -80,23 +80,23 @@ public class ModulesConnection {
     }
 
 
-    //Function to set List of ModuleApplication to this ModulesConnection (and add this ModuleConnectio to all ModuleApplication in the List)
-    public void setModuleApplications(List<ModuleApplication> moduleApplications) {
-        for(ModuleApplication m : moduleApplications) {
+    //Function to set List of ExternalModule to this ModulesConnection (and add this ModuleConnectio to all ExternalModule in the List)
+    public void setExternalModules(List<ExternalModule> externalModules) {
+        for(ExternalModule m : externalModules) {
             m.setModulesConnection(this);
         }
-        this.moduleApplications = moduleApplications;
+        this.externalModules = externalModules;
     }
-    public void addModuleApplications(List<ModuleApplication> moduleApplications) {
-        for(ModuleApplication m : moduleApplications) {
+    public void addExternalModules(List<ExternalModule> externalModules) {
+        for(ExternalModule m : externalModules) {
             m.setModulesConnection(this);
-            this.moduleApplications.add(m);
+            this.externalModules.add(m);
         }
     }
-    public void removeModuleApplications(List<ModuleApplication> moduleApplications) {
-        for(ModuleApplication m : moduleApplications) {
+    public void removeExternalModules(List<ExternalModule> externalModules) {
+        for(ExternalModule m : externalModules) {
             m.setModulesConnection(null);
-            this.moduleApplications.remove(m);
+            this.externalModules.remove(m);
         }
     }
 

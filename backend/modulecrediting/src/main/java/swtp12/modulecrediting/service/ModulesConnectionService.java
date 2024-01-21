@@ -5,12 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-import swtp12.modulecrediting.dto.ModuleApplicationUpdateDTO;
+import swtp12.modulecrediting.dto.ExternalModuleUpdateDTO;
 import swtp12.modulecrediting.dto.ModuleLeipzigUpdateDTO;
 import swtp12.modulecrediting.dto.ModulesConnectionCreateDTO;
 import swtp12.modulecrediting.dto.ModulesConnectionUpdateDTO;
-import swtp12.modulecrediting.model.EnumModuleConnectionDecision;
-import swtp12.modulecrediting.model.ModuleApplication;
+import swtp12.modulecrediting.model.ExternalModule;
 import swtp12.modulecrediting.model.ModuleLeipzig;
 import swtp12.modulecrediting.model.ModulesConnection;
 import swtp12.modulecrediting.repository.ModulesConnectionRepository;
@@ -24,7 +23,7 @@ public class ModulesConnectionService {
     @Autowired
     ModulesConnectionRepository modulesConnectionRepository;
     @Autowired
-    ModuleApplicationService moduleApplicationService;
+    ExternalModuleService externalModuleService;
     @Autowired
     ModuleLeipzigService moduleLeipzigService;
 
@@ -68,15 +67,15 @@ public class ModulesConnectionService {
 
 
             // handle module applications changes
-            if(mcuDTO.getModuleApplications() == null)  throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You cant delete all Module Applications of a Modules Connection " + mcuDTO.getId());
+            if(mcuDTO.getExternalModules() == null)  throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You cant delete all Module Applications of a Modules Connection " + mcuDTO.getId());
 
             List<Long> savedIdList = getIdListFromModuleConnection(modulesConnection);
             List<Long> updatedIdList = getIdListFromModuleConnectionUpdateDTO(mcuDTO);
             List<Long> deleteIdList = new ArrayList<>(savedIdList);
             deleteIdList.removeAll(updatedIdList);
 
-            removeAllDeletedModuleApplications(deleteIdList);
-            moduleApplicationService.updateModuleApplications(mcuDTO.getModuleApplications());
+            removeAllDeletedExternalModules(deleteIdList);
+            externalModuleService.updateExternalModules(mcuDTO.getExternalModules());
 
             // handle modules leipzig changes
             if(mcuDTO.getModulesLeipzig() == null) modulesConnection.removeAllModulesLeipzig(); // remove all module leipzig
@@ -117,22 +116,22 @@ public class ModulesConnectionService {
     }
 
     // module applications helper methos (external modules)
-    void removeAllDeletedModuleApplications(List<Long> deleteIdList) {
+    void removeAllDeletedExternalModules(List<Long> deleteIdList) {
         for(Long id : deleteIdList) {
-            moduleApplicationService.deleteModuleApplicationById(id);
+            externalModuleService.deleteExternalModuleById(id);
         }
     }
     List<Long> getIdListFromModuleConnection(ModulesConnection modulesConnection) {
         ArrayList<Long> idList = new ArrayList<>();
-        for(ModuleApplication ma : modulesConnection.getModuleApplications()) {
-            idList.add(ma.getId());
+        for(ExternalModule eM : modulesConnection.getExternalModules()) {
+            idList.add(eM.getId());
         }
         return idList;
     }
     List<Long> getIdListFromModuleConnectionUpdateDTO(ModulesConnectionUpdateDTO modulesConnection) {
         ArrayList<Long> idList = new ArrayList<>();
-        for(ModuleApplicationUpdateDTO ma : modulesConnection.getModuleApplications()) {
-            idList.add(ma.getId());
+        for(ExternalModuleUpdateDTO eM : modulesConnection.getExternalModules()) {
+            idList.add(eM.getId());
         }
         return idList;
     }
@@ -155,8 +154,8 @@ public class ModulesConnectionService {
             ModulesConnection modulesConnection = new ModulesConnection();
             modulesConnection.setCommentApplicant(mc.getCommentApplicant());
 
-            List<ModuleApplication> moduleApplications = moduleApplicationService.createModuleApplications(mc.getModuleApplications());
-            modulesConnection.setModuleApplications(moduleApplications);
+            List<ExternalModule> externalModules = externalModuleService.createExternalModules(mc.getExternalModules());
+            modulesConnection.setExternalModules(externalModules);
 
             if(mc.getModulesLeipzig() != null) { // no modules leipzig sent
                 List<ModuleLeipzig> modulesLeipzig = moduleLeipzigService.getModulesLeipzigByNames(mc.getModulesLeipzig());
@@ -191,10 +190,10 @@ public class ModulesConnectionService {
 
     // checks if a module connection is similar, based on if any of a modulename, university pair matches with another pair.
     public boolean checkSimilarityOfModulesConnection(ModulesConnection baseModulesConnection, ModulesConnection relatedModulesConnection) {
-        for(ModuleApplication maBase : baseModulesConnection.getModuleApplications()) {
-            for(ModuleApplication maRel : relatedModulesConnection.getModuleApplications()) {
-                int distanceModuleName = checkSimilarityOfStrings(maBase.getName(), maRel.getName());
-                int distanceUniversity = checkSimilarityOfStrings(maBase.getUniversity(), maRel.getUniversity());
+        for(ExternalModule emBase : baseModulesConnection.getExternalModules()) {
+            for(ExternalModule emRel : relatedModulesConnection.getExternalModules()) {
+                int distanceModuleName = checkSimilarityOfStrings(emBase.getName(), emRel.getName());
+                int distanceUniversity = checkSimilarityOfStrings(emBase.getUniversity(), emRel.getUniversity());
 
                 if(distanceUniversity <= 5 && distanceModuleName <= 5) return true;
             }

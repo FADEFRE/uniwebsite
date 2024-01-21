@@ -20,7 +20,7 @@ public class ModulesConnectionUpdateDTO {
     private EnumModuleConnectionDecision decisionFinal;
     private String commentApplicant;
 
-    private List<ModuleApplicationUpdateDTO> moduleApplications;
+    private List<ExternalModuleUpdateDTO> externalModules;
     private List<ModuleLeipzigUpdateDTO> modulesLeipzig;
 
 }
