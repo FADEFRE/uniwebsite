@@ -26,7 +26,6 @@ const moduleOptions = ref([])
 onBeforeMount(() => {
   getApplicationByIdForStatus(id)
     .then(data => {
-      data['modulesConnections'].sort((a, b) => a.id - b.id)
       applicationData.value = data
       return data
     })

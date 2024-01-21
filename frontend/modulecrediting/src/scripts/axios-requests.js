@@ -57,6 +57,10 @@ parameters:
 function getApplicationById (id) {
     return axios.get(url + '/api/applications/' + id)
         .then(response => {
+            response.data['modulesConnections'].sort((a, b) => a.id - b.id)
+            response.data['modulesConnections'].forEach(connection => {
+                connection['moduleApplications'].sort((a, b) => a.id - b.id)
+            })
             return response.data
         })
 }
@@ -71,6 +75,10 @@ parameters:
 function getApplicationByIdForStatus (id) {
     return axios.get(url + '/api/applications/student/' + id)
         .then(response => {
+            response.data['modulesConnections'].sort((a, b) => a.id - b.id)
+            response.data['modulesConnections'].forEach(connection => {
+                connection['moduleApplications'].sort((a, b) => a.id - b.id)
+            })
             return response.data
         })
 }
