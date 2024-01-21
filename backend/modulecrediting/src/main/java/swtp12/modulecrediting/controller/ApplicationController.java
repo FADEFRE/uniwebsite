@@ -1,13 +1,9 @@
 package swtp12.modulecrediting.controller;
 
-import java.io.IOException;
 import java.util.List;
 
-import com.itextpdf.text.DocumentException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +17,6 @@ import swtp12.modulecrediting.model.Application;
 import swtp12.modulecrediting.model.EnumApplicationStatus;
 import swtp12.modulecrediting.model.Views;
 import swtp12.modulecrediting.service.ApplicationService;
-import swtp12.modulecrediting.service.GeneratedPdfService;
 
 
 @RestController
@@ -30,8 +25,6 @@ import swtp12.modulecrediting.service.GeneratedPdfService;
 public class ApplicationController {
     @Autowired
     private ApplicationService applicationService;
-    @Autowired
-    private GeneratedPdfService generatedPdfService;
 
     //TODO: add auth study-office put request
     @PutMapping("/study-office/{id}")
