@@ -22,7 +22,7 @@ const props = defineProps({
     required: true,
     type: String,
     validator(value) {
-      return ['new', 'edit', 'readonly'].includes(value)
+      return ['new', 'edit', 'edit-full', 'readonly'].includes(value)
     }
   },
   modulesData: {
@@ -100,7 +100,7 @@ defineExpose({
       <small>Anrechnung mehrerer externer Module auf Module der Universität Leipzig</small>
     </div>
 
-    <div v-else-if="type === 'edit' || type === 'readonly'" class="external-modules-list">
+    <div v-else-if="type === 'edit' || type === 'edit-full' || type === 'readonly'" class="external-modules-list">
       <PanelExternalModulesItem
           v-for="module in modulesData"
           :type="type"
