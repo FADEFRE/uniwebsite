@@ -7,12 +7,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { ref, onBeforeMount } from "vue";
 import ErrorView from "@/views/ErrorView.vue";
 import ApplicationOverview from "@/components/ApplicationOverview.vue";
-import CustomPanel from "@/components/CustomPanel.vue";
-import PanelHeader from '../components/PanelHeader.vue';
-import PanelExternalModules from "@/components/PanelExternalModules.vue";
-import PanelInternalModules from "@/components/PanelInternalModules.vue";
-import PanelComment from "@/components/PanelComment.vue";
-import PanelDecisionBlock from "@/components/PanelDecisionBlock.vue";
+import StatusPanel from "@/components/StatusPanel.vue";
 import SideInfoContainer from '../components/SideInfoContainer.vue';
 import { url } from "@/scripts/url-config"
 import { getApplicationByIdForStatus, getModulesByCourse } from "@/scripts/axios-requests";
@@ -53,7 +48,7 @@ const openSummaryDocument = () => {
 
 <template>
   <div class="main">
-    
+
     <div v-if="!applicationData">
       <ErrorView
         :customTitle="'Ungültige Vorgangsnummer'"
@@ -71,35 +66,12 @@ const openSummaryDocument = () => {
 
       <div v-for="connection in applicationData['modulesConnections']">
 
-        <CustomPanel>
-
-          <template #header>
-            <PanelHeader :external-modules="connection['externalModules'].map(module => module['name'])"
-              :internal-modules="connection['modulesLeipzig'].map(module => module['name'])" />
-          </template>
-
-          <template #icons>
-            <img v-if="connection['decisionFinal'] === 'accepted'" src="../assets/icons/ModuleAccepted.svg">
-            <img v-else-if="connection['decisionFinal'] === 'asExamCertificate'"
-              src="../assets/icons/ModuleAsExamCertificate.svg">
-            <img v-else-if="connection['decisionFinal'] === 'denied'" src="../assets/icons/ModuleDenied.svg">
-          </template>
-
-          <div>
-
-            <PanelExternalModules type="readonly" :modules-data="connection['externalModules']" />
-
-            <PanelInternalModules type="readonly" :options="moduleOptions"
-              :selected-modules="connection['modulesLeipzig'].map(m => m.name)" />
-
-            <PanelComment type="readonly" :comment="connection['commentApplicant']" />
-
-            <PanelDecisionBlock v-if="connection['decisionFinal'] !== 'unedited'" type="readonly"
-              :display-decision="connection['decisionFinal']" :comment="connection['commentDecision']" />
-
-          </div>
-
-        </CustomPanel>
+        <StatusPanel
+            :connection="connection"
+            :selectable-modules="moduleOptions"
+            :readonly="!(applicationData['fullStatus'] === 'FORMFEHLER')"
+            :class="{ 'formal-rejection-highlight': connection['formalRejection'] }"
+        />
 
       </div>
 
@@ -149,5 +121,9 @@ const openSummaryDocument = () => {
 .side-infos-container {
   @include verticalList(big);
   width: min-content;
+}
+
+.formal-rejection-highlight {
+  border-left: 1rem solid $red;
 }
 </style>
