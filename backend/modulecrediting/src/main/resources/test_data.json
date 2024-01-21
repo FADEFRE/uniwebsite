@@ -9,7 +9,7 @@
     ],
 
     
-    "randModuleApplications": [
+    "randExternalModules": [
         {
             "name": ["externer Testkurs ", "Academicum subiectum ab extra", "external testcourse"],
             "uni": ["test Uni", "schola temptare", "Uni test"],
