@@ -284,7 +284,7 @@ defineExpose({
   }
 
   &.statusFormalRejection {
-    background-color: salmon;  // todo change color
+    background-color: $red;
   }
 
   &.statusStudyOffice {
