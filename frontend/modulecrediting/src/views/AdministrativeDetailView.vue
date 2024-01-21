@@ -19,7 +19,7 @@ const readonly = ref(true)
 
 const applicationData = ref()
 const moduleOptions = ref([])
-const passOnPossible = ref(false)
+const passOnStatus = ref('NOT_ALLOWED')
 
 onBeforeMount(() => {
   getApplicationById(id)
@@ -45,7 +45,7 @@ onBeforeMount(() => {
       return getUpdateStatusAllowed(id)
     })
     .then(updateAllowed => {
-      passOnPossible.value = updateAllowed
+      passOnStatus.value = updateAllowed
     })
 })
 
@@ -94,7 +94,7 @@ const saveChanges = () => {
 }
 
 const triggerPassOn = () => {
-  if (passOnPossible) updateStatus(id).then(_ => location.reload())
+  if (passOnStatus) updateStatus(id).then(_ => location.reload())
 }
 </script>
 
@@ -143,7 +143,11 @@ const triggerPassOn = () => {
         </Button>
       </div>
 
-      <ButtonLink :disabled="!passOnPossible" :primaryButton="true" @click="triggerPassOn">Weitergeben</ButtonLink>
+      <div v-if="!readonly">
+        <ButtonLink v-if="passOnStatus === 'NOT_ALLOWED'" :disabled="true">Weitergeben</ButtonLink>
+        <ButtonLink v-else-if="passOnStatus === 'PASSON'" :primaryButton="true" @click="triggerPassOn">Weitergeben</ButtonLink>
+        <ButtonLink v-else-if="passOnStatus === 'REJECT'" :primary-button="true" @click="triggerPassOn">Zurückweisen</ButtonLink>
+      </div>
     </div>
   </div>
 </template>
