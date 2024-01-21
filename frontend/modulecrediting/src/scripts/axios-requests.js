@@ -10,10 +10,11 @@ parameters:
     none
  */
 function getCoursesLeipzig () {
-    return httpResource.get(url + '/api/courses-leipzig')
+    console.debug("%c"+ "getCoursesLeipzig ()", "color:yellow")
+
+    return httpResource.get('/api/courses-leipzig')
         .then(response => {
             const courses = response.data.map(obj => obj.name)
-            console.log(courses)
             return courses
         })
 }
@@ -26,7 +27,9 @@ parameters:
     course - String, course name
  */
 function getModulesByCourse (course) {
-    return httpResource.get(url + '/api/courses-leipzig')
+    console.debug("%c"+ "getModulesByCourse (" + course + ")", "color:yellow")
+
+    return httpResource.get('/api/courses-leipzig')
         .then(response => {
             const courseObject = response.data.find(obj => obj.name === course)
             return courseObject.modulesLeipzigCourse
@@ -44,7 +47,9 @@ parameters:
     none
  */
 function getApplications () {
-    return httpResource.get(url + '/api/applications')
+    console.debug("%c"+ "getApplications ()", "color:yellow")
+
+    return httpResource.get('/api/applications')
         .then(response => response.data)
 }
 
@@ -56,7 +61,9 @@ parameters:
     id - Number, application id
  */
 function getApplicationById (id) {
-    return httpResource.get(url + '/api/applications/' + id)
+    console.debug("%c"+ "getApplicationById (" + id+ ")", "color:yellow")
+
+    return httpResource.get('/api/applications/' + id)
         .then(response => {
             response.data['modulesConnections'].sort((a, b) => a.id - b.id)
             response.data['modulesConnections'].forEach(connection => {
@@ -75,7 +82,8 @@ parameters:
     id - Number, application id
  */
 function getApplicationByIdForStatus (id) {
-    return httpResource.get(url + '/api/applications/student/' + id)
+    console.debug("%c"+ "getApplicationByIdForStatus (" + id + ")", "color:yellow")
+    return httpResource.get('/api/applications/student/' + id)
         .then(response => {
             response.data['modulesConnections'].sort((a, b) => a.id - b.id)
             response.data['modulesConnections'].forEach(connection => {
@@ -93,7 +101,9 @@ parameters:
     moduleConnectionId - Number, module connection id
  */
 function getRelatedModuleConnections (moduleConnectionId) {
-    return httpResource.get(url + '/api/modules-connection/' + moduleConnectionId + '/related')
+    console.debug("%c"+ "getRelatedModuleConnections (moduleConnectionId: " + moduleConnectionId + ")", "color:yellow")
+
+    return httpResource.get('/api/modules-connection/' + moduleConnectionId + '/related')
         .then(response => {
             return response.data
         })
@@ -109,6 +119,7 @@ parameters:
     ... String pointSystem, File descriptionFile, String comment, array of Strings selectedInternalModules
  */
 function postApplication (course, applicationObjects) {
+    console.debug("%c"+ "postApplication (course: " + course + ", applicationObjects: " + applicationObjects + ")", "color:yellow")
 
     const formData = new FormData()
     formData.append(`courseLeipzig`, course)
@@ -136,7 +147,7 @@ function postApplication (course, applicationObjects) {
     console.log('post request to /applications')
     console.log([...formData])
 
-    return httpResource.post(url + '/api/applications', formData)
+    return httpResource.post('/api/applications', formData)
         .then(response => {
             console.log('post application successful, data returned: ' + response.data)
             return response.data
@@ -165,6 +176,7 @@ function createBasicFormData (courseLeipzig, basicConnectionObjects) {
 }
 
 function putApplicationStandard (applicationId, courseLeipzig, connectionObjects) {
+    console.debug("%c"+ "putApplicationStandard (applicationId: " + applicationId + ", courseLeipzig: " + courseLeipzig + ", connectionsObjects: " + connectionObjects + ")", "color:yellow")
 
     const formData = createBasicFormData(courseLeipzig, connectionObjects)
 
@@ -177,6 +189,7 @@ function putApplicationStandard (applicationId, courseLeipzig, connectionObjects
 }
 
 function putApplicationStudyOffice (applicationId, courseLeipzig, connectionObjects) {
+    console.debug("%c"+ "putApplicationStudyOffice (applicationId: " + applicationId + ", courseLeipzig: " + courseLeipzig + ", connectionsObjects: " + connectionObjects + ")", "color:yellow")
 
     console.log(connectionObjects)
 
@@ -198,7 +211,7 @@ function putApplicationStudyOffice (applicationId, courseLeipzig, connectionObje
 
     console.log('put study office')
     console.log([...formData])
-    return httpResource.put(url + '/api/applications/study-office/' + applicationId, formData)
+    return httpResource.put('/api/applications/study-office/' + applicationId, formData)
         .then(response => response.data)
 }
 
@@ -210,7 +223,9 @@ parameters:
     - id, Number application id
  */
 function getUpdateStatusAllowed (id) {
-    return httpResource.get(url + '/api/applications/' + id + '/update-status-allowed')
+    console.debug("%c"+ "getUpdateStatusAllowed (id: " + id + ")", "color:yellow")
+
+    return httpResource.get('/api/applications/' + id + '/update-status-allowed')
         .then(response => response.data)
 }
 
@@ -222,8 +237,10 @@ parameters:
     - id, Number application id
  */
 function updateStatus (id) {
+    console.debug("%c"+ "updateStatus (id: " + id + ")", "color:yellow")
+
     console.log('updating status for applications: ' + id)
-    return httpResource.put(url + '/api/applications/' + id + '/update-status')
+    return httpResource.put('/api/applications/' + id + '/update-status')
         .then(response => {
             if (response.data) {
                 console.log('update successful')
