@@ -47,6 +47,7 @@ public class ApplicationService {
         if(containsFormalRejection(application))
             modulesConnectionService.removeAllDecisions(application.getModulesConnections());
 
+        if(!allDecisionSuggestionUnedited(application)) application.setFullStatus(STUDIENBÜRO);
         application.setLastEditedDate(LocalDateTime.now());
 
         if(userRole.equals("standard")) updateApplicationStatus(id);
@@ -63,7 +64,7 @@ public class ApplicationService {
         boolean allDecisionsFinalEdited = allDecisionsFinalEdited(application);
         boolean containsFormalRejection = containsFormalRejection(application);
 
-        if(application.getFullStatus() == STUDIENBÜRO && containsFormalRejection) return REJECT;
+        if((application.getFullStatus() == STUDIENBÜRO || application.getFullStatus() == NEU) && containsFormalRejection) return REJECT;
         if(application.getFullStatus() == ABGESCHLOSSEN) return NOT_ALLOWED;
         if(allDecisionsFinalEdited && (application.getFullStatus() == PRÜFUNGSAUSSCHUSS || application.getFullStatus() == STUDIENBÜRO || application.getFullStatus() == NEU)) return PASSON;
         if(allDecisionSuggestionEdited && (application.getFullStatus() == STUDIENBÜRO || application.getFullStatus() == NEU)) return PASSON;
@@ -74,8 +75,7 @@ public class ApplicationService {
     // FUNCTION TO UPDADTE APPLICATION STATUS ON UPDATE
     public EnumApplicationStatus updateApplicationStatus(String id) {
         Application application = getApplicationById(id);
-        
-        boolean allDecisionSuggestionUnedited = allDecisionSuggestionUnedited(application);
+
         boolean allDecisionSuggestionEdited = allDecisionSuggestionEdited(application);
         boolean allDecisionsFinalEdited = allDecisionsFinalEdited(application);
         boolean containsFormalRejection = containsFormalRejection(application);
@@ -86,7 +86,6 @@ public class ApplicationService {
             application.setFullStatus(ABGESCHLOSSEN);
             application.setDecisionDate(LocalDateTime.now());
         } else if(allDecisionSuggestionEdited) application.setFullStatus(PRÜFUNGSAUSSCHUSS);
-        else if(!allDecisionSuggestionUnedited) application.setFullStatus(STUDIENBÜRO);
 
         applicationRepository.save(application);
         return application.getFullStatus();
