@@ -112,7 +112,7 @@ defineExpose({
       </template>
 
       <template #icons>
-        <PanelStatusIcons :decision-suggestion="decisionSuggestion" :decision-final="decisionFinal" />
+        <PanelStatusIcons :formal-rejection="formalRejection" :decision-suggestion="decisionSuggestion" :decision-final="decisionFinal" />
       </template>
 
       <PanelExternalModules

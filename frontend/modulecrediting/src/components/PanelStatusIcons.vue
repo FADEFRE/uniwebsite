@@ -11,6 +11,9 @@ displays:
 import { defineProps } from 'vue';
 
 const props = defineProps({
+    formalRejection: {
+      type: Boolean
+    },
     decisionSuggestion: {
       type: String,
       validator(value) {
@@ -29,20 +32,26 @@ const props = defineProps({
 <template>
   <div class="panel-status-icons">
 
-    <div>
-      <img v-if="decisionSuggestion === 'accepted'" src="@/assets/icons/ModuleAccepted.svg">
-      <img v-else-if="decisionSuggestion === 'asExamCertificate'" src="@/assets/icons/ModuleAsExamCertificate.svg">
-      <img v-else-if="decisionSuggestion === 'denied'" src="@/assets/icons/ModuleDenied.svg">
-      <img v-else src="@/assets/icons/moduleUnedited.svg">
+    <div v-if="formalRejection">
+      <img src="@/assets/icons/ModuleFormalRejection.svg">
     </div>
 
-    <img src="../assets/icons/ArrowDark.svg" class="arrow-icon">
+    <div v-else>
+      <div>
+        <img v-if="decisionSuggestion === 'accepted'" src="@/assets/icons/ModuleAccepted.svg">
+        <img v-else-if="decisionSuggestion === 'asExamCertificate'" src="@/assets/icons/ModuleAsExamCertificate.svg">
+        <img v-else-if="decisionSuggestion === 'denied'" src="@/assets/icons/ModuleDenied.svg">
+        <img v-else src="@/assets/icons/moduleUnedited.svg">
+      </div>
 
-    <div>
-      <img v-if="decisionFinal === 'accepted'" src="@/assets/icons/ModuleAccepted.svg">
-      <img v-else-if="decisionFinal === 'asExamCertificate'" src="@/assets/icons/ModuleAsExamCertificate.svg">
-      <img v-else-if="decisionFinal === 'denied'" src="@/assets/icons/ModuleDenied.svg">
-      <img v-else src="@/assets/icons/moduleUnedited.svg">
+      <img src="@/assets/icons/ArrowDark.svg" class="arrow-icon">
+
+      <div>
+        <img v-if="decisionFinal === 'accepted'" src="@/assets/icons/ModuleAccepted.svg">
+        <img v-else-if="decisionFinal === 'asExamCertificate'" src="@/assets/icons/ModuleAsExamCertificate.svg">
+        <img v-else-if="decisionFinal === 'denied'" src="@/assets/icons/ModuleDenied.svg">
+        <img v-else src="@/assets/icons/moduleUnedited.svg">
+      </div>
     </div>
 
   </div>
