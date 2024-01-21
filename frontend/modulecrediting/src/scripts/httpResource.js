@@ -14,16 +14,23 @@ const instance = axios.create({
     timeout: 10000
 });
 
+let requestColor = "color:orange"
+let responseColor = "color:lightgreen"
+let errorColor = "color:red"
+
+
 const requestHandler = request => {
     if (isHandlerEnabled(request)) {
-        console.log("Request Interceptor", request); //TODO remove debug log
+        //TODO remove debug logs
+        console.log("%c" + request.method.toUpperCase() + "-Request: " + request.url, requestColor);
+        //console.log(request)
     }
     return request;
 };
 
 const errorHandler = error => {
     if (isHandlerEnabled(error.config)) {
-        console.log("Error Interceptor", error); //TODO remove debug log
+        console.log("%c" + "Error Interceptor", errorColor, error); //TODO remove debug log
 
         if (error.response) {
         if (error.response.status === 401) {
@@ -36,7 +43,7 @@ const errorHandler = error => {
 
 const successHandler = response => {
     if (isHandlerEnabled(response.config)) {
-        console.log("Response Interceptor", response); //TODO remove debug log
+        console.log("%c" + "Response: " + response.status + " ", responseColor, response.request.responseURL, "  Data:", response.data); //TODO remove debug log
     }
     return response;
 };
