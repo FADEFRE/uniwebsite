@@ -10,6 +10,7 @@ import {
 } from "@/scripts/axios-requests";
 import { parseRequestDate } from "@/scripts/date-utils";
 import ApplicationConnectionLinks from "@/components/ApplicationConnectionLinks.vue";
+import ErrorView from '@/views/ErrorView.vue';
 
 const route = useRoute()
 const id = route.params.id
@@ -24,6 +25,12 @@ const passOnStatus = ref('NOT_ALLOWED')
 onBeforeMount(() => {
   getApplicationById(id)
     .then(data => {
+      if (!data) {
+        router.push({
+          name: 'notFound'
+        });
+        return;
+      }
       // applicationData
       data['modulesConnections'].sort((a, b) => a.id - b.id)
       applicationData.value = data
@@ -100,9 +107,12 @@ const triggerPassOn = () => {
 
 <template>
   <!-- request pending -->
-  <div v-if="!applicationData" class="main">
-    <p>Lade Daten ...</p>
-  </div>
+  <div v-if="!applicationData">
+          <ErrorView
+            :customTitle="'Ungültige Vorgangsnummer'"
+            :customMessage="'falsche ID oder Antrag nicht mehr verfügbar'"
+          />
+      </div>
 
   <div v-else class="main">
 
