@@ -184,11 +184,13 @@ function putApplicationStudyOffice (applicationId, courseLeipzig, connectionObje
         if (connection.formalRejectionData['formalRejection']) {
             formData.append(`modulesConnections[${connectionIndex}].formalRejection`, true)
             formData.append(`modulesConnections[${connectionIndex}].formalRejectionComment`, connection.formalRejectionData.comment)
-        } else if (connection.studyOfficeDecisionData['decision']) {
+        } else {
             formData.append(`modulesConnections[${connectionIndex}].formalRejection`, false)
             formData.append(`modulesConnections[${connectionIndex}].formalRejectionComment`, '')
-            formData.append(`modulesConnections[${connectionIndex}].decisionSuggestion`, connection.studyOfficeDecisionData.decision)
-            formData.append(`modulesConnections[${connectionIndex}].commentStudyOffice`, connection.studyOfficeDecisionData.comment)
+            if (connection.studyOfficeDecisionData['decision']) {
+                formData.append(`modulesConnections[${connectionIndex}].decisionSuggestion`, connection.studyOfficeDecisionData.decision)
+                formData.append(`modulesConnections[${connectionIndex}].commentStudyOffice`, connection.studyOfficeDecisionData.comment)
+            }
         }
     })
 
