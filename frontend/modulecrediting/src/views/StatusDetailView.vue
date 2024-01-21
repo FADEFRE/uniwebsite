@@ -3,8 +3,9 @@ shows status of an application
 -->
 
 <script setup>
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router';
 import { ref, onBeforeMount } from "vue";
+import ErrorView from "@/views/ErrorView.vue";
 import ApplicationOverview from "@/components/ApplicationOverview.vue";
 import CustomPanel from "@/components/CustomPanel.vue";
 import PanelHeader from '../components/PanelHeader.vue';
@@ -22,10 +23,17 @@ const summaryDocumentLink = `${url}/file/pdf-documents/application/${id}`
 
 const applicationData = ref()
 const moduleOptions = ref([])
+const router = useRouter();
 
 onBeforeMount(() => {
   getApplicationByIdForStatus(id)
     .then(data => {
+        if (!data) {
+        router.push({
+          name: 'notFound'
+        });
+        return;
+      }
       applicationData.value = data
       return data
     })
@@ -45,10 +53,12 @@ const openSummaryDocument = () => {
 
 <template>
   <div class="main">
-
-    <!-- request pending -->
+    
     <div v-if="!applicationData">
-      <p>Lade Daten ...</p>
+      <ErrorView
+        :customTitle="'Ungültige Vorgangsnummer'"
+        :customMessage="'Bitte kehren Sie zur Startseite.'"
+          />
     </div>
 
     <div v-else class="status-detail-container">
