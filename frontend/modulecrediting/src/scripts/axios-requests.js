@@ -133,59 +133,59 @@ function postApplication (course, applicationObjects) {
         })
 }
 
-/*
-PUT-Request to '/applications/{id}' endpoints
-updates an existing application (including study-office and chairman data)
-
-parameters:
-    userRole - may be 'stud_office' or 'pav'
-    id - Number, application id
-    courseLeipzig - String, application course name
-    connectionObjects - array of objects, each containing Number id, Array externalModules, Array internalModules, ...
-    ..., optional String commentStudyOffice, optional String decisionSuggestion, ...
-    ..., optional String commentDecision, optional String decisionFinal
- */
-function putApplication (userRole, id, courseLeipzig, connectionObjects) {
-
+// helper - creates basicFormData for PUT-Requests
+// basicConnectionObjects has to be array containing objects with below used data
+function createBasicFormData (courseLeipzig, basicConnectionObjects) {
     const formData = new FormData()
-    formData.append('userRole', userRole)
     formData.append('courseLeipzig', courseLeipzig)
-
-    connectionObjects.forEach(
-        (connection, connectionIndex) => {
-            formData.append(`modulesConnections[${connectionIndex}].id`, connection.id)
-            if (connection.commentStudyOffice) {
-                formData.append(`modulesConnections[${connectionIndex}].commentStudyOffice`, connection.commentStudyOffice)
-            }
-            if (connection.decisionSuggestion) {
-                formData.append(`modulesConnections[${connectionIndex}].decisionSuggestion`, connection.decisionSuggestion)
-            }
-            if (connection.commentDecision) {
-                formData.append(`modulesConnections[${connectionIndex}].commentDecision`, connection.commentDecision)
-            }
-            if (connection.decisionFinal) {
-                formData.append(`modulesConnections[${connectionIndex}].decisionFinal`, connection.decisionFinal)
-            }
-            connection.externalModules.forEach(
-                (externalModule, externalModuleIndex) => {
-                    formData.append(`modulesConnections[${connectionIndex}].moduleApplications[${externalModuleIndex}].id`, externalModule.id)
-                    formData.append(`modulesConnections[${connectionIndex}].moduleApplications[${externalModuleIndex}].name`, externalModule.name)
-                    formData.append(`modulesConnections[${connectionIndex}].moduleApplications[${externalModuleIndex}].university`, externalModule.university)
-                    formData.append(`modulesConnections[${connectionIndex}].moduleApplications[${externalModuleIndex}].points`, externalModule.points)
-                    formData.append(`modulesConnections[${connectionIndex}].moduleApplications[${externalModuleIndex}].pointSystem`, externalModule.pointSystem)
-                }
-            )
-            connection.internalModules.forEach(
-                (moduleName, moduleIndex) => {
-                    formData.append(`modulesConnections[${connectionIndex}].modulesLeipzig[${moduleIndex}].name`, moduleName)
-                }
-            )
+    basicConnectionObjects.forEach((connection, connectionIndex) => {
+        formData.append(`modulesConnections[${connectionIndex}].id`, connection.id)
+        connection.externalModules.forEach((externalModule, externalModuleIndex) => {
+            formData.append(`modulesConnections[${connectionIndex}].moduleApplications[${externalModuleIndex}].id`, externalModule.id)
+            formData.append(`modulesConnections[${connectionIndex}].moduleApplications[${externalModuleIndex}].name`, externalModule.name)
+            formData.append(`modulesConnections[${connectionIndex}].moduleApplications[${externalModuleIndex}].university`, externalModule.university)
+            formData.append(`modulesConnections[${connectionIndex}].moduleApplications[${externalModuleIndex}].points`, externalModule.points)
+            formData.append(`modulesConnections[${connectionIndex}].moduleApplications[${externalModuleIndex}].pointSystem`, externalModule.pointSystem)
         })
+        connection.internalModules.forEach((moduleName, moduleIndex) => {
+            formData.append(`modulesConnections[${connectionIndex}].modulesLeipzig[${moduleIndex}].name`, moduleName)
+        })
+    })
+    return formData
+}
 
-    console.log('calling applications put request')
+function putApplicationStandard (applicationId, courseLeipzig, connectionObjects) {
+
+    const formData = createBasicFormData(courseLeipzig, connectionObjects)
+
+    connectionObjects.forEach((connection, connectionIndex) => {
+        // todo add comment applicant
+    })
+
+    axios.put(url + '/api/applications/standard/' + applicationId, formData)
+        .then(response => response.data)
+}
+
+function putApplicationStudyOffice (applicationId, courseLeipzig, connectionObjects) {
+
+    console.log(connectionObjects)
+
+    const formData = createBasicFormData(courseLeipzig, connectionObjects)
+
+    connectionObjects.forEach((connection, connectionIndex) => {
+        if (connection.formalRejectionData['formalRejection']) {
+            formData.append(`modulesConnections[${connectionIndex}].formalRejection`, true)
+            formData.append(`modulesConnections[${connectionIndex}].formalRejectionComment`, connection.formalRejectionData.comment)
+        } else if (connection.studyOfficeDecisionData['decision']) {
+            formData.append(`modulesConnections[${connectionIndex}].decisionSuggestion`, connection.studyOfficeDecisionData.decision)
+            formData.append(`modulesConnections[${connectionIndex}].commentStudyOffice`, connection.studyOfficeDecisionData.comment)
+        }
+    })
+
+    console.log('put study office')
     console.log([...formData])
-    return axios.put(url + '/api/applications/' + id, formData)
-        .then(response => console.log(response.data))
+    return axios.put(url + '/api/applications/study-office/' + applicationId, formData)
+        .then(response => response.data)
 }
 
 /*
@@ -228,7 +228,8 @@ export {
     getApplicationByIdForStatus,
     getRelatedModuleConnections,
     postApplication,
-    putApplication,
+    putApplicationStandard,
+    putApplicationStudyOffice,
     getUpdateStatusAllowed,
     updateStatus,
 }

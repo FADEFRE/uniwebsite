@@ -63,12 +63,12 @@ const panelInternalModules = ref()
 const externalModules = computed(() => panelExternalModules.value?.externalModules)
 const internalModules = computed(() => panelInternalModules.value?.selectedModules)
 
-const formalRejection = ref(false)  // todo add initial value from response
+const formalRejection = ref(props.connectionData['formalRejection'])
 const formalRejectionRef = ref()
 const formalRejectionData = computed(() => {
   return {
     formalRejection: formalRejection.value,
-    comment: formalRejectionRef.value?.comment
+    comment: formalRejectionRef.value?.comment ? formalRejectionRef.value?.comment : ''
   }
 })
 
@@ -138,7 +138,7 @@ defineExpose({
 
       <div v-if="formalRejection">
         <PanelDecision type="single">
-          <PanelFormalRejectionBlock type="edit" ref="formalRejectionRef" />
+          <PanelFormalRejectionBlock type="edit" :comment="connectionData['formalRejectionComment']" ref="formalRejectionRef" />
         </PanelDecision>
         <Button @click="unsetFormalRejection">Formfehler zurücknehmen</Button>
       </div>

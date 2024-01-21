@@ -5,8 +5,8 @@ import ApplicationOverview from "@/components/ApplicationOverview.vue";
 import AdministrativePanel from "@/components/AdministrativePanel.vue";
 import ButtonLink from "@/components/ButtonLink.vue";
 import {
-  getApplicationById, getModulesByCourse, putApplication,
-  getUpdateStatusAllowed, updateStatus
+  getApplicationById, getModulesByCourse,
+  getUpdateStatusAllowed, updateStatus, putApplicationStudyOffice
 } from "@/scripts/axios-requests";
 import { parseRequestDate } from "@/scripts/date-utils";
 import ApplicationConnectionLinks from "@/components/ApplicationConnectionLinks.vue";
@@ -87,36 +87,10 @@ const discardChanges = () => {
 }
 
 const saveChanges = () => {
-  // defining userRole
-  let userRole = undefined
-  if (type === 'study-office') userRole = 'study-office'
-  else if (type === 'chairman') userRole = 'pav'
-  else console.warn('AdministrativeDetailView: userRole is undefined in triggerPutRequest')
-
-  // creation connectionObjects
-  const connectionObjects = []
-
-  for (let connection of moduleConnections.value) {
-    const connectionObj = {
-      id: connection.id,
-      externalModules: connection.externalModules,
-      internalModules: connection.internalModules,
-    }
-    if (type === 'study-office') {
-      if (connection.studyOfficeDecisionData.comment) connectionObj['commentStudyOffice'] = connection.studyOfficeDecisionData.comment
-      if (connection.studyOfficeDecisionData.decision) connectionObj['decisionSuggestion'] = connection.studyOfficeDecisionData.decision
-    } else if (type === 'chairman') {
-      if (connection.chairmanDecisionData.comment) connectionObj['commentDecision'] = connection.chairmanDecisionData.comment
-      if (connection.chairmanDecisionData.decision) connectionObj['decisionFinal'] = connection.chairmanDecisionData.decision
-    }
-    connectionObjects.push(connectionObj)
+  if (type === 'study-office') {
+    putApplicationStudyOffice(id, applicationData.value['courseLeipzig']['name'], moduleConnections.value)
+        .then(_ => location.reload())
   }
-
-  // axios request
-  putApplication(userRole, applicationData.value['id'], applicationData.value['courseLeipzig']['name'], connectionObjects)
-    .then(_ => {
-      location.reload()
-    })
 }
 
 const triggerPassOn = () => {
