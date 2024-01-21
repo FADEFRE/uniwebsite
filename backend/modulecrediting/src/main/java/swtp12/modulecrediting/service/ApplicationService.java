@@ -47,7 +47,7 @@ public class ApplicationService {
         if(containsFormalRejection(application))
             modulesConnectionService.removeAllDecisions(application.getModulesConnections());
 
-        if(!allDecisionSuggestionUnedited(application)) application.setFullStatus(STUDIENBÜRO);
+        if(!allDecisionSuggestionUnedited(application) || containsFormalRejection(application)) application.setFullStatus(STUDIENBÜRO);
         application.setLastEditedDate(LocalDateTime.now());
 
         if(userRole.equals("standard")) updateApplicationStatus(id);
