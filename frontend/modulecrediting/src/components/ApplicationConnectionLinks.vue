@@ -41,6 +41,13 @@ const props = defineProps({
 .application-connection-links-container {
   @include basicContainer();
   width: 22%;
+
+  position: sticky;
+  top: 1rem;
+
+  @media only screen and (max-width: 1400px) {
+    display: none;
+  }
 }
 
 .connection-link-container {
@@ -66,6 +73,7 @@ const props = defineProps({
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  text-transform: none;
 }
 
 .arrow-icon {
