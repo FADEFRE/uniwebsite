@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @Entity
-public class ModuleApplication {
+public class ExternalModule {
     @Id
     @GeneratedValue
     @JsonView(Views.ApplicationLogin.class)
@@ -36,22 +36,22 @@ public class ModuleApplication {
     private String university;
 
 
-    //Relation ModuleApplication <-> PdfDocument
+    //Relation ExternalModule <-> PdfDocument
     @OneToOne(cascade = CascadeType.ALL)
     @JsonManagedReference
     @JsonView({Views.ApplicationStudent.class})
     private PdfDocument pdfDocument;
 
-    //Relation ModuleApplication <-> ModulesConnection (Setter in ModulesConnection)
+    //Relation ExternalModule <-> ModulesConnection (Setter in ModulesConnection)
     @ManyToOne
     @JsonBackReference
     @EqualsAndHashCode.Exclude
     private ModulesConnection modulesConnection;
 
 
-    //Function to set the PDF Document to this ModuleApplication (adds this Module to the PDF aswell)
+    //Function to set the PDF Document to this ExternalModule (adds this Module to the PDF aswell)
     public void setPdfDocument(PdfDocument pdfDocument) {
-        pdfDocument.setModuleApplication(this);
+        pdfDocument.setExternalModule(this);
         this.pdfDocument = pdfDocument;
     }
 }

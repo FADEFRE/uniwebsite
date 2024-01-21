@@ -4,17 +4,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import org.springframework.web.multipart.MultipartFile;
-
-
-
 @Getter
 @Setter
 @NoArgsConstructor
-public class ModuleApplicationCreateDTO {
+public class ExternalModuleUpdateDTO {
+    private Long id;
     private String name;
     private String university;
     private Integer points;
     private String pointSystem;
-    private MultipartFile description;
 }
