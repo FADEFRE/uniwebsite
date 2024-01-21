@@ -1,5 +1,6 @@
 import { url } from "@/scripts/url-config.js"
 import axios from "axios";
+import httpResource from "@/scripts/httpResource";
 
 /*
 GET-Request to '/courses-leipzig' endpoint
@@ -9,7 +10,7 @@ parameters:
     none
  */
 function getCoursesLeipzig () {
-    return axios.get(url + '/api/courses-leipzig')
+    return httpResource.get(url + '/api/courses-leipzig')
         .then(response => {
             const courses = response.data.map(obj => obj.name)
             console.log(courses)
@@ -25,7 +26,7 @@ parameters:
     course - String, course name
  */
 function getModulesByCourse (course) {
-    return axios.get(url + '/api/courses-leipzig')
+    return httpResource.get(url + '/api/courses-leipzig')
         .then(response => {
             const courseObject = response.data.find(obj => obj.name === course)
             return courseObject.modulesLeipzigCourse
@@ -43,7 +44,7 @@ parameters:
     none
  */
 function getApplications () {
-    return axios.get(url + '/api/applications')
+    return httpResource.get(url + '/api/applications')
         .then(response => response.data)
 }
 
@@ -55,7 +56,7 @@ parameters:
     id - Number, application id
  */
 function getApplicationById (id) {
-    return axios.get(url + '/api/applications/' + id)
+    return httpResource.get(url + '/api/applications/' + id)
         .then(response => {
             response.data['modulesConnections'].sort((a, b) => a.id - b.id)
             response.data['modulesConnections'].forEach(connection => {
@@ -74,7 +75,7 @@ parameters:
     id - Number, application id
  */
 function getApplicationByIdForStatus (id) {
-    return axios.get(url + '/api/applications/student/' + id)
+    return httpResource.get(url + '/api/applications/student/' + id)
         .then(response => {
             response.data['modulesConnections'].sort((a, b) => a.id - b.id)
             response.data['modulesConnections'].forEach(connection => {
@@ -92,7 +93,7 @@ parameters:
     moduleConnectionId - Number, module connection id
  */
 function getRelatedModuleConnections (moduleConnectionId) {
-    return axios.get(url + '/api/modules-connection/' + moduleConnectionId + '/related')
+    return httpResource.get(url + '/api/modules-connection/' + moduleConnectionId + '/related')
         .then(response => {
             return response.data
         })
@@ -135,7 +136,7 @@ function postApplication (course, applicationObjects) {
     console.log('post request to /applications')
     console.log([...formData])
 
-    return axios.post(url + '/api/applications', formData)
+    return httpResource.post(url + '/api/applications', formData)
         .then(response => {
             console.log('post application successful, data returned: ' + response.data)
             return response.data
@@ -171,7 +172,7 @@ function putApplicationStandard (applicationId, courseLeipzig, connectionObjects
         // todo add comment applicant
     })
 
-    axios.put(url + '/api/applications/standard/' + applicationId, formData)
+    httpResource.put(url + '/api/applications/standard/' + applicationId, formData)
         .then(response => response.data)
 }
 
@@ -197,7 +198,7 @@ function putApplicationStudyOffice (applicationId, courseLeipzig, connectionObje
 
     console.log('put study office')
     console.log([...formData])
-    return axios.put(url + '/api/applications/study-office/' + applicationId, formData)
+    return httpResource.put(url + '/api/applications/study-office/' + applicationId, formData)
         .then(response => response.data)
 }
 
@@ -209,7 +210,7 @@ parameters:
     - id, Number application id
  */
 function getUpdateStatusAllowed (id) {
-    return axios.get(url + '/api/applications/' + id + '/update-status-allowed')
+    return httpResource.get(url + '/api/applications/' + id + '/update-status-allowed')
         .then(response => response.data)
 }
 
@@ -222,7 +223,7 @@ parameters:
  */
 function updateStatus (id) {
     console.log('updating status for applications: ' + id)
-    return axios.put(url + '/api/applications/' + id + '/update-status')
+    return httpResource.put(url + '/api/applications/' + id + '/update-status')
         .then(response => {
             if (response.data) {
                 console.log('update successful')
