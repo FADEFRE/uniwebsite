@@ -41,9 +41,12 @@ public class ApplicationService {
         Application application = getApplicationById(id);
 
         // check if any changes were made
-        if(applicationDTO.getModulesConnections() != null) {
+        if(applicationDTO.getModulesConnections() != null)
             modulesConnectionService.updateModulesConnection(applicationDTO.getModulesConnections(), userRole);
-        }
+
+        if(containsFormalRejection(application))
+            modulesConnectionService.removeAllDecisions(application.getModulesConnections());
+
         application.setLastEditedDate(LocalDateTime.now());
 
         if(userRole.equals("standard")) updateApplicationStatus(id);

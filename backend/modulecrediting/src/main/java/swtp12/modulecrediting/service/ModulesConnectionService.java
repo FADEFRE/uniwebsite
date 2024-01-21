@@ -17,6 +17,8 @@ import swtp12.modulecrediting.repository.ModulesConnectionRepository;
 
 import java.util.*;
 
+import static swtp12.modulecrediting.model.EnumModuleConnectionDecision.unedited;
+
 @Service
 public class ModulesConnectionService {
     @Autowired
@@ -40,14 +42,8 @@ public class ModulesConnectionService {
                 if (mcuDTO.getDecisionSuggestion() != null)
                     modulesConnection.setDecisionSuggestion(mcuDTO.getDecisionSuggestion());
 
-                if(mcuDTO.getFormalRejection() != null) {
+                if(mcuDTO.getFormalRejection() != null)
                     modulesConnection.setFormalRejection(mcuDTO.getFormalRejection());
-                    if(mcuDTO.getFormalRejection() == true) {
-                        modulesConnection.setDecisionSuggestion(EnumModuleConnectionDecision.unedited);
-                        modulesConnection.setCommentStudyOffice("");
-                    }
-                }
-
 
                 if(mcuDTO.getFormalRejectionComment() != null)
                     modulesConnection.setFormalRejectionComment(mcuDTO.getFormalRejectionComment());
@@ -141,6 +137,15 @@ public class ModulesConnectionService {
         return idList;
     }
 
+    public void removeAllDecisions(List<ModulesConnection> modulesConnections) {
+        for(ModulesConnection mc : modulesConnections) {
+            mc.setDecisionSuggestion(unedited);
+            mc.setCommentStudyOffice("");
+            mc.setDecisionFinal(unedited);
+            mc.setCommentDecision("");
+        }
+    }
+
     public List<ModulesConnection> createModulesConnections(List<ModulesConnectionCreateDTO> modulesConnectionsDTO) {
         if(modulesConnectionsDTO == null || modulesConnectionsDTO.size() == 0)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, " No Modules Connections provided in the request");
@@ -177,7 +182,7 @@ public class ModulesConnectionService {
         for(ModulesConnection m : allModulesConnections) {
             if(m.getId() == baseModulesConnection.getId()) continue;
 
-            if(m.getDecisionFinal() == EnumModuleConnectionDecision.unedited) continue;
+            if(m.getDecisionFinal() == unedited) continue;
 
             if(checkSimilarityOfModulesConnection(baseModulesConnection,m)) relatedModuleConnections.add(m);
         }
