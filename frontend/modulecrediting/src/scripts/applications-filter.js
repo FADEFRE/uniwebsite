@@ -2,8 +2,8 @@ function filterBySearch (searchString, applications) {
     return applications.filter(a => {
         const lowerSearchString = searchString.toLowerCase()
         return a['id'].includes(lowerSearchString)
-            || a['modulesConnections'].some(c => c['moduleApplications'].some(m => m['name'].toLowerCase().includes(lowerSearchString)))
-            || a['modulesConnections'].some(c => c['moduleApplications'].some(m => m['university'].toLowerCase().includes(lowerSearchString)))
+            || a['modulesConnections'].some(c => c['externalModules'].some(m => m['name'].toLowerCase().includes(lowerSearchString)))
+            || a['modulesConnections'].some(c => c['externalModules'].some(m => m['university'].toLowerCase().includes(lowerSearchString)))
     })
 }
 

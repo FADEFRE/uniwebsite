@@ -117,7 +117,7 @@ defineExpose({
 
       <PanelExternalModules
           :type="readonly ? 'readonly' : 'edit'"
-          :modules-data="connectionData['moduleApplications']"
+          :modules-data="connectionData['externalModules']"
           ref="panelExternalModules"
           @change="emit('change')"
       />

@@ -64,7 +64,7 @@ const openSummaryDocument = () => {
         <CustomPanel>
 
           <template #header>
-            <PanelHeader :external-modules="connection['moduleApplications'].map(module => module['name'])"
+            <PanelHeader :external-modules="connection['externalModules'].map(module => module['name'])"
               :internal-modules="connection['modulesLeipzig'].map(module => module['name'])" />
           </template>
 
@@ -77,7 +77,7 @@ const openSummaryDocument = () => {
 
           <div>
 
-            <PanelExternalModules type="readonly" :modules-data="connection['moduleApplications']" />
+            <PanelExternalModules type="readonly" :modules-data="connection['externalModules']" />
 
             <PanelInternalModules type="readonly" :options="moduleOptions"
               :selected-modules="connection['modulesLeipzig'].map(m => m.name)" />

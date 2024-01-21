@@ -59,7 +59,8 @@ function getApplicationById (id) {
         .then(response => {
             response.data['modulesConnections'].sort((a, b) => a.id - b.id)
             response.data['modulesConnections'].forEach(connection => {
-                connection['moduleApplications'].sort((a, b) => a.id - b.id)
+                console.log(connection)
+                connection['externalModules'].sort((a, b) => a.id - b.id)
             })
             return response.data
         })
@@ -77,7 +78,7 @@ function getApplicationByIdForStatus (id) {
         .then(response => {
             response.data['modulesConnections'].sort((a, b) => a.id - b.id)
             response.data['modulesConnections'].forEach(connection => {
-                connection['moduleApplications'].sort((a, b) => a.id - b.id)
+                connection['externalModules'].sort((a, b) => a.id - b.id)
             })
             return response.data
         })
@@ -115,11 +116,11 @@ function postApplication (course, applicationObjects) {
         (connection, connectionIndex) => {
             connection.externalModules.forEach(
                 (externalModule, externalModuleIndex) => {
-                    formData.append(`modulesConnections[${connectionIndex}].moduleApplications[${externalModuleIndex}].name`, externalModule.name)
-                    formData.append(`modulesConnections[${connectionIndex}].moduleApplications[${externalModuleIndex}].university`, externalModule.university)
-                    formData.append(`modulesConnections[${connectionIndex}].moduleApplications[${externalModuleIndex}].points`, externalModule.points)
-                    formData.append(`modulesConnections[${connectionIndex}].moduleApplications[${externalModuleIndex}].pointSystem`, externalModule.pointSystem)
-                    formData.append(`modulesConnections[${connectionIndex}].moduleApplications[${externalModuleIndex}].description`, externalModule.selectedFile)
+                    formData.append(`modulesConnections[${connectionIndex}].externalModules[${externalModuleIndex}].name`, externalModule.name)
+                    formData.append(`modulesConnections[${connectionIndex}].externalModules[${externalModuleIndex}].university`, externalModule.university)
+                    formData.append(`modulesConnections[${connectionIndex}].externalModules[${externalModuleIndex}].points`, externalModule.points)
+                    formData.append(`modulesConnections[${connectionIndex}].externalModules[${externalModuleIndex}].pointSystem`, externalModule.pointSystem)
+                    formData.append(`modulesConnections[${connectionIndex}].externalModules[${externalModuleIndex}].description`, externalModule.selectedFile)
                 }
             )
             connection.internalModules.forEach(
@@ -149,11 +150,11 @@ function createBasicFormData (courseLeipzig, basicConnectionObjects) {
     basicConnectionObjects.forEach((connection, connectionIndex) => {
         formData.append(`modulesConnections[${connectionIndex}].id`, connection.id)
         connection.externalModules.forEach((externalModule, externalModuleIndex) => {
-            formData.append(`modulesConnections[${connectionIndex}].moduleApplications[${externalModuleIndex}].id`, externalModule.id)
-            formData.append(`modulesConnections[${connectionIndex}].moduleApplications[${externalModuleIndex}].name`, externalModule.name)
-            formData.append(`modulesConnections[${connectionIndex}].moduleApplications[${externalModuleIndex}].university`, externalModule.university)
-            formData.append(`modulesConnections[${connectionIndex}].moduleApplications[${externalModuleIndex}].points`, externalModule.points)
-            formData.append(`modulesConnections[${connectionIndex}].moduleApplications[${externalModuleIndex}].pointSystem`, externalModule.pointSystem)
+            formData.append(`modulesConnections[${connectionIndex}].externalModules[${externalModuleIndex}].id`, externalModule.id)
+            formData.append(`modulesConnections[${connectionIndex}].externalModules[${externalModuleIndex}].name`, externalModule.name)
+            formData.append(`modulesConnections[${connectionIndex}].externalModules[${externalModuleIndex}].university`, externalModule.university)
+            formData.append(`modulesConnections[${connectionIndex}].externalModules[${externalModuleIndex}].points`, externalModule.points)
+            formData.append(`modulesConnections[${connectionIndex}].externalModules[${externalModuleIndex}].pointSystem`, externalModule.pointSystem)
         })
         connection.internalModules.forEach((moduleName, moduleIndex) => {
             formData.append(`modulesConnections[${connectionIndex}].modulesLeipzig[${moduleIndex}].name`, moduleName)

@@ -66,7 +66,7 @@ const openRelatedModule = (module) => {
         <div v-else-if="module['decisionFinal'] === 'denied'">
           <img src="../assets/icons/ModuleDenied.svg">
         </div>
-        <PanelHeader :external-modules="module['moduleApplications'].map(m => m.name)"
+        <PanelHeader :external-modules="module['externalModules'].map(m => m.name)"
           :internal-modules="module['modulesLeipzig'].map(m => m.name)" :relatedModules="true" />
 
         <div class="date-block">
