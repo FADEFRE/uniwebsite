@@ -30,13 +30,12 @@ const props = defineProps({
 </script>
 
 <template>
-  <div class="panel-status-icons">
 
-    <div v-if="formalRejection">
+    <div v-if="formalRejection" class="panel-status-icons">
       <img src="@/assets/icons/ModuleFormalRejection.svg">
     </div>
 
-    <div v-else>
+    <div v-else  class="panel-status-icons">
       <div>
         <img v-if="decisionSuggestion === 'accepted'" src="@/assets/icons/ModuleAccepted.svg">
         <img v-else-if="decisionSuggestion === 'asExamCertificate'" src="@/assets/icons/ModuleAsExamCertificate.svg">
@@ -54,7 +53,6 @@ const props = defineProps({
       </div>
     </div>
 
-  </div>
 </template>
 
 <style scoped lang="scss">
