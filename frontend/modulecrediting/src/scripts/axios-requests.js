@@ -177,6 +177,8 @@ function putApplicationStudyOffice (applicationId, courseLeipzig, connectionObje
             formData.append(`modulesConnections[${connectionIndex}].formalRejection`, true)
             formData.append(`modulesConnections[${connectionIndex}].formalRejectionComment`, connection.formalRejectionData.comment)
         } else if (connection.studyOfficeDecisionData['decision']) {
+            formData.append(`modulesConnections[${connectionIndex}].formalRejection`, false)
+            formData.append(`modulesConnections[${connectionIndex}].formalRejectionComment`, '')
             formData.append(`modulesConnections[${connectionIndex}].decisionSuggestion`, connection.studyOfficeDecisionData.decision)
             formData.append(`modulesConnections[${connectionIndex}].commentStudyOffice`, connection.studyOfficeDecisionData.comment)
         }
