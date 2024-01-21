@@ -173,6 +173,7 @@ const triggerPassOn = () => {
 .administrative-detail-container {
   @include verticalList(small);
   width: 100%;
+  overflow: hidden;
 }
 
 .connection-highlight {
