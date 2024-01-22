@@ -10,11 +10,10 @@ import ApplicationOverview from "@/components/ApplicationOverview.vue";
 import StatusPanel from "@/components/StatusPanel.vue";
 import SideInfoContainer from '../components/SideInfoContainer.vue';
 import { url } from "@/scripts/url-config"
-import { getApplicationByIdForStatus, getModulesByCourse } from "@/scripts/axios-requests";
+import {getApplicationByIdForStatus, getModulesByCourse, putApplicationStandard} from "@/scripts/axios-requests";
 import { parseRequestDate } from "@/scripts/date-utils";
 import ButtonLink from '@/components/ButtonLink.vue';
 import ErrorContainer from '../components/ErrorContainer.vue';
-
 
 const id = useRoute().params.id
 const summaryDocumentLink = `${url}/file/pdf-documents/application/${id}`
@@ -42,7 +41,8 @@ onBeforeMount(() => {
       moduleOptions.value = modules
     })
 })
-// todo error handling
+
+const moduleConnections = ref()
 
 const openSummaryDocument = () => {
   window.open(summaryDocumentLink, '_blank')
@@ -50,6 +50,11 @@ const openSummaryDocument = () => {
 const redirectToHome = () => {
   router.push({ name: 'home' });
 };
+
+const triggerSubmit = () => {
+  putApplicationStandard(applicationData.value['id'], applicationData.value['courseLeipzig']['name'], moduleConnections.value)
+      .then(_ => location.reload())
+}
 </script>
 
 <template>
@@ -70,13 +75,13 @@ const redirectToHome = () => {
         :decision-date="parseRequestDate(applicationData['decisionDate'])" :id="applicationData['id']"
         :course="applicationData['courseLeipzig']['name']" :status="applicationData['fullStatus']" />
 
-
       <div v-for="connection in applicationData['modulesConnections']">
 
         <StatusPanel
             :connection="connection"
             :selectable-modules="moduleOptions"
             :readonly="!(applicationData['fullStatus'] === 'FORMFEHLER')"
+            ref="moduleConnections"
             :class="{ 'formal-rejection-highlight': connection['formalRejection'] }"
         />
 
@@ -86,6 +91,8 @@ const redirectToHome = () => {
         Antrag herunterladen
         <img src="../assets/icons/Download.svg">
       </Button>
+
+      <ButtonLink v-if="applicationData['fullStatus'] === 'FORMFEHLER'" :primaryButton="true" @click="triggerSubmit">Neu einreichen</ButtonLink>
 
     </div>
     <div class="side-infos-container">

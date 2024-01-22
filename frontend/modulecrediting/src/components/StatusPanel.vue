@@ -7,6 +7,7 @@ import PanelDecisionBlock from "@/components/PanelDecisionBlock.vue";
 import PanelExternalModules from "@/components/PanelExternalModules.vue";
 import PanelFormalRejectionBlock from "@/components/PanelFormalRejectionBlock.vue";
 import PanelDecision from "@/components/PanelDecision.vue";
+import {computed, ref} from "vue";
 
 const props = defineProps({
   readonly: {
@@ -22,6 +23,23 @@ const props = defineProps({
     type: Object,
     // todo validator
   }
+})
+
+const id = props.connection['id']
+
+const panelExternalModules = ref()
+const panelInternalModules = ref()
+const panelComment = ref()
+
+const externalModules = computed(() => panelExternalModules.value?.externalModules)
+const internalModules = computed(() => panelInternalModules.value?.selectedModules)
+const commentApplicant = computed(() => panelComment.value?.comment)
+
+defineExpose({
+  id,
+  externalModules,
+  internalModules,
+  commentApplicant
 })
 </script>
 
@@ -45,29 +63,37 @@ const props = defineProps({
       <PanelExternalModules
           :type="readonly ? 'readonly' : 'edit-full'"
           :modules-data="connection['externalModules']"
+          ref="panelExternalModules"
       />
       <PanelInternalModules
           :type="readonly ? 'readonly' : 'edit'"
           :options="selectableModules"
           :selected-modules="connection['modulesLeipzig'].map(m => m.name)"
+          ref="panelInternalModules"
       />
       <PanelComment
           v-if="connection['commentApplicant'] || readonly === false"
           :type="readonly ? 'readonly' : 'edit'"
           :comment="connection['commentApplicant']"
+          ref="panelComment"
       />
       <PanelDecision type="single">
-        <PanelFormalRejectionBlock
-            v-if="connection['formalRejection']"
-            type="readonly"
-            :comment="connection['formalRejectionComment']"
-        />
-        <PanelDecisionBlock
-            v-if="connection['decisionFinal'] !== 'unedited'"
-            type="readonly"
-            :display-decision="connection['decisionFinal']"
-            :comment="connection['commentDecision']"
-        />
+        <div v-if="!readonly">
+          <PanelFormalRejectionBlock
+              v-if="connection['formalRejection']"
+              type="readonly"
+              :comment="connection['formalRejectionComment']"
+          />
+        </div>
+        <div v-else>
+          <PanelDecisionBlock
+              v-if="connection['decisionFinal'] !== 'unedited'"
+              type="readonly"
+              :display-decision="connection['decisionFinal']"
+              :comment="connection['commentDecision']"
+          />
+          <p v-else>Es wurde noch keine Entscheidung getroffen.</p>
+        </div>
       </PanelDecision>
     </div>
 

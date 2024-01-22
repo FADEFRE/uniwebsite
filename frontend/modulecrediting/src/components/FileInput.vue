@@ -35,7 +35,7 @@ const openFile = () => {
 }
 
 const fileInput = ref()
-const selectedFile = ref(props.selectedFile)
+const selectedFile = ref()
 
 const checkFile = (file) => {
   if (file.type !== 'application/pdf') {
@@ -105,12 +105,16 @@ defineExpose({
     >
 
       <div v-if="readonly" :class="{ 'read-only-container': props.readonly }">
-        <p>{{ selectedFile?.name }}</p>
+        <p>{{ props.selectedFile?.name }}</p>
         <ButtonLink @click="openFile">PDF öffnen</ButtonLink>
       </div>
 
       <div v-else-if="selectedFile?.name">
         <p>{{ selectedFile?.name }}</p>
+      </div>
+
+      <div v-else-if="props.selectedFile?.name">
+        <p>{{ props.selectedFile?.name }}</p>
       </div>
 
       <div v-else class="file-drop-unselected">

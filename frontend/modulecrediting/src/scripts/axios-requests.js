@@ -174,10 +174,15 @@ function putApplicationStandard (applicationId, courseLeipzig, connectionObjects
     const formData = createBasicFormData(courseLeipzig, connectionObjects)
 
     connectionObjects.forEach((connection, connectionIndex) => {
-        // todo add comment applicant
+        formData.append(`modulesConnections[${connectionIndex}].commentApplicant`, connection.commentApplicant)
+        connection.externalModules.forEach((externalModule, externalModuleIndex) => {
+            if (externalModule.selectedFile) {
+                formData.append(`modulesConnections[${connectionIndex}].externalModules[${externalModuleIndex}].description`, externalModule.selectedFile)
+            }
+        })
     })
 
-    httpResource.put(url + '/api/applications/standard/' + applicationId, formData)
+    return httpResource.put(url + '/api/applications/standard/' + applicationId, formData)
         .then(response => response.data)
 }
 
