@@ -1,5 +1,5 @@
 <script setup>
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { ref, computed, onBeforeMount } from "vue";
 import ApplicationOverview from "@/components/ApplicationOverview.vue";
 import AdministrativePanel from "@/components/AdministrativePanel.vue";
@@ -13,6 +13,7 @@ import ApplicationConnectionLinks from "@/components/ApplicationConnectionLinks.
 import ErrorView from '@/views/ErrorView.vue';
 
 const route = useRoute()
+const router = useRouter();
 const id = route.params.id
 const connectionHighlightId = route.params.connection
 const type = route.meta['authType']
@@ -103,22 +104,28 @@ const saveChanges = () => {
 const triggerPassOn = () => {
   if (passOnStatus) updateStatus(id).then(_ => location.reload())
 }
+
+const goBack = () => {
+  router.go(-1);
+};
 </script>
 
 <template>
-  <!-- request pending -->
-  <div v-if="!applicationData">
-          <ErrorView
-            :customTitle="'Ungültige Vorgangsnummer'"
-            :customMessage="'falsche ID oder Antrag nicht mehr verfügbar'"
-          />
-      </div>
+  
+  <div class="main">
 
-  <div v-else class="main">
+    <!-- request pending -->
+    <div v-if="!applicationData">
+      <ErrorView
+        :customTitle="'Ungültige Vorgangsnummer'"
+        :customMessage="'falsche ID oder Antrag nicht mehr verfügbar'"/>
+        <ButtonLink @click="goBack">Zurück</ButtonLink>
+    </div>
 
-    <ApplicationConnectionLinks :connections-data="connectionsData" />
+    <div v-else class="administrative-detail-container">
 
-    <div class="administrative-detail-container">
+      <ApplicationConnectionLinks :connections-data="connectionsData" />
+
       <ApplicationOverview :creation-date="parseRequestDate(applicationData['creationDate'])"
         :last-edited-date="parseRequestDate(applicationData['lastEditedDate'])"
         :decision-date="parseRequestDate(applicationData['decisionDate'])" :id="applicationData['id']"
