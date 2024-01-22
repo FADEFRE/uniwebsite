@@ -26,7 +26,6 @@ import swtp12.modulecrediting.model.CourseLeipzig;
 import swtp12.modulecrediting.model.EnumApplicationStatus;
 import swtp12.modulecrediting.model.ModulesConnection;
 import swtp12.modulecrediting.repository.ApplicationRepository;
-import swtp12.modulecrediting.repository.ModulesConnectionRepository;
 
 // TODO: fix pdf generator
 
@@ -38,8 +37,6 @@ public class ApplicationService {
     ModulesConnectionService modulesConnectionService;
     @Autowired
     private CourseLeipzigService courseLeipzigService;
-    @Autowired
-    private ModulesConnectionRepository modulesConnectionRepository;
 
 
     @Transactional
@@ -194,10 +191,10 @@ public class ApplicationService {
         if (application.getFullStatus() == null) throw new ResponseStatusException(HttpStatus.I_AM_A_TEAPOT, "Application with id: " + id + " has no fullStatus");
         switch (application.getFullStatus()) {
             case FORMFEHLER:
-                studentApplicationDTO.setFullStatus("FORMFEHLER");
+                studentApplicationDTO.setFullStatus(FORMFEHLER.toString());
                 break;
             case ABGESCHLOSSEN:
-                studentApplicationDTO.setFullStatus("ABGESCHLOSSEN");
+                studentApplicationDTO.setFullStatus(ABGESCHLOSSEN.toString());
                 break;
             default:
                 studentApplicationDTO.setFullStatus("IN BEARBEITUNG");
@@ -206,7 +203,7 @@ public class ApplicationService {
 
         List<StudentModulesConnectionDTO> studentModulesConnectionDTOs = new ArrayList<>();
         for (ModulesConnection modulesConnection : application.getModulesConnections()) {
-            StudentModulesConnectionDTO smcDTO = getStudentModulesConnectionDTO(modulesConnection.getId());
+            StudentModulesConnectionDTO smcDTO = modulesConnectionService.getStudentModulesConnectionDTO(modulesConnection.getId(), application.getFullStatus() == ABGESCHLOSSEN);
             studentModulesConnectionDTOs.add(smcDTO);
         }
         studentApplicationDTO.setModulesConnections(studentModulesConnectionDTOs);
@@ -214,31 +211,5 @@ public class ApplicationService {
         return studentApplicationDTO;
     }
 
-    private StudentModulesConnectionDTO getStudentModulesConnectionDTO(Long moduleConnectionId) {
-        StudentModulesConnectionDTO studentModulesConnectionDTO = new StudentModulesConnectionDTO();
-        Optional<ModulesConnection> modulesConnectionCandidate = modulesConnectionRepository.findById(moduleConnectionId);
-        if (!modulesConnectionCandidate.isPresent()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "ModulesConnection with id: " + moduleConnectionId + " not Found");
-
-        ModulesConnection modulesConnection = modulesConnectionCandidate.get();
-        studentModulesConnectionDTO.setId(modulesConnection.getId());
-        
-        studentModulesConnectionDTO.setCommentApplicant(modulesConnection.getCommentApplicant());
-
-        studentModulesConnectionDTO.setExternalModules(modulesConnection.getExternalModules());
-        studentModulesConnectionDTO.setModulesLeipzig(modulesConnection.getModulesLeipzig());
-
-        if (modulesConnection.getDecisionFinal() == null) throw new ResponseStatusException(HttpStatus.I_AM_A_TEAPOT, "ModulesConnection with id: " + moduleConnectionId + " has no decisionFinal");
-        if (modulesConnection.getDecisionFinal().equals(unedited)) {
-            studentModulesConnectionDTO.setDecisionFinal(unedited);
-        } else {
-            studentModulesConnectionDTO.setDecisionFinal(modulesConnection.getDecisionFinal());
-            if (modulesConnection.getDecisionFinal() == null) throw new ResponseStatusException(HttpStatus.I_AM_A_TEAPOT, "ModulesConnection with id: " + moduleConnectionId + " has no commentDecision");
-            studentModulesConnectionDTO.setCommentDecision(modulesConnection.getCommentDecision());
-        }
-
-        studentModulesConnectionDTO.setFormalRejection(modulesConnection.getFormalRejection());
-        if (modulesConnection.getFormalRejection()) studentModulesConnectionDTO.setFormalRejectionComment(modulesConnection.getFormalRejectionComment());
-
-        return studentModulesConnectionDTO;
-    }
+    
 }

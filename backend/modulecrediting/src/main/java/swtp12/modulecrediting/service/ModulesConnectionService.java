@@ -9,6 +9,7 @@ import swtp12.modulecrediting.dto.ExternalModuleUpdateDTO;
 import swtp12.modulecrediting.dto.ModuleLeipzigUpdateDTO;
 import swtp12.modulecrediting.dto.ModulesConnectionCreateDTO;
 import swtp12.modulecrediting.dto.ModulesConnectionUpdateDTO;
+import swtp12.modulecrediting.dto.StudentModulesConnectionDTO;
 import swtp12.modulecrediting.model.ExternalModule;
 import swtp12.modulecrediting.model.ModuleLeipzig;
 import swtp12.modulecrediting.model.ModulesConnection;
@@ -169,7 +170,31 @@ public class ModulesConnectionService {
         return modulesConnections;
     }
 
+    public StudentModulesConnectionDTO getStudentModulesConnectionDTO(Long moduleConnectionId, boolean applicationEditFinished) {
+        StudentModulesConnectionDTO studentModulesConnectionDTO = new StudentModulesConnectionDTO();
+        Optional<ModulesConnection> modulesConnectionCandidate = modulesConnectionRepository.findById(moduleConnectionId);
+        if (!modulesConnectionCandidate.isPresent()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "ModulesConnection with id: " + moduleConnectionId + " not Found");
 
+        ModulesConnection modulesConnection = modulesConnectionCandidate.get();
+        studentModulesConnectionDTO.setId(modulesConnection.getId());
+        
+        studentModulesConnectionDTO.setCommentApplicant(modulesConnection.getCommentApplicant());
+
+        studentModulesConnectionDTO.setExternalModules(modulesConnection.getExternalModules());
+        studentModulesConnectionDTO.setModulesLeipzig(modulesConnection.getModulesLeipzig());
+
+        if (modulesConnection.getDecisionFinal() == null) throw new ResponseStatusException(HttpStatus.I_AM_A_TEAPOT, "ModulesConnection with id: " + moduleConnectionId + " has no decisionFinal");
+        if (applicationEditFinished) {
+            studentModulesConnectionDTO.setDecisionFinal(modulesConnection.getDecisionFinal());
+            if (modulesConnection.getDecisionFinal() == null) throw new ResponseStatusException(HttpStatus.I_AM_A_TEAPOT, "ModulesConnection with id: " + moduleConnectionId + " has no commentDecision");
+            studentModulesConnectionDTO.setCommentDecision(modulesConnection.getCommentDecision());
+        }
+
+        studentModulesConnectionDTO.setFormalRejection(modulesConnection.getFormalRejection());
+        if (modulesConnection.getFormalRejection()) studentModulesConnectionDTO.setFormalRejectionComment(modulesConnection.getFormalRejectionComment());
+
+        return studentModulesConnectionDTO;
+    }
 
 
     // METHODS FOR RELATED MODULES //
