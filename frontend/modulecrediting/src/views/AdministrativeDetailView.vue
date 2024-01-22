@@ -11,6 +11,7 @@ import {
 import { parseRequestDate } from "@/scripts/date-utils";
 import ApplicationConnectionLinks from "@/components/ApplicationConnectionLinks.vue";
 import ErrorView from '@/views/ErrorView.vue';
+import ErrorContainer from "../components/ErrorContainer.vue";
 
 const route = useRoute()
 const router = useRouter();
@@ -116,7 +117,7 @@ const goBack = () => {
 
     <!-- request pending -->
     <div v-if="!applicationData">
-      <ErrorView
+      <ErrorContainer
         :customTitle="'Ungültige Vorgangsnummer'"
         :customMessage="'falsche ID oder Antrag nicht mehr verfügbar'"/>
         <ButtonLink @click="goBack">Zurück</ButtonLink>

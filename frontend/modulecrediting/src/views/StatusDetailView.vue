@@ -13,6 +13,7 @@ import { url } from "@/scripts/url-config"
 import { getApplicationByIdForStatus, getModulesByCourse } from "@/scripts/axios-requests";
 import { parseRequestDate } from "@/scripts/date-utils";
 import ButtonLink from '@/components/ButtonLink.vue';
+import ErrorContainer from '../components/ErrorContainer.vue';
 
 
 const id = useRoute().params.id
@@ -55,7 +56,7 @@ const redirectToHome = () => {
   <div class="main">
 
     <div v-if="!applicationData">
-      <ErrorView
+      <ErrorContainer
         :customTitle="'Ungültige Vorgangsnummer'"
         :customMessage="'Bitte kehren Sie zur Startseite.'"/>
         <ButtonLink @click="redirectToHome">Zur Startseite</ButtonLink>

@@ -46,7 +46,7 @@ async function login (login_username, login_password) {
         }
     }
     catch (error) {
-        if (response.status === 401) {
+        if (response.status !== 200) {
             const apierror = parseApierror(error);
             displayErrorMessage.value = true;
             errorMessage.value = apierror.message;
