@@ -12,6 +12,8 @@ import SideInfoContainer from '../components/SideInfoContainer.vue';
 import { url } from "@/scripts/url-config"
 import { getApplicationByIdForStatus, getModulesByCourse } from "@/scripts/axios-requests";
 import { parseRequestDate } from "@/scripts/date-utils";
+import ButtonLink from '@/components/ButtonLink.vue';
+
 
 const id = useRoute().params.id
 const summaryDocumentLink = `${url}/file/pdf-documents/application/${id}`
@@ -44,6 +46,9 @@ onBeforeMount(() => {
 const openSummaryDocument = () => {
   window.open(summaryDocumentLink, '_blank')
 }
+const redirectToHome = () => {
+  router.push({ name: 'home' });
+};
 </script>
 
 <template>
@@ -52,8 +57,9 @@ const openSummaryDocument = () => {
     <div v-if="!applicationData">
       <ErrorView
         :customTitle="'Ungültige Vorgangsnummer'"
-        :customMessage="'Bitte kehren Sie zur Startseite.'"
-          />
+        :customMessage="'Bitte kehren Sie zur Startseite.'"/>
+        <ButtonLink @click="redirectToHome">Zur Startseite</ButtonLink>
+          
     </div>
 
     <div v-else class="status-detail-container">
