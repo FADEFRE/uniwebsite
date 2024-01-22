@@ -26,7 +26,10 @@ import lombok.NoArgsConstructor;
 @Entity
 public class CourseLeipzig {
     @Id
-    @JsonView({Views.coursesWithModules.class, Views.ApplicationOverview.class,Views.RelatedModulesConnection.class})
+    @JsonView({
+        Views.coursesWithModules.class, 
+        Views.ApplicationOverview.class,
+        Views.RelatedModulesConnection.class})
     @NotBlank(message = "Name may not be blank")
     private String name;
     @JsonView({Views.coursesWithModules.class})

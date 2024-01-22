@@ -82,7 +82,7 @@ public class ApplicationController {
 
 
     @GetMapping("/student/{id}")
-    //@JsonView(Views.ApplicationStudent.class)
+    @JsonView(Views.ApplicationStudent.class)
     public ResponseEntity<StudentApplicationDTO>  getApplicationStudentById(@PathVariable String id) {
         return ResponseEntity.ok(applicationService.getStudentApplicationById(id));
     }
