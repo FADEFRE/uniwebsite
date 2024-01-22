@@ -20,7 +20,7 @@ import static swtp12.modulecrediting.model.EnumModuleConnectionDecision.*;
 public class ModulesConnection {
     @Id
     @GeneratedValue
-    @JsonView({Views.ApplicationLogin.class,Views.RelatedModulesConnection.class})
+    @JsonView({Views.ApplicationStudent.class,Views.ApplicationLogin.class,Views.RelatedModulesConnection.class})
     private Long id;
     @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class})
     @NotNull(message = "decisionFinal must not be null")

@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 public class ExternalModule {
     @Id
     @GeneratedValue
-    @JsonView(Views.ApplicationLogin.class)
+    @JsonView({Views.ApplicationStudent.class,Views.ApplicationLogin.class})
     private Long id;
     @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class,Views.ApplicationOverview.class})
     @NotBlank(message = "moduleName must not be blank (empty String)")
