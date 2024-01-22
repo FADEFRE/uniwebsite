@@ -42,7 +42,7 @@ public class ExternalModuleService {
         return externalModules;
     }
 
-    public void updateExternalModules(List<ExternalModuleUpdateDTO> externalModuleUpdateDTOs) {
+    public void updateExternalModules(List<ExternalModuleUpdateDTO> externalModuleUpdateDTOs, String userRole) {
         for(ExternalModuleUpdateDTO ma : externalModuleUpdateDTOs) {
             if(ma.getId() == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Module Application id must not be null");
             ExternalModule externalModule = getExternalModuleById(ma.getId());
@@ -60,6 +60,10 @@ public class ExternalModuleService {
             if(ma.getPointSystem() != null)
                 externalModule.setPointSystem(ma.getPointSystem());
 
+            if(userRole.equals("standard") && ma.getDescription() != null) {
+                PdfDocument pdfDocument = pdfDocumentService.createPdfDocument(ma.getDescription());
+                externalModule.setPdfDocument(pdfDocument);
+            }
         }
 
     }

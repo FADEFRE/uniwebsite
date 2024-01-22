@@ -16,6 +16,7 @@ import swtp12.modulecrediting.repository.ModulesConnectionRepository;
 
 import java.util.*;
 
+import static swtp12.modulecrediting.model.EnumModuleConnectionDecision.asExamCertificate;
 import static swtp12.modulecrediting.model.EnumModuleConnectionDecision.unedited;
 
 @Service
@@ -67,7 +68,7 @@ public class ModulesConnectionService {
 
 
             // handle module applications changes
-            if(mcuDTO.getExternalModules() == null)  throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You cant delete all Module Applications of a Modules Connection " + mcuDTO.getId());
+            if(mcuDTO.getExternalModules() == null)  throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You cant delete all External Modules of a Modules Connection " + mcuDTO.getId());
 
             List<Long> savedIdList = getIdListFromModuleConnection(modulesConnection);
             List<Long> updatedIdList = getIdListFromModuleConnectionUpdateDTO(mcuDTO);
@@ -75,7 +76,7 @@ public class ModulesConnectionService {
             deleteIdList.removeAll(updatedIdList);
 
             removeAllDeletedExternalModules(deleteIdList);
-            externalModuleService.updateExternalModules(mcuDTO.getExternalModules());
+            externalModuleService.updateExternalModules(mcuDTO.getExternalModules(), userRole);
 
             // handle modules leipzig changes
             if(mcuDTO.getModulesLeipzig() == null) modulesConnection.removeAllModulesLeipzig(); // remove all module leipzig
@@ -181,7 +182,7 @@ public class ModulesConnectionService {
         for(ModulesConnection m : allModulesConnections) {
             if(m.getId() == baseModulesConnection.getId()) continue;
 
-            if(m.getDecisionFinal() == unedited) continue;
+            if(m.getDecisionFinal() == unedited || m.getDecisionFinal() == asExamCertificate) continue;
 
             if(checkSimilarityOfModulesConnection(baseModulesConnection,m)) relatedModuleConnections.add(m);
         }
