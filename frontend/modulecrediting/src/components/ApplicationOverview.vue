@@ -38,7 +38,7 @@ const props = defineProps({
 const statusStyle = computed(() => {
     if (props.status === "NEU") return "status-container greenBackground";
     if (props.status === "STUDIENBÜRO" || props.status === "PRÜFUNGSAUSSCHUSS") return "status-container orangeBackground";
-    if (props.status === "ABGESCHLOSSEN") return "status-container redBackground";
+    if (props.status === "ABGESCHLOSSEN" || props.status === "FORMFEHLER") return "status-container redBackground";
 })
 
 const triggerForward = () => {

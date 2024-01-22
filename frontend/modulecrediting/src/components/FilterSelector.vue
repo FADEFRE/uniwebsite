@@ -138,15 +138,16 @@ defineExpose({
     <div class="search-container">
       <h4>Suchen</h4>
       <InputText v-model="searchString" placeholder="Antrag suchen">
-        <!-- todo place search icon -->
+        <!-- search icon -->
       </InputText>
+
       <small>Suchen nach: Vorgangsnummer, Modulname, Universität</small>
     </div>
 
     <div class="general-container">
       <h4>Allgemein</h4>
       <div class="date-filter-container">
-        <div @click="setDateTypeCreation" class="date-block" :class="{ 'selected': dateType==='creation'}">
+        <div @click="setDateTypeCreation" class="date-block" :class="{ 'selected': dateType === 'creation' }">
           <img src="../assets/icons/CreationDate.svg">
           <p v-if="dateType === 'creation'">Erstellt</p>
         </div>
@@ -160,30 +161,31 @@ defineExpose({
         </div>
       </div>
       <div>
-        <Dropdown v-model="selectedDateOption" :options="dateOptions" />
+        <Dropdown v-model="selectedDateOption" :options="dateOptions">
+          <template #dropdownicon>
+            <img src="../assets/icons/ArrowWhite.svg">
+          </template>
+        </Dropdown>
       </div>
     </div>
 
     <div class="status-list-container">
       <h4>Status</h4>
-      <div :class="{ 'selected': statusNew }" class="statusNew status-container"
-        @click="toggleStatusNew">
+      <div :class="{ 'selected': statusNew }" class="statusNew status-container" @click="toggleStatusNew">
         <p class="overview-text">NEU</p>
       </div>
       <div :class="{ 'selected': statusFormalRejection }" class="statusFormalRejection status-container"
-           @click="toggleStatusFormalRejection">
+        @click="toggleStatusFormalRejection">
         <p class="overview-text">FORMFEHLER</p>
       </div>
       <div :class="{ 'selected': statusStudyOffice }" class="statusStudyOffice status-container"
         @click="toggleStatusStudyOffice">
         <p class="overview-text">STUDIENBÜRO</p>
       </div>
-      <div :class="{ 'selected': statusChairman }" class="statusChairman status-container"
-        @click="toggleStatusChairman">
+      <div :class="{ 'selected': statusChairman }" class="statusChairman status-container" @click="toggleStatusChairman">
         <p class="overview-text">PRÜFUNGSAUSSCHUSS</p>
       </div>
-      <div :class="{ 'selected': statusClosed }" class="statusClosed status-container"
-        @click="toggleStatusClosed">
+      <div :class="{ 'selected': statusClosed }" class="statusClosed status-container" @click="toggleStatusClosed">
         <p class="overview-text">ABGESCHLOSSEN</p>
       </div>
     </div>
@@ -195,7 +197,7 @@ defineExpose({
           <img src="@/assets/icons/TrashWhite.svg" class="clear-icon" @click="deleteCourse">
         </template>
         <template #dropdownicon>
-            <img src="../assets/icons/ArrowWhite.svg">
+          <img src="../assets/icons/ArrowWhite.svg">
         </template>
       </Dropdown>
     </div>
@@ -210,17 +212,21 @@ defineExpose({
 .clear-icon {
   opacity: 0.9;
   transition: 0.1s ease-in-out;
-  &:hover{
+
+  &:hover {
     opacity: 1;
   }
 }
+
 .arrow-icon {
   opacity: 0.9;
   transition: 0.1s ease-in-out;
-  &:hover{
+
+  &:hover {
     opacity: 1;
   }
 }
+
 .filter-container {
   @include basicContainer();
   width: 30%;
@@ -274,6 +280,7 @@ defineExpose({
 .p-inputtext {
   width: 100%;
 }
+
 .selected {
   & .overview-text {
     color: $white;
