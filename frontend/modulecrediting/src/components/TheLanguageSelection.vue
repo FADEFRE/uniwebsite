@@ -14,20 +14,30 @@
 
 .language-selection-container {
     display: flex;
-    
 }
 .language-button {
-    background-color: $gray;
-    color: $dark-gray;
-    @include smallHighlightBox();
+    background-color: transparent;
+    padding: 0 0.5rem;
+
+    color: $white;
+    font-family: "Jost";
+    font-size: 1.125rem;
+    font-weight: 400;
+    line-height: 1rem;
+
+    &:first-child {
+        border-right: 1px solid $white;
+    }
 
     &:hover {
-        background-color: $mid-gray;
+        background-color: transparent;
+        font-weight: 550;
     }
+
+
 }
 
 .active {
-    color: $white;
-    background-color: $dark-gray;
+    font-weight: 550;
 }
 </style>

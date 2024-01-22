@@ -8,8 +8,6 @@ const routeType = computed(() => route.meta['authType'])
 </script>
 
 <template>
-  <div class="navigation-container">
-
     <div v-if="routeType === 'standard'" class="links-container">
       <router-link :to="{ name: 'home' }" class="router-link-container">
         {{ $t('home page') }}
@@ -46,20 +44,17 @@ const routeType = computed(() => route.meta['authType'])
       </Button>
     </div>
 
-  </div>
 </template>
 
 <style scoped lang="scss">
 @import '../assets/variables.scss';
 
-.navigation-container {
-  padding: 0rem 1.875rem;
-}
 
 .links-container {
   display: flex;
   align-items: center;
-  gap: 1.875rem;
+  gap: 0.6rem 1.875rem;
+  flex-wrap: wrap;
 }
 
 

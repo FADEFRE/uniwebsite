@@ -31,7 +31,7 @@ public class ModulesConnection {
     @JsonView(Views.ApplicationLogin.class)
     @NotNull(message = "decisionSuggestion must not be null")
     private EnumModuleConnectionDecision decisionSuggestion;
-    @JsonView(Views.ApplicationStudent.class)
+    @JsonView(Views.ApplicationLogin.class)
     @NotNull(message = "commentStudyOffice must not be null")
     private String commentStudyOffice;
     @JsonView(Views.ApplicationStudent.class)

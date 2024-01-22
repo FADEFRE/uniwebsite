@@ -15,8 +15,10 @@ onMounted(() => {
         <a href="/" class="logo">
           <img class="logo-responsive" src="./assets/Universität_Leipzig_logo.svg" alt="Logo der Universität Leipzig" />
         </a>
-        <TheLanguageSelection />
+        <div class="controll-container">
+          <TheLanguageSelection />
           <TheNavigation />
+        </div>
       </div>
     </header>
     <router-view class="main-content" />
@@ -61,5 +63,12 @@ onMounted(() => {
 .logo-responsive {
   width: 27.42188rem;
   height: 11.25rem;
+}
+
+.controll-container {
+  display: flex;
+  flex-direction: column;
+  padding: 0rem 1.875rem;
+  gap: 0.6rem;
 }
 </style>
