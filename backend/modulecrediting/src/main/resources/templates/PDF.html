@@ -1,22 +1,19 @@
-<!DOCTYPE html>
-<html xmlns:th="https://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    </meta>
-    <title>Title</title>
-</head>
-<body>
-    <link th:ref = "@{/main.css}" rel="stylesheet">
-    </link>
-    <h1 th:text="${title}">Default Title</h1>
-
-    <div th:each="item : ${items}">
-        <p th:text="${item}">Default Item</p>
-    </div>
-
-    <img th:src="Universität_Leipzig_Logo.png" alt="Logo" width="200">
-    </img>
-
-
-</body>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8"></meta>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
+        <link rel="stylesheet" th:href="@{classpath:static/main.css}"></link>
+        <link href='https://fonts.googleapis.com/css?family=Jost' rel='stylesheet'></link>
+        <title>Application</title>
+    </head>
+  <body>
+    <header>
+        <div class="layout">
+            <div class="layoutBeforeAndAfterHeading">
+                <img class="logo" th:src="@{classpath:/static/images/Universität_leipzig_Logo.png}" alt="Bildbeschreibung"> </img>
+                <h1 id="HeadingPDF">ANTRAG ZUR MODULANRECHNUNG</h1>
+            </div>    
+        </div>
+    </header>
+  </body>
 </html>
