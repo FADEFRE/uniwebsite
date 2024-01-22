@@ -4,13 +4,13 @@ package swtp12.modulecrediting.service;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.lowagie.text.DocumentException;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.templatemode.TemplateMode;
+import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
+
 import java.io.*;
-import java.nio.charset.StandardCharsets;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 import org.xhtmlrenderer.pdf.ITextRenderer;
-import org.xhtmlrenderer.layout.SharedContext;
+import org.thymeleaf.context.Context;
 
 
 @Service
@@ -18,32 +18,34 @@ public class GeneratedPdfService {
     @Autowired
     private ApplicationService applicationService;
 
+    public String parseThymeleafTemplate() {
+        ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
+        templateResolver.setSuffix(".html");
+        templateResolver.setTemplateMode(TemplateMode.HTML);
+        templateResolver.setPrefix("templates/");
 
-    public byte[] generatePdfFromHtml() throws DocumentException, IOException {
-        try (OutputStream os = new ByteArrayOutputStream()) {
-            ClassLoader classLoader = getClass().getClassLoader();
-            InputStream inputStream = classLoader.getResourceAsStream("PDF.html");
+        TemplateEngine templateEngine = new TemplateEngine();
+        templateEngine.setTemplateResolver(templateResolver);
+
+        Context context = new Context();
+        context.setVariable("to", "Baeldung");
+
+        return templateEngine.process("PDF", context);
+    }
+
+    public byte[] generatePdfFromHtml() throws IOException {
+        String html = parseThymeleafTemplate();
 
 
-            if (inputStream == null) {
-                throw new FileNotFoundException("PDF.html konnte nicht gefunden werden");
-            }
-            String htmlContent = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
+        OutputStream outputStream = new ByteArrayOutputStream();
 
-            Document doc = Jsoup.parse(htmlContent);
-            doc.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
+        ITextRenderer renderer = new ITextRenderer();
+        renderer.setDocumentFromString(html);
+        renderer.layout();
+        renderer.createPDF(outputStream);
 
-            ITextRenderer renderer = new ITextRenderer();
-            SharedContext context = renderer.getSharedContext();
-            context.setPrint(true);
-            context.setInteractive(false);
+        outputStream.close();
 
-            String baseUrl = classLoader.getResource("PDF.html").toString();
-            renderer.setDocumentFromString(doc.html(), baseUrl);
-            renderer.layout();
-            renderer.createPDF(os);
-
-            return ((ByteArrayOutputStream) os).toByteArray();
-        }
+        return ((ByteArrayOutputStream) outputStream).toByteArray();
     }
 }

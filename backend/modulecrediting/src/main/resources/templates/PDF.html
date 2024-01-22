@@ -2,14 +2,21 @@
 <html xmlns:th="https://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    </meta>
     <title>Title</title>
 </head>
 <body>
+    <link th:ref = "@{/main.css}" rel="stylesheet">
+    </link>
     <h1 th:text="${title}">Default Title</h1>
 
     <div th:each="item : ${items}">
         <p th:text="${item}">Default Item</p>
     </div>
+
+    <img th:src="Universität_Leipzig_Logo.png" alt="Logo" width="200">
+    </img>
+
 
 </body>
 </html>
