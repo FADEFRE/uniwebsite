@@ -1,5 +1,3 @@
-<!-- ErrorContainer.vue -->
-
 <script setup>
 import { defineProps } from 'vue';
 import ButtonLink from '@/components/ButtonLink.vue';
@@ -8,19 +6,9 @@ import { useRouter } from 'vue-router';
 const router = useRouter();
 
 const props = defineProps(['customTitle', 'customMessage']);
-
 const errorTexts = {
     title: 'Fehler 404: Seite nicht gefunden',
     message: 'Leider kann die gewünschte Seite nicht angezeigt werden.',
-    
-};
-
-const redirectToHome = () => {
-    router.push({ name: 'home' });
-};
-
-const goBack = () => {
-    router.go(-1);
 };
 </script>
 
@@ -29,11 +17,10 @@ const goBack = () => {
         <div>
             <h2>{{ customTitle || errorTexts.title }}</h2>
             <p>{{ customMessage || errorTexts.message }}</p>
-        </div>
-        <div class="button-container">
-            <ButtonLink @click="redirectToHome">Zur Startseite</ButtonLink>
-            <ButtonLink @click="goBack">Zurück</ButtonLink>
-            <slot></slot>
+            
+            <div class="button-container">
+                <slot></slot>
+            </div>
         </div>
     </div>
 </template>
