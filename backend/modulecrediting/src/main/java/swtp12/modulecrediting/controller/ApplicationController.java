@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import swtp12.modulecrediting.dto.ApplicationCreateDTO;
 import swtp12.modulecrediting.dto.ApplicationUpdateDTO;
 import swtp12.modulecrediting.dto.EnumStatusChange;
+import swtp12.modulecrediting.dto.StudentApplicationDTO;
 import swtp12.modulecrediting.model.Application;
 import swtp12.modulecrediting.model.EnumApplicationStatus;
 import swtp12.modulecrediting.model.Views;
@@ -81,9 +82,9 @@ public class ApplicationController {
 
 
     @GetMapping("/student/{id}")
-    @JsonView(Views.ApplicationStudent.class)
-    public ResponseEntity<Application>  getApplicationStudentById(@PathVariable String id) {
-        return ResponseEntity.ok(applicationService.getApplicationById(id));
+    //@JsonView(Views.ApplicationStudent.class)
+    public ResponseEntity<StudentApplicationDTO>  getApplicationStudentById(@PathVariable String id) {
+        return ResponseEntity.ok(applicationService.getStudentApplicationById(id));
     }
 
     @GetMapping("/{id}/exists")
