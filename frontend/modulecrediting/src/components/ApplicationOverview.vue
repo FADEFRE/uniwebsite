@@ -37,7 +37,7 @@ const props = defineProps({
 
 const statusStyle = computed(() => {
     if (props.status === "NEU") return "status-container greenBackground";
-    if (props.status === "STUDIENBÜRO" || props.status === "PRÜFUNGSAUSSCHUSS") return "status-container orangeBackground";
+    if (props.status === "STUDIENBÜRO" || props.status === "PRÜFUNGSAUSSCHUSS" || props.status === "IN BEARBEITUNG") return "status-container orangeBackground";
     if (props.status === "ABGESCHLOSSEN" || props.status === "FORMFEHLER") return "status-container redBackground";
 })
 

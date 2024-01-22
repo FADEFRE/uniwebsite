@@ -5,7 +5,6 @@ shows status of an application
 <script setup>
 import { useRoute, useRouter } from 'vue-router';
 import { ref, onBeforeMount } from "vue";
-import ErrorView from "@/views/ErrorView.vue";
 import ApplicationOverview from "@/components/ApplicationOverview.vue";
 import StatusPanel from "@/components/StatusPanel.vue";
 import SideInfoContainer from '../components/SideInfoContainer.vue';
