@@ -98,7 +98,7 @@ const discardChanges = () => {
 const saveChanges = () => {
   if (type === 'study-office') {
     putApplicationStudyOffice(id, applicationData.value['courseLeipzig']['name'], moduleConnections.value)
-        .then(_ => location.reload())
+      .then(_ => location.reload())
   }
 }
 
@@ -112,21 +112,20 @@ const goBack = () => {
 </script>
 
 <template>
-  
-  <div class="main">
+  <!-- request pending -->
+  <div v-if="!applicationData" class="main">
+    <ErrorContainer :customTitle="'Ungültige Vorgangsnummer'"
+      :customMessage="'falsche ID oder Antrag nicht mehr verfügbar'" />
+    <ButtonLink @click="goBack">Zurück</ButtonLink>
+  </div>
 
-    <!-- request pending -->
-    <div v-if="!applicationData">
-      <ErrorContainer
-        :customTitle="'Ungültige Vorgangsnummer'"
-        :customMessage="'falsche ID oder Antrag nicht mehr verfügbar'"/>
-        <ButtonLink @click="goBack">Zurück</ButtonLink>
-    </div>
 
-    <div v-else class="administrative-detail-container">
 
-      <ApplicationConnectionLinks :connections-data="connectionsData" />
 
+  <div v-else class="main">
+
+    <ApplicationConnectionLinks :connections-data="connectionsData" />
+    <div class="administrative-detail-container">
       <ApplicationOverview :creation-date="parseRequestDate(applicationData['creationDate'])"
         :last-edited-date="parseRequestDate(applicationData['lastEditedDate'])"
         :decision-date="parseRequestDate(applicationData['decisionDate'])" :id="applicationData['id']"
@@ -146,26 +145,27 @@ const goBack = () => {
         <ButtonLink @click="saveChanges">Speichern</ButtonLink>
       </div>
 
-      <div v-if="unsaved">
-        <Button class="unsaved-button">
-          <img src="@/assets/icons/NotSaved.svg">
-        </Button>
-      </div>
+    </div>
 
-      <div>
-        <Button @click="collapseAll" class="collapse-expand-button">
-          <img src="@/assets/icons/CollapseAll.svg">
-        </Button>
-        <Button @click="unCollapseAll" class="collapse-expand-button">
-          <img src="@/assets/icons/ExpandAll.svg">
-        </Button>
-      </div>
+    <div class="mid-right-fixed-container">
+      <Button class="unsaved-button" v-if="unsaved">
+        <img src="@/assets/icons/NotSaved.svg">
+      </Button>
 
-      <div v-if="!readonly">
-        <ButtonLink v-if="passOnStatus === 'NOT_ALLOWED'" :disabled="true">Weitergeben</ButtonLink>
-        <ButtonLink v-else-if="passOnStatus === 'PASSON'" :primaryButton="true" @click="triggerPassOn">Weitergeben</ButtonLink>
-        <ButtonLink v-else-if="passOnStatus === 'REJECT'" :primary-button="true" @click="triggerPassOn">Zurückweisen</ButtonLink>
-      </div>
+      <Button @click="collapseAll" class="collapse-expand-button">
+        <img src="@/assets/icons/CollapseAll.svg">
+      </Button>
+      <Button @click="unCollapseAll" class="collapse-expand-button">
+        <img src="@/assets/icons/ExpandAll.svg">
+      </Button>
+
+    </div>
+    <div v-if="!readonly" class="confirmation-button">
+      <ButtonLink v-if="passOnStatus === 'NOT_ALLOWED'" :disabled="true">Weitergeben</ButtonLink>
+      <ButtonLink v-else-if="passOnStatus === 'PASSON'" :primaryButton="true" @click="triggerPassOn">Weitergeben
+      </ButtonLink>
+      <ButtonLink v-else-if="passOnStatus === 'REJECT'" :primary-button="true" @click="triggerPassOn">Zurückweisen
+      </ButtonLink>
     </div>
   </div>
 </template>
@@ -184,8 +184,24 @@ const goBack = () => {
   overflow: hidden;
 }
 
-.connection-highlight {
-  border-left: 1rem solid $dark-gray;
+.mid-right-fixed-container {
+  @include verticalList(small);
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+
+  position: fixed;
+  top: 50vh;
+  right: 1rem;
+
+  transform: translateY(-50%);
+}
+
+.confirmation-button {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
 }
 
 .saving-buttons-container {
@@ -205,6 +221,6 @@ const goBack = () => {
 
 .collapse-expand-button {
   width: 3.125rem;
-  height: 3.125rem;
+  height: 3.7rem;
 }
 </style>

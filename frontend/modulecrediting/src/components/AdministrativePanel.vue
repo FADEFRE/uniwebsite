@@ -172,6 +172,10 @@ defineExpose({
   </div>
 </template>
 
-<style scoped>
-
+<style scoped lang="scss">
+@import '../assets/variables.scss';
+@import '../assets/mixins.scss';
+.connection-highlight {
+  border-left: 1rem solid $dark-gray;
+}
 </style>

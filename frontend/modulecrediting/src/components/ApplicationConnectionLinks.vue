@@ -45,7 +45,7 @@ const props = defineProps({
   position: sticky;
   top: 1rem;
 
-  @media only screen and (max-width: 1400px) {
+  @media only screen and (max-width: 1300px) {
     display: none;
   }
 }
