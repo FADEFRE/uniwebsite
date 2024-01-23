@@ -2,7 +2,7 @@
 import { computed } from 'vue';
 
 const props = defineProps({
-  primaryButton: {
+  fixed: {
     type: Boolean,
     default: false
   },
@@ -20,7 +20,7 @@ const style = computed(() => {
 
 <template>
   <div class="button-link-container">
-    <Button :disabled="disabled" :class="{ ' primary-button': primaryButton, 'disabled': disabled }">
+    <Button :disabled="disabled" :class="{ ' fixed-button': fixed, 'disabled': disabled }">
       <slot />
       <img src="../assets/icons/ArrowWhite.svg" class="arrow-icon" alt="Arrow Icon">
     </Button>
@@ -48,11 +48,12 @@ const style = computed(() => {
   transition: 0.1s ease-in-out;
 }
 
-.primary-button {
+.fixed-button {
   background-color: $red;
   position: fixed;
-  bottom: 2rem;
-  right: 2rem;
+  z-index: 3;
+  bottom: 1rem;
+  right: 1rem;
 
   &:hover {
     background-color: $dark-red;
@@ -60,16 +61,7 @@ const style = computed(() => {
 }
 
 .disabled {
-  background-color: $mid-gray;
-  color: rgb(163, 163, 163);
+  opacity: 0.5;
 
-  & .arrow-icon {
-    display: none;
-  }
-
-  &:hover {
-    background-color: $mid-gray;
-    color: rgb(182, 182, 182);
-  }
 }
 </style>

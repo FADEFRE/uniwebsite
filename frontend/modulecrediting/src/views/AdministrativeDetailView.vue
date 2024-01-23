@@ -140,7 +140,7 @@ const goBack = () => {
 
       </div>
 
-      <div v-if="!readonly" class="saving-buttons-container">
+      <div v-if="!readonly" class="save-controlls-container">
         <ButtonLink @click="discardChanges">Änderungen verwerfen</ButtonLink>
         <ButtonLink @click="saveChanges">Speichern</ButtonLink>
       </div>
@@ -148,9 +148,9 @@ const goBack = () => {
     </div>
 
     <div class="mid-right-fixed-container">
-      <Button class="unsaved-button" v-if="unsaved">
+      <div class="unsaved-notification" v-if="unsaved">
         <img src="@/assets/icons/NotSaved.svg">
-      </Button>
+      </div>
 
       <Button @click="collapseAll" class="collapse-expand-button">
         <img src="@/assets/icons/CollapseAll.svg">
@@ -158,13 +158,13 @@ const goBack = () => {
       <Button @click="unCollapseAll" class="collapse-expand-button">
         <img src="@/assets/icons/ExpandAll.svg">
       </Button>
-
     </div>
-    <div v-if="!readonly" class="confirmation-button">
-      <ButtonLink v-if="passOnStatus === 'NOT_ALLOWED'" :disabled="true">Weitergeben</ButtonLink>
-      <ButtonLink v-else-if="passOnStatus === 'PASSON'" :primaryButton="true" @click="triggerPassOn">Weitergeben
+
+    <div v-if="!readonly">
+      <ButtonLink v-if="passOnStatus === 'NOT_ALLOWED'" :disabled="true" :fixed="true">Weitergeben</ButtonLink>
+      <ButtonLink v-else-if="passOnStatus === 'PASSON'" :fixed="true" @click="triggerPassOn">Weitergeben
       </ButtonLink>
-      <ButtonLink v-else-if="passOnStatus === 'REJECT'" :primary-button="true" @click="triggerPassOn">Zurückweisen
+      <ButtonLink v-else-if="passOnStatus === 'REJECT'" :fixed="true" @click="triggerPassOn">Zurückweisen
       </ButtonLink>
     </div>
   </div>
@@ -184,6 +184,14 @@ const goBack = () => {
   overflow: hidden;
 }
 
+
+.save-controlls-container {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+}
+
+
 .mid-right-fixed-container {
   @include verticalList(small);
 
@@ -197,26 +205,14 @@ const goBack = () => {
 
   transform: translateY(-50%);
 }
-
-.confirmation-button {
-  position: fixed;
-  bottom: 1rem;
-  right: 1rem;
-}
-
-.saving-buttons-container {
-  display: flex;
-  width: 100%;
-  justify-content: space-around;
-}
-
-.unsaved-button {
+.unsaved-notification {
   background-color: $red;
   width: 3.125rem;
   height: 3.125rem;
-}
-.unsaved-button-text {
-  color: $white;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .collapse-expand-button {

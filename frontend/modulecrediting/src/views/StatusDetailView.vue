@@ -59,18 +59,20 @@ const triggerSubmit = () => {
 
 <template>
   <div v-if="!applicationData" class="main">
-      <ErrorContainer :customTitle="'Ungültige Vorgangsnummer'" :customMessage="'Bitte kehren Sie zur Startseite zurück.'">
-        <ButtonLink @click="redirectToHome">Zur Startseite</ButtonLink>
-      </ErrorContainer>
-    </div>
+    <ErrorContainer :customTitle="'Ungültige Vorgangsnummer'" :customMessage="'Bitte kehren Sie zur Startseite zurück.'">
+      <ButtonLink @click="redirectToHome">Zur Startseite</ButtonLink>
+    </ErrorContainer>
+  </div>
 
   <div v-else class="main">
 
-    <div v-if="applicationData['fullStatus'] === 'FORMFEHLER'">
-      <FormalRejectionInfoBox />
-    </div>
+
 
     <div class="status-detail-container">
+
+      <div v-if="applicationData['fullStatus'] === 'FORMFEHLER'">
+        <FormalRejectionInfoBox />
+      </div>
 
       <ApplicationOverview :creation-date="parseRequestDate(applicationData['creationDate'])"
         :last-edited-date="parseRequestDate(applicationData['lastEditedDate'])"
@@ -90,7 +92,7 @@ const triggerSubmit = () => {
         <img src="../assets/icons/Download.svg">
       </Button>
 
-      <ButtonLink v-if="applicationData['fullStatus'] === 'FORMFEHLER'" :primaryButton="true" @click="triggerSubmit">Neu
+      <ButtonLink v-if="applicationData['fullStatus'] === 'FORMFEHLER'" :fixed="true" @click="triggerSubmit">Neu
         einreichen</ButtonLink>
 
     </div>
