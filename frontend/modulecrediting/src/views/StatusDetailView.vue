@@ -9,7 +9,7 @@ import ApplicationOverview from "@/components/ApplicationOverview.vue";
 import StatusPanel from "@/components/StatusPanel.vue";
 import SideInfoContainer from '../components/SideInfoContainer.vue';
 import { url } from "@/scripts/url-config"
-import {getApplicationByIdForStatus, getModulesByCourse, putApplicationStandard} from "@/scripts/axios-requests";
+import { getApplicationByIdForStatus, getModulesByCourse, putApplicationStandard } from "@/scripts/axios-requests";
 import { parseRequestDate } from "@/scripts/date-utils";
 import ButtonLink from '@/components/ButtonLink.vue';
 import ErrorContainer from '../components/ErrorContainer.vue';
@@ -24,7 +24,7 @@ const router = useRouter();
 onBeforeMount(() => {
   getApplicationByIdForStatus(id)
     .then(data => {
-        if (!data) {
+      if (!data) {
         router.push({
           name: 'notFound'
         });
@@ -52,22 +52,22 @@ const redirectToHome = () => {
 
 const triggerSubmit = () => {
   putApplicationStandard(applicationData.value['id'], applicationData.value['courseLeipzig']['name'], moduleConnections.value)
-      .then(_ => location.reload())
+    .then(_ => location.reload())
 }
 </script>
 
 <template>
-  <div class="main">
-
-    <div v-if="!applicationData">
-      <ErrorContainer
-        :customTitle="'Ungültige Vorgangsnummer'"
-        :customMessage="'Bitte kehren Sie zur Startseite.'"/>
+  <div v-if="!applicationData" class="main">
+      <ErrorContainer :customTitle="'Ungültige Vorgangsnummer'" :customMessage="'Bitte kehren Sie zur Startseite zurück.'">
         <ButtonLink @click="redirectToHome">Zur Startseite</ButtonLink>
-          
+      </ErrorContainer>
     </div>
 
-    <div v-else class="status-detail-container">
+  <div v-else class="main">
+
+
+
+    <div class="status-detail-container">
 
       <ApplicationOverview :creation-date="parseRequestDate(applicationData['creationDate'])"
         :last-edited-date="parseRequestDate(applicationData['lastEditedDate'])"
@@ -76,13 +76,9 @@ const triggerSubmit = () => {
 
       <div v-for="connection in applicationData['modulesConnections']">
 
-        <StatusPanel
-            :connection="connection"
-            :selectable-modules="moduleOptions"
-            :readonly="!(applicationData['fullStatus'] === 'FORMFEHLER')"
-            ref="moduleConnections"
-            :class="{ 'formal-rejection-highlight': connection['formalRejection'] }"
-        />
+        <StatusPanel :connection="connection" :selectable-modules="moduleOptions"
+          :readonly="!(applicationData['fullStatus'] === 'FORMFEHLER')" ref="moduleConnections"
+          :class="{ 'formal-rejection-highlight': connection['formalRejection'] }" />
 
       </div>
 
@@ -91,7 +87,8 @@ const triggerSubmit = () => {
         <img src="../assets/icons/Download.svg">
       </Button>
 
-      <ButtonLink v-if="applicationData['fullStatus'] === 'FORMFEHLER'" :primaryButton="true" @click="triggerSubmit">Neu einreichen</ButtonLink>
+      <ButtonLink v-if="applicationData['fullStatus'] === 'FORMFEHLER'" :primaryButton="true" @click="triggerSubmit">Neu
+        einreichen</ButtonLink>
 
     </div>
     <div class="side-infos-container">
