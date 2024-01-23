@@ -56,10 +56,6 @@ async function login (login_username, login_password) {
 
     loginInProcess.value = false;
 
-    if (canNavigate) {
-        router.replace("/");
-    }
-
 }
 
 export { login } 
