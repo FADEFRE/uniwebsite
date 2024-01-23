@@ -13,6 +13,7 @@ import { getApplicationByIdForStatus, getModulesByCourse, putApplicationStandard
 import { parseRequestDate } from "@/scripts/date-utils";
 import ButtonLink from '@/components/ButtonLink.vue';
 import ErrorContainer from '../components/ErrorContainer.vue';
+import FormalRejectionInfoBox from "@/components/FormalRejectionInfoBox.vue";
 
 const id = useRoute().params.id
 const summaryDocumentLink = `${url}/file/pdf-documents/application/${id}`
@@ -65,7 +66,9 @@ const triggerSubmit = () => {
 
   <div v-else class="main">
 
-
+    <div v-if="applicationData['fullStatus'] === 'FORMFEHLER'">
+      <FormalRejectionInfoBox />
+    </div>
 
     <div class="status-detail-container">
 
