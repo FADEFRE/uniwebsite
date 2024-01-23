@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <div>
+  <div class="formal-rejection-info-container">
     <h2>Formfehler</h2>
     <p>
       Aufgrund von Formfehlern wurde ihr Antrag abgelehnt.
@@ -14,5 +14,16 @@
 </template>
 
 <style scoped lang="scss">
+@import '../assets/mixins.scss';
+@import '../assets/variables.scss';
 
+.formal-rejection-info-container {
+  @include verticalListItem($white);
+  @include basicContainer();
+
+}
+
+h2 {
+  color: $red;
+}
 </style>
