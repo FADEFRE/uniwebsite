@@ -141,8 +141,8 @@ const goBack = () => {
       </div>
 
       <div v-if="!readonly" class="save-controlls-container">
-        <ButtonLink @click="discardChanges">Änderungen verwerfen</ButtonLink>
         <ButtonLink @click="saveChanges">Speichern</ButtonLink>
+        <ButtonLink @click="discardChanges">Änderungen verwerfen</ButtonLink>
       </div>
 
     </div>
@@ -188,7 +188,8 @@ const goBack = () => {
 .save-controlls-container {
   display: flex;
   width: 100%;
-  justify-content: space-around;
+  justify-content: flex-start;
+  gap: 1rem;
 }
 
 
