@@ -9,12 +9,10 @@ slots:
 </script>
 
 <template>
-  <div>
     <Button class="button-container">
       <slot></slot>
       <img src="../assets/icons/PlusIcon.svg">
     </Button>
-  </div>
 </template>
 
 <style scoped lang="scss">
