@@ -1,9 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { getAuthenticatedUser } from '@/scripts/utils';
 import { useAuthStore } from '@/store/authStore';
+import { useNavTypeStore } from '@/store/navTypeStore';
 import httpResource from "@/scripts/httpResource";
 import HomepageView from "@/views/HomepageView.vue"
-import { ref } from 'vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -83,29 +83,45 @@ const router = createRouter({
   ]
 })
 
-const roleName = ref();
 
-export function getRole () {
-  return roleName;
+function changeRole(authRole) {
+  const navStore = useNavTypeStore();
+  if (authRole === "ROLE_STUDY") { navStore.setCurrentRoleNav("study"); }
+  else if (authRole === "ROLE_CHAIR") { navStore.setCurrentRoleNav("chair"); }
+  else if (authRole === "ROLE_ADMIN") { navStore.setCurrentRoleNav("admin"); }
+  else { navStore.setCurrentRoleNav("user"); }
+  return true;
 }
+
 
 router.beforeEach(
   async (to) => {
     await getAuthenticatedUser();
     const authUserStore = useAuthStore();
+    const navStore = useNavTypeStore();
     const id = authUserStore.getCurrentUserId;
     const response = await httpResource.get(`/api/user/${id}/role`)
     switch (to.meta.authType) {
       case "standard":
+        changeRole(response.data);
         return true;
       case "study-office":
-        if (response.data === "ROLE_STUDY") { return true; }
+        if (response.data === "ROLE_STUDY") { 
+          navStore.setCurrentRoleNav("study");
+          return true; 
+        }
         return { name: 'login' };
       case "chairman":
-        if (response.data === "ROLE_CHAIR") { return true; }
+        if (response.data === "ROLE_CHAIR") { 
+          navStore.setCurrentRoleNav("chair");
+          return true; 
+        }
         return { name: 'login' };
       case "admin":
-        if (response.data === "ROLE_ADMIN") { return true; }
+        if (response.data === "ROLE_ADMIN") { 
+          navStore.setCurrentRoleNav("admin");
+          return true; 
+        }
         return { name: 'login' };
       default:
         break;
