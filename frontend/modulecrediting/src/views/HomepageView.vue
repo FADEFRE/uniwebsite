@@ -62,7 +62,7 @@ const getFormattedId = () => {
             <!-- HomepageContainer StatusView -->
             <HomepageContainer :header="$t('view status')"
                 :text="$t('view the status of applications that have already been submitted using the 6-digit process number.')">
-                <InputText v-model="id" :class="{ 'p-invalid': isInvalid }" placeholder="0-0-0-0-0-0" @keydown.enter.prevent="openDetailView" @input="validateInput" />
+                <InputText v-model="id" :class="{ 'p-invalid': isInvalid }" class="hide-placeholder" placeholder="0-0-0-0-0-0" @keydown.enter.prevent="openDetailView" @input="validateInput" />
                 <ButtonLink @click="openDetailView">{{$t('view status')}}</ButtonLink>
             </HomepageContainer>
         </div>
@@ -103,4 +103,11 @@ const getFormattedId = () => {
     width: 100%;
   }
 }
+
+.hide-placeholder {
+  &:focus::placeholder {
+    color: transparent;
+  }
+}
+
 </style>
