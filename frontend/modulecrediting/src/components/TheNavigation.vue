@@ -1,14 +1,20 @@
 <script setup>
 import { logout } from "@/router/logout";
-import { useRoute } from "vue-router";
+import { useNavTypeStore} from "../store/navTypeStore"
 import { computed } from "vue";
 
-const route = useRoute()
-const routeType = computed(() => route.meta['authType'])
+const navStore = useNavTypeStore();
+const isNavType = computed(() => {
+  if (navStore.getCurrentRoleNav === "user") { return "standard" }
+  else if (navStore.getCurrentRoleNav === "study" || navStore.getCurrentRoleNav === "chair" || navStore.getCurrentRoleNav === "admin") {
+    return "internal"
+  }
+});
+const specificRole = computed(() => navStore.getCurrentRoleNav)
 </script>
 
 <template>
-    <div v-if="routeType === 'standard'" class="links-container">
+    <div v-if="isNavType === 'standard'" class="links-container">
       <router-link :to="{ name: 'home' }" class="router-link-container">
         {{ $t('home page') }}
         <img src="@/assets/icons/ArrowWhite.svg" class="arrow-icon">
@@ -19,19 +25,19 @@ const routeType = computed(() => route.meta['authType'])
       </router-link>
     </div>
 
-    <div v-else-if="routeType === 'study-office' || routeType === 'chairman'" class="links-container">
+    <div v-else-if="isNavType === 'internal'" class="links-container">
       <router-link to="" class="router-link-container">
         Verwaltung
         <img src="@/assets/icons/ArrowWhite.svg" class="arrow-icon">
       </router-link> <!-- todo replace with manage link -->
 
-      <div v-if="routeType === 'study-office'"> 
+      <div v-if="specificRole === 'study'"> 
         <router-link :to="{ name: 'studyOfficeSelection' }" class="router-link-container">
           Übersicht
           <img src="@/assets/icons/ArrowWhite.svg" class="arrow-icon">
         </router-link>
       </div>
-      <div v-else-if="routeType === 'chairman'">
+      <div v-else-if="specificRole === 'chair'">
         <router-link :to="{ name: 'chairmanSelection' }" class="router-link-container">
           Übersicht
           <img src="@/assets/icons/ArrowWhite.svg" class="arrow-icon">
