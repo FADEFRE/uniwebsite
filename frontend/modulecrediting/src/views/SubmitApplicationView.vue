@@ -141,12 +141,7 @@ const triggerPostApplication = () => {
 }
 
 .side-infos-container {
-  @include verticalList(big);
-  width: min-content;
-
-  @media only screen and (max-width: 1000px) {
-    width: 100%;
-  }
+  @include sideInfoContainer();
 }
 </style>
 
