@@ -189,7 +189,13 @@ const goBack = () => {
   display: flex;
   width: 100%;
   justify-content: flex-start;
-  gap: 1rem;
+  flex-wrap: wrap;
+  gap: 0.625rem 1rem;
+
+  @media only screen and (max-width: 700px) {
+    padding: 0 0.625rem;
+    
+  }
 }
 
 
