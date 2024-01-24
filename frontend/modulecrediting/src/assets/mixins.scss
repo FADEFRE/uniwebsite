@@ -103,3 +103,9 @@
   align-items: center;
   gap: 0.5rem;
 }
+
+@mixin ellipsisTextOverflow() {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

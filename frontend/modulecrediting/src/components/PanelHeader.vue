@@ -72,9 +72,7 @@ const textStyle = computed(() => {
 }
 
 .single-module {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  @include ellipsisTextOverflow();
 }
 
 .arrow-icon {

@@ -69,12 +69,12 @@ const handleFiles = (e) => {
 }
 
 const dragOverHandler = (e) => {
-  if (!props.readonly) e.currentTarget.classList.add('file-drop-highlight')
+  if (!props.readonly) e.currentTarget.classList.add('edit-container-highlight')
   console.log(selectedFile.value);
 }
 
 const dragLeaveHandler = (e) => {
-  if (!props.readonly) e.currentTarget.classList.remove('file-drop-highlight')
+  if (!props.readonly) e.currentTarget.classList.remove('edit-container-highlight')
 }
 
 const dropHandler = (e) => {
@@ -83,7 +83,7 @@ const dropHandler = (e) => {
     if (checkFile(file)) {
       selectedFile.value = file
     }
-    e.currentTarget.classList.remove('file-drop-highlight')
+    e.currentTarget.classList.remove('edit-container-highlight')
   }
   console.log(selectedFile.value);
 }
@@ -94,36 +94,24 @@ defineExpose({
 </script>
 
 <template>
-  <div>
-    <div
-        @click="openFileDialog"
-        @dragover.prevent="dragOverHandler"
-        @dragleave.prevent="dragLeaveHandler"
-        @drop.prevent="dropHandler"
-        class="file-drop-container"
-        :class="{ 'cursor-pointer': !props.readonly, 'read-only-border': props.readonly }"
-    >
+  <div v-if="readonly" class="read-only-container">
+    <p class="ellipsis-text-overflow">{{ props.selectedFile?.name }}</p>
+    <ButtonLink @click="openFile">PDF öffnen</ButtonLink>
+  </div>
 
-      <div v-if="readonly" :class="{ 'read-only-container': props.readonly }">
-        <p>{{ props.selectedFile?.name }}</p>
-        <ButtonLink @click="openFile">PDF öffnen</ButtonLink>
-      </div>
+  <div v-else class="edit-container" @click="openFileDialog" @dragover.prevent="dragOverHandler"
+    @dragleave.prevent="dragLeaveHandler" @drop.prevent="dropHandler">
 
-      <div v-else-if="selectedFile?.name">
-        <p>{{ selectedFile?.name }}</p>
-      </div>
+    <p v-if="selectedFile?.name" class="ellipsis-text-overflow">{{ selectedFile?.name }}</p>
 
-      <div v-else-if="props.selectedFile?.name">
-        <p>{{ props.selectedFile?.name }}</p>
-      </div>
+    <p v-else-if="props.selectedFile?.name" class="ellipsis-text-overflow">{{ props.selectedFile?.name }}</p>
 
-      <div v-else class="file-drop-unselected">
-        <p>Modulbeschreibung hochladen</p>
-        <img src="../assets/icons/Upload.svg">
-      </div>
-
+    <div v-else class="file-drop-unselected">
+      <p class="ellipsis-text-overflow">Modulbeschreibung hochladen</p>
+      <img src="../assets/icons/Upload.svg">
     </div>
     <input type="file" ref="fileInput" @change="handleFiles" />
+
   </div>
 </template>
 
@@ -131,45 +119,50 @@ defineExpose({
 @import '../assets/mixins.scss';
 @import '../assets/variables.scss';
 
-input {
-  display: none;
-}
-
-.cursor-pointer {
-  cursor: pointer
-}
-
-.file-drop-container {
-  border: 2px dashed $black;
+.read-only-container {
+  width: 100%;
+  border: 2px solid $black;
 
   display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  overflow: hidden;
+}
+
+
+.edit-container {
+  width: 100%;
+  border: 2px dashed $black;
   padding: 0.625rem 0rem;
-  justify-content: center;
+  cursor: pointer;
 
   &:hover {
     background-color: $white;
   }
+
+  display: flex;
+  justify-content: center;
+
 }
 
-.read-only-border {
-  border: 2px solid $black;
-  padding: 0;
+.edit-container-highlight {
+  background-color: $white;
 }
 
 .file-drop-unselected {
   display: flex;
-  gap: 0.625rem;
+  overflow: hidden;
+  padding-right: 0.625rem;
 }
 
-.file-drop-highlight {
-  background-color: $white;
+input {
+  display: none;
 }
 
-.read-only-container {
-  display: flex;
+.ellipsis-text-overflow {
+  @include ellipsisTextOverflow();
   width: 100%;
-  justify-content: space-between;
-  align-items: center;
-  padding-left: 1.25rem;
+  padding: 0 0.625rem;
 }
 </style>
