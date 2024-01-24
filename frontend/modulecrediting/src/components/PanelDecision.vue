@@ -48,6 +48,10 @@ const props = defineProps({
   @include screenSplit();
   width: 100%;
   height: min-content;
+
+  @media only screen and (max-width: 1000px) {
+    flex-wrap: wrap;
+  }
 }
 
 .decision-container {
