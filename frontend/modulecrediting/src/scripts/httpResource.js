@@ -34,11 +34,15 @@ const errorHandler = error => {
 
         if (error.response) {
         if (error.response.status === 401) {
+            console.debug("%c" + "LOGOUT", errorColor) //TODO remove debug log
             performLogout();
+        }
+        if (error.response.status === 403) {
+            console.debug("%c" + "FORBIDDEN", errorColor) //TODO remove debug log
         }
         }
     }
-    return Promise.reject({ ...error });
+    //return Promise.reject({ ...error });
 };
 
 const successHandler = response => {
