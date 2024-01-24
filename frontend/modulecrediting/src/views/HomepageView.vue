@@ -14,7 +14,7 @@ const id = ref('')
 
 const openDetailView = () => {
     const formattedId = getFormattedId();
-    axios.get(url + `/api/applications/${formattedId}/exists`)
+    httpResource.get(url + `/api/applications/${formattedId}/exists`)
         .then(response => {
             if (response.data) {
                 const routeData = router.resolve({ name: 'statusDetail', params: { id: formattedId } });

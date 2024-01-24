@@ -3,7 +3,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { ref, onBeforeMount } from 'vue';
 import { getApplicationByIdForStatus } from '@/scripts/axios-requests';
 import { url } from '@/scripts/url-config';
-import axios from 'axios';
+import httpResource from "@/scripts/httpResource";
 import ConfirmationContainer from '../components/ConfirmationContainer.vue';
 import ButtonLink from "@/components/ButtonLink.vue";
 
@@ -26,7 +26,7 @@ onBeforeMount(() => {
 });
 
 const openDetailView = () => {
-    axios.get(`${url}/api/applications/${id}/exists`)
+    httpResource.get(`${url}/api/applications/${id}/exists`)
         .then(response => {
             if (response.data) {
                 const routeData = router.resolve({ name: 'statusDetail', params: { id: id } });
