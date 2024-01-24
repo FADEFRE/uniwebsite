@@ -59,7 +59,7 @@ defineExpose({
       <div class="module-dropdown" v-if="type === 'new' || type === 'edit'">
         <Dropdown filter :options="options" placeholder="Modul auswählen" emptyMessage="Studiengang auswählen" emptyFilterMessage="Modul nicht gefunden" @change="e => addSelectedModule(e.value)">
           <template #filtericon>
-            <img class="test" src="@/assets/icons/SearchIcon.svg">
+            <img class="search-icon" src="@/assets/icons/SearchIcon.svg">
           </template>
           <template #dropdownicon>
               <img src="../assets/icons/ArrowWhite.svg">
@@ -84,27 +84,32 @@ defineExpose({
 @import '@/assets/mixins.scss';
 @import '@/assets/variables.scss';
 
-.test {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  right: 0.625rem;
-}
-
 .panel-internal-modules {
   @include panelComponent();
 }
 .screen-split {
   @include screenSplit();
+  
+  @media only screen and (max-width: 700px) {
+    flex-wrap: wrap;
+  }
 }
 .module-dropdown {
   width: 50%;
+
+  @media only screen and (max-width: 700px) {
+    width: 100%;
+  }
 }
 .module-list{
   @include verticalList(small);
   justify-content: space-between;
   align-self: stretch;
   width: 50%;
+
+  @media only screen and (max-width: 700px) {
+    width: 100%;
+  }
 }
 .module-list-full {
   width: 100%
@@ -118,4 +123,11 @@ defineExpose({
     background-color: $mid-gray;
   }
 }
+.search-icon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 0.625rem;
+}
+
 </style>

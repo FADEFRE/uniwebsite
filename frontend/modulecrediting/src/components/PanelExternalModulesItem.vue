@@ -113,7 +113,6 @@ defineExpose({
         </div>
 
         <FileInput :readonly="type === 'edit' || type === 'readonly'" :selected-file="props.selectedFile" ref="fileInput" />
-
       </div>
 
     </div>
@@ -148,6 +147,10 @@ defineExpose({
 
 .screen-split {
   @include screenSplit();
+
+  @media only screen and (max-width: 700px) {
+    flex-wrap: wrap;
+  }
 }
 
 .left-side {
@@ -156,6 +159,9 @@ defineExpose({
   align-self: stretch;
   width: 50%;
   
+  @media only screen and (max-width: 700px) {
+    width: 100%;
+  }
 }
 
 .right-side {
@@ -163,6 +169,10 @@ defineExpose({
   justify-content: space-between;
   align-self: stretch;
   width: 50%;
+
+  @media only screen and (max-width: 700px) {
+    width: 100%;
+  }
 }
 
 .point-container {

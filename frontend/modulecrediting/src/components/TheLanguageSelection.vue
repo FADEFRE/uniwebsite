@@ -23,7 +23,7 @@
     font-family: "Jost";
     font-size: 1.125rem;
     font-weight: 400;
-    line-height: 1rem;
+    line-height: 1.5rem;
 
     &:first-child {
         border-right: 1px solid $white;
@@ -31,7 +31,7 @@
 
     &:hover {
         background-color: transparent;
-        font-weight: 550;
+        text-decoration: underline;
     }
 
 
@@ -39,5 +39,8 @@
 
 .active {
     font-weight: 550;
+    &:hover {
+        text-decoration: none;
+    }
 }
 </style>

@@ -78,7 +78,13 @@ defineExpose({
   border-bottom: 2px solid $dark-gray;
 
   @include verticalList(small);
-
+  
+  @media only screen and (max-width: 1000px) {
+    padding: 1.25rem 2rem;
+  }
+  @media only screen and (max-width: 700px) {
+    padding: 1.25rem 1.5rem;
+  }
 }
 
 

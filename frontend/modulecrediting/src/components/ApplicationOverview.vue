@@ -94,8 +94,6 @@ const containerStyle = computed(() => {
             <div :class="statusStyle">
                 <div class="status-text overview-text">Status: {{ status || 'Placeholder for Status' }}</div>
             </div>
-
-
         </div>
     </div>
 </template>
@@ -126,6 +124,7 @@ const containerStyle = computed(() => {
     align-content: center;
     gap: 0.9375rem;
     max-width: max-content;
+    flex-wrap: wrap;
 }
 
 .course-container {
@@ -160,6 +159,7 @@ const containerStyle = computed(() => {
     display: flex;
     align-items: center;
     gap: 0.9375rem;
+    flex-wrap: wrap;
 }
 
 .date-block {

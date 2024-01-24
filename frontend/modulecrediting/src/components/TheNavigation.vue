@@ -59,7 +59,7 @@ const specificRole = computed(() => navStore.getCurrentRoleNav)
 .links-container {
   display: flex;
   align-items: center;
-  gap: 0.6rem 1.875rem;
+  gap: 0.625rem;
   flex-wrap: wrap;
 }
 
