@@ -5,6 +5,7 @@ import java.util.List;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,23 +28,25 @@ public class ApplicationController {
     @Autowired
     private ApplicationService applicationService;
 
-    //TODO: add auth study-office put request
+    
     @PutMapping("/study-office/{id}")
+    @PreAuthorize("hasRole('ROLE_STUDY')")
     public ResponseEntity<String> updateApplicationStudyOffice(@PathVariable String id,
                                                     @Valid @ModelAttribute ApplicationUpdateDTO applicationUpdateDTO,
                                                     BindingResult result) {
         if (result.hasErrors()) return ResponseEntity.badRequest().body("Validation failed: " + result.getAllErrors());
         return ResponseEntity.ok(applicationService.updateApplication(id, applicationUpdateDTO, "study-office"));
     }
-    //TODO: add auth chairman put request
+
     @PutMapping("/chairman/{id}")
+    @PreAuthorize("hasRole('ROLE_CHAIR')")
     public ResponseEntity<String> updateApplicationChairman(@PathVariable String id,
                                                     @Valid @ModelAttribute ApplicationUpdateDTO applicationUpdateDTO,
                                                     BindingResult result) {
         if (result.hasErrors()) return ResponseEntity.badRequest().body("Validation failed: " + result.getAllErrors());
         return ResponseEntity.ok(applicationService.updateApplication(id, applicationUpdateDTO, "chairman"));
     }
-    //TODO: add auth standard put request? if needed.
+
     @PutMapping("/standard/{id}")
     public ResponseEntity<String> updateApplicationStandard(@PathVariable String id,
                                                     @Valid @ModelAttribute ApplicationUpdateDTO applicationUpdateDTO,
