@@ -15,6 +15,7 @@ function getCoursesLeipzig () {
         .then(response => {
             return response.data.map(obj => obj.name)
         })
+        .catch(_ => {})
 }
 
 /*
@@ -35,6 +36,7 @@ function getModulesByCourse (course) {
                 .map(obj => obj.name)
                 .sort()
         })
+        .catch(_ => {})
 }
 
 /*
@@ -49,6 +51,7 @@ function getApplications () {
 
     return httpResource.get('/api/applications')
         .then(response => response.data)
+        .catch(_ => {})
 }
 
 /*
@@ -69,6 +72,7 @@ function getApplicationById (id) {
             })
             return response.data
         })
+        .catch(_ => {})
 }
 
 /*
@@ -88,6 +92,7 @@ function getApplicationByIdForStatus (id) {
             })
             return response.data
         })
+        .catch(_ => {})
 }
 
 /*
@@ -104,6 +109,7 @@ function getRelatedModuleConnections (moduleConnectionId) {
         .then(response => {
             return response.data
         })
+        .catch(_ => {})
 }
 
 /*
@@ -145,6 +151,7 @@ function postApplication (course, applicationObjects) {
         .then(response => {
             return response.data
         })
+        .catch(_ => {})
 }
 
 // helper - creates basicFormData for PUT-Requests
@@ -184,6 +191,7 @@ function putApplicationStandard (applicationId, courseLeipzig, connectionObjects
 
     return httpResource.put(url + '/api/applications/standard/' + applicationId, formData)
         .then(response => response.data)
+        .catch(_ => {})
 }
 
 function putApplicationStudyOffice (applicationId, courseLeipzig, connectionObjects) {
@@ -207,6 +215,7 @@ function putApplicationStudyOffice (applicationId, courseLeipzig, connectionObje
 
     return httpResource.put('/api/applications/study-office/' + applicationId, formData)
         .then(response => response.data)
+        .catch(_ => {})
 }
 
 /*
@@ -221,6 +230,7 @@ function getUpdateStatusAllowed (id) {
 
     return httpResource.get('/api/applications/' + id + '/update-status-allowed')
         .then(response => response.data)
+        .catch(_ => {})
 }
 
 /*
@@ -242,6 +252,7 @@ function updateStatus (id) {
             }
             return response.data
         })
+        .catch(_ => {})
 }
 
 export {
