@@ -205,6 +205,10 @@ const goBack = () => {
   right: 1rem;
 
   transform: translateY(-50%);
+
+  @media only screen and (max-width: 1000px) {
+    display: none;
+  }
 }
 .unsaved-notification {
   background-color: $red;
