@@ -6,16 +6,13 @@ import { useRouter } from 'vue-router';
 const router = useRouter();
 
 const props = defineProps(['customTitle', 'customMessage']);
-const errorTexts = {
-    title: 'Fehler 404: Seite nicht gefunden',
-    message: 'Leider kann die gewünschte Seite nicht angezeigt werden.',
-};
+
 </script>
 
 <template>
     <div class="error-container">
-        <h3>{{ customTitle || errorTexts.title }}</h3>
-        <p>{{ customMessage || errorTexts.message }}</p>
+        <h3>{{customTitle}}</h3>
+        <p>{{customMessage}}</p>
         <slot></slot>
     </div>
 </template>
