@@ -1,6 +1,7 @@
 import axios from "axios";
 import { url } from "./url-config";
 import { performLogout } from "@/scripts/utils";
+import router from "../router";
 
 const isHandlerEnabled = (config = {}) => {
     return config.hasOwnProperty("handlerEnabled") && !config.handlerEnabled
@@ -39,7 +40,10 @@ const errorHandler = error => {
         }
         if (error.response.status === 403) {
             console.debug("%c" + "FORBIDDEN", errorColor) //TODO remove debug log
-        }
+            }
+        if (error.response.status === 404) {
+                 router.push({ name: "notFound" });
+            } 
         }
     }
     return Promise.reject({ ...error });

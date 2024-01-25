@@ -10,8 +10,6 @@ import {
 } from "@/scripts/axios-requests";
 import { parseRequestDate } from "@/scripts/date-utils";
 import ApplicationConnectionLinks from "@/components/ApplicationConnectionLinks.vue";
-import ErrorView from '@/views/ErrorView.vue';
-import ErrorContainer from "../components/ErrorContainer.vue";
 
 const route = useRoute()
 const router = useRouter();
@@ -27,12 +25,6 @@ const passOnStatus = ref('NOT_ALLOWED')
 onBeforeMount(() => {
   getApplicationById(id)
     .then(data => {
-      if (!data) {
-        router.push({
-          name: 'notFound'
-        });
-        return;
-      }
       // applicationData
       data['modulesConnections'].sort((a, b) => a.id - b.id)
       applicationData.value = data
@@ -106,30 +98,19 @@ const triggerPassOn = () => {
   if (passOnStatus) updateStatus(id).then(_ => location.reload())
 }
 
-const goBack = () => {
-  router.go(-1);
-};
 </script>
 
 <template>
-  <!-- request pending -->
-  <div v-if="!applicationData" class="main">
-    <ErrorContainer :customTitle="'Ungültige Vorgangsnummer'"
-      :customMessage="'falsche ID oder Antrag nicht mehr verfügbar'" />
-    <ButtonLink @click="goBack">Zurück</ButtonLink>
-  </div>
 
-
-
-
-  <div v-else class="main">
+  <div v-if="applicationData" class="main">
 
     <ApplicationConnectionLinks :connections-data="connectionsData" />
     <div class="administrative-detail-container">
-      <ApplicationOverview :creation-date="parseRequestDate(applicationData['creationDate'])"
-        :last-edited-date="parseRequestDate(applicationData['lastEditedDate'])"
-        :decision-date="parseRequestDate(applicationData['decisionDate'])" :id="applicationData['id']"
-        :course="applicationData['courseLeipzig']['name']" :status="applicationData['fullStatus']" />
+
+        <ApplicationOverview :creation-date="parseRequestDate(applicationData['creationDate'])"
+          :last-edited-date="parseRequestDate(applicationData['lastEditedDate'])"
+          :decision-date="parseRequestDate(applicationData['decisionDate'])" :id="applicationData['id']"
+          :course="applicationData['courseLeipzig']['name']" :status="applicationData['fullStatus']" />
 
       <div v-for="connection in applicationData['modulesConnections']">
 

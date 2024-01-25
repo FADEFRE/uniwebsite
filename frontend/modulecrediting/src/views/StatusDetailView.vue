@@ -12,7 +12,6 @@ import { url } from "@/scripts/url-config"
 import { getApplicationByIdForStatus, getModulesByCourse, putApplicationStandard } from "@/scripts/axios-requests";
 import { parseRequestDate } from "@/scripts/date-utils";
 import ButtonLink from '@/components/ButtonLink.vue';
-import ErrorContainer from '../components/ErrorContainer.vue';
 import FormalRejectionInfoBox from "@/components/FormalRejectionInfoBox.vue";
 
 const id = useRoute().params.id
@@ -22,17 +21,13 @@ const applicationData = ref()
 const moduleOptions = ref([])
 const router = useRouter();
 
+
 onBeforeMount(() => {
   getApplicationByIdForStatus(id)
     .then(data => {
-      if (!data) {
-        router.push({
-          name: 'notFound'
-        });
-        return;
-      }
-      applicationData.value = data
-      return data
+     
+      applicationData.value = data;
+      return data;
     })
     .then(data => {
       return getModulesByCourse(data['courseLeipzig']['name'])
@@ -42,15 +37,12 @@ onBeforeMount(() => {
     })
 })
 
+
 const moduleConnections = ref()
 
 const openSummaryDocument = () => {
   window.open(summaryDocumentLink, '_blank')
 }
-const redirectToHome = () => {
-  router.push({ name: 'home' });
-};
-
 const triggerSubmit = () => {
   putApplicationStandard(applicationData.value['id'], applicationData.value['courseLeipzig']['name'], moduleConnections.value)
     .then(_ => location.reload())
@@ -58,18 +50,10 @@ const triggerSubmit = () => {
 </script>
 
 <template>
-  <div v-if="!applicationData" class="main">
-    <ErrorContainer :customTitle="'Ungültige Vorgangsnummer'" :customMessage="'Bitte kehren Sie zur Startseite zurück.'">
-      <ButtonLink @click="redirectToHome">Zur Startseite</ButtonLink>
-    </ErrorContainer>
-  </div>
-
-  <div v-else class="main">
-
-
-
-    <div class="status-detail-container">
-
+  <div class="main">
+    
+    <div v-if="applicationData" class="status-detail-container">
+      
       <div v-if="applicationData['fullStatus'] === 'FORMFEHLER'">
         <FormalRejectionInfoBox />
       </div>
@@ -78,6 +62,8 @@ const triggerSubmit = () => {
         :last-edited-date="parseRequestDate(applicationData['lastEditedDate'])"
         :decision-date="parseRequestDate(applicationData['decisionDate'])" :id="applicationData['id']"
         :course="applicationData['courseLeipzig']['name']" :status="applicationData['fullStatus']" />
+
+
 
       <div v-for="connection in applicationData['modulesConnections']">
 
