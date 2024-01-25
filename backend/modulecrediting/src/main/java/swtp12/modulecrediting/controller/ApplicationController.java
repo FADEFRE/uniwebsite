@@ -31,12 +31,14 @@ public class ApplicationController {
     //GET-Requests
     @GetMapping
     @JsonView(Views.ApplicationOverview.class)
+    @PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR')")
     public ResponseEntity<List<Application>> get() {
         return ResponseEntity.ok(applicationService.getAllApplciations());
     }
 
     @GetMapping("/{id}")
     @JsonView(Views.ApplicationLogin.class)
+    @PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR')")
     public ResponseEntity<Application>  getApplicationById(@PathVariable String id) {
         return ResponseEntity.ok(applicationService.getApplicationById(id));
     }
