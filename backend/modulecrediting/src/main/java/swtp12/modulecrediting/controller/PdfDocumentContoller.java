@@ -31,6 +31,7 @@ public class PdfDocumentContoller {
     public ResponseEntity<byte[]> getPdfDocumentById(@PathVariable Long id) {
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_PDF).body(pdfDocumentService.getPdfDocumentDataById(id));
     }
+    
     @GetMapping("/application/{id}")
     public ResponseEntity<byte[]> generatePdf(@PathVariable String id) throws DocumentException, IOException {
         HttpHeaders headers = new HttpHeaders();

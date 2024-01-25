@@ -28,7 +28,58 @@ public class ApplicationController {
     @Autowired
     private ApplicationService applicationService;
 
-    
+    //GET-Requests
+    @GetMapping
+    @JsonView(Views.ApplicationOverview.class)
+    public ResponseEntity<List<Application>> get() {
+        return ResponseEntity.ok(applicationService.getAllApplciations());
+    }
+
+    @GetMapping("/{id}")
+    @JsonView(Views.ApplicationLogin.class)
+    public ResponseEntity<Application>  getApplicationById(@PathVariable String id) {
+        return ResponseEntity.ok(applicationService.getApplicationById(id));
+    }
+
+    @GetMapping("/{id}/exists")
+    public ResponseEntity<Boolean> applicationExists(@PathVariable String id) {
+        return ResponseEntity.ok(applicationService.applicationExists(id));
+    }
+
+    @GetMapping("/{id}/update-status-allowed")
+    public ResponseEntity<EnumStatusChange> updateApplicationStatusAllowed(@PathVariable String id) {
+        return ResponseEntity.ok(applicationService.updateApplicationStatusAllowed(id));
+    }
+
+    //TODO: FIX THAT ONLY REQUIRED FIELDS ARE PASSED
+    @GetMapping("/student/{id}") 
+    @JsonView(Views.ApplicationStudent.class)
+    public ResponseEntity<StudentApplicationDTO>  getApplicationStudentById(@PathVariable String id) {
+        return ResponseEntity.ok(applicationService.getStudentApplicationById(id));
+    }
+
+
+    //POST-Requests
+    @PostMapping
+    public ResponseEntity<String> createApplication(@ModelAttribute ApplicationCreateDTO applicationCreateDTO) {
+        return ResponseEntity.ok(applicationService.createApplication(applicationCreateDTO));
+    }
+
+
+    //PUT-Requests
+    @PutMapping("/{id}/update-status")
+    public ResponseEntity<EnumApplicationStatus> updateApplicationStatus(@PathVariable String id) {
+        return ResponseEntity.ok(applicationService.updateApplicationStatus(id));
+    }
+
+    @PutMapping("/standard/{id}")
+    public ResponseEntity<String> updateApplicationStandard(@PathVariable String id,
+                                                    @Valid @ModelAttribute ApplicationUpdateDTO applicationUpdateDTO,
+                                                    BindingResult result) {
+        if (result.hasErrors()) return ResponseEntity.badRequest().body("Validation failed: " + result.getAllErrors());
+        return ResponseEntity.ok(applicationService.updateApplication(id, applicationUpdateDTO, "standard"));
+    }
+
     @PutMapping("/study-office/{id}")
     @PreAuthorize("hasRole('ROLE_STUDY')")
     public ResponseEntity<String> updateApplicationStudyOffice(@PathVariable String id,
@@ -47,52 +98,4 @@ public class ApplicationController {
         return ResponseEntity.ok(applicationService.updateApplication(id, applicationUpdateDTO, "chairman"));
     }
 
-    @PutMapping("/standard/{id}")
-    public ResponseEntity<String> updateApplicationStandard(@PathVariable String id,
-                                                    @Valid @ModelAttribute ApplicationUpdateDTO applicationUpdateDTO,
-                                                    BindingResult result) {
-        if (result.hasErrors()) return ResponseEntity.badRequest().body("Validation failed: " + result.getAllErrors());
-        return ResponseEntity.ok(applicationService.updateApplication(id, applicationUpdateDTO, "standard"));
-    }
-
-
-
-    @GetMapping("/{id}/update-status-allowed")
-    public ResponseEntity<EnumStatusChange> updateApplicationStatusAllowed(@PathVariable String id) {
-        return ResponseEntity.ok(applicationService.updateApplicationStatusAllowed(id));
-    }
-    @PutMapping("/{id}/update-status")
-    public ResponseEntity<EnumApplicationStatus> updateApplicationStatus(@PathVariable String id) {
-        return ResponseEntity.ok(applicationService.updateApplicationStatus(id));
-    }
-
-    @PostMapping
-    public ResponseEntity<String> createApplication(@ModelAttribute ApplicationCreateDTO applicationCreateDTO) {
-        return ResponseEntity.ok(applicationService.createApplication(applicationCreateDTO));
-    }
-
-    @GetMapping
-    @JsonView(Views.ApplicationOverview.class)
-    public ResponseEntity<List<Application>> get() {
-        return ResponseEntity.ok(applicationService.getAllApplciations());
-    }
-
-    @GetMapping("/{id}")
-    @JsonView(Views.ApplicationLogin.class)
-    public ResponseEntity<Application>  getApplicationById(@PathVariable String id) {
-        return ResponseEntity.ok(applicationService.getApplicationById(id));
-    }
-
-
-    @GetMapping("/student/{id}")
-    @JsonView(Views.ApplicationStudent.class)
-    public ResponseEntity<StudentApplicationDTO>  getApplicationStudentById(@PathVariable String id) {
-        return ResponseEntity.ok(applicationService.getStudentApplicationById(id));
-    }
-
-    @GetMapping("/{id}/exists")
-    public ResponseEntity<Boolean> applicationExists(@PathVariable String id) {
-        return ResponseEntity.ok(applicationService.applicationExists(id));
-    }
-    
 }
