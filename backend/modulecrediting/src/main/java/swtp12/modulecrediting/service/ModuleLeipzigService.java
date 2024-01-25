@@ -111,4 +111,9 @@ public class ModuleLeipzigService {
     public List<ModuleLeipzig> getAllModulesLeipzig() {
         return moduleLeipzigRepository.findAll();
     }
+
+    public Boolean editModule(String name, ModuleLeipzigUpdateDTO moduleLeipzigUpdateDTO) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'editModule'");
+    }
 }
