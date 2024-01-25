@@ -1,8 +1,8 @@
 <svg width="865px" height="219px" viewBox="0 0 865 219" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <g id="d_nomenklatur_buehneS" transform="translate(-735, 0)">
         <g id="shape" transform="translate(703.369463, 0)">
-            <polygon fill="#B02F2C" points="32 0 332 650 897 650 897 0"></polygon>
-            <polygon fill="#FF5451" opacity="0.5" points="763 0 463 650 162 650 463 0"></polygon>
+            <polygon fill="#B02F2C" points="32 0 332 650 897 650 897 0"/>
+            <polygon fill="#FF5451" opacity="0.5" points="763 0 463 650 162 650 463 0"/>
         </g>
     </g>
 </svg>

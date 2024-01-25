@@ -43,7 +43,6 @@ function toggleMenu() {
 
 .header-background {
   background-color: $white;
-
 }
 
 .header-container {
@@ -56,6 +55,10 @@ function toggleMenu() {
   background-repeat: no-repeat;
   background-size: contain;
   background-position: right;
+
+  @media screen and (max-width: 920px) {
+    background-image: none;
+  }
 }
 
 .logo-container {
@@ -76,6 +79,11 @@ function toggleMenu() {
     width: 21rem;
     height: 9rem;
   }
+
+  @media only screen and (max-width: 920px) {
+    width: 16rem;
+    height: 7rem;
+  }
 }
 
 .nav-menu-container {
@@ -87,13 +95,22 @@ function toggleMenu() {
 
 .burger-menu {
   display: none;
-
 }
 
-@media (max-width: 800px) {
+@media (max-width: 920px) {
   .burger-menu {
     display: block; // Show burger menu icon on small screens
-  }
+    background-color: $white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin-right: 0.625rem;
+    &:hover {
+      background-color: $gray;
+    }
+}
+
 .nav-menu-container.open {
     display: block;
     transform: translateY(0); // Slide in
