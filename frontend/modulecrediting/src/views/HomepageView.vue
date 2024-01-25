@@ -2,7 +2,7 @@
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
 import { url } from "@/scripts/url-config";
-import axios from "axios";
+import { getApplicationExists } from "@/scripts/axios-requests";
 import HomepageContainer from '../components/HomepageContainer.vue';
 import SideInfoContainer from '../components/SideInfoContainer.vue';
 import ButtonLink from '../components/ButtonLink.vue';
@@ -14,14 +14,17 @@ const id = ref('')
 
 const openDetailView = () => {
     const formattedId = getFormattedId();
-    httpResource.get(url + `/api/applications/${formattedId}/exists`)
-        .then(response => {
-            if (response.data) {
-                const routeData = router.resolve({ name: 'statusDetail', params: { id: formattedId } });
-                window.open(routeData.href, '_top');
-            } else {
-                isInvalid.value = true
+    console.log(id.value);
+    console.log(formattedId);
+    getApplicationExists(formattedId)
+        .then(data => {
+            if (data === false) {
+                isInvalid.value = true;
+                return;
             }
+
+            const routeData = router.resolve({ name: 'statusDetail', params: { id: formattedId } });
+            window.open(routeData.href, '_top');
         })
 }
 
@@ -38,7 +41,6 @@ const handleEnterKey = (event) => {
 }
 
 const validateInput = () => {
-    
     id.value = id.value.replace(/[^0-9]/g, '');
     id.value = id.value.replace(/(\d)(?=(\d{1,5})+$)/g, '$1-');
     id.value = id.value.slice(0, 11);
@@ -56,14 +58,15 @@ const getFormattedId = () => {
             <!-- HomepageContainer Application -->
             <HomepageContainer :header="$t('make application')"
                 :text="$t('create an application to have modules from other universities recognized at the University of Leipzig.')">
-                <ButtonLink @click="goToSubmitApplication">{{$t('make application')}}</ButtonLink>
+                <ButtonLink @click="goToSubmitApplication">{{ $t('make application') }}</ButtonLink>
             </HomepageContainer>
 
             <!-- HomepageContainer StatusView -->
             <HomepageContainer :header="$t('view status')"
                 :text="$t('view the status of applications that have already been submitted using the 6-digit process number.')">
-                <InputText v-model="id" :class="{ 'p-invalid': isInvalid }" class="hide-placeholder" placeholder="0-0-0-0-0-0" @keydown.enter.prevent="openDetailView" @input="validateInput" />
-                <ButtonLink @click="openDetailView">{{$t('view status')}}</ButtonLink>
+                <InputText v-model="id" :class="{ 'p-invalid': isInvalid }" class="hide-placeholder"
+                    placeholder="0-0-0-0-0-0" @keydown.enter.prevent="openDetailView" @input="validateInput" />
+                <ButtonLink @click="openDetailView">{{ $t('view status') }}</ButtonLink>
             </HomepageContainer>
         </div>
 
@@ -71,10 +74,10 @@ const getFormattedId = () => {
             <!--SideInfoContainerfür Antragprozess -->
             <SideInfoContainer :heading="$t('application process')">
                 <ul class="list-container">
-                    <li class="list-item">{{$t('submit an application online')}}</li>
-                    <li class="list-item">{{$t('view status online using process number')}}</li>
-                    <li class="list-item">{{$t('wait for the PAV`s decision')}}</li>
-                    <li class="list-item">{{$t('go to the study office with the completed application')}}</li>
+                    <li class="list-item">{{ $t('submit an application online') }}</li>
+                    <li class="list-item">{{ $t('view status online using process number') }}</li>
+                    <li class="list-item">{{ $t('wait for the PAV`s decision') }}</li>
+                    <li class="list-item">{{ $t('go to the study office with the completed application') }}</li>
                 </ul>
             </SideInfoContainer>
         </div>
@@ -99,15 +102,15 @@ const getFormattedId = () => {
 .side-infos-container {
     @include verticalList(big);
     width: min-content;
+
     @media only screen and (max-width: 1000px) {
-    width: 100%;
-  }
+        width: 100%;
+    }
 }
 
 .hide-placeholder {
-  &:focus::placeholder {
-    color: transparent;
-  }
+    &:focus::placeholder {
+        color: transparent;
+    }
 }
-
 </style>

@@ -96,6 +96,21 @@ function getApplicationByIdForStatus (id) {
 }
 
 /*
+GET-Request to '/applications/{id}/exists' endpoint
+returns true if application with id exists: else returns false
+
+parameters:
+    id - Number, application id
+ */
+function getApplicationExists (id) {
+    console.debug("%c"+ "getApplicationExists ()", "color:yellow")
+
+    return httpResource.get(url + `/api/applications/${id}/exists`)
+        .then(response => response.data)
+        .catch(_ => {})
+}
+
+/*
 GET-Request to '/applications/{id}/related' endpoint
 returns related module connections
 
@@ -261,6 +276,7 @@ export {
     getApplications,
     getApplicationById,
     getApplicationByIdForStatus,
+    getApplicationExists,
     getRelatedModuleConnections,
     postApplication,
     putApplicationStandard,
