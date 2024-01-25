@@ -264,7 +264,8 @@ http://localhost:8090/api/courses-leipzig/{name} -> needs {name}, returns corres
     ]
 .
 
-http://localhost:8090/api/courses-leipzig/{name}/state -> needs {name}, returns "isActive"
+http://localhost:8090/api/courses-leipzig/{name}/state -> needs {name}, returns "isActive"      
+Requires Role: "ROLE_STUDY" or "ROLE_CHAIR"
 
     true / false
 .
@@ -272,7 +273,8 @@ http://localhost:8090/api/courses-leipzig/{name}/state -> needs {name}, returns 
 
 ### POST - Requests:
 
-http://localhost:8090/api/courses-leipzig/create -> needs "CourseLeipzigCreateDTO", returns "name" of created CourseLeipzig
+http://localhost:8090/api/courses-leipzig/create -> needs "CourseLeipzigCreateDTO", returns "name" of created CourseLeipzig         
+Requires Role: "ROLE_STUDY" or "ROLE_CHAIR"
 
     id
 .
@@ -280,7 +282,8 @@ http://localhost:8090/api/courses-leipzig/create -> needs "CourseLeipzigCreateDT
 
 ### PUT - Requests:
 
-http://localhost:8090/api/courses-leipzig/{name}/edit -> needs {name} "EditCourseDTO", returns "Boolean"
+http://localhost:8090/api/courses-leipzig/{name}/edit -> needs {name} "EditCourseDTO", returns "Boolean"            
+Requires Role: "ROLE_STUDY" or "ROLE_CHAIR"
 
     true / false
 .
@@ -288,7 +291,8 @@ http://localhost:8090/api/courses-leipzig/{name}/edit -> needs {name} "EditCours
 
 ### DELETE - Requests:
 
-http://localhost:8090/api/courses-leipzig/{name}/delete -> needs {name}, returns 
+http://localhost:8090/api/courses-leipzig/{name}/delete -> needs {name}, returns            
+Requires Role: "ROLE_STUDY" or "ROLE_CHAIR"
 
     DELETED / DEACTIVATED
 .
@@ -320,7 +324,8 @@ http://localhost:8090/api/modules-leipzig/{name} -> needs {name}, returns corres
     "isActive": true / false
 .
 
-http://localhost:8090/api/modules-leipzig/{name}/state -> needs {name}, returns "isActive"
+http://localhost:8090/api/modules-leipzig/{name}/state -> needs {name}, returns "isActive"      
+Requires Role: "ROLE_STUDY" or "ROLE_CHAIR"
 
     true / false
 .
@@ -328,7 +333,8 @@ http://localhost:8090/api/modules-leipzig/{name}/state -> needs {name}, returns 
 
 ### POST - Requests:
 
-http://localhost:8090/api/modules-leipzig/create -> needs "ModuleLeipzigCreateDTO", returns "name" of created CourseLeipzig
+http://localhost:8090/api/modules-leipzig/create -> needs "ModuleLeipzigCreateDTO", returns "name" of created CourseLeipzig         
+Requires Role: "ROLE_STUDY" or "ROLE_CHAIR"
 
     id
 .
@@ -336,7 +342,8 @@ http://localhost:8090/api/modules-leipzig/create -> needs "ModuleLeipzigCreateDT
 
 ### PUT - Requests:
 
-http://localhost:8090/api/modules-leipzig/{name}/edit -> needs {name} "ModuleLeipzigUpdateDTO", returns "Boolean"
+http://localhost:8090/api/modules-leipzig/{name}/edit -> needs {name} "ModuleLeipzigUpdateDTO", returns "Boolean"   
+Requires Role: "ROLE_STUDY" or "ROLE_CHAIR"
 
     true / false
 .
@@ -344,7 +351,8 @@ http://localhost:8090/api/modules-leipzig/{name}/edit -> needs {name} "ModuleLei
 
 ### DELETE - Requests:
 
-http://localhost:8090/api/modules-leipzig/{name}/delete -> needs {name}, returns 
+http://localhost:8090/api/modules-leipzig/{name}/delete -> needs {name}, returns        
+Requires Role: "ROLE_STUDY" or "ROLE_CHAIR"
 
     DELETED / DEACTIVATED
 .
