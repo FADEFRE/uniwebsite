@@ -45,3 +45,7 @@ Admin:
 
     username: admin
     password: admin
+
+## API - Requests
+
+    -> README-API.md
