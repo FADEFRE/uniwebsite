@@ -30,6 +30,10 @@ const requestHandler = request => {
 };
 
 const errorHandler = error => {
+    // TODO 401 route to login
+    // TODO 403 route to forbidden error page
+    // TODO 404 route to not found error page
+    // TODO else route to server error page
     if (isHandlerEnabled(error.config)) {
         console.log("%c" + "Error Interceptor", errorColor, error); //TODO remove debug log
 
