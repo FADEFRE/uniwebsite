@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,6 +43,7 @@ public class CourseLeipzigController {
     }
 
     @GetMapping("/{name}/state")
+    @PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR')")
     public ResponseEntity<Boolean> getCourseLeipzigState(@PathVariable String name) {
         return ResponseEntity.ok(courseLeipzigService.getCourseLeipzigState(name));
     }
@@ -49,6 +51,7 @@ public class CourseLeipzigController {
 
     //POST-Requests
     @PostMapping("/create")
+    @PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR')")
     public ResponseEntity<String> createCourseLeipzig(@ModelAttribute CourseLeipzigCreateDTO courseLeipzigCreateDTO) {
         return ResponseEntity.ok(courseLeipzigService.createApplication(courseLeipzigCreateDTO));
     }
@@ -56,6 +59,7 @@ public class CourseLeipzigController {
 
     //PUT-Requests
     @PutMapping("/{name}/edit")
+    @PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR')")
     public ResponseEntity<Boolean> editCourse(@PathVariable String name, @ModelAttribute EditCourseDTO editCourseDTO) {
         return ResponseEntity.ok(courseLeipzigService.editCourse(name, editCourseDTO));
     }
@@ -63,6 +67,7 @@ public class CourseLeipzigController {
     
     //DELETE-Requests
     @DeleteMapping("/{name}/delete")
+    @PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR')")
     public ResponseEntity<String> deleteCourseLeipzig(@PathVariable String name) {
         if (courseLeipzigService.deleteCourseLeipzig(name)) return ResponseEntity.ok("DELETED");
         else return ResponseEntity.ok("DEACTIVATED");

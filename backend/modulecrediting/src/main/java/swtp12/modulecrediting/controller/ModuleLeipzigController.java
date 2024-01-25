@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,6 +45,7 @@ public class ModuleLeipzigController {
     }
     
     @GetMapping("/{name}/state")
+    @PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR')")
     public ResponseEntity<Boolean> getModuleLeipzigState(@PathVariable String name) {
         return ResponseEntity.ok(moduleLeipzigService.getModuleLeipzigState(name));
     }
@@ -51,6 +53,7 @@ public class ModuleLeipzigController {
     
     //POST-Requests
     @PostMapping("/create")
+    @PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR')")
     public ResponseEntity<String> createModuleLeipzig(@ModelAttribute ModuleLeipzigCreateDTO moduleLeipzigCreateDTO) {
         return ResponseEntity.ok(moduleLeipzigService.createModuleLeipzig(moduleLeipzigCreateDTO));
     }
@@ -58,6 +61,7 @@ public class ModuleLeipzigController {
 
     //PUT-Requests
     @PutMapping("/{name}/edit")
+    @PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR')")
     public ResponseEntity<Boolean> editModule(@PathVariable String name, @ModelAttribute ModuleLeipzigUpdateDTO moduleLeipzigUpdateDTO) {
         return ResponseEntity.ok(moduleLeipzigService.editModule(name, moduleLeipzigUpdateDTO));
     }
@@ -65,6 +69,7 @@ public class ModuleLeipzigController {
 
     //DELETE-Requests
     @DeleteMapping("/{name}/delete")
+    @PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR')")
     public ResponseEntity<String> deleteModulesLeipzig(@PathVariable String name) {
         if (moduleLeipzigService.deleteModulesLeipzig(name)) {
             return ResponseEntity.ok("DELETED");
