@@ -32,7 +32,7 @@ public class ApplicationController {
     @GetMapping
     @JsonView(Views.ApplicationOverview.class)
     @PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR')")
-    public ResponseEntity<List<Application>> get() {
+    public ResponseEntity<List<Application>> getApplicationsOverview() {
         return ResponseEntity.ok(applicationService.getAllApplciations());
     }
 
@@ -43,21 +43,22 @@ public class ApplicationController {
         return ResponseEntity.ok(applicationService.getApplicationById(id));
     }
 
+    //TODO: FIX THAT ONLY REQUIRED FIELDS ARE PASSED
+    @GetMapping("/student/{id}")
+    @JsonView(Views.ApplicationStudent.class)
+    public ResponseEntity<StudentApplicationDTO>  getApplicationStudentById(@PathVariable String id) {
+        return ResponseEntity.ok(applicationService.getStudentApplicationById(id));
+    }
+
     @GetMapping("/{id}/exists")
     public ResponseEntity<Boolean> applicationExists(@PathVariable String id) {
         return ResponseEntity.ok(applicationService.applicationExists(id));
     }
 
     @GetMapping("/{id}/update-status-allowed")
+    @PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR')")
     public ResponseEntity<EnumStatusChange> updateApplicationStatusAllowed(@PathVariable String id) {
         return ResponseEntity.ok(applicationService.updateApplicationStatusAllowed(id));
-    }
-
-    //TODO: FIX THAT ONLY REQUIRED FIELDS ARE PASSED
-    @GetMapping("/student/{id}") 
-    @JsonView(Views.ApplicationStudent.class)
-    public ResponseEntity<StudentApplicationDTO>  getApplicationStudentById(@PathVariable String id) {
-        return ResponseEntity.ok(applicationService.getStudentApplicationById(id));
     }
 
 
@@ -70,6 +71,7 @@ public class ApplicationController {
 
     //PUT-Requests
     @PutMapping("/{id}/update-status")
+    @PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR')")
     public ResponseEntity<EnumApplicationStatus> updateApplicationStatus(@PathVariable String id) {
         return ResponseEntity.ok(applicationService.updateApplicationStatus(id));
     }

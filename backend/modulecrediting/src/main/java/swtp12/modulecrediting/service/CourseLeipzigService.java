@@ -67,11 +67,6 @@ public class CourseLeipzigService {
         return check;
     }
 
-    public Boolean getCourseLeipzigState(String name) {
-        CourseLeipzig courseLeipzig = getCourseLeipzigByName(name);
-        return courseLeipzig.getIsActive();
-    }
-
     public Boolean editCourse(String courseName, EditCourseDTO editCourseDTO) {
         if (editCourseDTO == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No data given");
         if (editCourseDTO.getModuleId().isBlank()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No module name given");

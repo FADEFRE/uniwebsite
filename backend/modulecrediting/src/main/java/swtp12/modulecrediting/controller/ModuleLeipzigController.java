@@ -35,21 +35,9 @@ public class ModuleLeipzigController {
     //GET-Requests
     @GetMapping
     @JsonView(Views.modulesWithoutCourse.class)
-    ResponseEntity<List<ModuleLeipzig>> getAllModulesLeipzig() {
-        return ResponseEntity.ok(moduleLeipzigService.getAllModulesLeipzig());
+    ResponseEntity<List<ModuleLeipzig>> getModulesLeipzig() {
+        return ResponseEntity.ok(moduleLeipzigService.getModulesLeipzig());
     }
-
-    @GetMapping("/{name}")
-    public ResponseEntity<ModuleLeipzig> getSingleModulesLeipzig(@PathVariable String name) {
-        return ResponseEntity.ok(moduleLeipzigService.getModuleLeipzigByName(name));
-    }
-    
-    @GetMapping("/{name}/state")
-    @PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR')")
-    public ResponseEntity<Boolean> getModuleLeipzigState(@PathVariable String name) {
-        return ResponseEntity.ok(moduleLeipzigService.getModuleLeipzigState(name));
-    }
-
     
     //POST-Requests
     @PostMapping("/create")
@@ -58,14 +46,12 @@ public class ModuleLeipzigController {
         return ResponseEntity.ok(moduleLeipzigService.createModuleLeipzig(moduleLeipzigCreateDTO));
     }
 
-
     //PUT-Requests
     @PutMapping("/{name}/edit")
     @PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR')")
     public ResponseEntity<Boolean> editModule(@PathVariable String name, @ModelAttribute ModuleLeipzigUpdateDTO moduleLeipzigUpdateDTO) {
         return ResponseEntity.ok(moduleLeipzigService.editModule(name, moduleLeipzigUpdateDTO));
     }
-
 
     //DELETE-Requests
     @DeleteMapping("/{name}/delete")
@@ -76,5 +62,4 @@ public class ModuleLeipzigController {
         }
         else return ResponseEntity.ok("DEACTIVATED");
     }
-
 }

@@ -33,21 +33,9 @@ public class CourseLeipzigController {
     //GET-Requests
     @GetMapping
     @JsonView(Views.coursesWithModules.class)
-    ResponseEntity<List<CourseLeipzig>> getCourseLeipzigs() {
+    ResponseEntity<List<CourseLeipzig>> getCoursesLeipzig() {
         return ResponseEntity.ok(courseLeipzigService.getAllCoursesLeipzig());
     }
-
-    @GetMapping("/{name}")
-    public ResponseEntity<CourseLeipzig> getSingleCourseLeipzig(@PathVariable String name) {
-        return ResponseEntity.ok(courseLeipzigService.getCourseLeipzigByName(name));
-    }
-
-    @GetMapping("/{name}/state")
-    @PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR')")
-    public ResponseEntity<Boolean> getCourseLeipzigState(@PathVariable String name) {
-        return ResponseEntity.ok(courseLeipzigService.getCourseLeipzigState(name));
-    }
-
 
     //POST-Requests
     @PostMapping("/create")
@@ -56,15 +44,13 @@ public class CourseLeipzigController {
         return ResponseEntity.ok(courseLeipzigService.createApplication(courseLeipzigCreateDTO));
     }
 
-
     //PUT-Requests
-    @PutMapping("/{name}/edit")
+    @PutMapping("/{name}/edit") // deleting and adding modules
     @PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR')")
-    public ResponseEntity<Boolean> editCourse(@PathVariable String name, @ModelAttribute EditCourseDTO editCourseDTO) {
+    public ResponseEntity<Boolean> updateCourseLeipzig(@PathVariable String name, @ModelAttribute EditCourseDTO editCourseDTO) {
         return ResponseEntity.ok(courseLeipzigService.editCourse(name, editCourseDTO));
     }
 
-    
     //DELETE-Requests
     @DeleteMapping("/{name}/delete")
     @PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR')")

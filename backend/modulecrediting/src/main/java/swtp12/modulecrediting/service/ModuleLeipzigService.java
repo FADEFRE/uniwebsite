@@ -26,7 +26,7 @@ public class ModuleLeipzigService {
     @Autowired
     private ModulesConnectionRepository modulesConnectionRepository;
 
-
+    // used for application update
     public void updateModulesLeipzig(ModulesConnection modulesConnection, List<ModuleLeipzigUpdateDTO> modulesLeipzigDTO) {
         for(ModuleLeipzigUpdateDTO ml : modulesLeipzigDTO) {
             ModuleLeipzig moduleLeipzig = getModuleLeipzigByName(ml.getName());
@@ -38,6 +38,10 @@ public class ModuleLeipzigService {
             // add new module leipzig to modules connection
             modulesConnection.addModulesLeipzig(List.of(moduleLeipzig));
         }
+    }
+
+    public List<ModuleLeipzig> getModulesLeipzig() {
+        return moduleLeipzigRepository.findAll();
     }
 
     public ArrayList<ModuleLeipzig> getModulesLeipzigByNames(List<String> moduleNamesLeipzig) {
@@ -101,15 +105,6 @@ public class ModuleLeipzigService {
             }
         }
         return check;
-    }
-
-    public Boolean getModuleLeipzigState(String name) {
-        ModuleLeipzig moduleLeipzig = getModuleLeipzigByName(name);
-        return moduleLeipzig.getIsActive();
-    }
-
-    public List<ModuleLeipzig> getAllModulesLeipzig() {
-        return moduleLeipzigRepository.findAll();
     }
 
     public Boolean editModule(String name, ModuleLeipzigUpdateDTO moduleLeipzigUpdateDTO) {
