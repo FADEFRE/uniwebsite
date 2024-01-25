@@ -10,12 +10,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
 import swtp12.modulecrediting.dto.ModuleLeipzigCreateDTO;
+import swtp12.modulecrediting.dto.ModuleLeipzigUpdateDTO;
 import swtp12.modulecrediting.model.ModuleLeipzig;
 import swtp12.modulecrediting.model.Views;
 import swtp12.modulecrediting.service.ModuleLeipzigService;
@@ -29,6 +31,7 @@ public class ModuleLeipzigController {
     @Autowired
     private ModuleLeipzigService moduleLeipzigService;
 
+    //GET-Requests
     @GetMapping
     @JsonView(Views.modulesWithoutCourse.class)
     ResponseEntity<List<ModuleLeipzig>> getAllModulesLeipzig() {
@@ -39,8 +42,28 @@ public class ModuleLeipzigController {
     public ResponseEntity<ModuleLeipzig> getSingleModulesLeipzig(@PathVariable String name) {
         return ResponseEntity.ok(moduleLeipzigService.getModuleLeipzigByName(name));
     }
+    
+    @GetMapping("/{name}/state")
+    public ResponseEntity<Boolean> getModuleLeipzigState(@PathVariable String name) {
+        return ResponseEntity.ok(moduleLeipzigService.getModuleLeipzigState(name));
+    }
+
+    
+    //POST-Requests
+    @PostMapping("/create")
+    public ResponseEntity<String> createModuleLeipzig(@ModelAttribute ModuleLeipzigCreateDTO moduleLeipzigCreateDTO) {
+        return ResponseEntity.ok(moduleLeipzigService.createModuleLeipzig(moduleLeipzigCreateDTO));
+    }
 
 
+    //PUT-Requests
+    @PutMapping("/{name}/edit")
+    public ResponseEntity<Boolean> editModule(@PathVariable String name, @ModelAttribute ModuleLeipzigUpdateDTO moduleLeipzigUpdateDTO) {
+        return ResponseEntity.ok(moduleLeipzigService.editModule(name, moduleLeipzigUpdateDTO));
+    }
+
+
+    //DELETE-Requests
     @DeleteMapping("/{name}/delete")
     public ResponseEntity<String> deleteModulesLeipzig(@PathVariable String name) {
         if (moduleLeipzigService.deleteModulesLeipzig(name)) {
@@ -49,14 +72,4 @@ public class ModuleLeipzigController {
         else return ResponseEntity.ok("DEACTIVATED");
     }
 
-    @GetMapping("/{name}/state")
-    public ResponseEntity<Boolean> getModuleLeipzigState(@PathVariable String name) {
-        return ResponseEntity.ok(moduleLeipzigService.getModuleLeipzigState(name));
-    }
-
-    @PostMapping("/create")
-    public ResponseEntity<String> createModuleLeipzig(@ModelAttribute ModuleLeipzigCreateDTO moduleLeipzigCreateDTO) {
-        return ResponseEntity.ok(moduleLeipzigService.createModuleLeipzig(moduleLeipzigCreateDTO));
-    }
-    
 }
