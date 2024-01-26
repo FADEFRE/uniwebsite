@@ -41,12 +41,13 @@ const errorHandler = error => {
         if (error.response.status === 401) {
             console.debug("%c" + "LOGOUT", errorColor) //TODO remove debug log
             performLogout();
+            router.push({ name: "login" });
         }
         if (error.response.status === 403) {
             console.debug("%c" + "FORBIDDEN", errorColor) //TODO remove debug log
             }
         if (error.response.status === 404) {
-                 router.push({ name: "notFound" });
+                router.push({ name: "notFound" });
             } 
         }
     }
