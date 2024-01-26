@@ -3,7 +3,7 @@
 
 <template>
     <div class="language-selection-container">
-        <Button @click="$i18n.locale = 'DE'" class="language-button" :class="{ 'active': $i18n.locale == 'DE' }">DE</Button>
+        <Button @click="$i18n.locale = 'DE'" class="language-button" :class="{ 'active': $i18n.locale == 'DE'}">DE</Button>
         <Button @click="$i18n.locale = 'EN'" class="language-button" :class="{ 'active': $i18n.locale == 'EN' }">EN</Button>
     </div>
 </template>
@@ -13,6 +13,7 @@
 @import '../assets/mixins.scss';
 
 .language-selection-container {
+    width: fit-content;
     display: flex;
 }
 .language-button {
@@ -33,9 +34,9 @@
         background-color: transparent;
         text-decoration: underline;
     }
-
-
 }
+
+
 
 .active {
     font-weight: 550;

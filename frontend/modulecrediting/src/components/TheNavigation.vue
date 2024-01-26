@@ -3,6 +3,8 @@ import { logout } from "@/router/logout";
 import { useNavTypeStore} from "../store/navTypeStore"
 import { computed } from "vue";
 
+const props = defineProps(['isMenuOpen'])
+
 const navStore = useNavTypeStore();
 const isNavType = computed(() => {
   if (navStore.getCurrentRoleNav === "user") { return "standard" }
@@ -10,43 +12,44 @@ const isNavType = computed(() => {
     return "internal"
   }
 });
+
 const specificRole = computed(() => navStore.getCurrentRoleNav)
 </script>
 
 <template>
-    <div v-if="isNavType === 'standard'" class="links-container">
-      <router-link :to="{ name: 'home' }" class="router-link-container">
+    <div v-if="isNavType === 'standard'" class="links-container" :class="{ 'small-screen-links-container': isMenuOpen}">
+      <router-link :to="{ name: 'home' }" class="router-link" :class="{ 'white-router-link': isMenuOpen}">
         {{ $t('home page') }}
         <img src="@/assets/icons/ArrowWhite.svg" class="arrow-icon">
       </router-link>
-      <router-link :to="{ name: 'login' }" class="router-link-container">
+      <router-link :to="{ name: 'login' }" class="router-link" :class="{ 'white-router-link': isMenuOpen }">
         {{ $t('log-in internally') }}
-        <img src="@/assets/icons/Login.svg" class="login-logout-icon">
+        <img src="@/assets/icons/LoginWhite.svg" class="login-logout-icon login-icon">
       </router-link>
     </div>
 
-    <div v-else-if="isNavType === 'internal'" class="links-container">
-      <router-link to="" class="router-link-container">
+    <div v-else-if="isNavType === 'internal'" class="links-container" :class="{ 'small-screen-links-container': isMenuOpen }">
+      <router-link to="" class="router-link" :class="{ 'white-router-link': isMenuOpen }">
         Verwaltung
         <img src="@/assets/icons/ArrowWhite.svg" class="arrow-icon">
       </router-link> <!-- todo replace with manage link -->
 
-      <div v-if="specificRole === 'study'"> 
-        <router-link :to="{ name: 'studyOfficeSelection' }" class="router-link-container">
+      <div v-if="specificRole === 'study'" :class="{'user-specific-container': isMenuOpen}"> 
+        <router-link :to="{ name: 'studyOfficeSelection' }" class="router-link" :class="{ 'white-router-link': isMenuOpen }">
           Übersicht
           <img src="@/assets/icons/ArrowWhite.svg" class="arrow-icon">
         </router-link>
       </div>
-      <div v-else-if="specificRole === 'chair'">
-        <router-link :to="{ name: 'chairmanSelection' }" class="router-link-container">
+      <div v-else-if="specificRole === 'chair'" :class="{ 'user-specific-container': isMenuOpen }">
+        <router-link :to="{ name: 'chairmanSelection' }" class="router-link" :class="{ 'white-router-link': isMenuOpen }">
           Übersicht
           <img src="@/assets/icons/ArrowWhite.svg" class="arrow-icon">
         </router-link>
       </div>
 
-      <Button @click="logout" class="router-link-container">
+      <Button @click="logout" class="router-link" :class="{ 'white-router-link': isMenuOpen }">
         Logout
-        <img src="@/assets/icons/Login.svg" class="login-logout-icon">
+        <img src="@/assets/icons/LogoutWhite.svg" class="login-logout-icon logout-icon">
       </Button>
     </div>
 
@@ -57,14 +60,26 @@ const specificRole = computed(() => navStore.getCurrentRoleNav)
 
 
 .links-container {
+  width: 100%;
   display: flex;
   align-items: center;
   gap: 0.625rem;
   flex-wrap: wrap;
 }
 
+.small-screen-links-container {
+  flex-direction: column;
+  gap: 1rem;
 
-.router-link-container {
+  max-width: 350px;
+  width: 100%;
+}
+.user-specific-container {
+  width: 100%;
+}
+
+
+.router-link {
   display: flex;
   gap: 0.625rem;
 
@@ -81,6 +96,25 @@ const specificRole = computed(() => navStore.getCurrentRoleNav)
   }
 }
 
+.white-router-link {
+  background-color: $white;
+  color: $dark-gray;
+  width: 100%;
+
+  & .arrow-icon {
+    content: url("@/assets/icons/ArrowDark.svg");
+  }
+  & .login-icon {
+    content: url("@/assets/icons/LoginDark.svg");
+  }
+  & .logout-icon {
+    content: url("@/assets/icons/LogoutDark.svg");
+  }
+
+  &:hover {
+    background-color: $gray;
+  }
+}
 
 .arrow-icon {
   transform: rotate(-90deg);

@@ -11,7 +11,6 @@ const isMenuOpen = ref(false);
 
 function toggleMenu() {
   isMenuOpen.value = !isMenuOpen.value;
-  console.log(isMenuOpen.value);
 }
 </script>
 
@@ -22,12 +21,18 @@ function toggleMenu() {
         <a href="/" class="logo-container">
           <img class="logo" src="./assets/Universität_Leipzig_logo.svg" alt="Logo der Universität Leipzig" />
         </a>
+        
         <Button class="burger-menu" @click="toggleMenu">
-          <img src="@/assets/icons/BurgerIcon.svg" alt="Menu" />
+          <img src="@/assets/icons/BurgerIcon.svg" alt="Menu Open"/>
         </Button>
-        <div class="nav-menu-container" :class="{ 'open': isMenuOpen }">
+
+        <Button class="close-menu" :class="{ 'open': isMenuOpen }" @click="toggleMenu">
+            <img src="@/assets/icons/CloseMenu.svg" alt="Menu Close"/>
+        </Button>
+
+        <div class="nav-menu-container" :class="{ 'closed': !isMenuOpen }">
           <TheLanguageSelection />
-          <TheNavigation />
+          <TheNavigation :isMenuOpen="isMenuOpen" />
         </div>
       </div>
     </header>
@@ -94,43 +99,54 @@ function toggleMenu() {
 }
 
 .burger-menu {
+  background-color: $white;
+  margin-right: 0.625rem;
+  padding: 0.8rem 1rem;
+
+  &:hover {
+    background-color: $gray;
+  }
+
+  display: none;
+}
+
+.close-menu {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 5;
+  border: 2px solid $white;
+  padding: 1.2rem 1.2rem;
+
   display: none;
 }
 
 @media (max-width: 920px) {
   .burger-menu {
-    display: block; // Show burger menu icon on small screens
-    background-color: $white;
     display: flex;
-    justify-content: center;
-    align-items: center;
-
-    margin-right: 0.625rem;
-    &:hover {
-      background-color: $gray;
-    }
-}
-
-.nav-menu-container.open {
-    display: block;
-    transform: translateY(0); // Slide in
   }
+  .close-menu.open {
+    display: flex;
+  }
+
   .nav-menu-container {
-    display: none; // Hide regular menu on small screens
-    position: absolute;
-    top: 0;
-    left: 0;
     width: 100vw;
     height: 100vh;
     background-color: $dark-gray;
-    transition: transform 0.3s ease-in-out;
     z-index: 4;
 
-    transform: translateY(100%);
-
+    position: fixed;
+    top: 0;
+    left: 0;
     
-  }
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
 
-  
+    &.closed {
+      display: none;
+    }
+  }
 }
 </style>

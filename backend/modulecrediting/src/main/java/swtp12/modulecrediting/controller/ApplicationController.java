@@ -43,7 +43,6 @@ public class ApplicationController {
         return ResponseEntity.ok(applicationService.getApplicationById(id));
     }
 
-    //TODO: FIX THAT ONLY REQUIRED FIELDS ARE PASSED
     @GetMapping("/student/{id}")
     @JsonView(Views.ApplicationStudent.class)
     public ResponseEntity<StudentApplicationDTO>  getApplicationStudentById(@PathVariable String id) {
