@@ -21,9 +21,6 @@ slots:
   display: flex;
   gap: 0.625rem;
 
-  &:hover{
-    background-color: $black;
-  }
 }
 
 

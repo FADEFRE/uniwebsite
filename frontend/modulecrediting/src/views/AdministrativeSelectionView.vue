@@ -49,6 +49,7 @@ const filteredApplications = computed(() => {
             :last-edited-date="parseRequestDate(application['lastEditedDate'])"
             :decision-date="parseRequestDate(application['decisionDate'])"
             :forward="route.meta['forward']"
+            class="admin-selection-view"
         />
       </div>
 

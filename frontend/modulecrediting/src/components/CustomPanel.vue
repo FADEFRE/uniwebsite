@@ -93,12 +93,12 @@ defineExpose({
   background-color: $white;
 
   &:hover {
-    background-color: $gray;
+    background-color: $white-hover;
   }
 }
 
 .arrow-icon {
-  transition: 0.2s ease-in-out;
+  transition: 0.3s ease-in-out;
 }
 
 .arrow-up {

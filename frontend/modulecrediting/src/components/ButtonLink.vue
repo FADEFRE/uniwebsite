@@ -56,7 +56,7 @@ const style = computed(() => {
   right: 1rem;
 
   &:hover {
-    background-color: $dark-red;
+    background-color: $red-hover;
   }
 }
 

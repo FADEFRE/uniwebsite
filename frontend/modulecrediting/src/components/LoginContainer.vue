@@ -79,6 +79,9 @@ const attemptLogin = () => {
 
     & .p-inputtext {
         width: 100%;
+        &:hover {
+            background-color: $white-hover;
+        }
     }
 }
 

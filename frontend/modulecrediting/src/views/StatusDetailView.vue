@@ -93,13 +93,35 @@ const triggerSubmit = () => {
         </ul>
       </SideInfoContainer>
       <SideInfoContainer :heading="'STUDIENBÜRO'">
-        <ul class="list-container">
-          <li class="list-item">Antrag online stellen</li>
-          <li class="list-item">Über Vorgangsnummer online Status einsehen</li>
-          <li class="list-item">Auf Entscheidung des PAV warten</li>
-          <li class="list-item">Mit abgeschlossenem Antrag zum Studienbüro gehen</li>
-        </ul>
-      </SideInfoContainer>
+          <p>Fakultät für Mathematik und Informatik</p>
+          <div class="main-info-container">
+            <div class="info-group-container">
+              <h4>Anschrift</h4>
+              <ul>
+                <li>Neues Augusteum</li>
+                <li>Augustusplatz 10</li>
+                <li>04109 Leipzig</li>
+              </ul>
+            </div>
+            <div class="info-group-container">
+              <h4>Kontakt</h4>
+              <ul>
+                <li>Telefon: +49 341 97-32165</li>
+                <li>Telefax: +49 341 97-32193</li>
+                <li>E-Mail: studienbuero@math.uni-leipzig.de</li>
+              </ul>
+            </div>
+            <div class="info-group-container">
+              <h4>Sprechzeiten</h4>
+              <p>Dienstag und Donnerstag: 9:00 - 11:30 Uhr und 12:30 - 16:00 Uhr</p>
+            </div>
+            <a href="https://www.mathcs.uni-leipzig.de/studium/studienbuero" class="link-container">
+              Zum Studienbüro
+              <img src="../assets/icons/ArrowWhite.svg" class="arrow-icon" alt="Arrow Icon">
+            </a>
+          </div>
+
+        </SideInfoContainer>
     </div>
 
   </div>
@@ -126,5 +148,18 @@ const triggerSubmit = () => {
 
 .formal-rejection-highlight {
   border-left: 1rem solid $red;
+}
+
+.link-container {
+  &:hover {
+    .arrow-icon {
+      transform: translate(0.15rem) rotate(-90deg);
+    }
+  }
+}
+
+.arrow-icon {
+  transform: rotate(-90deg);
+  transition: 0.1s ease-in-out;
 }
 </style>

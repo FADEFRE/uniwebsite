@@ -9,6 +9,7 @@
 
 ### Frontend ###
 *.local
+/frontend/modulecrediting/package-lock.json
 
 
 ### Logs ###

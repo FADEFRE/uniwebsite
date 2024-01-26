@@ -71,7 +71,7 @@ defineExpose({
         <div v-for="(module, index) in selectedModules" class="module-list-item">
           <p>{{ module }}</p>
           <div v-if="type === 'new' || type === 'edit'">
-            <img src="../assets/icons/Trash.svg" @click="removeSelectedModule(index)">
+            <img src="../assets/icons/Trash.svg" @click="removeSelectedModule(index)" class="trash-icon">
           </div>
         </div>
       </div>
@@ -118,16 +118,18 @@ defineExpose({
   @include smallHighlightBox();
   @include verticalListItem($gray);
   width: 100%;
-  
-  &:hover{
-    background-color: $mid-gray;
-  }
 }
 .search-icon {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
   right: 0.625rem;
+}
+.trash-icon {
+  @include trashIconAnimation();
+  &:hover{
+    background-color: $gray-hover;
+  }
 }
 
 </style>

@@ -175,7 +175,6 @@ const triggerPassOn = () => {
 
   @media only screen and (max-width: 700px) {
     padding: 0 0.625rem;
-    
   }
 }
 

@@ -62,7 +62,7 @@ defineExpose({
 
       <!-- Icons Slot -->
       <template #icons>
-        <img v-if="allowDelete" src="@/assets/icons/Trash.svg" @click="emit('deleteSelf')">
+        <img v-if="allowDelete" src="@/assets/icons/Trash.svg" @click="emit('deleteSelf')" class="trash-icon">
       </template>
 
       <!-- Panel Content -->
@@ -75,6 +75,11 @@ defineExpose({
 
 
 <style scoped lang="scss">
+@import '../assets/variables.scss';
+@import '../assets/mixins.scss';
+.trash-icon {
+  @include trashIconAnimation();
+}
 </style>
 
 

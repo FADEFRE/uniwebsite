@@ -113,11 +113,20 @@ textarea {
 
 :deep(.p-button:first-child.p-highlight) {
   background-color: $green;
+  &:hover {
+    background-color: $green-hover;
+  }
 }
 :deep(.p-button:nth-child(2).p-highlight) {
   background-color: $orange;
+  &:hover {
+    background-color: $orange-hover;
+  }
 }
 :deep(.p-button:last-child.p-highlight) {
   background-color: $red;
+  &:hover {
+    background-color: $red-hover;
+  }
 }
 </style>

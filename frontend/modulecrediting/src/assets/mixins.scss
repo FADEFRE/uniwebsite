@@ -110,3 +110,13 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+@mixin trashIconAnimation() {
+  background-color: transparent;
+  padding: 0.5rem 1.125rem;
+  transition: 0.2s ease-in-out;
+  cursor: pointer;
+  &:hover {
+    background: $white-hover;
+  }
+}

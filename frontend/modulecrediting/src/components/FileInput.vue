@@ -138,7 +138,7 @@ defineExpose({
   cursor: pointer;
 
   &:hover {
-    background-color: $white;
+    background-color: $gray-hover;
   }
 
   display: flex;
@@ -147,7 +147,7 @@ defineExpose({
 }
 
 .edit-container-highlight {
-  background-color: $white;
+  background-color: $gray-hover;
 }
 
 .file-drop-unselected {
