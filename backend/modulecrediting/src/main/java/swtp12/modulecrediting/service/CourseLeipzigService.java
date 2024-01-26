@@ -56,7 +56,7 @@ public class CourseLeipzigService {
 
     private Boolean checkIfDeletionIsPossible(CourseLeipzig courseLeipzig) {
         List<ModulesConnection> allModulesConnections = modulesConnectionRepository.findAll();
-        if (allModulesConnections.isEmpty()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "There are no connections in the database"); //TODO is this correct??? should it not just delete it then??
+        if (allModulesConnections.isEmpty()) return true;
         Boolean check = false;
         for (ModulesConnection modulesConnection : allModulesConnections) {
             Application application = modulesConnection.getApplication();
