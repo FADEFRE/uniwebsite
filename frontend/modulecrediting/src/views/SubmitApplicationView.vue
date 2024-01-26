@@ -116,7 +116,10 @@ const triggerPostApplication = () => {
             <h4>Sprechzeiten</h4>
             <p>Dienstag und Donnerstag: 9:00 - 11:30 Uhr und 12:30 - 16:00 Uhr</p>
           </div>
-          <ButtonLink>Zum Studienbüro</ButtonLink>
+          <a href="https://www.mathcs.uni-leipzig.de/studium/studienbuero" class="link-container">
+            Zum Studienbüro
+            <img src="../assets/icons/ArrowWhite.svg" class="arrow-icon" alt="Arrow Icon">
+          </a>
         </div>
 
       </SideInfoContainer>
@@ -142,6 +145,19 @@ const triggerPostApplication = () => {
 
 .side-infos-container {
   @include sideInfoContainer();
+}
+
+.link-container {
+  &:hover {
+    .arrow-icon {
+      transform: translate(0.15rem) rotate(-90deg);
+    }
+  }
+}
+
+.arrow-icon {
+  transform: rotate(-90deg);
+  transition: 0.1s ease-in-out;
 }
 </style>
 

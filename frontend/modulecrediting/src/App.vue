@@ -9,8 +9,11 @@ onMounted(() => {
 
 const isMenuOpen = ref(false);
 
-function toggleMenu() {
-  isMenuOpen.value = !isMenuOpen.value;
+function openMenu() {
+  isMenuOpen.value = true;
+}
+function closeMenu() {
+  isMenuOpen.value = false;
 }
 </script>
 
@@ -22,17 +25,17 @@ function toggleMenu() {
           <img class="logo" src="./assets/Universität_Leipzig_logo.svg" alt="Logo der Universität Leipzig" />
         </a>
         
-        <Button class="burger-menu" @click="toggleMenu">
+        <Button class="burger-menu" @click="openMenu">
           <img src="@/assets/icons/BurgerIcon.svg" alt="Menu Open"/>
         </Button>
 
-        <Button class="close-menu" :class="{ 'open': isMenuOpen }" @click="toggleMenu">
+        <Button class="close-menu" :class="{ 'open': isMenuOpen }" @click="closeMenu">
             <img src="@/assets/icons/CloseMenu.svg" alt="Menu Close"/>
         </Button>
 
         <div class="nav-menu-container" :class="{ 'closed': !isMenuOpen }">
           <TheLanguageSelection/>
-          <TheNavigation @linkClicked="toggleMenu" :isMenuOpen="isMenuOpen"/>
+          <TheNavigation @linkClicked="closeMenu" :isMenuOpen="isMenuOpen"/>
         </div>
       </div>
     </header>

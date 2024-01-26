@@ -57,4 +57,6 @@ const props = defineProps(['heading'])
         background-color: $red;
     }
 }
+
+
 </style>

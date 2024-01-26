@@ -7,6 +7,7 @@
 
   &:focus {
     outline: none;
+    box-shadow: none;
   }
 }
 
@@ -131,6 +132,10 @@ Button,
   width: 100%;
 }
 
+.p-focus {
+  box-shadow: none;
+}
+
 .p-dropdown-label {
   color: $white;
   font-family: "Jost";
@@ -225,7 +230,7 @@ textarea,
 /* Note: These styles are for older versions of IE and Edge and may not be necessary anymore. */
 textarea::-ms-scrollbar,
 .p-dropdown-items-wrapper::-ms-scrollbar {
-  width: 5px;
+  width: 3px;
 }
 
 textarea::-ms-scrollbar-track,
