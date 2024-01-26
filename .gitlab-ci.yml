@@ -23,7 +23,6 @@ stages:
 
 test_frontend:
   stage: test
-  when: manual
   image: node:21.1-alpine3.17
   script:
     - cd frontend/modulecrediting
@@ -32,7 +31,6 @@ test_frontend:
 
 test_backend:
   stage: test
-  when: manual
   image: public.ecr.aws/docker/library/maven:3.8.4-openjdk-17
   script:
     - cd backend/modulecrediting
@@ -60,6 +58,7 @@ build_backend:
     entrypoint: ['']
   only:
     - main
+    - develop
   script:
     - echo "{\"auths\":{\"$CI_REGISTRY\":{\"auth\":\"$(echo -n $CI_REGISTRY_USER:$CI_REGISTRY_PASSWORD | base64)\"}}}" > /kaniko/.docker/config.json
     - /kaniko/executor --context "${CI_PROJECT_DIR}/backend/modulecrediting" --build-arg VITE_URL=$VITE_URL --dockerfile
@@ -74,6 +73,7 @@ build_frontend:
     entrypoint: ['']
   only:
     - main
+    - develop
   script:
     - echo "{\"auths\":{\"$CI_REGISTRY\":{\"auth\":\"$(echo -n $CI_REGISTRY_USER:$CI_REGISTRY_PASSWORD | base64)\"}}}" > /kaniko/.docker/config.json
     - /kaniko/executor --context "${CI_PROJECT_DIR}/frontend/modulecrediting" --dockerfile "${CI_PROJECT_DIR}/frontend/modulecrediting/Dockerfile" --destination

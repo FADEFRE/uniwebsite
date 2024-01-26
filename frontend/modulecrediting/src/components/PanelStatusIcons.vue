@@ -40,7 +40,7 @@ const props = defineProps({
         <img v-if="decisionSuggestion === 'accepted'" src="@/assets/icons/ModuleAccepted.svg">
         <img v-else-if="decisionSuggestion === 'asExamCertificate'" src="@/assets/icons/ModuleAsExamCertificate.svg">
         <img v-else-if="decisionSuggestion === 'denied'" src="@/assets/icons/ModuleDenied.svg">
-        <img v-else src="@/assets/icons/moduleUnedited.svg">
+        <img v-else src="@/assets/icons/ModuleUnedited.svg">
       </div>
 
       <img src="@/assets/icons/ArrowDark.svg" class="arrow-icon">
@@ -49,7 +49,7 @@ const props = defineProps({
         <img v-if="decisionFinal === 'accepted'" src="@/assets/icons/ModuleAccepted.svg">
         <img v-else-if="decisionFinal === 'asExamCertificate'" src="@/assets/icons/ModuleAsExamCertificate.svg">
         <img v-else-if="decisionFinal === 'denied'" src="@/assets/icons/ModuleDenied.svg">
-        <img v-else src="@/assets/icons/moduleUnedited.svg">
+        <img v-else src="@/assets/icons/ModuleUnedited.svg">
       </div>
     </div>
 
