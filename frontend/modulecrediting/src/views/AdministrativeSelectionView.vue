@@ -37,6 +37,7 @@ const filteredApplications = computed(() => {
 <template>
   <div class="main">
     <FilterSelector ref="filter" />
+    
     <div class="overview-list">
 
       <div v-for="application in filteredApplications">
@@ -66,5 +67,13 @@ const filteredApplications = computed(() => {
 .overview-list {
   @include verticalList(big);
   width: 70%;
+
+  @media only screen and (max-width: 1100px) {
+    width: 100%;
+  }
+
+  @media only screen and (max-width: 700px) {
+    //padding: 2rem 1rem;
+  }
 }
 </style>

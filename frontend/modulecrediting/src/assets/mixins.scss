@@ -37,6 +37,7 @@
 
 @mixin singleContainer() {
   width: fit-content;
+  max-width: 100%;
   background-color: $white;
   display: flex;
   padding: 4.375rem;

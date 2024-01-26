@@ -70,7 +70,7 @@ function formatId(id) {
 .id {
     font-size: 2.25rem;
     font-weight: 800;
-    letter-spacing: 0.5625rem;
+    letter-spacing: 0.5rem;
 }
 .copy-icon {
     position: absolute;

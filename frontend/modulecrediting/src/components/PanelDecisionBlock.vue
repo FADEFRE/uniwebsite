@@ -46,9 +46,9 @@ defineExpose({
     <div v-if="type === 'edit'">
       <SelectButton :allow-empty="false" :options="decisionOptions" optionLabel="label" optionValue="value"
         v-model="decision">
-        <template #option="optionProps">
+        <!--template #option="optionProps">
           <div class="select-button" :class="optionProps.option.class">{{ optionProps.option.label }}</div>
-        </template>
+        </template-->
       </SelectButton>
     </div>
 
@@ -92,7 +92,6 @@ defineExpose({
   justify-content: space-around;
 }
 
-
 .icon-container {
   padding: 0.49rem 1.25rem;
   border-right: 2px solid $black;
@@ -101,7 +100,6 @@ defineExpose({
     background-color: $gray;
   }
 }
-
 
 textarea {
   width: 100%;
@@ -113,27 +111,13 @@ textarea {
   width: 100%;
 }
 
-:deep(.p-selectbutton > .p-button) {
-  padding: 0;
+:deep(.p-button:first-child.p-highlight) {
+  background-color: $green;
 }
-
-.select-button {
-  @include smallHighlightBox();
-  width: 100%;
-  
+:deep(.p-button:nth-child(2).p-highlight) {
+  background-color: $orange;
 }
-
-:deep(.p-highlight) {
-  & .highlight-accepted {
-    background-color: $green;
-  }
-
-  & .highlight-asExamCertificate {
-    background-color: $orange;
-  }
-
-  & .highlight-denied {
-    background-color: $red;
-  }
+:deep(.p-button:last-child.p-highlight) {
+  background-color: $red;
 }
 </style>
