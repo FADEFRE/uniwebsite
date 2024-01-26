@@ -102,7 +102,7 @@ public class CourseLeipzigService {
 
     public String createCourseLeipzig(CourseLeipzigCreateDTO courseLeipzigCreateDTO) {
         if (courseLeipzigCreateDTO == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No data given");
-        if (courseLeipzigCreateDTO.getCourseName().isBlank()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No course name given");
+        if (courseLeipzigCreateDTO.getCourseName() == null || courseLeipzigCreateDTO.getCourseName().isBlank()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No course name given");
         String courseName = courseLeipzigCreateDTO.getCourseName();
         Optional<CourseLeipzig> cL = courseLeipzigRepository.findById(courseName);
         if (cL.isPresent()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Course with this name already exists: " + courseName);
