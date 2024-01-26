@@ -132,9 +132,6 @@ public class DataLoader implements CommandLineRunner {
                     if(userCreate.getRole() == null) {
                         userCreate.setRole(roleCandidate.get());
                     }
-                    else {
-                        //TODO:check for double role maybe in other class aswell
-                    }
                     userRepository.save(userCreate);
                 }
             }
