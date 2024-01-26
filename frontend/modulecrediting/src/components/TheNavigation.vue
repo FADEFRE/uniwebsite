@@ -18,30 +18,30 @@ const specificRole = computed(() => navStore.getCurrentRoleNav)
 
 <template>
     <div v-if="isNavType === 'standard'" class="links-container" :class="{ 'small-screen-links-container': isMenuOpen}">
-      <router-link :to="{ name: 'home' }" class="router-link" :class="{ 'white-router-link': isMenuOpen}">
+      <router-link :to="{ name: 'home' }" class="router-link" :class="{ 'white-router-link': isMenuOpen}" @click="$emit('linkClicked')">
         {{ $t('home page') }}
         <img src="@/assets/icons/ArrowWhite.svg" class="arrow-icon">
       </router-link>
-      <router-link :to="{ name: 'login' }" class="router-link" :class="{ 'white-router-link': isMenuOpen }">
+      <router-link :to="{ name: 'login' }" @click="$emit('linkClicked')" class="router-link" :class="{ 'white-router-link': isMenuOpen }">
         {{ $t('log-in internally') }}
         <img src="@/assets/icons/LoginWhite.svg" class="login-logout-icon login-icon">
       </router-link>
     </div>
 
     <div v-else-if="isNavType === 'internal'" class="links-container" :class="{ 'small-screen-links-container': isMenuOpen }">
-      <router-link to="" class="router-link" :class="{ 'white-router-link': isMenuOpen }">
+      <router-link to="" class="router-link" @click="$emit('linkClicked')" :class="{ 'white-router-link': isMenuOpen }">
         Verwaltung
         <img src="@/assets/icons/ArrowWhite.svg" class="arrow-icon">
       </router-link> <!-- todo replace with manage link -->
 
       <div v-if="specificRole === 'study'" :class="{'user-specific-container': isMenuOpen}"> 
-        <router-link :to="{ name: 'studyOfficeSelection' }" class="router-link" :class="{ 'white-router-link': isMenuOpen }">
+        <router-link :to="{ name: 'studyOfficeSelection' }" @click="$emit('linkClicked')" class="router-link" :class="{ 'white-router-link': isMenuOpen }">
           Übersicht
           <img src="@/assets/icons/ArrowWhite.svg" class="arrow-icon">
         </router-link>
       </div>
       <div v-else-if="specificRole === 'chair'" :class="{ 'user-specific-container': isMenuOpen }">
-        <router-link :to="{ name: 'chairmanSelection' }" class="router-link" :class="{ 'white-router-link': isMenuOpen }">
+        <router-link :to="{ name: 'chairmanSelection' }" @click="$emit('linkClicked')" class="router-link" :class="{ 'white-router-link': isMenuOpen }">
           Übersicht
           <img src="@/assets/icons/ArrowWhite.svg" class="arrow-icon">
         </router-link>

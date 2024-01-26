@@ -31,8 +31,8 @@ function toggleMenu() {
         </Button>
 
         <div class="nav-menu-container" :class="{ 'closed': !isMenuOpen }">
-          <TheLanguageSelection />
-          <TheNavigation :isMenuOpen="isMenuOpen" />
+          <TheLanguageSelection/>
+          <TheNavigation @linkClicked="toggleMenu" :isMenuOpen="isMenuOpen"/>
         </div>
       </div>
     </header>
