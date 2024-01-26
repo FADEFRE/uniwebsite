@@ -283,7 +283,9 @@ Requires Role: "ROLE_STUDY" or "ROLE_CHAIR"
 ### PUT - Requests:
 
 http://localhost:8090/api/courses-leipzig/{name}/edit -> needs {name} "EditCourseDTO", returns "Boolean"            
-Requires Role: "ROLE_STUDY" or "ROLE_CHAIR"
+Requires Role: "ROLE_STUDY" or "ROLE_CHAIR"     
+
+This Requests edits CourseLeipzig <-> ModuleLeipzig relations
 
     true / false
 .
