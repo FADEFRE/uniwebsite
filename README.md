@@ -422,7 +422,7 @@ http://localhost:8090/api/user/me -> returns "UserSummary"
 http://localhost:8090/api/user/{id}/role -> needs user {id}, returns "Role" of user
 
     HttpStatus.OK           -> Anonymous user / ROLE_STUDY / ROLE_CHAIR / ROLE_ADMIN , 
-    HttpStatus.BAD_REQUEST  -> User doesnt exists! 
+    HttpStatus.NOT_FOUND  -> User doesnt exists! 
 .
 
 .
