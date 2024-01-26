@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import swtp12.modulecrediting.dto.CourseLeipzigCreateDTO;
-import swtp12.modulecrediting.dto.EditCourseDTO;
+import swtp12.modulecrediting.dto.EditCourseLeipzigDTO;
 import swtp12.modulecrediting.model.Application;
 import swtp12.modulecrediting.model.CourseLeipzig;
 import swtp12.modulecrediting.model.ModuleLeipzig;
@@ -67,7 +67,7 @@ public class CourseLeipzigService {
         return check;
     }
 
-    public Boolean editCourse(String courseName, EditCourseDTO editCourseDTO) {
+    public Boolean editCourse(String courseName, EditCourseLeipzigDTO editCourseDTO) {
         if (editCourseDTO == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No data given");
         if (editCourseDTO.getModuleId().isBlank()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No module name given");
         String moduleName = editCourseDTO.getModuleId();
