@@ -118,7 +118,7 @@ defineExpose({
     </div>
 
     <div v-if="type === 'new'">
-      <img v-if="allowDelete" src="../assets/icons/Trash.svg" @click="emit('deleteSelf')">
+      <img v-if="allowDelete" src="../assets/icons/Trash.svg" @click="emit('deleteSelf')" class="trash-icon">
     </div>
 
   </div>
@@ -133,16 +133,13 @@ defineExpose({
   @include verticalListItem($gray);
 
   width: 100%;
-  padding: 0.625rem 0.9375rem 0.625rem 1.25rem;
+  padding: 0.625rem 0.5rem 0.625rem 1.25rem;
 
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  gap: 0.9375rem;
-
-  &:hover{
-    background-color: $mid-gray;
-  }
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .screen-split {
@@ -164,6 +161,10 @@ defineExpose({
   }
 }
 
+:deep(.p-inputtext:hover) {
+  background-color: $gray-hover;
+}
+
 .right-side {
   @include verticalList(small);
   justify-content: space-between;
@@ -180,6 +181,14 @@ defineExpose({
   gap: 0.625rem;
   & .p-inputtext {
     width: 100%;
+  }
+}
+
+.trash-icon {
+  @include trashIconAnimation();
+  padding:  0.5rem 0.5rem;
+  &:hover {
+    background-color: $gray-hover;
   }
 }
 </style>

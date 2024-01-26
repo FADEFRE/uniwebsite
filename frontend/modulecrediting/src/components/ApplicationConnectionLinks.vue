@@ -60,7 +60,7 @@ const props = defineProps({
   gap: 0.08rem;
 
   &:hover{
-    background-color: $gray;
+    background-color: $white-hover;
     & .arrow-icon {
       transform: translateX(0.1rem) rotate(-90deg);
     }

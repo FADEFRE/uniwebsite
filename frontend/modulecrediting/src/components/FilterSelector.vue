@@ -149,15 +149,17 @@ defineExpose({
       <div class="date-filter-container">
         <div @click="setDateTypeCreation" class="date-block" :class="{ 'selected': dateType === 'creation' }">
           <img src="../assets/icons/CreationDate.svg">
-          <p v-if="dateType === 'creation'">Erstellt</p>
+            <p v-if="dateType === 'creation'">Erstellt</p>
+
         </div>
         <div @click="setDateTypeLastEdit" class="date-block" :class="{ 'selected': dateType === 'lastEdit' }">
           <img src="../assets/icons/LastEditedDate.svg">
-          <p v-if="dateType === 'lastEdit'">Zuletzt bearbeitet</p>
+            <p v-if="dateType === 'lastEdit'">Zuletzt bearbeitet</p>
+
         </div>
         <div @click="setDateTypeDecision" class="date-block" :class="{ 'selected': dateType === 'decision' }">
           <img src="../assets/icons/DecisionDate.svg">
-          <p v-if="dateType === 'decision'">Beschlossen</p>
+            <p v-if="dateType === 'decision'">Beschlossen</p>
         </div>
       </div>
       <div>
@@ -211,21 +213,14 @@ defineExpose({
 
 .clear-icon {
   opacity: 0.9;
-  transition: 0.1s ease-in-out;
+  transition: 0.2s ease-in-out;
 
   &:hover {
     opacity: 1;
   }
 }
 
-.arrow-icon {
-  opacity: 0.9;
-  transition: 0.1s ease-in-out;
 
-  &:hover {
-    opacity: 1;
-  }
-}
 
 .filter-container {
   @include basicContainer();
@@ -236,18 +231,17 @@ defineExpose({
   }
 }
 
+.p-inputtext {
+  width: 100%;
+  transition: 0.1s ease-in-out;
+
+  &:hover{
+    background-color: $white-hover;
+  }
+}
+
 .general-container {
   @include verticalList(small);
-  width: 100%;
-}
-
-.course-container {
-  width: 100%;
-}
-
-.status-list-container {
-  @include verticalList(small);
-  gap: 0.2rem;
   width: 100%;
 }
 
@@ -264,50 +258,80 @@ defineExpose({
   @include smallHighlightBox();
   width: 20%;
   display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: $white;
+  transition: 0.1s ease-in-out;
+  cursor: pointer;
 
   &.selected {
     background-color: $gray;
     width: 60%;
+
+    &:hover {
+      background-color: $gray-hover;
+    }
   }
+
+  &:hover {
+    background-color: $white-hover;
+  }
+}
+
+.course-container {
+  width: 100%;
+}
+
+.status-list-container {
+  @include verticalList(small);
+  gap: 0.2rem;
+  width: 100%;
 }
 
 .status-container {
   @include smallHighlightBox();
   background-color: $gray;
   width: 100%;
+  transition: 0.1s ease-in-out;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $gray-hover;
+  }
+}
+.selected {
+  .overview-text {
+    color: $white;
+  }
+
+  &.statusNew {
+    background-color: $green;
+
+    &:hover {
+      background-color: $green-hover;
+    }
+  }
+
+  &.statusStudyOffice,
+  &.statusChairman {
+    background-color: $orange;
+
+    &:hover {
+      background-color: $orange-hover;
+    }
+  }
+
+  &.statusFormalRejection,
+  &.statusClosed {
+    background-color: $red;
+    &:hover {
+      background-color: $red-hover;
+    }
+  }
 }
 
 .overview-text {
   color: $dark-gray;
 }
 
-.p-inputtext {
-  width: 100%;
-}
-
-.selected {
-  & .overview-text {
-    color: $white;
-  }
-
-  &.statusNew {
-    background-color: $green;
-  }
-
-  &.statusFormalRejection {
-    background-color: $red;
-  }
-
-  &.statusStudyOffice {
-    background-color: $orange;
-  }
-
-  &.statusChairman {
-    background-color: $orange;
-  }
-
-  &.statusClosed {
-    background-color: $red;
-  }
-}
 </style>

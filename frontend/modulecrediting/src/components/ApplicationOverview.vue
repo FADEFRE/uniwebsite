@@ -111,8 +111,15 @@ const containerStyle = computed(() => {
     justify-content: space-between;
     row-gap: 0.625rem;
     align-self: stretch;
-    flex-wrap: wrap;    
+    flex-wrap: wrap;
+    
 }
+.admin-selection-view:hover {
+    transition: 0.1s ease-in-out;
+    background-color: $white-hover;
+    cursor: pointer;
+}
+
 .selection-view {
     flex-direction: column;
 }
