@@ -11,7 +11,6 @@ stages:
 
 test_frontend:
   stage: test
-  when: manual
   image: node:21.1-alpine3.17
   script:
     - cd frontend/modulecrediting
@@ -20,7 +19,6 @@ test_frontend:
 
 test_backend:
   stage: test
-  when: manual
   image: public.ecr.aws/docker/library/maven:3.8.4-openjdk-17
   script:
     - cd backend/modulecrediting
