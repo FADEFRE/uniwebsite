@@ -105,7 +105,7 @@ public class CourseLeipzigService {
         if (courseLeipzigCreateDTO.getCourseName().isBlank()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No course name given");
         String courseName = courseLeipzigCreateDTO.getCourseName();
         Optional<CourseLeipzig> cL = courseLeipzigRepository.findById(courseName);
-        if (cL.isPresent()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Course with this name already exists: " + courseName);
+        if (cL.isPresent()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Course with this name already exists: " + courseName);
 
         CourseLeipzig courseLeipzig = new CourseLeipzig(courseName, true);
         courseLeipzigRepository.save(courseLeipzig);
