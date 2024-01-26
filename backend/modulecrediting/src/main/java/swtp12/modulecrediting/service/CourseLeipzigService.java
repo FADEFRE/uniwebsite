@@ -33,7 +33,7 @@ public class CourseLeipzigService {
 
     public CourseLeipzig getCourseLeipzigByName(String name) {
         Optional<CourseLeipzig> courseLeipzig = courseLeipzigRepository.findById(name);
-        if(!courseLeipzig.isPresent()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Course Leipzig not found with moduleName: " + name);
+        if(!courseLeipzig.isPresent()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Course Leipzig not found with moduleName: " + name);
         
         return courseLeipzig.get();
     }
@@ -56,7 +56,7 @@ public class CourseLeipzigService {
 
     private Boolean checkIfDeletionIsPossible(CourseLeipzig courseLeipzig) {
         List<ModulesConnection> allModulesConnections = modulesConnectionRepository.findAll();
-        if (allModulesConnections.isEmpty()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "There are no connections in the database");
+        if (allModulesConnections.isEmpty()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "There are no connections in the database"); //TODO is this correct??? should it not just delete it then??
         Boolean check = false;
         for (ModulesConnection modulesConnection : allModulesConnections) {
             Application application = modulesConnection.getApplication();
@@ -74,8 +74,8 @@ public class CourseLeipzigService {
         String action = editCourseDTO.getAction();
         Optional<CourseLeipzig> cL = courseLeipzigRepository.findById(courseName);
         Optional<ModuleLeipzig> mL = moduleLeipzigRepository.findById(moduleName);
-        if(!cL.isPresent()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Course Leipzig not found with given name: " + courseName);
-        if(!mL.isPresent()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Module Leipzig not found with given name: " + moduleName);
+        if(!cL.isPresent()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Course Leipzig not found with given name: " + courseName);
+        if(!mL.isPresent()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Module Leipzig not found with given name: " + moduleName);
 
         CourseLeipzig courseLeipzig = cL.get();
         ModuleLeipzig moduleLeipzig = mL.get();
@@ -100,12 +100,12 @@ public class CourseLeipzigService {
         return false;
     }
 
-    public String createApplication(CourseLeipzigCreateDTO courseLeipzigCreateDTO) {
+    public String createCourseLeipzig(CourseLeipzigCreateDTO courseLeipzigCreateDTO) {
         if (courseLeipzigCreateDTO == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No data given");
         if (courseLeipzigCreateDTO.getCourseName().isBlank()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No course name given");
         String courseName = courseLeipzigCreateDTO.getCourseName();
         Optional<CourseLeipzig> cL = courseLeipzigRepository.findById(courseName);
-        if (cL.isPresent()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Course with this name already exists: " + courseName);
+        if (cL.isPresent()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Course with this name already exists: " + courseName);
 
         CourseLeipzig courseLeipzig = new CourseLeipzig(courseName, true);
         courseLeipzigRepository.save(courseLeipzig);

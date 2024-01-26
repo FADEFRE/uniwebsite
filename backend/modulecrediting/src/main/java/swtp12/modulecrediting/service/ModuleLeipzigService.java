@@ -59,7 +59,7 @@ public class ModuleLeipzigService {
         if(moduleLeipzig.isPresent())
             return moduleLeipzig.get();
 
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Module Leipzig not found with moduleName: " + name);
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Module Leipzig not found with moduleName: " + name);
     }
 
     public String createModuleLeipzig(ModuleLeipzigCreateDTO moduleLeipzigCreateDTO) {

@@ -48,7 +48,7 @@ public class UserController {
             String roleName = role.getRoleName();
             return new ResponseEntity<>(roleName, HttpStatus.OK); 
         }
-        return new ResponseEntity<>("User doesnt exists!", HttpStatus.BAD_REQUEST); 
+        return new ResponseEntity<>("User doesnt exists!", HttpStatus.NOT_FOUND); 
     }
 
 }
