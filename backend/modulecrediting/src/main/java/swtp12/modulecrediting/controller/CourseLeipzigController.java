@@ -41,7 +41,7 @@ public class CourseLeipzigController {
     @PostMapping("/create")
     @PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR')")
     public ResponseEntity<String> createCourseLeipzig(@ModelAttribute CourseLeipzigCreateDTO courseLeipzigCreateDTO) {
-        return ResponseEntity.ok(courseLeipzigService.createApplication(courseLeipzigCreateDTO));
+        return ResponseEntity.ok(courseLeipzigService.createCourseLeipzig(courseLeipzigCreateDTO));
     }
 
     //PUT-Requests
