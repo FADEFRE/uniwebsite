@@ -24,7 +24,9 @@ export function parseApierror(error) {
     }
 }
 
-export function performLogout() {
+export async function performLogout() {
+    const response = await httpResource.post("/api/auth/logout");
+    console.log(response)
     const authUserStore = useAuthStore();
     const intervalName = authUserStore.getIntervalName;
     if (intervalName) clearInterval(intervalName);
