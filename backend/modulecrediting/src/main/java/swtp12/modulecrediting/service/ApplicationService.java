@@ -2,17 +2,14 @@ package swtp12.modulecrediting.service;
 
 import static swtp12.modulecrediting.model.EnumApplicationStatus.*;
 import static swtp12.modulecrediting.model.EnumModuleConnectionDecision.*;
+import static swtp12.modulecrediting.dto.EnumStatusChange.*;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -21,170 +18,124 @@ import jakarta.transaction.Transactional;
 
 import swtp12.modulecrediting.dto.ApplicationCreateDTO;
 import swtp12.modulecrediting.dto.ApplicationUpdateDTO;
-import swtp12.modulecrediting.dto.ModuleBlockCreateDTO;
-import swtp12.modulecrediting.dto.ModuleBlockUpdateDTO;
+import swtp12.modulecrediting.dto.EnumStatusChange;
+import swtp12.modulecrediting.dto.StudentApplicationDTO;
+import swtp12.modulecrediting.dto.StudentModulesConnectionDTO;
 import swtp12.modulecrediting.model.Application;
-import swtp12.modulecrediting.model.EnumApplicationStatus;
 import swtp12.modulecrediting.model.CourseLeipzig;
-import swtp12.modulecrediting.model.ModuleApplication;
-import swtp12.modulecrediting.model.ModuleLeipzig;
+import swtp12.modulecrediting.model.EnumApplicationStatus;
 import swtp12.modulecrediting.model.ModulesConnection;
-import swtp12.modulecrediting.model.PdfDocument;
 import swtp12.modulecrediting.repository.ApplicationRepository;
 
-
+// TODO: fix pdf generator
 
 @Service
 public class ApplicationService {
     @Autowired
-    private PdfDocumentService pdfDocumentService;
-    @Autowired
     private ApplicationRepository applicationRepository;
     @Autowired
-    private ModuleLeipzigService moduleLeipzigService;
+    ModulesConnectionService modulesConnectionService;
     @Autowired
     private CourseLeipzigService courseLeipzigService;
 
 
-
-    // TODO: Corner Case: No Module Leipzig when creating, or when updating
-    // TODO: Module Accepted but only as Pruefungsschien
     @Transactional
-    public String updateApplication(String id, ApplicationUpdateDTO applicationUpdateDTO) {
-
-
+    public String updateApplication(String id, ApplicationUpdateDTO applicationDTO, String userRole) {
         Application application = getApplicationById(id);
-        List<ModulesConnection> modulesConnections = application.getModulesConnections();
+
+        // check if any changes were made
+        if(applicationDTO.getModulesConnections() != null)
+            modulesConnectionService.updateModulesConnection(applicationDTO.getModulesConnections(), userRole);
+
+        if(containsFormalRejection(application))
+            modulesConnectionService.removeAllDecisions(application.getModulesConnections());
+        application.setLastEditedDate(LocalDateTime.now());
 
 
-        if(applicationUpdateDTO.getModuleBlockUpdateDTOList() == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Module Information is missing");
-        if(applicationUpdateDTO.getModuleBlockUpdateDTOList().size() != modulesConnections.size()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Modules Information don't match the saved Modules Information");
-
-        for (int i = 0; i < modulesConnections.size(); i++) {
-            ModulesConnection modulesConnection = modulesConnections.get(i);
-            ModuleApplication moduleApplication = modulesConnection.getModuleApplication();
-            ModuleBlockUpdateDTO moduleBlockUpdateDTO = applicationUpdateDTO.getModuleBlockUpdateDTOList().get(i);
-
-            // UPDATE BASIC MODULE APPLICATION ATTRIBUTES
-
-            moduleApplication.setName(moduleBlockUpdateDTO.getModuleName());
-            moduleApplication.setUniversity(moduleBlockUpdateDTO.getUniversity());
-            moduleApplication.setPoints(moduleBlockUpdateDTO.getPoints());
-            moduleApplication.setPointSystem(moduleBlockUpdateDTO.getPointSystem());
-
-            // UPDATE PAV/STUDY_OFFICE RELATED ATTRBIUTES
-            if(applicationUpdateDTO.getUserRole().equals("pav")) {
-                modulesConnection.setDecisionFinal(moduleBlockUpdateDTO.getDecisionFinal());
-                modulesConnection.setCommentDecision(moduleBlockUpdateDTO.getCommentDecision());
-            }else if(applicationUpdateDTO.getUserRole().equals("study_office")) {
-                modulesConnection.setDecisionSuggestion(moduleBlockUpdateDTO.getDecisionSuggestion());
-                modulesConnection.setCommentStudyOffice(moduleBlockUpdateDTO.getCommentStudyOffice());
-            }
-            modulesConnection.setAsExamCertificate(moduleBlockUpdateDTO.getAsExamCertificate());
-
-
-
-            // UPDATE CONNECTED MODULES LEIPZIG
-            if(moduleBlockUpdateDTO.getModuleNamesLeipzig() == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Module Leipzig Names are missing");
-            List<ModuleLeipzig> modulesLeipzig = modulesConnection.getModulesLeipzig();
-            List<String> existingModuleNames = getExistingModuleNames(modulesLeipzig);
-            List<String> newModuleNames = getNewModuleNames(existingModuleNames, moduleBlockUpdateDTO.getModuleNamesLeipzig());
-            List<String> deletedModuleNames = getDeletedModuleNames(existingModuleNames, moduleBlockUpdateDTO.getModuleNamesLeipzig());
-
-            List<ModuleLeipzig> modulesLeipzigNew = moduleLeipzigService.getModulesLeipzigByNames(newModuleNames);
-            List<ModuleLeipzig> modulesLeipzigDeleted = moduleLeipzigService.getModulesLeipzigByNames(deletedModuleNames);
-
-            modulesConnection.addModulesLeipzig(modulesLeipzigNew);
-            modulesConnection.removeModulesLeipzig(modulesLeipzigDeleted);
-        }
-
-        // UPDATE APPLICATION STATUS (& DECISIONDATE)
-        updateApplicationStatus(application);
+        // corner cases, where Status is set differently
+        if(!allDecisionSuggestionUnedited(application) || containsFormalRejection(application)) application.setFullStatus(STUDIENBÜRO);
+        if(userRole.equals("standard")) updateApplicationStatus(id);
 
         applicationRepository.save(application);
         return id;
     }
 
-    public List<String> getExistingModuleNames(List<ModuleLeipzig> modulesLeipzig) {
-        List<String> existingModuleNames = new ArrayList<>();
-        for (ModuleLeipzig module : modulesLeipzig) {
-            existingModuleNames.add(module.getModuleName());
-        }
-        return existingModuleNames;
-    }
 
-    public List<String> getNewModuleNames(List<String> existingModuleNames, List<String> updatedModuleNames) {
-        List<String> newModuleNames = new ArrayList<>();
-        for (String updatedModuleName : updatedModuleNames) {
-            if (!existingModuleNames.contains(updatedModuleName)) {
-                newModuleNames.add(updatedModuleName);
-            }
-        }
-        return newModuleNames;
-    }
+    public EnumStatusChange updateApplicationStatusAllowed(String id) {
+        Application application = getApplicationById(id);
 
-    public List<String> getDeletedModuleNames(List<String> existingModuleNames, List<String> updatedModuleNames) {
-        List<String> deletedModuleNames = new ArrayList<>();
-        for (String moduleName : existingModuleNames) {
-            if (!updatedModuleNames.contains(moduleName)) {
-                deletedModuleNames.add(moduleName);
-            }
-        }
-        return deletedModuleNames;
-    }
+        boolean allDecisionSuggestionEdited = allDecisionSuggestionEdited(application);
+        boolean allDecisionsFinalEdited = allDecisionsFinalEdited(application);
+        boolean containsFormalRejection = containsFormalRejection(application);
 
+        if((application.getFullStatus() == STUDIENBÜRO || application.getFullStatus() == NEU) && containsFormalRejection) return REJECT;
+        if(application.getFullStatus() == ABGESCHLOSSEN) return NOT_ALLOWED;
+        if(allDecisionsFinalEdited && (application.getFullStatus() == PRÜFUNGSAUSSCHUSS || application.getFullStatus() == STUDIENBÜRO || application.getFullStatus() == NEU)) return PASSON;
+        if(allDecisionSuggestionEdited && (application.getFullStatus() == STUDIENBÜRO || application.getFullStatus() == NEU)) return PASSON;
+
+        // base case
+        return NOT_ALLOWED;
+    }
     // FUNCTION TO UPDADTE APPLICATION STATUS ON UPDATE
-    public void updateApplicationStatus(Application application) {
-        boolean noDecisionSuggestionCompleted = true;
-        boolean allDecisionsSuggestionsCompleted = true;
-        boolean allDecisionsFinalCompleted = true;
+    public EnumApplicationStatus updateApplicationStatus(String id) {
+        Application application = getApplicationById(id);
 
+        boolean allDecisionSuggestionEdited = allDecisionSuggestionEdited(application);
+        boolean allDecisionsFinalEdited = allDecisionsFinalEdited(application);
+        boolean containsFormalRejection = containsFormalRejection(application);
 
-        for(ModulesConnection m : application.getModulesConnections()) {
-            if(m.getDecisionSuggestion() == UNBEARBEITET) allDecisionsSuggestionsCompleted = false;
-            if(m.getDecisionSuggestion() == ABGELEHNT || m.getDecisionSuggestion() == ANGENOMMEN) noDecisionSuggestionCompleted = false;
-            if(m.getDecisionFinal() == UNBEARBEITET) allDecisionsFinalCompleted = false;
-        }
-
-        if(!noDecisionSuggestionCompleted) application.setFullStatus(IN_BEARBEITUNG);
-        if(allDecisionsSuggestionsCompleted) application.setFullStatus(WARTEN_AUF_ENTSCHEIDUNG_DES_PRUEFUNGSAUSSCHUSSES);
-        if(allDecisionsFinalCompleted) {
+        if(containsFormalRejection) application.setFullStatus(FORMFEHLER);
+        else if(application.getFullStatus() == FORMFEHLER) application.setFullStatus(STUDIENBÜRO);
+        else if(allDecisionsFinalEdited) {
             application.setFullStatus(ABGESCHLOSSEN);
-            application.setDecisionDate(LocalDate.now());
+            application.setDecisionDate(LocalDateTime.now());
+        } else if(allDecisionSuggestionEdited) application.setFullStatus(PRÜFUNGSAUSSCHUSS);
+
+        applicationRepository.save(application);
+        return application.getFullStatus();
+    }
+
+    boolean allDecisionSuggestionUnedited(Application application) {
+        boolean allDecisionSuggestionUnedited = true;
+        for(ModulesConnection m : application.getModulesConnections()) {
+            if(m.getDecisionSuggestion() != unedited)  allDecisionSuggestionUnedited = false;
         }
+        return allDecisionSuggestionUnedited;
+    }
+    boolean allDecisionSuggestionEdited(Application application) {
+        boolean allDecisionSuggestionEdited = true;
+        for(ModulesConnection m : application.getModulesConnections()) {
+            if(m.getDecisionSuggestion() == unedited)  allDecisionSuggestionEdited = false;
+        }
+        return allDecisionSuggestionEdited;
+    }
+    boolean allDecisionsFinalEdited(Application application) {
+        boolean allDecisionsFinalEdited = true;
+        for(ModulesConnection m : application.getModulesConnections()) {
+            if(m.getDecisionFinal() == unedited) allDecisionsFinalEdited = false;
+        }
+        return allDecisionsFinalEdited;
+    }
+    boolean containsFormalRejection(Application application) {
+        boolean containsFormalRejection = false;
+        for(ModulesConnection m : application.getModulesConnections()) {
+            if(m.getFormalRejection()) containsFormalRejection = true;
+        }
+        return containsFormalRejection;
     }
 
 
-    public String createApplication(ApplicationCreateDTO applicationCreateDTO) {
-        ArrayList<ModulesConnection> modulesConnections = new ArrayList<>();
+    public String createApplication(ApplicationCreateDTO applicationDTO) {
+        Application application = new Application(generateValidApplicationId());
 
-        if(applicationCreateDTO.getModuleBlockCreateDTOList() == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Modules are required");
-
-        for(ModuleBlockCreateDTO m : applicationCreateDTO.getModuleBlockCreateDTOList()) {
-            PdfDocument pdfDocument = pdfDocumentService.createPdfDocument(m.getDescription());
-
-            ModuleApplication moduleApplication = new ModuleApplication(m.getModuleName(), m.getPoints(), m.getPointSystem(), m.getUniversity(), m.getCommentApplicant());
-            moduleApplication.addPdfDocument(pdfDocument);
-
-            ModulesConnection modulesConnection = new ModulesConnection();
-            modulesConnection.addModuleApplication(moduleApplication);
-
-            ArrayList<ModuleLeipzig> modulesLeipzig = moduleLeipzigService.getModulesLeipzigByNames(m.getModuleNamesLeipzig());
-            modulesConnection.setModulesLeipzig(modulesLeipzig);
-
-            modulesConnections.add(modulesConnection);
-        }
-
-        CourseLeipzig courseLeipzig = courseLeipzigService.getCourseLeipzigByName(applicationCreateDTO.getCourseLeipzig());
-
-
-        Application application = new Application(generateValidApplicationId(), OFFEN, LocalDate.now());
+        CourseLeipzig courseLeipzig = courseLeipzigService.getCourseLeipzigByName(applicationDTO.getCourseLeipzig());
         application.setCourseLeipzig(courseLeipzig);
 
-        application.addModulesConnections(modulesConnections);
+        List<ModulesConnection> modulesConnections = modulesConnectionService.createModulesConnections(applicationDTO.getModulesConnections());
+        application.setModulesConnections(modulesConnections);
 
-        Application savedApplication = applicationRepository.save(application);
-        return savedApplication.getId();
+        application = applicationRepository.save(application);
+        return application.getId();
     }
 
     private String generateValidApplicationId() {
@@ -220,4 +171,45 @@ public class ApplicationService {
     public boolean applicationExists(String id) {
         return applicationRepository.existsById(id);
     }
+
+
+    public StudentApplicationDTO getStudentApplicationById(String id) {
+        StudentApplicationDTO studentApplicationDTO = new StudentApplicationDTO();
+        Optional<Application> applicationCandidate = applicationRepository.findById(id);
+        if (!applicationCandidate.isPresent()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Application with id: " + id + " not Found");
+
+        Application application = applicationCandidate.get();
+        studentApplicationDTO.setId(application.getId());
+        studentApplicationDTO.setCreationDate(application.getCreationDate());
+        studentApplicationDTO.setLastEditedDate(application.getLastEditedDate());
+        studentApplicationDTO.setDecisionDate(application.getDecisionDate());
+
+        CourseLeipzig courseLeipzigDTO = new CourseLeipzig();
+        courseLeipzigDTO.setName(application.getCourseLeipzig().getName());
+        studentApplicationDTO.setCourseLeipzig(courseLeipzigDTO);
+
+        if (application.getFullStatus() == null) throw new ResponseStatusException(HttpStatus.I_AM_A_TEAPOT, "Application with id: " + id + " has no fullStatus");
+        switch (application.getFullStatus()) {
+            case FORMFEHLER:
+                studentApplicationDTO.setFullStatus(FORMFEHLER.toString());
+                break;
+            case ABGESCHLOSSEN:
+                studentApplicationDTO.setFullStatus(ABGESCHLOSSEN.toString());
+                break;
+            default:
+                studentApplicationDTO.setFullStatus("IN BEARBEITUNG");
+                break;
+        }
+
+        List<StudentModulesConnectionDTO> studentModulesConnectionDTOs = new ArrayList<>();
+        for (ModulesConnection modulesConnection : application.getModulesConnections()) {
+            StudentModulesConnectionDTO smcDTO = modulesConnectionService.getStudentModulesConnectionDTO(modulesConnection.getId(), application.getFullStatus() == ABGESCHLOSSEN);
+            studentModulesConnectionDTOs.add(smcDTO);
+        }
+        studentApplicationDTO.setModulesConnections(studentModulesConnectionDTOs);
+
+        return studentApplicationDTO;
+    }
+
+    
 }

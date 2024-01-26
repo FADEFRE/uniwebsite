@@ -22,10 +22,16 @@ import lombok.NoArgsConstructor;
 public class ModuleLeipzig {   
     @Id
     @NotBlank
-    @JsonView({Views.coursesWithModules.class, Views.modulesWithoutCourse.class, Views.ApplicationStudent.class, Views.RelatedModulesConnection.class})
-    private String moduleName;
+    @JsonView({
+        Views.coursesWithModules.class, 
+        Views.modulesWithoutCourse.class, 
+        Views.ApplicationStudent.class,
+        Views.RelatedModulesConnection.class})
+    private String name;
     @JsonView({Views.coursesWithModules.class, Views.modulesWithoutCourse.class})
-    private String moduleCode;
+    private String code;
+    @JsonView({Views.coursesWithModules.class,Views.modulesWithoutCourse.class})
+    private Boolean isActive;
 
     //Relation ModuleLeipzig <-> ModulesConnection
     @ManyToMany(mappedBy = "modulesLeipzig")
@@ -38,9 +44,10 @@ public class ModuleLeipzig {
     private List<CourseLeipzig> coursesLeipzig = new ArrayList<>();
 
 
-    public ModuleLeipzig(String moduleName, String moduleCode) {
-        this.moduleName = moduleName;
-        this.moduleCode = moduleCode;
+    public ModuleLeipzig(String name, String code, Boolean isActive) {
+        this.name = name;
+        this.code = code;
+        this.isActive = isActive;
     }
 
 }

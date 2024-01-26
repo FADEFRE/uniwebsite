@@ -1,11 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import SubmitApplicationView from '../views/SubmitApplicationView.vue'
-import StatusSearchView from "@/views/StatusSearchView.vue";
-import StatusDetailView from "@/views/StatusDetailView.vue";
-import SelectionView from "@/views/SelectionView.vue";
-import StudyOfficeDetailView from "@/views/StudyOfficeDetailView.vue";
-import ChairmanDetailView from "@/views/ChairmanDetailView.vue";
-import LoginView from "@/views/LoginView.vue";
+import { getAuthenticatedUser } from '@/scripts/utils';
+import { useAuthStore } from '@/store/authStore';
+import { useNavTypeStore } from '@/store/navTypeStore';
+import httpResource from "@/scripts/httpResource";
+import HomepageView from "@/views/HomepageView.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -13,46 +11,126 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: SubmitApplicationView
+      component: HomepageView,
+      meta: { authType: 'standard' }
     },
     {
-      path: '/status',
-      name: 'statusSearch',
-      component: StatusSearchView
+      path: '/antrag',
+      name: 'submitApplication',
+      component: () => import('../views/SubmitApplicationView.vue'),
+      meta: { authType: 'standard' }
+    },
+    {
+      path: '/confirmation/:id',
+      name: 'confirmation',
+      component: () => import('../views/ApplicationConfirmationView.vue'),
+      meta: { authType: 'standard' }
     },
     {
       path: '/status/:id',
       name: 'statusDetail',
-      component: StatusDetailView
+      component: () => import('../views/StatusDetailView.vue'),
+      meta: { authType: 'standard' }
     },
     {
       path: '/login',
       name: 'login',
-      component: LoginView
+      component: () => import('../views/LoginView.vue'),
+      meta: { authType: 'standard' }
     },
     {
-      path: '/study-office',
+      path: '/studienbuero',
       name: 'studyOfficeSelection',
-      component: SelectionView,
-      meta: {forward: 'studyOfficeDetail'}
+      component: () => import('../views/AdministrativeSelectionView.vue'),
+      meta: { authType: 'study-office', forward: 'studyOfficeDetail' }
     },
     {
-      path: '/study-office/:id',
+      path: '/studienbuero/:id',
       name: 'studyOfficeDetail',
-      component: StudyOfficeDetailView
+      component: () => import('../views/AdministrativeDetailView.vue'),
+      meta: { authType: 'study-office' }
     },
     {
-      path: '/chairman',
+      path: '/studienbuero/:id/:connection',
+      name: 'studyOfficeDetailHighlight',
+      component: () => import('../views/AdministrativeDetailView.vue'),
+      meta: { authType: 'study-office' }
+    },
+    {
+      path: '/pruefungsausschuss',
       name: 'chairmanSelection',
-      component: SelectionView,
-      meta: {forward: 'chairmanDetail'}
+      component: () => import('../views/AdministrativeSelectionView.vue'),
+      meta: { authType: 'chairman', forward: 'chairmanDetail' }
     },
     {
-      path: '/chairman/:id',
+      path: '/pruefungsausschuss/:id',
       name: 'chairmanDetail',
-      component: ChairmanDetailView
+      component: () => import('../views/AdministrativeDetailView.vue'),
+      meta: { authType: 'chairman' }
+    },
+    {
+      path: '/pruefungsausschuss/:id/:connection',
+      name: 'chairmanDetailHighlight',
+      component: () => import('../views/AdministrativeDetailView.vue'),
+      meta: { authType: 'chairman' }
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'notFound',
+      component: () => import ('../views/NotFoundView.vue'),
+      meta: { authType: 'standard' }
     }
   ]
 })
+
+
+function changeRole(authRole) {
+  const navStore = useNavTypeStore();
+  if (authRole === "ROLE_STUDY") { navStore.setCurrentRoleNav("study"); }
+  else if (authRole === "ROLE_CHAIR") { navStore.setCurrentRoleNav("chair"); }
+  else if (authRole === "ROLE_ADMIN") { navStore.setCurrentRoleNav("admin"); }
+  else { navStore.setCurrentRoleNav("user"); }
+  return true;
+}
+
+
+router.beforeEach(
+  async (to) => {
+    await getAuthenticatedUser();
+    const authUserStore = useAuthStore();
+    const navStore = useNavTypeStore();
+    const id = authUserStore.getCurrentUserId;
+    const response = await httpResource.get(`/api/user/${id}/role`)
+    switch (to.meta.authType) {
+      case "standard":
+        changeRole(response.data);
+        return true;
+      case "study-office":
+        if (response.data === "ROLE_STUDY") { 
+          navStore.setCurrentRoleNav("study");
+          return true; 
+        }
+        return { name: 'login' };
+      case "chairman":
+        if (response.data === "ROLE_CHAIR") { 
+          navStore.setCurrentRoleNav("chair");
+          return true; 
+        }
+        return { name: 'login' };
+      case "admin":
+        if (response.data === "ROLE_ADMIN") { 
+          navStore.setCurrentRoleNav("admin");
+          return true; 
+        }
+        return { name: 'login' };
+      default:
+        break;
+    }
+
+    console.log("default");
+    return false;
+
+  }
+);
 
 export default router

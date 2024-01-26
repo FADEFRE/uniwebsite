@@ -1,16 +1,18 @@
 {
     "randApplications": [
         {
-            "offen": 2,
-            "warten": 2,
-            "fertig": 2
+            "new": 2,
+            "study-office": 2,
+            "pav": 2,
+            "closed": 2
         }
     ],
 
-    "randModuleApplications": [
+    
+    "randExternalModules": [
         {
-            "name": "testModule",
-            "uni": "testUni",
+            "name": ["externer Testkurs ", "Academicum subiectum ab extra", "external testcourse"],
+            "uni": ["test Uni", "schola temptare", "Uni test"],
             "points": [42,69,420,1337],
             "pointSystem": ["ECTS", "PI", "SIN", "COS"],
             "comment": [
@@ -23,6 +25,25 @@
         }
     ],
 
+    "users": [
+        {
+            "name": "studyoffice",
+            "password": "abc123",
+            "role": "ROLE_STUDY"
+        },
+            
+        {
+            "name": "pav",
+            "password": "pav123",
+            "role": "ROLE_CHAIR"
+        },
+
+        {
+            "name": "admin",
+            "password": "admin",
+            "role": "ROLE_ADMIN"
+        }
+    ],
 
     "courses": [
         {

@@ -22,19 +22,19 @@ import lombok.NoArgsConstructor;
 public class PdfDocument {
     @Id
     @GeneratedValue
-    @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class})
+    @JsonView({Views.ApplicationStudent.class})
     private Long id;
-    @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class})
+    @JsonView({Views.ApplicationStudent.class})
     private String name;
     @Lob
     @JsonIgnore
     private byte[] pdfData;
 
-    //Relation PdfDocument <-> ModuleApplication (Setter in ModuleApplication)
+    //Relation PdfDocument <-> ExternalModule (Setter in ExternalModule)
     @OneToOne(mappedBy = "pdfDocument")
     @JsonBackReference
     @EqualsAndHashCode.Exclude
-    private ModuleApplication moduleApplication;
+    private ExternalModule externalModule;
 
 
     //Constructer

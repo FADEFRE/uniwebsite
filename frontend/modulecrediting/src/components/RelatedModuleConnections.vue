@@ -16,9 +16,9 @@ onBeforeMount(() => {
 
 const generateModuleConnectionString = (connection) => {
   const separator = ' | '
-  let conStr = connection['moduleApplication']['university']
+  let conStr = connection['moduleExternals']['university']
   conStr += separator
-  conStr += connection['moduleApplication']['name']
+  conStr += connection['externalModules']['name']
   conStr += ' -> '
   for (let [index, module] of connection['modulesLeipzig'].entries()) {
     conStr += module['moduleName']

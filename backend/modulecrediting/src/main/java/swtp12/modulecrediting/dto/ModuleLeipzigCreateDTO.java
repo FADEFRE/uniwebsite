@@ -1,7 +1,5 @@
 package swtp12.modulecrediting.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,8 +8,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class ModuleLeipzigCreateDTO {
-    private String moduleName;
-    
-    @JsonIgnore
-    private String moduleCode;
+    private String name;
+
+    private String code;
 }

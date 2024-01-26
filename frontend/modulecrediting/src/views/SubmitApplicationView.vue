@@ -12,137 +12,136 @@ functionality:
 -->
 
 <script setup>
-import ApplicationModulePanel from "@/components/ApplicationModulePanel.vue";
-import NewApplicationModulePanel from "@/components/NewApplicationModulePanel.vue";
-import { useRouter } from "vue-router"
-import { ref, reactive, computed, onBeforeMount } from "vue"
-import { postApplication } from "@/scripts/axios-requests";
-import { getCourseData } from "@/scripts/axios-requests"
+import router from "@/router";
+import { ref, onBeforeMount } from "vue";
+import { getFormattedDate } from "@/scripts/date-utils";
+import { getCoursesLeipzig, getModulesByCourse, postApplication } from "@/scripts/axios-requests";
+import ApplicationPanel from "@/components/ApplicationPanel.vue";
+import SideInfoContainer from "@/components/SideInfoContainer.vue";
+import ButtonAdd from "@/components/ButtonAdd.vue";
+import ButtonLink from "@/components/ButtonLink.vue";
+import ApplicationOverview from "@/components/ApplicationOverview.vue";
 
-const router = useRouter()
+const creationDate = new Date()
 
-// courses
+const courses = ref()
 const selectedCourse = ref()
 
-const courseData = ref(undefined)
-
 onBeforeMount(() => {
-  getCourseData()
-      .then(data => {
-        courseData.value = data
-      })
-      .catch(error => {
-        console.log(error)
-        courseData.value = 'error'
-      })
+  getCoursesLeipzig()
+    .then(data => courses.value = data)
 })
 
-const courses = computed(() => courseData.value ? courseData.value.map((obj) => obj.name) : [])
-
-// module applications
-const moduleApplicationPanels = reactive({
-  1: 'moduleApplication'
-})
-const moduleApplicationPanelsRef = ref([])
-
-const addModuleApplication = () => {
-  let nextKey = null
-  if (Object.keys(moduleApplicationPanels).length === 0) {
-    nextKey = 1
-  } else {
-    // noinspection JSCheckFunctionSignatures
-    nextKey = Math.max(...Object.keys(moduleApplicationPanels)) + 1
-  }
-  moduleApplicationPanels[nextKey] = 'moduleApplication'
+const selectableModules = ref([])
+const setSelectableModules = () => {
+  getModulesByCourse(selectedCourse.value)
+    .then(data => selectableModules.value = data)
 }
 
-const deleteModuleApplication = (key) => {
-  delete moduleApplicationPanels[key]
+const moduleConnections = ref([1])
+const moduleConnectionsRef = ref()
+
+const addModuleConnection = () => {
+  const nextIndex = Math.max(...moduleConnections.value) + 1
+  moduleConnections.value.push(nextIndex)
 }
 
-const resetInternalModules = () => {
-  // getting modules
-  let modules = []
-  if (courses.value && courses.value !== 'error' && selectedCourse.value) {
-    const selectedCourseObject = courseData.value.find((course) => course.name === selectedCourse.value)
-    const moduleObjects = selectedCourseObject["modulesLeipzigCourse"]
-    modules = moduleObjects.map((module) => module.moduleName).sort()
-  }
-  // resetting internalModules dropdowns
-  for (let panel of moduleApplicationPanelsRef.value) {
-    panel.internalModules.resetInternalModules(modules)
-  }
+const deleteModuleConnection = (key) => {
+  moduleConnections.value = moduleConnections.value.filter(el => el !== key)
 }
 
-// send button
 const triggerPostApplication = () => {
-  // unwrapping data
-  const applicationsObject = moduleApplicationPanelsRef.value.map((panel) => {
-    return {
-      moduleName: panel.base.moduleName,
-      university: panel.base.university,
-      creditPoints: panel.base.creditPoints,
-      pointSystem: panel.base.pointSystem,
-      descriptionFile: panel.file.descriptionFile,
-      selectedInternalModules: panel.internalModules.selectedInternalModules,
-      comment: panel.comment.comment,
-    }
-  })
-  // post request
-  postApplication(selectedCourse.value, applicationsObject)
-      .then((id) => {
-        // routing to status page for application
-        const routeData = router.resolve({name: 'statusDetail', params: {id: id}})
-        window.open(routeData.href, '_top')
-      })
+  console.log(selectedCourse.value)
+  console.log(moduleConnectionsRef.value)
+  postApplication(selectedCourse.value, moduleConnectionsRef.value)
+    .then(id => {
+      router.push({ name: 'confirmation', params: { id: id } })
+    })
 }
 </script>
 
 <template>
+  <div class="main">
 
-  <div v-if="!courseData">
-    <p>Lade Daten ...</p>
-  </div>
+    <div class="submit-application-container">
 
-  <div v-else-if="courseData === 'error'">
-    <p>Fehler bei der Datenabfrage!</p>
-  </div>
+      <ApplicationOverview :creation-date="getFormattedDate(creationDate)" :last-edited-date="undefined"
+        :decision-date="undefined" status="NEU">
+        <Dropdown v-model="selectedCourse" :options="courses" placeholder="Studiengang wählen"
+          @change="setSelectableModules">
+          <template #dropdownicon>
+            <img src="../assets/icons/ArrowWhite.svg">
+          </template>
+        </Dropdown>
+      </ApplicationOverview>
 
-  <div v-else class="view-container">
+      <ApplicationPanel v-for="item in moduleConnections" :key="item" :selectable-modules="selectableModules"
+        :allow-delete="moduleConnections.length > 1" ref="moduleConnectionsRef"
+        @delete-self="deleteModuleConnection(item)" />
 
-    <!-- courses -->
-    <Dropdown v-model="selectedCourse" :options="courses" placeholder="Studiengang wählen" class="course-dropdown" @change="resetInternalModules"/>
+      <ButtonAdd @click="addModuleConnection">Modulzuweisung hinzufügen</ButtonAdd>
+      <ButtonLink @click="triggerPostApplication" :fixed="true">Absenden</ButtonLink>
+    </div>
 
-    <!-- module applications -->
-    <ApplicationModulePanel
-        v-for="(value, key) in moduleApplicationPanels"
-        :key="key"
-        ref="moduleApplicationPanelsRef"
-        @deletePanel="deleteModuleApplication(key)"
-    />
-    <NewApplicationModulePanel @add-module-application="addModuleApplication" />
+    <div class="side-infos-container">
+      <!--SideInfoContainerfür Antragprozess -->
+      <SideInfoContainer :heading="'ANTRAGSPROZESS'">
+        <ul>
+          <li>Antrag online stellen</li>
+          <li>Über Vorgangsnummer online Status einsehen</li>
+          <li>Auf Entscheidung des PAV warten</li>
+          <li>Mit abgeschlossenem Antrag zum Studienbüro gehen</li>
+        </ul>
+      </SideInfoContainer>
+      <SideInfoContainer :heading="'STUDIENBÜRO'">
+        <p>Fakultät für Mathematik und Informatik</p>
+        <div class="main-info-container">
+          <div class="info-group-container">
+            <h4>Anschrift</h4>
+            <ul>
+              <li>Neues Augusteum</li>
+              <li>Augustusplatz 10</li>
+              <li>04109 Leipzig</li>
+            </ul>
+          </div>
+          <div class="info-group-container">
+            <h4>Kontakt</h4>
+            <ul>
+              <li>Telefon: +49 341 97-32165</li>
+              <li>Telefax: +49 341 97-32193</li>
+              <li>E-Mail: studienbuero@math.uni-leipzig.de</li>
+            </ul>
+          </div>
+          <div class="info-group-container">
+            <h4>Sprechzeiten</h4>
+            <p>Dienstag und Donnerstag: 9:00 - 11:30 Uhr und 12:30 - 16:00 Uhr</p>
+          </div>
+          <ButtonLink>Zum Studienbüro</ButtonLink>
+        </div>
 
-    <!-- send button -->
-    <button @click="triggerPostApplication" class="submit-button">Absenden</button>
+      </SideInfoContainer>
+    </div>
+
+
   </div>
 </template>
 
-<style scoped>
-.course-dropdown {
-  margin: 10px;
-}
-button.submit-button {
-  display: inline-block;
-  padding: 10px 20px;
-  background-color: #8AC2D1;
-  color: #000;
-  text-decoration: none;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
-  border: none; 
-  cursor: pointer; 
-  
+<style scoped lang="scss">
+@import '../assets/variables.scss';
+@import '../assets/mixins.scss';
+
+.main {
+  @include main();
 }
 
+.submit-application-container {
+  @include verticalList(small);
+  width: 100%;
+  overflow: hidden;
+}
 
+.side-infos-container {
+  @include sideInfoContainer();
+}
 </style>
+

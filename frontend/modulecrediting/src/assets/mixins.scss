@@ -1,0 +1,112 @@
+@mixin main() {
+  max-width: 1500px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  padding: 3.125rem 4.375rem;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 1.875rem;
+
+  @media only screen and (max-width: 1100px) {
+    flex-wrap: wrap;
+    padding: 2rem 1.5rem;
+  }
+
+  @media only screen and (max-width: 700px) {
+    padding: 2rem 1rem;
+  }
+}
+
+@mixin verticalList($gapSize) {
+  display: flex;
+  flex-direction: column;
+
+  @if $gapSize == small {
+    gap: 0.625rem; 
+  } @else if $gapSize == big{
+    gap: 1.25rem; 
+  }
+}
+
+@mixin verticalListItem($background-color) {
+    background-color: $background-color;
+    justify-content: space-between;
+    border-left: 3px solid $red;
+  }
+
+@mixin singleContainer() {
+  width: fit-content;
+  max-width: 100%;
+  background-color: $white;
+  display: flex;
+  padding: 4.375rem;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2.5rem;
+}
+
+@mixin basicContainer() {
+  width: auto;
+  background-color: $white;
+  padding: 0.9375rem 1.5625rem;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.625rem;
+}
+
+
+@mixin sideInfoContainer() {
+  @include verticalList(big);
+  width: 25%;
+
+  @media only screen and (max-width: 1100px) {
+    width: 100%;
+  }
+}
+
+
+@mixin panelComponent() {
+  width: 100%;
+  padding: 0.625rem 0rem;
+  background-color: $white;
+  border-top: 1px solid $dark-gray;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 0.625rem;
+}
+
+@mixin screenSplit() {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.9735rem;
+}
+
+@mixin rightArrow() {
+  transform: rotate(-90deg);
+}
+
+@mixin smallHighlightBox() {
+  width: max-content;
+  padding: 0.625rem 1.125rem;
+  border: none;
+
+  display: flex;
+  
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+@mixin ellipsisTextOverflow() {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

@@ -1,73 +1,52 @@
 package swtp12.modulecrediting.controller;
 
-import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.itextpdf.text.DocumentException;
 
 import swtp12.modulecrediting.dto.ApplicationCreateDTO;
 import swtp12.modulecrediting.dto.ApplicationUpdateDTO;
+import swtp12.modulecrediting.dto.EnumStatusChange;
+import swtp12.modulecrediting.dto.StudentApplicationDTO;
 import swtp12.modulecrediting.model.Application;
 import swtp12.modulecrediting.model.EnumApplicationStatus;
 import swtp12.modulecrediting.model.Views;
 import swtp12.modulecrediting.service.ApplicationService;
-import swtp12.modulecrediting.service.GeneratedPdfService;
 
 
 @RestController
 @CrossOrigin
-@RequestMapping("/applications")
+@RequestMapping("/api/applications")
 public class ApplicationController {
     @Autowired
     private ApplicationService applicationService;
 
-    @Autowired
-    private GeneratedPdfService generatedPdfService;
-
-    @PutMapping("/{id}")
-    public ResponseEntity<String> updateApplication(@PathVariable String id,@ModelAttribute ApplicationUpdateDTO applicationUpdateDTO) {
-        return ResponseEntity.ok(applicationService.updateApplication(id, applicationUpdateDTO));
-    }
-
-    @PostMapping
-    public ResponseEntity<String> createApplication(@ModelAttribute ApplicationCreateDTO applicationCreateDTO) {
-        return ResponseEntity.ok(applicationService.createApplication(applicationCreateDTO));
-    }
-
+    //GET-Requests
     @GetMapping
     @JsonView(Views.ApplicationOverview.class)
-    public ResponseEntity<List<Application>> get() {
-            return ResponseEntity.ok(applicationService.getAllApplciations());
+    @PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR')")
+    public ResponseEntity<List<Application>> getApplicationsOverview() {
+        return ResponseEntity.ok(applicationService.getAllApplciations());
     }
 
     @GetMapping("/{id}")
     @JsonView(Views.ApplicationLogin.class)
+    @PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR')")
     public ResponseEntity<Application>  getApplicationById(@PathVariable String id) {
         return ResponseEntity.ok(applicationService.getApplicationById(id));
     }
 
-
     @GetMapping("/student/{id}")
     @JsonView(Views.ApplicationStudent.class)
-    public ResponseEntity<Application>  getApplicationStudentById(@PathVariable String id) {
-        return ResponseEntity.ok(applicationService.getApplicationById(id));
+    public ResponseEntity<StudentApplicationDTO>  getApplicationStudentById(@PathVariable String id) {
+        return ResponseEntity.ok(applicationService.getStudentApplicationById(id));
     }
 
     @GetMapping("/{id}/exists")
@@ -75,18 +54,51 @@ public class ApplicationController {
         return ResponseEntity.ok(applicationService.applicationExists(id));
     }
 
-    @GetMapping("/pdf-data/{id}")
-    public ResponseEntity<byte[]> generatePdf(@PathVariable String id) throws DocumentException, IOException {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_PDF);
-
-        headers.setContentDispositionFormData("att", "Antrag.pdf");
-        byte[] pdfBytes = generatedPdfService.generatePdfDataDocument(id);
-
-        return ResponseEntity.ok()
-                .headers(headers)
-                .contentLength(pdfBytes.length)
-                .body(pdfBytes);
-
+    @GetMapping("/{id}/update-status-allowed")
+    @PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR')")
+    public ResponseEntity<EnumStatusChange> updateApplicationStatusAllowed(@PathVariable String id) {
+        return ResponseEntity.ok(applicationService.updateApplicationStatusAllowed(id));
     }
+
+
+    //POST-Requests
+    @PostMapping
+    public ResponseEntity<String> createApplication(@ModelAttribute ApplicationCreateDTO applicationCreateDTO) {
+        return ResponseEntity.ok(applicationService.createApplication(applicationCreateDTO));
+    }
+
+
+    //PUT-Requests
+    @PutMapping("/{id}/update-status")
+    @PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR')")
+    public ResponseEntity<EnumApplicationStatus> updateApplicationStatus(@PathVariable String id) {
+        return ResponseEntity.ok(applicationService.updateApplicationStatus(id));
+    }
+
+    @PutMapping("/standard/{id}")
+    public ResponseEntity<String> updateApplicationStandard(@PathVariable String id,
+                                                    @Valid @ModelAttribute ApplicationUpdateDTO applicationUpdateDTO,
+                                                    BindingResult result) {
+        if (result.hasErrors()) return ResponseEntity.badRequest().body("Validation failed: " + result.getAllErrors());
+        return ResponseEntity.ok(applicationService.updateApplication(id, applicationUpdateDTO, "standard"));
+    }
+
+    @PutMapping("/study-office/{id}")
+    @PreAuthorize("hasRole('ROLE_STUDY')")
+    public ResponseEntity<String> updateApplicationStudyOffice(@PathVariable String id,
+                                                    @Valid @ModelAttribute ApplicationUpdateDTO applicationUpdateDTO,
+                                                    BindingResult result) {
+        if (result.hasErrors()) return ResponseEntity.badRequest().body("Validation failed: " + result.getAllErrors());
+        return ResponseEntity.ok(applicationService.updateApplication(id, applicationUpdateDTO, "study-office"));
+    }
+
+    @PutMapping("/chairman/{id}")
+    @PreAuthorize("hasRole('ROLE_CHAIR')")
+    public ResponseEntity<String> updateApplicationChairman(@PathVariable String id,
+                                                    @Valid @ModelAttribute ApplicationUpdateDTO applicationUpdateDTO,
+                                                    BindingResult result) {
+        if (result.hasErrors()) return ResponseEntity.badRequest().body("Validation failed: " + result.getAllErrors());
+        return ResponseEntity.ok(applicationService.updateApplication(id, applicationUpdateDTO, "chairman"));
+    }
+
 }

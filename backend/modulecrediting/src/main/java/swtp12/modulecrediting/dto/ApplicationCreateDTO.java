@@ -7,11 +7,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
-
 @Getter
 @Setter
 @NoArgsConstructor
 public class ApplicationCreateDTO {
     private String courseLeipzig;
-    private List<ModuleBlockCreateDTO> moduleBlockCreateDTOList;
+    private List<ModulesConnectionCreateDTO> modulesConnections;
 }

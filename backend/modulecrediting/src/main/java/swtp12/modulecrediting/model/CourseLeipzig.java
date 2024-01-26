@@ -26,16 +26,21 @@ import lombok.NoArgsConstructor;
 @Entity
 public class CourseLeipzig {
     @Id
-    @JsonView({Views.coursesWithModules.class, Views.ApplicationOverview.class,Views.RelatedModulesConnection.class})
+    @JsonView({
+        Views.coursesWithModules.class, 
+        Views.ApplicationOverview.class,
+        Views.RelatedModulesConnection.class})
     @NotBlank(message = "Name may not be blank")
     private String name;
+    @JsonView({Views.coursesWithModules.class})
+    private Boolean isActive;
 
     //Relation CourseLeipzig <-> ModuleLeipzig
     @ManyToMany (cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "course_leipzig_module_leipzig",
             joinColumns = @JoinColumn(name = "course_leipzig", referencedColumnName = "name"),
-            inverseJoinColumns = @JoinColumn(name = "module_leipzig", referencedColumnName = "moduleName")
+            inverseJoinColumns = @JoinColumn(name = "module_leipzig", referencedColumnName = "name")
     )
     @JsonManagedReference
     @JsonView(Views.coursesWithModules.class)
@@ -47,8 +52,9 @@ public class CourseLeipzig {
     private List<Application> applications = new ArrayList<>();
 
 
-    public CourseLeipzig(String name) {
+    public CourseLeipzig(String name, Boolean isActive) {
         this.name = name;
+        this.isActive = isActive;
     }
 
 
@@ -56,5 +62,10 @@ public class CourseLeipzig {
     public void addCourseToModulesLeipzig(ModuleLeipzig moduleLeipzig) {
         this.modulesLeipzigCourse.add(moduleLeipzig);
         moduleLeipzig.getCoursesLeipzig().add(this);
+    }
+
+    public void removeCourseToModulesLeipzig(ModuleLeipzig moduleLeipzig) {
+        this.modulesLeipzigCourse.remove(moduleLeipzig);
+        moduleLeipzig.getCoursesLeipzig().remove(this);
     }
 }

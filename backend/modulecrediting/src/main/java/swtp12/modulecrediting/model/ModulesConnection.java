@@ -6,15 +6,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -28,30 +20,37 @@ import static swtp12.modulecrediting.model.EnumModuleConnectionDecision.*;
 public class ModulesConnection {
     @Id
     @GeneratedValue
-    @JsonView(Views.ApplicationLogin.class)
+    @JsonView({Views.ApplicationStudent.class,Views.ApplicationLogin.class,Views.RelatedModulesConnection.class})
     private Long id;
     @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class})
     @NotNull(message = "decisionFinal must not be null")
     private EnumModuleConnectionDecision decisionFinal;
-    @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class})
+    @JsonView({Views.ApplicationStudent.class})
     @NotNull(message = "commentDecision must not be null")
     private String commentDecision;
-
-    @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class})
-    @NotNull(message = "asExamCertificate must not be null")
-    private Boolean asExamCertificate;
     @JsonView(Views.ApplicationLogin.class)
     @NotNull(message = "decisionSuggestion must not be null")
     private EnumModuleConnectionDecision decisionSuggestion;
-    @JsonView(Views.ApplicationStudent.class)
+    @JsonView(Views.ApplicationLogin.class)
     @NotNull(message = "commentStudyOffice must not be null")
     private String commentStudyOffice;
+    @JsonView(Views.ApplicationStudent.class)
+    @NotNull(message = "formalRejection must not be null")
+    private Boolean formalRejection;
+    @JsonView(Views.ApplicationStudent.class)
 
-    //Relation ModulesConnection <-> ModuleApplication (Setter in ModuleApplication)
-    @OneToOne(cascade = CascadeType.ALL , orphanRemoval = true)
+    @NotNull(message = "formalRejectionComment must not be null")
+    private String formalRejectionComment;
+
+    @JsonView({Views.ApplicationStudent.class})
+    @NotNull(message = "comment applicant must not be null")
+    private String commentApplicant;
+
+    //Relation ModulesConnection <-> ExternalModule (Setter in ExternalModule)
+    @OneToMany(mappedBy = "modulesConnection", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JsonManagedReference
-    @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class})
-    private ModuleApplication moduleApplication;
+    @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class,Views.ApplicationOverview.class})
+    private List<ExternalModule> externalModules = new ArrayList<>();
 
     //Relation ModulesConnection <-> ModuleLeipzig
     @ManyToMany
@@ -61,7 +60,7 @@ public class ModulesConnection {
             inverseJoinColumns = @JoinColumn(name = "module_leipzig_id")
     )
     @JsonManagedReference
-    @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class})
+    @JsonView({Views.ApplicationStudent.class, Views.RelatedModulesConnection.class})
     private List<ModuleLeipzig> modulesLeipzig = new ArrayList<>();
 
     //Relation ModulesConnection <-> Application (Setter in Application)
@@ -72,26 +71,41 @@ public class ModulesConnection {
 
 
     public ModulesConnection() {
-        decisionFinal = UNBEARBEITET;
-        decisionSuggestion = UNBEARBEITET;
+        decisionFinal = unedited;
+        decisionSuggestion = unedited;
         commentDecision = "";
         commentStudyOffice = "";
-        asExamCertificate = false;
+        formalRejection = false;
+        formalRejectionComment = "";
     }
 
 
-    //Function to add ModuleApplication to this ModuleConnection (and add this ModuleConnection to the ModuleApplication)
-    public void addModuleApplication(ModuleApplication moduleApplication) {
-        moduleApplication.setModulesConnection(this);
-        this.moduleApplication = moduleApplication;
+    //Function to set List of ExternalModule to this ModulesConnection (and add this ModuleConnectio to all ExternalModule in the List)
+    public void setExternalModules(List<ExternalModule> externalModules) {
+        for(ExternalModule m : externalModules) {
+            m.setModulesConnection(this);
+        }
+        this.externalModules = externalModules;
+    }
+    public void addExternalModules(List<ExternalModule> externalModules) {
+        for(ExternalModule m : externalModules) {
+            m.setModulesConnection(this);
+            this.externalModules.add(m);
+        }
+    }
+    public void removeExternalModules(List<ExternalModule> externalModules) {
+        for(ExternalModule m : externalModules) {
+            m.setModulesConnection(null);
+            this.externalModules.remove(m);
+        }
     }
 
     //Function to set List of ModuleLeipzig to this ModulesConnection (and add this ModuleConnectio to all ModulesLeipzig in the List)
     public void setModulesLeipzig(List<ModuleLeipzig> modulesLeipzig) {
-        for(ModuleLeipzig m : modulesLeipzig) { 
+        for(ModuleLeipzig m : modulesLeipzig) {
             m.getModulesConnections().add(this);
         }
-    this.modulesLeipzig = modulesLeipzig;
+        this.modulesLeipzig = modulesLeipzig;
     }
 
     public void addModulesLeipzig(List<ModuleLeipzig> modulesLeipzig) {
@@ -106,5 +120,11 @@ public class ModulesConnection {
             m.getModulesConnections().remove(this);
             this.modulesLeipzig.remove(m);
         }
+    }
+    public void removeAllModulesLeipzig() {
+        for(ModuleLeipzig m : modulesLeipzig) {
+            m.getModulesConnections().remove(this);
+        }
+        this.modulesLeipzig = new ArrayList<>();
     }
 }

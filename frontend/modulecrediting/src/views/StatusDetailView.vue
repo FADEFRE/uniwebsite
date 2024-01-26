@@ -1,186 +1,130 @@
 <!--
 shows status of an application
-displays:
-- application id
-- overall status
-- course application is related to
-- panels containing module application information
 -->
 
 <script setup>
-import { useRoute } from 'vue-router'
-import { ref, computed, onBeforeMount } from "vue";
-import { getApplicationByIdForStatus } from "@/scripts/axios-requests";
+import { useRoute, useRouter } from 'vue-router';
+import { ref, onBeforeMount } from "vue";
+import ApplicationOverview from "@/components/ApplicationOverview.vue";
+import StatusPanel from "@/components/StatusPanel.vue";
+import SideInfoContainer from '../components/SideInfoContainer.vue';
 import { url } from "@/scripts/url-config"
+import { getApplicationByIdForStatus, getModulesByCourse, putApplicationStandard } from "@/scripts/axios-requests";
+import { parseRequestDate } from "@/scripts/date-utils";
+import ButtonLink from '@/components/ButtonLink.vue';
+import FormalRejectionInfoBox from "@/components/FormalRejectionInfoBox.vue";
 
-const route = useRoute()
+const id = useRoute().params.id
+const summaryDocumentLink = `${url}/file/pdf-documents/application/${id}`
 
-const applicationData = ref(undefined)
-let id = undefined
-let pdfDataLink = undefined
+const applicationData = ref()
+const moduleOptions = ref([])
+const router = useRouter();
+
+
 onBeforeMount(() => {
-  id = route.params.id
-  pdfDataLink = url + '/applications/pdf-data/' + id
   getApplicationByIdForStatus(id)
-      .then(data => applicationData.value = data)
-      .catch(error => {
-        console.log(error)
-        applicationData.value = 'error'
-      })
+    .then(data => {
+     
+      applicationData.value = data;
+      return data;
+    })
+    .then(data => {
+      return getModulesByCourse(data['courseLeipzig']['name'])
+    })
+    .then(modules => {
+      moduleOptions.value = modules
+    })
 })
 
-// link to pdf document
-const fileLinkBase = computed(() => `${url}/pdf-documents/`)
+
+const moduleConnections = ref()
+
+const openSummaryDocument = () => {
+  window.open(summaryDocumentLink, '_blank')
+}
+const triggerSubmit = () => {
+  putApplicationStandard(applicationData.value['id'], applicationData.value['courseLeipzig']['name'], moduleConnections.value)
+    .then(_ => location.reload())
+}
 </script>
 
 <template>
-  <div>
+  <div class="main">
+    
+    <div v-if="applicationData" class="status-detail-container">
+      
+      <div v-if="applicationData['fullStatus'] === 'FORMFEHLER'">
+        <FormalRejectionInfoBox />
+      </div>
 
-    <!-- request pending -->
-    <div v-if="!applicationData">
-      <p>Lade Daten ...</p>
-    </div>
+      <ApplicationOverview :creation-date="parseRequestDate(applicationData['creationDate'])"
+        :last-edited-date="parseRequestDate(applicationData['lastEditedDate'])"
+        :decision-date="parseRequestDate(applicationData['decisionDate'])" :id="applicationData['id']"
+        :course="applicationData['courseLeipzig']['name']" :status="applicationData['fullStatus']" />
 
-    <!-- request rejected -->
-    <div v-else-if="applicationData === 'error'">
-      <p>Fehler bei der Datenabfrage!</p>
-    </div>
 
-    <!-- request resolved -->
-    <div v-else class="view-container">
 
-      <div v-if="applicationData">
-        <div>
+      <div v-for="connection in applicationData['modulesConnections']">
 
-          <div>
-            <h2>Vorgangsnummer: {{ id }}</h2>
-            <p>Status: {{ applicationData['fullStatus'] }}</p>
-            <p>Anrechnung für {{ applicationData['courseLeipzig']['name'] }} an der Universität Leipzig.</p>
-            <p>Zusammenfassung als PDF: <a :href="pdfDataLink">Antrag {{ id }}</a></p>
-          </div>
-
-          <Panel
-              toggleable
-              collapsed
-              v-for="moduleConnection in applicationData['modulesConnections']"
-              class="module-panel"
-          >
-
-            <!-- Panel Header -->
-            <template #header>
-              <h2>
-                {{ moduleConnection['moduleApplication']['name'] }}
-                <span v-if="moduleConnection['asExamCertificate']" style="color: #8a8a8a">
-                  (als Übungsschein)
-                </span>
-              </h2>
-            </template>
-
-            <!-- accept / reject Icons -->
-            <template #icons v-if="moduleConnection['decisionFinal'] === 'ANGENOMMEN' || moduleConnection['decisionFinal'] === 'ABGELEHNT'">
-              <div class="p-panel-header-icon">
-                <div v-if="moduleConnection['decisionFinal'] === 'ANGENOMMEN' && !moduleConnection['asExamCertificate']">
-                  <span class="pi pi-check-circle" style="color: green; font-size: 1.5rem"></span>
-                </div>
-
-                <div v-else-if="moduleConnection['decisionFinal'] === 'ANGENOMMEN' && moduleConnection['asExamCertificate']">
-                  <span class="pi pi-info-circle" style="color: darkorange; font-size: 1.5rem"></span>
-                </div>
-
-                <div v-else-if="moduleConnection['decisionFinal'] === 'ABGELEHNT'">
-                  <span class="pi pi-times-circle" style="color:red; font-size: 1.5rem"></span>
-                </div>
-              </div>
-            </template>
-
-            <!-- External Module -->
-            <div>
-              <h3>Anzurechnendes Modul:</h3>
-              <!-- Module Name -->
-              <div>
-                <p>Modulname: {{ moduleConnection['moduleApplication']['name'] }}</p>
-              </div>
-              <!-- University -->
-              <div>
-                <p>Universität: {{ moduleConnection['moduleApplication']['university'] }}</p>
-              </div>
-              <!-- Credit Points -->
-              <div>
-                <p>Punkte: {{ moduleConnection['moduleApplication']['points'] }} {{ moduleConnection['moduleApplication']['pointSystem'] }}</p>
-              </div>
-              <!-- File Link -->
-              <div>
-                <a :href="fileLinkBase + moduleConnection['moduleApplication']['pdfDocument']['id']" target="_blank">
-                  Modulbeschreibung anzeigen
-                </a>
-              </div>
-            </div>
-
-            <!-- Internal Module -->
-            <div>
-              <h3>Module der Uni Leipzig:</h3>
-              <!-- Internal Module List -->
-              <div>
-                <p v-for="internalModule in moduleConnection['modulesLeipzig']">{{ internalModule['moduleName'] }}</p>
-              </div>
-              <!-- Comment -->
-              <div v-if="moduleConnection['moduleApplication']['commentApplicant']">
-                <p>Anmerkung: {{ moduleConnection['moduleApplication']['commentApplicant'] }}</p>
-              </div>
-            </div>
-
-            <!-- Decision -->
-            <template #footer v-if="applicationData['fullStatus'] === 'ABGESCHLOSSEN'">
-              <div class="footer-container">
-                <h3>Beschluss:</h3>
-                <div class="decision-container">
-
-                  <div class="icon-container">
-                    <div v-if="moduleConnection['decisionFinal'] === 'ANGENOMMEN' && !moduleConnection['asExamCertificate']">
-                      <span class="pi pi-check" style="color: green; font-size: 1.5rem"></span>
-                    </div>
-
-                    <div v-else-if="moduleConnection['decisionFinal'] === 'ANGENOMMEN' && moduleConnection['asExamCertificate']">
-                      <span class="pi pi-info" style="color: darkorange; font-size: 1.5rem"></span>
-                    </div>
-
-                    <div v-else-if="moduleConnection['decisionFinal'] === 'ABGELEHNT'">
-                      <span class="pi pi-times" style="color:red; font-size: 1.5rem;"></span>
-                    </div>
-                  </div>
-
-                  <div class="comment-container">
-                    <p>{{ moduleConnection['commentDecision'] }}</p>
-                  </div>
-
-                </div>
-              </div>
-            </template>
-
-          </Panel>
-        </div>
+        <StatusPanel :connection="connection" :selectable-modules="moduleOptions"
+          :readonly="!(applicationData['fullStatus'] === 'FORMFEHLER')" ref="moduleConnections"
+          :class="{ 'formal-rejection-highlight': connection['formalRejection'] }" />
 
       </div>
 
+      <Button @click="openSummaryDocument">
+        Antrag herunterladen
+        <img src="../assets/icons/Download.svg">
+      </Button>
+
+      <ButtonLink v-if="applicationData['fullStatus'] === 'FORMFEHLER'" :fixed="true" @click="triggerSubmit">Neu
+        einreichen</ButtonLink>
+
+    </div>
+    <div class="side-infos-container">
+      <!--SideInfoContainerfür Antragprozess -->
+      <SideInfoContainer :heading="'ANTRAGSPROZESS'">
+        <ul class="list-container">
+          <li class="list-item">Antrag online stellen</li>
+          <li class="list-item">Über Vorgangsnummer online Status einsehen</li>
+          <li class="list-item">Auf Entscheidung des PAV warten</li>
+          <li class="list-item">Mit abgeschlossenem Antrag zum Studienbüro gehen</li>
+        </ul>
+      </SideInfoContainer>
+      <SideInfoContainer :heading="'STUDIENBÜRO'">
+        <ul class="list-container">
+          <li class="list-item">Antrag online stellen</li>
+          <li class="list-item">Über Vorgangsnummer online Status einsehen</li>
+          <li class="list-item">Auf Entscheidung des PAV warten</li>
+          <li class="list-item">Mit abgeschlossenem Antrag zum Studienbüro gehen</li>
+        </ul>
+      </SideInfoContainer>
     </div>
 
   </div>
 </template>
 
-<style scoped>
-.module-panel {
-  margin: 10px;
+<style scoped lang="scss">
+@import '../assets/variables.scss';
+@import '../assets/mixins.scss';
+
+.main {
+  @include main();
 }
 
-.p-panel-header-icon {
-  margin: 10px;
+.status-detail-container {
+  @include verticalList(small);
+  width: 100%;
+  overflow: hidden;
 }
 
-.decision-container {
-  display: inline-flex;
+
+.side-infos-container {
+  @include sideInfoContainer();
 }
 
-.icon-container > * {
-  margin: 13px;
+.formal-rejection-highlight {
+  border-left: 1rem solid $red;
 }
 </style>

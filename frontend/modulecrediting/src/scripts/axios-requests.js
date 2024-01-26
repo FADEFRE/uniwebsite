@@ -1,20 +1,21 @@
-import { url } from "@/scripts/url-config.js"
-import axios from "axios";
-
+import {url} from "@/scripts/url-config.js"
+import httpResource from "@/scripts/httpResource";
 
 /*
 GET-Request to '/courses-leipzig' endpoint
-returns todo
+return list of all course names
 
 parameters:
     none
  */
-function getCourseData () {
-    return axios.get(url + '/courses-leipzig')
+function getCoursesLeipzig () {
+    console.debug("%c"+ "getCoursesLeipzig ()", "color:yellow")
+
+    return httpResource.get('/api/courses-leipzig')
         .then(response => {
-            console.log(response.data)
-            return response.data
+            return response.data.map(obj => obj.name)
         })
+        .catch(_ => {})
 }
 
 /*
@@ -25,11 +26,32 @@ parameters:
     course - String, course name
  */
 function getModulesByCourse (course) {
-    return axios.get(url + '/courses-leipzig')
+    console.debug("%c"+ "getModulesByCourse (" + course + ")", "color:yellow")
+
+    return httpResource.get('/api/courses-leipzig')
         .then(response => {
             const courseObject = response.data.find(obj => obj.name === course)
-            return courseObject.modulesLeipzigCourse.map(obj => obj.moduleName)
+            return courseObject.modulesLeipzigCourse
+                .filter(m => m.isActive)
+                .map(obj => obj.name)
+                .sort()
         })
+        .catch(_ => {})
+}
+
+/*
+GET-Request to '/applications' endpoint
+returns list of applications (only data needed for overview)
+
+parameters:
+    none
+ */
+function getApplications () {
+    console.debug("%c"+ "getApplications ()", "color:yellow")
+
+    return httpResource.get('/api/applications')
+        .then(response => response.data)
+        .catch(_ => {})
 }
 
 /*
@@ -40,10 +62,17 @@ parameters:
     id - Number, application id
  */
 function getApplicationById (id) {
-    return axios.get(url + '/applications/' + id)
+    console.debug("%c"+ "getApplicationById (" + id+ ")", "color:yellow")
+
+    return httpResource.get('/api/applications/' + id)
         .then(response => {
+            response.data['modulesConnections'].sort((a, b) => a.id - b.id)
+            response.data['modulesConnections'].forEach(connection => {
+                connection['externalModules'].sort((a, b) => a.id - b.id)
+            })
             return response.data
         })
+        .catch(_ => {})
 }
 
 /*
@@ -54,10 +83,31 @@ parameters:
     id - Number, application id
  */
 function getApplicationByIdForStatus (id) {
-    return axios.get(url + '/applications/student/' + id)
+    console.debug("%c"+ "getApplicationByIdForStatus (" + id + ")", "color:yellow")
+    return httpResource.get('/api/applications/student/' + id)
         .then(response => {
+            response.data['modulesConnections'].sort((a, b) => a.id - b.id)
+            response.data['modulesConnections'].forEach(connection => {
+                connection['externalModules'].sort((a, b) => a.id - b.id)
+            })
             return response.data
         })
+        .catch(_ => {})
+}
+
+/*
+GET-Request to '/applications/{id}/exists' endpoint
+returns true if application with id exists: else returns false
+
+parameters:
+    id - Number, application id
+ */
+function getApplicationExists (id) {
+    console.debug("%c"+ "getApplicationExists ()", "color:yellow")
+
+    return httpResource.get(url + `/api/applications/${id}/exists`)
+        .then(response => response.data)
+        .catch(_ => {})
 }
 
 /*
@@ -68,10 +118,13 @@ parameters:
     moduleConnectionId - Number, module connection id
  */
 function getRelatedModuleConnections (moduleConnectionId) {
-    return axios.get(url + '/modules-connection/' + moduleConnectionId + '/related')
+    console.debug("%c"+ "getRelatedModuleConnections (moduleConnectionId: " + moduleConnectionId + ")", "color:yellow")
+
+    return httpResource.get('/api/modules-connection/' + moduleConnectionId + '/related')
         .then(response => {
             return response.data
         })
+        .catch(_ => {})
 }
 
 /*
@@ -84,89 +137,150 @@ parameters:
     ... String pointSystem, File descriptionFile, String comment, array of Strings selectedInternalModules
  */
 function postApplication (course, applicationObjects) {
+    console.debug("%c"+ "postApplication (course: " + course + ", applicationObjects: " + applicationObjects + ")", "color:yellow")
+
     const formData = new FormData()
     formData.append(`courseLeipzig`, course)
+
     applicationObjects.forEach(
-        (object, index) => {
-            formData.append(`moduleBlockCreateDTOList[${index}].moduleName`, object.moduleName)
-            formData.append(`moduleBlockCreateDTOList[${index}].university`, object.university)
-            formData.append(`moduleBlockCreateDTOList[${index}].points`, object.creditPoints)
-            formData.append(`moduleBlockCreateDTOList[${index}].pointSystem`, object.pointSystem)
-            formData.append(`moduleBlockCreateDTOList[${index}].description`, object.descriptionFile)
-            object.selectedInternalModules.forEach(
-                (moduleName, moduleIndex) => {
-                    formData.append(`moduleBlockCreateDTOList[${index}].moduleNamesLeipzig[${moduleIndex}]`, moduleName)
+        (connection, connectionIndex) => {
+            connection.externalModules.forEach(
+                (externalModule, externalModuleIndex) => {
+                    formData.append(`modulesConnections[${connectionIndex}].externalModules[${externalModuleIndex}].name`, externalModule.name)
+                    formData.append(`modulesConnections[${connectionIndex}].externalModules[${externalModuleIndex}].university`, externalModule.university)
+                    formData.append(`modulesConnections[${connectionIndex}].externalModules[${externalModuleIndex}].points`, externalModule.points)
+                    formData.append(`modulesConnections[${connectionIndex}].externalModules[${externalModuleIndex}].pointSystem`, externalModule.pointSystem)
+                    formData.append(`modulesConnections[${connectionIndex}].externalModules[${externalModuleIndex}].description`, externalModule.selectedFile)
                 }
             )
-            formData.append(`moduleBlockCreateDTOList[${index}].commentApplicant`, object.comment)
+            connection.internalModules.forEach(
+                (moduleName, moduleIndex) => {
+                    formData.append(`modulesConnections[${connectionIndex}].modulesLeipzig[${moduleIndex}]`, moduleName)
+                }
+            )
+            formData.append(`modulesConnections[${connectionIndex}].commentApplicant`, connection.commentApplicant)
         }
     )
-    console.log('post request to /applications')
-    console.log([...formData])
-    return axios.post(url + '/applications', formData)
+
+    return httpResource.post('/api/applications', formData)
+        .then(response => {
+            return response.data
+        })
+        .catch(_ => {})
+}
+
+// helper - creates basicFormData for PUT-Requests
+// basicConnectionObjects has to be array containing objects with below used data
+function createBasicFormData (courseLeipzig, basicConnectionObjects) {
+    const formData = new FormData()
+    formData.append('courseLeipzig', courseLeipzig)
+    basicConnectionObjects.forEach((connection, connectionIndex) => {
+        formData.append(`modulesConnections[${connectionIndex}].id`, connection.id)
+        connection.externalModules.forEach((externalModule, externalModuleIndex) => {
+            formData.append(`modulesConnections[${connectionIndex}].externalModules[${externalModuleIndex}].id`, externalModule.id)
+            formData.append(`modulesConnections[${connectionIndex}].externalModules[${externalModuleIndex}].name`, externalModule.name)
+            formData.append(`modulesConnections[${connectionIndex}].externalModules[${externalModuleIndex}].university`, externalModule.university)
+            formData.append(`modulesConnections[${connectionIndex}].externalModules[${externalModuleIndex}].points`, externalModule.points)
+            formData.append(`modulesConnections[${connectionIndex}].externalModules[${externalModuleIndex}].pointSystem`, externalModule.pointSystem)
+        })
+        connection.internalModules.forEach((moduleName, moduleIndex) => {
+            formData.append(`modulesConnections[${connectionIndex}].modulesLeipzig[${moduleIndex}].name`, moduleName)
+        })
+    })
+    return formData
+}
+
+function putApplicationStandard (applicationId, courseLeipzig, connectionObjects) {
+    console.debug("%c"+ "putApplicationStandard (applicationId: " + applicationId + ", courseLeipzig: " + courseLeipzig + ", connectionsObjects: " + connectionObjects + ")", "color:yellow")
+
+    const formData = createBasicFormData(courseLeipzig, connectionObjects)
+
+    connectionObjects.forEach((connection, connectionIndex) => {
+        formData.append(`modulesConnections[${connectionIndex}].commentApplicant`, connection.commentApplicant)
+        connection.externalModules.forEach((externalModule, externalModuleIndex) => {
+            if (externalModule.selectedFile) {
+                formData.append(`modulesConnections[${connectionIndex}].externalModules[${externalModuleIndex}].description`, externalModule.selectedFile)
+            }
+        })
+    })
+
+    return httpResource.put(url + '/api/applications/standard/' + applicationId, formData)
         .then(response => response.data)
-    // todo error catching
+        .catch(_ => {})
 }
 
-function putStudyOffice (id, applicationObjects) {
-    const formData = new FormData()
-    formData.append('userRole', 'study_office')  // todo
-    applicationObjects.forEach(
-        (object, index) => {
-            // application data
-            formData.append(`moduleBlockUpdateDTOList[${index}].moduleName`, object.moduleName)
-            formData.append(`moduleBlockUpdateDTOList[${index}].university`, object.university)
-            formData.append(`moduleBlockUpdateDTOList[${index}].points`, object.creditPoints)
-            formData.append(`moduleBlockUpdateDTOList[${index}].pointSystem`, object.pointSystem)
-            formData.append(`moduleBlockUpdateDTOList[${index}].asExamCertificate`, object.asExamCertificate)
-            object.selectedInternalModules.forEach(
-                (moduleName, moduleIndex) => {
-                    formData.append(`moduleBlockUpdateDTOList[${index}].moduleNamesLeipzig[${moduleIndex}]`, moduleName)
-                }
-            )
-            // study office data
-            formData.append(`moduleBlockUpdateDTOList[${index}].decisionSuggestion`, object.decisionSuggestion)
-            formData.append(`moduleBlockUpdateDTOList[${index}].commentStudyOffice`, object.commentStudyOffice)
+function putApplicationStudyOffice (applicationId, courseLeipzig, connectionObjects) {
+    console.debug("%c"+ "putApplicationStudyOffice (applicationId: " + applicationId + ", courseLeipzig: " + courseLeipzig + ", connectionsObjects: " + connectionObjects + ")", "color:yellow")
+
+    const formData = createBasicFormData(courseLeipzig, connectionObjects)
+
+    connectionObjects.forEach((connection, connectionIndex) => {
+        if (connection.formalRejectionData['formalRejection']) {
+            formData.append(`modulesConnections[${connectionIndex}].formalRejection`, true)
+            formData.append(`modulesConnections[${connectionIndex}].formalRejectionComment`, connection.formalRejectionData.comment)
+        } else {
+            formData.append(`modulesConnections[${connectionIndex}].formalRejection`, false)
+            formData.append(`modulesConnections[${connectionIndex}].formalRejectionComment`, '')
+            if (connection.studyOfficeDecisionData['decision']) {
+                formData.append(`modulesConnections[${connectionIndex}].decisionSuggestion`, connection.studyOfficeDecisionData.decision)
+                formData.append(`modulesConnections[${connectionIndex}].commentStudyOffice`, connection.studyOfficeDecisionData.comment)
+            }
         }
-    )
-    console.log([...formData])
-    return axios.put(url + '/applications/' + id, formData)
-        .then(response => console.log(response.data))
+    })
+
+    return httpResource.put('/api/applications/study-office/' + applicationId, formData)
+        .then(response => response.data)
+        .catch(_ => {})
 }
 
-function putChairman (id, applicationObjects) {
-    const formData = new FormData()
-    formData.append('userRole', 'pav')  // todo
-    applicationObjects.forEach(
-        (object, index) => {
-            // application data
-            formData.append(`moduleBlockUpdateDTOList[${index}].moduleName`, object.moduleName)
-            formData.append(`moduleBlockUpdateDTOList[${index}].university`, object.university)
-            formData.append(`moduleBlockUpdateDTOList[${index}].points`, object.creditPoints)
-            formData.append(`moduleBlockUpdateDTOList[${index}].pointSystem`, object.pointSystem)
-            formData.append(`moduleBlockUpdateDTOList[${index}].asExamCertificate`, object.asExamCertificate)
-            object.selectedInternalModules.forEach(
-                (moduleName, moduleIndex) => {
-                    formData.append(`moduleBlockUpdateDTOList[${index}].moduleNamesLeipzig[${moduleIndex}]`, moduleName)
-                }
-            )
-            // chairman data
-            formData.append(`moduleBlockUpdateDTOList[${index}].decisionFinal`, object.decisionFinal)
-            formData.append(`moduleBlockUpdateDTOList[${index}].commentDecision`, object.commentDecision)
-        }
-    )
-    console.log([...formData])
-    return axios.put(url + '/applications/' + id, formData)
-        .then(response => console.log(response.data))
+/*
+GET-Request to /applications/{id}/update-status-allowed endpoint
+returns true/false if updating application status is allowed
+
+parameters:
+    - id, Number application id
+ */
+function getUpdateStatusAllowed (id) {
+    console.debug("%c"+ "getUpdateStatusAllowed (id: " + id + ")", "color:yellow")
+
+    return httpResource.get('/api/applications/' + id + '/update-status-allowed')
+        .then(response => response.data)
+        .catch(_ => {})
+}
+
+/*
+PUT-Request to /applications/{id}/update-status endpoint
+updates application status if possible
+
+parameters:
+    - id, Number application id
+ */
+function updateStatus (id) {
+    console.debug("%c"+ "updateStatus (id: " + id + ")", "color:yellow")
+
+    return httpResource.put('/api/applications/' + id + '/update-status')
+        .then(response => {
+            if (response.data) {
+                console.log('update successful')
+            } else {
+                console.log('update was not successful')
+            }
+            return response.data
+        })
+        .catch(_ => {})
 }
 
 export {
-    getCourseData,
+    getCoursesLeipzig,
     getModulesByCourse,
+    getApplications,
     getApplicationById,
     getApplicationByIdForStatus,
+    getApplicationExists,
     getRelatedModuleConnections,
     postApplication,
-    putStudyOffice,
-    putChairman
+    putApplicationStandard,
+    putApplicationStudyOffice,
+    getUpdateStatusAllowed,
+    updateStatus,
 }

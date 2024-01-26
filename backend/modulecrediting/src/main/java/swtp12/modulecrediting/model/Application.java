@@ -1,17 +1,10 @@
 package swtp12.modulecrediting.model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.NamedAttributeNode;
-import jakarta.persistence.NamedEntityGraph;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -25,24 +18,20 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @Entity
-@NamedEntityGraph(
-        name = "graph.Application.modulesConnections",
-        attributeNodes = @NamedAttributeNode(value = "modulesConnections")
-)
 public class Application {
-
-
     @Id
     @JsonView({Views.ApplicationOverview.class,Views.RelatedModulesConnection.class})
     private String id;
 
-    @JsonView({Views.ApplicationOverview.class,Views.RelatedModulesConnection.class})
+    @JsonView({Views.ApplicationOverview.class})
     private EnumApplicationStatus fullStatus;
     @CreationTimestamp
+    @JsonView({Views.ApplicationOverview.class})
+    private LocalDateTime creationDate;
+    @JsonView({Views.ApplicationOverview.class})
+    private LocalDateTime lastEditedDate;
     @JsonView({Views.ApplicationOverview.class,Views.RelatedModulesConnection.class})
-    private LocalDate creationDate;
-    @JsonView({Views.ApplicationOverview.class,Views.RelatedModulesConnection.class})
-    private LocalDate decisionDate;
+    private LocalDateTime decisionDate;
 
     //Relation Application <-> CourseLeipzig
     @ManyToOne
@@ -52,21 +41,20 @@ public class Application {
     private CourseLeipzig courseLeipzig;
 
     //Relation Application <-> ModulesConnection
-    @OneToMany(mappedBy = "application", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "application", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference
-    @JsonView(Views.ApplicationStudent.class)
+    @JsonView({Views.ApplicationStudent.class,Views.ApplicationOverview.class})
     private List<ModulesConnection> modulesConnections = new ArrayList<>();
 
 
-    public Application(String id, EnumApplicationStatus fullStatus, LocalDate creationDate) {
+    public Application(String id) {
         this.id = id;
-        this.fullStatus = fullStatus;
-        this.creationDate = creationDate;
+        this.fullStatus = EnumApplicationStatus.NEU;
     }
 
 
-    //Function for adding a List of ModuelsConnections to this Application (and add the Application to all ModulesConnection in the List)
-    public void addModulesConnections(List<ModulesConnection> modulesConnections) {
+    //Function for setting a List of ModuelsConnections to this Application (and add the Application to all ModulesConnection in the List)
+    public void setModulesConnections(List<ModulesConnection> modulesConnections) {
         for(ModulesConnection mc : modulesConnections) {
             mc.setApplication(this);
         }

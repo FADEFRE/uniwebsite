@@ -1,0 +1,37 @@
+{"properties": [
+    {
+        "name": "app.sec.refresh-token-secret",
+        "type": "java.lang.String",
+        "description": "A description for 'app.sec.refresh-token-secret'"
+    },
+    {
+        "name": "app.sec.access-token-secret",
+        "type": "java.lang.String",
+        "description": "A description for 'app.sec.access-token-secret'"
+    },
+    {
+        "name": "app.auth.tokenSecret",
+        "type": "java.lang.String",
+        "description": "A description for 'app.auth.tokenSecret'"
+    },
+    {
+        "name": "app.auth.refreshTokenCookieName",
+        "type": "java.lang.String",
+        "description": "A description for 'auth.refreshTokenCookieName'"
+    },
+    {
+        "name": "app.auth.accessTokenCookieName",
+        "type": "java.lang.String",
+        "description": "A description for 'auth.accessTokenCookieName'"
+    },
+    {
+        "name": "app.auth.refreshTokenExpirationMsec",
+        "type": "java.lang.Integer",
+        "description": "A description for 'auth.refreshTokenExpirationMsec'"
+    },
+    {
+        "name": "app.auth.tokenExpirationMsec",
+        "type": "java.lang.Integer",
+        "description": "A description for 'auth.tokenExpirationMsec'"
+    }
+]}
