@@ -9,10 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import swtp12.modulecrediting.dto.CourseLeipzigEditDTO;
 import swtp12.modulecrediting.dto.ModuleLeipzigCreateDTO;
 import swtp12.modulecrediting.dto.ModuleLeipzigUpdateDTO;
-import swtp12.modulecrediting.model.CourseLeipzig;
 import swtp12.modulecrediting.model.ModuleLeipzig;
 import swtp12.modulecrediting.model.ModulesConnection;
 import swtp12.modulecrediting.repository.ModuleLeipzigRepository;

@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import swtp12.modulecrediting.dto.CourseLeipzigEditDTO;
-import swtp12.modulecrediting.dto.CourseLeipzigRelationEditDTO;
 import swtp12.modulecrediting.model.CourseLeipzig;
 import swtp12.modulecrediting.model.Views;
 import swtp12.modulecrediting.service.CourseLeipzigService;
