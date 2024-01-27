@@ -38,7 +38,7 @@ public class CourseLeipzigController {
     }
 
     //POST-Requests
-    @PostMapping("/create")
+    @PostMapping
     @PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR')")
     public ResponseEntity<String> createCourseLeipzig(@ModelAttribute CourseLeipzigCreateDTO courseLeipzigCreateDTO) {
         return ResponseEntity.ok(courseLeipzigService.createCourseLeipzig(courseLeipzigCreateDTO));

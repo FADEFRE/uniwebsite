@@ -32,10 +32,11 @@ const specificRole = computed(() => navStore.getCurrentRoleNav)
 
   <div v-else-if="isNavType === 'internal'" class="links-container"
     :class="{ 'small-screen-links-container': isMenuOpen }">
-    <router-link to="" class="router-link" @click="$emit('linkClicked')" :class="{ 'white-router-link': isMenuOpen }">
+    <router-link :to="{ name: 'management' }" class="router-link" @click="$emit('linkClicked')"
+      :class="{ 'white-router-link': isMenuOpen }">
       Verwaltung
       <img src="@/assets/icons/ArrowWhite.svg" class="arrow-icon">
-    </router-link> <!-- todo replace with manage link -->
+    </router-link>
 
     <div v-if="specificRole === 'study'" :class="{ 'user-specific-container': isMenuOpen }">
       <router-link :to="{ name: 'studyOfficeSelection' }" @click="$emit('linkClicked')" class="router-link"

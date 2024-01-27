@@ -40,7 +40,7 @@ public class ModuleLeipzigController {
     }
     
     //POST-Requests
-    @PostMapping("/create")
+    @PostMapping
     @PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR')")
     public ResponseEntity<String> createModuleLeipzig(@ModelAttribute ModuleLeipzigCreateDTO moduleLeipzigCreateDTO) {
         return ResponseEntity.ok(moduleLeipzigService.createModuleLeipzig(moduleLeipzigCreateDTO));
