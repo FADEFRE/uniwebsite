@@ -39,14 +39,14 @@ public class CourseLeipzigController {
 
     //POST-Requests
     @PostMapping
-    //@PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR')")
+    @PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR')")
     public ResponseEntity<String> createCourseLeipzig(@ModelAttribute CourseLeipzigEditDTO courseLeipzigDTO) {
         return ResponseEntity.ok(courseLeipzigService.createCourseLeipzig(courseLeipzigDTO));
     }
 
     //PUT-Requests
     @PutMapping("/{name}")
-    //@PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR')") TODO
+    @PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR')")
     public ResponseEntity<String> updateCourseLeipzig(@PathVariable String name, @ModelAttribute CourseLeipzigEditDTO courseLeipzigDTO) {
         return ResponseEntity.ok(courseLeipzigService.updateCourseLeipzig(name, courseLeipzigDTO));
     }
@@ -59,7 +59,7 @@ public class CourseLeipzigController {
 
     //DELETE-Requests
     @DeleteMapping("/{name}")
-    //@PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR')")
+    @PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR')")
     public ResponseEntity<String> deleteCourseLeipzig(@PathVariable String name) {
         return ResponseEntity.ok(courseLeipzigService.deleteCourseLeipzig(name));
     }
