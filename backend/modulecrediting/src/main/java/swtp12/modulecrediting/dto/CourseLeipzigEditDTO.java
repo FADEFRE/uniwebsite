@@ -7,6 +7,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class CourseLeipzigCreateDTO {
+public class CourseLeipzigEditDTO {
     private String courseName;
 }

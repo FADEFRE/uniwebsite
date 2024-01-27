@@ -13,7 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
-import swtp12.modulecrediting.dto.CourseLeipzigCreateDTO;
+import swtp12.modulecrediting.dto.CourseLeipzigEditDTO;
 import swtp12.modulecrediting.model.CourseLeipzig;
 import swtp12.modulecrediting.repository.CourseLeipzigRepository;
 
@@ -65,26 +65,26 @@ public class CourseLeipzigServiceTest {
     @Test
     void shouldCreateCourseLeipzig() {
         String testName = "test course";
-        CourseLeipzigCreateDTO courseLeipzigCreateDTO = new CourseLeipzigCreateDTO();
+        CourseLeipzigEditDTO courseLeipzigDTO = new CourseLeipzigEditDTO();
 
         ResponseStatusException e1 = assertThrows(ResponseStatusException.class, () -> { courseLeipzigService.createCourseLeipzig(null); });
         assertTrue(e1.getStatusCode().equals(HttpStatus.BAD_REQUEST));
 
-        ResponseStatusException e2 = assertThrows(ResponseStatusException.class, () -> { courseLeipzigService.createCourseLeipzig(courseLeipzigCreateDTO); });
+        ResponseStatusException e2 = assertThrows(ResponseStatusException.class, () -> { courseLeipzigService.createCourseLeipzig(courseLeipzigDTO); });
         assertTrue(e2.getStatusCode().equals(HttpStatus.BAD_REQUEST));
 
 
-        courseLeipzigCreateDTO.setCourseName(testName);
+        courseLeipzigDTO.setCourseName(testName);
 
         CourseLeipzig courseLeipzig = new CourseLeipzig(testName, true);
         Mockito.when(courseLeipzigRepository.save(any())).thenReturn(courseLeipzig);
-        String expectedCourseLeipzigName = courseLeipzigService.createCourseLeipzig(courseLeipzigCreateDTO);
+        String expectedCourseLeipzigName = courseLeipzigService.createCourseLeipzig(courseLeipzigDTO);
         assertEquals(expectedCourseLeipzigName, testName);
         
         
         Optional<CourseLeipzig> optionalCourseLeipzig = Optional.of(new CourseLeipzig(testName, true));
         Mockito.when(courseLeipzigRepository.findById(testName)).thenReturn(optionalCourseLeipzig);
-        ResponseStatusException e3 = assertThrows(ResponseStatusException.class, () -> { courseLeipzigService.createCourseLeipzig(courseLeipzigCreateDTO); });
+        ResponseStatusException e3 = assertThrows(ResponseStatusException.class, () -> { courseLeipzigService.createCourseLeipzig(courseLeipzigDTO); });
         assertTrue(e3.getStatusCode().equals(HttpStatus.BAD_REQUEST));
     }
 

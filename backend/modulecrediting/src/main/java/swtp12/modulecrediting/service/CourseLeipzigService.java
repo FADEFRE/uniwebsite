@@ -8,12 +8,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import swtp12.modulecrediting.dto.CourseLeipzigCreateDTO;
-import swtp12.modulecrediting.dto.EditCourseLeipzigDTO;
+import swtp12.modulecrediting.dto.CourseLeipzigEditDTO;
+import swtp12.modulecrediting.dto.CourseLeipzigRelationEditDTO;
 import swtp12.modulecrediting.model.Application;
 import swtp12.modulecrediting.model.CourseLeipzig;
 import swtp12.modulecrediting.model.ModuleLeipzig;
 import swtp12.modulecrediting.model.ModulesConnection;
+import swtp12.modulecrediting.repository.ApplicationRepository;
 import swtp12.modulecrediting.repository.CourseLeipzigRepository;
 import swtp12.modulecrediting.repository.ModuleLeipzigRepository;
 import swtp12.modulecrediting.repository.ModulesConnectionRepository;
@@ -24,15 +25,12 @@ import swtp12.modulecrediting.repository.ModulesConnectionRepository;
 public class CourseLeipzigService {
     @Autowired
     CourseLeipzigRepository courseLeipzigRepository;
-    
-    @Autowired
-    private ModulesConnectionRepository modulesConnectionRepository;
 
     @Autowired
-    private ModuleLeipzigRepository moduleLeipzigRepository;
+    ApplicationRepository applicationRepository;
 
     public CourseLeipzig getCourseLeipzigByName(String name) {
-        Optional<CourseLeipzig> courseLeipzig = courseLeipzigRepository.findById(name);
+        Optional<CourseLeipzig> courseLeipzig = courseLeipzigRepository.findByName(name);
         if(!courseLeipzig.isPresent()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Course Leipzig not found with moduleName: " + name);
         
         return courseLeipzig.get();
@@ -42,38 +40,73 @@ public class CourseLeipzigService {
         return courseLeipzigRepository.findAll();
     }
 
-    public Boolean deleteCourseLeipzig(String name) {
+    public String createCourseLeipzig(CourseLeipzigEditDTO courseLeipzigDTO) {
+        if (courseLeipzigDTO == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No data given");
+        if (courseLeipzigDTO.getCourseName() == null || courseLeipzigDTO.getCourseName().isBlank()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No course name given");
+        String courseName = courseLeipzigDTO.getCourseName();
+        Optional<CourseLeipzig> cL = courseLeipzigRepository.findByName(courseName);
+        if (cL.isPresent()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Course with this name already exists: " + courseName);
+        //TODO: reactivate
+        CourseLeipzig courseLeipzig = new CourseLeipzig(courseName, true);
+        courseLeipzigRepository.save(courseLeipzig);
+        return courseName;
+    }
+
+    public String updateCourseLeipzig(String courseName, CourseLeipzigEditDTO courseLeipzigDTO) {
+        if (courseLeipzigDTO == null)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No data given");
+        if (courseLeipzigDTO.getCourseName() == null || courseLeipzigDTO.getCourseName().isBlank())
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No course name given");
+
+        Optional<CourseLeipzig> courseLeipzigOptional = courseLeipzigRepository.findByName(courseName);
+
+        if (!courseLeipzigOptional.isPresent())
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No Course with name " + courseName + " exists");
+
+        CourseLeipzig courseLeipzig = courseLeipzigOptional.get();
+        courseLeipzig.setName(courseLeipzigDTO.getCourseName());
+
+        courseLeipzigRepository.save(courseLeipzig);
+        return courseLeipzig.getName();
+    }
+
+
+    public String deleteCourseLeipzig(String name) {
         CourseLeipzig courseLeipzig = getCourseLeipzigByName(name);
         if (!courseLeipzig.getIsActive())
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Course Leipzig is already deactivated with name: " + name);
+
         courseLeipzig.setIsActive(false);
-        if (checkIfDeletionIsPossible(courseLeipzig)) {
-            courseLeipzigRepository.deleteById(name);
-            return true;
+
+        if (!checkIfCourseIsUsedInApplications(courseLeipzig)) {
+            courseLeipzigRepository.deleteById(courseLeipzig.getId());
+            return "DELETED";
         }
-        else return false;
+
+        courseLeipzigRepository.save(courseLeipzig);
+        return "DEACTIVATED";
     }
 
-    private Boolean checkIfDeletionIsPossible(CourseLeipzig courseLeipzig) {
-        List<ModulesConnection> allModulesConnections = modulesConnectionRepository.findAll();
-        if (allModulesConnections.isEmpty()) return true;
-        Boolean check = false;
-        for (ModulesConnection modulesConnection : allModulesConnections) {
-            Application application = modulesConnection.getApplication();
-            CourseLeipzig applicationCourseLeipzig = application.getCourseLeipzig();
-            if (!applicationCourseLeipzig.equals(courseLeipzig)) { check = true; }
-            else check = false;
+    private Boolean checkIfCourseIsUsedInApplications(CourseLeipzig courseLeipzig) {
+        // TODO: add origin and editable applications
+        List<Application> applications = applicationRepository.findAll();
+
+        if(applications.isEmpty()) return false;
+
+        for(Application application : applications) {
+            if(courseLeipzig.equals(application.getCourseLeipzig())) return true;
         }
-        return check;
+        return false;
     }
 
-    public Boolean editCourse(String courseName, EditCourseLeipzigDTO editCourseDTO) {
+    /*
+    public Boolean editCourse(String courseName, CourseLeipzigRelationEditDTO editCourseDTO) {
         if (editCourseDTO == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No data given");
         if (editCourseDTO.getModuleId().isBlank()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No module name given");
         String moduleName = editCourseDTO.getModuleId();
         String action = editCourseDTO.getAction();
-        Optional<CourseLeipzig> cL = courseLeipzigRepository.findById(courseName);
-        Optional<ModuleLeipzig> mL = moduleLeipzigRepository.findById(moduleName);
+        Optional<CourseLeipzig> cL = courseLeipzigRepository.findByName(courseName);
+        Optional<ModuleLeipzig> mL = moduleLeipzigRepository.findByName(moduleName);
         if(!cL.isPresent()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Course Leipzig not found with given name: " + courseName);
         if(!mL.isPresent()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Module Leipzig not found with given name: " + moduleName);
 
@@ -98,17 +131,6 @@ public class CourseLeipzigService {
                 break;
         }
         return false;
-    }
+    }*/
 
-    public String createCourseLeipzig(CourseLeipzigCreateDTO courseLeipzigCreateDTO) {
-        if (courseLeipzigCreateDTO == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No data given");
-        if (courseLeipzigCreateDTO.getCourseName() == null || courseLeipzigCreateDTO.getCourseName().isBlank()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No course name given");
-        String courseName = courseLeipzigCreateDTO.getCourseName();
-        Optional<CourseLeipzig> cL = courseLeipzigRepository.findById(courseName);
-        if (cL.isPresent()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Course with this name already exists: " + courseName);
-
-        CourseLeipzig courseLeipzig = new CourseLeipzig(courseName, true);
-        courseLeipzigRepository.save(courseLeipzig);
-        return courseName;
-    }
 }

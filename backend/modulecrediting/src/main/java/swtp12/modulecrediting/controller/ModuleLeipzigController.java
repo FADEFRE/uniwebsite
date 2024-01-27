@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
+import swtp12.modulecrediting.dto.CourseLeipzigEditDTO;
 import swtp12.modulecrediting.dto.ModuleLeipzigCreateDTO;
 import swtp12.modulecrediting.dto.ModuleLeipzigUpdateDTO;
 import swtp12.modulecrediting.model.ModuleLeipzig;
@@ -41,25 +42,22 @@ public class ModuleLeipzigController {
     
     //POST-Requests
     @PostMapping
-    @PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR')")
+    //@PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR')")
     public ResponseEntity<String> createModuleLeipzig(@ModelAttribute ModuleLeipzigCreateDTO moduleLeipzigCreateDTO) {
         return ResponseEntity.ok(moduleLeipzigService.createModuleLeipzig(moduleLeipzigCreateDTO));
     }
 
     //PUT-Requests
-    @PutMapping("/{name}/edit")
-    @PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR')")
-    public ResponseEntity<Boolean> editModule(@PathVariable String name, @ModelAttribute ModuleLeipzigUpdateDTO moduleLeipzigUpdateDTO) {
-        return ResponseEntity.ok(moduleLeipzigService.editModule(name, moduleLeipzigUpdateDTO));
+    @PutMapping("/{name}")
+    //@PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR')") TODO
+    public ResponseEntity<String> updateCourseLeipzig(@PathVariable String name, @ModelAttribute ModuleLeipzigCreateDTO moduleLeipzigCreateDTO) {
+        return ResponseEntity.ok(moduleLeipzigService.updateModuleLeipzig(name, moduleLeipzigCreateDTO));
     }
 
     //DELETE-Requests
-    @DeleteMapping("/{name}/delete")
-    @PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR')")
+    @DeleteMapping("/{name}")
+    //@PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR')")
     public ResponseEntity<String> deleteModulesLeipzig(@PathVariable String name) {
-        if (moduleLeipzigService.deleteModulesLeipzig(name)) {
-            return ResponseEntity.ok("DELETED");
-        }
-        else return ResponseEntity.ok("DEACTIVATED");
+        return ResponseEntity.ok(moduleLeipzigService.deleteModuleLeipzig(name));
     }
 }

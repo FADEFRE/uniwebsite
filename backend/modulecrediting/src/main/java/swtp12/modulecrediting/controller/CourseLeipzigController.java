@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
-import swtp12.modulecrediting.dto.CourseLeipzigCreateDTO;
-import swtp12.modulecrediting.dto.EditCourseLeipzigDTO;
+import swtp12.modulecrediting.dto.CourseLeipzigEditDTO;
+import swtp12.modulecrediting.dto.CourseLeipzigRelationEditDTO;
 import swtp12.modulecrediting.model.CourseLeipzig;
 import swtp12.modulecrediting.model.Views;
 import swtp12.modulecrediting.service.CourseLeipzigService;
@@ -39,24 +39,29 @@ public class CourseLeipzigController {
 
     //POST-Requests
     @PostMapping
-    @PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR')")
-    public ResponseEntity<String> createCourseLeipzig(@ModelAttribute CourseLeipzigCreateDTO courseLeipzigCreateDTO) {
-        return ResponseEntity.ok(courseLeipzigService.createCourseLeipzig(courseLeipzigCreateDTO));
+    //@PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR')")
+    public ResponseEntity<String> createCourseLeipzig(@ModelAttribute CourseLeipzigEditDTO courseLeipzigDTO) {
+        return ResponseEntity.ok(courseLeipzigService.createCourseLeipzig(courseLeipzigDTO));
     }
 
     //PUT-Requests
-    @PutMapping("/{name}/edit") // deleting and adding modules
-    @PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR')")
-    public ResponseEntity<Boolean> updateCourseLeipzig(@PathVariable String name, @ModelAttribute EditCourseLeipzigDTO editCourseDTO) {
-        return ResponseEntity.ok(courseLeipzigService.editCourse(name, editCourseDTO));
+    @PutMapping("/{name}")
+    //@PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR')") TODO
+    public ResponseEntity<String> updateCourseLeipzig(@PathVariable String name, @ModelAttribute CourseLeipzigEditDTO courseLeipzigDTO) {
+        return ResponseEntity.ok(courseLeipzigService.updateCourseLeipzig(name, courseLeipzigDTO));
     }
 
+    /*@PutMapping("/{name}/edit") // deleting and adding modules
+    //@PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR')")
+    public ResponseEntity<Boolean> updateCourseLeipzig(@PathVariable String name, @ModelAttribute CourseLeipzigRelationEditDTO editCourseDTO) {
+        return ResponseEntity.ok(courseLeipzigService.editCourse(name, editCourseDTO));
+    }*/
+
     //DELETE-Requests
-    @DeleteMapping("/{name}/delete")
-    @PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR')")
+    @DeleteMapping("/{name}")
+    //@PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR')")
     public ResponseEntity<String> deleteCourseLeipzig(@PathVariable String name) {
-        if (courseLeipzigService.deleteCourseLeipzig(name)) return ResponseEntity.ok("DELETED");
-        else return ResponseEntity.ok("DEACTIVATED");
+        return ResponseEntity.ok(courseLeipzigService.deleteCourseLeipzig(name));
     }
 
 }

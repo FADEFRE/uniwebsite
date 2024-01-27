@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class EditCourseLeipzigDTO {
+public class CourseLeipzigRelationEditDTO {
     private String moduleId;
 
     private String action;

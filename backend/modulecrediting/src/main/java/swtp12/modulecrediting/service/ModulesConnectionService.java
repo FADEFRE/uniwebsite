@@ -87,7 +87,7 @@ public class ModulesConnectionService {
                 List<String> deleteNameList = new ArrayList<>(savedNameList);
                 deleteNameList.removeAll(updatedNameList);
                 removeAllDeletedModulesLeipzig(modulesConnection, deleteNameList);
-                moduleLeipzigService.updateModulesLeipzig(modulesConnection, mcuDTO.getModulesLeipzig());
+                moduleLeipzigService.updateApplicationModulesLeipzig(modulesConnection, mcuDTO.getModulesLeipzig());
             }
 
             // modulesConnection will be saved in application service due to cascade all

@@ -155,40 +155,35 @@ public class DataLoader implements CommandLineRunner {
      */
     @Transactional
     private void leipzigDataLoader(String fileName) {
-        
         JsonNode courseNodes = grabFirstNodeFromJson(fileName, "courses");
         for (JsonNode courseNode : courseNodes) {
-            CourseLeipzig courseLeipzig = new CourseLeipzig(courseNode.get("name").asText(), true);
-            if (courseLeipzigRepo.existsById(courseLeipzig.getName()) == false) {
-                courseLeipzigRepo.save(courseLeipzig);
-            }
+            String courseName = courseNode.get("name").asText();
+            System.out.println("Processing course: " + courseName);
+            CourseLeipzig courseLeipzig = courseLeipzigRepo.findByName(courseName)
+                    .orElseGet(() -> {
+                        System.out.println("Creating new course: " + courseName);
+                        return courseLeipzigRepo.save(new CourseLeipzig(courseName, true));
+                    });
 
             JsonNode modules = grabModulesFromJsonNode(courseNode);
             for (JsonNode module : modules) {
-                String name = module.get("name").asText();
-                String number = module.get("number").asText();
-                ModuleLeipzig moduleLeipzig = new ModuleLeipzig(name, number, true);
-                if (modulLeipzigRepo.existsById(moduleLeipzig.getName()) == false) {
-                    modulLeipzigRepo.save(moduleLeipzig);
-                }
+                String moduleName = module.get("name").asText();
+                String moduleCode = module.get("number").asText();
+                System.out.println("Processing module: " + moduleName + " with code: " + moduleCode);
+                ModuleLeipzig moduleLeipzig = modulLeipzigRepo.findByName(moduleName)
+                        .orElseGet(() -> {
+                            System.out.println("Creating new module: " + moduleName + " with code: " + moduleCode);
+                            return modulLeipzigRepo.save(new ModuleLeipzig(moduleName, moduleCode, true));
+                        });
 
-                CourseLeipzig cLdB = courseLeipzigRepo.findById(courseLeipzig.getName()).get();
-                ModuleLeipzig mLdB = modulLeipzigRepo.findById(moduleLeipzig.getName()).get();
-
-                List<ModuleLeipzig> mList = cLdB.getModulesLeipzigCourse(); ;
-                mList.add(mLdB);
-                cLdB.setModulesLeipzigCourse(mList);
-
-                List<CourseLeipzig> cList = mLdB.getCoursesLeipzig();
-                cList.add(cLdB);
-                mLdB.setCoursesLeipzig(cList);
-
-                courseLeipzigRepo.save(cLdB);
-                modulLeipzigRepo.save(mLdB);
+                courseLeipzig.addCourseToModulesLeipzig(moduleLeipzig);
+                courseLeipzigRepo.save(courseLeipzig);
             }
         }
-        System.out.println("Dataloader: Data successfully loaded into Database \n"); 
+        System.out.println("Dataloader: Data successfully loaded into Database \n");
     }
+
+
 
     /**
      * The `createTestData` function generates dummy data for testing purposes by creating random

@@ -5,8 +5,11 @@ import org.springframework.stereotype.Repository;
 
 import swtp12.modulecrediting.model.CourseLeipzig;
 
-@Repository
-public interface CourseLeipzigRepository extends JpaRepository<CourseLeipzig, String>{
+import java.util.Optional;
 
+@Repository
+public interface CourseLeipzigRepository extends JpaRepository<CourseLeipzig, Long> {
     boolean existsByName(String name);
+    Optional<CourseLeipzig> findByName(String name);
 }
+

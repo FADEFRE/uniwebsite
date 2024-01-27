@@ -9,8 +9,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import swtp12.modulecrediting.dto.CourseLeipzigEditDTO;
 import swtp12.modulecrediting.dto.ModuleLeipzigCreateDTO;
 import swtp12.modulecrediting.dto.ModuleLeipzigUpdateDTO;
+import swtp12.modulecrediting.model.CourseLeipzig;
 import swtp12.modulecrediting.model.ModuleLeipzig;
 import swtp12.modulecrediting.model.ModulesConnection;
 import swtp12.modulecrediting.repository.ModuleLeipzigRepository;
@@ -27,7 +29,7 @@ public class ModuleLeipzigService {
     private ModulesConnectionRepository modulesConnectionRepository;
 
     // used for application update
-    public void updateModulesLeipzig(ModulesConnection modulesConnection, List<ModuleLeipzigUpdateDTO> modulesLeipzigDTO) {
+    public void updateApplicationModulesLeipzig(ModulesConnection modulesConnection, List<ModuleLeipzigUpdateDTO> modulesLeipzigDTO) {
         for(ModuleLeipzigUpdateDTO ml : modulesLeipzigDTO) {
             ModuleLeipzig moduleLeipzig = getModuleLeipzigByName(ml.getName());
 
@@ -43,7 +45,6 @@ public class ModuleLeipzigService {
     public List<ModuleLeipzig> getModulesLeipzig() {
         return moduleLeipzigRepository.findAll();
     }
-
     public ArrayList<ModuleLeipzig> getModulesLeipzigByNames(List<String> moduleNamesLeipzig) {
         if(moduleNamesLeipzig.size() == 0) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No Module Leipzig Names provided");
 
@@ -53,9 +54,8 @@ public class ModuleLeipzigService {
         }
         return modulesLeipzig;
     }
-
     public ModuleLeipzig getModuleLeipzigByName(String name) {
-        Optional<ModuleLeipzig> moduleLeipzig = moduleLeipzigRepository.findById(name);
+        Optional<ModuleLeipzig> moduleLeipzig = moduleLeipzigRepository.findByName(name);
         if(moduleLeipzig.isPresent())
             return moduleLeipzig.get();
 
@@ -66,49 +66,75 @@ public class ModuleLeipzigService {
         if (moduleLeipzigCreateDTO == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No data given");
         if (moduleLeipzigCreateDTO.getName().isBlank()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No module name given");
         if (moduleLeipzigCreateDTO.getCode().isBlank()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No moduel code given");
+
         String moduleName = moduleLeipzigCreateDTO.getName();
-        String moduelCode = moduleLeipzigCreateDTO.getCode();
-        Optional<ModuleLeipzig> mL = moduleLeipzigRepository.findById(moduleName);
-        if (mL.isPresent() && mL.get().getCode().equals(moduelCode)) {
-            if (mL.get().getIsActive()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Course with this name already exists: " + moduleName);
-            mL.get().setIsActive(true);
-            moduleLeipzigRepository.save(mL.get());
-            return "REACTIVATED";
+        String moduleCode = moduleLeipzigCreateDTO.getCode();
+
+        Optional<ModuleLeipzig> moduleLeipzigOptional = moduleLeipzigRepository.findByName(moduleName);
+        if (moduleLeipzigOptional.isPresent()) {
+            ModuleLeipzig moduleLeipzig = moduleLeipzigOptional.get();
+            if (moduleLeipzig.getIsActive())
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Module with this name already exists: " + moduleName);
+
+            // reacitvate old module
+            moduleLeipzig.setCode(moduleCode);
+            moduleLeipzigRepository.save(moduleLeipzig);
+            return moduleLeipzig.getName();
         }
 
-        ModuleLeipzig moduleLeipzig = new ModuleLeipzig(moduleName, moduelCode, true);
+        // create new module
+        ModuleLeipzig moduleLeipzig = new ModuleLeipzig(moduleName, moduleCode, true);
         moduleLeipzigRepository.save(moduleLeipzig);
-        return moduleName;
+        return moduleLeipzig.getName();
     }
 
-    public Boolean deleteModulesLeipzig(String name) {
+    public String updateModuleLeipzig(String name, ModuleLeipzigCreateDTO moduleLeipzigCreateDTO) {
+        if (moduleLeipzigCreateDTO == null)
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No data given");
+        if (moduleLeipzigCreateDTO.getName() == null || moduleLeipzigCreateDTO.getName().isBlank() || moduleLeipzigCreateDTO.getCode() == null || moduleLeipzigCreateDTO.getCode().isBlank())
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No course name given");
+
+        Optional<ModuleLeipzig> moduleLeipzigOptional = moduleLeipzigRepository.findByName(name);
+
+        if (!moduleLeipzigOptional.isPresent())
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No Module: " + name + " exists");
+
+        ModuleLeipzig moduleLeipzig = moduleLeipzigOptional.get();
+        moduleLeipzig.setName(moduleLeipzigCreateDTO.getName());
+        moduleLeipzig.setCode(moduleLeipzigCreateDTO.getCode());
+
+        moduleLeipzigRepository.save(moduleLeipzig);
+        return moduleLeipzig.getName();
+    }
+
+    public String deleteModuleLeipzig(String name) {
         ModuleLeipzig moduleLeipzig = getModuleLeipzigByName(name);
         if (!moduleLeipzig.getIsActive())
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Module Leipzig is already deactivated with name: " + name);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Course Leipzig is already deactivated with name: " + name);
+
         moduleLeipzig.setIsActive(false);
-        if (checkIfDeletionIsPossible(moduleLeipzig)) {
-            moduleLeipzigRepository.deleteById(name);
-            return true;
+
+        if (!checkIfModuleIsUsedInApplications(moduleLeipzig)) {
+            moduleLeipzigRepository.deleteById(moduleLeipzig.getId());
+            return "DELETED";
         }
-        else return false;
+
+        moduleLeipzigRepository.save(moduleLeipzig);
+        return "DEACTIVATED";
     }
 
-    private Boolean checkIfDeletionIsPossible(ModuleLeipzig moduleLeipzig) {
-        List<ModulesConnection> allModulesConnections = modulesConnectionRepository.findAll();
-        if (allModulesConnections.isEmpty()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "There are no connections in the database");
-        Boolean check = false;
-        for (ModulesConnection modulesConnection : allModulesConnections) {
-            List<ModuleLeipzig> listOfModuleLeipzig = modulesConnection.getModulesLeipzig();
-            for (ModuleLeipzig connectionsModuleLeipzig : listOfModuleLeipzig) {
-                if (!connectionsModuleLeipzig.equals(moduleLeipzig)) { check = true; }
-                else check = false;
+    private Boolean checkIfModuleIsUsedInApplications(ModuleLeipzig moduleLeipzig) {
+        List<ModulesConnection> modulesConnections = modulesConnectionRepository.findAll();
+
+        if (modulesConnections.isEmpty()) return false;
+
+        for (ModulesConnection mc : modulesConnections) {
+            List<ModuleLeipzig> listOfModuleLeipzig = mc.getModulesLeipzig();
+            for (ModuleLeipzig ml : listOfModuleLeipzig) {
+                if (ml.equals(moduleLeipzig)) return true;
             }
         }
-        return check;
-    }
 
-    public Boolean editModule(String name, ModuleLeipzigUpdateDTO moduleLeipzigUpdateDTO) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'editModule'");
+        return false;
     }
 }
