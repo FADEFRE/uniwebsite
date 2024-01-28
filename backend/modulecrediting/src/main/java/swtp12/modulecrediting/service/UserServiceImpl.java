@@ -20,7 +20,7 @@ import swtp12.modulecrediting.repository.UserRepository;
 import swtp12.modulecrediting.util.CookieUtil;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl {
     @Autowired
     private UserRepository userRepository;
 
@@ -30,7 +30,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private CookieUtil cookieUtil;
 
-    @Override
     public ResponseEntity<LoginResponse> login(LoginRequest loginRequest, String accessToken, String refreshToken) {
         String username = loginRequest.getUsername();
         User user = userRepository.findByUsername(username).orElseThrow(() -> new IllegalArgumentException("User with this username could not be found " + username));
@@ -65,7 +64,6 @@ public class UserServiceImpl implements UserService {
 
     }
 
-    @Override
     public ResponseEntity<LoginResponse> refresh(String accessToken, String refreshToken) {
         Boolean refreshTokenValid = tokenProvider.validateToken(refreshToken);
         if (!refreshTokenValid) {
@@ -88,7 +86,6 @@ public class UserServiceImpl implements UserService {
         return ResponseEntity.ok().headers(responseHeaders).body(loginResponse);
     }
 
-    @Override
     public ResponseEntity<LogoutResponse> logout() {
         HttpHeaders responseHeaders = new HttpHeaders();
         deleteAccessTokenCookie(responseHeaders);
@@ -96,7 +93,6 @@ public class UserServiceImpl implements UserService {
         return ResponseEntity.ok().headers(responseHeaders).body(logoutResponse);
     }
 
-    @Override
     public UserSummary getUserProfile() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = new User();
