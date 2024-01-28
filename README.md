@@ -55,7 +55,8 @@ Admin:
 ### GET - Requests:
 
 http://localhost:8090/api/applications -> returns a "List" of all "Applications"    
-"Views.ApplicationOverview.class"
+"Views.ApplicationOverview.class"   
+http://localhost:8090/api/applications/original -> returns a "List" of all "OriginalApplications"   
 
     [
         {
@@ -85,7 +86,8 @@ http://localhost:8090/api/applications -> returns a "List" of all "Applications"
 .
 
 http://localhost:8090/api/applications/{id} -> needs {id}, returns corresponding "Application"    
-"Views.ApplicationLogin.class"
+"Views.ApplicationLogin.class"      
+http://localhost:8090/api/applications/{id}/original -> needs {id}, returns corresponding "OriginalApplications"  
 
     "id": id,
     "fullStatus": NEU / FORMFEHLER / STUDIENBÜRO / PRÜFUNGSAUSSCHUSS / ABGESCHLOSSEN,
