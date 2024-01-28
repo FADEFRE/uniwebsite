@@ -7,6 +7,7 @@ import org.springframework.web.server.ResponseStatusException;
 import swtp12.modulecrediting.dto.ExternalModuleCreateDTO;
 import swtp12.modulecrediting.dto.ExternalModuleUpdateDTO;
 import swtp12.modulecrediting.model.ExternalModule;
+import swtp12.modulecrediting.model.ModulesConnection;
 import swtp12.modulecrediting.model.PdfDocument;
 import swtp12.modulecrediting.repository.ExternalModuleRepository;
 
@@ -42,30 +43,31 @@ public class ExternalModuleService {
         return externalModules;
     }
 
-    public void updateExternalModules(List<ExternalModuleUpdateDTO> externalModuleUpdateDTOs, String userRole) {
+    public List<Long> updateExternalModules(List<ExternalModuleUpdateDTO> externalModuleUpdateDTOs, String userRole) {
+        List<Long> listofIds = new ArrayList<>();
         for(ExternalModuleUpdateDTO ma : externalModuleUpdateDTOs) {
             if(ma.getId() == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Module Application id must not be null");
             ExternalModule externalModule = getExternalModuleById(ma.getId());
-
-
-            if(ma.getName() != null)
+            
+            if(ma.getName() != null) {
                 externalModule.setName(ma.getName());
-
-            if(ma.getUniversity() != null)
+            }
+            if(ma.getUniversity() != null) {
                 externalModule.setUniversity(ma.getUniversity());
-
-            if(ma.getPoints() != null)
+            }
+            if(ma.getPoints() != null) {
                 externalModule.setPoints(ma.getPoints());
-
-            if(ma.getPointSystem() != null)
+            }
+            if(ma.getPointSystem() != null) {
                 externalModule.setPointSystem(ma.getPointSystem());
-
+            }
             if(userRole.equals("standard") && ma.getDescription() != null) {
                 PdfDocument pdfDocument = pdfDocumentService.createPdfDocument(ma.getDescription());
                 externalModule.setPdfDocument(pdfDocument);
             }
+            listofIds.add(ma.getId());
         }
-
+        return listofIds;
     }
 
     public ExternalModule getExternalModuleById(Long id) {
@@ -78,7 +80,9 @@ public class ExternalModuleService {
 
     public void deleteExternalModuleById(Long id) {
         ExternalModule externalModule = getExternalModuleById(id);
-        externalModule.getModulesConnection().removeExternalModules(List.of(externalModule));
+        for (ModulesConnection modulesConnection : externalModule.getModulesConnection()) {
+            modulesConnection.removeExternalModules(List.of(externalModule));
+        }
         externalModuleRepository.deleteById(id);
     }
 }
