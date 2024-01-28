@@ -6,7 +6,9 @@ import static swtp12.modulecrediting.dto.EnumStatusChange.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +21,15 @@ import jakarta.transaction.Transactional;
 import swtp12.modulecrediting.dto.ApplicationCreateDTO;
 import swtp12.modulecrediting.dto.ApplicationUpdateDTO;
 import swtp12.modulecrediting.dto.EnumStatusChange;
+import swtp12.modulecrediting.dto.ModulesConnectionUpdateDTO;
 import swtp12.modulecrediting.dto.StudentApplicationDTO;
-import swtp12.modulecrediting.dto.StudentModulesConnectionDTO;
 import swtp12.modulecrediting.model.Application;
 import swtp12.modulecrediting.model.CourseLeipzig;
 import swtp12.modulecrediting.model.EnumApplicationStatus;
 import swtp12.modulecrediting.model.ModulesConnection;
+import swtp12.modulecrediting.model.OriginalApplication;
 import swtp12.modulecrediting.repository.ApplicationRepository;
+import swtp12.modulecrediting.repository.OriginalApplicationRepository;
 
 // TODO: fix pdf generator
 
@@ -33,6 +37,8 @@ import swtp12.modulecrediting.repository.ApplicationRepository;
 public class ApplicationService {
     @Autowired
     private ApplicationRepository applicationRepository;
+    @Autowired
+    private OriginalApplicationRepository originalApplicationRepository;
     @Autowired
     ModulesConnectionService modulesConnectionService;
     @Autowired
@@ -60,6 +66,43 @@ public class ApplicationService {
         return id;
     }
 
+    @Transactional
+    public String updateStudentApplication(String id, ApplicationUpdateDTO applicationDTO) {
+        Application application = getApplicationById(id);
+        OriginalApplication originalApplication = getOriginalApplication(id);
+
+        if(applicationDTO.getModulesConnections() != null) {
+            List<ModulesConnectionUpdateDTO> DTOs = applicationDTO.getModulesConnections();
+            int size = DTOs.size();
+            for (int i = 0; i < size; i++) {
+                ModulesConnectionUpdateDTO dtoCon = DTOs.get(i);
+                Long modConId = modulesConnectionService.getModulesConnectionById(dtoCon.getId()).getMatchingId();
+                ModulesConnectionUpdateDTO modConUpDTO = duplicateModuleConnectionUpdateDTO(modConId, dtoCon);
+                DTOs.add(modConUpDTO);
+            }
+            modulesConnectionService.updateModulesConnection(DTOs, "standard");
+        }
+        application.setFullStatus(NEU);
+        originalApplication.setFullStatus(IN_BEARBEITUNG);
+        applicationRepository.save(application);
+        originalApplicationRepository.save(originalApplication);
+        return id;
+    }
+
+    private ModulesConnectionUpdateDTO duplicateModuleConnectionUpdateDTO(Long id, ModulesConnectionUpdateDTO mcDto) {
+        ModulesConnectionUpdateDTO modConUpDTO = new ModulesConnectionUpdateDTO();
+        modConUpDTO.setId(id);
+        modConUpDTO.setFormalRejection(mcDto.getFormalRejection());
+        modConUpDTO.setFormalRejectionComment(mcDto.getFormalRejectionComment());
+        modConUpDTO.setCommentStudyOffice(mcDto.getCommentStudyOffice());
+        modConUpDTO.setDecisionSuggestion(mcDto.getDecisionSuggestion());
+        modConUpDTO.setCommentDecision(mcDto.getCommentDecision());
+        modConUpDTO.setDecisionFinal(mcDto.getDecisionFinal());
+        modConUpDTO.setCommentApplicant(mcDto.getCommentApplicant());
+        modConUpDTO.setExternalModules(mcDto.getExternalModules());
+        modConUpDTO.setModulesLeipzig(mcDto.getModulesLeipzig());
+        return modConUpDTO;
+    }
 
     public EnumStatusChange updateApplicationStatusAllowed(String id) {
         Application application = getApplicationById(id);
@@ -124,17 +167,26 @@ public class ApplicationService {
         return containsFormalRejection;
     }
 
-
+    @Transactional
     public String createApplication(ApplicationCreateDTO applicationDTO) {
-        Application application = new Application(generateValidApplicationId());
+        String id = generateValidApplicationId();
+        Application application = new Application(id);
+        OriginalApplication originalApplication = new OriginalApplication(id);
 
         CourseLeipzig courseLeipzig = courseLeipzigService.getCourseLeipzigByName(applicationDTO.getCourseLeipzig());
         application.setCourseLeipzig(courseLeipzig);
+        originalApplication.setCourseLeipzig(courseLeipzig);
 
-        List<ModulesConnection> modulesConnections = modulesConnectionService.createModulesConnections(applicationDTO.getModulesConnections());
+
+        Map<String, List<ModulesConnection>> map = modulesConnectionService.createModulesConnections(applicationDTO.getModulesConnections());
+
+        List<ModulesConnection> modulesConnections = map.get("one");
+        List<ModulesConnection> originalModulesConnections = map.get("two");
         application.setModulesConnections(modulesConnections);
+        originalApplication.setModulesConnections(originalModulesConnections);
 
         application = applicationRepository.save(application);
+        originalApplication = originalApplicationRepository.save(originalApplication);
         return application.getId();
     }
 
@@ -172,44 +224,95 @@ public class ApplicationService {
         return applicationRepository.existsById(id);
     }
 
+    public List<OriginalApplication> getAllOriginalApplications() {
+        return originalApplicationRepository.findAll();
+    }
+
+    public OriginalApplication getOriginalApplication(String id) {
+        Optional<OriginalApplication> originalApplicationOptional = originalApplicationRepository.findById(id);
+        if(!originalApplicationOptional.isPresent()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Application with id: " + id + " not Found");
+        return originalApplicationOptional.get();
+    }
 
     public StudentApplicationDTO getStudentApplicationById(String id) {
         StudentApplicationDTO studentApplicationDTO = new StudentApplicationDTO();
-        Optional<Application> applicationCandidate = applicationRepository.findById(id);
-        if (!applicationCandidate.isPresent()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Application with id: " + id + " not Found");
 
-        Application application = applicationCandidate.get();
-        studentApplicationDTO.setId(application.getId());
-        studentApplicationDTO.setCreationDate(application.getCreationDate());
-        studentApplicationDTO.setLastEditedDate(application.getLastEditedDate());
-        studentApplicationDTO.setDecisionDate(application.getDecisionDate());
+        Application application = getApplicationById(id);
+        OriginalApplication originalApplication = getOriginalApplication(id);
 
-        CourseLeipzig courseLeipzigDTO = new CourseLeipzig();
-        courseLeipzigDTO.setName(application.getCourseLeipzig().getName());
-        studentApplicationDTO.setCourseLeipzig(courseLeipzigDTO);
-
-        if (application.getFullStatus() == null) throw new ResponseStatusException(HttpStatus.I_AM_A_TEAPOT, "Application with id: " + id + " has no fullStatus");
         switch (application.getFullStatus()) {
             case FORMFEHLER:
-                studentApplicationDTO.setFullStatus(FORMFEHLER.toString());
+                //return original mit ff + ff der module
+                originalApplication.setFullStatus(FORMFEHLER);
+                originalApplication.setLastEditedDate(application.getLastEditedDate());
+                originalApplication = originalApplicationRepository.save(originalApplication);
+
+                studentApplicationDTO = boilderPlateOriginal(originalApplication, studentApplicationDTO);
+
+                studentApplicationDTO.setModulesConnections(getFormfehlerModulesConnections(application, originalApplication));
                 break;
             case ABGESCHLOSSEN:
-                studentApplicationDTO.setFullStatus(ABGESCHLOSSEN.toString());
+                //retun application
+
+                //originalApplicationRepository.delete(originalApplication); //TODO should original application be deleted on "ABGESCHLOSSEN"
+                //or this
+                originalApplication.setFullStatus(ABGESCHLOSSEN);
+                originalApplication.setLastEditedDate(application.getLastEditedDate());
+                originalApplication.setDecisionDate(application.getDecisionDate());
+                originalApplication = originalApplicationRepository.save(originalApplication);
+
+                studentApplicationDTO = boilderPlateApplication(application, studentApplicationDTO);
+
+                studentApplicationDTO.setModulesConnections(application.getModulesConnections());
                 break;
             default:
-                studentApplicationDTO.setFullStatus("IN BEARBEITUNG");
+                //return original
+                studentApplicationDTO = boilderPlateOriginal(originalApplication, studentApplicationDTO);
+
+                studentApplicationDTO.setModulesConnections(originalApplication.getModulesConnections());
                 break;
         }
-
-        List<StudentModulesConnectionDTO> studentModulesConnectionDTOs = new ArrayList<>();
-        for (ModulesConnection modulesConnection : application.getModulesConnections()) {
-            StudentModulesConnectionDTO smcDTO = modulesConnectionService.getStudentModulesConnectionDTO(modulesConnection.getId(), application.getFullStatus() == ABGESCHLOSSEN);
-            studentModulesConnectionDTOs.add(smcDTO);
-        }
-        studentApplicationDTO.setModulesConnections(studentModulesConnectionDTOs);
 
         return studentApplicationDTO;
     }
 
-    
+    private StudentApplicationDTO boilderPlateApplication(Application application, StudentApplicationDTO studentApplicationDTO) {
+        studentApplicationDTO.setId(application.getId());
+        studentApplicationDTO.setFullStatus(application.getFullStatus());
+        studentApplicationDTO.setCreationDate(application.getCreationDate());
+        studentApplicationDTO.setLastEditedDate(application.getLastEditedDate());
+        studentApplicationDTO.setDecisionDate(application.getDecisionDate()); 
+        studentApplicationDTO.setCourseLeipzig(application.getCourseLeipzig());
+        return studentApplicationDTO;
+    }
+
+    private StudentApplicationDTO boilderPlateOriginal(OriginalApplication originalApplication, StudentApplicationDTO studentApplicationDTO) {
+        studentApplicationDTO.setId(originalApplication.getId());
+        studentApplicationDTO.setFullStatus(originalApplication.getFullStatus());
+        studentApplicationDTO.setCreationDate(originalApplication.getCreationDate());
+        studentApplicationDTO.setLastEditedDate(originalApplication.getLastEditedDate());
+        studentApplicationDTO.setDecisionDate(originalApplication.getDecisionDate()); 
+        studentApplicationDTO.setCourseLeipzig(originalApplication.getOriginalCourseLeipzig());
+        return studentApplicationDTO;
+    }
+
+
+    private List<ModulesConnection> getFormfehlerModulesConnections(Application application, OriginalApplication originalApplication) {
+        List<ModulesConnection> formfehlerModulesConnections = new ArrayList<>();
+        Long[] matchingIds = new Long[application.getModulesConnections().size()];
+        int count = 0;
+        for (ModulesConnection modulesConnection : application.getModulesConnections()) {
+            if (modulesConnection.getFormalRejection()) { 
+                formfehlerModulesConnections.add(modulesConnection);
+            } 
+            else matchingIds[count] = modulesConnection.getMatchingId();
+            count ++;
+        }
+        for (ModulesConnection original : originalApplication.getModulesConnections()) {
+            if (Arrays.asList(matchingIds).contains(original.getId())) {
+                formfehlerModulesConnections.add(original);
+            }
+        }
+        return formfehlerModulesConnections;
+    }
 }

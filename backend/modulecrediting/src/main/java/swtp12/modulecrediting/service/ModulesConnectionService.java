@@ -9,7 +9,6 @@ import swtp12.modulecrediting.dto.ExternalModuleUpdateDTO;
 import swtp12.modulecrediting.dto.ModuleLeipzigUpdateDTO;
 import swtp12.modulecrediting.dto.ModulesConnectionCreateDTO;
 import swtp12.modulecrediting.dto.ModulesConnectionUpdateDTO;
-import swtp12.modulecrediting.dto.StudentModulesConnectionDTO;
 import swtp12.modulecrediting.model.ExternalModule;
 import swtp12.modulecrediting.model.ModuleLeipzig;
 import swtp12.modulecrediting.model.ModulesConnection;
@@ -147,55 +146,47 @@ public class ModulesConnectionService {
         }
     }
 
-    public List<ModulesConnection> createModulesConnections(List<ModulesConnectionCreateDTO> modulesConnectionsDTO) {
+    public Map<String, List<ModulesConnection>> createModulesConnections(List<ModulesConnectionCreateDTO> modulesConnectionsDTO) {
         if(modulesConnectionsDTO == null || modulesConnectionsDTO.size() == 0)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, " No Modules Connections provided in the request");
-        List<ModulesConnection> modulesConnections = new ArrayList<>();
+        List<ModulesConnection> modulesConnections1 = new ArrayList<>();
+        List<ModulesConnection> modulesConnections2 = new ArrayList<>();
+        Map<String, List<ModulesConnection>> map = new HashMap<>();
 
         for(ModulesConnectionCreateDTO mc : modulesConnectionsDTO) {
-            ModulesConnection modulesConnection = new ModulesConnection();
-            modulesConnection.setCommentApplicant(mc.getCommentApplicant());
+            ModulesConnection modulesConnection1 = new ModulesConnection();
+            ModulesConnection modulesConnection2 = new ModulesConnection();
+
+            modulesConnection1 = createModCons(modulesConnection1, mc);
+            modulesConnection2 = createModCons(modulesConnection2, mc);
 
             List<ExternalModule> externalModules = externalModuleService.createExternalModules(mc.getExternalModules());
-            modulesConnection.setExternalModules(externalModules);
+            modulesConnection1.setExternalModules(externalModules);
+            modulesConnection2.setExternalModules(externalModules);
 
-            if(mc.getModulesLeipzig() != null) { // no modules leipzig sent
-                List<ModuleLeipzig> modulesLeipzig = moduleLeipzigService.getModulesLeipzigByNames(mc.getModulesLeipzig());
-                modulesConnection.setModulesLeipzig(modulesLeipzig);
-            }
+            modulesConnection1 = modulesConnectionRepository.save(modulesConnection1);
+            modulesConnection2 = modulesConnectionRepository.save(modulesConnection2);
 
-            modulesConnections.add(modulesConnection);
+            modulesConnection1.setMatchingId(modulesConnection2.getId());
+            modulesConnection2.setMatchingId(modulesConnection1.getId());
+
+            modulesConnections1.add(modulesConnection1);
+            modulesConnections2.add(modulesConnection2);
         }
 
-        return modulesConnections;
+        map.put("one", modulesConnections1);
+        map.put("two", modulesConnections2);
+        return map;
     }
 
-    public StudentModulesConnectionDTO getStudentModulesConnectionDTO(Long moduleConnectionId, boolean applicationEditFinished) {
-        StudentModulesConnectionDTO studentModulesConnectionDTO = new StudentModulesConnectionDTO();
-        Optional<ModulesConnection> modulesConnectionCandidate = modulesConnectionRepository.findById(moduleConnectionId);
-        if (!modulesConnectionCandidate.isPresent()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "ModulesConnection with id: " + moduleConnectionId + " not Found");
-
-        ModulesConnection modulesConnection = modulesConnectionCandidate.get();
-        studentModulesConnectionDTO.setId(modulesConnection.getId());
-        
-        studentModulesConnectionDTO.setCommentApplicant(modulesConnection.getCommentApplicant());
-
-        studentModulesConnectionDTO.setExternalModules(modulesConnection.getExternalModules());
-        studentModulesConnectionDTO.setModulesLeipzig(modulesConnection.getModulesLeipzig());
-
-        if (modulesConnection.getDecisionFinal() == null) throw new ResponseStatusException(HttpStatus.I_AM_A_TEAPOT, "ModulesConnection with id: " + moduleConnectionId + " has no decisionFinal");
-        if (applicationEditFinished) {
-            studentModulesConnectionDTO.setDecisionFinal(modulesConnection.getDecisionFinal());
-            if (modulesConnection.getDecisionFinal() == null) throw new ResponseStatusException(HttpStatus.I_AM_A_TEAPOT, "ModulesConnection with id: " + moduleConnectionId + " has no commentDecision");
-            studentModulesConnectionDTO.setCommentDecision(modulesConnection.getCommentDecision());
+    private ModulesConnection createModCons(ModulesConnection modulesConnection, ModulesConnectionCreateDTO mc) {
+        modulesConnection.setCommentApplicant(mc.getCommentApplicant());
+        if(mc.getModulesLeipzig() != null) { // no modules leipzig sent
+            List<ModuleLeipzig> modulesLeipzig = moduleLeipzigService.getModulesLeipzigByNames(mc.getModulesLeipzig());
+            modulesConnection.setModulesLeipzig(modulesLeipzig);
         }
-
-        studentModulesConnectionDTO.setFormalRejection(modulesConnection.getFormalRejection());
-        if (modulesConnection.getFormalRejection()) studentModulesConnectionDTO.setFormalRejectionComment(modulesConnection.getFormalRejectionComment());
-
-        return studentModulesConnectionDTO;
+        return modulesConnection;
     }
-
 
     // METHODS FOR RELATED MODULES //
 
