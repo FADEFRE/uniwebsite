@@ -31,7 +31,6 @@ import swtp12.modulecrediting.model.OriginalApplication;
 import swtp12.modulecrediting.repository.ApplicationRepository;
 import swtp12.modulecrediting.repository.OriginalApplicationRepository;
 
-// TODO: fix pdf generator
 
 @Service
 public class ApplicationService {
