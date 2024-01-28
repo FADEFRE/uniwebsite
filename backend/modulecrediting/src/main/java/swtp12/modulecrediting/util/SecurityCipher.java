@@ -10,6 +10,9 @@ import java.util.Base64;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
+
 public class SecurityCipher {
     private static final String KEYVALUE = "secureKey";
     private static SecretKeySpec secretKey;
@@ -62,9 +65,9 @@ public class SecurityCipher {
             System.out.println(LocalDate.now() + "SecurtiyCipher could not decrypt given String. Printing Error-StrackTrace: ");
             e.printStackTrace();
             System.out.println("    ------------------- End of Error-StrackTrace -------------------    ");
-            //throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "error while decrypting key");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "error while decrypting key");
 
         }
-        return null;
+        //return null;
     }
 }
