@@ -20,7 +20,7 @@ import swtp12.modulecrediting.repository.UserRepository;
 import swtp12.modulecrediting.util.CookieUtil;
 
 @Service
-public class UserServiceImpl {
+public class UserService {
     @Autowired
     private UserRepository userRepository;
 
