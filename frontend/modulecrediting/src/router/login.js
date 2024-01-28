@@ -26,6 +26,7 @@ async function login (login_username, login_password) {
 
             const authUserStore = useAuthStore();
             const id = authUserStore.getCurrentUserId;
+            console.log("getRole");
             const response = await httpResource.get(`/api/user/${id}/role`)
             switch (response.data) {
                 case "ROLE_STUDY":

@@ -108,6 +108,7 @@ router.beforeEach(async (to) => {
   const authUserStore = useAuthStore();
   const navStore = useNavTypeStore();
   const id = authUserStore.getCurrentUserId;
+  console.log("getRole");
   const response = await httpResource.get(`/api/user/${id}/role`);
   switch (to.meta.authType) {
     case "standard":

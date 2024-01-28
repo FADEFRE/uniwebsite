@@ -48,6 +48,7 @@ export async function refreshToken() {
 
 export async function getAuthenticatedUser() {
     try {
+        console.log("getUserMe");
         const response = await httpResource.get("/api/user/me");
         if (response.data.username !== null) {
             const currentUser = response.data;
