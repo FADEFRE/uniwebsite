@@ -37,7 +37,7 @@ public class ApplicationController {
         return ResponseEntity.ok(applicationService.getAllApplciations());
     }
 
-    @GetMapping("original")
+    @GetMapping("/original")
     @JsonView(Views.ApplicationOverview.class)
     public ResponseEntity<List<OriginalApplication>> getAllOriginalApplicatios() {
         return ResponseEntity.ok(applicationService.getAllOriginalApplications());
