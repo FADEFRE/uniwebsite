@@ -49,6 +49,11 @@ public class CourseLeipzig {
     @JsonBackReference
     private List<Application> applications = new ArrayList<>();
 
+    //Relation CourseLeipzig <-> OriginalApplication
+    @OneToMany(mappedBy = "originalCourseLeipzig")
+    @JsonBackReference
+    private List<OriginalApplication> originalApplications = new ArrayList<>();
+
 
     public CourseLeipzig(String name, Boolean isActive) {
         this.name = name;
