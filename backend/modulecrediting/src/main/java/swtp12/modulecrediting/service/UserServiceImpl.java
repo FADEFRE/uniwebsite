@@ -2,10 +2,12 @@ package swtp12.modulecrediting.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import swtp12.modulecrediting.dto.CustomUserDetails;
 import swtp12.modulecrediting.dto.LoginRequest;
@@ -70,7 +72,13 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("Refresh Token is invalid!");
         }
 
-        String currentUserUsername = tokenProvider.getUsernameFromToken(accessToken);
+        String currentUserUsername = null;
+        try {
+            currentUserUsername = tokenProvider.getUsernameFromToken(accessToken);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "No accessToken provided, you are most likely not actively logged in");
+        }
+        
 
         Token newAccessToken = tokenProvider.generateAccessToken(currentUserUsername);
         HttpHeaders responseHeaders = new HttpHeaders();
