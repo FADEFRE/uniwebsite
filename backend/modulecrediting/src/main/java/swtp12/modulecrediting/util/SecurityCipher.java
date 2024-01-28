@@ -3,6 +3,7 @@ package swtp12.modulecrediting.util;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Base64;
 
@@ -55,7 +56,14 @@ public class SecurityCipher {
             cipher.init(Cipher.DECRYPT_MODE, secretKey);
             return new String(cipher.doFinal(Base64.getDecoder().decode(strToDecrypt)));
         } catch (Exception e) {
+
+            //TODO remove these two debug lines if we want
+            System.out.println("    ------------------- Start of Error-StrackTrace -------------------    ");
+            System.out.println(LocalDate.now() + "SecurtiyCipher could not decrypt given String. Printing Error-StrackTrace: ");
             e.printStackTrace();
+            System.out.println("    ------------------- End of Error-StrackTrace -------------------    ");
+            //throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "error while decrypting key");
+
         }
         return null;
     }
