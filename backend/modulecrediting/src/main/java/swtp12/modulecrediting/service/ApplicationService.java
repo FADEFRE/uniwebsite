@@ -6,7 +6,6 @@ import static swtp12.modulecrediting.dto.EnumStatusChange.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -21,14 +20,18 @@ import jakarta.transaction.Transactional;
 import swtp12.modulecrediting.dto.ApplicationCreateDTO;
 import swtp12.modulecrediting.dto.ApplicationUpdateDTO;
 import swtp12.modulecrediting.dto.EnumStatusChange;
+import swtp12.modulecrediting.dto.ExternalModuleUpdateDTO;
 import swtp12.modulecrediting.dto.ModulesConnectionUpdateDTO;
 import swtp12.modulecrediting.dto.StudentApplicationDTO;
 import swtp12.modulecrediting.model.Application;
 import swtp12.modulecrediting.model.CourseLeipzig;
 import swtp12.modulecrediting.model.EnumApplicationStatus;
+import swtp12.modulecrediting.model.ExternalModule;
 import swtp12.modulecrediting.model.ModulesConnection;
 import swtp12.modulecrediting.model.OriginalApplication;
 import swtp12.modulecrediting.repository.ApplicationRepository;
+import swtp12.modulecrediting.repository.ExternalModuleRepository;
+import swtp12.modulecrediting.repository.ModulesConnectionRepository;
 import swtp12.modulecrediting.repository.OriginalApplicationRepository;
 
 
@@ -40,6 +43,10 @@ public class ApplicationService {
     private OriginalApplicationRepository originalApplicationRepository;
     @Autowired
     ModulesConnectionService modulesConnectionService;
+    @Autowired
+    ModulesConnectionRepository modulesConnectionRepository;
+    @Autowired
+    ExternalModuleRepository externalModuleRepository;
     @Autowired
     private CourseLeipzigService courseLeipzigService;
 
@@ -98,8 +105,27 @@ public class ApplicationService {
         modConUpDTO.setCommentDecision(mcDto.getCommentDecision());
         modConUpDTO.setDecisionFinal(mcDto.getDecisionFinal());
         modConUpDTO.setCommentApplicant(mcDto.getCommentApplicant());
-        modConUpDTO.setExternalModules(mcDto.getExternalModules());
         modConUpDTO.setModulesLeipzig(mcDto.getModulesLeipzig());
+
+        List<ExternalModuleUpdateDTO> externalModules = new ArrayList<>();
+        List<ExternalModuleUpdateDTO> externalModuleUpdateDTO = mcDto.getExternalModules();
+
+        for (ExternalModuleUpdateDTO extMod : externalModuleUpdateDTO) {
+            ExternalModuleUpdateDTO updateDTO = new ExternalModuleUpdateDTO();
+            updateDTO.setName(extMod.getName());
+            updateDTO.setDescription(extMod.getDescription());
+            updateDTO.setPoints(extMod.getPoints());
+            updateDTO.setPointSystem(extMod.getPointSystem());
+            updateDTO.setUniversity(extMod.getUniversity());
+
+            Optional<ExternalModule> optional = externalModuleRepository.findById(extMod.getId());
+            if (!optional.isPresent()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "ExternalModule with id: " + extMod.getId() + " not found");
+            Long secondId = optional.get().getMatchingId();
+            updateDTO.setId(secondId);
+            externalModules.add(updateDTO);
+        }
+
+        modConUpDTO.setExternalModules(externalModules);
         return modConUpDTO;
     }
 
@@ -179,10 +205,8 @@ public class ApplicationService {
 
         Map<String, List<ModulesConnection>> map = modulesConnectionService.createModulesConnections(applicationDTO.getModulesConnections());
 
-        List<ModulesConnection> modulesConnections = map.get("one");
-        List<ModulesConnection> originalModulesConnections = map.get("two");
-        application.setModulesConnections(modulesConnections);
-        originalApplication.setModulesConnections(originalModulesConnections);
+        application.setModulesConnections(map.get("one"));
+        originalApplication.setModulesConnections(map.get("two"));
 
         application = applicationRepository.save(application);
         originalApplication = originalApplicationRepository.save(originalApplication);
@@ -229,7 +253,7 @@ public class ApplicationService {
 
     public OriginalApplication getOriginalApplication(String id) {
         Optional<OriginalApplication> originalApplicationOptional = originalApplicationRepository.findById(id);
-        if(!originalApplicationOptional.isPresent()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Application with id: " + id + " not Found");
+        if(!originalApplicationOptional.isPresent()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Application with id: " + id + " not found");
         return originalApplicationOptional.get();
     }
 
@@ -248,7 +272,7 @@ public class ApplicationService {
 
                 studentApplicationDTO = boilderPlateOriginal(originalApplication, studentApplicationDTO);
 
-                studentApplicationDTO.setModulesConnections(getFormfehlerModulesConnections(application, originalApplication));
+                studentApplicationDTO.setModulesConnections(getStudentModulesConnections(application, originalApplication));
                 break;
             case ABGESCHLOSSEN:
                 //retun application
@@ -296,21 +320,19 @@ public class ApplicationService {
     }
 
 
-    private List<ModulesConnection> getFormfehlerModulesConnections(Application application, OriginalApplication originalApplication) {
+    private List<ModulesConnection> getStudentModulesConnections(Application application, OriginalApplication originalApplication) {
         List<ModulesConnection> formfehlerModulesConnections = new ArrayList<>();
-        Long[] matchingIds = new Long[application.getModulesConnections().size()];
-        int count = 0;
         for (ModulesConnection modulesConnection : application.getModulesConnections()) {
+            Optional<ModulesConnection> optional = modulesConnectionRepository.findById(modulesConnection.getMatchingId());
+            if (!optional.isPresent()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No ModuleConnection with id: " + modulesConnection.getMatchingId() + " not found");
+            ModulesConnection modCon = optional.get();
+
             if (modulesConnection.getFormalRejection()) { 
-                formfehlerModulesConnections.add(modulesConnection);
+                modCon.setFormalRejection(true);
+                modCon.setFormalRejectionComment(modulesConnection.getFormalRejectionComment());
             } 
-            else matchingIds[count] = modulesConnection.getMatchingId();
-            count ++;
-        }
-        for (ModulesConnection original : originalApplication.getModulesConnections()) {
-            if (Arrays.asList(matchingIds).contains(original.getId())) {
-                formfehlerModulesConnections.add(original);
-            }
+
+            formfehlerModulesConnections.add(modCon);
         }
         return formfehlerModulesConnections;
     }

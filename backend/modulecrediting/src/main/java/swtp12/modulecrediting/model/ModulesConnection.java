@@ -52,12 +52,7 @@ public class ModulesConnection {
     private String commentApplicant;
 
     //Relation ModulesConnection <-> ExternalModule (Setter in ExternalModule)
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "module_connection_external_module",
-            joinColumns = @JoinColumn(name = "module_connection_id"),
-            inverseJoinColumns = @JoinColumn(name = "external_module_id")
-    )
+    @OneToMany(mappedBy = "modulesConnection", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JsonManagedReference
     @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class,Views.ApplicationOverview.class})
     private List<ExternalModule> externalModules = new ArrayList<>();
@@ -99,15 +94,13 @@ public class ModulesConnection {
     //Function to set List of ExternalModule to this ModulesConnection (and add this ModuleConnectio to all ExternalModule in the List)
     public void setExternalModules(List<ExternalModule> externalModules) {
         for(ExternalModule m : externalModules) {
-            List<ModulesConnection> modulesConnections = new ArrayList<>();
-            modulesConnections.add(this);
-            m.setModulesConnection(modulesConnections);
+            m.setModulesConnection(this);
         }
         this.externalModules = externalModules;
     }
     public void addExternalModules(List<ExternalModule> externalModules) {
         for(ExternalModule m : externalModules) {
-            m.getModulesConnection().add(this);
+            m.setModulesConnection(this);
             this.externalModules.add(m);
         }
     }

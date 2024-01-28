@@ -160,9 +160,10 @@ public class ModulesConnectionService {
             modulesConnection1 = createModCons(modulesConnection1, mc);
             modulesConnection2 = createModCons(modulesConnection2, mc);
 
-            List<ExternalModule> externalModules = externalModuleService.createExternalModules(mc.getExternalModules());
-            modulesConnection1.setExternalModules(externalModules);
-            modulesConnection2.setExternalModules(externalModules);
+            Map<String, List<ExternalModule>> mapExternal = externalModuleService.createExternalModules(mc.getExternalModules());
+            
+            modulesConnection1.setExternalModules(mapExternal.get("one"));
+            modulesConnection2.setExternalModules(mapExternal.get("two"));
 
             modulesConnection1 = modulesConnectionRepository.save(modulesConnection1);
             modulesConnection2 = modulesConnectionRepository.save(modulesConnection2);

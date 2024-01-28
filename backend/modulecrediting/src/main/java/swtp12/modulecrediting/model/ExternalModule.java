@@ -1,13 +1,15 @@
 package swtp12.modulecrediting.model;
 
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
 
-import jakarta.persistence.*;
-
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -24,6 +26,9 @@ public class ExternalModule {
     @GeneratedValue
     @JsonView({Views.ApplicationStudent.class,Views.ApplicationLogin.class})
     private Long id;
+
+    private Long matchingId;
+
     @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class,Views.ApplicationOverview.class})
     @NotBlank(message = "moduleName must not be blank (empty String)")
     private String name;
@@ -45,10 +50,10 @@ public class ExternalModule {
     private PdfDocument pdfDocument;
 
     //Relation ExternalModule <-> ModulesConnection (Setter in ModulesConnection)
-    @ManyToMany(mappedBy = "externalModules")
+    @ManyToOne
     @JsonBackReference
     @EqualsAndHashCode.Exclude
-    private List<ModulesConnection> modulesConnection;
+    private ModulesConnection modulesConnection;
 
 
     //Function to set the PDF Document to this ExternalModule (adds this Module to the PDF aswell)
