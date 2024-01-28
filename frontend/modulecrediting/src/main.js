@@ -22,8 +22,11 @@ import SelectButton from "primevue/selectbutton";
 import 'primevue/resources/themes/nova/theme.css'
 import 'primeicons/primeicons.css'
 
+import { useNavTypeStore } from "./store/navTypeStore"
+const store = useNavTypeStore()
+
 const i18n = createI18n({
-    locale: document.cookie.split('=')[1],
+    locale: store.locale,
     messages: {
         EN: EN,
         DE: DE,

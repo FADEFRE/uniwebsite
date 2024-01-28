@@ -3,7 +3,8 @@ import { defineStore } from 'pinia';
 
 export const useNavTypeStore = defineStore('navRole',{
     state: () => ({
-        currentRole: "user"
+        currentRole: "user",
+        locale: 'DE'
     }),
 
     getters: {
