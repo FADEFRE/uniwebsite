@@ -38,7 +38,7 @@ public class PdfDocumentContoller {
         headers.setContentType(MediaType.APPLICATION_PDF);
         headers.setContentDispositionFormData("attachment", "Antrag.pdf");
 
-        byte[] pdfBytes = generatedPdfService.generatePdfFromHtml();
+        byte[] pdfBytes = generatedPdfService.generatePdfFromHtml(id);
 
         return ResponseEntity.ok()
                 .headers(headers)
