@@ -2,7 +2,7 @@ import httpResource from "./httpResource";
 import { useAuthStore } from '@/store/authStore';
 
 export function parseApierror(error) {
-    console.log("parseapierror", error);
+    console.debug("parseapierror", error);
     try {
         if (error && error.hasOwnProperty("response") && error.response.hasOwnProperty("data")) {
             const apierror = error.response.data;
@@ -25,6 +25,7 @@ export function parseApierror(error) {
 }
 
 export async function performLogout() {
+    console.debug("performLogout()");
     const response = await httpResource.post("/api/auth/logout");
     console.log(response)
     const authUserStore = useAuthStore();
@@ -34,6 +35,7 @@ export async function performLogout() {
 }
 
 export async function refreshTokenInternal() {
+    console.debug("refreshTokenInternal()");
     try {
         const response = await httpResource.post("/api/auth/refresh");
         if (response.status !== 200) performLogout();
@@ -42,13 +44,14 @@ export async function refreshTokenInternal() {
 }
 
 export async function refreshToken() {
+    console.debug("refreshToken()");
     const response = await httpResource.post("/api/auth/refresh");
     return response.status;
 }
 
 export async function getAuthenticatedUser() {
+    console.debug("getAuthenticatedUser()");
     try {
-        console.log("getUserMe");
         const response = await httpResource.get("/api/user/me");
         if (response.data.username !== null) {
             const currentUser = response.data;
