@@ -7,7 +7,7 @@ import PanelDecisionBlock from "@/components/PanelDecisionBlock.vue";
 import PanelExternalModules from "@/components/PanelExternalModules.vue";
 import PanelFormalRejectionBlock from "@/components/PanelFormalRejectionBlock.vue";
 import PanelDecision from "@/components/PanelDecision.vue";
-import {computed, ref} from "vue";
+import { ref, computed} from "vue";
 
 const props = defineProps({
   readonly: {
@@ -73,7 +73,7 @@ defineExpose({
       />
       <PanelComment
           v-if="connection['commentApplicant'] || readonly === false"
-          :type="readonly ? 'readonly' : 'edit'"
+          :readonly="readonly"
           :comment="connection['commentApplicant']"
           ref="panelComment"
       />

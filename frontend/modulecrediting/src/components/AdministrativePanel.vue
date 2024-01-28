@@ -129,7 +129,7 @@ defineExpose({
           @change="emit('change')"
       />
       <PanelComment
-          type="readonly"
+          :readonly="true"
           :comment="connectionData['commentApplicant']"
       />
       <PanelRelatedModules
