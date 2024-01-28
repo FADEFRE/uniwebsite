@@ -1,5 +1,7 @@
 package swtp12.modulecrediting.model;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -43,10 +45,10 @@ public class ExternalModule {
     private PdfDocument pdfDocument;
 
     //Relation ExternalModule <-> ModulesConnection (Setter in ModulesConnection)
-    @ManyToOne
+    @ManyToMany(mappedBy = "externalModules")
     @JsonBackReference
     @EqualsAndHashCode.Exclude
-    private ModulesConnection modulesConnection;
+    private List<ModulesConnection> modulesConnection;
 
 
     //Function to set the PDF Document to this ExternalModule (adds this Module to the PDF aswell)
