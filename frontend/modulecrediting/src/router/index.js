@@ -42,7 +42,7 @@ const router = createRouter({
       path: "/verwaltungsbereich",
       name: "management",
       component: () => import("../views/ManagementView.vue"),
-      meta: { authType: "study-office" }, // TODO: allow also authtype chairman
+      meta: { authType: "internal" }, // TODO: allow also authtype chairman
     },
     {
       path: "/studienbuero",
@@ -129,6 +129,16 @@ router.beforeEach(async (to) => {
     case "admin":
       if (response.data === "ROLE_ADMIN") {
         navStore.setCurrentRoleNav("admin");
+        return true;
+      }
+    case "internal":
+      if (response.data === "ROLE_CHAIR" || response.data === "ROLE_STUDY") {
+        changeRole(response.data);
+        return true;
+      }
+    case "internal-with-admin":
+      if (response.data === "ROLE_ADMIN" || response.data === "ROLE_CHAIR" || response.data === "ROLE_STUDY") {
+        changeRole(response.data);
         return true;
       }
       return { name: "login" };
