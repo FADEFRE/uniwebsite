@@ -11,8 +11,10 @@ import org.springframework.web.server.ResponseStatusException;
 import swtp12.modulecrediting.dto.CourseLeipzigEditDTO;
 import swtp12.modulecrediting.model.Application;
 import swtp12.modulecrediting.model.CourseLeipzig;
+import swtp12.modulecrediting.model.OriginalApplication;
 import swtp12.modulecrediting.repository.ApplicationRepository;
 import swtp12.modulecrediting.repository.CourseLeipzigRepository;
+import swtp12.modulecrediting.repository.OriginalApplicationRepository;
 
 
 
@@ -23,6 +25,8 @@ public class CourseLeipzigService {
 
     @Autowired
     ApplicationRepository applicationRepository;
+    @Autowired
+    OriginalApplicationRepository originalApplicationRepository;
 
     public CourseLeipzig getCourseLeipzigByName(String name) {
         Optional<CourseLeipzig> courseLeipzig = courseLeipzigRepository.findByName(name);
@@ -83,14 +87,18 @@ public class CourseLeipzigService {
     }
 
     private Boolean checkIfCourseIsUsedInApplications(CourseLeipzig courseLeipzig) {
-        // TODO: add origin and editable applications
         List<Application> applications = applicationRepository.findAll();
+        List<OriginalApplication> originalApplications = originalApplicationRepository.findAll();
 
-        if(applications.isEmpty()) return false;
+        if(applications.isEmpty() && originalApplications.isEmpty()) return false;
 
         for(Application application : applications) {
             if(courseLeipzig.equals(application.getCourseLeipzig())) return true;
         }
+        for(OriginalApplication originalApplication : originalApplications) {
+            if(courseLeipzig.equals(originalApplication.getOriginalCourseLeipzig())) return true;
+        }
+
         return false;
     }
 
