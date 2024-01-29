@@ -66,7 +66,8 @@ defineExpose({
           ref="panelExternalModules"
       />
       <PanelInternalModules
-          :type="readonly ? 'readonly' : 'edit'"
+          :allow-select="!readonly"
+          :allow-delete="!readonly"
           :options="selectableModules"
           :selected-modules="connection['modulesLeipzig'].map(m => m.name)"
           ref="panelInternalModules"
