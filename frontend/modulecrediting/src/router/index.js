@@ -42,7 +42,7 @@ const router = createRouter({
       path: "/verwaltungsbereich",
       name: "management",
       component: () => import("../views/ManagementView.vue"),
-      meta: { authType: "internal" }, // TODO: allow also authtype chairman
+      meta: { authType: "internal" },
     },
     {
       path: "/studienbuero",
