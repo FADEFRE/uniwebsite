@@ -65,7 +65,7 @@ public class SecurityCipher {
             System.out.println(LocalDate.now() + "SecurtiyCipher could not decrypt given String. Printing Error-StrackTrace: ");
             e.printStackTrace();
             System.out.println("    ------------------- End of Error-StrackTrace -------------------    ");
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "error while decrypting key");
+            throw new ResponseStatusException(HttpStatus.PROXY_AUTHENTICATION_REQUIRED, "error while decrypting key");
 
         }
         //return null;
