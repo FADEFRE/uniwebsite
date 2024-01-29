@@ -1,5 +1,6 @@
 import httpResource from "./httpResource";
 import { useAuthStore } from '@/store/authStore';
+import { useNavTypeStore } from "@/store/navTypeStore";
 
 export function parseApierror(error) {
     console.debug("parseapierror", error);
@@ -29,9 +30,11 @@ export async function performLogout() {
     const response = await httpResource.post("/api/auth/logout");
     console.log(response)
     const authUserStore = useAuthStore();
+    const navTypeStore = useNavTypeStore();
     const intervalName = authUserStore.getIntervalName;
     if (intervalName) clearInterval(intervalName);
     authUserStore.logout();
+    navTypeStore.logout();
 }
 
 export async function refreshTokenInternal() {

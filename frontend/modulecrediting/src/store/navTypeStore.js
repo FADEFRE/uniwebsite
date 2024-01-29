@@ -13,6 +13,7 @@ export const useNavTypeStore = defineStore('navRole',{
 
 
     actions: {
-        setCurrentRoleNav(currentRole) { this.currentRole = currentRole }
+        setCurrentRoleNav(currentRole) { this.currentRole = currentRole },
+        logout() { this.currentRole = "user" }
     }
 })
