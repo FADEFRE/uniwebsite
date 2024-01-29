@@ -78,8 +78,9 @@ const triggerSubmit = () => {
         <img src="../assets/icons/Download.svg">
       </Button>
 
-      <ButtonLink v-if="applicationData['fullStatus'] === 'FORMFEHLER'" :fixed="true" @click="triggerSubmit">Neu
-        einreichen</ButtonLink>
+      <ButtonLink v-if="applicationData['fullStatus'] === 'FORMFEHLER'" :fixed="true" @click="triggerSubmit">
+        Neu einreichen
+      </ButtonLink>
 
     </div>
     <div class="side-infos-container">
