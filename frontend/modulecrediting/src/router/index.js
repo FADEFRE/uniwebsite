@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import { getAuthenticatedUser } from "@/scripts/utils";
 import { useAuthStore } from "@/store/authStore";
 import { useNavTypeStore } from "@/store/navTypeStore";
+import { performLogout } from "@/scripts/utils";
 import httpResource from "@/scripts/httpResource";
 import HomepageView from "@/views/HomepageView.vue";
 
@@ -114,34 +115,47 @@ router.beforeEach(async (to) => {
     case "standard":
       changeRole(response.data);
       return true;
+
     case "study-office":
       if (response.data === "ROLE_STUDY") {
         navStore.setCurrentRoleNav("study");
         return true;
       }
-      return { name: "login" };
+      return { name: "notFound" }; //TODO route to correct error page "permission not allowed"
+      //return { name: "login" };
+
     case "chairman":
       if (response.data === "ROLE_CHAIR") {
         navStore.setCurrentRoleNav("chair");
         return true;
       }
-      return { name: "login" };
+      return { name: "notFound" }; //TODO route to correct error page "permission not allowed"
+      //return { name: "login" };
+
     case "admin":
       if (response.data === "ROLE_ADMIN") {
         navStore.setCurrentRoleNav("admin");
         return true;
       }
+      return { name: "notFound" }; //TODO route to correct error page "permission not allowed"
+      //return { name: "login" };
+
     case "internal":
       if (response.data === "ROLE_CHAIR" || response.data === "ROLE_STUDY") {
         changeRole(response.data);
         return true;
       }
+      return { name: "notFound" }; //TODO route to correct error page "permission not allowed"
+      //return { name: "login" };
+
     case "internal-with-admin":
       if (response.data === "ROLE_ADMIN" || response.data === "ROLE_CHAIR" || response.data === "ROLE_STUDY") {
         changeRole(response.data);
         return true;
       }
-      return { name: "login" };
+      return { name: "notFound" }; //TODO route to correct error page "permission not allowed"
+      //return { name: "login" };
+      
     default:
       break;
   }
