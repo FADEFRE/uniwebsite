@@ -82,7 +82,7 @@ defineExpose({
         <div v-if="!readonly">
           <PanelFormalRejectionBlock
               v-if="connection['formalRejection']"
-              type="readonly"
+              :readonly="false"
               :comment="connection['formalRejectionComment']"
           />
         </div>

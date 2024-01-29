@@ -139,7 +139,7 @@ defineExpose({
 
       <div v-if="formalRejection">
         <PanelDecision type="single">
-          <PanelFormalRejectionBlock type="edit" :comment="connectionData['formalRejectionComment']" ref="formalRejectionRef" />
+          <PanelFormalRejectionBlock :readonly="readonly" :comment="connectionData['formalRejectionComment']" ref="formalRejectionRef" />
         </PanelDecision>
         <Button @click="unsetFormalRejection">Formfehler zurücknehmen</Button>
       </div>
