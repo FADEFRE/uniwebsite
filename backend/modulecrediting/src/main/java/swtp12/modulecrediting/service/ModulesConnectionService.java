@@ -154,25 +154,25 @@ public class ModulesConnectionService {
         Map<String, List<ModulesConnection>> map = new HashMap<>();
 
         for(ModulesConnectionCreateDTO mc : modulesConnectionsDTO) {
-            ModulesConnection modulesConnection1 = new ModulesConnection();
-            ModulesConnection modulesConnection2 = new ModulesConnection();
+            ModulesConnection modulesConnectionONE = new ModulesConnection();
+            ModulesConnection modulesConnectionTWO = new ModulesConnection();
 
-            modulesConnection1 = createModCons(modulesConnection1, mc);
-            modulesConnection2 = createModCons(modulesConnection2, mc);
+            modulesConnectionONE = createModCons(modulesConnectionONE, mc);
+            modulesConnectionTWO = createModCons(modulesConnectionTWO, mc);
 
             Map<String, List<ExternalModule>> mapExternal = externalModuleService.createExternalModules(mc.getExternalModules());
             
-            modulesConnection1.setExternalModules(mapExternal.get("one"));
-            modulesConnection2.setExternalModules(mapExternal.get("two"));
+            modulesConnectionONE.setExternalModules(mapExternal.get("one"));
+            modulesConnectionTWO.setExternalModules(mapExternal.get("two"));
 
-            modulesConnection1 = modulesConnectionRepository.save(modulesConnection1);
-            modulesConnection2 = modulesConnectionRepository.save(modulesConnection2);
+            modulesConnectionONE = modulesConnectionRepository.save(modulesConnectionONE);
+            modulesConnectionTWO = modulesConnectionRepository.save(modulesConnectionTWO);
 
-            modulesConnection1.setMatchingId(modulesConnection2.getId());
-            modulesConnection2.setMatchingId(modulesConnection1.getId());
+            modulesConnectionONE.setMatchingId(modulesConnectionTWO.getId());
+            modulesConnectionTWO.setMatchingId(modulesConnectionONE.getId());
 
-            modulesConnections1.add(modulesConnection1);
-            modulesConnections2.add(modulesConnection2);
+            modulesConnections1.add(modulesConnectionONE);
+            modulesConnections2.add(modulesConnectionTWO);
         }
 
         map.put("one", modulesConnections1);
