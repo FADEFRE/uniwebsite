@@ -9,6 +9,6 @@ public class LogoutResponse {
     private String message;
 
     public enum SuccessFailure {
-        SUCCESS, FAILURE
+        SUCCESS, FAILURE , ERROR
     }
 }

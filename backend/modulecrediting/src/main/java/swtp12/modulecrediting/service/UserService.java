@@ -88,8 +88,9 @@ public class UserService {
 
     public ResponseEntity<LogoutResponse> logout() {
         HttpHeaders responseHeaders = new HttpHeaders();
+        LogoutResponse logoutResponse = new LogoutResponse(LogoutResponse.SuccessFailure.ERROR, "Error in userservice logout()");
         deleteAccessTokenCookie(responseHeaders);
-        LogoutResponse logoutResponse = new LogoutResponse(LogoutResponse.SuccessFailure.SUCCESS, "Successfully logged out");
+        logoutResponse = new LogoutResponse(LogoutResponse.SuccessFailure.SUCCESS, "Successfully logged out");
         return ResponseEntity.ok().headers(responseHeaders).body(logoutResponse);
     }
 
