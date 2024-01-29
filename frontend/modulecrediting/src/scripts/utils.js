@@ -31,10 +31,10 @@ export async function performLogout() {
     console.log(response)
     const authUserStore = useAuthStore();
     const navTypeStore = useNavTypeStore();
+    navTypeStore.logout();
     const intervalName = authUserStore.getIntervalName;
     if (intervalName) clearInterval(intervalName);
     authUserStore.logout();
-    navTypeStore.logout();
 }
 
 export async function refreshTokenInternal() {
