@@ -116,7 +116,8 @@ defineExpose({
       </template>
 
       <PanelExternalModules
-          :type="readonly ? 'readonly' : 'edit'"
+          :allow-text-edit="!readonly"
+          :allow-file-edit="false"
           :modules-data="connectionData['externalModules']"
           ref="panelExternalModules"
           @change="emit('change')"

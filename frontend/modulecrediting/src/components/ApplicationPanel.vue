@@ -66,7 +66,7 @@ defineExpose({
       </template>
 
       <!-- Panel Content -->
-      <PanelExternalModules type="new" ref="panelExternalModules" />
+      <PanelExternalModules :allow-text-edit="true" :allow-file-edit="true" ref="panelExternalModules" />
       <PanelInternalModules :allow-select="true" :allow-delete="true" :options="selectableModules" ref="panelInternalModules" />
       <PanelComment :readonly="false" ref="panelComment" />
     </CustomPanel>

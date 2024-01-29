@@ -7,7 +7,7 @@ import PanelDecisionBlock from "@/components/PanelDecisionBlock.vue";
 import PanelExternalModules from "@/components/PanelExternalModules.vue";
 import PanelFormalRejectionBlock from "@/components/PanelFormalRejectionBlock.vue";
 import PanelDecision from "@/components/PanelDecision.vue";
-import { ref, computed} from "vue";
+import { ref, computed } from "vue";
 
 const props = defineProps({
   readonly: {
@@ -61,7 +61,8 @@ defineExpose({
 
     <div>
       <PanelExternalModules
-          :type="readonly ? 'readonly' : 'edit-full'"
+          :allow-text-edit="!readonly"
+          :allow-file-edit="!readonly"
           :modules-data="connection['externalModules']"
           ref="panelExternalModules"
       />

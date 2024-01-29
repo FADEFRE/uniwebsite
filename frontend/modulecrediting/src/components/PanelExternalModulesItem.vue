@@ -1,16 +1,14 @@
 <!--
 single external module
 props:
-  - type (may be 'new', 'edit' or 'readonly')
-      type 'new' allows editing all data and deleting self
-      type 'edit' allows editing all data except selected file
-      type 'readonly' allows no editing
-  - moduleName (should be given if type is 'edit' or 'readonly')
-  - university (should be given if type is 'edit' or 'readonly')
-  - points (should be given if type is 'edit' or 'readonly')
-  - pointSystem (should be given if type is 'edit' or 'readonly')
-  - selectedFile (should be given if type is 'edit' or 'readonly')
-  - allowDelete (Boolean, defaults to false)
+  - allowTextEdit (toggles InputText elements readonly)
+  - allowFileEdit (toggles FileInput elements readonly)
+  - allowDelete
+  - moduleName
+  - university
+  - points
+  - pointSystem
+  - selectedFile
 emits:
   - deleteSelf (called on trash button click)
 exposes:
@@ -22,7 +20,7 @@ exposes:
 displays:
   - input fields for moduleName, university, creditPoints, pointSystem
   - drop zone for module description
-  - delete icon (if type is 'new')
+  - delete icon (if allowDelete)
 -->
 
 <script setup>
@@ -30,12 +28,17 @@ import { ref, computed, watch, onBeforeMount } from "vue";
 import FileInput from "@/components/FileInput.vue";
 
 const props = defineProps({
-  type: {
+  allowTextEdit: {
     required: true,
-    type: String,
-    validator(value) {
-      return ['new', 'edit', 'readonly'].includes(value)
-    }
+    type: Boolean
+  },
+  allowFileEdit: {
+    required: true,
+    type: Boolean
+  },
+  allowDelete: {
+    required: true,
+    type: Boolean,
   },
   id: {
     type: Number,
@@ -54,33 +57,12 @@ const props = defineProps({
   },
   selectedFile: {
     type: Object
-  },
-  allowDelete: {
-    type: Boolean,
-    default: false
   }
 })
 
 const emit = defineEmits(['deleteSelf', 'change'])
 
 const id = props.id ? props.id : undefined
-
-// checking props
-onBeforeMount(() => {
-  const warn = (prop) => {
-    console.warn(`PanelExternalModulesItem: prop ${prop} should be given if type is ${props.type}`)
-  }
-
-  if (props.type === 'edit' || props.type === 'readonly') {
-    if (!props.name) warn('name')
-    if (!props.university) warn('university')
-    if (!props.points) warn('points')
-    if (!props.pointSystem) warn('pointSystem')
-    if (!props.selectedFile) warn('selectedFile')
-  }
-})
-
-const readonly = props.type === 'readonly'
 
 const name = ref(props.name || "")
 const university = ref(props.university || "")
@@ -101,24 +83,24 @@ defineExpose({
   <div class="external-modules-item">
     <div class="screen-split">
       <div class="left-side">
-        <InputText :readonly="readonly" type="text" placeholder="Modulname" v-model="name" />
-        <InputText :readonly="readonly" type="text" placeholder="Universität" v-model="university" />
+        <InputText :readonly="!allowTextEdit" type="text" placeholder="Modulname" v-model="name" />
+        <InputText :readonly="!allowTextEdit" type="text" placeholder="Universität" v-model="university" />
       </div>
 
       <div class="right-side">
 
         <div class="point-container">
-          <InputText :readonly="readonly" type="text" placeholder="Punkte" v-model="points" />
-          <InputText :readonly="readonly" type="text" placeholder="Punktesystem" v-model="pointSystem" />
+          <InputText :readonly="!allowTextEdit" type="text" placeholder="Punkte" v-model="points" />
+          <InputText :readonly="!allowTextEdit" type="text" placeholder="Punktesystem" v-model="pointSystem" />
         </div>
 
-        <FileInput :readonly="type === 'edit' || type === 'readonly'" :selected-file="props.selectedFile" ref="fileInput" />
+        <FileInput :readonly="!allowFileEdit" :selected-file="props.selectedFile" ref="fileInput" />
       </div>
 
     </div>
 
-    <div v-if="type === 'new'">
-      <img v-if="allowDelete" src="../assets/icons/Trash.svg" @click="emit('deleteSelf')" class="trash-icon">
+    <div v-if="allowDelete">
+      <img src="../assets/icons/Trash.svg" @click="emit('deleteSelf')" class="trash-icon">
     </div>
 
   </div>

@@ -15,15 +15,16 @@ displays:
 <script setup>
 import PanelExternalModulesItem from "@/components/PanelExternalModulesItem.vue";
 import ButtonAdd from "./ButtonAdd.vue";
-import { ref, onBeforeMount } from "vue";
+import { ref } from "vue";
 
 const props = defineProps({
-  type: {
+  allowTextEdit: {
     required: true,
-    type: String,
-    validator(value) {
-      return ['new', 'edit', 'edit-full', 'readonly'].includes(value)
-    }
+    type: Boolean
+  },
+  allowFileEdit: {
+    required: true,
+    type: Boolean
   },
   modulesData: {
     type: Array,
@@ -41,22 +42,6 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['change'])
-
-// custom prop checker
-if (props.type !== 'new') {
-  if (!(props.modulesData.every(m => m.id))) {
-    console.warn("PanelExternalModules: if type is 'edit' or 'readonly' every module in modulesData prop should have property id")
-  }
-}
-
-// checking modulesData prop
-onBeforeMount(() => {
-  if (props.type === 'edit' || props.type === 'readonly') {
-    if (!props.modulesData) {
-      console.warn(`PanelExternalModules: prop modulesData should be given if type is ${props.type}`)
-    }
-  }
-})
 
 // connection handling
 const externalModulesList = ref([0])
@@ -87,11 +72,12 @@ defineExpose({
 
     <h4>Anzurechnende Module</h4>
 
-    <div v-if="type === 'new'" class="external-modules-list">
+    <div v-if="!modulesData" class="external-modules-list">
       <PanelExternalModulesItem
           v-for="i in externalModulesList"
           :key="i"
-          :type="type"
+          :allow-text-edit="allowTextEdit"
+          :allow-file-edit="allowFileEdit"
           :allow-delete="externalModulesList.length > 1"
           ref="externalModules"
           @delete-self="deleteExternalModule(i)"
@@ -100,10 +86,12 @@ defineExpose({
       <small>Anrechnung mehrerer externer Module auf Module der Universität Leipzig</small>
     </div>
 
-    <div v-else-if="type === 'edit' || type === 'edit-full' || type === 'readonly'" class="external-modules-list">
+    <div v-else class="external-modules-list">
       <PanelExternalModulesItem
           v-for="module in modulesData"
-          :type="type"
+          :allow-text-edit="allowTextEdit"
+          :allow-file-edit="allowFileEdit"
+          :allow-delete="false"
           :id="module.id"
           :name="module.name"
           :university="module.university"
