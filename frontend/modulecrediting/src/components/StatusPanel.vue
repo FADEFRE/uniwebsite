@@ -88,7 +88,7 @@ defineExpose({
         <div v-else>
           <PanelDecisionBlock
               v-if="connection['decisionFinal'] !== 'unedited'"
-              type="readonly"
+              :readonly="true"
               :display-decision="connection['decisionFinal']"
               :comment="connection['commentDecision']"
           />

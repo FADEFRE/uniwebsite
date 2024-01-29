@@ -1,12 +1,9 @@
 <script setup>
 import { ref, watch } from "vue";
 const props = defineProps({
-  type: {
+  readonly: {
     required: true,
-    type: String,
-    validator(value) {
-      return ['edit', 'readonly'].includes(value)
-    }
+    type: Boolean
   },
   displayDecision: {
     type: String,
@@ -43,7 +40,7 @@ defineExpose({
   <div class="panel-decision-block">
 
 
-    <div v-if="type === 'edit'">
+    <div v-if="!readonly">
       <SelectButton :allow-empty="false" :options="decisionOptions" optionLabel="label" optionValue="value"
         v-model="decision">
         <!--template #option="optionProps">
@@ -52,7 +49,7 @@ defineExpose({
       </SelectButton>
     </div>
 
-    <div v-else-if="type === 'readonly'" class="readonly-decision-container">
+    <div v-else class="readonly-decision-container">
 
       <div class="icon-container" :class="{ 'highlight': displayDecision === 'accepted' }">
         <img v-if="displayDecision === 'accepted'" src="../assets/icons/ModuleAccepted.svg">
@@ -69,7 +66,7 @@ defineExpose({
       </div>
     </div>
 
-    <textarea :readonly="type === 'readonly'" v-model="comment" @change="emit('change')"></textarea>
+    <textarea :readonly="readonly" v-model="comment" @change="emit('change')"></textarea>
   </div>
 </template>
 

@@ -147,7 +147,7 @@ defineExpose({
         <PanelDecision type="study-office-chairman">
           <template #study-office>
             <PanelDecisionBlock
-                :type="(type === 'study-office' && !readonly) ? 'edit' : 'readonly'"
+                :readonly="type !== 'study-office' || readonly"
                 :display-decision="decisionSuggestion"
                 :comment="connectionData['commentStudyOffice']"
                 ref="studyOfficeDecisionData"
@@ -156,7 +156,7 @@ defineExpose({
           </template>
           <template #chairman>
             <PanelDecisionBlock
-                :type="(type === 'chairman' && !readonly) ? 'edit' : 'readonly'"
+                :readonly="type !== 'chairman' || readonly"
                 :display-decision="decisionFinal"
                 :comment="connectionData['commentDecision']"
                 ref="chairmanDecisionData"
