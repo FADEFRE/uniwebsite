@@ -49,6 +49,11 @@ const errorHandler = error => {
         if (error.response.status === 404) {
                 router.push({ name: "notFound" });
             } 
+
+        //debug
+        if (error.response.status === 407) {
+            console.debug("%c" + "DER FEHLER DA IM BACKEND", errorColor)
+        }
         }
     }
     return Promise.reject({ ...error });
