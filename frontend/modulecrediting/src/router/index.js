@@ -102,10 +102,17 @@ function changeRole(authRole) {
   return true;
 }
 
-router.beforeEach(async (to) => {
-  getAuthenticatedUser()
+router.beforeEach(async (to, from) => {
   const userStore = useUserStore();
   const id = userStore.getCurrentUserId;
+  if (from.name === "notFound" && to.name === "notFound") {
+    return false;
+  }
+  if (to.meta.authType === "standard" && id === "-1") {
+    userStore.setCurrentRoleNav("user");
+    return true;
+  }
+  getAuthenticatedUser()
   console.log("getRole Router");
   const response = await httpResource.get(`/api/user/${id}/role`);
   switch (to.meta.authType) {
