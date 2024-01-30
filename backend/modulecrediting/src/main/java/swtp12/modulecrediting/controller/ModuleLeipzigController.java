@@ -33,7 +33,7 @@ public class ModuleLeipzigController {
 
     //GET-Requests
     @GetMapping
-    @JsonView(Views.modulesWithoutCourse.class)
+    @JsonView(Views.ModulesWithoutCourse.class)
     ResponseEntity<List<ModuleLeipzig>> getModulesLeipzig() {
         return ResponseEntity.ok(moduleLeipzigService.getModulesLeipzig());
     }

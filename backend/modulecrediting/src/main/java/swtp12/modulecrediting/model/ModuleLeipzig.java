@@ -23,15 +23,15 @@ public class ModuleLeipzig {
 
     @NotBlank
     @JsonView({
-        Views.coursesWithModules.class, 
-        Views.modulesWithoutCourse.class, 
+        Views.CoursesWithModules.class, 
+        Views.ModulesWithoutCourse.class, 
         Views.ApplicationStudent.class,
         Views.RelatedModulesConnection.class})
     @Column(unique = true, nullable = false)
     private String name;
-    @JsonView({Views.coursesWithModules.class, Views.modulesWithoutCourse.class})
+    @JsonView({Views.CoursesWithModules.class, Views.ModulesWithoutCourse.class})
     private String code;
-    @JsonView({Views.coursesWithModules.class,Views.modulesWithoutCourse.class})
+    @JsonView({Views.CoursesWithModules.class, Views.ModulesWithoutCourse.class})
     private Boolean isActive;
 
     //Relation ModuleLeipzig <-> ModulesConnection

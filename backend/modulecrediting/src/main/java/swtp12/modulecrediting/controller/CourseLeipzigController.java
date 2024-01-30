@@ -31,7 +31,7 @@ public class CourseLeipzigController {
 
     //GET-Requests
     @GetMapping
-    @JsonView(Views.coursesWithModules.class)
+    @JsonView({Views.CoursesWithModules.class})
     ResponseEntity<List<CourseLeipzig>> getCoursesLeipzig() {
         return ResponseEntity.ok(courseLeipzigService.getAllCoursesLeipzig());
     }
