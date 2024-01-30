@@ -51,7 +51,7 @@ const errorHandler = error => {
             } 
 
         //debug
-        if (error.response.status === 407) {
+        if (error.response.status === 407 || error.response.status === 409) {
             console.debug("%c" + "DER FEHLER DA IM BACKEND", errorColor)
         }
         }
