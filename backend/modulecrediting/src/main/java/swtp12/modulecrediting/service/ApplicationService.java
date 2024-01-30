@@ -205,7 +205,7 @@ public class ApplicationService {
 
         Map<String, List<ModulesConnection>> map = modulesConnectionService.createModulesConnections(applicationDTO.getModulesConnections());
 
-        application.setModulesConnections(map.get("one"));
+        application.addModulesConnections(map.get("one"));
         originalApplication.setModulesConnections(map.get("two"));
 
         application = applicationRepository.save(application);

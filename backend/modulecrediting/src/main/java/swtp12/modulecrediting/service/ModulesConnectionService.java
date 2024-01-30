@@ -184,7 +184,7 @@ public class ModulesConnectionService {
         modulesConnection.setCommentApplicant(mc.getCommentApplicant());
         if(mc.getModulesLeipzig() != null) { // no modules leipzig sent
             List<ModuleLeipzig> modulesLeipzig = moduleLeipzigService.getModulesLeipzigByNames(mc.getModulesLeipzig());
-            modulesConnection.setModulesLeipzig(modulesLeipzig);
+            modulesConnection.addModulesLeipzig(modulesLeipzig);
         }
         return modulesConnection;
     }
