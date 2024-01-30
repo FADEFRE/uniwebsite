@@ -46,7 +46,6 @@ public class ApplicationService {
         return application.getId();
     }
 
-
     @Transactional
     public String updateApplication(String id, ApplicationUpdateDTO applicationDTO, String userRole) {
         Application application = getApplicationById(id);
@@ -72,29 +71,6 @@ public class ApplicationService {
     public String updateApplicationAfterFormalRejection(String id, ApplicationCreateDTO applicationCreateDTO) {
         return "nicht fertig dikka";
     }
-
-  /*  @Transactional
-    public String updateStudentApplication(String id, ApplicationUpdateDTO applicationDTO) {
-        Application application = getApplicationById(id);
-        OriginalApplication originalApplication = getOriginalApplication(id);
-
-        if(applicationDTO.getModulesConnections() != null) {
-            List<ModulesConnectionUpdateDTO> DTOs = applicationDTO.getModulesConnections();
-            int size = DTOs.size();
-            for (int i = 0; i < size; i++) {
-                ModulesConnectionUpdateDTO dtoCon = DTOs.get(i);
-                Long modConId = modulesConnectionService.getModulesConnectionById(dtoCon.getId()).getMatchingId();
-                ModulesConnectionUpdateDTO modConUpDTO = duplicateModuleConnectionUpdateDTO(modConId, dtoCon);
-                DTOs.add(modConUpDTO);
-            }
-            modulesConnectionService.updateModulesConnection(DTOs, "standard");
-        }
-        application.setFullStatus(NEU);
-        originalApplication.setFullStatus(IN_BEARBEITUNG);
-        applicationRepository.save(application);
-        originalApplicationRepository.save(originalApplication);
-        return id;
-    }*/
 
 
     public EnumStatusChange updateApplicationStatusAllowed(String id) {
@@ -174,7 +150,6 @@ public class ApplicationService {
         return id;
     }
 
-
     // Simple Getters for Application
     // is used internally and for login requests
     public List<Application> getAllApplciations(){
@@ -192,7 +167,35 @@ public class ApplicationService {
     }
     // is used only for student request
     public Application getApplicationStudentById(String id) {
-        return getApplicationById(id);
+        Application application = getApplicationById(id);
+
+        List<ModulesConnection> editModulesConnection = application.getModulesConnections();
+
+        // return edited application, without original application TODO: delte original application when status on abgeschlossen
+        if(application.getFullStatus() == ABGESCHLOSSEN) {
+            List<ModulesConnection> adjModulesConnections = modulesConnectionService.removeOriginalModulesConnections(editModulesConnection);
+            application.setModulesConnections(adjModulesConnections);
+            return application;
+        }
+
+        // return orignal application with rejection info
+        if(application.getFullStatus() == FORMFEHLER) {
+            List<ModulesConnection> modulesConnectionsOriginalWithFormalRejectionData = modulesConnectionService.getOriginalModulesConnectionsWithFormalRejectionData(editModulesConnection);
+            application.setModulesConnections(modulesConnectionsOriginalWithFormalRejectionData);
+            return application;
+        }
+
+        // default case
+
+        // set for student visible status
+        if(application.getFullStatus() == STUDIENBÜRO || application.getFullStatus() == PRÜFUNGSAUSSCHUSS)
+            application.setFullStatus(IN_BEARBEITUNG);
+
+        // replace edited modules connection with original modules connections
+        List<ModulesConnection> modulesConnectionsOriginal = modulesConnectionService.getOriginalModulesConnections(editModulesConnection);
+        application.setModulesConnections(modulesConnectionsOriginal);
+
+        return application;
     }
     public boolean applicationExists(String id) {
         return applicationRepository.existsById(id);

@@ -108,5 +108,4 @@ public class ApplicationController {
         if (result.hasErrors()) return ResponseEntity.badRequest().body("Validation failed: " + result.getAllErrors());
         return ResponseEntity.ok(applicationService.updateApplication(id, applicationUpdateDTO, "chairman"));
     }
-
 }

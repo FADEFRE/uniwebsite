@@ -172,6 +172,7 @@ public class ModulesConnectionService {
         }
         return idList;
     }
+
     public void removeAllDecisions(List<ModulesConnection> modulesConnections) {
         for(ModulesConnection mc : modulesConnections) {
             mc.setDecisionSuggestion(unedited);
@@ -180,6 +181,39 @@ public class ModulesConnectionService {
             mc.setCommentDecision("");
         }
     }
+
+
+    public List<ModulesConnection> getOriginalModulesConnections(List<ModulesConnection> modulesConnections) {
+        ArrayList<ModulesConnection> modulesConnectionsOriginal = new ArrayList<>();
+
+        for(ModulesConnection modulesConnection : modulesConnections) {
+            modulesConnectionsOriginal.add(modulesConnection.getModulesConnectionOriginal());
+        }
+        return modulesConnectionsOriginal;
+    }
+
+    public List<ModulesConnection> removeOriginalModulesConnections(List<ModulesConnection> modulesConnections) {
+        for(ModulesConnection modulesConnection : modulesConnections) {
+            modulesConnection.setModulesConnectionOriginal(null);
+        }
+        return modulesConnections;
+    }
+
+    public List<ModulesConnection> getOriginalModulesConnectionsWithFormalRejectionData(List<ModulesConnection> editModulesConnections) {
+        ArrayList<ModulesConnection> modulesConnectionsOriginal = new ArrayList<>();
+
+        for(ModulesConnection editModulesConnection : editModulesConnections) {
+
+            ModulesConnection modulesConnectionOriginal = editModulesConnection.getModulesConnectionOriginal();
+            // adding formal rejection data
+            modulesConnectionOriginal.setFormalRejection(editModulesConnection.getFormalRejection());
+            modulesConnectionOriginal.setFormalRejectionComment(editModulesConnection.getFormalRejectionComment());
+
+            modulesConnectionsOriginal.add(modulesConnectionOriginal);
+        }
+        return modulesConnectionsOriginal;
+    }
+
 
 
     // METHODS FOR RELATED MODULES //
@@ -219,7 +253,6 @@ public class ModulesConnectionService {
         return levenshteinDistance.apply(name1Clean, name2Clean);
     }
 
-    // GENERALL METHODS //
     public ModulesConnection getModulesConnectionById(Long id) {
         Optional<ModulesConnection> modulesConnection = modulesConnectionRepository.findById(id);
         if(modulesConnection.isPresent()) return modulesConnection.get();
