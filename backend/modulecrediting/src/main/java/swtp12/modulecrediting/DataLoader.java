@@ -269,7 +269,7 @@ public class DataLoader implements CommandLineRunner {
                 updatedData = "studyOffice";
                 studyOffice--;
             }
-            /*
+            
             else if (formfehler > 0) { // update application to FORMFEHLER
                 List<ModulesConnectionUpdateDTO> mcuDTOs = new ArrayList<>();
                 mcuDTOs = updateModulesConnectionDTO(FORMFEHLER, application);
@@ -279,7 +279,7 @@ public class DataLoader implements CommandLineRunner {
                 updatedData = "formfehler";
                 formfehler--;
             }
-            */
+            
             else if (open > 0) { // update application to ABGESCHLOSSEN
                 updatedData = "open";
                 open--;
@@ -446,12 +446,12 @@ public class DataLoader implements CommandLineRunner {
                 
                 modulesConnectionDTO.setCommentStudyOffice("liegt beim study office");
             }
-/*
+
             if(status == FORMFEHLER) {
                 modulesConnectionDTO.setFormalRejection(true);
                 modulesConnectionDTO.setFormalRejectionComment("Dickes F an Huy");
             }
-*/
+
             if(status == PRÜFUNGSAUSSCHUSS) {
                 modulesConnectionDTO.setDecisionSuggestion(generateDecision());
                 modulesConnectionDTO.setCommentStudyOffice("comment study office");
