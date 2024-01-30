@@ -45,9 +45,11 @@ const errorHandler = error => {
         }
         if (error.response.status === 403) {
             console.debug("%c" + "FORBIDDEN", errorColor) //TODO remove debug log
+                router.push({ name: "Forbidden" });
+
             }
         if (error.response.status === 404) {
-                router.push({ name: "notFound" });
+                router.push({ name: "IdError" });
             } 
 
         //debug
