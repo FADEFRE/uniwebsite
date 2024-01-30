@@ -4,17 +4,30 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.persistence.*;
-
 import org.hibernate.annotations.CreationTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
+/**
+ * Application. Includes custom {@link JsonView} classes:
+ * <p> {@link Views ApplicationOverview}, {@link Views RelatedModulesConnection} 
+ * 
+ * @see JsonView
+ * @see Views
+ * @see Views.ApplicationOverview
+ * @see Views.RelatedModulesConnection
+ */
 @Data
 @NoArgsConstructor
 @Entity
@@ -25,19 +38,19 @@ public class Application {
 
     @JsonView({Views.ApplicationOverview.class})
     private EnumApplicationStatus fullStatus;
+
     @CreationTimestamp
     @JsonView({Views.ApplicationOverview.class})
     private LocalDateTime creationDate;
     @JsonView({Views.ApplicationOverview.class})
     private LocalDateTime lastEditedDate;
-    @JsonView({Views.ApplicationOverview.class,Views.RelatedModulesConnection.class})
+    @JsonView({Views.ApplicationOverview.class, Views.RelatedModulesConnection.class})
     private LocalDateTime decisionDate;
 
     //Relation Application <-> CourseLeipzig
-    @ManyToOne
-    @JoinColumn(name = "course_leipzig_id")
-    @JsonManagedReference
-    @JsonView({Views.ApplicationOverview.class,Views.RelatedModulesConnection.class})
+    @ManyToOne @JoinColumn(name = "course_leipzig_id")
+    @JsonManagedReference 
+    @JsonView({Views.ApplicationOverview.class, Views.RelatedModulesConnection.class})
     private CourseLeipzig courseLeipzig;
 
     //Relation Application <-> ModulesConnection
@@ -46,22 +59,45 @@ public class Application {
     @JsonView({Views.ApplicationStudent.class,Views.ApplicationOverview.class})
     private List<ModulesConnection> modulesConnections = new ArrayList<>();
 
-
+    
+    /**
+     * Constructor for {@link Application}.
+     * <p>Creates {@link Application} with given {@link String} as {@link #id}
+     * and sets {@link #fullStatus} to {@link EnumApplicationStatus NEU}.
+     * 
+     * @param id
+     * @see Application
+     * @see EnumApplicationStatus
+     */
     public Application(String id) {
         this.id = id;
         this.fullStatus = EnumApplicationStatus.NEU;
     }
 
 
-    //Function for setting a List of ModuelsConnections to this Application (and add the Application to all ModulesConnection in the List)
-    public void setModulesConnections(List<ModulesConnection> modulesConnections) {
-        for(ModulesConnection mc : modulesConnections) {
-            mc.setApplication(this);
+    /**
+     * Adds the {@link List} of {@link ModulesConnection} to this {@link Application}.
+     * <p>Also sets this {@link Application} for every {@link CoursModulesConnectioneLeipzig} in the given {@link List}.
+     * 
+     * @param modulesConnections
+     * @see Application
+     * @see ModulesConnection 
+     */
+    public void addModulesConnections(List<ModulesConnection> modulesConnections) {
+        for(ModulesConnection mc : modulesConnections) { 
+            mc.setApplication(this); 
         }
-        this.modulesConnections = modulesConnections;
+        this.modulesConnections.addAll(modulesConnections);
     }
 
-    //Function for adding a Course to this Application (and add the Application to the Course aswell)
+    /**
+     * Set the {@link CourseLeipzig} for this {@link Application}.
+     * <p>Also adds this {@link Application} to the {@link List} of {@link Application Applications} in the given {@link CourseLeipzig}.
+     * 
+     * @param courseLeipzig
+     * @see Application
+     * @see CourseLeipzig 
+     */
     public void setCourseLeipzig(CourseLeipzig courseLeipzig) {
         courseLeipzig.getApplications().add(this);
         this.courseLeipzig = courseLeipzig;
