@@ -29,25 +29,31 @@ public class GeneratedPdfService {
         return applicationService.getStudentApplicationById(id);
     }
 
-    public String parseThymeleafTemplate() {
+    public String parseThymeleafTemplate(String id) {
         ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
         templateResolver.setSuffix(".html");
         templateResolver.setTemplateMode(TemplateMode.HTML);
         templateResolver.setPrefix("templates/");
-
         TemplateEngine templateEngine = new TemplateEngine();
         templateEngine.setTemplateResolver(templateResolver);
+        
+        
+        StudentApplicationDTO application = getDataForPDF(id);
 
         Context context = new Context();
-        context.setVariable("to", "Baeldung");
+        context.setVariable("id", id);
+        context.setVariable("Erstelldatum", application.getCreationDate());
+        context.setVariable("Status", application.getFullStatus());
+        context.setVariable("Entscheidungsdatum", application.getDecisionDate());
+    
 
         return templateEngine.process("PDF", context);
     }
 
     public byte[] generatePdfFromHtml(String id) throws IOException {
     
-        StudentApplicationDTO applicationDTO = getDataForPDF(id); 
-        String html = parseThymeleafTemplate();
+        StudentApplicationDTO application = getDataForPDF(id); 
+        String html = parseThymeleafTemplate(id);
 
 
         OutputStream outputStream = new ByteArrayOutputStream();
