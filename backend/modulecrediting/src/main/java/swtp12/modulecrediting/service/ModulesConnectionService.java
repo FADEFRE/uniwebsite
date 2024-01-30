@@ -28,6 +28,44 @@ public class ModulesConnectionService {
     @Autowired
     ModuleLeipzigService moduleLeipzigService;
 
+    public List<ModulesConnection> createModulesConnectionsWithDuplicate(List<ModulesConnectionCreateDTO> modulesConnectionsDTO) {
+        if(modulesConnectionsDTO == null || modulesConnectionsDTO.size() == 0)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, " No Modules Connections provided in the request");
+
+        List<ModulesConnection> modulesConnections = new ArrayList<>();
+
+        for(ModulesConnectionCreateDTO modulesConnectionDTO : modulesConnectionsDTO) {
+            ModulesConnection modulesConnection = createModulesConnection(modulesConnectionDTO);
+            ModulesConnection modulesConnectionOriginal = createModulesConnection(modulesConnectionDTO);
+
+            modulesConnection.setModulesConnectionOriginal(modulesConnectionOriginal);
+
+            modulesConnections.add(modulesConnection);
+        }
+        return modulesConnections;
+    }
+
+    private ModulesConnection createModulesConnection(ModulesConnectionCreateDTO modulesConnectionDTO) {
+
+        ModulesConnection modulesConnection = new ModulesConnection();
+
+        // create external modules
+        List<ExternalModule> externalModules = externalModuleService.createExternalModules(modulesConnectionDTO.getExternalModules());
+        modulesConnection.setExternalModules(externalModules); // TODO: check correct relation set
+
+        // create modules lepizig relation
+        if(modulesConnectionDTO.getModulesLeipzig() != null) { // no modules leipzig sent in dto
+            List<ModuleLeipzig> modulesLeipzig = moduleLeipzigService.getModulesLeipzigByNames(modulesConnectionDTO.getModulesLeipzig());
+            modulesConnection.setModulesLeipzig(modulesLeipzig);
+        }
+
+        // create set comment applicant
+        modulesConnection.setCommentApplicant(modulesConnectionDTO.getCommentApplicant());
+
+        //modulesConnection = modulesConnectionRepository.save(modulesConnectionONE); //TODO: save first and then you can add
+        return modulesConnection;
+    }
+
 
     public void updateModulesConnection(List<ModulesConnectionUpdateDTO> modulesConnectionsDTO, String userRole) {
         for(ModulesConnectionUpdateDTO mcuDTO : modulesConnectionsDTO) {
@@ -94,21 +132,21 @@ public class ModulesConnectionService {
     }
 
     // modules leipzig helper methods
-    void removeAllDeletedModulesLeipzig(ModulesConnection modulesConnection, List<String> deleteIdList) {
+    private void removeAllDeletedModulesLeipzig(ModulesConnection modulesConnection, List<String> deleteIdList) {
         ArrayList<ModuleLeipzig> modulesLeipzig = new ArrayList<>();
         for(String name : deleteIdList) {
             modulesLeipzig.add(moduleLeipzigService.getModuleLeipzigByName(name));
         }
         modulesConnection.removeModulesLeipzig(modulesLeipzig);
     }
-    List<String> getModuleLeipzigNameFromModuleConnection(ModulesConnection modulesConnection) {
+    private List<String> getModuleLeipzigNameFromModuleConnection(ModulesConnection modulesConnection) {
         ArrayList<String> nameList = new ArrayList<>();
         for(ModuleLeipzig ml : modulesConnection.getModulesLeipzig()) {
             nameList.add(ml.getName());
         }
         return nameList;
     }
-    List<String> getModuleLeipzigNameFromModuleConnectionUpdateDTO(ModulesConnectionUpdateDTO modulesConnection) {
+    private List<String> getModuleLeipzigNameFromModuleConnectionUpdateDTO(ModulesConnectionUpdateDTO modulesConnection) {
         ArrayList<String> nameList = new ArrayList<>();
         for(ModuleLeipzigUpdateDTO ml : modulesConnection.getModulesLeipzig()) {
             nameList.add(ml.getName());
@@ -117,26 +155,25 @@ public class ModulesConnectionService {
     }
 
     // module applications helper methos (external modules)
-    void removeAllDeletedExternalModules(List<Long> deleteIdList) {
+    private void removeAllDeletedExternalModules(List<Long> deleteIdList) {
         for(Long id : deleteIdList) {
             externalModuleService.deleteExternalModuleById(id);
         }
     }
-    List<Long> getIdListFromModuleConnection(ModulesConnection modulesConnection) {
+    private List<Long> getIdListFromModuleConnection(ModulesConnection modulesConnection) {
         ArrayList<Long> idList = new ArrayList<>();
         for(ExternalModule eM : modulesConnection.getExternalModules()) {
             idList.add(eM.getId());
         }
         return idList;
     }
-    List<Long> getIdListFromModuleConnectionUpdateDTO(ModulesConnectionUpdateDTO modulesConnection) {
+    private List<Long> getIdListFromModuleConnectionUpdateDTO(ModulesConnectionUpdateDTO modulesConnection) {
         ArrayList<Long> idList = new ArrayList<>();
         for(ExternalModuleUpdateDTO eM : modulesConnection.getExternalModules()) {
             idList.add(eM.getId());
         }
         return idList;
     }
-
     public void removeAllDecisions(List<ModulesConnection> modulesConnections) {
         for(ModulesConnection mc : modulesConnections) {
             mc.setDecisionSuggestion(unedited);
@@ -146,48 +183,6 @@ public class ModulesConnectionService {
         }
     }
 
-    public Map<String, List<ModulesConnection>> createModulesConnections(List<ModulesConnectionCreateDTO> modulesConnectionsDTO) {
-        if(modulesConnectionsDTO == null || modulesConnectionsDTO.size() == 0)
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, " No Modules Connections provided in the request");
-        List<ModulesConnection> modulesConnections1 = new ArrayList<>();
-        List<ModulesConnection> modulesConnections2 = new ArrayList<>();
-        Map<String, List<ModulesConnection>> map = new HashMap<>();
-
-        for(ModulesConnectionCreateDTO mc : modulesConnectionsDTO) {
-            ModulesConnection modulesConnectionONE = new ModulesConnection();
-            ModulesConnection modulesConnectionTWO = new ModulesConnection();
-
-            modulesConnectionONE = createModCons(modulesConnectionONE, mc);
-            modulesConnectionTWO = createModCons(modulesConnectionTWO, mc);
-
-            Map<String, List<ExternalModule>> mapExternal = externalModuleService.createExternalModules(mc.getExternalModules());
-            
-            modulesConnectionONE.setExternalModules(mapExternal.get("one"));
-            modulesConnectionTWO.setExternalModules(mapExternal.get("two"));
-
-            modulesConnectionONE = modulesConnectionRepository.save(modulesConnectionONE);
-            modulesConnectionTWO = modulesConnectionRepository.save(modulesConnectionTWO);
-
-            modulesConnectionONE.setMatchingId(modulesConnectionTWO.getId());
-            modulesConnectionTWO.setMatchingId(modulesConnectionONE.getId());
-
-            modulesConnections1.add(modulesConnectionONE);
-            modulesConnections2.add(modulesConnectionTWO);
-        }
-
-        map.put("one", modulesConnections1);
-        map.put("two", modulesConnections2);
-        return map;
-    }
-
-    private ModulesConnection createModCons(ModulesConnection modulesConnection, ModulesConnectionCreateDTO mc) {
-        modulesConnection.setCommentApplicant(mc.getCommentApplicant());
-        if(mc.getModulesLeipzig() != null) { // no modules leipzig sent
-            List<ModuleLeipzig> modulesLeipzig = moduleLeipzigService.getModulesLeipzigByNames(mc.getModulesLeipzig());
-            modulesConnection.addModulesLeipzig(modulesLeipzig);
-        }
-        return modulesConnection;
-    }
 
     // METHODS FOR RELATED MODULES //
 
@@ -207,7 +202,7 @@ public class ModulesConnectionService {
     }
 
     // checks if a module connection is similar, based on if any of a modulename, university pair matches with another pair.
-    public boolean checkSimilarityOfModulesConnection(ModulesConnection baseModulesConnection, ModulesConnection relatedModulesConnection) {
+    private boolean checkSimilarityOfModulesConnection(ModulesConnection baseModulesConnection, ModulesConnection relatedModulesConnection) {
         for(ExternalModule emBase : baseModulesConnection.getExternalModules()) {
             for(ExternalModule emRel : relatedModulesConnection.getExternalModules()) {
                 int distanceModuleName = checkSimilarityOfStrings(emBase.getName(), emRel.getName());
@@ -219,13 +214,12 @@ public class ModulesConnectionService {
         return false;
     }
 
-    public int checkSimilarityOfStrings(String name1, String name2) {
+    private int checkSimilarityOfStrings(String name1, String name2) {
         LevenshteinDistance levenshteinDistance = new LevenshteinDistance();
         String name1Clean = name1.toLowerCase().replaceAll(" ", "");
         String name2Clean = name2.toLowerCase().replaceAll(" ", "");
         return levenshteinDistance.apply(name1Clean, name2Clean);
     }
-
 
     // GENERALL METHODS //
     public ModulesConnection getModulesConnectionById(Long id) {

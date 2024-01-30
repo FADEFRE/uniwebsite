@@ -27,8 +27,6 @@ public class ExternalModule {
     @JsonView({Views.ApplicationStudent.class,Views.ApplicationLogin.class})
     private Long id;
 
-    private Long matchingId;
-
     @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class,Views.ApplicationOverview.class})
     @NotBlank(message = "moduleName must not be blank (empty String)")
     private String name;

@@ -24,9 +24,6 @@ public class ModulesConnection {
     @JsonView({Views.ApplicationStudent.class,Views.ApplicationLogin.class,Views.RelatedModulesConnection.class})
     private Long id;
 
-    @JsonIgnore
-    private Long matchingId;
-
     @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class})
     @NotNull(message = "decisionFinal must not be null")
     private EnumModuleConnectionDecision decisionFinal;
@@ -74,11 +71,11 @@ public class ModulesConnection {
     @EqualsAndHashCode.Exclude
     private Application application;
 
-    //Relation ModulesConnection <-> OriginalApplication (Setter in OriginalApplication)
-    @ManyToOne
-    @JsonView(Views.RelatedModulesConnection.class)
-    @EqualsAndHashCode.Exclude
-    private OriginalApplication originalApplication;
+
+    // TODO: add json views
+    @OneToOne(cascade = CascadeType.ALL)
+    @JsonView(Views.ApplicationLogin.class)
+    private ModulesConnection modulesConnectionOriginal;
 
 
     public ModulesConnection() {

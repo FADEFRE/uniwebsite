@@ -63,11 +63,6 @@ public class CourseLeipzig {
     @JsonBackReference
     private List<Application> applications = new ArrayList<>();
 
-    //Relation CourseLeipzig <-> OriginalApplication
-    @OneToMany(mappedBy = "originalCourseLeipzig")
-    @JsonBackReference
-    private List<OriginalApplication> originalApplications = new ArrayList<>();
-
 
     /**
      * Constructor for {@link CourseLeipzig}.

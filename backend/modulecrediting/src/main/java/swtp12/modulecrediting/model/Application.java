@@ -73,9 +73,17 @@ public class Application {
     }
 
 
+    // set modules connection + db relation
+    public void setModulesConnections(List<ModulesConnection> modulesConnections) {
+        for(ModulesConnection mc : modulesConnections) {
+            mc.setApplication(this);
+        }
+        this.modulesConnections = modulesConnections;
+    }
+
     /**
      * Adds the given {@link List} of {@link ModulesConnection} to this {@link Application}.
-     * <p>Also sets this {@link Application} for every {@link CoursModulesConnectioneLeipzig} in the given {@link List}.
+     * <p>Also sets this {@link Application} for every {@link ModulesConnection} in the given {@link List}.
      * 
      * @see Application
      * @see ModulesConnection 
