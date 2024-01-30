@@ -85,6 +85,24 @@ const router = createRouter({
       component: () => import("../views/NotFoundView.vue"),
       meta: { authType: "standard" },
     },
+    {
+      path: "/:pathMatch(.*)*",
+      name: "Forbidden",
+      component: () => import("../views/ForbiddenView.vue"),
+      meta: { authType: "standard" },
+    },
+    {
+      path: "/:pathMatch(.*)*",
+      name: "IdError",
+      component: () => import("../views/IdErrorView.vue"),
+      meta: { authType: "standard" },
+    },
+    {
+      path: "/:pathMatch(.*)*",
+      name: "Permission",
+      component: () => import("../views/NoPermissionView.vue"),
+      meta: { authType: "standard" },
+    }
   ],
 });
 
@@ -125,7 +143,7 @@ router.beforeEach(async (to, from) => {
         userStore.setCurrentRoleNav("study");
         return true;
       }
-      return { name: "notFound" }; //TODO route to correct error page "permission not allowed"
+      return { name: "Permission" }; //TODO route to correct error page "permission not allowed"
       //return { name: "login" };
 
     case "chairman":
@@ -133,7 +151,7 @@ router.beforeEach(async (to, from) => {
         userStore.setCurrentRoleNav("chair");
         return true;
       }
-      return { name: "notFound" }; //TODO route to correct error page "permission not allowed"
+      return { name: "Permission" }; //TODO route to correct error page "permission not allowed"
       //return { name: "login" };
 
     case "admin":
@@ -141,7 +159,7 @@ router.beforeEach(async (to, from) => {
         userStore.setCurrentRoleNav("admin");
         return true;
       }
-      return { name: "notFound" }; //TODO route to correct error page "permission not allowed"
+      return { name: "Permission" }; //TODO route to correct error page "permission not allowed"
       //return { name: "login" };
 
     case "internal":
@@ -149,7 +167,7 @@ router.beforeEach(async (to, from) => {
         changeRole(response.data);
         return true;
       }
-      return { name: "notFound" }; //TODO route to correct error page "permission not allowed"
+      return { name: "Permission" }; //TODO route to correct error page "permission not allowed"
       //return { name: "login" };
 
     case "internal-with-admin":
@@ -157,7 +175,7 @@ router.beforeEach(async (to, from) => {
         changeRole(response.data);
         return true;
       }
-      return { name: "notFound" }; //TODO route to correct error page "permission not allowed"
+      return { name: "Permission" }; //TODO route to correct error page "permission not allowed"
       //return { name: "login" };
       
     default:
