@@ -27,26 +27,24 @@ public class ExternalModule {
     @JsonView({Views.ApplicationStudent.class,Views.ApplicationLogin.class})
     private Long id;
 
-    private Long matchingId;
-
-    @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class,Views.ApplicationOverview.class})
+    @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class,Views.ApplicationLoginOverview.class})
     @NotBlank(message = "moduleName must not be blank (empty String)")
     private String name;
-    @JsonView({Views.ApplicationStudent.class})
+    @JsonView({Views.ApplicationStudent.class,Views.ApplicationLogin.class})
     @NotNull(message = "points must not be null")
     private Integer points;
-    @JsonView({Views.ApplicationStudent.class})
+    @JsonView({Views.ApplicationStudent.class,Views.ApplicationLogin.class})
     @NotNull(message = "point system must not be null")
     private String pointSystem;
-    @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class,Views.ApplicationOverview.class})
+    //TODO: check related modules connection view here e.g
+    @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class,Views.ApplicationLoginOverview.class})
     @NotBlank(message = "university must not be blank (empty String)")
     private String university;
-
 
     //Relation ExternalModule <-> PdfDocument
     @OneToOne(cascade = CascadeType.ALL)
     @JsonManagedReference
-    @JsonView({Views.ApplicationStudent.class})
+    @JsonView({Views.ApplicationStudent.class,Views.ApplicationLogin.class})
     private PdfDocument pdfDocument;
 
     //Relation ExternalModule <-> ModulesConnection (Setter in ModulesConnection)

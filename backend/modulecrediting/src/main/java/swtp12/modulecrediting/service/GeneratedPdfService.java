@@ -15,20 +15,14 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
-import swtp12.modulecrediting.dto.StudentApplicationDTO;
-
 import org.thymeleaf.context.Context;
+import swtp12.modulecrediting.model.Application;
 
 
 @Service
 public class GeneratedPdfService {
     @Autowired
     private ApplicationService applicationService;
-
-    //helper to get DTO
-    private StudentApplicationDTO getDataForPDF(String id) {
-        return applicationService.getStudentApplicationById(id);
-    }
 
     public String parseThymeleafTemplate(String id) {
         ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
@@ -47,16 +41,12 @@ public class GeneratedPdfService {
         context.setVariable("Status", application.getFullStatus());
         context.setVariable("Entscheidungsdatum", application.getDecisionDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
 
-
-    
-
         return templateEngine.process("PDF", context);
     }
 
     public byte[] generatePdfFromHtml(String id) throws IOException {
-    
-        StudentApplicationDTO application = getDataForPDF(id); 
-        String html = parseThymeleafTemplate(id);
+        Application application = applicationService.getApplicationStudentById(id);
+        String html = parseThymeleafTemplate();
 
 
         OutputStream outputStream = new ByteArrayOutputStream();

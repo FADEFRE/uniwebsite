@@ -3,9 +3,7 @@ package swtp12.modulecrediting.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.annotation.*;
 
 import jakarta.persistence.*;
 
@@ -18,19 +16,17 @@ import static swtp12.modulecrediting.model.EnumModuleConnectionDecision.*;
 
 @Data
 @Entity
+// TODO: serilize only first iteration of cylic relation (modules connection original)
 public class ModulesConnection {
     @Id
     @GeneratedValue
-    @JsonView({Views.ApplicationStudent.class,Views.ApplicationLogin.class,Views.RelatedModulesConnection.class})
+    @JsonView({Views.ApplicationStudent.class, Views.ApplicationLogin.class, Views.RelatedModulesConnection.class})
     private Long id;
 
-    @JsonIgnore
-    private Long matchingId;
-
-    @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class})
+    @JsonView({Views.ApplicationStudent.class,Views.ApplicationLogin.class, Views.RelatedModulesConnection.class})
     @NotNull(message = "decisionFinal must not be null")
     private EnumModuleConnectionDecision decisionFinal;
-    @JsonView({Views.ApplicationStudent.class})
+    @JsonView({Views.ApplicationStudent.class, Views.ApplicationLogin.class})
     @NotNull(message = "commentDecision must not be null")
     private String commentDecision;
     @JsonView(Views.ApplicationLogin.class)
@@ -39,22 +35,21 @@ public class ModulesConnection {
     @JsonView(Views.ApplicationLogin.class)
     @NotNull(message = "commentStudyOffice must not be null")
     private String commentStudyOffice;
-    @JsonView(Views.ApplicationStudent.class)
+    @JsonView({Views.ApplicationStudent.class, Views.ApplicationLogin.class})
     @NotNull(message = "formalRejection must not be null")
     private Boolean formalRejection;
-    @JsonView(Views.ApplicationStudent.class)
-
+    @JsonView({Views.ApplicationStudent.class,Views.ApplicationLogin.class})
     @NotNull(message = "formalRejectionComment must not be null")
     private String formalRejectionComment;
 
-    @JsonView({Views.ApplicationStudent.class})
+    @JsonView({Views.ApplicationStudent.class,Views.ApplicationLogin.class})
     @NotNull(message = "comment applicant must not be null")
     private String commentApplicant;
 
     //Relation ModulesConnection <-> ExternalModule (Setter in ExternalModule)
     @OneToMany(mappedBy = "modulesConnection", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JsonManagedReference
-    @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class,Views.ApplicationOverview.class})
+    @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class,Views.ApplicationLoginOverview.class})
     private List<ExternalModule> externalModules = new ArrayList<>();
 
     //Relation ModulesConnection <-> ModuleLeipzig
@@ -65,20 +60,19 @@ public class ModulesConnection {
             inverseJoinColumns = @JoinColumn(name = "module_leipzig_id")
     )
     @JsonManagedReference
-    @JsonView({Views.ApplicationStudent.class, Views.RelatedModulesConnection.class})
+    @JsonView({Views.ApplicationStudent.class,Views.ApplicationLogin.class, Views.RelatedModulesConnection.class})
     private List<ModuleLeipzig> modulesLeipzig = new ArrayList<>();
 
     //Relation ModulesConnection <-> Application (Setter in Application)
     @ManyToOne
-    @JsonView(Views.RelatedModulesConnection.class)
     @EqualsAndHashCode.Exclude
+    @JsonBackReference
+    @JsonView(Views.RelatedModulesConnection.class)
     private Application application;
 
-    //Relation ModulesConnection <-> OriginalApplication (Setter in OriginalApplication)
-    @ManyToOne
-    @JsonView(Views.RelatedModulesConnection.class)
-    @EqualsAndHashCode.Exclude
-    private OriginalApplication originalApplication;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JsonView(Views.ApplicationStudent.class)
+    private ModulesConnection modulesConnectionOriginal;
 
 
     public ModulesConnection() {

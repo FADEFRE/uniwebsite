@@ -7,7 +7,6 @@ import static swtp12.modulecrediting.dto.EnumStatusChange.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,22 +16,11 @@ import org.springframework.web.server.ResponseStatusException;
 
 import jakarta.transaction.Transactional;
 
-import swtp12.modulecrediting.dto.ApplicationCreateDTO;
-import swtp12.modulecrediting.dto.ApplicationUpdateDTO;
-import swtp12.modulecrediting.dto.EnumStatusChange;
-import swtp12.modulecrediting.dto.ExternalModuleUpdateDTO;
-import swtp12.modulecrediting.dto.ModulesConnectionUpdateDTO;
-import swtp12.modulecrediting.dto.StudentApplicationDTO;
-import swtp12.modulecrediting.model.Application;
-import swtp12.modulecrediting.model.CourseLeipzig;
-import swtp12.modulecrediting.model.EnumApplicationStatus;
-import swtp12.modulecrediting.model.ExternalModule;
-import swtp12.modulecrediting.model.ModulesConnection;
-import swtp12.modulecrediting.model.OriginalApplication;
+import swtp12.modulecrediting.dto.*;
+import swtp12.modulecrediting.model.*;
 import swtp12.modulecrediting.repository.ApplicationRepository;
 import swtp12.modulecrediting.repository.ExternalModuleRepository;
 import swtp12.modulecrediting.repository.ModulesConnectionRepository;
-import swtp12.modulecrediting.repository.OriginalApplicationRepository;
 
 
 @Service
@@ -40,16 +28,23 @@ public class ApplicationService {
     @Autowired
     private ApplicationRepository applicationRepository;
     @Autowired
-    private OriginalApplicationRepository originalApplicationRepository;
-    @Autowired
     ModulesConnectionService modulesConnectionService;
-    @Autowired
-    ModulesConnectionRepository modulesConnectionRepository;
-    @Autowired
-    ExternalModuleRepository externalModuleRepository;
     @Autowired
     private CourseLeipzigService courseLeipzigService;
 
+    public String createApplication(ApplicationCreateDTO applicationDTO) {
+        String id = generateValidApplicationId();
+        Application application = new Application(id);
+
+        CourseLeipzig courseLeipzig = courseLeipzigService.getCourseLeipzigByName(applicationDTO.getCourseLeipzig());
+        application.setCourseLeipzig(courseLeipzig);
+
+        List<ModulesConnection> modulesConnections = modulesConnectionService.createModulesConnectionsWithDuplicate(applicationDTO.getModulesConnections());
+        application.setModulesConnections(modulesConnections);
+
+        application = applicationRepository.save(application);
+        return application.getId();
+    }
 
     @Transactional
     public String updateApplication(String id, ApplicationUpdateDTO applicationDTO, String userRole) {
@@ -72,62 +67,11 @@ public class ApplicationService {
         return id;
     }
 
-    @Transactional
-    public String updateStudentApplication(String id, ApplicationUpdateDTO applicationDTO) {
-        Application application = getApplicationById(id);
-        OriginalApplication originalApplication = getOriginalApplication(id);
 
-        if(applicationDTO.getModulesConnections() != null) {
-            List<ModulesConnectionUpdateDTO> DTOs = applicationDTO.getModulesConnections();
-            int size = DTOs.size();
-            for (int i = 0; i < size; i++) {
-                ModulesConnectionUpdateDTO dtoCon = DTOs.get(i);
-                Long modConId = modulesConnectionService.getModulesConnectionById(dtoCon.getId()).getMatchingId();
-                ModulesConnectionUpdateDTO modConUpDTO = duplicateModuleConnectionUpdateDTO(modConId, dtoCon);
-                DTOs.add(modConUpDTO);
-            }
-            modulesConnectionService.updateModulesConnection(DTOs, "standard");
-        }
-        application.setFullStatus(STUDIENBÜRO);
-        originalApplication.setFullStatus(IN_BEARBEITUNG);
-        applicationRepository.save(application);
-        originalApplicationRepository.save(originalApplication);
-        return id;
+    public String updateApplicationAfterFormalRejection(String id, ApplicationCreateDTO applicationCreateDTO) {
+        return "nicht fertig dikka";
     }
 
-    private ModulesConnectionUpdateDTO duplicateModuleConnectionUpdateDTO(Long id, ModulesConnectionUpdateDTO mcDto) {
-        ModulesConnectionUpdateDTO modConUpDTO = new ModulesConnectionUpdateDTO();
-        modConUpDTO.setId(id);
-        modConUpDTO.setFormalRejection(mcDto.getFormalRejection());
-        modConUpDTO.setFormalRejectionComment(mcDto.getFormalRejectionComment());
-        modConUpDTO.setCommentStudyOffice(mcDto.getCommentStudyOffice());
-        modConUpDTO.setDecisionSuggestion(mcDto.getDecisionSuggestion());
-        modConUpDTO.setCommentDecision(mcDto.getCommentDecision());
-        modConUpDTO.setDecisionFinal(mcDto.getDecisionFinal());
-        modConUpDTO.setCommentApplicant(mcDto.getCommentApplicant());
-        modConUpDTO.setModulesLeipzig(mcDto.getModulesLeipzig());
-
-        List<ExternalModuleUpdateDTO> externalModules = new ArrayList<>();
-        List<ExternalModuleUpdateDTO> externalModuleUpdateDTO = mcDto.getExternalModules();
-
-        for (ExternalModuleUpdateDTO extMod : externalModuleUpdateDTO) {
-            ExternalModuleUpdateDTO updateDTO = new ExternalModuleUpdateDTO();
-            updateDTO.setName(extMod.getName());
-            updateDTO.setDescription(extMod.getDescription());
-            updateDTO.setPoints(extMod.getPoints());
-            updateDTO.setPointSystem(extMod.getPointSystem());
-            updateDTO.setUniversity(extMod.getUniversity());
-
-            Optional<ExternalModule> optional = externalModuleRepository.findById(extMod.getId());
-            if (!optional.isPresent()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "ExternalModule with id: " + extMod.getId() + " not found");
-            Long secondId = optional.get().getMatchingId();
-            updateDTO.setId(secondId);
-            externalModules.add(updateDTO);
-        }
-
-        modConUpDTO.setExternalModules(externalModules);
-        return modConUpDTO;
-    }
 
     public EnumStatusChange updateApplicationStatusAllowed(String id) {
         Application application = getApplicationById(id);
@@ -144,6 +88,7 @@ public class ApplicationService {
         // base case
         return NOT_ALLOWED;
     }
+
     // FUNCTION TO UPDADTE APPLICATION STATUS ON UPDATE
     public EnumApplicationStatus updateApplicationStatus(String id) {
         Application application = getApplicationById(id);
@@ -163,6 +108,7 @@ public class ApplicationService {
         return application.getFullStatus();
     }
 
+    // helper methos to update applicaiton status
     boolean allDecisionSuggestionUnedited(Application application) {
         boolean allDecisionSuggestionUnedited = true;
         for(ModulesConnection m : application.getModulesConnections()) {
@@ -192,48 +138,25 @@ public class ApplicationService {
         return containsFormalRejection;
     }
 
-    @Transactional
-    public String createApplication(ApplicationCreateDTO applicationDTO) {
-        String id = generateValidApplicationId();
-        Application application = new Application(id);
-        OriginalApplication originalApplication = new OriginalApplication(id);
-
-        CourseLeipzig courseLeipzig = courseLeipzigService.getCourseLeipzigByName(applicationDTO.getCourseLeipzig());
-        application.setCourseLeipzig(courseLeipzig);
-        originalApplication.setCourseLeipzig(courseLeipzig);
-
-
-        Map<String, List<ModulesConnection>> map = modulesConnectionService.createModulesConnections(applicationDTO.getModulesConnections());
-
-        application.addModulesConnections(map.get("one"));
-        originalApplication.setModulesConnections(map.get("two"));
-
-        application = applicationRepository.save(application);
-        originalApplication = originalApplicationRepository.save(originalApplication);
-        return application.getId();
-    }
-
+    // helper method for create application
     private String generateValidApplicationId() {
         String id;
         do {
-            id = generateApplicationId();
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < 6; i++) sb.append((int) (Math.random() * 10)); // generates number from 000000 to 999999
+            id = sb.toString();
         }while(applicationExists(id));
 
         return id;
     }
 
-    private String generateApplicationId() {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < 6; i++) {
-            sb.append((int) (Math.random() * 10));
-        }
-        return sb.toString();
-    }
-
+    // Simple Getters for Application
+    // is used internally and for login requests
     public List<Application> getAllApplciations(){
         return applicationRepository.findAll();
     }
 
+    // is used internally and for login requests
     public Application getApplicationById(String id) {
         Optional<Application> applicationOptional = applicationRepository.findById(id);
         if(applicationOptional.isPresent()) {
@@ -242,98 +165,39 @@ public class ApplicationService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Application with id: " + id + " not Found");
         }
     }
+    // is used only for student request
+    public Application getApplicationStudentById(String id) {
+        Application application = getApplicationById(id);
 
+        List<ModulesConnection> editModulesConnection = application.getModulesConnections();
+
+        // return edited application, without original application TODO: delte original application when status on abgeschlossen
+        if(application.getFullStatus() == ABGESCHLOSSEN) {
+            List<ModulesConnection> adjModulesConnections = modulesConnectionService.removeOriginalModulesConnections(editModulesConnection);
+            application.setModulesConnections(adjModulesConnections);
+            return application;
+        }
+
+        // return orignal application with rejection info
+        if(application.getFullStatus() == FORMFEHLER) {
+            List<ModulesConnection> modulesConnectionsOriginalWithFormalRejectionData = modulesConnectionService.getOriginalModulesConnectionsWithFormalRejectionData(editModulesConnection);
+            application.setModulesConnections(modulesConnectionsOriginalWithFormalRejectionData);
+            return application;
+        }
+
+        // default case
+
+        // set for student visible status
+        if(application.getFullStatus() == STUDIENBÜRO || application.getFullStatus() == PRÜFUNGSAUSSCHUSS)
+            application.setFullStatus(IN_BEARBEITUNG);
+
+        // replace edited modules connection with original modules connections
+        List<ModulesConnection> modulesConnectionsOriginal = modulesConnectionService.getOriginalModulesConnections(editModulesConnection);
+        application.setModulesConnections(modulesConnectionsOriginal);
+
+        return application;
+    }
     public boolean applicationExists(String id) {
         return applicationRepository.existsById(id);
-    }
-
-    public List<OriginalApplication> getAllOriginalApplications() {
-        return originalApplicationRepository.findAll();
-    }
-
-    public OriginalApplication getOriginalApplication(String id) {
-        Optional<OriginalApplication> originalApplicationOptional = originalApplicationRepository.findById(id);
-        if(!originalApplicationOptional.isPresent()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Application with id: " + id + " not found");
-        return originalApplicationOptional.get();
-    }
-
-    public StudentApplicationDTO getStudentApplicationById(String id) {
-        StudentApplicationDTO studentApplicationDTO = new StudentApplicationDTO();
-
-        Application application = getApplicationById(id);
-        OriginalApplication originalApplication = getOriginalApplication(id);
-
-        switch (application.getFullStatus()) {
-            case FORMFEHLER:
-                //return original mit ff + ff der module
-                originalApplication.setFullStatus(FORMFEHLER);
-                originalApplication.setLastEditedDate(application.getLastEditedDate());
-                originalApplication = originalApplicationRepository.save(originalApplication);
-
-                studentApplicationDTO = boilderPlateOriginal(originalApplication, studentApplicationDTO);
-
-                studentApplicationDTO.setModulesConnections(getStudentModulesConnections(application, originalApplication));
-                break;
-            case ABGESCHLOSSEN:
-                //retun application
-
-                //originalApplicationRepository.delete(originalApplication); //TODO should original application be deleted on "ABGESCHLOSSEN"
-                //or this
-                originalApplication.setFullStatus(ABGESCHLOSSEN);
-                originalApplication.setLastEditedDate(application.getLastEditedDate());
-                originalApplication.setDecisionDate(application.getDecisionDate());
-                originalApplication = originalApplicationRepository.save(originalApplication);
-
-                studentApplicationDTO = boilderPlateApplication(application, studentApplicationDTO);
-
-                studentApplicationDTO.setModulesConnections(application.getModulesConnections());
-                break;
-            default:
-                //return original
-                studentApplicationDTO = boilderPlateOriginal(originalApplication, studentApplicationDTO);
-
-                studentApplicationDTO.setModulesConnections(originalApplication.getModulesConnections());
-                break;
-        }
-
-        return studentApplicationDTO;
-    }
-
-    private StudentApplicationDTO boilderPlateApplication(Application application, StudentApplicationDTO studentApplicationDTO) {
-        studentApplicationDTO.setId(application.getId());
-        studentApplicationDTO.setFullStatus(application.getFullStatus());
-        studentApplicationDTO.setCreationDate(application.getCreationDate());
-        studentApplicationDTO.setLastEditedDate(application.getLastEditedDate());
-        studentApplicationDTO.setDecisionDate(application.getDecisionDate()); 
-        studentApplicationDTO.setCourseLeipzig(application.getCourseLeipzig());
-        return studentApplicationDTO;
-    }
-
-    private StudentApplicationDTO boilderPlateOriginal(OriginalApplication originalApplication, StudentApplicationDTO studentApplicationDTO) {
-        studentApplicationDTO.setId(originalApplication.getId());
-        studentApplicationDTO.setFullStatus(originalApplication.getFullStatus());
-        studentApplicationDTO.setCreationDate(originalApplication.getCreationDate());
-        studentApplicationDTO.setLastEditedDate(originalApplication.getLastEditedDate());
-        studentApplicationDTO.setDecisionDate(originalApplication.getDecisionDate()); 
-        studentApplicationDTO.setCourseLeipzig(originalApplication.getOriginalCourseLeipzig());
-        return studentApplicationDTO;
-    }
-
-
-    private List<ModulesConnection> getStudentModulesConnections(Application application, OriginalApplication originalApplication) {
-        List<ModulesConnection> formfehlerModulesConnections = new ArrayList<>();
-        for (ModulesConnection modulesConnection : application.getModulesConnections()) {
-            Optional<ModulesConnection> optional = modulesConnectionRepository.findById(modulesConnection.getMatchingId());
-            if (!optional.isPresent()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No ModuleConnection with id: " + modulesConnection.getMatchingId() + " not found");
-            ModulesConnection modCon = optional.get();
-
-            if (modulesConnection.getFormalRejection()) { 
-                modCon.setFormalRejection(true);
-                modCon.setFormalRejectionComment(modulesConnection.getFormalRejectionComment());
-            } 
-
-            formfehlerModulesConnections.add(modCon);
-        }
-        return formfehlerModulesConnections;
     }
 }

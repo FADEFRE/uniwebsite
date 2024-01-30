@@ -14,10 +14,8 @@ import com.fasterxml.jackson.annotation.JsonView;
 import swtp12.modulecrediting.dto.ApplicationCreateDTO;
 import swtp12.modulecrediting.dto.ApplicationUpdateDTO;
 import swtp12.modulecrediting.dto.EnumStatusChange;
-import swtp12.modulecrediting.dto.StudentApplicationDTO;
 import swtp12.modulecrediting.model.Application;
 import swtp12.modulecrediting.model.EnumApplicationStatus;
-import swtp12.modulecrediting.model.OriginalApplication;
 import swtp12.modulecrediting.model.Views;
 import swtp12.modulecrediting.service.ApplicationService;
 
@@ -31,36 +29,23 @@ public class ApplicationController {
 
     //GET-Requests
     @GetMapping
-    @JsonView(Views.ApplicationOverview.class)
+    @JsonView(Views.ApplicationLoginOverview.class)
     @PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR')")
     public ResponseEntity<List<Application>> getApplicationsOverview() {
         return ResponseEntity.ok(applicationService.getAllApplciations());
     }
 
-    @GetMapping("/original")
-    @JsonView(Views.ApplicationOverview.class)
-    public ResponseEntity<List<OriginalApplication>> getAllOriginalApplicatios() {
-        return ResponseEntity.ok(applicationService.getAllOriginalApplications());
-    }
-
     @GetMapping("/{id}")
     @JsonView(Views.ApplicationLogin.class)
     @PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR')")
-    public ResponseEntity<Application>  getApplicationById(@PathVariable String id) {
+    public ResponseEntity<Application>  getApplicationLoginById(@PathVariable String id) {
         return ResponseEntity.ok(applicationService.getApplicationById(id));
-    }
-
-    @GetMapping("/{id}/original")
-    @JsonView(Views.ApplicationLogin.class)
-    @PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR')")
-    public ResponseEntity<OriginalApplication>  getOriginalApplicationById(@PathVariable String id) {
-        return ResponseEntity.ok(applicationService.getOriginalApplication(id));
     }
 
     @GetMapping("/student/{id}")
     @JsonView(Views.ApplicationStudent.class)
-    public ResponseEntity<StudentApplicationDTO>  getApplicationStudentById(@PathVariable String id) {
-        return ResponseEntity.ok(applicationService.getStudentApplicationById(id));
+    public ResponseEntity<Application>  getApplicationStudentById(@PathVariable String id) {
+        return ResponseEntity.ok(applicationService.getApplicationStudentById(id));
     }
 
     @GetMapping("/{id}/exists")
@@ -89,12 +74,13 @@ public class ApplicationController {
         return ResponseEntity.ok(applicationService.updateApplicationStatus(id));
     }
 
-    @PutMapping("/standard/{id}")
-    public ResponseEntity<String> updateApplicationStandard(@PathVariable String id,
-                                                    @Valid @ModelAttribute ApplicationUpdateDTO applicationUpdateDTO,
+    //TODO: change route in frontend
+    @PutMapping("/student/{id}")
+    public ResponseEntity<String> updateApplicationAfterFormalRejection(@PathVariable String id,
+                                                    @Valid @ModelAttribute ApplicationCreateDTO applicationCreateDTO,
                                                     BindingResult result) {
         if (result.hasErrors()) return ResponseEntity.badRequest().body("Validation failed: " + result.getAllErrors());
-        return ResponseEntity.ok(applicationService.updateStudentApplication(id, applicationUpdateDTO));
+        return ResponseEntity.ok(applicationService.updateApplicationAfterFormalRejection(id, applicationCreateDTO));
     }
 
     @PutMapping("/study-office/{id}")
@@ -114,5 +100,4 @@ public class ApplicationController {
         if (result.hasErrors()) return ResponseEntity.badRequest().body("Validation failed: " + result.getAllErrors());
         return ResponseEntity.ok(applicationService.updateApplication(id, applicationUpdateDTO, "chairman"));
     }
-
 }

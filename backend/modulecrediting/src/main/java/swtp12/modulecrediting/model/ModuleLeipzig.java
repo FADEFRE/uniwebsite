@@ -26,7 +26,9 @@ public class ModuleLeipzig {
         Views.CoursesWithModules.class, 
         Views.ModulesWithoutCourse.class, 
         Views.ApplicationStudent.class,
-        Views.RelatedModulesConnection.class})
+        Views.RelatedModulesConnection.class,
+        Views.ApplicationLogin.class
+    })
     @Column(unique = true, nullable = false)
     private String name;
     @JsonView({Views.CoursesWithModules.class, Views.ModulesWithoutCourse.class})

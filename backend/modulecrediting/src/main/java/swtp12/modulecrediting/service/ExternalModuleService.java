@@ -24,45 +24,29 @@ public class ExternalModuleService {
     @Autowired
     ExternalModuleRepository externalModuleRepository;
 
-    public Map<String, List<ExternalModule>> createExternalModules(List<ExternalModuleCreateDTO> externalModuleCreateDTOs) {
+    public List<ExternalModule> createExternalModules(List<ExternalModuleCreateDTO> externalModuleCreateDTOs) {
         if(externalModuleCreateDTOs == null || externalModuleCreateDTOs.size() == 0)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, " No Module Applications provided in the request");
-        List<ExternalModule> externalModuleListONE = new ArrayList<>();
-        List<ExternalModule> externalModuleListTWO = new ArrayList<>();
-        Map<String, List<ExternalModule>> map = new HashMap<>();
+
+        List<ExternalModule> externalModules = new ArrayList<>();
 
         for(ExternalModuleCreateDTO ma : externalModuleCreateDTOs) {
-            ExternalModule externalModuleONE = new ExternalModule();
-            ExternalModule externalModuleTWO = new ExternalModule();
-            externalModuleONE.setName(ma.getName());
-            externalModuleONE.setUniversity(ma.getUniversity());
-            externalModuleONE.setPoints(ma.getPoints());
-            externalModuleONE.setPointSystem(ma.getPointSystem());
+            ExternalModule externalModule = new ExternalModule();
 
-            externalModuleTWO.setName(ma.getName());
-            externalModuleTWO.setUniversity(ma.getUniversity());
-            externalModuleTWO.setPoints(ma.getPoints());
-            externalModuleTWO.setPointSystem(ma.getPointSystem());
+            externalModule.setName(ma.getName());
+            externalModule.setUniversity(ma.getUniversity());
+            externalModule.setPoints(ma.getPoints());
+            externalModule.setPointSystem(ma.getPointSystem());
 
-            PdfDocument pdfDocument1 = pdfDocumentService.createPdfDocument(ma.getDescription());
-            PdfDocument pdfDocument2 = pdfDocumentService.createPdfDocument(ma.getDescription());
-            externalModuleONE.setPdfDocument(pdfDocument1);
-            externalModuleTWO.setPdfDocument(pdfDocument2);
+            PdfDocument pdfDocument = pdfDocumentService.createPdfDocument(ma.getDescription());
+            externalModule.setPdfDocument(pdfDocument);
 
-            externalModuleRepository.save(externalModuleONE);
-            externalModuleRepository.save(externalModuleTWO);
-
-            externalModuleONE.setMatchingId(externalModuleTWO.getId());
-            externalModuleTWO.setMatchingId(externalModuleONE.getId());
-
-            externalModuleListONE.add(externalModuleONE);
-            externalModuleListTWO.add(externalModuleTWO);
+            externalModules.add(externalModule);
         }
 
-        map.put("one", externalModuleListONE);
-        map.put("two", externalModuleListTWO);
-        return map;
+        return externalModules;
     }
+
 
     public List<Long> updateExternalModules(List<ExternalModuleUpdateDTO> externalModuleUpdateDTOs, String userRole) {
         List<Long> listofIds = new ArrayList<>();
@@ -90,6 +74,8 @@ public class ExternalModuleService {
         }
         return listofIds;
     }
+
+
 
     public ExternalModule getExternalModuleById(Long id) {
         Optional<ExternalModule> optionalExternalModule = externalModuleRepository.findById(id);
