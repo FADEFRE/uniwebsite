@@ -25,6 +25,9 @@ async function login (login_username, login_password) {
             if (userResponse.data.userId !== null) {
                 const loginUser = userResponse.data;
                 authUserStore.setCurrentUser(loginUser);
+                await refreshTokenInternal();
+                const intervalName = setInterval(async () => { await refreshTokenInternal(); } , intervalMilliSeconds);
+                authUserStore.setIntervalName(intervalName);
             }
             const id = authUserStore.getCurrentUserId;
             console.log("test 4 " + id)

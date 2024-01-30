@@ -58,9 +58,6 @@ export async function getAuthenticatedUser() {
             if (response.status === 200 && response.data.userId !== null) {
                 const currentUser = response.data;
                 authUserStore.setCurrentUser(currentUser);
-                await refreshTokenInternal();
-                const intervalName = setInterval(async () => { await refreshTokenInternal(); } , intervalMilliSeconds);
-                authUserStore.setIntervalName(intervalName);
             } 
         }
         else { performLogout(); }
