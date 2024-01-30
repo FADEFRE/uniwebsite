@@ -31,9 +31,9 @@ public class GeneratedPdfService {
         templateResolver.setPrefix("templates/");
         TemplateEngine templateEngine = new TemplateEngine();
         templateEngine.setTemplateResolver(templateResolver);
-        
-        
-        StudentApplicationDTO application = getDataForPDF(id);
+
+
+        Application application = applicationService.getApplicationStudentById(id);
 
         Context context = new Context();
         context.setVariable("id", id);
@@ -46,7 +46,7 @@ public class GeneratedPdfService {
 
     public byte[] generatePdfFromHtml(String id) throws IOException {
         Application application = applicationService.getApplicationStudentById(id);
-        String html = parseThymeleafTemplate();
+        String html = parseThymeleafTemplate(id);
 
 
         OutputStream outputStream = new ByteArrayOutputStream();
