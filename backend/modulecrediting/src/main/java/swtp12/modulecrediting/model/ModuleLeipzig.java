@@ -48,5 +48,6 @@ public class ModuleLeipzig {
     public ModuleLeipzig(String name, String code) {
         this.name = name;
         this.code = code;
+        this.isActive = true;
     }
 }
