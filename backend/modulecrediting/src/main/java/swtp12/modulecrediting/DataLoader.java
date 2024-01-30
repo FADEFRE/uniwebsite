@@ -204,7 +204,7 @@ public class DataLoader implements CommandLineRunner {
         Random rand = new Random();
 
         int open = applicationSettingsNode.get("new").asInt();
-        int studyOffice = applicationSettingsNode.get("study-office").asInt();
+        int studyOffice = 1 + applicationSettingsNode.get("study-office").asInt();
         int pav = applicationSettingsNode.get("pav").asInt();
         int closed = applicationSettingsNode.get("closed").asInt();
         int total = open + studyOffice + pav + closed;
@@ -396,9 +396,9 @@ public class DataLoader implements CommandLineRunner {
     }
 
     private List<ModulesConnectionUpdateDTO> updateModulesConnectionDTO(EnumApplicationStatus status, Application application) {
-        
         List<ModulesConnectionUpdateDTO> mcuDTO = new ArrayList<>();
         boolean studyBool = true;
+        boolean formfehler = true;
         boolean pavBool = true;
         for (ModulesConnection modCon : application.getModulesConnections()) { 
             //Modul listen
@@ -433,7 +433,12 @@ public class DataLoader implements CommandLineRunner {
             }
             //comments and decisions
             if(status == STUDIENBÜRO) {
-                if (studyBool) { 
+                if (formfehler) {
+                    modulesConnectionDTO.setFormalRejection(true);
+                    modulesConnectionDTO.setFormalRejectionComment("Dickes F an Huy");
+                    formfehler = false;
+                }
+                else if (studyBool) { 
                     modulesConnectionDTO.setDecisionSuggestion(unedited); 
                     studyBool = false;
                 }
