@@ -2,7 +2,7 @@ import router from "@/router";
 import { performLogout } from "@/scripts/utils"
 
 async function logout () {
-  performLogout();
+  await performLogout();
   const routeData = router.resolve({name: 'login'})
   window.open(routeData.href, '_top')
 }
