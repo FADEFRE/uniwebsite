@@ -6,7 +6,7 @@ import AdministrativePanel from "@/components/AdministrativePanel.vue";
 import ButtonLink from "@/components/ButtonLink.vue";
 import {
   getApplicationById, getModulesByCourse,
-  getUpdateStatusAllowed, updateStatus, putApplicationStudyOffice
+  getUpdateStatusAllowed, updateStatus, putApplicationStudyOffice, putApplicationChairman
 } from "@/scripts/axios-requests";
 import { parseRequestDate } from "@/scripts/date-utils";
 import ApplicationConnectionLinks from "@/components/ApplicationConnectionLinks.vue";
@@ -90,7 +90,10 @@ const discardChanges = () => {
 const saveChanges = () => {
   if (type === 'study-office') {
     putApplicationStudyOffice(id, applicationData.value['courseLeipzig']['name'], moduleConnections.value)
-      .then(_ => location.reload())
+        .then(_ => location.reload())
+  } else if (type === 'chairman') {
+    putApplicationChairman(id, applicationData.value['courseLeipzig']['name'], moduleConnections.value)
+        .then(_ => location.reload())
   }
 }
 

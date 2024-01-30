@@ -351,6 +351,44 @@ function putApplicationStudyOffice(
     .catch((_) => {});
 }
 
+function putApplicationChairman(
+    applicationId,
+    courseLeipzig,
+    connectionObjects
+) {
+    console.debug(
+        "%c" +
+        "putApplicationStudyOffice (applicationId: " +
+        applicationId +
+        ", courseLeipzig: " +
+        courseLeipzig +
+        ", connectionsObjects: " +
+        connectionObjects +
+        ")",
+        "color:yellow"
+    );
+
+    const formData = createBasicFormData(courseLeipzig, connectionObjects);
+
+    connectionObjects.forEach((connection, connectionIndex) => {
+        if (connection.studyOfficeDecisionData["decision"]) {
+            formData.append(
+                `modulesConnections[${connectionIndex}].decisionFinal`,
+                connection.chairmanDecisionData.decision
+            );
+            formData.append(
+                `modulesConnections[${connectionIndex}].commentDecision`,
+                connection.chairmanDecisionData.comment
+            );
+        }
+    });
+
+    return httpResource
+        .put("/api/applications/chairman/" + applicationId, formData)
+        .then((response) => response.data)
+        .catch((_) => {});
+}
+
 /*
 GET-Request to /applications/{id}/update-status-allowed endpoint
 returns true/false if updating application status is allowed
@@ -454,6 +492,7 @@ export {
   postApplication,
   putApplicationStandard,
   putApplicationStudyOffice,
+  putApplicationChairman,
   getUpdateStatusAllowed,
   updateStatus,
   postCourseLeipzig,
