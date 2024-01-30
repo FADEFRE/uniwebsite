@@ -46,7 +46,7 @@ public class CourseLeipzigServiceTest {
 
     @Test
     void shouldGetCourseLeipzigByName() {
-        Optional<CourseLeipzig> coursesLeipzig = Optional.of(new CourseLeipzig("test course", true));
+        Optional<CourseLeipzig> coursesLeipzig = Optional.of(new CourseLeipzig("test course"));
 
 
         Mockito.when(courseLeipzigRepository.findByName("test course")).thenReturn(coursesLeipzig);
@@ -76,13 +76,13 @@ public class CourseLeipzigServiceTest {
 
         courseLeipzigDTO.setCourseName(testName);
 
-        CourseLeipzig courseLeipzig = new CourseLeipzig(testName, true);
+        CourseLeipzig courseLeipzig = new CourseLeipzig(testName);
         Mockito.when(courseLeipzigRepository.save(any())).thenReturn(courseLeipzig);
         String expectedCourseLeipzigName = courseLeipzigService.createCourseLeipzig(courseLeipzigDTO);
         assertEquals(expectedCourseLeipzigName, testName);
         
         
-        Optional<CourseLeipzig> optionalCourseLeipzig = Optional.of(new CourseLeipzig(testName, true));
+        Optional<CourseLeipzig> optionalCourseLeipzig = Optional.of(new CourseLeipzig(testName));
         Mockito.when(courseLeipzigRepository.findByName(testName)).thenReturn(optionalCourseLeipzig);
         ResponseStatusException e3 = assertThrows(ResponseStatusException.class, () -> { courseLeipzigService.createCourseLeipzig(courseLeipzigDTO); });
         assertTrue(e3.getStatusCode().equals(HttpStatus.BAD_REQUEST));

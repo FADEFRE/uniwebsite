@@ -162,7 +162,7 @@ public class DataLoader implements CommandLineRunner {
             CourseLeipzig courseLeipzig = courseLeipzigRepo.findByName(courseName)
                     .orElseGet(() -> {
                         System.out.println("Creating new course: " + courseName);
-                        return courseLeipzigRepo.save(new CourseLeipzig(courseName, true));
+                        return courseLeipzigRepo.save(new CourseLeipzig(courseName));
                     });
 
             JsonNode modules = grabModulesFromJsonNode(courseNode);
@@ -176,7 +176,7 @@ public class DataLoader implements CommandLineRunner {
                             return modulLeipzigRepo.save(new ModuleLeipzig(moduleName, moduleCode, true));
                         });
 
-                courseLeipzig.addCourseToModulesLeipzig(moduleLeipzig);
+                courseLeipzig.addModulesLeipzig(moduleLeipzig);
                 courseLeipzigRepo.save(courseLeipzig);
             }
         }

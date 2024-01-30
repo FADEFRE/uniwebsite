@@ -46,7 +46,7 @@ public class CourseLeipzigService {
         Optional<CourseLeipzig> cL = courseLeipzigRepository.findByName(courseName);
         if (cL.isPresent()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Course with this name already exists: " + courseName);
         //TODO: reactivate
-        CourseLeipzig courseLeipzig = new CourseLeipzig(courseName, true);
+        CourseLeipzig courseLeipzig = new CourseLeipzig(courseName);
         courseLeipzigRepository.save(courseLeipzig);
         return courseName;
     }
