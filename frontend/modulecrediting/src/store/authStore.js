@@ -1,30 +1,29 @@
 import { defineStore } from 'pinia';
 
-
-export const useAuthStore = defineStore('authUser',{
+export const useUserStore = defineStore('user', {
     state: () => ({
-        isAuthenticated: false,
-        currentUser: {
-            userId: "-1",
-            username: ""
-        },
-        intervalName: "" 
+        currentUser: { userId: "-1" },
+        intervalName: "",
+        nav: "user",
+        locale: 'DE'
     }),
-
-    getters: {
-        getIsAuthenticated() { return this.isAuthenticated },
-        getCurrentUserId() { return this.currentUser.userId }
+    
+    persist: {
+        storage: sessionStorage,
     },
 
+    getters: {
+        getCurrentUserId() { return this.currentUser.userId },
+        getCurrentRoleNav() { return this.nav },
+    },
 
     actions: {
-        setIsAuthenticated(value) { this.isAuthenticated = value; },
-        setIntervalName(intervalName) {this.intervalName = intervalName; },
-        setCurrentUser(currentUser) { this.currentUser = currentUser},
-        //async refresh() {},
+        setIntervalName(intervalName) {this.intervalName = intervalName },
+        setCurrentUser(currentUser) { this.currentUser = currentUser },
+        setCurrentRoleNav(currentRole) { this.nav = currentRole },
         async logout() { 
-            this.userId = "-1";
-            this.username = "";
-            this.isAuthenticated = false }
-    }
+            this.nav = "user"
+            this.currentUser.userId = "-1" 
+        },
+    },
 })

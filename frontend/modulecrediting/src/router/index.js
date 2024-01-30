@@ -1,8 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
+import { useUserStore } from "@/store/authStore";
 import { getAuthenticatedUser } from "@/scripts/utils";
-import { useAuthStore } from "@/store/authStore";
-import { useNavTypeStore } from "@/store/navTypeStore";
-import { performLogout } from "@/scripts/utils";
 import httpResource from "@/scripts/httpResource";
 import HomepageView from "@/views/HomepageView.vue";
 
@@ -91,25 +89,24 @@ const router = createRouter({
 });
 
 function changeRole(authRole) {
-  const navStore = useNavTypeStore();
+  const userStore = useUserStore();
   if (authRole === "ROLE_STUDY") {
-    navStore.setCurrentRoleNav("study");
+    userStore.setCurrentRoleNav("study");
   } else if (authRole === "ROLE_CHAIR") {
-    navStore.setCurrentRoleNav("chair");
+    userStore.setCurrentRoleNav("chair");
   } else if (authRole === "ROLE_ADMIN") {
-    navStore.setCurrentRoleNav("admin");
+    userStore.setCurrentRoleNav("admin");
   } else {
-    navStore.setCurrentRoleNav("user");
+    userStore.setCurrentRoleNav("user");
   }
   return true;
 }
 
 router.beforeEach(async (to) => {
-  await getAuthenticatedUser();
-  const authUserStore = useAuthStore();
-  const navStore = useNavTypeStore();
-  const id = authUserStore.getCurrentUserId;
-  console.log("getRole");
+  getAuthenticatedUser()
+  const userStore = useUserStore();
+  const id = userStore.getCurrentUserId;
+  console.log("getRole Router");
   const response = await httpResource.get(`/api/user/${id}/role`);
   switch (to.meta.authType) {
     case "standard":
@@ -118,7 +115,7 @@ router.beforeEach(async (to) => {
 
     case "study-office":
       if (response.data === "ROLE_STUDY") {
-        navStore.setCurrentRoleNav("study");
+        userStore.setCurrentRoleNav("study");
         return true;
       }
       return { name: "notFound" }; //TODO route to correct error page "permission not allowed"
@@ -126,7 +123,7 @@ router.beforeEach(async (to) => {
 
     case "chairman":
       if (response.data === "ROLE_CHAIR") {
-        navStore.setCurrentRoleNav("chair");
+        userStore.setCurrentRoleNav("chair");
         return true;
       }
       return { name: "notFound" }; //TODO route to correct error page "permission not allowed"
@@ -134,7 +131,7 @@ router.beforeEach(async (to) => {
 
     case "admin":
       if (response.data === "ROLE_ADMIN") {
-        navStore.setCurrentRoleNav("admin");
+        userStore.setCurrentRoleNav("admin");
         return true;
       }
       return { name: "notFound" }; //TODO route to correct error page "permission not allowed"

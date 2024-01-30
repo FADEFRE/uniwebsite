@@ -46,7 +46,6 @@ public class User implements Serializable{
 
     public UserSummary toUserSummary() {
         UserSummary userSummary = new UserSummary();
-        userSummary.setUsername(this.username);
         userSummary.setUserId(this.userId);
         return userSummary;
     }

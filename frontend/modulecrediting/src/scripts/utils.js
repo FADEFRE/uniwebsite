@@ -1,6 +1,5 @@
 import httpResource from "./httpResource";
-import { useAuthStore } from '@/store/authStore';
-import { useNavTypeStore } from "@/store/navTypeStore";
+import { useUserStore } from "@/store/authStore";
 
 export function parseApierror(error) {
     console.debug("parseapierror", error);
@@ -29,12 +28,10 @@ export async function performLogout() {
     console.debug("performLogout()");
     const response = await httpResource.post("/api/auth/logout");
     console.log(response)
-    const authUserStore = useAuthStore();
-    const navTypeStore = useNavTypeStore();
-    navTypeStore.logout();
+    const authUserStore = useUserStore();
+    authUserStore.logout();
     const intervalName = authUserStore.getIntervalName;
     if (intervalName) clearInterval(intervalName);
-    authUserStore.logout();
 }
 
 export async function refreshTokenInternal() {
@@ -54,20 +51,24 @@ export async function refreshToken() {
 
 export async function getAuthenticatedUser() {
     console.debug("getAuthenticatedUser()");
+    const authUserStore = useUserStore();
     try {
-        const response = await httpResource.get("/api/user/me");
-        if (response.data.username !== null) {
-            const currentUser = response.data;
-            const authUserStore = useAuthStore();
-            authUserStore.setCurrentUser(currentUser);
-            authUserStore.setIsAuthenticated(true);
-            await refreshTokenInternal();
-            const intervalName = setInterval(async () => { await refreshTokenInternal(); } , intervalMilliSeconds);
-            authUserStore.setIntervalName(intervalName);
-        } 
+        if (authUserStore.getCurrentUserId !== "-1" ) {
+            const response = await httpResource.get("/api/user/me");
+            if (response.status === 200 && response.data.userId !== null) {
+                const currentUser = response.data;
+                authUserStore.setCurrentUser(currentUser);
+                await refreshTokenInternal();
+                const intervalName = setInterval(async () => { await refreshTokenInternal(); } , intervalMilliSeconds);
+                authUserStore.setIntervalName(intervalName);
+            } 
+        }
         else { performLogout(); }
     } 
-    catch (error) { performLogout(); }
+    catch (error) { 
+        console.error(error)
+        performLogout(); 
+    }
 }
 
 export const intervalMilliSeconds = 1800000; // 30 minutes

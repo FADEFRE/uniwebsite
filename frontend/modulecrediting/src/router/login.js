@@ -1,8 +1,8 @@
 import router from "@/router";
 import httpResource from "@/scripts/httpResource";
-import { parseApierror, performLogout, getAuthenticatedUser} from "@/scripts/utils";
+import { parseApierror, performLogout, refreshTokenInternal, intervalMilliSeconds} from "@/scripts/utils";
 import { ref } from "vue";
-import { useAuthStore } from '@/store/authStore';
+import { useUserStore } from "@/store/authStore";
 
 
 const displayErrorMessage = ref();
@@ -11,21 +11,23 @@ const loginInProcess = ref();
 
 async function login (login_username, login_password) {
     loginInProcess.value = true;
-    let canNavigate = false;
     const loginRequest = {
         username: login_username,
         password: login_password
     };
+    const authUserStore = useUserStore();
     try {
         console.log(loginRequest)
         const response = await httpResource.post("/api/auth/login", loginRequest);
         console.log(response)
         if (response.status === 200) {
-            await getAuthenticatedUser();
-            canNavigate = true;
-
-            const authUserStore = useAuthStore();
+            const userResponse = await httpResource.get("/api/user/me");
+            if (userResponse.data.userId !== null) {
+                const loginUser = userResponse.data;
+                authUserStore.setCurrentUser(loginUser);
+            }
             const id = authUserStore.getCurrentUserId;
+            console.log("test 4 " + id)
             console.log("getRole");
             const response = await httpResource.get(`/api/user/${id}/role`)
             switch (response.data) {

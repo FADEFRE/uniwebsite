@@ -1,11 +1,11 @@
 <script setup>
 import { logout } from "@/router/logout";
-import { useNavTypeStore } from "../store/navTypeStore"
+import { useUserStore } from "@/store/authStore"
 import { computed } from "vue";
 
 const props = defineProps(['isMenuOpen'])
 
-const navStore = useNavTypeStore();
+const navStore = useUserStore();
 const isNavType = computed(() => {
   if (navStore.getCurrentRoleNav === "user") { return "standard" }
   else if (navStore.getCurrentRoleNav === "study" || navStore.getCurrentRoleNav === "chair" || navStore.getCurrentRoleNav === "admin") {
