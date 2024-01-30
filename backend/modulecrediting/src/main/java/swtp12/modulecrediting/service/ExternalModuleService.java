@@ -44,9 +44,10 @@ public class ExternalModuleService {
             externalModuleTWO.setPoints(ma.getPoints());
             externalModuleTWO.setPointSystem(ma.getPointSystem());
 
-            PdfDocument pdfDocument = pdfDocumentService.createPdfDocument(ma.getDescription());
-            externalModuleONE.setPdfDocument(pdfDocument);
-            externalModuleTWO.setPdfDocument(pdfDocument);
+            PdfDocument pdfDocument1 = pdfDocumentService.createPdfDocument(ma.getDescription());
+            PdfDocument pdfDocument2 = pdfDocumentService.createPdfDocument(ma.getDescription());
+            externalModuleONE.setPdfDocument(pdfDocument1);
+            externalModuleTWO.setPdfDocument(pdfDocument2);
 
             externalModuleRepository.save(externalModuleONE);
             externalModuleRepository.save(externalModuleTWO);
