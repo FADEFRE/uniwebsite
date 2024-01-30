@@ -24,7 +24,7 @@ public class GeneratedPdfService {
     private ApplicationService applicationService;
 
     //helper to get DTO
-    private Application getDataForPDF(String id) { // TODO: control which data should be sent back in pdf
+    private Application getDataForPDF(String id) {
         return applicationService.getApplicationStudentById(id);
     }
 

@@ -27,13 +27,6 @@ public class ApplicationController {
     @Autowired
     private ApplicationService applicationService;
 
-    // TODO: for testing purposes
-    @GetMapping("/{id}/test")
-    public ResponseEntity<Application> getApplicationByIdTest(@PathVariable String id) {
-        return ResponseEntity.ok(applicationService.getApplicationById(id));
-    }
-
-
     //GET-Requests
     @GetMapping
     @JsonView(Views.ApplicationLoginOverview.class)
@@ -44,11 +37,10 @@ public class ApplicationController {
 
     @GetMapping("/{id}")
     @JsonView(Views.ApplicationLogin.class)
-    //@PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR')") TODO: add auth
+    @PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR')")
     public ResponseEntity<Application>  getApplicationLoginById(@PathVariable String id) {
         return ResponseEntity.ok(applicationService.getApplicationById(id));
     }
-
 
     @GetMapping("/student/{id}")
     @JsonView(Views.ApplicationStudent.class)
@@ -82,7 +74,7 @@ public class ApplicationController {
         return ResponseEntity.ok(applicationService.updateApplicationStatus(id));
     }
 
-    //TODO: change route in frontend, add auth
+    //TODO: change route in frontend
     @PutMapping("/student/{id}")
     public ResponseEntity<String> updateApplicationAfterFormalRejection(@PathVariable String id,
                                                     @Valid @ModelAttribute ApplicationCreateDTO applicationCreateDTO,
