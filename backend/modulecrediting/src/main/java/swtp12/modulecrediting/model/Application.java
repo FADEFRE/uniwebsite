@@ -20,8 +20,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Application {@link Entity}. Includes custom {@link JsonView} classes:
- * <p> {@link Views ApplicationOverview}, {@link Views RelatedModulesConnection} 
+ * Application {@link Entity}. Includes custom {@link JsonView} classes
  * 
  * @see JsonView
  * @see Views
