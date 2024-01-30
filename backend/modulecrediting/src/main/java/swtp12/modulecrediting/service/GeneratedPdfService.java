@@ -45,11 +45,7 @@ public class GeneratedPdfService {
     }
 
     public byte[] generatePdfFromHtml(String id) throws IOException {
-        /*
-            Hey Jonas, wir haben Dinge umgebaut, deswegen habe ich dir hier das DTO schon rein geschrieben
-            und die function mit der ID erweitert. Alle Daten des Antrags die du im Pdf anzeigen willst
-            oder kannst, sind in diesem DTO, du kannst dir dann einfach die Felder über die Getter holen :)
-        */
+    
         StudentApplicationDTO applicationDTO = getDataForPDF(id); 
         String html = parseThymeleafTemplate();
 
