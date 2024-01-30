@@ -88,7 +88,7 @@ public class ApplicationService {
             }
             modulesConnectionService.updateModulesConnection(DTOs, "standard");
         }
-        application.setFullStatus(NEU);
+        application.setFullStatus(STUDIENBÜRO);
         originalApplication.setFullStatus(IN_BEARBEITUNG);
         applicationRepository.save(application);
         originalApplicationRepository.save(originalApplication);
