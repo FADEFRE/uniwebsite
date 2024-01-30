@@ -7,14 +7,28 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
 
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
-
+/**
+ * CourseLeipzig {@link Entity}. Includes custom {@link JsonView} classes
+ * 
+ * @see JsonView
+ * @see Views
+ * @see Views.ApplicationOverview
+ * @see Views.CoursesWithModules
+ * @see Views.RelatedModulesConnection
+ */
 @Data
 @NoArgsConstructor
 @Entity
@@ -24,13 +38,13 @@ public class CourseLeipzig {
     private Long id;
 
     @JsonView({
-        Views.coursesWithModules.class, 
+        Views.CoursesWithModules.class, 
         Views.ApplicationOverview.class,
         Views.RelatedModulesConnection.class})
     @NotBlank(message = "Name may not be blank")
     @Column(unique = true, nullable = false)
     private String name;
-    @JsonView({Views.coursesWithModules.class})
+    @JsonView({Views.CoursesWithModules.class})
     private Boolean isActive;
 
     //Relation CourseLeipzig <-> ModuleLeipzig
@@ -41,7 +55,7 @@ public class CourseLeipzig {
             inverseJoinColumns = @JoinColumn(name = "module_leipzig_id", referencedColumnName = "id")
     )
     @JsonManagedReference
-    @JsonView(Views.coursesWithModules.class)
+    @JsonView(Views.CoursesWithModules.class)
     private List<ModuleLeipzig> modulesLeipzigCourse = new ArrayList<>();
 
     //Relation CourseLeipzig <-> Application
@@ -55,20 +69,68 @@ public class CourseLeipzig {
     private List<OriginalApplication> originalApplications = new ArrayList<>();
 
 
-    public CourseLeipzig(String name, Boolean isActive) {
+    /**
+     * Constructor for {@link CourseLeipzig}.
+     * <p>Creates {@link CourseLeipzig} with given {@link String} as {@link #name}
+     * and sets {@link #isActive} to {@link Boolean true}.
+     * 
+     * @see CourseLeipzig
+     */
+    public CourseLeipzig(String name) {
         this.name = name;
-        this.isActive = isActive;
+        this.isActive = true;
     }
 
 
-    //Function to add a Module to this Course (adds the Course to the Module aswell)
-    public void addCourseToModulesLeipzig(ModuleLeipzig moduleLeipzig) {
+    /**
+     * Adds the given {@link ModuleLeipzig} to this {@link CourseLeipzig}.
+     * <p>Also adds this {@link CourseLeipzig} to the given {@link ModuleLeipzig}.
+     * 
+     * @see CourseLeipzig
+     * @see ModuleLeipzig
+     */
+    public void addModulesLeipzig(ModuleLeipzig moduleLeipzig) {
         this.modulesLeipzigCourse.add(moduleLeipzig);
         moduleLeipzig.getCoursesLeipzig().add(this);
     }
 
-    public void removeCourseToModulesLeipzig(ModuleLeipzig moduleLeipzig) {
+    /**
+     * Adds the given {@link List} of {@link ModuleLeipzig} to this {@link CourseLeipzig}.
+     * <p>Also adds this {@link CourseLeipzig} to from every {@link ModuleLeipzig} in the given {@link List}.
+     * 
+     * @see CourseLeipzig
+     * @see ModuleLeipzig
+     */
+    public void addModulesLeipzig(List<ModuleLeipzig> moduleLeipzigs) {
+        this.modulesLeipzigCourse.addAll(moduleLeipzigs);
+        for (ModuleLeipzig moduleLeipzig : moduleLeipzigs) {
+            moduleLeipzig.getCoursesLeipzig().add(this);
+        }
+    }
+
+    /**
+     * Removes the given {@link ModuleLeipzig} from this {@link CourseLeipzig}.
+     * <p>Also removes this {@link CourseLeipzig} from the given {@link ModuleLeipzig}.
+     * 
+     * @see CourseLeipzig
+     * @see ModuleLeipzig
+     */
+    public void removeModulesLeipzig(ModuleLeipzig moduleLeipzig) {
         this.modulesLeipzigCourse.remove(moduleLeipzig);
         moduleLeipzig.getCoursesLeipzig().remove(this);
+    }
+
+    /**
+     * Removes the given {@link List} of {@link ModuleLeipzig} from this {@link CourseLeipzig}.
+     * <p>Also removes this {@link CourseLeipzig} from from every {@link ModuleLeipzig} in the given {@link List}.
+     * 
+     * @see CourseLeipzig
+     * @see ModuleLeipzig
+     */
+    public void removeModulesLeipzig(List<ModuleLeipzig> moduleLeipzigs) {
+        this.modulesLeipzigCourse.removeAll(moduleLeipzigs);
+        for (ModuleLeipzig moduleLeipzig : moduleLeipzigs) {
+            moduleLeipzig.getCoursesLeipzig().remove(this);
+        }
     }
 }
