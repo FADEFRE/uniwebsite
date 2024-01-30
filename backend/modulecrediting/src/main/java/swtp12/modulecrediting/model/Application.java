@@ -20,7 +20,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Application. Includes custom {@link JsonView} classes:
+ * Application {@link Entity}. Includes custom {@link JsonView} classes:
  * <p> {@link Views ApplicationOverview}, {@link Views RelatedModulesConnection} 
  * 
  * @see JsonView
@@ -65,7 +65,6 @@ public class Application {
      * <p>Creates {@link Application} with given {@link String} as {@link #id}
      * and sets {@link #fullStatus} to {@link EnumApplicationStatus NEU}.
      * 
-     * @param id
      * @see Application
      * @see EnumApplicationStatus
      */
@@ -76,10 +75,9 @@ public class Application {
 
 
     /**
-     * Adds the {@link List} of {@link ModulesConnection} to this {@link Application}.
+     * Adds the given {@link List} of {@link ModulesConnection} to this {@link Application}.
      * <p>Also sets this {@link Application} for every {@link CoursModulesConnectioneLeipzig} in the given {@link List}.
      * 
-     * @param modulesConnections
      * @see Application
      * @see ModulesConnection 
      */
@@ -91,10 +89,9 @@ public class Application {
     }
 
     /**
-     * Set the {@link CourseLeipzig} for this {@link Application}.
+     * Set the given {@link CourseLeipzig} for this {@link Application}.
      * <p>Also adds this {@link Application} to the {@link List} of {@link Application Applications} in the given {@link CourseLeipzig}.
      * 
-     * @param courseLeipzig
      * @see Application
      * @see CourseLeipzig 
      */
