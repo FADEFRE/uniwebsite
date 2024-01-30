@@ -102,7 +102,10 @@ function changeRole(authRole) {
   return true;
 }
 
-router.beforeEach(async (to) => {
+router.beforeEach(async (to, from) => {
+  if (from.name === "notFound" && to.name === "notFound") {
+    return false;
+  }
   getAuthenticatedUser()
   const userStore = useUserStore();
   const id = userStore.getCurrentUserId;
