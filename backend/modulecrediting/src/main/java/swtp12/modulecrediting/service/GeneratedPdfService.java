@@ -3,6 +3,7 @@ package swtp12.modulecrediting.service;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.time.format.DateTimeFormatter;
 
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,9 +43,11 @@ public class GeneratedPdfService {
 
         Context context = new Context();
         context.setVariable("id", id);
-        context.setVariable("Erstelldatum", application.getCreationDate());
+        context.setVariable("Erstelldatum", application.getCreationDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
         context.setVariable("Status", application.getFullStatus());
-        context.setVariable("Entscheidungsdatum", application.getDecisionDate());
+        context.setVariable("Entscheidungsdatum", application.getDecisionDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+
+
     
 
         return templateEngine.process("PDF", context);
