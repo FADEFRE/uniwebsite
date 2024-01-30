@@ -97,7 +97,7 @@ public class DataLoader implements CommandLineRunner {
         createTestData(testData);
     }
 
-
+    //role creation
     private void roleCreation() {
         System.out.println("Creating Roles:");
         Role admin = new Role("ROLE_ADMIN");
@@ -107,7 +107,6 @@ public class DataLoader implements CommandLineRunner {
         roleRepository.save(sb);
         roleRepository.save(pav);
     }
-
 
 
     //creates users defined in filename (test data)
@@ -137,11 +136,6 @@ public class DataLoader implements CommandLineRunner {
             }
         }
     }
-
-
-
-
-
 
 
     //the two dataloader functions (leipzigData/ testData):
@@ -204,10 +198,11 @@ public class DataLoader implements CommandLineRunner {
         Random rand = new Random();
 
         int open = applicationSettingsNode.get("new").asInt();
-        int studyOffice = 1 + applicationSettingsNode.get("study-office").asInt();
+        int studyOffice = applicationSettingsNode.get("study-office").asInt();
+        int formfehler = applicationSettingsNode.get("formfehler").asInt();
         int pav = applicationSettingsNode.get("pav").asInt();
         int closed = applicationSettingsNode.get("closed").asInt();
-        int total = open + studyOffice + pav + closed;
+        int total = open + studyOffice + formfehler + pav + closed;
         
         List<CourseLeipzig> listOfCourseLeipzig = new ArrayList<>();
         List<CourseLeipzig> listOfCLinDB = courseLeipzigRepo.findAll();
@@ -266,14 +261,25 @@ public class DataLoader implements CommandLineRunner {
                 pav--;
             }
             else if (studyOffice > 0) { // update application to STUDIENBUERO
-                List<ModulesConnectionUpdateDTO> mcuDTO = new ArrayList<>();
-                mcuDTO = updateModulesConnectionDTO(STUDIENBÜRO, application);
-                applicationUpdateDTO.setModulesConnections(mcuDTO);
+                List<ModulesConnectionUpdateDTO> mcuDTOs = new ArrayList<>();
+                mcuDTOs = updateModulesConnectionDTO(STUDIENBÜRO, application);
+                applicationUpdateDTO.setModulesConnections(mcuDTOs);
                 applicationService.updateApplication(vorgangsnummer, applicationUpdateDTO, "study-office");
                 applicationService.updateApplicationStatus(vorgangsnummer);
                 updatedData = "studyOffice";
                 studyOffice--;
             }
+            /*
+            else if (formfehler > 0) { // update application to FORMFEHLER
+                List<ModulesConnectionUpdateDTO> mcuDTOs = new ArrayList<>();
+                mcuDTOs = updateModulesConnectionDTO(FORMFEHLER, application);
+                applicationUpdateDTO.setModulesConnections(mcuDTOs);
+                applicationService.updateApplication(vorgangsnummer, applicationUpdateDTO, "study-office");
+                applicationService.updateApplicationStatus(vorgangsnummer);
+                updatedData = "formfehler";
+                formfehler--;
+            }
+            */
             else if (open > 0) { // update application to ABGESCHLOSSEN
                 updatedData = "open";
                 open--;
@@ -398,7 +404,6 @@ public class DataLoader implements CommandLineRunner {
     private List<ModulesConnectionUpdateDTO> updateModulesConnectionDTO(EnumApplicationStatus status, Application application) {
         List<ModulesConnectionUpdateDTO> mcuDTO = new ArrayList<>();
         boolean studyBool = true;
-        boolean formfehler = true;
         boolean pavBool = true;
         for (ModulesConnection modCon : application.getModulesConnections()) { 
             //Modul listen
@@ -433,12 +438,7 @@ public class DataLoader implements CommandLineRunner {
             }
             //comments and decisions
             if(status == STUDIENBÜRO) {
-                if (formfehler) {
-                    modulesConnectionDTO.setFormalRejection(true);
-                    modulesConnectionDTO.setFormalRejectionComment("Dickes F an Huy");
-                    formfehler = false;
-                }
-                else if (studyBool) { 
+                if (studyBool) { 
                     modulesConnectionDTO.setDecisionSuggestion(unedited); 
                     studyBool = false;
                 }
@@ -446,7 +446,12 @@ public class DataLoader implements CommandLineRunner {
                 
                 modulesConnectionDTO.setCommentStudyOffice("liegt beim study office");
             }
-
+/*
+            if(status == FORMFEHLER) {
+                modulesConnectionDTO.setFormalRejection(true);
+                modulesConnectionDTO.setFormalRejectionComment("Dickes F an Huy");
+            }
+*/
             if(status == PRÜFUNGSAUSSCHUSS) {
                 modulesConnectionDTO.setDecisionSuggestion(generateDecision());
                 modulesConnectionDTO.setCommentStudyOffice("comment study office");
