@@ -14,7 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 public class SecurityCipher {
-    private static final String KEYVALUE = "secureKey";
+    private static final String KEYVALUE = "JPnJqOfeEge";
     private static SecretKeySpec secretKey;
     private static byte[] key;
 
@@ -42,7 +42,7 @@ public class SecurityCipher {
             setKey();
             Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
             cipher.init(Cipher.ENCRYPT_MODE, secretKey);
-            return Base64.getEncoder().encodeToString(cipher.doFinal(strToEncrypt.getBytes(StandardCharsets.UTF_8)));
+            return Base64.getEncoder().encodeToString(cipher.doFinal(strToEncrypt.getBytes()));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -57,17 +57,19 @@ public class SecurityCipher {
             setKey();
             Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
             cipher.init(Cipher.DECRYPT_MODE, secretKey);
-            return new String(cipher.doFinal(Base64.getDecoder().decode(strToDecrypt)));
+            String test = new String(cipher.doFinal(Base64.getDecoder().decode(strToDecrypt)));
+            return test;
         } catch (Exception e) {
-
+            System.out.println("Der Fehler im Backend");
+            /*
             //TODO remove these two debug lines if we want
             System.out.println("    ------------------- Start of Error-StrackTrace -------------------    ");
             System.out.println(LocalDate.now() + "SecurtiyCipher could not decrypt given String. Printing Error-StrackTrace: ");
             e.printStackTrace();
             System.out.println("    ------------------- End of Error-StrackTrace -------------------    ");
             throw new ResponseStatusException(HttpStatus.PROXY_AUTHENTICATION_REQUIRED, "error while decrypting key");
-
+            */
         }
-        //return null;
+        return null;
     }
 }
