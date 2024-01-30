@@ -81,7 +81,7 @@ public class ModuleLeipzigService {
         }
 
         // create new module
-        ModuleLeipzig moduleLeipzig = new ModuleLeipzig(moduleName, moduleCode, true);
+        ModuleLeipzig moduleLeipzig = new ModuleLeipzig(moduleName, moduleCode);
         moduleLeipzigRepository.save(moduleLeipzig);
         return moduleLeipzig.getName();
     }

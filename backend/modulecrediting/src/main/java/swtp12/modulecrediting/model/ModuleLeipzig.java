@@ -45,9 +45,8 @@ public class ModuleLeipzig {
     private List<CourseLeipzig> coursesLeipzig = new ArrayList<>();
 
 
-    public ModuleLeipzig(String name, String code, Boolean isActive) {
+    public ModuleLeipzig(String name, String code) {
         this.name = name;
         this.code = code;
-        this.isActive = isActive;
     }
 }

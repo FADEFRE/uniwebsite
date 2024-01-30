@@ -173,7 +173,7 @@ public class DataLoader implements CommandLineRunner {
                 ModuleLeipzig moduleLeipzig = modulLeipzigRepo.findByName(moduleName)
                         .orElseGet(() -> {
                             System.out.println("Creating new module: " + moduleName + " with code: " + moduleCode);
-                            return modulLeipzigRepo.save(new ModuleLeipzig(moduleName, moduleCode, true));
+                            return modulLeipzigRepo.save(new ModuleLeipzig(moduleName, moduleCode));
                         });
 
                 courseLeipzig.addModulesLeipzig(moduleLeipzig);
