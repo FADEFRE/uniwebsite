@@ -142,7 +142,7 @@ defineExpose({
         <PanelDecision type="single">
           <PanelFormalRejectionBlock :readonly="readonly" :comment="connectionData['formalRejectionComment']" ref="formalRejectionRef" />
         </PanelDecision>
-        <Button v-if="!readonly" @click="unsetFormalRejection">Formfehler zurücknehmen</Button>
+        <Button v-if="!readonly && type === 'study-office'" @click="unsetFormalRejection">Formfehler zurücknehmen</Button>
       </div>
 
       <div v-else>
@@ -166,7 +166,7 @@ defineExpose({
             />
           </template>
         </PanelDecision>
-        <Button v-if="!readonly" @click="setFormalRejection">Als Formfehler markieren</Button>
+        <Button v-if="!readonly && type === 'study-office'" @click="setFormalRejection">Als Formfehler markieren</Button>
       </div>
 
     </CustomPanel>
