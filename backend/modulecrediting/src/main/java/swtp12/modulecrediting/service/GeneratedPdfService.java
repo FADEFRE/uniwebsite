@@ -14,8 +14,6 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
-import swtp12.modulecrediting.dto.StudentApplicationDTO;
-
 import org.thymeleaf.context.Context;
 import swtp12.modulecrediting.model.Application;
 
@@ -27,7 +25,7 @@ public class GeneratedPdfService {
 
     //helper to get DTO
     private Application getDataForPDF(String id) { // TODO: control which data should be sent back in pdf
-        return applicationService.getApplicationById(id);
+        return applicationService.getApplicationStudentById(id);
     }
 
     public String parseThymeleafTemplate() {
@@ -51,7 +49,7 @@ public class GeneratedPdfService {
             und die function mit der ID erweitert. Alle Daten des Antrags die du im Pdf anzeigen willst
             oder kannst, sind in diesem DTO, du kannst dir dann einfach die Felder über die Getter holen :)
         */
-        Application applicationDTO = getDataForPDF(id);
+        Application application = getDataForPDF(id);
         String html = parseThymeleafTemplate();
 
 

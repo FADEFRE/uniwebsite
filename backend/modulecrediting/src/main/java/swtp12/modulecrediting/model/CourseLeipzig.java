@@ -25,7 +25,7 @@ import lombok.NoArgsConstructor;
  * 
  * @see JsonView
  * @see Views
- * @see Views.ApplicationOverview
+ * @see Views.ApplicationLoginOverview
  * @see Views.CoursesWithModules
  * @see Views.RelatedModulesConnection
  */
@@ -37,10 +37,7 @@ public class CourseLeipzig {
     @GeneratedValue
     private Long id;
 
-    @JsonView({
-        Views.CoursesWithModules.class, 
-        Views.ApplicationOverview.class,
-        Views.RelatedModulesConnection.class})
+    @JsonView({Views.CoursesWithModules.class, Views.ApplicationStudent.class, Views.ApplicationLoginOverview.class, Views.RelatedModulesConnection.class})
     @NotBlank(message = "Name may not be blank")
     @Column(unique = true, nullable = false)
     private String name;

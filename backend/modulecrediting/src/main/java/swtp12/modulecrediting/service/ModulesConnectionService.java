@@ -46,12 +46,11 @@ public class ModulesConnectionService {
     }
 
     private ModulesConnection createModulesConnection(ModulesConnectionCreateDTO modulesConnectionDTO) {
-
         ModulesConnection modulesConnection = new ModulesConnection();
 
         // create external modules
         List<ExternalModule> externalModules = externalModuleService.createExternalModules(modulesConnectionDTO.getExternalModules());
-        modulesConnection.setExternalModules(externalModules); // TODO: check correct relation set
+        modulesConnection.setExternalModules(externalModules);
 
         // create modules lepizig relation
         if(modulesConnectionDTO.getModulesLeipzig() != null) { // no modules leipzig sent in dto
@@ -62,7 +61,6 @@ public class ModulesConnectionService {
         // create set comment applicant
         modulesConnection.setCommentApplicant(modulesConnectionDTO.getCommentApplicant());
 
-        //modulesConnection = modulesConnectionRepository.save(modulesConnectionONE); //TODO: save first and then you can add
         return modulesConnection;
     }
 

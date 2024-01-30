@@ -16,16 +16,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import jakarta.transaction.Transactional;
 
-import swtp12.modulecrediting.dto.ApplicationCreateDTO;
-import swtp12.modulecrediting.dto.ApplicationUpdateDTO;
-import swtp12.modulecrediting.dto.EnumStatusChange;
-import swtp12.modulecrediting.dto.ExternalModuleUpdateDTO;
-import swtp12.modulecrediting.dto.ModulesConnectionUpdateDTO;
-import swtp12.modulecrediting.model.Application;
-import swtp12.modulecrediting.model.CourseLeipzig;
-import swtp12.modulecrediting.model.EnumApplicationStatus;
-import swtp12.modulecrediting.model.ExternalModule;
-import swtp12.modulecrediting.model.ModulesConnection;
+import swtp12.modulecrediting.dto.*;
+import swtp12.modulecrediting.model.*;
 import swtp12.modulecrediting.repository.ApplicationRepository;
 import swtp12.modulecrediting.repository.ExternalModuleRepository;
 import swtp12.modulecrediting.repository.ModulesConnectionRepository;
@@ -38,13 +30,8 @@ public class ApplicationService {
     @Autowired
     ModulesConnectionService modulesConnectionService;
     @Autowired
-    ModulesConnectionRepository modulesConnectionRepository;
-    @Autowired
-    ExternalModuleRepository externalModuleRepository;
-    @Autowired
     private CourseLeipzigService courseLeipzigService;
 
-    // TODO: Remove transactional here
     public String createApplication(ApplicationCreateDTO applicationDTO) {
         String id = generateValidApplicationId();
         Application application = new Application(id);
@@ -54,13 +41,11 @@ public class ApplicationService {
 
         List<ModulesConnection> modulesConnections = modulesConnectionService.createModulesConnectionsWithDuplicate(applicationDTO.getModulesConnections());
         application.setModulesConnections(modulesConnections);
-        //Map<String, List<ModulesConnection>> map = modulesConnectionService.createModulesConnections(applicationDTO.getModulesConnections());
-        //application.addModulesConnections(map.get("one"));
-        //originalApplication.setModulesConnections(map.get("two"));
 
         application = applicationRepository.save(application);
         return application.getId();
     }
+
 
     @Transactional
     public String updateApplication(String id, ApplicationUpdateDTO applicationDTO, String userRole) {
@@ -81,6 +66,11 @@ public class ApplicationService {
 
         applicationRepository.save(application);
         return id;
+    }
+
+
+    public String updateApplicationAfterFormalRejection(String id, ApplicationCreateDTO applicationCreateDTO) {
+        return "nicht fertig dikka";
     }
 
   /*  @Transactional
@@ -105,82 +95,6 @@ public class ApplicationService {
         originalApplicationRepository.save(originalApplication);
         return id;
     }*/
-    /*public StudentApplicationDTO getStudentApplicationById(String id) {
-        StudentApplicationDTO studentApplicationDTO = new StudentApplicationDTO();
-
-        Application application = getApplicationById(id);
-        OriginalApplication originalApplication = getOriginalApplication(id);
-
-        switch (application.getFullStatus()) {
-            case FORMFEHLER:
-                //return original mit ff + ff der module
-                originalApplication.setFullStatus(FORMFEHLER);
-                originalApplication.setLastEditedDate(application.getLastEditedDate());
-                originalApplication = originalApplicationRepository.save(originalApplication);
-
-                studentApplicationDTO = boilderPlateOriginal(originalApplication, studentApplicationDTO);
-
-                studentApplicationDTO.setModulesConnections(getStudentModulesConnections(application, originalApplication));
-                break;
-            case ABGESCHLOSSEN:
-                //retun application
-
-                //originalApplicationRepository.delete(originalApplication); //TODO should original application be deleted on "ABGESCHLOSSEN"
-                //or this
-                originalApplication.setFullStatus(ABGESCHLOSSEN);
-                originalApplication.setLastEditedDate(application.getLastEditedDate());
-                originalApplication.setDecisionDate(application.getDecisionDate());
-                originalApplication = originalApplicationRepository.save(originalApplication);
-
-                studentApplicationDTO = boilderPlateApplication(application, studentApplicationDTO);
-
-                studentApplicationDTO.setModulesConnections(application.getModulesConnections());
-                break;
-            default:
-                //return original
-                studentApplicationDTO = boilderPlateOriginal(originalApplication, studentApplicationDTO);
-
-                studentApplicationDTO.setModulesConnections(originalApplication.getModulesConnections());
-                break;
-        }
-
-        return studentApplicationDTO;
-    }*/
-
-    /*
-    private ModulesConnectionUpdateDTO duplicateModuleConnectionUpdateDTO(Long id, ModulesConnectionUpdateDTO mcDto) {
-        ModulesConnectionUpdateDTO modConUpDTO = new ModulesConnectionUpdateDTO();
-        modConUpDTO.setId(id);
-        modConUpDTO.setFormalRejection(mcDto.getFormalRejection());
-        modConUpDTO.setFormalRejectionComment(mcDto.getFormalRejectionComment());
-        modConUpDTO.setCommentStudyOffice(mcDto.getCommentStudyOffice());
-        modConUpDTO.setDecisionSuggestion(mcDto.getDecisionSuggestion());
-        modConUpDTO.setCommentDecision(mcDto.getCommentDecision());
-        modConUpDTO.setDecisionFinal(mcDto.getDecisionFinal());
-        modConUpDTO.setCommentApplicant(mcDto.getCommentApplicant());
-        modConUpDTO.setModulesLeipzig(mcDto.getModulesLeipzig());
-
-        List<ExternalModuleUpdateDTO> externalModules = new ArrayList<>();
-        List<ExternalModuleUpdateDTO> externalModuleUpdateDTO = mcDto.getExternalModules();
-
-        for (ExternalModuleUpdateDTO extMod : externalModuleUpdateDTO) {
-            ExternalModuleUpdateDTO updateDTO = new ExternalModuleUpdateDTO();
-            updateDTO.setName(extMod.getName());
-            updateDTO.setDescription(extMod.getDescription());
-            updateDTO.setPoints(extMod.getPoints());
-            updateDTO.setPointSystem(extMod.getPointSystem());
-            updateDTO.setUniversity(extMod.getUniversity());
-
-            Optional<ExternalModule> optional = externalModuleRepository.findById(extMod.getId());
-            if (!optional.isPresent()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "ExternalModule with id: " + extMod.getId() + " not found");
-            Long secondId = optional.get().getMatchingId();
-            updateDTO.setId(secondId);
-            externalModules.add(updateDTO);
-        }
-
-        modConUpDTO.setExternalModules(externalModules);
-        return modConUpDTO;
-    }*/
 
 
     public EnumStatusChange updateApplicationStatusAllowed(String id) {
@@ -198,6 +112,7 @@ public class ApplicationService {
         // base case
         return NOT_ALLOWED;
     }
+
     // FUNCTION TO UPDADTE APPLICATION STATUS ON UPDATE
     public EnumApplicationStatus updateApplicationStatus(String id) {
         Application application = getApplicationById(id);
@@ -261,9 +176,12 @@ public class ApplicationService {
 
 
     // Simple Getters for Application
+    // is used internally and for login requests
     public List<Application> getAllApplciations(){
         return applicationRepository.findAll();
     }
+
+    // is used internally and for login requests
     public Application getApplicationById(String id) {
         Optional<Application> applicationOptional = applicationRepository.findById(id);
         if(applicationOptional.isPresent()) {
@@ -271,6 +189,10 @@ public class ApplicationService {
         }else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Application with id: " + id + " not Found");
         }
+    }
+    // is used only for student request
+    public Application getApplicationStudentById(String id) {
+        return getApplicationById(id);
     }
     public boolean applicationExists(String id) {
         return applicationRepository.existsById(id);

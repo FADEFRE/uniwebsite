@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
  * 
  * @see JsonView
  * @see Views
- * @see Views.ApplicationOverview
+ * @see Views.ApplicationLoginOverview
  * @see Views.RelatedModulesConnection
  */
 @Data
@@ -32,30 +32,30 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Application {
     @Id
-    @JsonView({Views.ApplicationOverview.class,Views.RelatedModulesConnection.class})
+    @JsonView({Views.ApplicationStudent.class, Views.ApplicationLoginOverview.class,Views.RelatedModulesConnection.class})
     private String id;
 
-    @JsonView({Views.ApplicationOverview.class})
+    @JsonView({Views.ApplicationStudent.class, Views.ApplicationLoginOverview.class})
     private EnumApplicationStatus fullStatus;
 
     @CreationTimestamp
-    @JsonView({Views.ApplicationOverview.class})
+    @JsonView({Views.ApplicationStudent.class, Views.ApplicationLoginOverview.class})
     private LocalDateTime creationDate;
-    @JsonView({Views.ApplicationOverview.class})
+    @JsonView({Views.ApplicationLoginOverview.class})
     private LocalDateTime lastEditedDate;
-    @JsonView({Views.ApplicationOverview.class, Views.RelatedModulesConnection.class})
+    @JsonView({Views.ApplicationStudent.class, Views.ApplicationLoginOverview.class, Views.RelatedModulesConnection.class})
     private LocalDateTime decisionDate;
 
     //Relation Application <-> CourseLeipzig
     @ManyToOne @JoinColumn(name = "course_leipzig_id")
     @JsonManagedReference 
-    @JsonView({Views.ApplicationOverview.class, Views.RelatedModulesConnection.class})
+    @JsonView({Views.ApplicationStudent.class, Views.ApplicationLoginOverview.class, Views.RelatedModulesConnection.class})
     private CourseLeipzig courseLeipzig;
 
     //Relation Application <-> ModulesConnection
     @OneToMany(mappedBy = "application", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference
-    @JsonView({Views.ApplicationStudent.class,Views.ApplicationOverview.class})
+    @JsonView({Views.ApplicationStudent.class,Views.ApplicationLoginOverview.class})
     private List<ModulesConnection> modulesConnections = new ArrayList<>();
 
     

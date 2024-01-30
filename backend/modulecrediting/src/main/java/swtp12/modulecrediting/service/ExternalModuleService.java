@@ -39,7 +39,7 @@ public class ExternalModuleService {
             externalModule.setPointSystem(ma.getPointSystem());
 
             PdfDocument pdfDocument = pdfDocumentService.createPdfDocument(ma.getDescription());
-            externalModule.setPdfDocument(pdfDocument); // TODO: check correct relation set
+            externalModule.setPdfDocument(pdfDocument);
 
             externalModules.add(externalModule);
         }
