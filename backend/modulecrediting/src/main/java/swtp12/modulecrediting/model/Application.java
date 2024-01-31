@@ -82,13 +82,10 @@ public class Application {
      * @see ModulesConnection 
      */
     public void setModulesConnections(List<ModulesConnection> modulesConnections) {
-        System.out.println("setting");
-        System.out.println(this.modulesConnections.size());
         for(ModulesConnection mc : modulesConnections) {
             mc.setApplication(this);
         }
         this.modulesConnections = modulesConnections;
-        System.out.println(this.modulesConnections.size());
     }
 
     /**
@@ -112,13 +109,10 @@ public class Application {
      * @see ModulesConnection
      */
     public void removeAllModulesConnections() {
-        System.out.println("removing");
         for(ModulesConnection modulesConnection : modulesConnections) {
             modulesConnection.setApplication(null);
-            System.out.println(this.modulesConnections.size());
         }
         modulesConnections.clear();
-        System.out.println(this.modulesConnections.size());
     }
 
     /**

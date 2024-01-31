@@ -55,7 +55,7 @@ const openRelatedModule = (module) => {
   <div class="panel-related-modules">
 
     <h4>Ähnliche Module:</h4>
-<!--
+
     <div v-if="relatedModules && relatedModules.length > 0" class="related-modules-list-container">
       <div v-for="module in relatedModules" class="single-related-module-container" @click="openRelatedModule(module)">
 
@@ -79,8 +79,8 @@ const openRelatedModule = (module) => {
         <p class="course">{{ module['application']['courseLeipzig']['name'] }}</p>
       </div>
     </div>
--->
-    <div> <!-- <div v-else> -->
+
+    <div v-else>
       <p>Es wurden keine ähnlichen Module gefunden.</p>
     </div>
 
