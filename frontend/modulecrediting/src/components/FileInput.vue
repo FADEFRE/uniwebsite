@@ -88,19 +88,28 @@ const dropHandler = (e) => {
   console.log(selectedFile.value);
 }
 
+const isValid = ref(true)
+
+const checkValidity = () => {
+  // setting invalid styles
+  isValid.value = Boolean(selectedFile.value)
+  // return
+  return isValid
+}
+
 defineExpose({
-  selectedFile
+  selectedFile, checkValidity
 })
 </script>
 
 <template>
-  <div v-if="readonly" class="read-only-container">
+  <div v-if="readonly" class="read-only-container" :class="{ 'invalid': !isValid }">
     <p class="ellipsis-text-overflow">{{ props.selectedFile?.name }}</p>
     <ButtonLink @click="openFile">PDF öffnen</ButtonLink>
   </div>
 
   <div v-else class="edit-container" @click="openFileDialog" @dragover.prevent="dragOverHandler"
-    @dragleave.prevent="dragLeaveHandler" @drop.prevent="dropHandler">
+    @dragleave.prevent="dragLeaveHandler" @drop.prevent="dropHandler" :class="{ 'invalid': !isValid }">
 
     <p v-if="selectedFile?.name" class="ellipsis-text-overflow">{{ selectedFile?.name }}</p>
 
