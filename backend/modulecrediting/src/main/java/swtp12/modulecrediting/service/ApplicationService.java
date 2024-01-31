@@ -43,6 +43,22 @@ public class ApplicationService {
         return application.getId();
     }
 
+    public String updateApplicationAfterFormalRejection(String id, ApplicationDTO applicationDTO) {
+        Application application = new Application(id);
+
+        application.setFullStatus(STUDIENBÜRO);
+
+        // TODO: delete all
+
+        CourseLeipzig courseLeipzig = courseLeipzigService.getCourseLeipzigByName(applicationDTO.getCourseLeipzig());
+        application.setCourseLeipzig(courseLeipzig);
+
+        List<ModulesConnection> modulesConnections = modulesConnectionService.createModulesConnectionsWithDuplicate(applicationDTO.getModulesConnections());
+        application.setModulesConnections(modulesConnections);
+
+        application = applicationRepository.save(application);
+        return application.getId();
+    }
 
     // TODO: update neu
     @Transactional
@@ -69,12 +85,6 @@ public class ApplicationService {
         applicationRepository.save(application);
         return id;
     }
-
-
-    public String updateApplicationAfterFormalRejection(String id, ApplicationDTO applicationDTO) {
-        return "nicht fertig dikka";
-    }
-
 
     public EnumStatusChangeAllowed updateApplicationStatusAllowed(String id) {
         Application application = getApplicationById(id);
