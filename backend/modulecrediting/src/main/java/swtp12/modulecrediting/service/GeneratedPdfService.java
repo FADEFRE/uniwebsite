@@ -1,6 +1,11 @@
 package swtp12.modulecrediting.service;
 
+/*import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfReader;
+import com.itextpdf.kernel.pdf.PdfWriter;*/
 
+
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.time.format.DateTimeFormatter;
@@ -15,8 +20,9 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
+import swtp12.modulecrediting.dto.StudentApplicationDTO;
+
 import org.thymeleaf.context.Context;
-import swtp12.modulecrediting.model.Application;
 
 
 @Service
@@ -24,34 +30,60 @@ public class GeneratedPdfService {
     @Autowired
     private ApplicationService applicationService;
 
-    public String parseThymeleafTemplate(String id) {
+    //helper to get DTO
+    private StudentApplicationDTO getDataForPDF(String id) {
+        return applicationService.getStudentApplicationById(id);
+    }
+
+    public String GeneralDataTemplate(String id) {
         ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
         templateResolver.setSuffix(".html");
         templateResolver.setTemplateMode(TemplateMode.HTML);
         templateResolver.setPrefix("templates/");
         TemplateEngine templateEngine = new TemplateEngine();
         templateEngine.setTemplateResolver(templateResolver);
-
-
-        Application application = applicationService.getApplicationStudentById(id);
+        
+        
+        StudentApplicationDTO application = getDataForPDF(id);
 
         Context context = new Context();
         context.setVariable("id", id);
         context.setVariable("Erstelldatum", application.getCreationDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
         context.setVariable("Status", application.getFullStatus());
         context.setVariable("Entscheidungsdatum", application.getDecisionDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+        //context.setVariable("Studiengang", application.getCourseLeipzig());
 
-        return templateEngine.process("PDF", context);
+        return templateEngine.process("GeneralData", context);
     }
 
+    public String ModuleConnectionTemplate(String id) {
+        ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
+        templateResolver.setSuffix(".html");
+        templateResolver.setTemplateMode(TemplateMode.HTML);
+        templateResolver.setPrefix("templates/");
+        TemplateEngine templateEngine = new TemplateEngine();
+        templateEngine.setTemplateResolver(templateResolver);
+        
+        
+        StudentApplicationDTO application = getDataForPDF(id);
+
+        Context context = new Context();
+
+        return templateEngine.process("ModulesConnection", context);
+    }
+
+ 
     public byte[] generatePdfFromHtml(String id) throws IOException {
-        Application application = applicationService.getApplicationStudentById(id);
-        String html = parseThymeleafTemplate(id);
+    
+        StudentApplicationDTO application = getDataForPDF(id); 
+        String html = GeneralDataTemplate(id);
+        String html2 = ModuleConnectionTemplate(id);
 
 
         OutputStream outputStream = new ByteArrayOutputStream();
 
         ITextRenderer renderer = new ITextRenderer();
+        
         renderer.setDocumentFromString(html);
         renderer.layout();
         renderer.createPDF(outputStream);
@@ -60,4 +92,46 @@ public class GeneratedPdfService {
 
         return ((ByteArrayOutputStream) outputStream).toByteArray();
     }
+
+    /* 
+
+    public byte[] generatePdfFromHtml(String id) throws IOException {
+        StudentApplicationDTO application = getDataForPDF(id);
+        String html1 = GeneralDataTemplate(id);
+        String html2 = ModuleConnectionTemplate(id);
+    
+        ByteArrayOutputStream outputStream1 = new ByteArrayOutputStream();
+        ByteArrayOutputStream outputStream2 = new ByteArrayOutputStream();
+    
+        ITextRenderer renderer = new ITextRenderer();
+    
+        renderer.setDocumentFromString(html1);
+        renderer.layout();
+        renderer.createPDF(outputStream1);
+    
+        renderer.setDocumentFromString(html2);
+        renderer.layout();
+        renderer.createPDF(outputStream2);
+    
+        byte[] mergedPdf = mergePdfs(outputStream1.toByteArray(), outputStream2.toByteArray());
+    
+        return mergedPdf;
+    }
+
+    private byte[] mergePdfs(byte[] pdf1, byte[] pdf2) throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    
+        PdfDocument pdfDocument1 = new PdfDocument(new PdfReader(new ByteArrayInputStream(pdf1)));
+        PdfDocument pdfDocument2 = new PdfDocument(new PdfReader(new ByteArrayInputStream(pdf2)));
+        PdfDocument mergedPdfDocument = new PdfDocument(new PdfWriter(outputStream));
+    
+        pdfDocument1.copyPagesTo(1, pdfDocument1.getNumberOfPages(), mergedPdfDocument);
+        pdfDocument2.copyPagesTo(1, pdfDocument2.getNumberOfPages(), mergedPdfDocument);
+    
+        pdfDocument1.close();
+        pdfDocument2.close();
+        mergedPdfDocument.close();
+    
+        return outputStream.toByteArray();
+    }*/
 }
