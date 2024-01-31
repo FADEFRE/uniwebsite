@@ -33,6 +33,7 @@ import swtp12.modulecrediting.service.UserService;
 import swtp12.modulecrediting.util.SecurityCipher;
 
 
+
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -72,7 +73,7 @@ public class AuthController {
         return userService.login(loginRequest, decryptedAccessToken, decryptedRefreshToken);
     }
 
-    @PostMapping(value = "/refresh")
+    @PostMapping("/refresh")
     public ResponseEntity<LoginResponse> refreshToken(
         @CookieValue(name = "accessToken", required = false) String accessToken, 
         @CookieValue(name = "refreshToken", required = false) String refreshToken) {
@@ -101,10 +102,9 @@ public class AuthController {
     }
     
 
-    @PostMapping(value = "/register")
+    @PostMapping("/register")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<String> registerUser(@Valid @RequestBody RegisterRequest registerRequest) {
-
         Optional<User> userCandidate = userRepository.findByUsername(registerRequest.getUsername());
 
         if (!userCandidate.isPresent()) {
@@ -126,7 +126,6 @@ public class AuthController {
                 return new ResponseEntity<>("User registered successfully!", HttpStatus.OK);
             }
         }
-
         return new ResponseEntity<>("Username already exists!", HttpStatus.BAD_REQUEST);
     }
 }
