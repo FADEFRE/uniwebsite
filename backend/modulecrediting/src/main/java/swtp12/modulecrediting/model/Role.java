@@ -21,10 +21,18 @@ public class Role implements Serializable {
 
     private String roleName;
 
+    
     public GrantedAuthority grantedAuthority() {
         return new SimpleGrantedAuthority(this.roleName);
     }
 
+
+    /**
+     * Constructor for {@link Role}.
+     * <p>Creates {@link Role} with given {@link String roleName}.
+     * 
+     * @see Role
+     */
     public Role(String roleName) {
         this.roleName = roleName;
     }

@@ -1,12 +1,16 @@
 package swtp12.modulecrediting.dto;
 
+import java.util.List;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
 @Getter
 @Setter
 @NoArgsConstructor
-public class ModuleLeipzigUpdateDTO {
-    private String name;
+public class ApplicationDTO {
+    private String courseLeipzig;
+    private List<ModulesConnectionDTO> modulesConnections;
 }

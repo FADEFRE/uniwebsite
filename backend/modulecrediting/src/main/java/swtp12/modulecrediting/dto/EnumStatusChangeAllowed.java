@@ -1,6 +1,6 @@
 package swtp12.modulecrediting.dto;
 
-public enum EnumStatusChange {
+public enum EnumStatusChangeAllowed {
     NOT_ALLOWED,
     PASSON,
     REJECT

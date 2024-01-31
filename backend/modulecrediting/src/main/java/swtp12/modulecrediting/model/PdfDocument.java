@@ -15,7 +15,14 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 
-
+/**
+ * PdfDocument {@link Entity}. Includes custom {@link JsonView} classes
+ * 
+ * @see JsonView
+ * @see Views
+ * @see Views.ApplicationLogin
+ * @see Views.ApplicationStudent
+ */
 @Data
 @NoArgsConstructor
 @Entity
@@ -37,7 +44,12 @@ public class PdfDocument {
     private ExternalModule externalModule;
 
 
-    //Constructer
+    /**
+     * Constructor for {@link PdfDocument}.
+     * <p>Creates {@link PdfDocument} with given {@link String name} and byte[] pdfData.
+     * 
+     * @see PdfDocument
+     */
     public PdfDocument(String name, byte[] pdfData) {
         this.name = name;
         this.pdfData = pdfData;

@@ -11,7 +11,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import swtp12.modulecrediting.dto.CourseLeipzigEditDTO;
 import swtp12.modulecrediting.dto.CourseLeipzigRelationEditDTO;
-import swtp12.modulecrediting.dto.ModuleLeipzigCreateDTO;
+import swtp12.modulecrediting.dto.ModuleLeipzigDTO;
 import swtp12.modulecrediting.model.Application;
 import swtp12.modulecrediting.model.CourseLeipzig;
 import swtp12.modulecrediting.model.ModuleLeipzig;
@@ -112,7 +112,7 @@ public class CourseLeipzigService {
             return true;
         }
 
-        for(ModuleLeipzigCreateDTO ml : editCourseRelationsDTO.getModulesLeipzig()) {
+        for(ModuleLeipzigDTO ml : editCourseRelationsDTO.getModulesLeipzig()) {
             ModuleLeipzig moduleLeipzig = moduleLeipzigService.getModuleLeipzigByName(ml.getName());
             if(!moduleLeipzig.getCode().equals(ml.getCode()))
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Module Code dont match:" + moduleLeipzig.getName());

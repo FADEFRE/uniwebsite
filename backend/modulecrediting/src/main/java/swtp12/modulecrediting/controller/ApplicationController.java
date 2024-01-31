@@ -11,9 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
-import swtp12.modulecrediting.dto.ApplicationCreateDTO;
-import swtp12.modulecrediting.dto.ApplicationUpdateDTO;
-import swtp12.modulecrediting.dto.EnumStatusChange;
+import swtp12.modulecrediting.dto.ApplicationDTO;
+import swtp12.modulecrediting.dto.EnumStatusChangeAllowed;
 import swtp12.modulecrediting.model.Application;
 import swtp12.modulecrediting.model.EnumApplicationStatus;
 import swtp12.modulecrediting.model.Views;
@@ -21,7 +20,6 @@ import swtp12.modulecrediting.service.ApplicationService;
 
 
 @RestController
-@CrossOrigin
 @RequestMapping("/api/applications")
 public class ApplicationController {
     @Autowired
@@ -53,19 +51,18 @@ public class ApplicationController {
         return ResponseEntity.ok(applicationService.applicationExists(id));
     }
 
+
     @GetMapping("/{id}/update-status-allowed")
     @PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR')")
-    public ResponseEntity<EnumStatusChange> updateApplicationStatusAllowed(@PathVariable String id) {
+    public ResponseEntity<EnumStatusChangeAllowed> updateApplicationStatusAllowed(@PathVariable String id) {
         return ResponseEntity.ok(applicationService.updateApplicationStatusAllowed(id));
     }
 
-
     //POST-Requests
     @PostMapping
-    public ResponseEntity<String> createApplication(@ModelAttribute ApplicationCreateDTO applicationCreateDTO) {
-        return ResponseEntity.ok(applicationService.createApplication(applicationCreateDTO));
+    public ResponseEntity<String> createApplication(@ModelAttribute ApplicationDTO applicationDTO) {
+        return ResponseEntity.ok(applicationService.createApplication(applicationDTO));
     }
-
 
     //PUT-Requests
     @PutMapping("/{id}/update-status")
@@ -77,16 +74,16 @@ public class ApplicationController {
     //TODO: change route in frontend
     @PutMapping("/student/{id}")
     public ResponseEntity<String> updateApplicationAfterFormalRejection(@PathVariable String id,
-                                                    @Valid @ModelAttribute ApplicationCreateDTO applicationCreateDTO,
+                                                    @Valid @ModelAttribute ApplicationDTO applicationDTO,
                                                     BindingResult result) {
         if (result.hasErrors()) return ResponseEntity.badRequest().body("Validation failed: " + result.getAllErrors());
-        return ResponseEntity.ok(applicationService.updateApplicationAfterFormalRejection(id, applicationCreateDTO));
+        return ResponseEntity.ok(applicationService.updateApplicationAfterFormalRejection(id, applicationDTO));
     }
 
     @PutMapping("/study-office/{id}")
     @PreAuthorize("hasRole('ROLE_STUDY')")
     public ResponseEntity<String> updateApplicationStudyOffice(@PathVariable String id,
-                                                    @Valid @ModelAttribute ApplicationUpdateDTO applicationUpdateDTO,
+                                                    @Valid @ModelAttribute ApplicationDTO applicationUpdateDTO,
                                                     BindingResult result) {
         if (result.hasErrors()) return ResponseEntity.badRequest().body("Validation failed: " + result.getAllErrors());
         return ResponseEntity.ok(applicationService.updateApplication(id, applicationUpdateDTO, "study-office"));
@@ -95,7 +92,7 @@ public class ApplicationController {
     @PutMapping("/chairman/{id}")
     @PreAuthorize("hasRole('ROLE_CHAIR')")
     public ResponseEntity<String> updateApplicationChairman(@PathVariable String id,
-                                                    @Valid @ModelAttribute ApplicationUpdateDTO applicationUpdateDTO,
+                                                    @Valid @ModelAttribute ApplicationDTO applicationUpdateDTO,
                                                     BindingResult result) {
         if (result.hasErrors()) return ResponseEntity.badRequest().body("Validation failed: " + result.getAllErrors());
         return ResponseEntity.ok(applicationService.updateApplication(id, applicationUpdateDTO, "chairman"));

@@ -20,7 +20,6 @@ import swtp12.modulecrediting.service.UserService;
 
 @RestController
 @RequestMapping("/api/user")
-@CrossOrigin
 public class UserController {
     @Autowired
     private UserRepository userRepository;

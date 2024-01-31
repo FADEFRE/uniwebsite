@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ModuleLeipzigCreateDTO {
+public class ModuleLeipzigDTO {
     private String name;
 
     private String code;

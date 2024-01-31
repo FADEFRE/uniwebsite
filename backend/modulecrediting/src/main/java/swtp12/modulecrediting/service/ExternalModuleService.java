@@ -4,17 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-import swtp12.modulecrediting.dto.ExternalModuleCreateDTO;
-import swtp12.modulecrediting.dto.ExternalModuleUpdateDTO;
+import swtp12.modulecrediting.dto.ExternalModuleDTO;
 import swtp12.modulecrediting.model.ExternalModule;
 import swtp12.modulecrediting.model.ModulesConnection;
 import swtp12.modulecrediting.model.PdfDocument;
 import swtp12.modulecrediting.repository.ExternalModuleRepository;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -24,13 +21,13 @@ public class ExternalModuleService {
     @Autowired
     ExternalModuleRepository externalModuleRepository;
 
-    public List<ExternalModule> createExternalModules(List<ExternalModuleCreateDTO> externalModuleCreateDTOs) {
-        if(externalModuleCreateDTOs == null || externalModuleCreateDTOs.size() == 0)
+    public List<ExternalModule> createExternalModules(List<ExternalModuleDTO> externalModuleDTOS) {
+        if(externalModuleDTOS == null || externalModuleDTOS.size() == 0)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, " No Module Applications provided in the request");
 
         List<ExternalModule> externalModules = new ArrayList<>();
 
-        for(ExternalModuleCreateDTO ma : externalModuleCreateDTOs) {
+        for(ExternalModuleDTO ma : externalModuleDTOS) {
             ExternalModule externalModule = new ExternalModule();
 
             externalModule.setName(ma.getName());
@@ -48,9 +45,9 @@ public class ExternalModuleService {
     }
 
 
-    public List<Long> updateExternalModules(List<ExternalModuleUpdateDTO> externalModuleUpdateDTOs, String userRole) {
+    public List<Long> updateExternalModules(List<ExternalModuleDTO> externalModuleUpdateDTOs, String userRole) {
         List<Long> listofIds = new ArrayList<>();
-        for(ExternalModuleUpdateDTO ma : externalModuleUpdateDTOs) {
+        for(ExternalModuleDTO ma : externalModuleUpdateDTOs) {
             if(ma.getId() == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Module Application id must not be null");
             ExternalModule externalModule = getExternalModuleById(ma.getId());
             
@@ -66,10 +63,11 @@ public class ExternalModuleService {
             if(ma.getPointSystem() != null) {
                 externalModule.setPointSystem(ma.getPointSystem());
             }
+            /*
             if(userRole.equals("standard") && ma.getDescription() != null) {
                 PdfDocument pdfDocument = pdfDocumentService.createPdfDocument(ma.getDescription());
                 externalModule.setPdfDocument(pdfDocument);
-            }
+            }*/ // TODO: handle all files
             listofIds.add(ma.getId());
         }
         return listofIds;

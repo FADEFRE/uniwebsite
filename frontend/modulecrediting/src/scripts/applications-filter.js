@@ -20,8 +20,8 @@ function filterByCourse (course, applications) {
     return applications.filter(a => a['courseLeipzig']['name'] === course)
 }
 
-function sortByDate (applications) {
-    applications.sort((a, b) => new Date(b['creationDate']).getTime() - new Date(a['creationDate']).getTime())
+function sortByDate (dateKey, applications) {
+    applications.sort((a, b) => new Date(b[dateKey]).getTime() - new Date(a[dateKey]).getTime())
 }
 
 function filterApplications (filter, applications) {
@@ -33,13 +33,7 @@ function filterApplications (filter, applications) {
     }
     // date filter
     if (filter.earliestDate) {
-        if (filter.dateType === 'creation') {
-            filteredApplications = filterByDate(filter.earliestDate, 'creationDate', filteredApplications)
-        } else if (filter.dateType === 'lastEdit') {
-            filteredApplications = filterByDate(filter.earliestDate, 'lastEditedDate', filteredApplications)
-        } else if (filter.dateType === 'decision') {
-            filteredApplications = filterByDate(filter.earliestDate, 'decisionDate', filteredApplications)
-        }
+        filteredApplications = filterByDate(filter.earliestDate, filter.dateType, filteredApplications)
     }
     // status filter
     filteredApplications = filterByStatus(filter.statusTypes, filteredApplications)
@@ -49,7 +43,7 @@ function filterApplications (filter, applications) {
     }
 
     // sorting
-    sortByDate(filteredApplications)
+    sortByDate(filter.dateType, filteredApplications)
 
     return filteredApplications
 }

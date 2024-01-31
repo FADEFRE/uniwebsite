@@ -4,6 +4,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Base64;
 
@@ -57,10 +58,12 @@ public class SecurityCipher {
             setKey();
             Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
             cipher.init(Cipher.DECRYPT_MODE, secretKey);
+            System.out.println(secretKey);
             String test = new String(cipher.doFinal(Base64.getDecoder().decode(strToDecrypt)));
             return test;
         } catch (Exception e) {
-            System.out.println("Der Fehler im Backend");
+            System.out.println(LocalDateTime.now() + " Der Fehler im Backend");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, LocalDateTime.now() + "  change this message later");
             /*
             //TODO remove these two debug lines if we want
             System.out.println("    ------------------- Start of Error-StrackTrace -------------------    ");
@@ -70,6 +73,6 @@ public class SecurityCipher {
             throw new ResponseStatusException(HttpStatus.PROXY_AUTHENTICATION_REQUIRED, "error while decrypting key");
             */
         }
-        return null;
+        //return null;
     }
 }

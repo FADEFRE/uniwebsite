@@ -19,7 +19,6 @@ import swtp12.modulecrediting.service.PdfDocumentService;
 
 @RestController
 @RequestMapping("/file/pdf-documents")
-@CrossOrigin
 public class PdfDocumentContoller {
     @Autowired
     private PdfDocumentService pdfDocumentService;

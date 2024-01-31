@@ -12,7 +12,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
-
+/**
+ * ModuleLeipzig {@link Entity}. Includes custom {@link JsonView} classes
+ * 
+ * @see JsonView
+ * @see Views
+ * @see Views.ApplicationLogin
+ * @see Views.ApplicationStudent
+ * @see Views.CoursesWithModules
+ * @see Views.ModulesWithoutCourse
+ * @see Views.RelatedModulesConnection
+ */
 @Data
 @NoArgsConstructor
 @Entity
@@ -47,6 +57,13 @@ public class ModuleLeipzig {
     private List<CourseLeipzig> coursesLeipzig = new ArrayList<>();
 
 
+    /**
+     * Constructor for {@link ModuleLeipzig}.
+     * <p>Creates {@link ModuleLeipzig} with given {@link String name} and {@link String code}
+     * and sets {@link #isActive} to {@link Boolean true}.
+     * 
+     * @see ModuleLeipzig
+     */
     public ModuleLeipzig(String name, String code) {
         this.name = name;
         this.code = code;

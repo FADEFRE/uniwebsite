@@ -2,10 +2,9 @@ package swtp12.modulecrediting.service;
 
 import static swtp12.modulecrediting.model.EnumApplicationStatus.*;
 import static swtp12.modulecrediting.model.EnumModuleConnectionDecision.*;
-import static swtp12.modulecrediting.dto.EnumStatusChange.*;
+import static swtp12.modulecrediting.dto.EnumStatusChangeAllowed.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,8 +18,6 @@ import jakarta.transaction.Transactional;
 import swtp12.modulecrediting.dto.*;
 import swtp12.modulecrediting.model.*;
 import swtp12.modulecrediting.repository.ApplicationRepository;
-import swtp12.modulecrediting.repository.ExternalModuleRepository;
-import swtp12.modulecrediting.repository.ModulesConnectionRepository;
 
 
 @Service
@@ -32,7 +29,7 @@ public class ApplicationService {
     @Autowired
     private CourseLeipzigService courseLeipzigService;
 
-    public String createApplication(ApplicationCreateDTO applicationDTO) {
+    public String createApplication(ApplicationDTO applicationDTO) {
         String id = generateValidApplicationId();
         Application application = new Application(id);
 
@@ -46,34 +43,50 @@ public class ApplicationService {
         return application.getId();
     }
 
+    public String updateApplicationAfterFormalRejection(String id, ApplicationDTO applicationDTO) {
+        Application application = new Application(id);
+
+        application.setFullStatus(STUDIENBÜRO);
+
+        // TODO: delete all
+
+        CourseLeipzig courseLeipzig = courseLeipzigService.getCourseLeipzigByName(applicationDTO.getCourseLeipzig());
+        application.setCourseLeipzig(courseLeipzig);
+
+        List<ModulesConnection> modulesConnections = modulesConnectionService.createModulesConnectionsWithDuplicate(applicationDTO.getModulesConnections());
+        application.setModulesConnections(modulesConnections);
+
+        application = applicationRepository.save(application);
+        return application.getId();
+    }
+
+    // TODO: update neu
     @Transactional
-    public String updateApplication(String id, ApplicationUpdateDTO applicationDTO, String userRole) {
+    public String updateApplication(String id, ApplicationDTO applicationDTO, String userRole) {
         Application application = getApplicationById(id);
 
-        // check if any changes were made
-        if(applicationDTO.getModulesConnections() != null)
-            modulesConnectionService.updateModulesConnection(applicationDTO.getModulesConnections(), userRole);
+        System.out.println(userRole);
 
-        if(containsFormalRejection(application))
-            modulesConnectionService.removeAllDecisions(application.getModulesConnections());
+        modulesConnectionService.updateModulesConnection(applicationDTO.getModulesConnections(), userRole);
         application.setLastEditedDate(LocalDateTime.now());
 
 
+
+        // student request stuff
+        //if(containsFormalRejection(application)) TODO: check i really not needed
+            //modulesConnectionService.removeAllDecisions(application.getModulesConnections());
+
         // corner cases, where Status is set differently
+
+        // when study office saves decision suggestions -> status from NEU to STUDEINBUERO
         if(!allDecisionSuggestionUnedited(application) || containsFormalRejection(application)) application.setFullStatus(STUDIENBÜRO);
-        if(userRole.equals("standard")) updateApplicationStatus(id);
+        //if(userRole.equals("standard")) updateApplicationStatus(id);
 
         applicationRepository.save(application);
         return id;
     }
 
-
-    public String updateApplicationAfterFormalRejection(String id, ApplicationCreateDTO applicationCreateDTO) {
-        return "nicht fertig dikka";
-    }
-
-
-    public EnumStatusChange updateApplicationStatusAllowed(String id) {
+    public EnumStatusChangeAllowed updateApplicationStatusAllowed(String id) {
         Application application = getApplicationById(id);
 
         boolean allDecisionSuggestionEdited = allDecisionSuggestionEdited(application);

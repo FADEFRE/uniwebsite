@@ -43,10 +43,15 @@ const commentApplicant = computed(() => panelComment.value?.comment)
 
 const emit = defineEmits(['deleteSelf'])
 
+const checkValidity = () => {
+  panelExternalModules.value.checkValidity()
+}
+
 defineExpose({
   externalModules,
   internalModules,
-  commentApplicant
+  commentApplicant,
+  checkValidity
 })
 </script>
 
