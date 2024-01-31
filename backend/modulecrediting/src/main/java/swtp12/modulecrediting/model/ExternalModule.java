@@ -36,7 +36,6 @@ public class ExternalModule {
     @JsonView({Views.ApplicationStudent.class,Views.ApplicationLogin.class})
     @NotNull(message = "point system must not be null")
     private String pointSystem;
-    //TODO: check related modules connection view here e.g
     @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class,Views.ApplicationLoginOverview.class})
     @NotBlank(message = "university must not be blank (empty String)")
     private String university;
