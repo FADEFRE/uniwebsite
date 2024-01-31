@@ -75,9 +75,8 @@ public class AuthController {
 
     @PostMapping("/refresh")
     public ResponseEntity<LoginResponse> refreshToken(
-        @CookieValue(name = "accessToken", required = false) String accessToken, 
-        @CookieValue(name = "refreshToken", required = false) String refreshToken) {
-            System.out.println("we will start se refresh");
+            @CookieValue(name = "accessToken", required = false) String accessToken, 
+            @CookieValue(name = "refreshToken", required = false) String refreshToken) {
         String decryptedAccessToken = SecurityCipher.decrypt(accessToken);
         String decryptedRefreshToken = SecurityCipher.decrypt(refreshToken);
         return userService.refresh(decryptedAccessToken, decryptedRefreshToken);

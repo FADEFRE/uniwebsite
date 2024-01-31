@@ -14,7 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 public class SecurityCipher {
-    private static final String KEYVALUE = "JPnJqOfeEge";
+    private static final String KEYVALUE = "JPnJqOfaEge";
     private static SecretKeySpec secretKey;
     private static byte[] key;
 
