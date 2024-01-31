@@ -53,7 +53,7 @@ public class SecurityCipher {
     public static String decrypt(String strToDecrypt) {
         if (strToDecrypt == null) return null;
         int counter = 0;
-        int finished = 5;
+        int finished = 3;
 
         while (counter < finished) {
             try {
