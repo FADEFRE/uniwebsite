@@ -96,7 +96,7 @@ public class ApplicationService {
         return NOT_ALLOWED;
     }
 
-    // FUNCTION TO UPDADTE APPLICATION STATUS ON UPDATE TODO: remove unnecassary statements
+    // FUNCTION TO UPDADTE APPLICATION STATUS ON UPDATE
     public EnumApplicationStatus updateApplicationStatus(String id) {
         Application application = getApplicationById(id);
 
@@ -104,12 +104,14 @@ public class ApplicationService {
         boolean allDecisionsFinalEdited = allDecisionsFinalEdited(application);
         boolean containsFormalRejection = containsFormalRejection(application);
 
-        if(containsFormalRejection) application.setFullStatus(FORMFEHLER);
-        else if(application.getFullStatus() == FORMFEHLER) application.setFullStatus(STUDIENBÜRO);
-        else if(allDecisionsFinalEdited) {
+        if(containsFormalRejection) {
+            application.setFullStatus(FORMFEHLER);
+        }else if(allDecisionsFinalEdited) {
             application.setFullStatus(ABGESCHLOSSEN);
             application.setDecisionDate(LocalDateTime.now());
-        } else if(allDecisionSuggestionEdited) application.setFullStatus(PRÜFUNGSAUSSCHUSS);
+        }else if(allDecisionSuggestionEdited) {
+            application.setFullStatus(PRÜFUNGSAUSSCHUSS);
+        }
 
         applicationRepository.save(application);
         return application.getFullStatus();
