@@ -74,8 +74,28 @@ const selectedFile = computed(() => fileInput.value?.selectedFile)
 
 watch([name, university, points, pointSystem], () => emit('change'))
 
+const nameValid = ref(true)
+const universityValid = ref(true)
+const pointsValid = ref(true)
+const pointSystemValid = ref(true)
+
+const numberRegExp = new RegExp('\\d+')
+
+const checkValidity = () => {
+  // setting validity
+  nameValid.value = Boolean(name.value)
+  universityValid.value = Boolean(university.value)
+  pointsValid.value = numberRegExp.test(points.value)
+  pointSystemValid.value = Boolean(pointSystem.value)
+  // cascading calls
+  const fileValid = fileInput.value.checkValidity()
+  // return
+  console.log(nameValid.value && universityValid.value && pointsValid.value && pointSystemValid.value && fileValid.value)  // todo remove
+  return nameValid.value && universityValid.value && pointsValid.value && pointSystemValid.value && fileValid.value
+}
+
 defineExpose({
-  id, name, university, points, pointSystem, selectedFile
+  id, name, university, points, pointSystem, selectedFile, checkValidity
 })
 </script>
 
@@ -83,15 +103,15 @@ defineExpose({
   <div class="external-modules-item">
     <div class="screen-split">
       <div class="left-side">
-        <InputText :readonly="!allowTextEdit" type="text" placeholder="Modulname" v-model="name" />
-        <InputText :readonly="!allowTextEdit" type="text" placeholder="Universität" v-model="university" />
+        <InputText :readonly="!allowTextEdit" type="text" placeholder="Modulname" v-model="name" :class="{ 'invalid': !nameValid }" />
+        <InputText :readonly="!allowTextEdit" type="text" placeholder="Universität" v-model="university" :class="{ 'invalid': !universityValid }" />
       </div>
 
       <div class="right-side">
 
         <div class="point-container">
-          <InputText :readonly="!allowTextEdit" type="text" placeholder="Punkte" v-model="points" />
-          <InputText :readonly="!allowTextEdit" type="text" placeholder="Punktesystem" v-model="pointSystem" />
+          <InputText :readonly="!allowTextEdit" type="text" placeholder="Punkte" v-model="points" :class="{ 'invalid': !pointsValid }" />
+          <InputText :readonly="!allowTextEdit" type="text" placeholder="Punktesystem" v-model="pointSystem" :class="{ 'invalid': !pointSystemValid }" />
         </div>
 
         <FileInput :readonly="!allowFileEdit" :selected-file="props.selectedFile" ref="fileInput" />
@@ -172,5 +192,10 @@ defineExpose({
   &:hover {
     background-color: $gray-hover;
   }
+}
+
+.invalid {
+  border: 2px solid $red !important;
+  box-shadow: 0px 0px 4px 0px $red !important;
 }
 </style>

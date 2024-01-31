@@ -62,8 +62,14 @@ const deleteExternalModule = (key) => {
 // data ref
 const externalModules = ref()
 
+const checkValidity = () => {
+  for (let externalModule of externalModules.value) {
+    externalModule.checkValidity()
+  }
+}
+
 defineExpose({
-  externalModules
+  externalModules, checkValidity
 })
 </script>
 

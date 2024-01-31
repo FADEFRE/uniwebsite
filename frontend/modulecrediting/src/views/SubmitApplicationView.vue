@@ -50,6 +50,13 @@ const deleteModuleConnection = (key) => {
   moduleConnections.value = moduleConnections.value.filter(el => el !== key)
 }
 
+const checkValidity = () => {
+  console.log('checkValidity')
+  for (let connectionPanel of moduleConnectionsRef.value) {
+    connectionPanel.checkValidity()
+  }
+}
+
 const triggerPostApplication = () => {
   console.log(selectedCourse.value)
   console.log(moduleConnectionsRef.value)
@@ -64,6 +71,8 @@ const triggerPostApplication = () => {
   <div class="main">
 
     <div class="submit-application-container">
+
+      <Button @click="checkValidity">Check Validity</Button>
 
       <ApplicationOverview :creation-date="getFormattedDate(creationDate)" :last-edited-date="undefined"
         :decision-date="undefined" status="NEU">
