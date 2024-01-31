@@ -11,7 +11,6 @@ import swtp12.modulecrediting.service.ModulesConnectionService;
 import java.util.List;
 
 @RestController
-@CrossOrigin
 @RequestMapping("/api/modules-connection")
 public class ModulesConnectionController {
     @Autowired

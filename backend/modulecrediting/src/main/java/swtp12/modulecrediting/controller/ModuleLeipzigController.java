@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
-import swtp12.modulecrediting.dto.ModuleLeipzigCreateDTO;
+import swtp12.modulecrediting.dto.ModuleLeipzigDTO;
 import swtp12.modulecrediting.model.ModuleLeipzig;
 import swtp12.modulecrediting.model.Views;
 import swtp12.modulecrediting.service.ModuleLeipzigService;
@@ -25,7 +25,6 @@ import swtp12.modulecrediting.service.ModuleLeipzigService;
 
 @RestController
 @RequestMapping("/api/modules-leipzig")
-@CrossOrigin
 public class ModuleLeipzigController {
 
     @Autowired
@@ -41,15 +40,15 @@ public class ModuleLeipzigController {
     //POST-Requests
     @PostMapping
     @PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR')")
-    public ResponseEntity<String> createModuleLeipzig(@ModelAttribute ModuleLeipzigCreateDTO moduleLeipzigCreateDTO) {
-        return ResponseEntity.ok(moduleLeipzigService.createModuleLeipzig(moduleLeipzigCreateDTO));
+    public ResponseEntity<String> createModuleLeipzig(@ModelAttribute ModuleLeipzigDTO moduleLeipzigDTO) {
+        return ResponseEntity.ok(moduleLeipzigService.createModuleLeipzig(moduleLeipzigDTO));
     }
 
     //PUT-Requests
     @PutMapping("/{name}")
     @PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR')")
-    public ResponseEntity<String> updateCourseLeipzig(@PathVariable String name, @ModelAttribute ModuleLeipzigCreateDTO moduleLeipzigCreateDTO) {
-        return ResponseEntity.ok(moduleLeipzigService.updateModuleLeipzig(name, moduleLeipzigCreateDTO));
+    public ResponseEntity<String> updateCourseLeipzig(@PathVariable String name, @ModelAttribute ModuleLeipzigDTO moduleLeipzigDTO) {
+        return ResponseEntity.ok(moduleLeipzigService.updateModuleLeipzig(name, moduleLeipzigDTO));
     }
 
     //DELETE-Requests

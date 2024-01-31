@@ -36,7 +36,6 @@ import swtp12.modulecrediting.util.SecurityCipher;
 
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin
 public class AuthController {
     
     @Value("${app.auth.accessTokenCookieName}")

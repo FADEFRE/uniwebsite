@@ -371,7 +371,7 @@ function putApplicationChairman(
     const formData = createBasicFormData(courseLeipzig, connectionObjects);
 
     connectionObjects.forEach((connection, connectionIndex) => {
-        if (connection.studyOfficeDecisionData["decision"]) {
+        if (connection.chairmanDecisionData["decision"]) {
             formData.append(
                 `modulesConnections[${connectionIndex}].decisionFinal`,
                 connection.chairmanDecisionData.decision

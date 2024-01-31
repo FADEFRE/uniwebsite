@@ -9,5 +9,5 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class CourseLeipzigRelationEditDTO {
-    private List<ModuleLeipzigCreateDTO> modulesLeipzig;
+    private List<ModuleLeipzigDTO> modulesLeipzig;
 }

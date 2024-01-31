@@ -23,7 +23,6 @@ import swtp12.modulecrediting.model.Views;
 import swtp12.modulecrediting.service.CourseLeipzigService;
 
 @RestController
-@CrossOrigin
 @RequestMapping("/api/courses-leipzig")
 public class CourseLeipzigController {
     @Autowired

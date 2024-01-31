@@ -5,10 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-import swtp12.modulecrediting.dto.ExternalModuleUpdateDTO;
-import swtp12.modulecrediting.dto.ModuleLeipzigUpdateDTO;
-import swtp12.modulecrediting.dto.ModulesConnectionCreateDTO;
-import swtp12.modulecrediting.dto.ModulesConnectionUpdateDTO;
+import swtp12.modulecrediting.dto.ExternalModuleDTO;
+import swtp12.modulecrediting.dto.ModuleLeipzigDTO;
+import swtp12.modulecrediting.dto.ModulesConnectionDTO;
 import swtp12.modulecrediting.model.ExternalModule;
 import swtp12.modulecrediting.model.ModuleLeipzig;
 import swtp12.modulecrediting.model.ModulesConnection;
@@ -28,13 +27,13 @@ public class ModulesConnectionService {
     @Autowired
     ModuleLeipzigService moduleLeipzigService;
 
-    public List<ModulesConnection> createModulesConnectionsWithDuplicate(List<ModulesConnectionCreateDTO> modulesConnectionsDTO) {
+    public List<ModulesConnection> createModulesConnectionsWithDuplicate(List<ModulesConnectionDTO> modulesConnectionsDTO) {
         if(modulesConnectionsDTO == null || modulesConnectionsDTO.size() == 0)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, " No Modules Connections provided in the request");
 
         List<ModulesConnection> modulesConnections = new ArrayList<>();
 
-        for(ModulesConnectionCreateDTO modulesConnectionDTO : modulesConnectionsDTO) {
+        for(ModulesConnectionDTO modulesConnectionDTO : modulesConnectionsDTO) {
             ModulesConnection modulesConnection = createModulesConnection(modulesConnectionDTO);
             ModulesConnection modulesConnectionOriginal = createModulesConnection(modulesConnectionDTO);
 
@@ -45,7 +44,7 @@ public class ModulesConnectionService {
         return modulesConnections;
     }
 
-    private ModulesConnection createModulesConnection(ModulesConnectionCreateDTO modulesConnectionDTO) {
+    private ModulesConnection createModulesConnection(ModulesConnectionDTO modulesConnectionDTO) {
         ModulesConnection modulesConnection = new ModulesConnection();
 
         // create external modules
@@ -65,12 +64,15 @@ public class ModulesConnectionService {
     }
 
 
-    public void updateModulesConnection(List<ModulesConnectionUpdateDTO> modulesConnectionsDTO, String userRole) {
-        for(ModulesConnectionUpdateDTO mcuDTO : modulesConnectionsDTO) {
+    public void updateModulesConnection(List<ModulesConnectionDTO> modulesConnectionsDTO, String userRole) {
+        if(modulesConnectionsDTO == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Modules Connections must not be null");
+
+        for(ModulesConnectionDTO mcuDTO : modulesConnectionsDTO) {
             if(mcuDTO.getId() == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Modules Connection id must not be null");
+
             ModulesConnection modulesConnection = getModulesConnectionById(mcuDTO.getId());
 
-            // handle decision block
+            // handle study office decision
             if(userRole.equals("study-office")) {
                 if (mcuDTO.getCommentStudyOffice() != null)
                     modulesConnection.setCommentStudyOffice(mcuDTO.getCommentStudyOffice());
@@ -78,6 +80,7 @@ public class ModulesConnectionService {
                 if (mcuDTO.getDecisionSuggestion() != null)
                     modulesConnection.setDecisionSuggestion(mcuDTO.getDecisionSuggestion());
 
+                // allow only study-office to reject as formal rejection TODO: if we want to change this
                 if(mcuDTO.getFormalRejection() != null)
                     modulesConnection.setFormalRejection(mcuDTO.getFormalRejection());
 
@@ -85,6 +88,7 @@ public class ModulesConnectionService {
                     modulesConnection.setFormalRejectionComment(mcuDTO.getFormalRejectionComment());
             }
 
+            // handle chairman decision
             if(userRole.equals("chairman")) {
                 if (mcuDTO.getCommentDecision() != null)
                     modulesConnection.setCommentDecision(mcuDTO.getCommentDecision());
@@ -93,6 +97,7 @@ public class ModulesConnectionService {
                     modulesConnection.setDecisionFinal(mcuDTO.getDecisionFinal());
             }
 
+            /* //TODO: add again outsource in function
             if(userRole.equals("standard")) {
                 // when user corrects application, the status of connection goes back to non rejecting
                 modulesConnection.setFormalRejection(false);
@@ -100,7 +105,7 @@ public class ModulesConnectionService {
 
                 if(mcuDTO.getCommentApplicant() != null)
                     modulesConnection.setCommentApplicant(mcuDTO.getCommentApplicant());
-            }
+            }*/ // TODO: not relevant here maybe in student update
 
 
             // handle module applications changes
@@ -129,6 +134,7 @@ public class ModulesConnectionService {
         }
     }
 
+
     // modules leipzig helper methods
     private void removeAllDeletedModulesLeipzig(ModulesConnection modulesConnection, List<String> deleteIdList) {
         ArrayList<ModuleLeipzig> modulesLeipzig = new ArrayList<>();
@@ -144,9 +150,9 @@ public class ModulesConnectionService {
         }
         return nameList;
     }
-    private List<String> getModuleLeipzigNameFromModuleConnectionUpdateDTO(ModulesConnectionUpdateDTO modulesConnection) {
+    private List<String> getModuleLeipzigNameFromModuleConnectionUpdateDTO(ModulesConnectionDTO modulesConnection) {
         ArrayList<String> nameList = new ArrayList<>();
-        for(ModuleLeipzigUpdateDTO ml : modulesConnection.getModulesLeipzig()) {
+        for(ModuleLeipzigDTO ml : modulesConnection.getModulesLeipzig()) {
             nameList.add(ml.getName());
         }
         return nameList;
@@ -165,9 +171,9 @@ public class ModulesConnectionService {
         }
         return idList;
     }
-    private List<Long> getIdListFromModuleConnectionUpdateDTO(ModulesConnectionUpdateDTO modulesConnection) {
+    private List<Long> getIdListFromModuleConnectionUpdateDTO(ModulesConnectionDTO modulesConnection) {
         ArrayList<Long> idList = new ArrayList<>();
-        for(ExternalModuleUpdateDTO eM : modulesConnection.getExternalModules()) {
+        for(ExternalModuleDTO eM : modulesConnection.getExternalModules()) {
             idList.add(eM.getId());
         }
         return idList;
