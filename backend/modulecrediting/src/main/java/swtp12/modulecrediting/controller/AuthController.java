@@ -88,11 +88,8 @@ public class AuthController {
         LogoutResponse logoutResponse = new LogoutResponse(LogoutResponse.SuccessFailure.ERROR, "Error in api/auth/logout");
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
-            logoutResponse = new LogoutResponse(LogoutResponse.SuccessFailure.SUCCESS, "Step 1 in api/auth/logout");
             for (Cookie cookie : cookies) {
-                logoutResponse = new LogoutResponse(LogoutResponse.SuccessFailure.SUCCESS, "Step 2 in api/auth/logout");
                 if (cookie.getName().equals(accessTokenCookieName)) {
-                    logoutResponse = new LogoutResponse(LogoutResponse.SuccessFailure.SUCCESS, "Step 3 in api/auth/logout");
                     return userService.logout();
                 }
             }

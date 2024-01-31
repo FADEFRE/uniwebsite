@@ -13,7 +13,7 @@ export const useUserStore = defineStore('user', {
     },
 
     getters: {
-        getCurrentUserId() { return this.currentUser.userId },
+        getCurrentUser() { return this.currentUser.user },
         getCurrentRoleNav() { return this.nav },
     },
 

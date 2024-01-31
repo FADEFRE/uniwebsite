@@ -40,23 +40,4 @@ export async function refreshToken() {
     return response.status;
 }
 
-export async function getAuthenticatedUser() {
-    console.debug("getAuthenticatedUser()");
-    const authUserStore = useUserStore();
-    try {
-        if (authUserStore.getCurrentUserId !== "-1" ) {
-            const response = await httpResource.get("/api/user/me");
-            if (response.status === 200 && response.data.userId !== null) {
-                const currentUser = response.data;
-                authUserStore.setCurrentUser(currentUser);
-            } 
-        }
-        else { performLogout(); }
-    } 
-    catch (error) { 
-        console.error(error)
-        performLogout(); 
-    }
-}
-
 export const intervalMilliSeconds = 1800000; // 30 minutes

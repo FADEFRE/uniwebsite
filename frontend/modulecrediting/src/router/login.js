@@ -29,9 +29,8 @@ async function login (login_username, login_password) {
                 const intervalName = setInterval(async () => { await refreshTokenInternal(); } , intervalMilliSeconds);
                 authUserStore.setIntervalName(intervalName);
             }
-            const id = authUserStore.getCurrentUserId;
             console.log("getRole");
-            const response = await httpResource.get(`/api/user/${id}/role`)
+            const response = await httpResource.get(`/api/user/role`)
             switch (response.data) {
                 case "ROLE_STUDY":
                     const routeData = router.resolve({name: 'studyOfficeSelection'})

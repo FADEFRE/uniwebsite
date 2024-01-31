@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { useUserStore } from "@/store/authStore";
-import { getAuthenticatedUser } from "@/scripts/utils";
 import httpResource from "@/scripts/httpResource";
 import HomepageView from "@/views/HomepageView.vue";
 
@@ -122,17 +121,16 @@ function changeRole(authRole) {
 
 router.beforeEach(async (to, from) => {
   const userStore = useUserStore();
-  const id = userStore.getCurrentUserId;
+  const user = userStore.getCurrentUser;
   if (from.name === "notFound" && to.name === "notFound") {
     return false;
   }
-  if (to.meta.authType === "standard" && id === "-1") {
+  if (to.meta.authType === "standard" && user === false) {
     userStore.setCurrentRoleNav("user");
     return true;
   }
-  getAuthenticatedUser()
   console.log("getRole Router");
-  const response = await httpResource.get(`/api/user/${id}/role`);
+  const response = await httpResource.get(`/api/user/role`);
   switch (to.meta.authType) {
     case "standard":
       changeRole(response.data);

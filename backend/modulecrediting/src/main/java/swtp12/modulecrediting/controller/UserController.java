@@ -5,8 +5,10 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -33,13 +35,12 @@ public class UserController {
     
 
 
-    @GetMapping("/{id}/role")
-    public ResponseEntity<String> getRole(@PathVariable String id) {
-        if (id.equals("-1")) {
-            return new ResponseEntity<>("Anonymous user", HttpStatus.OK); 
-        }
-        Long idLong = Long.parseLong(id);
-        Optional<User> userCandidate = userRepository.findById(idLong);
+    @GetMapping("/role")
+    @PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR') or hasRole('ROLE_ADMIN')")
+    public ResponseEntity<String> getRole() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+        Optional<User> userCandidate = userRepository.findByUsername(name);
         if (userCandidate.isPresent()) {
             User user = userCandidate.get();
             Role role = user.getRole();
