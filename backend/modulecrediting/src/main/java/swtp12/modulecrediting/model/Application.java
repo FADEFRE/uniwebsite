@@ -25,6 +25,7 @@ import lombok.NoArgsConstructor;
  * @see JsonView
  * @see Views
  * @see Views.ApplicationLoginOverview
+ * @see Views.ApplicationStudent
  * @see Views.RelatedModulesConnection
  */
 @Data
@@ -73,7 +74,13 @@ public class Application {
     }
 
 
-    // set modules connection + db relation
+    /**
+     * Sets the given {@link List} of {@link ModulesConnection} to this {@link Application}.
+     * <p>Also sets this {@link Application} for every {@link ModulesConnection} in the given {@link List}.
+     * 
+     * @see Application
+     * @see ModulesConnection 
+     */
     public void setModulesConnections(List<ModulesConnection> modulesConnections) {
         for(ModulesConnection mc : modulesConnections) {
             mc.setApplication(this);

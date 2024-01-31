@@ -26,6 +26,7 @@ import lombok.NoArgsConstructor;
  * @see JsonView
  * @see Views
  * @see Views.ApplicationLoginOverview
+ * @see Views.ApplicationStudent
  * @see Views.CoursesWithModules
  * @see Views.RelatedModulesConnection
  */

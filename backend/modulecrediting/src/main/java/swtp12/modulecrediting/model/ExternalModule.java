@@ -17,7 +17,17 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 
-
+/**
+ * ExternalModule {@link Entity}. Includes custom {@link JsonView} classes
+ * 
+ * @see JsonView
+ * @see Views
+ * @see Views.ApplicationLogin
+ * @see Views.ApplicationLoginOverview
+ * @see Views.ApplicationStudent
+ * @see Views.CoursesWithModules
+ * @see Views.RelatedModulesConnection
+ */
 @Data
 @NoArgsConstructor
 @Entity
@@ -53,7 +63,13 @@ public class ExternalModule {
     private ModulesConnection modulesConnection;
 
 
-    //Function to set the PDF Document to this ExternalModule (adds this Module to the PDF aswell)
+    /**
+     * Sets the given {@link PdfDocument} to this {@link ExternalModule}.
+     * <p>Also sets this {@link ExternalModule} to the given {@link PdfDocument}.
+     * 
+     * @see ExternalModule
+     * @see PdfDocument 
+     */
     public void setPdfDocument(PdfDocument pdfDocument) {
         pdfDocument.setExternalModule(this);
         this.pdfDocument = pdfDocument;
