@@ -60,7 +60,9 @@ public class SecurityCipher {
                 setKey();
                 Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
                 cipher.init(Cipher.DECRYPT_MODE, secretKey);
-                System.out.println(secretKey);
+
+                int printCounter = counter + 1;
+                System.out.println(secretKey + " Try:" + printCounter);
                 String test = new String(cipher.doFinal(Base64.getDecoder().decode(strToDecrypt)));
                 return test;
             } catch (Exception e) {
