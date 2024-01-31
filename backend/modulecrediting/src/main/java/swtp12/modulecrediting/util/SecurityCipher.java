@@ -52,9 +52,19 @@ public class SecurityCipher {
 
     public static String decrypt(String strToDecrypt) {
         if (strToDecrypt == null) return null;
-        int counter = 0;
-        int finished = 3;
 
+        /*
+         * There seems to be an issue with "setKey()" while decrypting. Therefore I had to 
+         * let the code below run twice, if the decrypt was not succesfull, due to the diffrent
+         * generated key
+         * 
+         * Somebody more expirenced with this, might find the issue, why sometimes "setKey()"
+         * generates a diffrent key. 
+         * 
+         * Frederik Kluge
+         */
+        int counter = 0;
+        int finished = 2;
         while (counter < finished) {
             try {
                 setKey();
