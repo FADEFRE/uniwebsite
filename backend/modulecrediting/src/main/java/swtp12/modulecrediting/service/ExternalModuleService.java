@@ -23,7 +23,7 @@ public class ExternalModuleService {
 
     public List<ExternalModule> createExternalModules(List<ExternalModuleDTO> externalModuleDTOS) {
         if(externalModuleDTOS == null || externalModuleDTOS.size() == 0)
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, " No Module Applications provided in the request");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, " No External Modules provided in the request");
 
         List<ExternalModule> externalModules = new ArrayList<>();
 
@@ -63,11 +63,6 @@ public class ExternalModuleService {
             if(ma.getPointSystem() != null) {
                 externalModule.setPointSystem(ma.getPointSystem());
             }
-            /*
-            if(userRole.equals("standard") && ma.getDescription() != null) {
-                PdfDocument pdfDocument = pdfDocumentService.createPdfDocument(ma.getDescription());
-                externalModule.setPdfDocument(pdfDocument);
-            }*/ // TODO: handle all files
             listofIds.add(ma.getId());
         }
         return listofIds;

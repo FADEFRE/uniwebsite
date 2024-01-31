@@ -70,7 +70,7 @@ public class ModulesConnection {
     @JsonView(Views.RelatedModulesConnection.class)
     private Application application;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonView(Views.ApplicationStudent.class)
     private ModulesConnection modulesConnectionOriginal;
 

@@ -65,19 +65,18 @@ public class ApplicationController {
     }
 
     //PUT-Requests
+    @PutMapping("/student/{id}")
+    public ResponseEntity<String> updateApplicationAfterFormalRejection(@PathVariable String id,
+                                                                        @Valid @ModelAttribute ApplicationDTO applicationDTO,
+                                                                        BindingResult result) {
+        if (result.hasErrors()) return ResponseEntity.badRequest().body("Validation failed: " + result.getAllErrors());
+        return ResponseEntity.ok(applicationService.updateApplicationAfterFormalRejection(id, applicationDTO));
+    }
+
     @PutMapping("/{id}/update-status")
     @PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR')")
     public ResponseEntity<EnumApplicationStatus> updateApplicationStatus(@PathVariable String id) {
         return ResponseEntity.ok(applicationService.updateApplicationStatus(id));
-    }
-
-    //TODO: change route in frontend
-    @PutMapping("/student/{id}")
-    public ResponseEntity<String> updateApplicationAfterFormalRejection(@PathVariable String id,
-                                                    @Valid @ModelAttribute ApplicationDTO applicationDTO,
-                                                    BindingResult result) {
-        if (result.hasErrors()) return ResponseEntity.badRequest().body("Validation failed: " + result.getAllErrors());
-        return ResponseEntity.ok(applicationService.updateApplicationAfterFormalRejection(id, applicationDTO));
     }
 
     @PutMapping("/study-office/{id}")

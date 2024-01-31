@@ -22,4 +22,9 @@ public class ModulesConnectionController {
     ResponseEntity<List<ModulesConnection>> getRelatedModulesConnections(@PathVariable Long id) {
         return ResponseEntity.ok(modulesConnectionService.getRelatedModulesConnections(id));
     }
+
+    @GetMapping("/{id}")
+    ResponseEntity<ModulesConnection> getRelatedModus(@PathVariable Long id) {
+        return ResponseEntity.ok(modulesConnectionService.getModulesConnectionById(id));
+    }
 }

@@ -26,7 +26,7 @@ public class ModuleLeipzigService {
     private ModulesConnectionRepository modulesConnectionRepository;
 
     // used for application update
-    public void updateApplicationModulesLeipzig(ModulesConnection modulesConnection, List<ModuleLeipzigDTO> modulesLeipzigDTO) {
+    public void updateRelationModulesConnectionToModulesLeipzig(ModulesConnection modulesConnection, List<ModuleLeipzigDTO> modulesLeipzigDTO) {
         for(ModuleLeipzigDTO ml : modulesLeipzigDTO) {
             ModuleLeipzig moduleLeipzig = getModuleLeipzigByName(ml.getName());
 
