@@ -5,7 +5,6 @@ import static swtp12.modulecrediting.model.EnumModuleConnectionDecision.*;
 import static swtp12.modulecrediting.dto.EnumStatusChange.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,8 +18,6 @@ import jakarta.transaction.Transactional;
 import swtp12.modulecrediting.dto.*;
 import swtp12.modulecrediting.model.*;
 import swtp12.modulecrediting.repository.ApplicationRepository;
-import swtp12.modulecrediting.repository.ExternalModuleRepository;
-import swtp12.modulecrediting.repository.ModulesConnectionRepository;
 
 
 @Service
