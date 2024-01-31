@@ -72,7 +72,7 @@ const pointSystem = ref(props.pointSystem || "")
 const fileInput = ref()
 const selectedFile = computed(() => fileInput.value?.selectedFile)
 
-watch([name, university, points, pointSystem], () => emit('change'))
+watch([name, university, points, pointSystem, selectedFile], () => emit('change'))
 
 const nameValid = ref(true)
 const universityValid = ref(true)
