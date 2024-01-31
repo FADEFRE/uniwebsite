@@ -1,6 +1,6 @@
 import axios from "axios";
 import { url } from "./url-config";
-import { performLogout } from "@/scripts/utils";
+import { performLogout } from '@/router/logout'
 import router from "@/router";
 
 const isHandlerEnabled = (config = {}) => {

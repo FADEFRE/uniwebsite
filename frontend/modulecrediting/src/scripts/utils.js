@@ -1,5 +1,6 @@
 import httpResource from "./httpResource";
 import { useUserStore } from "@/store/authStore";
+import { performLogout } from '@/router/logout'
 
 export function parseApierror(error) {
     console.debug("parseapierror", error);
@@ -22,16 +23,6 @@ export function parseApierror(error) {
             message: "Server is not responding.."
         };
     }
-}
-
-export async function performLogout() {
-    console.debug("performLogout()");
-    const response = await httpResource.post("/api/auth/logout");
-    console.log(response)
-    const authUserStore = useUserStore();
-    authUserStore.logout();
-    const intervalName = authUserStore.getIntervalName;
-    if (intervalName) clearInterval(intervalName);
 }
 
 export async function refreshTokenInternal() {
