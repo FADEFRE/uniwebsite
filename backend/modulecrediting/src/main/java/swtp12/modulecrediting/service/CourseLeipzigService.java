@@ -32,7 +32,7 @@ public class CourseLeipzigService {
 
     public CourseLeipzig getCourseLeipzigByName(String name) {
         Optional<CourseLeipzig> courseLeipzig = courseLeipzigRepository.findByName(name);
-        if(!courseLeipzig.isPresent()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Course Leipzig not found with moduleName: " + name);
+        if(!courseLeipzig.isPresent()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Course Leipzig not found with moduleName: " + name);
 
         return courseLeipzig.get();
     }
