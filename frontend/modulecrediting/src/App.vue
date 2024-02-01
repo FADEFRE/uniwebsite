@@ -2,9 +2,11 @@
 import TheNavigation from "@/components/TheNavigation.vue";
 import TheLanguageSelection from "@/components/TheLanguageSelection.vue";
 import { onMounted, ref } from "vue";
+import translate from '@/i18n/translate';
 
 onMounted(() => {
-  document.cookie = 'locale=DE'
+    const locale = translate.guessDefaultLocale()
+    translate.setCurrentLocale(locale)
 })
 
 const isMenuOpen = ref(false);

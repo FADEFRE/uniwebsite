@@ -1,10 +1,21 @@
 <script setup>
+import { useUserStore } from "@/store/authStore";
+import translate from '@/i18n/translate';
+import { onMounted } from "vue";
+
+const store = useUserStore()
+
+onMounted(() => {
+    const locale = translate.guessDefaultLocale()
+    translate.setCurrentLocale(locale)
+})
+
 </script>
 
 <template>
     <div class="language-selection-container">
-        <Button @click="$i18n.locale = 'DE'" class="language-button" :class="{ 'active': $i18n.locale == 'DE'}">DE</Button>
-        <Button @click="$i18n.locale = 'EN'" class="language-button" :class="{ 'active': $i18n.locale == 'EN' }">EN</Button>
+        <Button @click="translate.switchLanguage('de')" class="language-button" :class="{ 'active': store.locale == 'de' }">DE</Button>
+        <Button @click="translate.switchLanguage('en')" class="language-button" :class="{ 'active': store.locale == 'en' }">EN</Button>
     </div>
 </template>
 
