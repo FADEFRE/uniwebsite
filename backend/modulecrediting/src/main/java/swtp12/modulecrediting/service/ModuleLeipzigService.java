@@ -69,19 +69,25 @@ public class ModuleLeipzigService {
         String moduleCode = moduleLeipzigDTO.getCode();
 
         Optional<ModuleLeipzig> moduleLeipzigOptional = moduleLeipzigRepository.findByName(moduleName);
+
         if (moduleLeipzigOptional.isPresent()) {
             ModuleLeipzig moduleLeipzig = moduleLeipzigOptional.get();
-            if (moduleLeipzig.getIsActive())
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Module with this name already exists: " + moduleName);
+            if (moduleLeipzig.getIsActive()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Module with this name already exists: " + moduleName);
+            else {
+                // reactivate with new module code
+                moduleLeipzig.setIsActive(true);
+                moduleLeipzig.setCode(moduleCode);
 
-            // reacitvate old module
-            moduleLeipzig.setCode(moduleCode);
+                System.out.println("Reactivated Module Leipzig: " + moduleLeipzig.getName() + ", " + moduleLeipzig.getCode());
+            }
+
             moduleLeipzigRepository.save(moduleLeipzig);
             return moduleLeipzig.getName();
         }
 
         // create new module
         ModuleLeipzig moduleLeipzig = new ModuleLeipzig(moduleName, moduleCode);
+        System.out.println("Created new Module Leipzig: " + moduleLeipzig.getName() + ", " + moduleLeipzig.getCode());
         moduleLeipzigRepository.save(moduleLeipzig);
         return moduleLeipzig.getName();
     }
@@ -92,14 +98,12 @@ public class ModuleLeipzigService {
         if (moduleLeipzigDTO.getName() == null || moduleLeipzigDTO.getName().isBlank() || moduleLeipzigDTO.getCode() == null || moduleLeipzigDTO.getCode().isBlank())
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No course name given");
 
-        Optional<ModuleLeipzig> moduleLeipzigOptional = moduleLeipzigRepository.findByName(name);
+        ModuleLeipzig moduleLeipzig = getModuleLeipzigByName(name);
 
-        if (!moduleLeipzigOptional.isPresent())
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No Module: " + name + " exists");
-
-        ModuleLeipzig moduleLeipzig = moduleLeipzigOptional.get();
+        System.out.print("Update Module Leipzig: " + moduleLeipzig.getName() + ", " + moduleLeipzig.getCode());
         moduleLeipzig.setName(moduleLeipzigDTO.getName());
         moduleLeipzig.setCode(moduleLeipzigDTO.getCode());
+        System.out.println(" => " + moduleLeipzig.getName() + ", " + moduleLeipzig.getCode());
 
         moduleLeipzigRepository.save(moduleLeipzig);
         return moduleLeipzig.getName();
@@ -113,10 +117,12 @@ public class ModuleLeipzigService {
         moduleLeipzig.setIsActive(false);
 
         if (!checkIfModuleIsUsedInApplications(moduleLeipzig)) {
+            System.out.println("Delete Module Leipzig: " + moduleLeipzig.getName() + ", " + moduleLeipzig.getCode());
             moduleLeipzigRepository.deleteById(moduleLeipzig.getId());
             return "DELETED";
         }
 
+        System.out.println("Deactivate Module Leipzig: " + moduleLeipzig.getName() + ", " + moduleLeipzig.getCode());
         moduleLeipzigRepository.save(moduleLeipzig);
         return "DEACTIVATED";
     }
