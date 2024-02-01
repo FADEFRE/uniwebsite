@@ -5,7 +5,7 @@ export const useUserStore = defineStore('user', {
         currentUser: { user: false },
         intervalName: "",
         nav: "user",
-        locale: 'DE'
+        locale: 'de'
     }),
     
     persist: {
@@ -15,11 +15,13 @@ export const useUserStore = defineStore('user', {
     getters: {
         getCurrentUser() { return this.currentUser.user },
         getCurrentRoleNav() { return this.nav },
+        getLocale() { return this.locale }
     },
 
     actions: {
         setIntervalName(intervalName) {this.intervalName = intervalName },
         setCurrentUser(loggedInUser) { this.currentUser.user = loggedInUser },
+        setLocale(newLocale) { this.locale = newLocale },
         setCurrentRoleNav(currentRole) { this.nav = currentRole },
         async logout() { 
             this.nav = "user";
