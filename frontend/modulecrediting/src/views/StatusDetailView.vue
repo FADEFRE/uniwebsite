@@ -9,7 +9,7 @@ import ApplicationOverview from "@/components/ApplicationOverview.vue";
 import StatusPanel from "@/components/StatusPanel.vue";
 import SideInfoContainer from '../components/SideInfoContainer.vue';
 import { url } from "@/scripts/url-config"
-import { getApplicationByIdForStatus, getModulesByCourse, putApplicationStandard } from "@/scripts/axios-requests";
+import { getApplicationByIdForStatus, getModulesByCourse, putApplicationStudent } from "@/scripts/axios-requests";
 import { parseRequestDate } from "@/scripts/date-utils";
 import ButtonLink from '@/components/ButtonLink.vue';
 import FormalRejectionInfoBox from "@/components/FormalRejectionInfoBox.vue";
@@ -44,7 +44,7 @@ const openSummaryDocument = () => {
   window.open(summaryDocumentLink, '_blank')
 }
 const triggerSubmit = () => {
-  putApplicationStandard(applicationData.value['id'], applicationData.value['courseLeipzig']['name'], moduleConnections.value)
+  putApplicationStudent(applicationData.value['id'], applicationData.value['courseLeipzig']['name'], moduleConnections.value)
     .then(_ => location.reload())
 }
 </script>

@@ -252,7 +252,7 @@ function createBasicFormData(courseLeipzig, basicConnectionObjects) {
   return formData;
 }
 
-function putApplicationStandard(
+function putApplicationStudent(
   applicationId,
   courseLeipzig,
   connectionObjects
@@ -289,7 +289,7 @@ function putApplicationStandard(
   });
 
   return httpResource
-    .put(url + "/api/applications/standard/" + applicationId, formData)
+    .put(url + "/api/applications/student/" + applicationId, formData)
     .then((response) => response.data)
     .catch((_) => {});
 }
@@ -490,7 +490,7 @@ export {
   getApplicationExists,
   getRelatedModuleConnections,
   postApplication,
-  putApplicationStandard,
+  putApplicationStudent,
   putApplicationStudyOffice,
   putApplicationChairman,
   getUpdateStatusAllowed,

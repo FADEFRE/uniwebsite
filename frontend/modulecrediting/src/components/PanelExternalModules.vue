@@ -1,9 +1,12 @@
 <!--
 list of external modules
 props:
-  - type (may be 'new', 'edit' or 'readonly', is cascaded to PanelExternalModulesItem)
-      type 'new' allows for adding external modules
-  - modulesData (should be given if type is 'edit' or 'readonly')
+  - allowTextEdit
+  - allowFileEdit
+  - allowDelete
+  - allowAdd
+  - hasInitialNew (defaults to false)
+  - modulesData (optional)
       modulesData should be array containing objects, each with properties name, university, creditPoints, pointSystem, selectedFile
 exposes:
   - externalModules (array similar to modulesData)
@@ -15,7 +18,7 @@ displays:
 <script setup>
 import PanelExternalModulesItem from "@/components/PanelExternalModulesItem.vue";
 import ButtonAdd from "./ButtonAdd.vue";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 
 const props = defineProps({
   allowTextEdit: {
@@ -25,6 +28,18 @@ const props = defineProps({
   allowFileEdit: {
     required: true,
     type: Boolean
+  },
+  allowDelete: {
+    required: true,
+    type: Boolean
+  },
+  allowAdd: {
+    required: true,
+    type: Boolean
+  },
+  hasInitialNew: {
+    type: Boolean,
+    default: false
   },
   modulesData: {
     type: Array,
@@ -43,28 +58,55 @@ const props = defineProps({
 
 const emit = defineEmits(['change'])
 
-// connection handling
-const externalModulesList = ref([0])
+// handle existing modules
+const existingModulesList = ref(props.modulesData)
 
-const addExternalModule = () => {
-  if (externalModulesList.value.length > 0) {
-    const nextIndex = Math.max(...externalModulesList.value) + 1
-    externalModulesList.value.push(nextIndex)
+const deleteExistingModule = (id) => {
+  existingModulesList.value = existingModulesList.value.filter(m => m.id !== id)
+  emit('change')
+}
+
+const existingModulesRef = ref()
+
+// handle new modules
+const newModulesList = ref([])
+if (props.hasInitialNew) newModulesList.value.push(0)
+
+const addNewModule = () => {
+  if (newModulesList.value.length > 0) {
+    const nextIndex = Math.max(...newModulesList.value) + 1
+    newModulesList.value.push(nextIndex)
   } else {
-    externalModulesList.value.push(0)
+    newModulesList.value.push(0)
   }
+  emit('change')
 }
 
-const deleteExternalModule = (key) => {
-  externalModulesList.value = externalModulesList.value.filter(el => el !== key)
+const deleteNewModule = (key) => {
+  newModulesList.value = newModulesList.value.filter(k => k !== key)
+  emit('change')
 }
 
-// data ref
-const externalModules = ref()
+const newModulesRef = ref()
+
+// concat external modules
+const externalModules = computed(() => {
+  let modulesArray = []
+  if (existingModulesRef.value) modulesArray = modulesArray.concat(existingModulesRef.value)
+  if (newModulesRef.value) modulesArray = modulesArray.concat(newModulesRef.value)
+  return modulesArray
+})
 
 const checkValidity = () => {
-  for (let externalModule of externalModules.value) {
-    externalModule.checkValidity()
+  if (existingModulesRef.value) {
+    for (let module of existingModulesRef.value) {
+      module.checkValidity()
+    }
+  }
+  if (newModulesRef.value) {
+    for (let module of newModulesRef.value) {
+      module.checkValidity()
+    }
   }
 }
 
@@ -78,37 +120,39 @@ defineExpose({
 
     <h4>Anzurechnende Module</h4>
 
-    <div v-if="!modulesData" class="external-modules-list">
+    <div v-if="existingModulesList" class="external-modules-list">
       <PanelExternalModulesItem
-          v-for="i in externalModulesList"
-          :key="i"
+          v-for="module in existingModulesList"
+          :key="module.id"
           :allow-text-edit="allowTextEdit"
           :allow-file-edit="allowFileEdit"
-          :allow-delete="externalModulesList.length > 1"
-          ref="externalModules"
-          @delete-self="deleteExternalModule(i)"
-      />
-      <ButtonAdd @click="addExternalModule">Fremdmodul hinzufuegen</ButtonAdd>
-      <small>Anrechnung mehrerer externer Module auf Module der Universität Leipzig</small>
-    </div>
-
-    <div v-else class="external-modules-list">
-      <PanelExternalModulesItem
-          v-for="module in modulesData"
-          :allow-text-edit="allowTextEdit"
-          :allow-file-edit="allowFileEdit"
-          :allow-delete="false"
+          :allow-delete="allowDelete && externalModules.length > 1"
           :id="module.id"
           :name="module.name"
           :university="module.university"
           :points="module.points"
           :point-system="module.pointSystem"
-          :selected-file="module['pdfDocument']"
-          ref="externalModules"
+          :selected-file="module.pdfDocument"
+          @delete-self="deleteExistingModule(module.id)"
           @change="emit('change')"
-          />
+          ref="existingModulesRef"
+      />
     </div>
 
+    <div v-if="allowAdd" class="external-modules-list">
+      <PanelExternalModulesItem
+          v-for="key in newModulesList"
+          :key="key"
+          :allow-text-edit="allowTextEdit"
+          :allow-file-edit="allowFileEdit"
+          :allow-delete="allowDelete && externalModules.length > 1"
+          @delete-self="deleteNewModule(key)"
+          @change="emit('change')"
+          ref="newModulesRef"
+      />
+      <ButtonAdd @click="addNewModule">Fremdmodul hinzufuegen</ButtonAdd>
+      <small>Anrechnung mehrerer externer Module auf Module der Universität Leipzig</small>
+    </div>
 
   </div>
 </template>
