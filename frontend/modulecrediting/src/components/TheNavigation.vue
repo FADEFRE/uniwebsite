@@ -1,6 +1,6 @@
 <script setup>
 import { logout } from "@/router/logout";
-import { useUserStore } from "@/store/authStore"
+import { useUserStore } from "@/store/userStore"
 import { computed } from "vue";
 
 const props = defineProps(['isMenuOpen'])

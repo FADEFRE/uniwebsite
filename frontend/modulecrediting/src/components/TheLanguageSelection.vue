@@ -1,5 +1,5 @@
 <script setup>
-import { useUserStore } from "@/store/authStore";
+import { useUserStore } from "@/store/userStore";
 import translate from '@/i18n/translate';
 import { onMounted } from "vue";
 
