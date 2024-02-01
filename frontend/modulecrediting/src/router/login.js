@@ -3,7 +3,7 @@ import httpResource from "@/scripts/httpResource";
 import { parseApierror, refreshTokenInternal, intervalMilliSeconds} from "@/scripts/utils";
 import { performLogout } from '@/router/logout'
 import { ref } from "vue";
-import { useUserStore } from "@/store/authStore";
+import { useUserStore } from "@/store/userStore";
 
 
 const displayErrorMessage = ref();

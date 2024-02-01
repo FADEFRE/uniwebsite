@@ -1,5 +1,5 @@
 import i18n from "@/i18n"
-import { useUserStore } from "@/store/authStore";
+import { useUserStore } from "@/store/userStore";
 
 const translate = {
     get supportedLocales() {

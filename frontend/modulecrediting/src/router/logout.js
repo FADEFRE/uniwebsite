@@ -1,6 +1,6 @@
 import router from "@/router";
 import httpResource from "@/scripts/httpResource";
-import { useUserStore } from "@/store/authStore";
+import { useUserStore } from "@/store/userStore";
 
 async function logout() {
   await performLogout();

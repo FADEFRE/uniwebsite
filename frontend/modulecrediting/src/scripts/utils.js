@@ -1,5 +1,5 @@
 import httpResource from "./httpResource";
-import { useUserStore } from "@/store/authStore";
+import { useUserStore } from "@/store/userStore";
 import { performLogout } from '@/router/logout'
 
 export function parseApierror(error) {
