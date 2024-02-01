@@ -13,6 +13,7 @@ public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint{
     
     @Override
     public void commence(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
-        httpServletResponse.sendError(HttpServletResponse.SC_CONFLICT, "Error in 'RestAuthenticationEntryPoint' Error message: " + e.getLocalizedMessage());
+        e.printStackTrace();
+        httpServletResponse.sendError(HttpServletResponse.SC_PAYMENT_REQUIRED, "Custom Message: Error in 'RestAuthenticationEntryPoint' Error message: " + e.getLocalizedMessage());
     }
 }
