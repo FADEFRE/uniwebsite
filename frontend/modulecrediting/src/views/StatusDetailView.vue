@@ -6,13 +6,15 @@ shows status of an application
 import { useRoute, useRouter } from 'vue-router';
 import {ref, onBeforeMount, computed} from "vue";
 import ApplicationOverview from "@/components/ApplicationOverview.vue";
-import StatusPanel from "@/components/StatusPanel.vue";
+import FormalRejectionInfoBox from "@/components/FormalRejectionInfoBox.vue";
 import SideInfoContainer from '../components/SideInfoContainer.vue';
+import StatusPanel from "@/components/StatusPanel.vue";
+import ApplicationPanel from "../components/ApplicationPanel.vue";
+import ButtonLink from '@/components/ButtonLink.vue';
+import ButtonAdd from "../components/ButtonAdd.vue";
 import { url } from "@/scripts/url-config"
 import { getApplicationByIdForStatus, getModulesByCourse, putApplicationStudent } from "@/scripts/axios-requests";
 import { parseRequestDate } from "@/scripts/date-utils";
-import ButtonLink from '@/components/ButtonLink.vue';
-import FormalRejectionInfoBox from "@/components/FormalRejectionInfoBox.vue";
 
 const id = useRoute().params.id
 const summaryDocumentLink = `${url}/file/pdf-documents/application/${id}`
@@ -65,9 +67,9 @@ const deleteNewConnection = (key) => {
 const newConnectionsRef = ref()
 
 const moduleConnections = computed(() => {
-  const connectionsArray = []
-  if (existingConnectionsRef.value) connectionsArray.concat(existingConnectionsRef.value)
-  if (newConnectionsRef.value) connectionsArray.concat(newConnectionsRef.value)
+  let connectionsArray = []
+  if (existingConnectionsRef.value) connectionsArray = connectionsArray.concat(existingConnectionsRef.value)
+  if (newConnectionsRef.value) connectionsArray = connectionsArray.concat(newConnectionsRef.value)
   return connectionsArray
 })
 
@@ -107,12 +109,20 @@ const triggerSubmit = () => {
             :readonly="!(applicationData['fullStatus'] === 'FORMFEHLER')"
             :allow-delete="applicationData['fullStatus'] === 'FORMFEHLER' && moduleConnections.length > 1"
             @delete-self="deleteExistingConnection(connection.id)"
-            ref="moduleConnections"
+            ref="existingConnectionsRef"
             :class="{ 'formal-rejection-highlight': connection['formalRejection'] }"
         />
       </div>
       <div v-if="applicationData['fullStatus'] === 'FORMFEHLER'">
-        <!-- todo add new connections -->
+        <ApplicationPanel
+          v-for="key in newConnections"
+          :key="key"
+          :selectable-modules="moduleOptions"
+          :allow-delete="moduleConnections.length > 1"
+          @delete-self="deleteNewConnection(key)"
+          ref="newConnectionsRef"
+        />
+        <ButtonAdd @click="addNewConnection">Modulzuweisung hinzufügen</ButtonAdd>
       </div>
 
       <Button @click="openSummaryDocument">

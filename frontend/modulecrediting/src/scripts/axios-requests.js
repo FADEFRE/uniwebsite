@@ -202,7 +202,9 @@ function createBasicFormData(courseLeipzig, basicConnectionObjects) {
   const formData = new FormData();
   formData.append("courseLeipzig", courseLeipzig);
   basicConnectionObjects.forEach((connection, connectionIndex) => {
-    formData.append(`modulesConnections[${connectionIndex}].id`, connection.id);
+    if (connection.id) {
+      formData.append(`modulesConnections[${connectionIndex}].id`, connection.id);
+    }
     connection.externalModules.forEach(
       (externalModule, externalModuleIndex) => {
         if (externalModule.id) {
