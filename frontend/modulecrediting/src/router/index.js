@@ -129,8 +129,11 @@ router.beforeEach(async (to, from) => {
     userStore.setCurrentRoleNav("user");
     return true;
   }
+  const response = "";
   console.log("getRole Router");
-  const response = await httpResource.get(`/api/user/role`);
+  if (user !== false) {
+    response = await httpResource.get(`/api/user/role`);
+  }
   switch (to.meta.authType) {
     case "standard":
       changeRole(response.data);
