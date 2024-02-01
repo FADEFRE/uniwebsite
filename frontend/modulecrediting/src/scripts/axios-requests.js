@@ -1,6 +1,7 @@
 import { url } from "@/scripts/url-config.js";
 import httpResource from "@/scripts/httpResource";
 
+let axiosColor = "color:yellow";
 /*
 GET-Request to '/courses-leipzig' endpoint
 return list of all course names
@@ -9,7 +10,7 @@ parameters:
     none
  */
 function getCoursesLeipzig() {
-  console.debug("%c" + "getCoursesLeipzig ()", "color:yellow");
+  console.debug("%c" + "getCoursesLeipzig ()", axiosColor);
 
   return httpResource
     .get("/api/courses-leipzig")
@@ -27,7 +28,7 @@ parameters:
     course - String, course name
  */
 function getModulesByCourse(course) {
-  console.debug("%c" + "getModulesByCourse (" + course + ")", "color:yellow");
+  console.debug("%c" + "getModulesByCourse (" + course + ")", axiosColor);
 
   return httpResource
     .get("/api/courses-leipzig")
@@ -49,7 +50,7 @@ parameters:
     none
  */
 function getApplications() {
-  console.debug("%c" + "getApplications ()", "color:yellow");
+  console.debug("%c" + "getApplications ()", axiosColor);
 
   return httpResource
     .get("/api/applications")
@@ -65,7 +66,7 @@ parameters:
     id - Number, application id
  */
 function getApplicationById(id) {
-  console.debug("%c" + "getApplicationById (" + id + ")", "color:yellow");
+  console.debug("%c" + "getApplicationById (" + id + ")", axiosColor);
 
   return httpResource
     .get("/api/applications/" + id)
@@ -87,10 +88,8 @@ parameters:
     id - Number, application id
  */
 function getApplicationByIdForStatus(id) {
-  console.debug(
-    "%c" + "getApplicationByIdForStatus (" + id + ")",
-    "color:yellow"
-  );
+  console.debug("%c" + "getApplicationByIdForStatus (" + id + ")", axiosColor);
+
   return httpResource
     .get("/api/applications/student/" + id)
     .then((response) => {
@@ -111,7 +110,7 @@ parameters:
     id - Number, application id
  */
 function getApplicationExists(id) {
-  console.debug("%c" + "getApplicationExists ()", "color:yellow");
+  console.debug("%c" + "getApplicationExists ()", axiosColor);
 
   return httpResource
     .get(url + `/api/applications/${id}/exists`)
@@ -127,13 +126,7 @@ parameters:
     moduleConnectionId - Number, module connection id
  */
 function getRelatedModuleConnections(moduleConnectionId) {
-  console.debug(
-    "%c" +
-      "getRelatedModuleConnections (moduleConnectionId: " +
-      moduleConnectionId +
-      ")",
-    "color:yellow"
-  );
+  console.debug("%c" + "getRelatedModuleConnections (moduleConnectionId: " + moduleConnectionId + ")", axiosColor);
 
   return httpResource
     .get("/api/modules-connection/" + moduleConnectionId + "/related")
@@ -153,15 +146,7 @@ parameters:
     ... String pointSystem, File descriptionFile, String comment, array of Strings selectedInternalModules
  */
 function postApplication(course, applicationObjects) {
-  console.debug(
-    "%c" +
-      "postApplication (course: " +
-      course +
-      ", applicationObjects: " +
-      applicationObjects +
-      ")",
-    "color:yellow"
-  );
+  console.debug("%c" + "postApplication (course: " +  course + ", applicationObjects: " +  applicationObjects + ")", axiosColor);
 
   const formData = new FormData();
   formData.append(`courseLeipzig`, course);
@@ -266,7 +251,7 @@ function putApplicationStudent(
       ", connectionsObjects: " +
       connectionObjects +
       ")",
-    "color:yellow"
+      axiosColor
   );
 
   const formData = createBasicFormData(courseLeipzig, connectionObjects);
@@ -307,7 +292,7 @@ function putApplicationStudyOffice(
       ", connectionsObjects: " +
       connectionObjects +
       ")",
-    "color:yellow"
+      axiosColor
   );
 
   const formData = createBasicFormData(courseLeipzig, connectionObjects);
@@ -364,7 +349,7 @@ function putApplicationChairman(
         ", connectionsObjects: " +
         connectionObjects +
         ")",
-        "color:yellow"
+        axiosColor
     );
 
     const formData = createBasicFormData(courseLeipzig, connectionObjects);
@@ -398,7 +383,7 @@ parameters:
 function getUpdateStatusAllowed(id) {
   console.debug(
     "%c" + "getUpdateStatusAllowed (id: " + id + ")",
-    "color:yellow"
+    axiosColor
   );
 
   return httpResource
@@ -415,7 +400,7 @@ parameters:
     - id, Number application id
  */
 function updateStatus(id) {
-  console.debug("%c" + "updateStatus (id: " + id + ")", "color:yellow");
+  console.debug("%c" + "updateStatus (id: " + id + ")", axiosColor);
 
   return httpResource
     .put("/api/applications/" + id + "/update-status")
@@ -440,7 +425,7 @@ parameters:
 function postCourseLeipzig(coursename) {
   console.debug(
     "%c" + "create course leipzig (name: " + coursename + ")",
-    "color:yellow"
+    axiosColor
   );
 
   const formData = new FormData();
@@ -465,7 +450,7 @@ parameters:
 function postModuleLeipzig(modulename, modulecode) {
   console.debug(
     "%c" + "create module leipzig (name: " + modulename + ")",
-    "color:yellow"
+    axiosColor
   );
 
   const formData = new FormData();
