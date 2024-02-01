@@ -28,13 +28,34 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+
+    /**
+     * Get {@link GetMapping /api/user/me} 
+     * <p> Returns {@link UserSummary} of the currently logged in {@link User}
+     * 
+     * @return {@link UserSummary}
+     * @see GetMapping
+     * @see User
+     * @see UserSummary
+     */
     @GetMapping("/me")
     public ResponseEntity<UserSummary> getMeUser() {
         return ResponseEntity.ok(userService.getUserProfile());
     }
-    
 
 
+
+    /**
+     * Get {@link GetMapping /api/user/role} 
+     * <p> User needs to be logged in
+     * <p> Returns {@link Role} name of the currently logged in {@link User}
+     * 
+     * @return Role name
+     * @see GetMapping
+     * @see PreAuthorize
+     * @see Role
+     * @see User
+     */
     @GetMapping("/role")
     @PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR') or hasRole('ROLE_ADMIN')")
     public ResponseEntity<String> getRole() {
