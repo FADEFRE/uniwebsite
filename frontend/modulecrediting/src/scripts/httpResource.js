@@ -23,8 +23,16 @@ let errorColor = "color:red"
 const requestHandler = request => {
     if (isHandlerEnabled(request)) {
         //TODO remove debug logs
-        console.log("%c" + request.method.toUpperCase() + "-Request: " + request.url, requestColor);
-        //console.log(request)
+        if (request.data instanceof FormData) {
+            console.log("%c" + request.method.toUpperCase() + "-Request: " + request.url, requestColor, "  Start of Data: ");
+            let formData = new FormData;
+            formData = request.data;
+            for (const pair of formData.entries()) {
+                console.log(pair[0], pair[1]);
+            }
+            console.log("%c" + "End of Data", requestColor);
+        }
+        else console.log("%c" + request.method.toUpperCase() + "-Request: " + request.url, requestColor, "  Data: " + request.data);
     }
     return request;
 };
@@ -53,8 +61,8 @@ const errorHandler = error => {
             } 
 
         //debug
-        if (error.response.status === 407 || error.response.status === 409) {
-            console.debug("%c" + "DER FEHLER DA IM BACKEND", errorColor)
+        if (error.response.status === 402 ) {
+            console.debug("%c" + "RestAuthenticationEntryPoint FEHLER", errorColor, error.response)
         }
         }
     }
