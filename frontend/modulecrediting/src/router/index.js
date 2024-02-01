@@ -129,18 +129,19 @@ router.beforeEach(async (to, from) => {
     userStore.setCurrentRoleNav("user");
     return true;
   }
-  const response = "";
-  console.log("getRole Router");
-  if (user !== false) {
-    response = await httpResource.get(`/api/user/role`);
+  if (user === false) {
+    if (to.meta.authType !== "standard") { return { name: "login" }; }
+    return true;
   }
+  console.log("getRole Router");
+  const responseRole = await httpResource.get(`/api/user/role`);
   switch (to.meta.authType) {
     case "standard":
-      changeRole(response.data);
+      changeRole(responseRole.data);
       return true;
 
     case "study-office":
-      if (response.data === "ROLE_STUDY") {
+      if (responseRole.data === "ROLE_STUDY") {
         userStore.setCurrentRoleNav("study");
         return true;
       }
@@ -148,7 +149,7 @@ router.beforeEach(async (to, from) => {
       //return { name: "login" };
 
     case "chairman":
-      if (response.data === "ROLE_CHAIR") {
+      if (responseRole.data === "ROLE_CHAIR") {
         userStore.setCurrentRoleNav("chair");
         return true;
       }
@@ -156,7 +157,7 @@ router.beforeEach(async (to, from) => {
       //return { name: "login" };
 
     case "admin":
-      if (response.data === "ROLE_ADMIN") {
+      if (responseRole.data === "ROLE_ADMIN") {
         userStore.setCurrentRoleNav("admin");
         return true;
       }
@@ -164,16 +165,16 @@ router.beforeEach(async (to, from) => {
       //return { name: "login" };
 
     case "internal":
-      if (response.data === "ROLE_CHAIR" || response.data === "ROLE_STUDY") {
-        changeRole(response.data);
+      if (responseRole.data === "ROLE_CHAIR" || responseRole.data === "ROLE_STUDY") {
+        changeRole(responseRole.data);
         return true;
       }
       return { name: "Permission" }; //TODO route to correct error page "permission not allowed"
       //return { name: "login" };
 
     case "internal-with-admin":
-      if (response.data === "ROLE_ADMIN" || response.data === "ROLE_CHAIR" || response.data === "ROLE_STUDY") {
-        changeRole(response.data);
+      if (responseRole.data === "ROLE_ADMIN" || responseRole.data === "ROLE_CHAIR" || responseRole.data === "ROLE_STUDY") {
+        changeRole(responseRole.data);
         return true;
       }
       return { name: "Permission" }; //TODO route to correct error page "permission not allowed"
