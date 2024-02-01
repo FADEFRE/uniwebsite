@@ -103,24 +103,27 @@ defineExpose({
 </script>
 
 <template>
-  <div v-if="readonly" class="read-only-container" :class="{ 'invalid': !isValid }">
-    <p class="ellipsis-text-overflow">{{ props.selectedFile?.name }}</p>
-    <ButtonLink @click="openFile">PDF öffnen</ButtonLink>
-  </div>
-
-  <div v-else class="edit-container" @click="openFileDialog" @dragover.prevent="dragOverHandler"
-    @dragleave.prevent="dragLeaveHandler" @drop.prevent="dropHandler" :class="{ 'invalid': !isValid }">
-
-    <p v-if="selectedFile?.name" class="ellipsis-text-overflow">{{ selectedFile?.name }}</p>
-
-    <p v-else-if="props.selectedFile?.name" class="ellipsis-text-overflow">{{ props.selectedFile?.name }}</p>
-
-    <div v-else class="file-drop-unselected">
-      <p class="ellipsis-text-overflow">Modulbeschreibung hochladen</p>
-      <img src="../assets/icons/Upload.svg">
+  <div>
+    <div v-if="readonly" class="read-only-container" :class="{ 'invalid': !isValid }">
+      <p class="ellipsis-text-overflow">{{ props.selectedFile?.name }}</p>
+      <ButtonLink @click="openFile">PDF öffnen</ButtonLink>
     </div>
-    <input type="file" ref="fileInput" @change="handleFiles" />
 
+    <div v-else class="edit-container" @click="openFileDialog" @dragover.prevent="dragOverHandler"
+         @dragleave.prevent="dragLeaveHandler" @drop.prevent="dropHandler" :class="{ 'invalid': !isValid }">
+
+      <p v-if="selectedFile?.name" class="ellipsis-text-overflow">{{ selectedFile?.name }}</p>
+
+      <p v-else-if="props.selectedFile?.name" class="ellipsis-text-overflow">{{ props.selectedFile?.name }}</p>
+
+      <div v-else class="file-drop-unselected">
+        <p class="ellipsis-text-overflow">Modulbeschreibung hochladen</p>
+        <img src="../assets/icons/Upload.svg">
+      </div>
+      <input type="file" ref="fileInput" @change="handleFiles" />
+
+    </div>
+    <small v-if="!isValid" class="invalid-text">Es muss eine Datei ausgewählt sein</small>
   </div>
 </template>
 
@@ -173,5 +176,9 @@ input {
   @include ellipsisTextOverflow();
   width: 100%;
   padding: 0 0.625rem;
+}
+
+.invalid-text {
+  color: $red;
 }
 </style>
