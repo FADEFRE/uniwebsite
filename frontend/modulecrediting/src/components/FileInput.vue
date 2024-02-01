@@ -4,7 +4,7 @@ props:
   - readonly
   - selectedFile (File object)
 exposes:
-  - selectedFile
+  - selectedFile (might be File Object OR object with properties name and id)
 displays:
   - drop area
   - file name inside drop area if file is selected
@@ -98,7 +98,7 @@ const checkValidity = () => {
 }
 
 defineExpose({
-  selectedFile, checkValidity
+  selectedFile, checkValidity  // exposed selectedFile might be File Object OR object with properties name and id
 })
 </script>
 

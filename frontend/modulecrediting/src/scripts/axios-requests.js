@@ -220,10 +220,12 @@ function createBasicFormData(courseLeipzig, basicConnectionObjects) {
     formData.append(`modulesConnections[${connectionIndex}].id`, connection.id);
     connection.externalModules.forEach(
       (externalModule, externalModuleIndex) => {
-        formData.append(
-          `modulesConnections[${connectionIndex}].externalModules[${externalModuleIndex}].id`,
-          externalModule.id
-        );
+        if (externalModule.id) {
+          formData.append(
+            `modulesConnections[${connectionIndex}].externalModules[${externalModuleIndex}].id`,
+            externalModule.id
+          );
+        }
         formData.append(
           `modulesConnections[${connectionIndex}].externalModules[${externalModuleIndex}].name`,
           externalModule.name
@@ -277,7 +279,7 @@ function putApplicationStudent(
       connection.commentApplicant
     );
     connection.externalModules.forEach((externalModule, externalModuleIndex) => {
-        if (externalModule.selectedFile) {
+        if (externalModule.selectedFile && externalModule.selectedFile instanceof File) {
           formData.append(
             `modulesConnections[${connectionIndex}].externalModules[${externalModuleIndex}].description`,
             externalModule.selectedFile
