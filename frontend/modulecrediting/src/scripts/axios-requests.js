@@ -193,7 +193,7 @@ function postApplication(course, applicationObjects) {
     );
     connection.internalModules.forEach((moduleName, moduleIndex) => {
       formData.append(
-        `modulesConnections[${connectionIndex}].modulesLeipzig[${moduleIndex}]`,
+        `modulesConnections[${connectionIndex}].modulesLeipzig[${moduleIndex}].name`,
         moduleName
       );
     });
@@ -276,8 +276,7 @@ function putApplicationStudent(
       `modulesConnections[${connectionIndex}].commentApplicant`,
       connection.commentApplicant
     );
-    connection.externalModules.forEach(
-      (externalModule, externalModuleIndex) => {
+    connection.externalModules.forEach((externalModule, externalModuleIndex) => {
         if (externalModule.selectedFile) {
           formData.append(
             `modulesConnections[${connectionIndex}].externalModules[${externalModuleIndex}].description`,
