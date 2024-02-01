@@ -14,6 +14,10 @@ const props = defineProps({
     required: true,
     type: Boolean
   },
+  allowDelete: {
+    required: true,
+    type: Boolean
+  },
   selectableModules: {
     required: true,
     type: Array
@@ -24,6 +28,8 @@ const props = defineProps({
     // todo validator
   }
 })
+
+const emit = defineEmits(['deleteSelf'])
 
 const id = props.connection['id']
 
@@ -57,6 +63,7 @@ defineExpose({
       <img v-if="connection['decisionFinal'] === 'accepted'" src="@/assets/icons/ModuleAccepted.svg">
       <img v-else-if="connection['decisionFinal'] === 'asExamCertificate'" src="@/assets/icons/ModuleAsExamCertificate.svg">
       <img v-else-if="connection['decisionFinal'] === 'denied'" src="@/assets/icons/ModuleDenied.svg">
+      <img v-if="allowDelete" src="@/assets/icons/Trash.svg" @click="emit('deleteSelf')" class="trash-icon">
     </template>
 
     <div>
@@ -105,5 +112,9 @@ defineExpose({
 </template>
 
 <style scoped lang="scss">
-
+@import '../assets/variables.scss';
+@import '../assets/mixins.scss';
+.trash-icon {
+  @include trashIconAnimation();
+}
 </style>

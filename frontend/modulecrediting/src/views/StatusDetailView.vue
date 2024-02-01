@@ -4,7 +4,7 @@ shows status of an application
 
 <script setup>
 import { useRoute, useRouter } from 'vue-router';
-import { ref, onBeforeMount } from "vue";
+import {ref, onBeforeMount, computed} from "vue";
 import ApplicationOverview from "@/components/ApplicationOverview.vue";
 import StatusPanel from "@/components/StatusPanel.vue";
 import SideInfoContainer from '../components/SideInfoContainer.vue';
@@ -25,8 +25,8 @@ const router = useRouter();
 onBeforeMount(() => {
   getApplicationByIdForStatus(id)
     .then(data => {
-     
       applicationData.value = data;
+      existingConnections.value = data['modulesConnections']
       return data;
     })
     .then(data => {
@@ -37,8 +37,39 @@ onBeforeMount(() => {
     })
 })
 
+// handling existing connections
+const existingConnections = ref()
 
-const moduleConnections = ref()
+const deleteExistingConnection = (id) => {
+  existingConnections.value = existingConnections.value.filter(c => id !== c.id)
+}
+
+const existingConnectionsRef = ref()
+
+// handling new connections
+const newConnections = ref([])
+
+const addNewConnection = () => {
+  if (newConnections.value.length > 0) {
+    const nextIndex = Math.max(...newConnections.value) + 1
+    newConnections.value.push(nextIndex)
+  } else {
+    newConnections.value.push(0)
+  }
+}
+
+const deleteNewConnection = (key) => {
+  newConnections.value = newConnections.value.filter(k => k !== key)
+}
+
+const newConnectionsRef = ref()
+
+const moduleConnections = computed(() => {
+  const connectionsArray = []
+  if (existingConnectionsRef.value) connectionsArray.concat(existingConnectionsRef.value)
+  if (newConnectionsRef.value) connectionsArray.concat(newConnectionsRef.value)
+  return connectionsArray
+})
 
 const openSummaryDocument = () => {
   window.open(summaryDocumentLink, '_blank')
@@ -58,19 +89,30 @@ const triggerSubmit = () => {
         <FormalRejectionInfoBox />
       </div>
 
-      <ApplicationOverview :creation-date="parseRequestDate(applicationData['creationDate'])"
-        :last-edited-date="parseRequestDate(applicationData['lastEditedDate'])"
-        :decision-date="parseRequestDate(applicationData['decisionDate'])" :id="applicationData['id']"
-        :course="applicationData['courseLeipzig']['name']" :status="applicationData['fullStatus']" />
+      <ApplicationOverview
+          :creation-date="parseRequestDate(applicationData['creationDate'])"
+          :last-edited-date="parseRequestDate(applicationData['lastEditedDate'])"
+          :decision-date="parseRequestDate(applicationData['decisionDate'])"
+          :id="applicationData['id']"
+          :course="applicationData['courseLeipzig']['name']"
+          :status="applicationData['fullStatus']"
+      />
 
-
-
-      <div v-for="connection in applicationData['modulesConnections']">
-
-        <StatusPanel :connection="connection" :selectable-modules="moduleOptions"
-          :readonly="!(applicationData['fullStatus'] === 'FORMFEHLER')" ref="moduleConnections"
-          :class="{ 'formal-rejection-highlight': connection['formalRejection'] }" />
-
+      <div v-if="existingConnections">
+        <StatusPanel
+            v-for="connection in existingConnections"
+            :key="connection.id"
+            :connection="connection"
+            :selectable-modules="moduleOptions"
+            :readonly="!(applicationData['fullStatus'] === 'FORMFEHLER')"
+            :allow-delete="applicationData['fullStatus'] === 'FORMFEHLER' && moduleConnections.length > 1"
+            @delete-self="deleteExistingConnection(connection.id)"
+            ref="moduleConnections"
+            :class="{ 'formal-rejection-highlight': connection['formalRejection'] }"
+        />
+      </div>
+      <div v-if="applicationData['fullStatus'] === 'FORMFEHLER'">
+        <!-- todo add new connections -->
       </div>
 
       <Button @click="openSummaryDocument">
