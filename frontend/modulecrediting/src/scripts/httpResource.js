@@ -68,7 +68,7 @@ const errorHandler = (error) => {
         router.push({ name: "Forbidden" });
       }
         if (error.response.status === 404) {
-        onsole.debug("%c" + "NOT FOUND", errorColor, error.response.data); 
+        console.debug("%c" + "NOT FOUND", errorColor, error.response.data); 
         router.push({ name: "IdError" });
       }
 
