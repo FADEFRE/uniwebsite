@@ -3,7 +3,6 @@ package swtp12.modulecrediting.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -64,12 +63,7 @@ public class SecurityConfig {
             .httpBasic(basic -> basic.disable())
             .exceptionHandling(handling -> handling.authenticationEntryPoint(new RestAuthenticationEntryPoint()))
             .authorizeHttpRequests(requests -> 
-                requests.requestMatchers(HttpMethod.GET, "/api/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/**").permitAll()
-                        .requestMatchers(HttpMethod.PUT, "/api/**").permitAll()
-                        .requestMatchers(HttpMethod.DELETE, "/api/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/file/**").permitAll()
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                requests.requestMatchers("/**").permitAll() //securing api entry points with @PreAuthorize
                         .anyRequest().authenticated());
         http.authenticationProvider(authenticationProvider());
         http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
