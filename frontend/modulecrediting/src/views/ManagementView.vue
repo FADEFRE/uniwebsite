@@ -1,5 +1,6 @@
 <script setup>
 import ManagementCreateContainer from '../components/ManagementCreateContainer.vue';
+import ManagementEditCourse from '../components/ManagementEditCourse.vue';
 </script>
 
 
@@ -8,6 +9,9 @@ import ManagementCreateContainer from '../components/ManagementCreateContainer.v
         <div class="create-container-list">
             <ManagementCreateContainer :type="'course'" />
             <ManagementCreateContainer :type="'module'" />
+            <ManagementEditCourse>
+
+            </ManagementEditCourse>
         </div>
     </div>
 </template>
@@ -19,7 +23,6 @@ import ManagementCreateContainer from '../components/ManagementCreateContainer.v
 
 .main {
     @include main();
-    max-width: 1200px
 }
 
 .create-container-list {

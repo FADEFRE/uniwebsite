@@ -9,6 +9,10 @@ const props = defineProps({
   disabled: {
     type: Boolean,
     default: false
+  },
+  redButton: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -20,7 +24,7 @@ const style = computed(() => {
 
 <template>
   <div class="button-link-container">
-    <Button :disabled="disabled" :class="{ ' fixed-button': fixed, 'disabled': disabled }">
+    <Button :disabled="disabled" :class="{ ' fixed-button': fixed, 'disabled': disabled, 'red-button': redButton}">
       <slot />
       <img src="../assets/icons/ArrowWhite.svg" class="arrow-icon" alt="Arrow Icon">
     </Button>
@@ -48,6 +52,13 @@ const style = computed(() => {
   transition: 0.1s ease-in-out;
 }
 
+.red-button {
+  background-color: $red;
+  &:hover {
+    background-color: $red-hover;
+  }
+}
+
 .fixed-button {
   background-color: $red;
   position: fixed;
@@ -59,6 +70,8 @@ const style = computed(() => {
     background-color: $red-hover;
   }
 }
+
+
 
 .disabled {
   opacity: 0.5;

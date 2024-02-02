@@ -43,6 +43,61 @@ function getModulesByCourse(course) {
 }
 
 /*
+GET-Request to '/courses-leipzig' endpoint
+returns a list containing all modules related to a specific course
+{name: module name, code: module code }
+
+parameters:
+    course - String, course name
+ */
+function getModulesNameCodeByCourse(course) {
+  console.debug("%c" + "getModulesByCourse (" + course + ")", axiosColor);
+
+  return httpResource
+    .get("/api/courses-leipzig")
+    .then((response) => {
+      const courseObject = response.data.find((obj) => obj.name === course);
+      return courseObject.modulesLeipzigCourse
+        .filter((m) => m.isActive)
+        .map((obj) => ({ name: obj.name, code: obj.code }))
+        .sort((a, b) => a.name.localeCompare(b.name));
+    })
+    .catch((_) => {});
+}
+
+function getModulesNameCode() {
+  console.debug("%c" + "getModulesNameCode", axiosColor);
+
+  return httpResource
+    .get("/api/modules-leipzig")
+    .then((response) => {
+      return response.data
+        .filter((module) => module.isActive)
+        .map((module) => ({ name: module.name, code: module.code }))
+        .sort((a, b) => a.name.localeCompare(b.name));
+    })
+    .catch((_) => {});
+}
+
+function putCourseLeipzigEdit(coursename, moduleList) {
+  console.debug("%c" + "putCourseLeipzigEdit", axiosColor);
+
+  const formData = new FormData();
+
+  moduleList.forEach((module, moduleIndex) => {
+    formData.append(`modulesLeipzig[${moduleIndex}].name`, module.name)
+    formData.append(`modulesLeipzig[${moduleIndex}].code`, module.code)
+  })
+    
+  return httpResource
+    .put(`/api/courses-leipzig/${coursename}/edit`, formData)
+    .then((response) => response.data)
+    .catch((_) => {});
+}
+
+
+
+/*
 GET-Request to '/applications' endpoint
 returns list of applications (only data needed for overview)
 
@@ -476,6 +531,9 @@ function postModuleLeipzig(modulename, modulecode) {
 export {
   getCoursesLeipzig,
   getModulesByCourse,
+  getModulesNameCodeByCourse,
+  getModulesNameCode,
+  putCourseLeipzigEdit,
   getApplications,
   getApplicationById,
   getApplicationByIdForStatus,

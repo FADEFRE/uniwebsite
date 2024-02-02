@@ -137,10 +137,13 @@ defineExpose({
 
     <div class="search-container">
       <h4>Suchen</h4>
-      <InputText v-model="searchString" placeholder="Antrag suchen">
-        <!-- search icon -->
+      <div class="input-search-field-container">
+        <InputText v-model="searchString" placeholder="Antrag suchen">
+          
       </InputText>
-
+      <img src="@/assets/icons/SearchIcon.svg" class="search-icon">
+      </div>
+      
       <small>Suchen nach: Vorgangsnummer, Modulname, Universität</small>
     </div>
 
@@ -214,6 +217,7 @@ defineExpose({
 .clear-icon {
   opacity: 0.9;
   transition: 0.2s ease-in-out;
+  margin-right: 0.5rem;
 
   &:hover {
     opacity: 1;
@@ -231,12 +235,29 @@ defineExpose({
   }
 }
 
+.search-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+.input-search-field-container {
+  width: 100%;
+  position: relative;
+}
 .p-inputtext {
   width: 100%;
-
   &:hover{
     background-color: $white-hover;
   }
+}
+.search-icon {
+ width: 1rem;
+ height: 1rem;
+ position: absolute;
+ right: 1rem;
+ top: 50%;
+ transform: translateY(-50%);
 }
 
 .general-container {
