@@ -58,6 +58,7 @@ defineExpose({
     <h4>Module der Universität Leipzig</h4>
 
     <div class="screen-split">
+
       <div class="module-dropdown" v-if="allowSelect">
         <Dropdown filter :options="options" placeholder="Modul auswählen" emptyMessage="Studiengang auswählen" emptyFilterMessage="Modul nicht gefunden" @change="e => addSelectedModule(e.value)">
           <template #filtericon>
@@ -70,15 +71,19 @@ defineExpose({
       </div>
 
       <div class="module-list" :class="{ 'module-list-full': !allowSelect }">
-        <div v-for="(module, index) in selectedModules" class="module-list-item">
+        <div v-if="selectedModules.length > 0" v-for="(module, index) in selectedModules" class="module-list-item">
           <p>{{ module }}</p>
           <div v-if="allowDelete">
             <img src="../assets/icons/Trash.svg" @click="removeSelectedModule(index)" class="trash-icon">
           </div>
         </div>
+        <div v-else-if="!allowSelect">
+          <p>Es sind keine Module der Universität Leipzig ausgewählt.</p>
+        </div>
       </div>
 
     </div>
+
   </div>
 </template>
 

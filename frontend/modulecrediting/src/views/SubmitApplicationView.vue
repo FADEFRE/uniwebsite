@@ -81,6 +81,7 @@ const triggerPostApplication = () => {
             <img src="../assets/icons/ArrowWhite.svg">
           </template>
         </Dropdown>
+        <p v-if="!courseValid" class="invalid-text">Es muss ein Studiengang ausgewählt werden</p>
       </ApplicationOverview>
 
       <ApplicationPanel v-for="item in moduleConnections" :key="item" :selectable-modules="selectableModules"
@@ -166,6 +167,10 @@ const triggerPostApplication = () => {
 .arrow-icon {
   transform: rotate(-90deg);
   transition: 0.1s ease-in-out;
+}
+
+.invalid-text {
+  color: $red;
 }
 </style>
 
