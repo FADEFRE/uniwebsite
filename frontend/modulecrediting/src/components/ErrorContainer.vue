@@ -1,6 +1,4 @@
 <script setup>
-import { defineProps } from 'vue';
-import ButtonLink from '@/components/ButtonLink.vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
