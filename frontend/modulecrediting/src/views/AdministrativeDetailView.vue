@@ -92,13 +92,19 @@ const discardChanges = () => {
   location.reload()
 }
 
+const checkValidity = () => {
+  return moduleConnections.value.map(c => c.checkValidity()).every(Boolean)
+}
+
 const saveChanges = () => {
-  if (type === 'study-office') {
-    putApplicationStudyOffice(id, applicationData.value['courseLeipzig']['name'], moduleConnections.value)
-      .then(_ => location.reload())
-  } else if (type === 'chairman') {
-    putApplicationChairman(id, applicationData.value['courseLeipzig']['name'], moduleConnections.value)
-      .then(_ => location.reload())
+  if (checkValidity()) {
+    if (type === 'study-office') {
+      putApplicationStudyOffice(id, applicationData.value['courseLeipzig']['name'], moduleConnections.value)
+          .then(_ => location.reload())
+    } else if (type === 'chairman') {
+      putApplicationChairman(id, applicationData.value['courseLeipzig']['name'], moduleConnections.value)
+          .then(_ => location.reload())
+    }
   }
 }
 

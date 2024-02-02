@@ -91,6 +91,10 @@ const setCollapsed = (value) => {
   panel.value.setCollapsed(value)
 }
 
+const checkValidity = () => {
+  return panelExternalModules.value.checkValidity()
+}
+
 defineExpose({
   id,
   externalModules,
@@ -98,7 +102,8 @@ defineExpose({
   formalRejectionData,
   studyOfficeDecisionData,
   chairmanDecisionData,
-  setCollapsed
+  setCollapsed,
+  checkValidity
 })
 </script>
 
