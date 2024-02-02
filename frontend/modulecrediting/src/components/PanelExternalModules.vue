@@ -98,16 +98,7 @@ const externalModules = computed(() => {
 })
 
 const checkValidity = () => {
-  if (existingModulesRef.value) {
-    for (let module of existingModulesRef.value) {
-      module.checkValidity()
-    }
-  }
-  if (newModulesRef.value) {
-    for (let module of newModulesRef.value) {
-      module.checkValidity()
-    }
-  }
+  return externalModules.value.map(m => m.checkValidity()).every(Boolean)
 }
 
 defineExpose({

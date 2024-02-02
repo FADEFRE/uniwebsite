@@ -90,7 +90,6 @@ const checkValidity = () => {
   // cascading calls
   const fileValid = fileInput.value.checkValidity()
   // return
-  console.log(nameValid.value && universityValid.value && pointsValid.value && pointSystemValid.value && fileValid.value)  // todo remove
   return nameValid.value && universityValid.value && pointsValid.value && pointSystemValid.value && fileValid.value
 }
 
