@@ -6,8 +6,6 @@ props:
 -->
 
 <script setup>
-import PanelHeader from "@/components/PanelHeader.vue";
-
 const props = defineProps({
   connectionsData: {
     required: true,
