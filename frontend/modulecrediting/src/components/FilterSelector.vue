@@ -233,7 +233,6 @@ defineExpose({
 
 .p-inputtext {
   width: 100%;
-  transition: 0.1s ease-in-out;
 
   &:hover{
     background-color: $white-hover;
@@ -261,7 +260,6 @@ defineExpose({
   justify-content: center;
   align-items: center;
   background-color: $white;
-  transition: 0.1s ease-in-out;
   cursor: pointer;
 
   &.selected {
