@@ -24,7 +24,7 @@ public class CustomUserDetails implements UserDetails{
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<Role> roles = new HashSet<>();
         roles.add(user.getRole());
-        return roles.stream().map(Role::grantedAuthority).collect(Collectors.toList()); //To the person this my concern: FCK JAVA
+        return roles.stream().map(Role::grantedAuthority).collect(Collectors.toList()); //To the person this may concern: FCK JAVA
     }
 
     @Override
