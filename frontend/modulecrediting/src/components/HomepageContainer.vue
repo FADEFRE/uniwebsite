@@ -14,10 +14,10 @@ const props = defineProps(['header', 'text'])
         <div v-else>
             <p>Platzhalter Text</p>
         </div>
-        <div class="input-button-container">
-            <slot></slot>    
+        <div class="input-button-with-invalid-container">
+            <slot></slot>
         </div>
-        
+
     </div>
 </template>
 
@@ -37,22 +37,35 @@ const props = defineProps(['header', 'text'])
     align-self: stretch;
 }
 
-.input-button-container{
+.input-button-with-invalid-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+:slotted(.input-button-container) {
     width: 100%;
     display: flex;
-
-    
+    flex-wrap: wrap;
 }
 
 :deep(.p-inputtext) {
     background-color: $gray;
     border: none;
-    
+
     text-align: center;
     font-family: 'Jost';
-    font-size: 1.25rem;
     font-weight: 500;
     letter-spacing: 0.3125rem;
+    width: 100%;
+    max-width: 250px;
+
+    &.invalid {
+        border: 2px solid $red;
+    }
+}
+:slotted(.invalid-text) {
+  color: $red;
 }
 </style>
 

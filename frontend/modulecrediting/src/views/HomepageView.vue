@@ -64,9 +64,12 @@ const getFormattedId = () => {
             <!-- HomepageContainer StatusView -->
             <HomepageContainer :header="$t('view status')"
                 :text="$t('view the status of applications that have already been submitted using the 6-digit process number.')">
-                <InputText v-model="id" :class="{ 'p-invalid': isInvalid }" class="status-input"
-                    placeholder="0-0-0-0-0-0" @keydown.enter.prevent="openDetailView" @input="validateInput" />
-                <ButtonLink @click="openDetailView">{{ $t('view status') }}</ButtonLink>
+                <div class="input-button-container">
+                    <InputText v-model="id" :class="{ 'invalid': isInvalid }" class="status-input"
+                        placeholder="0-0-0-0-0-0" @keydown.enter.prevent="openDetailView" @input="validateInput" />
+                    <ButtonLink @click="openDetailView">{{ $t('view status') }}</ButtonLink>
+                </div>
+                <small v-if="isInvalid" class="invalid-text">Punkte müssen als Zahl angegeben werden</small>
             </HomepageContainer>
         </div>
 
