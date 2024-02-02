@@ -23,7 +23,7 @@ const props = defineProps({
     <h2>Übersicht</h2>
 
     <a v-for="connection in connectionsData" :href="'#' + connection.id" class="connection-link-container">
-      <p class="connection-text"> {{ connection.externalModules.join(', ') }}</p>
+      <p class="connection-text"> {{ connection.externalModules.join(', ') || '...' }}</p>
       <div>
         <img src="@/assets/icons/ArrowRed.svg" alt="arrow-icon" class="arrow-icon">
       </div>
