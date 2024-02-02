@@ -14,9 +14,11 @@ const goBack = () => {
 
 <template>
     <div class="main">
-        <ErrorContainer :customTitle="'Antragsnummer existiert nicht'"
-            :customMessage="'Antrag existiert nicht '" />
-        <ButtonLink @click="goBack">Zurück</ButtonLink>
+        <ErrorContainer :customTitle="'Antragsnummer existiert nicht'" :customMessage="'Antrag existiert nicht '">
+            <template #default>
+                <ButtonLink @click="goBack">Zurück</ButtonLink>
+            </template>
+        </ErrorContainer>
     </div>
 </template>
 
@@ -26,5 +28,6 @@ const goBack = () => {
 
 .main {
     @include main();
+    flex-direction: row !important;
 }
 </style>

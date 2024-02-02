@@ -18,11 +18,8 @@
 }
 
 html {
-  @media only screen and (max-width: 800px) {
+  @media only screen and (max-width: 600px) {
     font-size: 14px;
-  }
-  @media only screen and (max-width: 450px) {
-    font-size: 13px;
   }
 }
 

@@ -20,5 +20,6 @@ const props = defineProps(['customTitle', 'customMessage']);
 
 .main {
     @include main();
+    flex-direction: row !important;
 }
 </style>
