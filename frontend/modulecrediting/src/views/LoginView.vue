@@ -16,6 +16,7 @@ import LoginContainer from '../components/LoginContainer.vue';
 
 .main {
   @include main();
+  flex-direction: row !important;
 }
 
 </style>

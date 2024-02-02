@@ -32,6 +32,10 @@ const props = defineProps({
     },
     forward: {
         type: String,
+    },
+    adminSelectionView: {
+        type: Boolean,
+        default: false
     }
 });
 
@@ -54,7 +58,7 @@ const containerStyle = computed(() => {
 </script>
 
 <template>
-    <div :class="containerStyle" @click="triggerForward">
+    <div :class="containerStyle" @click="triggerForward" class="application-overview-container">
         <div class="dates">
             <!-- Div-Block Creation Date -->
             <div v-if="creationDate" class="date-block">
@@ -76,22 +80,27 @@ const containerStyle = computed(() => {
         </div>
 
         <!-- remaining data -->
-        <div class="application-info">
-            <div v-if="id" class="vorgangsnummer-container">
-                <div class="vorgangsnummer-text overview-text">Vorgangsnummer: {{ id || 'Placeholder for Vorgangsnummer' }}
+        <div class="application-info" :class="{ 'admin-selection-view': adminSelectionView }">
+            <div class="application-info-left">
+                <div v-if="id" class="vorgangsnummer-container info-container">
+                    <div class="vorgangsnummer-text overview-text">
+                        Vorgangsnummer: {{ id || 'Placeholder for Vorgangsnummer' }}
+                    </div>
+                </div>
+
+                <!-- Slot study course -->
+                <div class="course-selection-container info-container">
+                    <slot>
+                        <div class="course-container info-container">
+                            <div class="overview-text">{{ course }}</div>
+                        </div>
+                    </slot>
                 </div>
             </div>
 
-            <!-- Slot study course -->
-            <div>
-                <slot>
-                    <div class="course-container">
-                        <div class="overview-text">{{ course }}</div>
-                    </div>
-                </slot>
-            </div>
 
-            <div :class="statusStyle">
+
+            <div :class="statusStyle" class="info-container">
                 <div class="status-text overview-text">Status: {{ status || 'Placeholder for Status' }}</div>
             </div>
         </div>
@@ -109,11 +118,16 @@ const containerStyle = computed(() => {
     display: flex;
     padding: 0.625rem 0.625rem 0.625rem 1.25rem;
     justify-content: space-between;
-    row-gap: 0.625rem;
+    gap: 0.625rem;
     align-self: stretch;
     flex-wrap: wrap;
-    
+
+    @media only screen and (max-width: 1400px) {
+
+        gap: 0.7rem;
+    }
 }
+
 .admin-selection-view:hover {
     transition: 0.1s ease-in-out;
     background-color: $white-hover;
@@ -127,17 +141,49 @@ const containerStyle = computed(() => {
 
 .application-info {
     display: flex;
+    gap: 0.9375rem;
+
+    max-width: 100%;
+    flex-wrap: wrap;
+
+    &.admin-selection-view {
+        @media only screen and (max-width: 1400px) {
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+    }
+}
+
+.application-info-left {
+    display: flex;
     align-items: center;
     align-content: center;
     gap: 0.9375rem;
-    max-width: max-content;
     flex-wrap: wrap;
+
+    @media only screen and (max-width: 550px) {
+        flex-direction: column;
+        width: 100%;
+        gap: 0.4rem;
+    }
 }
+
+
 
 .course-container {
     @include smallHighlightBox();
     background-color: $dark-gray;
     color: $white;
+    min-width: 12rem;
+    width: 12rem;
+}
+
+.course-selection-container {
+    width: min-content;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.05rem;
 }
 
 .vorgangsnummer-container {
@@ -173,5 +219,11 @@ const containerStyle = computed(() => {
     display: flex;
     align-items: center;
     gap: 0.625rem;
+}
+
+.info-container {
+    @media only screen and (max-width: 550px) {
+        width: 100%;
+    }
 }
 </style>

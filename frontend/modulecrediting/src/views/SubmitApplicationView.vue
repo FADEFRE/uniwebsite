@@ -81,7 +81,7 @@ const triggerPostApplication = () => {
             <img src="../assets/icons/ArrowWhite.svg">
           </template>
         </Dropdown>
-        <p v-if="!courseValid" class="invalid-text">Es muss ein Studiengang ausgewählt werden</p>
+        <small v-if="!courseValid" class="invalid-text">Es muss ein Studiengang ausgewählt werden</small>
       </ApplicationOverview>
 
       <ApplicationPanel v-for="item in moduleConnections" :key="item" :selectable-modules="selectableModules"

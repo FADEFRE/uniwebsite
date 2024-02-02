@@ -49,6 +49,7 @@ const filteredApplications = computed(() => {
             :last-edited-date="parseRequestDate(application['lastEditedDate'])"
             :decision-date="parseRequestDate(application['decisionDate'])"
             :forward="route.meta['forward']"
+            :adminSelectionView="true"
             class="admin-selection-view"
         />
       </div>
@@ -69,12 +70,8 @@ const filteredApplications = computed(() => {
   @include verticalList(big);
   width: 70%;
 
-  @media only screen and (max-width: 1100px) {
+  @media only screen and (max-width: 1200px) {
     width: 100%;
-  }
-
-  @media only screen and (max-width: 700px) {
-    //padding: 2rem 1rem;
   }
 }
 </style>

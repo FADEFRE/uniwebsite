@@ -47,7 +47,10 @@ const openPdf = () => {
 <template>
     <div class="main" v-if="applicationData">
         <ConfirmationContainer :id="id">
-            <ButtonLink @click="openPdf" class="pdf-button">Antrag herunterladen</ButtonLink>
+            <Button @click="openPdf">
+                Antrag herunterladen
+                <img src="../assets/icons/Download.svg">
+            </Button>
             <ButtonLink @click="openDetailView" class="status-button">Status einsehen</ButtonLink>
         </ConfirmationContainer>
     </div>

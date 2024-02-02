@@ -226,7 +226,7 @@ defineExpose({
   @include basicContainer();
   width: 30%;
 
-  @media only screen and (max-width: 1100px) {
+  @media only screen and (max-width: 1200px) {
     width: 100%;
   }
 }
