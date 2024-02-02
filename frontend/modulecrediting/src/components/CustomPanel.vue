@@ -68,7 +68,6 @@ defineExpose({
 :deep(.p-panel-icons) {
   display: flex;
   align-items: center;
-  gap: 1.875rem;
   margin-left: 0.625rem;
 }
 

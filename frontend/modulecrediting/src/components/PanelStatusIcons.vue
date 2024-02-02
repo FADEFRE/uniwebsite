@@ -62,6 +62,7 @@ const props = defineProps({
     display: flex;
     justify-content: center;
     gap: 0.9375rem;
+    margin-right: 0.5rem
 }
 .arrow-icon {
     @include rightArrow();
