@@ -181,4 +181,9 @@ input {
 .invalid-text {
   color: $red;
 }
+
+.invalid {
+  border: 2px dashed $red;
+  box-shadow: none;
+}
 </style>

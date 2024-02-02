@@ -167,11 +167,5 @@ const triggerPostApplication = () => {
   transform: rotate(-90deg);
   transition: 0.1s ease-in-out;
 }
-
-.invalid {
-  background-color: $red;
-  border: 2px solid $red !important;
-  box-shadow: 0px 0px 4px 0px $red !important;
-}
 </style>
 

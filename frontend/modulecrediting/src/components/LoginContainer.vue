@@ -30,16 +30,16 @@ const attemptLogin = () => {
 
             <div class="input-container">
                 <InputText type="text" placeholder="Benutzername" v-model="login_username" class="input-text"
-                    :class="{ 'p-invalid': styleInvalid }" />
+                    :class="{ 'invalid': styleInvalid }" />
 
                 <InputText type="password" placeholder="Passwort" v-model="login_password" class="input-text"
-                    :class="{ 'p-invalid': styleInvalid }" @keydown.enter.prevent="attemptLogin" />
+                    :class="{ 'invalid': styleInvalid }" @keydown.enter.prevent="attemptLogin" />
             </div>
 
             <div class="button-container">
                 <ButtonLink @click="attemptLogin" class="button-login">Anmelden</ButtonLink>
             </div>
-                <p v-if="styleInvalid" class="error-message">{{ errorMessage }}</p>
+                <small v-if="styleInvalid" class="invalid-text">{{ errorMessage }}</small>
             </div>
     </div>
 </template>
@@ -85,10 +85,12 @@ const attemptLogin = () => {
     }
 }
 
-.error-message {
-    color: $red;
-    margin-top: 0.625rem;
+.invalid {
+  border: 2px solid $red;
 }
 
+.invalid-text {
+  color: $red;
+}
 
 </style>

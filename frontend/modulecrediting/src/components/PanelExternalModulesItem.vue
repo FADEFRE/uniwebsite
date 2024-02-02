@@ -102,19 +102,29 @@ defineExpose({
   <div class="external-modules-item">
     <div class="screen-split">
       <div class="left-side">
-        <InputText :readonly="!allowTextEdit" type="text" placeholder="Modulname" v-model="name" :class="{ 'invalid': !nameValid }" />
-        <small v-if="!nameValid" class="invalid-text">Modulname darf nicht leer sein</small>
-        <InputText :readonly="!allowTextEdit" type="text" placeholder="Universität" v-model="university" :class="{ 'invalid': !universityValid }" />
-        <small v-if="!universityValid" class="invalid-text">Universität darf nicht leer sein</small>
+        <div class="input-container">
+          <InputText :readonly="!allowTextEdit" type="text" placeholder="Modulname" v-model="name" :class="{ 'invalid': !nameValid }" />
+          <small v-if="!nameValid" class="invalid-text">Modulname darf nicht leer sein</small>
+        </div>
+        <div class="input-container">
+          <InputText :readonly="!allowTextEdit" type="text" placeholder="Universität" v-model="university" :class="{ 'invalid': !universityValid }" />
+          <small v-if="!universityValid" class="invalid-text">Universität darf nicht leer sein</small>
+        </div>
       </div>
 
       <div class="right-side">
 
         <div class="point-container">
-          <InputText :readonly="!allowTextEdit" type="text" placeholder="Punkte" v-model="points" :class="{ 'invalid': !pointsValid }" />
-          <small v-if="!pointsValid" class="invalid-text">Punkte müssen als Zahl angegeben werden</small>
-          <InputText :readonly="!allowTextEdit" type="text" placeholder="Punktesystem" v-model="pointSystem" :class="{ 'invalid': !pointSystemValid }" />
-          <small v-if="!pointSystemValid" class="invalid-text">Punktsystem darf nicht leer sein</small>
+          <div class="input-container">
+            <InputText :readonly="!allowTextEdit" type="text" placeholder="Punkte" v-model="points" :class="{ 'invalid': !pointsValid }" />
+            <small v-if="!pointsValid" class="invalid-text">Punkte müssen als Zahl angegeben werden</small>
+          </div>
+          
+          <div class="input-container">
+            <InputText :readonly="!allowTextEdit" type="text" placeholder="Punktesystem" v-model="pointSystem" :class="{ 'invalid': !pointSystemValid }" />
+            <small v-if="!pointSystemValid" class="invalid-text">Punktsystem darf nicht leer sein</small>
+          </div>
+          
         </div>
 
         <FileInput :readonly="!allowFileEdit" :selected-file="props.selectedFile" ref="fileInput" />
@@ -189,6 +199,13 @@ defineExpose({
   }
 }
 
+.input-container {
+  display: flex;
+  gap: 0.5rem;
+  flex-direction: column;
+  width: 100%;
+}
+
 .trash-icon {
   @include trashIconAnimation();
   padding:  0.5rem 0.5rem;
@@ -198,8 +215,7 @@ defineExpose({
 }
 
 .invalid {
-  border: 2px solid $red !important;
-  box-shadow: 0px 0px 4px 0px $red !important;
+  border: 2px solid $red;
 }
 
 .invalid-text {
