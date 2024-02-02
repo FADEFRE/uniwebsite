@@ -9,8 +9,6 @@ import swtp12.modulecrediting.model.ExternalModule;
 import swtp12.modulecrediting.model.ModulesConnection;
 import swtp12.modulecrediting.model.PdfDocument;
 import swtp12.modulecrediting.repository.ExternalModuleRepository;
-import swtp12.modulecrediting.repository.PdfDocumentRepository;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
