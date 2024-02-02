@@ -321,10 +321,12 @@ function putApplicationStudyOffice(
         ""
       );
       if (connection.studyOfficeDecisionData["decision"]) {
-        formData.append(
-          `modulesConnections[${connectionIndex}].decisionSuggestion`,
-          connection.studyOfficeDecisionData.decision
-        );
+          formData.append(
+              `modulesConnections[${connectionIndex}].decisionSuggestion`,
+              connection.studyOfficeDecisionData.decision
+          );
+      }
+      if (connection.studyOfficeDecisionData["comment"]) {
         formData.append(
           `modulesConnections[${connectionIndex}].commentStudyOffice`,
           connection.studyOfficeDecisionData.comment
@@ -364,6 +366,8 @@ function putApplicationChairman(
                 `modulesConnections[${connectionIndex}].decisionFinal`,
                 connection.chairmanDecisionData.decision
             );
+        }
+        if (connection.chairmanDecisionData["comment"]) {
             formData.append(
                 `modulesConnections[${connectionIndex}].commentDecision`,
                 connection.chairmanDecisionData.comment
