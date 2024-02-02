@@ -1,6 +1,7 @@
 <script setup>
 import ManagementCreateContainer from '../components/ManagementCreateContainer.vue';
 import ManagementEditCourse from '../components/ManagementEditCourse.vue';
+import ManagementViewCourse from '../components/ManagementViewCourse.vue';
 </script>
 
 
@@ -9,9 +10,8 @@ import ManagementEditCourse from '../components/ManagementEditCourse.vue';
         <div class="create-container-list">
             <ManagementCreateContainer :type="'course'" />
             <ManagementCreateContainer :type="'module'" />
-            <ManagementEditCourse>
-
-            </ManagementEditCourse>
+            <ManagementEditCourse />
+            <ManagementViewCourse />
         </div>
     </div>
 </template>

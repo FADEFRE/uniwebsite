@@ -115,9 +115,31 @@
 @mixin trashIconAnimation() {
   background-color: transparent;
   padding: 0.5rem 1.125rem;
-  transition: 0.2s ease-in-out;
+  transition: 0.1s ease-in-out;
   cursor: pointer;
   &:hover {
     background: $white-hover;
   }
+}
+
+@mixin searchFieldContainer() {
+  width: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+
+    & .p-inputtext {
+        &:hover {
+            background-color: $white-hover;
+        }
+    }
+
+    & .search-icon {
+        width: 1rem;
+        height: 1rem;
+        position: absolute;
+        right: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+    }
 }

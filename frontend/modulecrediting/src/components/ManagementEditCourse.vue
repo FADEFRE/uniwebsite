@@ -8,6 +8,7 @@ const selectedCourse = ref()
 
 const allModules = ref([])
 const selectedModules = ref([])
+const searchString = ref();
 
 const deleteCourse = () => {
     selectedCourse.value = null;
@@ -57,6 +58,8 @@ const saveCourseLeipzig = () => {
             deleteCourse()
         })
 }
+
+
 </script>
 
 <template>
@@ -77,7 +80,7 @@ const saveCourseLeipzig = () => {
 
         <div v-if="selectedCourse" class="screen-split">
             <div class="selectable-modules-container">
-                <h4>Wählbare Module</h4>
+                <h3>Wählbare Module</h3>
                 <div class="search-container">
                     <InputText v-model="searchString" placeholder="Modul suchen"></InputText>
                     <img src="@/assets/icons/SearchIcon.svg" class="search-icon">
@@ -95,7 +98,7 @@ const saveCourseLeipzig = () => {
             </div>
 
             <div class="selected-modules-container">
-                <h4>Module in {{ selectedCourse }}</h4>
+                <h3>Module in {{ selectedCourse }}</h3>
 
                 <div v-for="singleModule in selectedModules" @click="removeModuleFromCourse(singleModule)"
                     class="single-selected-module-item">
@@ -125,6 +128,7 @@ const saveCourseLeipzig = () => {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+    align-items: center;
     gap: 1rem 1.5rem;
 }
 
@@ -141,7 +145,7 @@ const saveCourseLeipzig = () => {
 
 .screen-split {
     @include screenSplit();
-    gap: 3rem;
+    gap: 1.3rem;
     width: 100%;
 }
 
@@ -151,26 +155,10 @@ const saveCourseLeipzig = () => {
 }
 
 .search-container {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    position: relative;
+    @include searchFieldContainer();
 }
 
-.p-inputtext {
-    &:hover {
-        background-color: $white-hover;
-    }
-}
 
-.search-icon {
-    width: 1rem;
-    height: 1rem;
-    position: absolute;
-    right: 1rem;
-    top: 50%;
-    transform: translateY(-50%);
-}
 
 .single-selectable-module-item {
     @include smallHighlightBox();
@@ -244,4 +232,5 @@ const saveCourseLeipzig = () => {
             transform: translateX(-0.15rem) rotate(90deg);
         }
     }
-}</style>
+}
+</style>

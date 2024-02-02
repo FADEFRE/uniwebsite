@@ -139,11 +139,11 @@ defineExpose({
       <h4>Suchen</h4>
       <div class="input-search-field-container">
         <InputText v-model="searchString" placeholder="Antrag suchen">
-          
-      </InputText>
-      <img src="@/assets/icons/SearchIcon.svg" class="search-icon">
+
+        </InputText>
+        <img src="@/assets/icons/SearchIcon.svg" class="search-icon">
       </div>
-      
+
       <small>Suchen nach: Vorgangsnummer, Modulname, Universität</small>
     </div>
 
@@ -152,17 +152,17 @@ defineExpose({
       <div class="date-filter-container">
         <div @click="setDateTypeCreation" class="date-block" :class="{ 'selected': dateType === 'creationDate' }">
           <img src="../assets/icons/CreationDate.svg">
-            <p v-if="dateType === 'creationDate'">Erstellt</p>
+          <p v-if="dateType === 'creationDate'">Erstellt</p>
 
         </div>
         <div @click="setDateTypeLastEdit" class="date-block" :class="{ 'selected': dateType === 'lastEditedDate' }">
           <img src="../assets/icons/LastEditedDate.svg">
-            <p v-if="dateType === 'lastEditedDate'">Zuletzt bearbeitet</p>
+          <p v-if="dateType === 'lastEditedDate'">Zuletzt bearbeitet</p>
 
         </div>
         <div @click="setDateTypeDecision" class="date-block" :class="{ 'selected': dateType === 'decisionDate' }">
           <img src="../assets/icons/DecisionDate.svg">
-            <p v-if="dateType === 'decisionDate'">Beschlossen</p>
+          <p v-if="dateType === 'decisionDate'">Beschlossen</p>
         </div>
       </div>
       <div>
@@ -236,29 +236,15 @@ defineExpose({
 }
 
 .search-container {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 }
+
 .input-search-field-container {
-  width: 100%;
-  position: relative;
+   @include searchFieldContainer();
 }
-.p-inputtext {
-  width: 100%;
-  &:hover{
-    background-color: $white-hover;
-  }
-}
-.search-icon {
- width: 1rem;
- height: 1rem;
- position: absolute;
- right: 1rem;
- top: 50%;
- transform: translateY(-50%);
-}
+
 
 .general-container {
   @include verticalList(small);
@@ -318,6 +304,7 @@ defineExpose({
     background-color: $gray-hover;
   }
 }
+
 .selected {
   .overview-text {
     color: $white;
@@ -343,6 +330,7 @@ defineExpose({
   &.statusFormalRejection,
   &.statusClosed {
     background-color: $red;
+
     &:hover {
       background-color: $red-hover;
     }
@@ -351,6 +339,4 @@ defineExpose({
 
 .overview-text {
   color: $dark-gray;
-}
-
-</style>
+}</style>

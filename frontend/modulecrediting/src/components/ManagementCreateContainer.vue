@@ -2,6 +2,7 @@
 import ButtonAdd from "@/components/ButtonAdd.vue";
 import { ref } from 'vue';
 import { postCourseLeipzig, postModuleLeipzig } from "@/scripts/axios-requests";
+import _default from "pinia-plugin-persistedstate";
 const props = defineProps({
     type: {
         required: true,
@@ -16,7 +17,10 @@ const modulecode = ref('');
 const createCourseLeipzig = () => {
     postCourseLeipzig(coursename.value)
         .then((result) => {
-            if (result) coursename.value = '';
+            if (result) {
+                coursename.value = '';
+                location.reload();
+            }
         })
 }
 const createModuleLeipzig = () => {
@@ -25,6 +29,7 @@ const createModuleLeipzig = () => {
             if (result) {
                 modulename.value = '';
                 modulecode.value = '';
+                location.reload();
             }
         })
 }
