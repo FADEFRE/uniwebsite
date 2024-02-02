@@ -4,11 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -36,13 +32,6 @@ public class PdfDocument {
     @Lob
     @JsonIgnore
     private byte[] pdfData;
-
-    //Relation PdfDocument <-> ExternalModule (Setter in ExternalModule)
-    @OneToOne(mappedBy = "pdfDocument")
-    @JsonBackReference
-    @EqualsAndHashCode.Exclude
-    private ExternalModule externalModule;
-
 
     /**
      * Constructor for {@link PdfDocument}.

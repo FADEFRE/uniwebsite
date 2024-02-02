@@ -53,13 +53,13 @@ public class ApplicationService {
         application.setFullStatus(STUDIENBÜRO);
         application.setLastEditedDate(LocalDateTime.now());
 
-        // delete old modules connections
+        // create new modules connections (before deleting otherwise old pdf documetns are already deleted)
+        List<ModulesConnection> modulesConnections = modulesConnectionService.createModulesConnectionsWithDuplicate(applicationDTO.getModulesConnections());
+
+        // delete old modules connections/
         application.removeAllModulesConnections();
 
-        // create new modules connections
-        List<ModulesConnection> modulesConnections = modulesConnectionService.createModulesConnectionsWithDuplicate(applicationDTO.getModulesConnections());
         application.addModulesConnections(modulesConnections);
-
         application = applicationRepository.save(application);
         return application.getId();
     }

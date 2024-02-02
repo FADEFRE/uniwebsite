@@ -19,27 +19,43 @@ public class PdfDocumentService {
     private PdfDocumentRepository pdfDocumentRepository;
 
 
-    public PdfDocument createPdfDocument(MultipartFile pdf) {
-        if (pdf == null || pdf.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No PDF file provided or file is empty");
+    public PdfDocument createOrGetPdfDocument(MultipartFile pdfData, Long externalModuleId) {
+
+        // overwrite old pdf document
+        if(pdfData != null && externalModuleId != null) { // todo: is it smart using external modules id?
+            return createPdfDocument(pdfData);
         }
+
+        // use already saved pdf of created external module( application put request)
+        if(externalModuleId != null) {
+            return getPdfDocumentById(externalModuleId);
+        }
+
+        // create completly new pdf document (for new external module)
+        return createPdfDocument(pdfData);
+    }
+
+    public PdfDocument createPdfDocument(MultipartFile pdfData) {
+        if (pdfData == null || pdfData.isEmpty())
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No PDF file provided or file is empty");
+
         try {
-            return new PdfDocument(pdf.getOriginalFilename(), pdf.getBytes());
+            return new PdfDocument(pdfData.getOriginalFilename(), pdfData.getBytes());
         } catch (IOException ioException) {
-            ioException.printStackTrace();
-            // Throw a ResponseStatusException with the appropriate HTTP status code
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error reading PDF file", ioException);
         }
     }
 
 
     public byte[] getPdfDocumentDataById(Long id) {
+        PdfDocument pdfDocument = getPdfDocumentById(id);
+        return pdfDocument.getPdfData();
+    }
+
+    public PdfDocument getPdfDocumentById(Long id) {
         Optional<PdfDocument> pdfDocumentOptional = pdfDocumentRepository.findById(id);
-        if (pdfDocumentOptional.isPresent()) {
-            PdfDocument pdfDocument = pdfDocumentOptional.get();
-            return pdfDocument.getPdfData();
-        } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "PDF document not found with id: " + id);
-        }
+        if (pdfDocumentOptional.isPresent()) return pdfDocumentOptional.get();
+
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "PDF document not found with id: " + id);
     }
 }

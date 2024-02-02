@@ -67,7 +67,6 @@ public class ModulesConnection {
     @ManyToOne
     @EqualsAndHashCode.Exclude
     @JsonView(Views.RelatedModulesConnection.class)
-    @JsonManagedReference
     private Application application;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
@@ -107,29 +106,17 @@ public class ModulesConnection {
 
     //Function to set List of ModuleLeipzig to this ModulesConnection (and add this ModuleConnectio to all ModulesLeipzig in the List)
     public void setModulesLeipzig(List<ModuleLeipzig> modulesLeipzig) {
-        for(ModuleLeipzig m : modulesLeipzig) {
-            m.getModulesConnections().add(this);
-        }
         this.modulesLeipzig = modulesLeipzig;
     }
 
     public void addModulesLeipzig(List<ModuleLeipzig> modulesLeipzig) {
-        for(ModuleLeipzig m : modulesLeipzig) {
-            m.getModulesConnections().add(this);
-            this.modulesLeipzig.add(m);
-        }
+        this.modulesLeipzig.addAll(modulesLeipzig);
     }
 
     public void removeModulesLeipzig(List<ModuleLeipzig> modulesLeipzig) {
-        for(ModuleLeipzig m : modulesLeipzig) {
-            m.getModulesConnections().remove(this);
-            this.modulesLeipzig.remove(m);
-        }
+        this.modulesLeipzig.removeAll(modulesLeipzig);
     }
     public void removeAllModulesLeipzig() {
-        for(ModuleLeipzig m : modulesLeipzig) {
-            m.getModulesConnections().remove(this);
-        }
-        this.modulesLeipzig = new ArrayList<>();
+        this.modulesLeipzig.clear();
     }
 }

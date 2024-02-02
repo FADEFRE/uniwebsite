@@ -8,6 +8,7 @@ import org.springframework.web.server.ResponseStatusException;
 import swtp12.modulecrediting.dto.ExternalModuleDTO;
 import swtp12.modulecrediting.dto.ModuleLeipzigDTO;
 import swtp12.modulecrediting.dto.ModulesConnectionDTO;
+import swtp12.modulecrediting.model.EnumApplicationStatus;
 import swtp12.modulecrediting.model.ExternalModule;
 import swtp12.modulecrediting.model.ModuleLeipzig;
 import swtp12.modulecrediting.model.ModulesConnection;
@@ -64,7 +65,7 @@ public class ModulesConnectionService {
     }
 
 
-    public void updateModulesConnection(List<ModulesConnectionDTO> modulesConnectionsDTO, String userRole) {
+    public void updateModulesConnection(List<ModulesConnectionDTO> modulesConnectionsDTO, String userRole) { // todo: change name for login specfiic update
         if(modulesConnectionsDTO == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Modules Connections must not be null");
 
         for(ModulesConnectionDTO mcuDTO : modulesConnectionsDTO) {
@@ -108,7 +109,7 @@ public class ModulesConnectionService {
             deleteIdList.removeAll(updatedIdList);
             removeAllDeletedExternalModules(deleteIdList);
             // update external modules data
-            externalModuleService.updateExternalModules(mcuDTO.getExternalModules(), userRole);
+            externalModuleService.updateExternalModules(mcuDTO.getExternalModules());
 
             // handle modules leipzig changes
             if(mcuDTO.getModulesLeipzig() == null) modulesConnection.removeAllModulesLeipzig(); // remove all module leipzig
@@ -213,7 +214,7 @@ public class ModulesConnectionService {
 
         for(ModulesConnection m : allModulesConnections) {
             if(m.getId() == baseModulesConnection.getId()) continue;
-
+            // todo: add only abgeschlossene applciaitons
             if(m.getDecisionFinal() == unedited || m.getDecisionFinal() == asExamCertificate) continue;
 
             if(checkSimilarityOfModulesConnection(baseModulesConnection,m)) relatedModuleConnections.add(m);
