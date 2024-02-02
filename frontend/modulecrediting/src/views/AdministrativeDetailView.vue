@@ -77,6 +77,11 @@ const unCollapseAll = () => {
   }
 }
 
+const scrollTop = () => {
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
+}
+
 const unsaved = ref(false)
 
 const setUnsaved = () => {
@@ -90,10 +95,10 @@ const discardChanges = () => {
 const saveChanges = () => {
   if (type === 'study-office') {
     putApplicationStudyOffice(id, applicationData.value['courseLeipzig']['name'], moduleConnections.value)
-        .then(_ => location.reload())
+      .then(_ => location.reload())
   } else if (type === 'chairman') {
     putApplicationChairman(id, applicationData.value['courseLeipzig']['name'], moduleConnections.value)
-        .then(_ => location.reload())
+      .then(_ => location.reload())
   }
 }
 
@@ -104,16 +109,15 @@ const triggerPassOn = () => {
 </script>
 
 <template>
-
   <div v-if="applicationData" class="main">
 
     <ApplicationConnectionLinks :connections-data="connectionsData" />
     <div class="administrative-detail-container">
 
-        <ApplicationOverview :creation-date="parseRequestDate(applicationData['creationDate'])"
-          :last-edited-date="parseRequestDate(applicationData['lastEditedDate'])"
-          :decision-date="parseRequestDate(applicationData['decisionDate'])" :id="applicationData['id']"
-          :course="applicationData['courseLeipzig']['name']" :status="applicationData['fullStatus']" />
+      <ApplicationOverview :creation-date="parseRequestDate(applicationData['creationDate'])"
+        :last-edited-date="parseRequestDate(applicationData['lastEditedDate'])"
+        :decision-date="parseRequestDate(applicationData['decisionDate'])" :id="applicationData['id']"
+        :course="applicationData['courseLeipzig']['name']" :status="applicationData['fullStatus']" />
 
       <div v-for="connection in applicationData['modulesConnections']">
 
@@ -142,6 +146,10 @@ const triggerPassOn = () => {
       <Button @click="unCollapseAll" class="collapse-expand-button">
         <img src="@/assets/icons/ExpandAll.svg">
       </Button>
+
+      <Button @click="scrollTop" class="move-top-button">
+        <img src="@/assets/icons/ArrowWhite.svg" class="arrow-icon">
+      </Button>
     </div>
 
     <div v-if="!readonly">
@@ -160,6 +168,10 @@ const triggerPassOn = () => {
 
 .main {
   @include main();
+
+  @media only screen and (max-width: 1300px) {
+    gap: 0; // remove gap for application modules connection links
+  }
 }
 
 .administrative-detail-container {
@@ -190,15 +202,11 @@ const triggerPassOn = () => {
   align-items: flex-end;
 
   position: fixed;
-  top: 50vh;
+  bottom: 5.625rem;
   right: 1rem;
-
-  transform: translateY(-50%);
-
-  @media only screen and (max-width: 1000px) {
-    display: none;
-  }
 }
+
+
 .unsaved-notification {
   background-color: $red;
   width: 3.125rem;
@@ -212,5 +220,20 @@ const triggerPassOn = () => {
 .collapse-expand-button {
   width: 3.125rem;
   height: 3.7rem;
+
+  @media only screen and (max-width: 950px) {
+    display: none;
+  }
+}
+
+.move-top-button {
+  width: 3.125rem;
+  height: 3.125rem;
+
+  & .arrow-icon {
+    transform: rotate(180deg);
+    width: 18px;
+    height: 12px;
+  }
 }
 </style>

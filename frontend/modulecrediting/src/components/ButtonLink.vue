@@ -52,7 +52,7 @@ const style = computed(() => {
   background-color: $red;
   position: fixed;
   z-index: 3;
-  bottom: 1rem;
+  bottom: 2rem;
   right: 1rem;
 
   &:hover {
