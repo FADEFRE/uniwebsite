@@ -43,8 +43,12 @@ const commentApplicant = computed(() => panelComment.value?.comment)
 
 const emit = defineEmits(['deleteSelf'])
 
+const panelRef = ref()
+
 const checkValidity = () => {
-  return panelExternalModules.value.checkValidity()
+  const validity = panelExternalModules.value.checkValidity()
+  panelRef.value.setCollapsed(validity)
+  return validity
 }
 
 defineExpose({
@@ -58,7 +62,7 @@ defineExpose({
 
 <template>
   <div>
-    <CustomPanel :initial-collapsed-state="false">
+    <CustomPanel :initial-collapsed-state="false" ref="panelRef">
       <!-- Header Content -->
       <template #header>
         <PanelHeader :external-modules="externalModules?.map(m => m.name).filter(name => name !== '')"
