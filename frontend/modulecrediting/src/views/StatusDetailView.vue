@@ -66,6 +66,7 @@ const deleteNewConnection = (key) => {
 
 const newConnectionsRef = ref()
 
+// concatenating connections
 const moduleConnections = computed(() => {
   let connectionsArray = []
   if (existingConnectionsRef.value) connectionsArray = connectionsArray.concat(existingConnectionsRef.value)
@@ -76,9 +77,16 @@ const moduleConnections = computed(() => {
 const openSummaryDocument = () => {
   window.open(summaryDocumentLink, '_blank')
 }
+
+const checkValidity = () => {
+  return moduleConnections.value.map(c => c.checkValidity()).every(Boolean)
+}
+
 const triggerSubmit = () => {
-  putApplicationStudent(applicationData.value['id'], applicationData.value['courseLeipzig']['name'], moduleConnections.value)
-    .then(_ => location.reload())
+  if (checkValidity()) {
+    putApplicationStudent(applicationData.value['id'], applicationData.value['courseLeipzig']['name'], moduleConnections.value)
+      .then(_ => location.reload())
+  }
 }
 </script>
 

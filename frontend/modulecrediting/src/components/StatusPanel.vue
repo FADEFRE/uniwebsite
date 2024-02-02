@@ -41,16 +41,25 @@ const externalModules = computed(() => panelExternalModules.value?.externalModul
 const internalModules = computed(() => panelInternalModules.value?.selectedModules)
 const commentApplicant = computed(() => panelComment.value?.comment)
 
+const panelRef = ref()
+
+const checkValidity = () => {
+  const validity = panelExternalModules.value.checkValidity()
+  panelRef.value.setCollapsed(validity)
+  return validity
+}
+
 defineExpose({
   id,
   externalModules,
   internalModules,
-  commentApplicant
+  commentApplicant,
+  checkValidity
 })
 </script>
 
 <template>
-  <CustomPanel>
+  <CustomPanel ref="panelRef">
 
     <template #header>
       <PanelHeader
