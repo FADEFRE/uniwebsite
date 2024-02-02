@@ -92,7 +92,9 @@ const setCollapsed = (value) => {
 }
 
 const checkValidity = () => {
-  return panelExternalModules.value.checkValidity()
+  const validity = panelExternalModules.value.checkValidity()
+  panel.value.setCollapsed(validity)
+  return validity
 }
 
 defineExpose({
