@@ -50,20 +50,21 @@ const deleteModuleConnection = (key) => {
   moduleConnections.value = moduleConnections.value.filter(el => el !== key)
 }
 
+const courseValid = ref(true)
+
 const checkValidity = () => {
-  console.log('checkValidity')
-  for (let connectionPanel of moduleConnectionsRef.value) {
-    connectionPanel.checkValidity()
-  }
+  courseValid.value = Boolean(selectedCourse.value)
+  const connectionValidity = moduleConnectionsRef.value.map(c => c.checkValidity()).every(Boolean)
+  return courseValid.value && connectionValidity
 }
 
 const triggerPostApplication = () => {
-  console.log(selectedCourse.value)
-  console.log(moduleConnectionsRef.value)
-  postApplication(selectedCourse.value, moduleConnectionsRef.value)
-    .then(id => {
-      router.push({ name: 'confirmation', params: { id: id } })
-    })
+  if (checkValidity()) {
+    postApplication(selectedCourse.value, moduleConnectionsRef.value)
+        .then(id => {
+          router.push({ name: 'confirmation', params: { id: id } })
+        })
+  }
 }
 </script>
 
@@ -75,7 +76,7 @@ const triggerPostApplication = () => {
       <ApplicationOverview :creation-date="getFormattedDate(creationDate)" :last-edited-date="undefined"
         :decision-date="undefined" status="NEU">
         <Dropdown v-model="selectedCourse" :options="courses" placeholder="Studiengang wählen"
-          @change="setSelectableModules">
+          @change="setSelectableModules" :class="{ 'invalid': !courseValid }">
           <template #dropdownicon>
             <img src="../assets/icons/ArrowWhite.svg">
           </template>
@@ -165,6 +166,12 @@ const triggerPostApplication = () => {
 .arrow-icon {
   transform: rotate(-90deg);
   transition: 0.1s ease-in-out;
+}
+
+.invalid {
+  background-color: $red;
+  border: 2px solid $red !important;
+  box-shadow: 0px 0px 4px 0px $red !important;
 }
 </style>
 
