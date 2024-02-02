@@ -92,7 +92,7 @@ const isValid = ref(true)
 
 const checkValidity = () => {
   // setting invalid styles
-  isValid.value = Boolean(selectedFile.value)
+  isValid.value = Boolean(props.selectedFile || selectedFile.value)
   // return
   return isValid
 }
