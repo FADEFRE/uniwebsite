@@ -42,6 +42,44 @@ function getModulesByCourse(course) {
     .catch((_) => {});
 }
 
+function putCourseLeipzigEdit(coursename, moduleList) {
+  console.debug("%c" + "putCourseLeipzigEdit", axiosColor);
+
+  const formData = new FormData();
+
+  moduleList.forEach((module, moduleIndex) => {
+    formData.append(`modulesLeipzig[${moduleIndex}].name`, module.name);
+    formData.append(`modulesLeipzig[${moduleIndex}].code`, module.code);
+  });
+
+  return httpResource
+    .put(`/api/courses-leipzig/${coursename}/edit`, formData)
+    .then((response) => response.data)
+    .catch((_) => {});
+}
+
+function putUpdateCourseLeipzig(coursename, newCourseName) {
+  console.debug("%c" + "putUpdateCourseLeipzig", axiosColor);
+
+  const formData = new FormData();
+  formData.append("courseName", newCourseName);
+
+  return httpResource
+    .put(`/api/courses-leipzig/${coursename}`, formData)
+    .then((response) => response.data)
+    .catch((_) => {});
+}
+
+function deleteCourseLeipzig(coursename) {
+  console.debug("%c" + "deleteCourseLeipzig", axiosColor);
+
+  return httpResource
+    .delete(`/api/courses-leipzig/${coursename}`)
+    .then((response) => response.data)
+    .catch((_) => {});
+}
+
+
 /*
 GET-Request to '/courses-leipzig' endpoint
 returns a list containing all modules related to a specific course
@@ -79,42 +117,15 @@ function getModulesNameCode() {
     .catch((_) => {});
 }
 
-function putCourseLeipzigEdit(coursename, moduleList) {
-  console.debug("%c" + "putCourseLeipzigEdit", axiosColor);
+function deleteModuleLeipzig(modulename) {
+  console.debug("%c" + "deleteModuleLeipzig", axiosColor);
 
-  const formData = new FormData();
-
-  moduleList.forEach((module, moduleIndex) => {
-    formData.append(`modulesLeipzig[${moduleIndex}].name`, module.name)
-    formData.append(`modulesLeipzig[${moduleIndex}].code`, module.code)
-  })
-    
   return httpResource
-    .put(`/api/courses-leipzig/${coursename}/edit`, formData)
+    .delete(`/api/modules-leipzig/${modulename}`)
     .then((response) => response.data)
     .catch((_) => {});
 }
 
-function putUpdateCourseLeipzig(coursename, newCourseName) {
-  console.debug("%c" + "putUpdateCourseLeipzig", axiosColor);
-
-  const formData = new FormData();
-  formData.append('courseName', newCourseName);
-
-  return httpResource
-    .put(`/api/courses-leipzig/${coursename}`, formData)
-    .then((response) => response.data)
-    .catch((_) => {});
-}
-
-function deleteCourseLeipzig(coursename) {
-  console.debug("%c" + "deleteCourseLeipzig", axiosColor);
-
-  return httpResource
-    .delete(`/api/courses-leipzig/${coursename}`)
-    .then((response) => response.data)
-    .catch((_) => {});
-}
 
 
 
@@ -554,6 +565,7 @@ export {
   getModulesByCourse,
   getModulesNameCodeByCourse,
   getModulesNameCode,
+  deleteModuleLeipzig,
   putCourseLeipzigEdit,
   putUpdateCourseLeipzig,
   deleteCourseLeipzig,

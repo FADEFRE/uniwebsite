@@ -1,8 +1,9 @@
 <script setup>
 import { getCoursesLeipzig, deleteCourseLeipzig, putUpdateCourseLeipzig } from "@/scripts/axios-requests";
-import { ref, onBeforeMount } from "vue";
+import { ref, onBeforeMount, computed } from "vue";
 
 const courses = ref();
+const searchString = ref('');
 
 onBeforeMount(() => {
     getCoursesLeipzig()
@@ -14,6 +15,14 @@ const deleteCourseLeipzigClick = (course) => {
         .then(_ => location.reload())
 }
 
+const filteredCourses = computed(() => {
+    if (searchString.value === '') return courses.value;
+
+    return courses.value.filter(course => {
+        return course.toLocaleLowerCase().includes(searchString.value.toLocaleLowerCase());
+    })
+})
+
 </script>
 
 <template>
@@ -23,7 +32,7 @@ const deleteCourseLeipzigClick = (course) => {
             <InputText v-model="searchString" placeholder="Studiengang suchen"></InputText>
             <img src="@/assets/icons/SearchIcon.svg" class="search-icon">
         </div>
-        <div v-for="course in courses" class="course-item">
+        <div v-for="course in filteredCourses" class="course-item">
             <p>{{ course }}</p>
             <div class="icons-container">
                 <img src="@/assets/icons/EditIcon.svg" class="edit-icon">
