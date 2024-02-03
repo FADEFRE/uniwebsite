@@ -53,18 +53,18 @@ const getFormattedId = () => {
     <div class="main">
         <div class="homepage-content">
             <!-- HomepageContainer Application -->
-            <HomepageContainer :header="$t('make application')"
+            <HomepageContainer :header="$t('homepage.make application')"
                 :text="$t('create an application to have modules from other universities recognized at the University of Leipzig.')">
-                <ButtonLink @click="goToSubmitApplication">{{ $t('make application') }}</ButtonLink>
+                <ButtonLink @click="goToSubmitApplication">{{ $t('homepage.make application') }}</ButtonLink>
             </HomepageContainer>
 
             <!-- HomepageContainer StatusView -->
-            <HomepageContainer :header="$t('view status')"
+            <HomepageContainer :header="$t('homepage.view status')"
                 :text="$t('view the status of applications that have already been submitted using the 6-digit process number.')">
                 <div class="input-button-container">
                     <InputText v-model="id" :class="{ 'invalid': isInvalid }" class="status-input"
                         placeholder="0-0-0-0-0-0" @keydown.enter.prevent="openDetailView" @input="validateInput" />
-                    <ButtonLink @click="openDetailView">{{ $t('view status') }}</ButtonLink>
+                    <ButtonLink @click="openDetailView">{{ $t('homepage.view status') }}</ButtonLink>
                 </div>
                 <small v-if="isInvalid" class="invalid-text">Punkte müssen als Zahl angegeben werden</small>
             </HomepageContainer>
@@ -72,12 +72,12 @@ const getFormattedId = () => {
 
         <div class="side-infos-container">
             <!--SideInfoContainerfür Antragprozess -->
-            <SideInfoContainer :heading="$t('application process')">
+            <SideInfoContainer :heading="$t('homepage.side info.application process')">
                 <ul class="list-container">
-                    <li class="list-item">{{ $t('submit an application online') }}</li>
-                    <li class="list-item">{{ $t('view status online using process number') }}</li>
-                    <li class="list-item">{{ $t('wait for the PAV`s decision') }}</li>
-                    <li class="list-item">{{ $t('go to the study office with the completed application') }}</li>
+                    <li class="list-item">{{ $t('homepage.side info.submit an application online') }}</li>
+                    <li class="list-item">{{ $t('homepage.side info.view status online using process number') }}</li>
+                    <li class="list-item">{{ $t('homepage.side info.wait for the PAV`s decision') }}</li>
+                    <li class="list-item">{{ $t('homepage.side info.go to the study office with the completed application') }}</li>
                 </ul>
             </SideInfoContainer>
         </div>
