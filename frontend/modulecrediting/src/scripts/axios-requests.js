@@ -5,7 +5,7 @@ let axiosColor = "color:yellow";
 /*
 GET-Request to '/courses-leipzig' endpoint
 return list of all course names
-
+removes non active courses
 parameters:
     none
  */
@@ -15,7 +15,7 @@ function getCoursesLeipzig() {
   return httpResource
     .get("/api/courses-leipzig")
     .then((response) => {
-      return response.data.map((obj) => obj.name);
+      return response.data.filter(course => course.isActive).map((obj) => obj.name);
     })
     .catch((_) => {});
 }

@@ -120,6 +120,8 @@ public class CourseLeipzigService {
         if(courseName == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No Course Name sent");
 
         CourseLeipzig courseLeipzig = getCourseLeipzigByName(courseName);
+        if(!courseLeipzig.getIsActive()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Course Leipzig with this name is deactivated: " + courseLeipzig.getName());
+
         List<ModuleLeipzig> modulesLeipzig = new ArrayList<>();
 
         // remove all modules from course leipzig
