@@ -45,6 +45,9 @@ const requestHandler = (request) => {
 };
 
 const errorHandler = (error) => {
+  
+  // TODO 400 bad request? -> wohin? -> to calling function to correctly display?
+
   // TODO 401 route to login
   // TODO 403 route to forbidden error page
   // TODO 404 route to id does not exist error page
@@ -55,8 +58,7 @@ const errorHandler = (error) => {
     if (error.response) {
       if (error.response.status === 400) {
         console.debug("%c" + "BAD REQUEST", errorColor, error.response.data); //TODO remove debug log
-        performLogout();
-        router.push({ name: "login" });
+        // TODO 400 bad request? -> wohin?
       }
       if (error.response.status === 401) {
         console.debug("%c" + "LOGOUT", errorColor, error.response.data); //TODO remove debug log
