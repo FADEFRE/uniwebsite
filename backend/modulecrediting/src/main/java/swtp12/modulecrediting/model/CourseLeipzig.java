@@ -23,6 +23,7 @@ import lombok.NoArgsConstructor;
 /**
  * CourseLeipzig {@link Entity}. Includes custom {@link JsonView} classes
  * 
+ * @see Entity
  * @see JsonView
  * @see Views
  * @see Views.ApplicationLoginOverview
