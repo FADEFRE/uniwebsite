@@ -2,16 +2,18 @@
 import ManagementCreateContainer from '../components/ManagementCreateContainer.vue';
 import ManagementEditCourse from '../components/ManagementEditCourse.vue';
 import ManagementViewCourse from '../components/ManagementViewCourse.vue';
+import ManagementViewModule from '../components/ManagementViewModule.vue';
 </script>
 
 
 <template>
     <div class="main">
         <div class="create-container-list">
-            <ManagementCreateContainer :type="'course'" />
-            <ManagementCreateContainer :type="'module'" />
-            <ManagementEditCourse />
-            <ManagementViewCourse />
+            <ManagementCreateContainer :type="'course'"/>
+            <ManagementCreateContainer :type="'module'"/>
+            <ManagementEditCourse/>
+            <ManagementViewCourse/>
+            <ManagementViewModule/>
         </div>
     </div>
 </template>

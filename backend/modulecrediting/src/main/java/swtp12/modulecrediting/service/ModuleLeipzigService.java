@@ -72,7 +72,7 @@ public class ModuleLeipzigService {
 
         if (moduleLeipzigOptional.isPresent()) {
             ModuleLeipzig moduleLeipzig = moduleLeipzigOptional.get();
-            if (moduleLeipzig.getIsActive()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Module with this name already exists: " + moduleName);
+            if (moduleLeipzig.getIsActive()) return "exists";
             else {
                 // reactivate with new module code
                 moduleLeipzig.setIsActive(true);
