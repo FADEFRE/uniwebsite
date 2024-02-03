@@ -1,14 +1,8 @@
 <script setup>
 import { useUserStore } from "@/store/userStore";
 import translate from '@/i18n/translate';
-import { onMounted } from "vue";
 
 const store = useUserStore()
-
-onMounted(() => {
-    const locale = translate.guessDefaultLocale()
-    translate.setCurrentLocale(locale)
-})
 
 </script>
 

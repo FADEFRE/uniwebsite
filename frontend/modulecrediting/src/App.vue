@@ -1,10 +1,10 @@
 <script setup>
 import TheNavigation from "@/components/TheNavigation.vue";
 import TheLanguageSelection from "@/components/TheLanguageSelection.vue";
-import { onMounted, ref } from "vue";
+import { onBeforeMount, ref } from "vue";
 import translate from '@/i18n/translate';
 
-onMounted(() => {
+onBeforeMount(() => {
     const locale = translate.guessDefaultLocale()
     translate.setCurrentLocale(locale)
 })
