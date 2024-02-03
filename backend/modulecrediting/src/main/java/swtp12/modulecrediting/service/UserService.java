@@ -1,6 +1,7 @@
 package swtp12.modulecrediting.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpCookie;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,23 +20,57 @@ import swtp12.modulecrediting.model.User;
 import swtp12.modulecrediting.repository.UserRepository;
 import swtp12.modulecrediting.util.CookieUtil;
 
+/**
+ * {@link UserService} is a {@link Service} and provides the {@link #login(LoginRequest, String, String) login},
+ * {@link #refresh(String, String) refresh}, {@link #logout() logout} 
+ * and {@link #getUserProfile() getUserProfile} methods.
+ * 
+ * @see #login(LoginRequest, String, String)
+ * @see #refresh(String, String)
+ * @see #logout()
+ * @see #getUserProfile()
+ * @see <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/stereotype/Service.html"> Springboot @Service </a>
+ * 
+ * @author Frederik Kluge 
+ */
 @Service
 public class UserService {
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private TokenProvider tokenProvider;
-
     @Autowired
     private CookieUtil cookieUtil;
 
-    public ResponseEntity<LoginResponse> login(LoginRequest loginRequest, String accessToken, String refreshToken) {
+    /**
+     * This method takes a {@link LoginRequest} and two {@code String} and checks if:
+     * <p> - the {@link User}, given by the {@code username} field in the {@code loginRequest}, exists.
+     * <p> - both {@code accessTokenString} and {@code refreshTokenString} are valid {@link Token}.
+     * <p> Depending on these checks, the {@code User} gets logged in and the method creates new {@code accessToken} and {@code refreshToken} 
+     * and puts them into {@link HttpHeaders} as {@link HttpCookie HttpCookies}.
+     * 
+     * @param loginRequest {@link LoginRequest} with username and password
+     * @param accessTokenString {@code String} 
+     * @param refreshTokenString {@code String} 
+     * 
+     * @return {@link ResponseEntity} with the created {@link HttpHeaders} and a {@link LoginResponse} as body.
+     * 
+     * @throws IllegalArgumentException if {@link User} could not be found in the database with the given {@code username}
+     * 
+     * @see LoginResponse
+     * @see LoginRequest
+     * @see Token
+     * @see User
+     * @see <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/http/ResponseEntity.html"> HttpCookie </a>
+     * @see <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/http/ResponseEntity.html"> HttpHeaders </a>
+     * @see <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/http/ResponseEntity.html"> ResponseEntity </a>
+     */
+    public ResponseEntity<LoginResponse> login(LoginRequest loginRequest, String accessTokenString, String refreshTokenString) {
         String username = loginRequest.getUsername();
         User user = userRepository.findByUsername(username).orElseThrow(() -> new IllegalArgumentException("User with this username could not be found " + username));
         
-        Boolean accessTokenValid = tokenProvider.validateToken(accessToken);
-        Boolean refreshTokenValid = tokenProvider.validateToken(refreshToken);
+        Boolean accessTokenValid = tokenProvider.validateToken(accessTokenString);
+        Boolean refreshTokenValid = tokenProvider.validateToken(refreshTokenString);
 
         HttpHeaders responseHeaders = new HttpHeaders();
         Token newAccessToken;
@@ -61,24 +96,36 @@ public class UserService {
 
         LoginResponse loginResponse = new LoginResponse(LoginResponse.SuccessFailure.SUCCESS, "Auth successful. Tokens are created in cookie.");
         return ResponseEntity.ok().headers(responseHeaders).body(loginResponse);
-
     }
 
     /**
-     * Returns a {@link ResponseEntity} containing a {@link LoginResponse} and adds a new accessToken cookie.
+     * This method takes two {@code String} and refreshes the {@link Token} of a current authenticated {@link User}. By
+     * <p> - checking if the {@code refreshTokenString} is a valid {@code Token}.
+     * <p> - trying to get the authenticated {@code User} from the {@code accessTokenString}.
+     * <p> The method then creates a new {@code refreshToken} and puts it into {@link HttpHeaders} as {@link HttpCookie HttpCookies}.
      * 
-     * @return The method is returning a {@link ResponseEntity} object with a body of type {@link LoginResponse}.
+     * @param accessTokenString {@code String} 
+     * @param refreshTokenString {@code String} 
+     * 
+     * @return {@link ResponseEntity} with the created {@link HttpHeaders} and a {@link LoginResponse} as body.
+     * 
+     * @throws IllegalArgumentException if {@code refreshTokenString} is an invalid {@link Token}.
+     * @throws ResponseStatusException if getting the authenticated {@link User} from the {@code accessTokenString} is not possible. -> Code: 401
+     * 
      * @see LoginResponse
-     * @see ResponseEntity
-     * @see CookieUtil
-     * @see CookieUtil#createAccessTokenCookie()
+     * @see Token
+     * @see User
+     * @see <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/http/ResponseEntity.html"> HttpCookie </a>
+     * @see <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/http/ResponseEntity.html"> HttpHeaders </a>
+     * @see <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/http/ResponseEntity.html"> ResponseEntity </a>
+     * @see  <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/server/ResponseStatusException.html"> ResponseStatusException </a>
      */
-    public ResponseEntity<LoginResponse> refresh(String accessToken, String refreshToken) {
-        Boolean refreshTokenValid = tokenProvider.validateToken(refreshToken);
+    public ResponseEntity<LoginResponse> refresh(String accessTokenString, String refreshTokenString) {
+        Boolean refreshTokenValid = tokenProvider.validateToken(refreshTokenString);
         if (!refreshTokenValid) throw new IllegalArgumentException("Refresh Token is invalid!");
 
         String currentUserUsername = null;
-        try { currentUserUsername = tokenProvider.getUsernameFromToken(accessToken); } 
+        try { currentUserUsername = tokenProvider.getUsernameFromToken(accessTokenString); } 
         catch (Exception e) { throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "No accessToken provided, you are most likely not actively logged in"); }
 
         Token newAccessToken = tokenProvider.generateAccessToken(currentUserUsername);
@@ -88,26 +135,39 @@ public class UserService {
         LoginResponse loginResponse = new LoginResponse(LoginResponse.SuccessFailure.SUCCESS, "Auth successful. Tokens are created in cookie.");
         return ResponseEntity.ok().headers(responseHeaders).body(loginResponse);
     }
+
     /**
-     * Returns a {@link ResponseEntity} containing a {@link LogoutResponse} with a success or error message, and deletes the accessToken cookie.
+     * This method deletes the {@link Token accessToken} by creating a new {@code accessToken} with a {@code MaxAge} of {@code 0}
+     * and putting it into {@link HttpHeaders} as {@link HttpCookie HttpCookies}. 
+     * This cookie is returned by the {@link CookieUtil#createAccessTokenCookie createAccessTokenCookie()} method in {@link CookieUtil}.
      * 
-     * @return The method is returning a {@link ResponseEntity} object with a body of type {@link LogoutResponse}.
+     * @return {@link ResponseEntity} with the created {@link HttpHeaders} and a {@link LogoutResponse} as body.
+     * 
+     * @see CookieUtil
+     * @see CookieUtil#createAccessTokenCookie
      * @see LogoutResponse
-     * @see ResponseEntity
-     * @see #deleteAccessTokenCookie()
+     * @see Token
+     * @see <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/http/ResponseEntity.html"> HttpCookie </a>
+     * @see <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/http/ResponseEntity.html"> HttpHeaders </a>
+     * @see <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/http/ResponseEntity.html"> ResponseEntity </a>
      */
     public ResponseEntity<LogoutResponse> logout() {
-        HttpHeaders responseHeaders = new HttpHeaders();
         LogoutResponse logoutResponse = new LogoutResponse(LogoutResponse.SuccessFailure.ERROR, "Error in userservice logout()");
-        deleteAccessTokenCookie(responseHeaders);
+
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add(HttpHeaders.SET_COOKIE, cookieUtil.deleteAccessTokenCookie().toString());
+
         logoutResponse = new LogoutResponse(LogoutResponse.SuccessFailure.SUCCESS, "Successfully logged out");
         return ResponseEntity.ok().headers(responseHeaders).body(logoutResponse);
     }
 
     /**
-     * Retrieves the user profile based on the currently authenticated {@link User}.
+     * This method gets the {@link UserSummary} of a current authenticated {@link User}. 
      * 
-     * @return The method is returning a {@link UserSummary} object of the current {@link User}.
+     * @return {@code UserSummary} of the authenticated {@code User}.
+     * 
+     * @throws IllegalArgumentException if {@link User} could not be found in the database with the given {@code username}.
+     * 
      * @see User
      * @see UserSummary
      */
@@ -126,40 +186,31 @@ public class UserService {
         return user.toUserSummary();
     }
 
+
+    // ------- Helper Methods -------
+
     /**
-     * Adds the "accessToken" cookie by {@link HttpHeaders#SET_COOKIE SET_COOKIE} a new cookie to the {@link HttpHeaders}.
-     * <p> This cookie is returned by the {@link CookieUtil#createAccessTokenCookie() createAccessTokenCookie()} method in {@link CookieUtil}.
+     * Adds the "accessToken" cookie by {@link HttpHeaders#SET_COOKIE SET_COOKIE} a new cookie to the given {@code httpHeaders}.
+     * <p> This cookie is returned by the {@link CookieUtil#createAccessTokenCookie createAccessTokenCookie()} method in {@link CookieUtil}.
      * 
      * @see CookieUtil
-     * @see CookieUtil#createAccessTokenCookie()
+     * @see CookieUtil#createAccessTokenCookie
      * @see HttpHeaders
      */
-    private void addAccessTokenCookie(HttpHeaders httpHeaders, Token token) {
-        httpHeaders.add(HttpHeaders.SET_COOKIE, cookieUtil.createAccessTokenCookie(token.getTokenValue(), token.getDuration()).toString());
+    private void addAccessTokenCookie(HttpHeaders httpHeaders, Token accessToken) {
+        httpHeaders.add(HttpHeaders.SET_COOKIE, cookieUtil.createAccessTokenCookie(accessToken.getTokenValue(), accessToken.getDuration()).toString());
     }
 
     /**
-     * Adds the "refreshToken" cookie by {@link HttpHeaders#SET_COOKIE SET_COOKIE} a new cookie to the {@link HttpHeaders}.
+     * Adds the "refreshToken" cookie by {@link HttpHeaders#SET_COOKIE SET_COOKIE} a new cookie to the given {@code httpHeaders}.
      * <p> This cookie is returned by the {@link CookieUtil#createRefreshTokenCookie() createRefreshTokenCookie()} method in {@link CookieUtil}.
      * 
      * @see CookieUtil
-     * @see CookieUtil#createRefreshTokenCookie()
+     * @see CookieUtil#createRefreshTokenCookie
      * @see HttpHeaders
      */
-    private void addRefreshTokenCookie(HttpHeaders httpHeaders, Token token) {
-        httpHeaders.add(HttpHeaders.SET_COOKIE, cookieUtil.createRefreshTokenCookie(token.getTokenValue(), token.getDuration()).toString());
-    }
-
-    /**
-     * Deletes the "accessToken" cookie by {@link HttpHeaders#SET_COOKIE SET_COOKIE} a new cookie to the {@link HttpHeaders}.
-     * <p> This cookie is returned by the {@link CookieUtil#deleteAccessTokenCookie() deleteAccessTokenCookie()} method in {@link CookieUtil}.
-     * 
-     * @see CookieUtil
-     * @see CookieUtil#deleteAccessTokenCookie()
-     * @see HttpHeaders
-     */
-    private void deleteAccessTokenCookie(HttpHeaders httpHeaders) {
-        httpHeaders.add(HttpHeaders.SET_COOKIE, cookieUtil.deleteAccessTokenCookie().toString());
+    private void addRefreshTokenCookie(HttpHeaders httpHeaders, Token refreshToken) {
+        httpHeaders.add(HttpHeaders.SET_COOKIE, cookieUtil.createRefreshTokenCookie(refreshToken.getTokenValue(), refreshToken.getDuration()).toString());
     }
 
 }
