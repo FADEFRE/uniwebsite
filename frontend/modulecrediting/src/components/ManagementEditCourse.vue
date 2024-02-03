@@ -6,14 +6,15 @@ import { ref, onBeforeMount, computed } from "vue";
 const courses = ref()
 const selectedCourse = ref()
 
+// allModules of selected course
 const allModules = ref([])
+const addedModules = ref([])
 const selectedModules = ref([])
-const searchString = ref();
 
-const deleteCourse = () => {
-    selectedCourse.value = null;
-    selectedModules.value = [];
-};
+// search in selectable modules
+const searchString = ref('');
+
+
 
 onBeforeMount(() => {
     getCoursesLeipzig()
@@ -22,6 +23,12 @@ onBeforeMount(() => {
         .then(data => allModules.value = data)
 })
 
+const deleteCourse = () => {
+    selectedCourse.value = null;
+    selectedModules.value = [];
+    addedModules.value = [];
+}
+
 
 const setSelectedModules = () => {
     getModulesNameCodeByCourse(selectedCourse.value)
@@ -29,37 +36,43 @@ const setSelectedModules = () => {
 }
 
 const selectableModules = computed(() => {
-    const selectedModuleNames = selectedModules.value.map((singleModule) => {
+    const selectedModuleNames = [...selectedModules.value, ...addedModules.value].map((singleModule) => {
         return singleModule.name;
     });
 
-    return allModules.value.filter((singleModule) => {
+    const selectableModules = allModules.value.filter((singleModule) => {
         return !selectedModuleNames.includes(singleModule.name);
     });
+
+    if (searchString.value === '') return selectableModules;
+
+    return selectableModules.filter((singleModule => {
+        
+
+        return singleModule.name.toLocaleLowerCase().includes(searchString.value.toLocaleLowerCase());
+    }))
 });
 
 
 
-const addModuleToCourse = (selectedModule) => {
-    // Ensure the module is not already in the selectedModules list
-    if (!selectedModules.value.some(module => module.name === selectedModule.name)) {
-        selectedModules.value.unshift(selectedModule);
-    }
+
+
+const addModuleToCourse = (clickedModule) => {
+    addedModules.value.unshift(clickedModule);
 }
 
-const removeModuleFromCourse = (selectedModule) => {
-    // Filter out the module to be removed from the selectedModules list
-    selectedModules.value = selectedModules.value.filter(module => module.name !== selectedModule.name);
+const removeModuleFromCourse = (clickedModule) => {
+    selectedModules.value = selectedModules.value.filter(module => module.name !== clickedModule.name);
+    addedModules.value = addedModules.value.filter(module => module.name !== clickedModule.name);
 }
+
 
 const saveCourseLeipzig = () => {
-    putCourseLeipzigEdit(selectedCourse.value, selectedModules.value)
+    putCourseLeipzigEdit(selectedCourse.value, [...selectedModules.value, ...addedModules.value])
         .then((coursename) => {
             deleteCourse()
         })
 }
-
-
 </script>
 
 <template>
@@ -99,6 +112,20 @@ const saveCourseLeipzig = () => {
 
             <div class="selected-modules-container">
                 <h3>Module in {{ selectedCourse }}</h3>
+
+                <div v-for="singleModule in addedModules" @click="removeModuleFromCourse(singleModule)"
+                    class="single-selected-module-item">
+                    <img src="@/assets/icons/ArrowRed.svg" class="arrow-icon">
+                    <div class="module-text-container">
+                        <p>{{ singleModule.name }}</p>
+                        <small>{{ singleModule.code }}</small>
+                    </div>
+                </div>
+
+                <div v-if="addedModules.length" class="break-container">
+                    <div class="break-line"></div>
+                    <h4 class="break-text">NEU</h4>
+                </div>
 
                 <div v-for="singleModule in selectedModules" @click="removeModuleFromCourse(singleModule)"
                     class="single-selected-module-item">
@@ -153,13 +180,9 @@ const saveCourseLeipzig = () => {
     @include verticalList(small);
     width: 100%;
 }
-
 .search-container {
     @include searchFieldContainer();
 }
-
-
-
 .single-selectable-module-item {
     @include smallHighlightBox();
     @include verticalListItem($gray);
@@ -191,10 +214,34 @@ const saveCourseLeipzig = () => {
     }
 }
 
+
+
 .selected-modules-container {
     @include verticalList(small);
     width: 100%;
 }
+
+.break-container {
+    width: 100%;
+    margin: 1rem 0;
+    padding: 0 1rem;
+    position: relative;
+}
+.break-line {
+    width: 100%;
+    height: 2px;
+    background-color: $dark-gray;
+}
+.break-text {
+    width: 3rem;
+    text-align: center;
+    background-color: $white;
+    position: absolute;
+    left: 50%;
+    top: -0.65rem;
+    transform: translateX(-50%);
+}
+
 
 .single-selected-module-item {
     @include smallHighlightBox();
