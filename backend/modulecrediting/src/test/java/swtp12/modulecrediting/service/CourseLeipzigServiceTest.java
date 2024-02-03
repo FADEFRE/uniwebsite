@@ -13,7 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
-import swtp12.modulecrediting.dto.CourseLeipzigEditDTO;
+import swtp12.modulecrediting.dto.CourseLeipzigDTO;
 import swtp12.modulecrediting.model.CourseLeipzig;
 import swtp12.modulecrediting.repository.CourseLeipzigRepository;
 
@@ -65,7 +65,7 @@ public class CourseLeipzigServiceTest {
     @Test
     void shouldCreateCourseLeipzig() {
         String testName = "test course";
-        CourseLeipzigEditDTO courseLeipzigDTO = new CourseLeipzigEditDTO();
+        CourseLeipzigDTO courseLeipzigDTO = new CourseLeipzigDTO();
 
         ResponseStatusException e1 = assertThrows(ResponseStatusException.class, () -> { courseLeipzigService.createCourseLeipzig(null); });
         assertTrue(e1.getStatusCode().equals(HttpStatus.BAD_REQUEST));

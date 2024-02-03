@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import swtp12.modulecrediting.dto.CourseLeipzigEditDTO;
+import swtp12.modulecrediting.dto.CourseLeipzigDTO;
 import swtp12.modulecrediting.dto.CourseLeipzigRelationEditDTO;
 import swtp12.modulecrediting.dto.ModuleLeipzigDTO;
 import swtp12.modulecrediting.model.Application;
@@ -39,7 +39,7 @@ public class CourseLeipzigService {
         return courseLeipzigRepository.findAll();
     }
 
-    public String createCourseLeipzig(CourseLeipzigEditDTO courseLeipzigDTO) {
+    public String createCourseLeipzig(CourseLeipzigDTO courseLeipzigDTO) {
         if (courseLeipzigDTO == null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No data given");
         if (courseLeipzigDTO.getCourseName() == null || courseLeipzigDTO.getCourseName().isBlank())
@@ -64,7 +64,7 @@ public class CourseLeipzigService {
         return courseLeipzig.getName();
     }
 
-    public String updateCourseLeipzig(String courseName, CourseLeipzigEditDTO courseLeipzigDTO) {
+    public String updateCourseLeipzig(String courseName, CourseLeipzigDTO courseLeipzigDTO) {
         if (courseLeipzigDTO == null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No data given");
         if (courseLeipzigDTO.getCourseName() == null || courseLeipzigDTO.getCourseName().isBlank())

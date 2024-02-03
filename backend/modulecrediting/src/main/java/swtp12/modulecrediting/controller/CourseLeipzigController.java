@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
-import swtp12.modulecrediting.dto.CourseLeipzigEditDTO;
+import swtp12.modulecrediting.dto.CourseLeipzigDTO;
 import swtp12.modulecrediting.dto.CourseLeipzigRelationEditDTO;
 import swtp12.modulecrediting.model.CourseLeipzig;
 import swtp12.modulecrediting.model.Views;
@@ -38,14 +38,14 @@ public class CourseLeipzigController {
     //POST-Requests
     @PostMapping
     @PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR')")
-    public ResponseEntity<String> createCourseLeipzig(@ModelAttribute CourseLeipzigEditDTO courseLeipzigDTO) {
+    public ResponseEntity<String> createCourseLeipzig(@ModelAttribute CourseLeipzigDTO courseLeipzigDTO) {
         return ResponseEntity.ok(courseLeipzigService.createCourseLeipzig(courseLeipzigDTO));
     }
 
     //PUT-Requests
     @PutMapping("/{name}")
     @PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR')")
-    public ResponseEntity<String> updateCourseLeipzig(@PathVariable String name, @ModelAttribute CourseLeipzigEditDTO courseLeipzigDTO) {
+    public ResponseEntity<String> updateCourseLeipzig(@PathVariable String name, @ModelAttribute CourseLeipzigDTO courseLeipzigDTO) {
         return ResponseEntity.ok(courseLeipzigService.updateCourseLeipzig(name, courseLeipzigDTO));
     }
 
