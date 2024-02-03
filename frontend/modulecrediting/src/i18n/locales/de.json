@@ -1,23 +1,25 @@
 {
     "navigation": {
         "homepage": "Startseite",
-        "login_internally": "log-in intern"
+        "login": "log-in intern"
     },
 
     "homepage": {
-        "make_application": "Antrag stellen",
-        "view_status": "Status einsehen",
+        "makeApplication": "Antrag stellen",
+        "makeApplicationExplanation": "Erstellen Sie einen Antrag, um Module anderer Universitäten an der Universität Leipzig anzurechnen lassen.",
 
-        "side_info": {
-            "submit_application": "Antrag online stellen",
-            "view_status": "Über Vorgangsnummer online Status einsehen",
+
+        "viewStatus": "Status einsehen",
+        "viewStatusExplanation": "Sehen Sie den Status von bereits gestellten Anträgen über die 6-stellige Vorgangsnummer ein.",
+
+        "sideInfo": {
+            "applicationProcess": "Antragsprozess",
+            "submitApplication": "Antrag online stellen",
+            "viewStatus": "Über Vorgangsnummer online Status einsehen",
             "wait": "Auf Entscheidung des PAV warten",
-            "go_to_study": "Mit abgeschlossenem Antrag zum Studienbüro gehen"
+            "goToStudy": "Mit abgeschlossenem Antrag zum Studienbüro gehen"
             
         }
-    },
+    }
 
-    "application process": "Antragsprozess",
-    "create an application to have modules from other universities recognized at the University of Leipzig.": "Erstellen Sie einen Antrag, um Module anderer Universitäten an der Universität Leipzig anzurechnen lassen.",
-    "view the status of applications that have already been submitted using the 6-digit process number.": "Sehen Sie den Status von bereits gestellten Anträgen über die 6-stellige Vorgangsnummer ein."
 }

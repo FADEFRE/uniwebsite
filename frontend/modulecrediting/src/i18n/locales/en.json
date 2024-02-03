@@ -1,23 +1,24 @@
 {
     "navigation": {
         "homepage": "Home page",
-        "login_internally": "Log-in internally"
+        "login": "Log-in internally"
     },
 
     "homepage": {
-        "make_application": "Create application",
-        "view_status": "View status",
+        "makeApplication": "Create application",
+        "makeApplicationExplanation": "Create an application to have modules from other universities recognized at the University of Leipzig.",
+    
+        "viewStatus": "View status",
+        "viewStatusExplanation": "View the status of applications that have already been submitted using the 6-digit process number.",
+
         
-        "side_info": {
-            "submit_application": "Submit an application online",
-            "view_status": "View status online using process number",
+        "sideInfo": {
+            "submitApplication": "Submit an application online",
+            "viewStatus": "View status online using process number",
             "wait": "Wait for the PAV's decision",
-            "go_to_study": "Go to the study office with the completed application"
+            "goToStudy": "Go to the study office with the completed application"
             
         }
-    },
+    }
 
-    "application process": "Application process",
-    "create an application to have modules from other universities recognized at the University of Leipzig.": "Create an application to have modules from other universities recognized at the University of Leipzig.",
-    "view the status of applications that have already been submitted using the 6-digit process number.": "View the status of applications that have already been submitted using the 6-digit process number."
 }

@@ -53,18 +53,18 @@ const getFormattedId = () => {
     <div class="main">
         <div class="homepage-content">
             <!-- HomepageContainer Application -->
-            <HomepageContainer :header="$t('homepage.make_application')"
-                :text="$t('create an application to have modules from other universities recognized at the University of Leipzig.')">
-                <ButtonLink @click="goToSubmitApplication">{{ $t('homepage.make_application') }}</ButtonLink>
+            <HomepageContainer :header="$t('homepage.makeApplication')"
+                :text="$t('homepage.makeApplicationExplanation')">
+                <ButtonLink @click="goToSubmitApplication">{{ $t('homepage.makeApplication') }}</ButtonLink>
             </HomepageContainer>
 
             <!-- HomepageContainer StatusView -->
-            <HomepageContainer :header="$t('homepage.view_status')"
-                :text="$t('view the status of applications that have already been submitted using the 6-digit process number.')">
+            <HomepageContainer :header="$t('homepage.viewStatus')"
+                :text="$t('homepage.viewStatusExplanation')">
                 <div class="input-button-container">
                     <InputText v-model="id" :class="{ 'invalid': isInvalid }" class="status-input"
                         placeholder="0-0-0-0-0-0" @keydown.enter.prevent="openDetailView" @input="validateInput" />
-                    <ButtonLink @click="openDetailView">{{ $t('homepage.view_status') }}</ButtonLink>
+                    <ButtonLink @click="openDetailView">{{ $t('homepage.viewStatus') }}</ButtonLink>
                 </div>
                 <small v-if="isInvalid" class="invalid-text">Punkte müssen als Zahl angegeben werden</small>
             </HomepageContainer>
@@ -72,12 +72,12 @@ const getFormattedId = () => {
 
         <div class="side-infos-container">
             <!--SideInfoContainerfür Antragprozess -->
-            <SideInfoContainer :heading="$t('homepage.side_info.application_process')">
+            <SideInfoContainer :heading="$t('homepage.sideInfo.applicationProcess')">
                 <ul class="list-container">
-                    <li class="list-item">{{ $t('homepage.side_info.submit_application') }}</li>
-                    <li class="list-item">{{ $t('homepage.side_info.view_status') }}</li>
-                    <li class="list-item">{{ $t('homepage.side_info.wait') }}</li>
-                    <li class="list-item">{{ $t('homepage.side_info.go_to_study') }}</li>
+                    <li class="list-item">{{ $t('homepage.sideInfo.submitApplication') }}</li>
+                    <li class="list-item">{{ $t('homepage.sideInfo.viewStatus') }}</li>
+                    <li class="list-item">{{ $t('homepage.sideInfo.wait') }}</li>
+                    <li class="list-item">{{ $t('homepage.sideInfo.goToStudy') }}</li>
                 </ul>
             </SideInfoContainer>
         </div>

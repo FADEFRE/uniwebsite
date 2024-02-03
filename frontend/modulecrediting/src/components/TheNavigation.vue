@@ -25,7 +25,7 @@ const specificRole = computed(() => navStore.getCurrentRoleNav)
     </router-link>
     <router-link :to="{ name: 'login' }" @click="$emit('linkClicked')" class="router-link"
       :class="{ 'white-router-link': isMenuOpen }">
-      {{ $t('navigation.login_internally') }}
+      {{ $t('navigation.login') }}
       <img src="@/assets/icons/LoginWhite.svg" class="login-logout-icon login-icon">
     </router-link>
   </div>
