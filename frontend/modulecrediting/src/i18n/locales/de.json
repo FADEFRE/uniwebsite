@@ -8,7 +8,6 @@
         "makeApplication": "Antrag stellen",
         "makeApplicationExplanation": "Erstellen Sie einen Antrag, um Module anderer Universitäten an der Universität Leipzig anzurechnen lassen.",
 
-
         "viewStatus": "Status einsehen",
         "viewStatusExplanation": "Sehen Sie den Status von bereits gestellten Anträgen über die 6-stellige Vorgangsnummer ein.",
 
@@ -18,8 +17,8 @@
             "viewStatus": "Über Vorgangsnummer online Status einsehen",
             "wait": "Auf Entscheidung des PAV warten",
             "goToStudy": "Mit abgeschlossenem Antrag zum Studienbüro gehen"
-            
         }
+        
     }
 
 }
