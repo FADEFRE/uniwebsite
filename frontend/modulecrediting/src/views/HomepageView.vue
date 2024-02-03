@@ -1,7 +1,6 @@
 <script setup>
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
-import { url } from "@/scripts/url-config";
 import { getApplicationExists } from "@/scripts/axios-requests";
 import HomepageContainer from '../components/HomepageContainer.vue';
 import SideInfoContainer from '../components/SideInfoContainer.vue';
@@ -27,8 +26,6 @@ const openDetailView = () => {
             window.open(routeData.href, '_top');
         })
 }
-
-
 
 const goToSubmitApplication = () => {
     router.push({ name: 'submitApplication' })
