@@ -1,5 +1,5 @@
 <script setup>
-import { getCoursesLeipzig } from "@/scripts/axios-requests";
+import { getCoursesLeipzig, deleteCourseLeipzig, putUpdateCourseLeipzig } from "@/scripts/axios-requests";
 import { ref, onBeforeMount } from "vue";
 
 const courses = ref();
@@ -8,6 +8,7 @@ onBeforeMount(() => {
     getCoursesLeipzig()
         .then(data => courses.value = data)
 })
+
 </script>
 
 <template>
@@ -17,11 +18,11 @@ onBeforeMount(() => {
             <InputText v-model="searchString" placeholder="Studiengang suchen"></InputText>
             <img src="@/assets/icons/SearchIcon.svg" class="search-icon">
         </div>
-        <div v-for="course in courses" class="course-item">
+        <div v-for="course in courses" class="course-item" >
             <p>{{ course }}</p>
             <div class="icons-container">
                 <img src="@/assets/icons/EditIcon.svg" class="edit-icon">
-                <img src="@/assets/icons/Trash.svg" class="trash-icon">
+                <img src="@/assets/icons/Trash.svg" @click="deleteCourseLeipzig(course)" class="trash-icon">
             </div>
         </div>
     </div>
