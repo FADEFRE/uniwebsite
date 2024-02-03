@@ -40,4 +40,4 @@ export async function refreshToken() {
     return response.status;
 }
 
-export const intervalMilliSeconds = 1800000; // 30 minutes
+export const intervalMilliSeconds = 600000; // 10 minutes
