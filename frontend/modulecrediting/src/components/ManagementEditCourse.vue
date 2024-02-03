@@ -1,20 +1,31 @@
 <script setup>
-import { getCoursesLeipzig, getModulesNameCodeByCourse, getModulesNameCode, putCourseLeipzigEdit } from "@/scripts/axios-requests";
-import ButtonLink from "@/components/ButtonLink.vue"
 import { ref, onBeforeMount, computed } from "vue";
+import ButtonLink from "@/components/ButtonLink.vue"
+import { getCoursesLeipzig, getModulesNameCodeByCourse, getModulesNameCode, putCourseLeipzigEdit } from "@/scripts/axios-requests";
 
 const courses = ref()
 const selectedCourse = ref()
 
-// allModules of selected course
 const allModules = ref([])
+
+// allModules of selected course
 const addedModules = ref([])
 const selectedModules = ref([])
 
+const selectableModules = computed(() => {
+  const selectedModuleNames = [...selectedModules.value, ...addedModules.value].map(singleModule => singleModule.name);
+
+  const selectableModules = allModules.value.filter(singleModule => !selectedModuleNames.includes(singleModule.name));
+
+  if (searchString.value === '') return selectableModules;
+
+  return selectableModules.filter(singleModule => {
+    return singleModule.name.toLocaleLowerCase().includes(searchString.value.toLocaleLowerCase());
+  })
+});
+
 // search in selectable modules
 const searchString = ref('');
-
-
 
 onBeforeMount(() => {
     getCoursesLeipzig()
@@ -23,39 +34,16 @@ onBeforeMount(() => {
         .then(data => allModules.value = data)
 })
 
-const deleteCourse = () => {
+const discardEditCourseChanges = () => {
     selectedCourse.value = null;
     selectedModules.value = [];
     addedModules.value = [];
 }
 
-
 const setSelectedModules = () => {
     getModulesNameCodeByCourse(selectedCourse.value)
         .then(data => selectedModules.value = data)
 }
-
-const selectableModules = computed(() => {
-    const selectedModuleNames = [...selectedModules.value, ...addedModules.value].map((singleModule) => {
-        return singleModule.name;
-    });
-
-    const selectableModules = allModules.value.filter((singleModule) => {
-        return !selectedModuleNames.includes(singleModule.name);
-    });
-
-    if (searchString.value === '') return selectableModules;
-
-    return selectableModules.filter((singleModule => {
-        
-
-        return singleModule.name.toLocaleLowerCase().includes(searchString.value.toLocaleLowerCase());
-    }))
-});
-
-
-
-
 
 const addModuleToCourse = (clickedModule) => {
     addedModules.value.unshift(clickedModule);
@@ -66,12 +54,9 @@ const removeModuleFromCourse = (clickedModule) => {
     addedModules.value = addedModules.value.filter(module => module.name !== clickedModule.name);
 }
 
-
 const saveCourseLeipzig = () => {
     putCourseLeipzigEdit(selectedCourse.value, [...selectedModules.value, ...addedModules.value])
-        .then((coursename) => {
-            deleteCourse()
-        })
+        .then(_ => location.reload())
 }
 </script>
 
@@ -86,7 +71,7 @@ const saveCourseLeipzig = () => {
                 </template>
             </Dropdown>
             <div v-else class="saving-buttons-container">
-                <ButtonLink @click="deleteCourse">Änderung verwerfen</ButtonLink>
+                <ButtonLink @click="discardEditCourseChanges">Änderung verwerfen</ButtonLink>
                 <ButtonLink @click="saveCourseLeipzig" :redButton="true">Speichern</ButtonLink>
             </div>
         </div>
