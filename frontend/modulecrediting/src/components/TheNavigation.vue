@@ -20,12 +20,12 @@ const specificRole = computed(() => navStore.getCurrentRoleNav)
   <div v-if="isNavType === 'standard'" class="links-container" :class="{ 'small-screen-links-container': isMenuOpen }">
     <router-link :to="{ name: 'home' }" class="router-link" :class="{ 'white-router-link': isMenuOpen }"
       @click="$emit('linkClicked')">
-      {{ $t('navigation.home page') }}
+      {{ $t('navigation.homepage') }}
       <img src="@/assets/icons/ArrowWhite.svg" class="arrow-icon">
     </router-link>
     <router-link :to="{ name: 'login' }" @click="$emit('linkClicked')" class="router-link"
       :class="{ 'white-router-link': isMenuOpen }">
-      {{ $t('navigation.log-in internally') }}
+      {{ $t('navigation.login_internally') }}
       <img src="@/assets/icons/LoginWhite.svg" class="login-logout-icon login-icon">
     </router-link>
   </div>

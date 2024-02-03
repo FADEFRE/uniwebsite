@@ -1,18 +1,18 @@
 {
     "navigation": {
-        "home page": "Startseite",
-        "log-in internally": "log-in intern"
+        "homepage": "Startseite",
+        "login_internally": "log-in intern"
     },
 
     "homepage": {
-        "make application": "Antrag stellen",
-        "view status": "Status einsehen",
+        "make_application": "Antrag stellen",
+        "view_status": "Status einsehen",
 
-        "side info": {
-            "submit an application online": "Antrag online stellen",
-            "view status online using process number": "Über Vorgangsnummer online Status einsehen",
-            "wait for the PAV`s decision": "Auf Entscheidung des PAV warten",
-            "go to the study office with the completed application": "Mit abgeschlossenem Antrag zum Studienbüro gehen"
+        "side_info": {
+            "submit_application": "Antrag online stellen",
+            "view_status": "Über Vorgangsnummer online Status einsehen",
+            "wait": "Auf Entscheidung des PAV warten",
+            "go_to_study": "Mit abgeschlossenem Antrag zum Studienbüro gehen"
             
         }
     },
