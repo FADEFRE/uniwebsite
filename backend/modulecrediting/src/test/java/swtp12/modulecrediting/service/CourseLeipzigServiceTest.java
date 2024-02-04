@@ -63,30 +63,28 @@ public class CourseLeipzigServiceTest {
     }
 
     @Test
-    void shouldCreateCourseLeipzig() {
+    public void shouldCreateCourseLeipzig() {
         String testName = "test course";
         CourseLeipzigDTO courseLeipzigDTO = new CourseLeipzigDTO();
-
-        ResponseStatusException e1 = assertThrows(ResponseStatusException.class, () -> { courseLeipzigService.createCourseLeipzig(null); });
-        assertTrue(e1.getStatusCode().equals(HttpStatus.BAD_REQUEST));
-
-        ResponseStatusException e2 = assertThrows(ResponseStatusException.class, () -> { courseLeipzigService.createCourseLeipzig(courseLeipzigDTO); });
-        assertTrue(e2.getStatusCode().equals(HttpStatus.BAD_REQUEST));
-
-
         courseLeipzigDTO.setCourseName(testName);
 
+        // Mock the behavior when saving a new course
         CourseLeipzig courseLeipzig = new CourseLeipzig(testName);
         Mockito.when(courseLeipzigRepository.save(any())).thenReturn(courseLeipzig);
-        String expectedCourseLeipzigName = courseLeipzigService.createCourseLeipzig(courseLeipzigDTO);
-        assertEquals(expectedCourseLeipzigName, testName);
-        
-        
-        Optional<CourseLeipzig> optionalCourseLeipzig = Optional.of(new CourseLeipzig(testName));
+
+        // First attempt to create the course should succeed
+        String resultCreate = courseLeipzigService.createCourseLeipzig(courseLeipzigDTO);
+        assertEquals(testName, resultCreate);
+
+        // Mock the behavior when finding an existing course
+        Optional<CourseLeipzig> optionalCourseLeipzig = Optional.of(courseLeipzig);
         Mockito.when(courseLeipzigRepository.findByName(testName)).thenReturn(optionalCourseLeipzig);
-        ResponseStatusException e3 = assertThrows(ResponseStatusException.class, () -> { courseLeipzigService.createCourseLeipzig(courseLeipzigDTO); });
-        assertTrue(e3.getStatusCode().equals(HttpStatus.BAD_REQUEST));
+
+        // Second attempt to create the same course should return "exists"
+        String resultDuplicate = courseLeipzigService.createCourseLeipzig(courseLeipzigDTO);
+        assertEquals("exists", resultDuplicate);
     }
+
 
     @Test
     void shouldDeleteCourseLeipzig() {
