@@ -118,6 +118,7 @@ const triggerPassOn = () => {
   <div v-if="applicationData" class="main">
 
     <ApplicationConnectionLinks :connections-data="connectionsData" />
+    
     <div class="administrative-detail-container">
 
       <ApplicationOverview :creation-date="parseRequestDate(applicationData['creationDate'])"
@@ -198,6 +199,7 @@ const triggerPassOn = () => {
     padding: 0 0.625rem;
   }
 }
+
 
 
 .mid-right-fixed-container {

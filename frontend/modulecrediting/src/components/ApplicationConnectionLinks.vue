@@ -39,6 +39,7 @@ const props = defineProps({
 .application-connection-links-container {
   @include basicContainer();
   width: 22%;
+  min-width: 22%;
 
   position: sticky;
   top: 1rem;
@@ -63,7 +64,6 @@ const props = defineProps({
       transform: translateX(0.1rem) rotate(-90deg);
     }
   }
-
 }
 
 .connection-text {
