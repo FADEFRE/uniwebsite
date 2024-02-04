@@ -56,8 +56,8 @@ const attemptLogin = () => {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 27.42188rem;
-    height: 11.25rem;
+    width: 27rem;
+    height: 11rem;
 }
 
 .login-content {
@@ -66,7 +66,7 @@ const attemptLogin = () => {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 1.5625rem;
+    gap: 1.5rem;
 }
 
 .input-container {
@@ -75,7 +75,7 @@ const attemptLogin = () => {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 0.625rem;
+    gap: 0.5rem;
 
     & .p-inputtext {
         width: 100%;

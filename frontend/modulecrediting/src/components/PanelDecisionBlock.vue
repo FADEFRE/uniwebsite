@@ -90,7 +90,7 @@ defineExpose({
 }
 
 .icon-container {
-  padding: 0.49rem 1.25rem;
+  padding: 0.5rem 1.25rem;
   border-right: 2px solid $black;
 
   &.highlight {

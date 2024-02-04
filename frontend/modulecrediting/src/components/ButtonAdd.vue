@@ -19,7 +19,7 @@ slots:
 @import '../assets/variables.scss';
 .button-container{
   display: flex;
-  gap: 0.625rem;
+  gap: 0.5rem;
 
 }
 

@@ -37,7 +37,7 @@ const props = defineProps(['heading'])
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 0.625rem;
+    gap: 0.5rem;
 }
 
 :slotted(li) {

@@ -56,12 +56,8 @@ defineExpose({
   width: max-content;
 
   color: $white;
-  font-size: 1.125rem;
+  font-size: 1.1rem;
   font-weight: 600;
-
-
-
-
 }
 
 textarea {

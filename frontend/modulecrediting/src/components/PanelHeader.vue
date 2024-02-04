@@ -24,16 +24,12 @@ const props = defineProps({
   }
 });
 
-const textStyle = computed(() => {
-  if (props.relatedModules) return "overview-text";
-  return "";
-})
 </script>
 
 <template>
   <div class="panel-heading-container">
     <div class="modules-container">
-      <h3 v-if="externalModules && externalModules.length" :class="textStyle" class="single-module">
+      <h3 v-if="externalModules && externalModules.length" :class="{ 'related-modules-text': relatedModules }" class="single-module">
           {{ externalModules.join(', ') }}
         </h3>
         <h3 v-else>...</h3>
@@ -44,7 +40,7 @@ const textStyle = computed(() => {
     </div>
 
     <div class="modules-container">
-      <h3 v-if="internalModules && internalModules.length" :class="textStyle" class="single-module">
+      <h3 v-if="internalModules && internalModules.length" :class="{ 'related-modules-text': relatedModules }" class="single-module">
         {{ internalModules.join(', ') }}
       </h3>
       <h3 v-else>...</h3>
@@ -60,7 +56,7 @@ const textStyle = computed(() => {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 0.625rem;
+  gap: 0.5rem;
   width: 100%;
   overflow: hidden;
 }
@@ -80,7 +76,9 @@ const textStyle = computed(() => {
   // Ensure the arrow icon doesn't cause unnecessary wrapping
 }
 
-.overview-text {
+.related-modules-text {
   text-transform: none;
+  font-size: 1rem;
+  font-weight: 500;
 }
 </style>

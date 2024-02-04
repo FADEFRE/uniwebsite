@@ -3,10 +3,10 @@
   margin: 0 auto;
   display: flex;
   flex-direction: row;
-  padding: 3.125rem 4.375rem;
+  padding: 3rem 4.5rem;
   justify-content: center;
   align-items: flex-start;
-  gap: 1.875rem;
+  gap: 2rem;
 
   @media only screen and (max-width: 1200px) {
     flex-direction: column;
@@ -26,9 +26,11 @@
   flex-direction: column;
 
   @if $gapSize == small {
-    gap: 0.625rem;
+    gap: 0.5rem;
   } @else if $gapSize == big {
-    gap: 1.25rem;
+    gap: 1.5rem;
+  } @else if $gapSize == mid {
+    gap: 1rem;
   }
 }
 
@@ -43,11 +45,11 @@
   max-width: 100%;
   background-color: $white;
   display: flex;
-  padding: 4.375rem;
+  padding: 4rem;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 2.5rem;
+  gap: 2rem;
 
   @include boxShadow(big);
 }
@@ -61,11 +63,11 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 0.625rem;
+  gap: 0.5rem;
 }
 
 @mixin applicationContainer($type) {
-  @include verticalList(big);
+  @include verticalList(mid);
   width: 100%;
 
   @if ($type == split) {
@@ -88,7 +90,7 @@
 
 @mixin panelComponent() {
   width: 100%;
-  padding: 0.625rem 0rem;
+  padding: 0.5rem 0rem;
   background-color: $white;
   border-top: 1px solid $dark-gray;
 
@@ -96,14 +98,14 @@
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  gap: 0.625rem;
+  gap: 0.5rem;
 }
 
 @mixin screenSplit() {
   width: 100%;
   display: flex;
   align-items: flex-start;
-  gap: 0.9735rem;
+  gap: 1rem;
 }
 
 @mixin rightArrow() {
@@ -112,7 +114,7 @@
 
 @mixin smallHighlightBox() {
   width: max-content;
-  padding: 0.625rem 1.125rem;
+  padding: 0.5rem 1rem;
   border: none;
 
   display: flex;
@@ -130,7 +132,7 @@
 
 @mixin trashIconAnimation() {
   background-color: transparent;
-  padding: 0.5rem 1.125rem;
+  padding: 0.5rem 1.2rem;
   transition: 0.1s ease-in-out;
   cursor: pointer;
   &:hover {

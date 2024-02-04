@@ -48,7 +48,7 @@ function formatId(id) {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.9rem;
+    gap: 1rem;
 }
 
 .id-section {
@@ -56,19 +56,19 @@ function formatId(id) {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 0.9375rem;
+    gap: 1rem;
     width: min-content;
 }
 
 .id-container {
     position: relative;
     width: max-content;
-    padding: 0.9375rem 1.875rem;
+    padding: 1rem 2rem;
     background-color: $gray;
     border: solid 1px $dark-gray;
 }
 .id {
-    font-size: 2.25rem;
+    font-size: 2rem;
     font-weight: 800;
     letter-spacing: 0.5rem;
 }

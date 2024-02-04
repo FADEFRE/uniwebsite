@@ -82,8 +82,8 @@ function closeMenu() {
 }
 
 .logo {
-  width: 27.42188rem;
-  height: 11.25rem;
+  width: 27rem;
+  height: 11rem;
 
   @media only screen and (max-width: 1170px) {
     width: 21rem;
@@ -99,14 +99,14 @@ function closeMenu() {
 .nav-menu-container {
   display: flex;
   flex-direction: column;
-  padding: 0rem 1.875rem;
-  gap: 0.6rem;
+  padding: 0rem 2rem;
+  gap: 0.5rem;
 }
 
 .burger-menu {
   background-color: $white;
-  margin-right: 0.625rem;
-  padding: 0.8rem 1rem;
+  margin-right: 0.5rem;
+  padding: 1rem;
 
   &:hover {
     background-color: $gray;
@@ -117,11 +117,11 @@ function closeMenu() {
 
 .close-menu {
   position: fixed;
-  top: 1rem;
-  right: 1rem;
+  top: 1.8rem;
+  right: 0.5rem;
   z-index: 5;
   border: 2px solid $white;
-  padding: 1.2rem 1.2rem;
+  padding: 1.2rem;
 
   display: none;
 }

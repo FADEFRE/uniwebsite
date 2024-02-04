@@ -117,9 +117,9 @@ const triggerForward = () => {
 .application-overview-container {
     background-color: $white;
     display: flex;
-    padding: 0.625rem 0.625rem 0.625rem 1.25rem;
+    padding: 0.5rem 0.5rem 0.5rem 1rem;
     justify-content: space-between;
-    gap: 0.625rem;
+    gap: 0.5rem;
     align-self: stretch;
     flex-wrap: wrap;
     transition: 0.1s ease-in-out;
@@ -229,6 +229,6 @@ const triggerForward = () => {
 .date-block {
     display: flex;
     align-items: center;
-    gap: 0.625rem;
+    gap: 0.5rem;
 }
 </style>

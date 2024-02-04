@@ -51,7 +51,7 @@ const props = defineProps(['header', 'text'])
     text-align: center;
     font-family: 'Jost';
     font-weight: 500;
-    letter-spacing: 0.3125rem;
+    letter-spacing: 0.3rem;
     width: 100%;
     max-width: 250px;
 

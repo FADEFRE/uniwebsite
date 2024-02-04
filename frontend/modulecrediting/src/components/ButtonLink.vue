@@ -44,7 +44,7 @@ const style = computed(() => {
 
 .p-button {
   display: flex;
-  gap: 0.625rem;
+  gap: 0.5rem;
 }
 
 .arrow-icon {

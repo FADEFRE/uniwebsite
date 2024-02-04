@@ -44,19 +44,19 @@ const props = defineProps({
   position: sticky;
   top: 1rem;
 
-  @media only screen and (max-width: 1300px) {
+  @media only screen and (max-width: 1200px) {
     display: none;
   }
 }
 
 .connection-link-container {
-  padding: 0.25rem 0.625rem;
+  padding: 0.25rem 0.5rem;
   width: 100%;
   background-color: transparent;
 
   border-top: 2px solid $dark-gray;
   border-bottom: 2px solid $dark-gray;
-  gap: 0.08rem;
+  gap: 0.1rem;
 
   &:hover{
     background-color: $white-hover;

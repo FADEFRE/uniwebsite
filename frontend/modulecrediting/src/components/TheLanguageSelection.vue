@@ -27,9 +27,9 @@ const store = useUserStore()
 
     color: $white;
     font-family: "Jost";
-    font-size: 1.125rem;
+    font-size: 1rem;
     font-weight: 400;
-    line-height: 1.5rem;
+    line-height: 1.25rem;
 
     &:first-child {
         border-right: 1px solid $white;

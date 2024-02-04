@@ -130,7 +130,7 @@ defineExpose({
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  right: 0.625rem;
+  right: 0.5rem;
 }
 .trash-icon {
   @include trashIconAnimation();

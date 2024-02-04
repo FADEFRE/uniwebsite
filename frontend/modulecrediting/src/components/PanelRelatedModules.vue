@@ -106,12 +106,12 @@ const openRelatedModule = (module) => {
   @include verticalListItem($gray);
 
   width: 100%;
-  padding: 0.625rem 1.125rem;
+  padding: 0.5rem 1rem;
 
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 0.965rem;
+  gap: 1rem;
 
   overflow: hidden;
 }
@@ -119,17 +119,16 @@ const openRelatedModule = (module) => {
 .left-side,
 .right-side {
   display: flex;
-  gap: 0.625rem;
+  gap: 0.5rem;
   align-items: center;
 }
 
 .date-block {
   display: flex;
   align-items: center;
-  gap: 0.625rem;
+  gap: 0.5rem;
 }
 
 .course {
-  text-wrap: nowrap;
 }
 </style>

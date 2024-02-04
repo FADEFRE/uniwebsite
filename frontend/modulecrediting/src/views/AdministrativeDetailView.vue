@@ -175,10 +175,6 @@ const triggerPassOn = () => {
 
 .main {
   @include main();
-
-  @media only screen and (max-width: 1300px) {
-    gap: 0; // remove gap for application modules connection links
-  }
 }
 
 .administrative-detail-container {
@@ -191,10 +187,10 @@ const triggerPassOn = () => {
   width: 100%;
   justify-content: flex-start;
   flex-wrap: wrap;
-  gap: 0.625rem 1rem;
+  gap: 0.5rem 1rem;
 
   @media only screen and (max-width: 700px) {
-    padding: 0 0.625rem;
+    padding: 0 0.5rem;
   }
 }
 
@@ -208,15 +204,15 @@ const triggerPassOn = () => {
   align-items: flex-end;
 
   position: fixed;
-  bottom: 5.625rem;
+  bottom: 5.5rem;
   right: 1rem;
 }
 
 
 .unsaved-notification {
   background-color: $red;
-  width: 3.125rem;
-  height: 3.125rem;
+  width: 3rem;
+  height: 3rem;
 
   display: flex;
   justify-content: center;
@@ -224,8 +220,8 @@ const triggerPassOn = () => {
 }
 
 .collapse-expand-button {
-  width: 3.125rem;
-  height: 3.7rem;
+  width: 3rem;
+  height: 4rem;
 
   @media only screen and (max-width: 950px) {
     display: none;
@@ -233,8 +229,8 @@ const triggerPassOn = () => {
 }
 
 .move-top-button {
-  width: 3.125rem;
-  height: 3.125rem;
+  width: 3rem;
+  height: 3rem;
 
   & .arrow-icon {
     transform: rotate(180deg);

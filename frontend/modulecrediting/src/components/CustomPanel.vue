@@ -69,7 +69,7 @@ defineExpose({
 :deep(.p-panel-icons) {
   display: flex;
   align-items: center;
-  margin-left: 0.625rem;
+  margin-left: 0.5rem;
 }
 
 :deep(.p-panel-content) {

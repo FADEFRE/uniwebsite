@@ -148,7 +148,7 @@ defineExpose({
   @include verticalListItem($gray);
 
   width: 100%;
-  padding: 0.625rem 0.5rem 0.625rem 1.25rem;
+  padding: 0.5rem 0.5rem 0.5rem 1.25rem;
 
   display: flex;
   flex-direction: row;
@@ -193,7 +193,7 @@ defineExpose({
 
 .point-container {
   display: flex;
-  gap: 0.625rem;
+  gap: 0.5rem;
   & .p-inputtext {
     width: 100%;
   }

@@ -68,7 +68,7 @@ const specificRole = computed(() => navStore.getCurrentRoleNav)
   width: 100%;
   display: flex;
   align-items: center;
-  gap: 0.625rem;
+  gap: 1rem;
   flex-wrap: wrap;
 }
 
@@ -87,7 +87,7 @@ const specificRole = computed(() => navStore.getCurrentRoleNav)
 
 .router-link {
   display: flex;
-  gap: 0.625rem;
+  gap: 0.5rem;
 
   &:hover {
     background-color: $dark-gray-hover;
