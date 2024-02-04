@@ -180,9 +180,7 @@ const triggerSubmit = () => {
 }
 
 .status-detail-container {
-  @include verticalList(small);
-  width: 100%;
-  overflow: hidden;
+  @include applicationContainer(noSplit);
 }
 
 .formal-rejection-info-container {

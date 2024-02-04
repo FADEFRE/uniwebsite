@@ -61,9 +61,9 @@ const checkValidity = () => {
 const triggerPostApplication = () => {
   if (checkValidity()) {
     postApplication(selectedCourse.value, moduleConnectionsRef.value)
-        .then(id => {
-          router.push({ name: 'confirmation', params: { id: id } })
-        })
+      .then(id => {
+        router.push({ name: 'confirmation', params: { id: id } })
+      })
   }
 }
 </script>
@@ -147,9 +147,7 @@ const triggerPostApplication = () => {
 }
 
 .submit-application-container {
-  @include verticalList(big);
-  width: 100%;
-  overflow: hidden;
+  @include applicationContainer(split);
 }
 
 .side-infos-container {

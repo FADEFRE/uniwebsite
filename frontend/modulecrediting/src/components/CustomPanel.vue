@@ -27,18 +27,20 @@ defineExpose({
 </script>
 
 <template>
-  <Panel toggleable v-model:collapsed="d_collapsed">
-    <template #header>
-      <slot name="header"></slot>
-    </template>
-    <template #icons>
-      <slot name="icons"></slot>
-    </template>
-    <template #togglericon>
-      <img src="@/assets/icons/ArrowRed.svg" :class="arrowStyle">
-    </template>
-    <slot></slot>
-  </Panel>
+  <div class="custom-panel-container">
+    <Panel toggleable v-model:collapsed="d_collapsed">
+      <template #header>
+        <slot name="header"></slot>
+      </template>
+      <template #icons>
+        <slot name="icons"></slot>
+      </template>
+      <template #togglericon>
+        <img src="@/assets/icons/ArrowRed.svg" :class="arrowStyle">
+      </template>
+      <slot></slot>
+    </Panel>
+  </div>
 </template>
 
 <style scoped lang="scss">
@@ -46,8 +48,8 @@ defineExpose({
 @import '@/assets/variables.scss';
 
 :deep(.p-panel) {
-  background-color: $gray !important;
-  @include boxShadow(big); 
+  @include boxShadow(big);
+  width: 100%;
 }
 
 :deep(.p-panel-header) {
