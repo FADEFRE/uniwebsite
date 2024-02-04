@@ -67,7 +67,6 @@
 
 @mixin sideInfoListContainer() {
   @include verticalList(big);
-  @include boxShadow(big);
   width: 25%;
   
 
@@ -153,9 +152,9 @@
 
 @mixin boxShadow($size) {
   @if $size == small {
-    box-shadow: 0 0.25rem 0.5rem 0 rgba($color: $dark-gray, $alpha: 0.08);
+    box-shadow: 0 0.2rem 0.5rem 0 rgba($color: $dark-gray, $alpha: 0.08);
   } @else if $size == big {
-    box-shadow: 0 0.5rem 1rem 0 rgba($color: $dark-gray, $alpha: 0.1);
+    box-shadow: 0 0.2rem 1rem 0 rgba($color: $dark-gray, $alpha: 0.1);
   }
 
 }
