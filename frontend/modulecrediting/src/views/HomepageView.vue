@@ -100,7 +100,7 @@ const getFormattedId = () => {
 }
 
 .side-infos-container {
-    @include sideInfoContainer();
+    @include sideInfoListContainer();
 }
 
 .status-input {

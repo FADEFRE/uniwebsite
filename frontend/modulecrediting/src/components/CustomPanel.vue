@@ -46,8 +46,8 @@ defineExpose({
 @import '@/assets/variables.scss';
 
 :deep(.p-panel) {
-  width: 100%;
-  background-color: $white;
+  background-color: $gray !important;
+  @include boxShadow(big); 
 }
 
 :deep(.p-panel-header) {
@@ -60,7 +60,6 @@ defineExpose({
   border-bottom: 2px solid $dark-gray;
 
   display: flex;
-  padding: 1.25rem;
   justify-content: space-between;
   align-items: center;
 }
@@ -77,10 +76,11 @@ defineExpose({
   border-bottom: 2px solid $dark-gray;
 
   @include verticalList(small);
-  
+
   @media only screen and (max-width: 1350px) {
     padding: 1.25rem 5%;
   }
+
   @media only screen and (max-width: 700px) {
     padding: 1.25rem 1.5rem;
   }

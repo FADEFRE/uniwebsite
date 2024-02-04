@@ -48,12 +48,16 @@
   justify-content: center;
   align-items: center;
   gap: 2.5rem;
+
+  @include boxShadow(big);
 }
 
 @mixin basicContainer() {
   width: auto;
   background-color: $white;
-  padding: 0.9375rem 1.5625rem;
+  padding: 1.5rem 1.5rem;
+  @include boxShadow(big);
+  
 
   display: flex;
   flex-direction: column;
@@ -61,13 +65,16 @@
   gap: 0.625rem;
 }
 
-@mixin sideInfoContainer() {
+@mixin sideInfoListContainer() {
   @include verticalList(big);
+  @include boxShadow(big);
   width: 25%;
+  
 
   @media only screen and (max-width: 1200px) {
     width: 100%;
   }
+
 }
 
 @mixin panelComponent() {
@@ -142,4 +149,13 @@
         top: 50%;
         transform: translateY(-50%);
     }
+}
+
+@mixin boxShadow($size) {
+  @if $size == small {
+    box-shadow: 0 0.25rem 0.5rem 0 rgba($color: $dark-gray, $alpha: 0.08);
+  } @else if $size == big {
+    box-shadow: 0 0.5rem 1rem 0 rgba($color: $dark-gray, $alpha: 0.1);
+  }
+
 }

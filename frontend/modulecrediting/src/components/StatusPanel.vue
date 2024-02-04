@@ -123,6 +123,9 @@ defineExpose({
 <style scoped lang="scss">
 @import '../assets/variables.scss';
 @import '../assets/mixins.scss';
+
+
+
 .trash-icon {
   @include trashIconAnimation();
 }

@@ -61,7 +61,6 @@ defineExpose({
 
 
 <template>
-  <div>
     <CustomPanel :initial-collapsed-state="false" ref="panelRef">
       <!-- Header Content -->
       <template #header>
@@ -94,7 +93,6 @@ defineExpose({
           ref="panelComment"
       />
     </CustomPanel>
-  </div>
 </template>
 
 

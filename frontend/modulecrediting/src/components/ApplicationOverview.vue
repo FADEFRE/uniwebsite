@@ -123,6 +123,7 @@ const triggerForward = () => {
     align-self: stretch;
     flex-wrap: wrap;
     transition: 0.1s ease-in-out;
+    @include boxShadow(small);
 
     &.admin-selection-view {
         flex-direction: column;

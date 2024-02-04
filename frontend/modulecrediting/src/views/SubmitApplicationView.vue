@@ -147,13 +147,13 @@ const triggerPostApplication = () => {
 }
 
 .submit-application-container {
-  @include verticalList(small);
+  @include verticalList(big);
   width: 100%;
   overflow: hidden;
 }
 
 .side-infos-container {
-  @include sideInfoContainer();
+  @include sideInfoListContainer();
 }
 
 .link-container {

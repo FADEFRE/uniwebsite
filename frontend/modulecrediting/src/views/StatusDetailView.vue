@@ -197,7 +197,7 @@ const triggerSubmit = () => {
 
 
 .side-infos-container {
-  @include sideInfoContainer();
+  @include sideInfoListContainer();
 }
 
 .formal-rejection-highlight {
