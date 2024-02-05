@@ -1,0 +1,14 @@
+$spacings: (
+    "xs": "0.1rem",
+    "s": "0.25rem",
+    "m": "0.5rem", 
+    "l": "1rem", 
+    "xl": "2rem" 
+); 
+
+// todo: add font sizes also (for overview-text e.g)
+
+
+@function spacing($size) {
+    @return map-get($spacings, $size);
+}
