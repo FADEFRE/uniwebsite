@@ -52,15 +52,12 @@
   justify-content: center;
   align-items: center;
   gap: 2rem;
-
-  @include boxShadow(big);
 }
 
 @mixin basicContainer() {
   width: auto;
   background-color: $white;
   padding: 1.5rem 1.5rem;
-  @include boxShadow(big);
 
   display: flex;
   flex-direction: column;
@@ -164,10 +161,3 @@
   }
 }
 
-@mixin boxShadow($size) {
-  @if $size == small {
-    box-shadow: $box-shadow-m;
-  } @else if $size == big {
-    box-shadow: $box-shadow-l;
-  }
-}

@@ -48,7 +48,6 @@ defineExpose({
 @use '@/assets/styles/global' as *;
 
 :deep(.p-panel) {
-  @include boxShadow(big);
   width: 100%;
 }
 
