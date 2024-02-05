@@ -48,7 +48,6 @@ public class GeneratedPdfService {
     }
 
     public byte[] generatePdfFromHtml(String id) throws IOException {
-        Application application = applicationService.getApplicationStudentById(id);
         String html = parseThymeleafTemplate(id);
 
 
