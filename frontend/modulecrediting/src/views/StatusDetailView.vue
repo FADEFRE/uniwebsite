@@ -177,7 +177,7 @@ const triggerSubmit = () => {
 }
 
 .status-detail-container {
-  @include applicationContainer(noSplit);
+  @include applicationContainer(split);
 }
 
 .formal-rejection-info-container {
