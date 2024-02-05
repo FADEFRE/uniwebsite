@@ -43,17 +43,25 @@ const commentApplicant = computed(() => panelComment.value?.comment)
 
 const emit = defineEmits(['deleteSelf'])
 
+const panelRef = ref()
+
+const checkValidity = () => {
+  const validity = panelExternalModules.value.checkValidity()
+  panelRef.value.setCollapsed(validity)
+  return validity
+}
+
 defineExpose({
   externalModules,
   internalModules,
-  commentApplicant
+  commentApplicant,
+  checkValidity
 })
 </script>
 
 
 <template>
-  <div>
-    <CustomPanel :initial-collapsed-state="false">
+    <CustomPanel :initial-collapsed-state="false" ref="panelRef">
       <!-- Header Content -->
       <template #header>
         <PanelHeader :external-modules="externalModules?.map(m => m.name).filter(name => name !== '')"
@@ -66,17 +74,32 @@ defineExpose({
       </template>
 
       <!-- Panel Content -->
-      <PanelExternalModules type="new" ref="panelExternalModules" />
-      <PanelInternalModules type="new" :options="selectableModules" ref="panelInternalModules" />
-      <PanelComment type="new" ref="panelComment" />
+      <PanelExternalModules
+          :allow-text-edit="true"
+          :allow-file-edit="true"
+          :allow-delete="true"
+          :allow-add="true"
+          :has-initial-new="true"
+          ref="panelExternalModules"
+      />
+      <PanelInternalModules
+          :allow-select="true"
+          :allow-delete="true"
+          :options="selectableModules"
+          ref="panelInternalModules"
+      />
+      <PanelComment
+          :readonly="false"
+          ref="panelComment"
+      />
     </CustomPanel>
-  </div>
 </template>
 
 
 <style scoped lang="scss">
-@import '../assets/variables.scss';
-@import '../assets/mixins.scss';
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
+
 .trash-icon {
   @include trashIconAnimation();
 }

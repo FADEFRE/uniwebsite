@@ -1,12 +1,9 @@
 <script setup>
 import { ref, watch } from "vue";
 const props = defineProps({
-  type: {
+  readonly: {
     required: true,
-    type: String,
-    validator(value) {
-      return ['edit', 'readonly'].includes(value)
-    }
+    type: Boolean
   },
   displayDecision: {
     type: String,
@@ -43,7 +40,7 @@ defineExpose({
   <div class="panel-decision-block">
 
 
-    <div v-if="type === 'edit'">
+    <div v-if="!readonly">
       <SelectButton :allow-empty="false" :options="decisionOptions" optionLabel="label" optionValue="value"
         v-model="decision">
         <!--template #option="optionProps">
@@ -52,7 +49,7 @@ defineExpose({
       </SelectButton>
     </div>
 
-    <div v-else-if="type === 'readonly'" class="readonly-decision-container">
+    <div v-else class="readonly-decision-container">
 
       <div class="icon-container" :class="{ 'highlight': displayDecision === 'accepted' }">
         <img v-if="displayDecision === 'accepted'" src="../assets/icons/ModuleAccepted.svg">
@@ -69,13 +66,13 @@ defineExpose({
       </div>
     </div>
 
-    <textarea :readonly="type === 'readonly'" v-model="comment" @change="emit('change')"></textarea>
+    <textarea :readonly="readonly" v-model="comment" @change="emit('change')"></textarea>
   </div>
 </template>
 
 <style scoped lang="scss">
-@import '@/assets/mixins.scss';
-@import '@/assets/variables.scss';
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
 
 
 .panel-decision-block {
@@ -93,7 +90,7 @@ defineExpose({
 }
 
 .icon-container {
-  padding: 0.49rem 1.25rem;
+  padding: 0.5rem 1.25rem;
   border-right: 2px solid $black;
 
   &.highlight {

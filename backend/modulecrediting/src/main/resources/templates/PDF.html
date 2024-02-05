@@ -3,17 +3,43 @@
         <meta charset="UTF-8"></meta>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
         <link rel="stylesheet" th:href="@{classpath:static/main.css}"></link>
-        <link href='https://fonts.googleapis.com/css?family=Jost' rel='stylesheet'></link>
         <title>Application</title>
     </head>
   <body>
-    <header>
-        <div class="layout">
-            <div class="layoutBeforeAndAfterHeading">
-                <img class="logo" th:src="@{classpath:/static/images/Universität_leipzig_Logo.png}" alt="Bildbeschreibung"> </img>
-                <h1 id="HeadingPDF">ANTRAG ZUR MODULANRECHNUNG</h1>
-            </div>    
-        </div>
-    </header>
+    <div class="layout">
+      <header>
+        
+            <img class="logo" th:src="@{classpath:/static/images/Universität_leipzig_Logo.png}" alt="Bildbeschreibung"> </img>
+              <h1 id="HeadingPDF">ANTRAG ZUR MODULANRECHNUNG</h1>
+              <h2 id="SubHeadingPDF">Allgemeine Informationen</h2>
+      
+      </header>
+
+      <table class="content-table">
+          <tbody>
+            <tr>
+              <td>Voragangsnummer</td>
+              <td th:text="${id}">nicht verfügbar</td>
+            </tr>
+            <tr>
+              <td>Erstelldatum</td>
+              <td th:text="${Erstelldatum}">nicht verfügbar</td>
+          
+            </tr>
+            <tr>
+              <td>Status</td>
+              <td th:text="${Status}">nicht verfügbar</td>
+            </tr>
+            <tr>
+              <td>Entscheidungsdatum</td>
+              <td th:text="${Entscheidungsdatum}">nicht verfügbar</td>
+            </tr>
+            <tr>
+              <td>Studiengang</td>
+              <td>B.Sc.Informatik</td>
+            </tr>
+          </tbody>
+      </table>
+    </div>
   </body>
 </html>

@@ -44,11 +44,15 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter{
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
-        } catch (Exception ex) {
+        } 
+        catch (Exception ex) {
+            System.out.println("----------doFilterInternal error stacktrace start:-------------");
             ex.printStackTrace();
+            System.out.println("----------end of doFilterInternal error stacktrace-------------");
+        } 
+        finally {
+            filterChain.doFilter(httpServletRequest, httpServletResponse);
         }
-
-        filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
 
     private String getJwtFromRequest(HttpServletRequest request) {

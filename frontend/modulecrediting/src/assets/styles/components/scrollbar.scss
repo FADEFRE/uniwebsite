@@ -1,0 +1,44 @@
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
+
+// STYLING SCROLLBAR
+
+/* WebKit (Chrome, Safari) */
+textarea::-webkit-scrollbar,
+.p-dropdown-items-wrapper::-webkit-scrollbar {
+  width: 3px;
+}
+
+textarea::-webkit-scrollbar-track,
+.p-dropdown-items-wrapper::-webkit-scrollbar-track {
+  background-color: $gray;
+}
+
+textarea::-webkit-scrollbar-thumb,
+.p-dropdown-items-wrapper::-webkit-scrollbar-thumb {
+  background-color: $red;
+}
+
+/* Firefox */
+textarea,
+.p-dropdown-items-wrapper {
+  scrollbar-width: thin; /* 'auto', 'thin', or 'none' */
+  scrollbar-color: $red $gray;
+}
+
+/* Microsoft Edge and Internet Explorer (Legacy) */
+/* Note: These styles are for older versions of IE and Edge and may not be necessary anymore. */
+textarea::-ms-scrollbar,
+.p-dropdown-items-wrapper::-ms-scrollbar {
+  width: 3px;
+}
+
+textarea::-ms-scrollbar-track,
+.p-dropdown-items-wrapper::-ms-scrollbar-track {
+  background-color: $red;
+}
+
+textarea::-ms-scrollbar-thumb,
+.p-dropdown-items-wrapper::-ms-scrollbar-thumb {
+  background-color: $gray;
+}

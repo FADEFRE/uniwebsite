@@ -1,11 +1,11 @@
 <script setup>
 import { logout } from "@/router/logout";
-import { useNavTypeStore } from "../store/navTypeStore"
+import { useUserStore } from "@/store/userStore"
 import { computed } from "vue";
 
 const props = defineProps(['isMenuOpen'])
 
-const navStore = useNavTypeStore();
+const navStore = useUserStore();
 const isNavType = computed(() => {
   if (navStore.getCurrentRoleNav === "user") { return "standard" }
   else if (navStore.getCurrentRoleNav === "study" || navStore.getCurrentRoleNav === "chair" || navStore.getCurrentRoleNav === "admin") {
@@ -20,22 +20,23 @@ const specificRole = computed(() => navStore.getCurrentRoleNav)
   <div v-if="isNavType === 'standard'" class="links-container" :class="{ 'small-screen-links-container': isMenuOpen }">
     <router-link :to="{ name: 'home' }" class="router-link" :class="{ 'white-router-link': isMenuOpen }"
       @click="$emit('linkClicked')">
-      {{ $t('home page') }}
+      {{ $t('navigation.homepage') }}
       <img src="@/assets/icons/ArrowWhite.svg" class="arrow-icon">
     </router-link>
     <router-link :to="{ name: 'login' }" @click="$emit('linkClicked')" class="router-link"
       :class="{ 'white-router-link': isMenuOpen }">
-      {{ $t('log-in internally') }}
+      {{ $t('navigation.login') }}
       <img src="@/assets/icons/LoginWhite.svg" class="login-logout-icon login-icon">
     </router-link>
   </div>
 
   <div v-else-if="isNavType === 'internal'" class="links-container"
     :class="{ 'small-screen-links-container': isMenuOpen }">
-    <router-link to="" class="router-link" @click="$emit('linkClicked')" :class="{ 'white-router-link': isMenuOpen }">
+    <router-link :to="{ name: 'management' }" class="router-link" @click="$emit('linkClicked')"
+      :class="{ 'white-router-link': isMenuOpen }">
       Verwaltung
       <img src="@/assets/icons/ArrowWhite.svg" class="arrow-icon">
-    </router-link> <!-- todo replace with manage link -->
+    </router-link>
 
     <div v-if="specificRole === 'study'" :class="{ 'user-specific-container': isMenuOpen }">
       <router-link :to="{ name: 'studyOfficeSelection' }" @click="$emit('linkClicked')" class="router-link"
@@ -60,14 +61,25 @@ const specificRole = computed(() => navStore.getCurrentRoleNav)
 </template>
 
 <style scoped lang="scss">
-@import '../assets/variables.scss';
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
 
+a,.p-button {
+  @include smallHighlightBox();
+  width: max-content;
+
+  background-color: $dark-gray;
+
+  &:hover {
+    background-color: $dark-gray-hover;
+  }
+}
 
 .links-container {
   width: 100%;
   display: flex;
   align-items: center;
-  gap: 0.625rem;
+  gap: 1rem;
   flex-wrap: wrap;
 }
 
@@ -86,7 +98,7 @@ const specificRole = computed(() => navStore.getCurrentRoleNav)
 
 .router-link {
   display: flex;
-  gap: 0.625rem;
+  gap: 0.5rem;
 
   &:hover {
     background-color: $dark-gray-hover;

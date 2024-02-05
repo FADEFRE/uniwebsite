@@ -24,13 +24,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 
 
-import swtp12.modulecrediting.dto.ApplicationCreateDTO;
-import swtp12.modulecrediting.dto.ApplicationUpdateDTO;
-import swtp12.modulecrediting.dto.ExternalModuleCreateDTO;
-import swtp12.modulecrediting.dto.ExternalModuleUpdateDTO;
-import swtp12.modulecrediting.dto.ModuleLeipzigUpdateDTO;
-import swtp12.modulecrediting.dto.ModulesConnectionCreateDTO;
-import swtp12.modulecrediting.dto.ModulesConnectionUpdateDTO;
+import swtp12.modulecrediting.dto.ApplicationDTO;
+import swtp12.modulecrediting.dto.ExternalModuleDTO;
+import swtp12.modulecrediting.dto.ModuleLeipzigDTO;
+import swtp12.modulecrediting.dto.ModulesConnectionDTO;
 import swtp12.modulecrediting.model.Application;
 import swtp12.modulecrediting.model.Role;
 import swtp12.modulecrediting.model.CourseLeipzig;
@@ -97,7 +94,7 @@ public class DataLoader implements CommandLineRunner {
         createTestData(testData);
     }
 
-
+    //role creation
     private void roleCreation() {
         System.out.println("Creating Roles:");
         Role admin = new Role("ROLE_ADMIN");
@@ -107,7 +104,6 @@ public class DataLoader implements CommandLineRunner {
         roleRepository.save(sb);
         roleRepository.save(pav);
     }
-
 
 
     //creates users defined in filename (test data)
@@ -139,11 +135,6 @@ public class DataLoader implements CommandLineRunner {
     }
 
 
-
-
-
-
-
     //the two dataloader functions (leipzigData/ testData):
 
     /**
@@ -155,40 +146,31 @@ public class DataLoader implements CommandLineRunner {
      */
     @Transactional
     private void leipzigDataLoader(String fileName) {
-        
         JsonNode courseNodes = grabFirstNodeFromJson(fileName, "courses");
         for (JsonNode courseNode : courseNodes) {
-            CourseLeipzig courseLeipzig = new CourseLeipzig(courseNode.get("name").asText(), true);
-            if (courseLeipzigRepo.existsById(courseLeipzig.getName()) == false) {
-                courseLeipzigRepo.save(courseLeipzig);
-            }
+            String courseName = courseNode.get("name").asText();
+            CourseLeipzig courseLeipzig = courseLeipzigRepo.findByName(courseName)
+                    .orElseGet(() -> {
+                        return courseLeipzigRepo.save(new CourseLeipzig(courseName));
+                    });
 
             JsonNode modules = grabModulesFromJsonNode(courseNode);
             for (JsonNode module : modules) {
-                String name = module.get("name").asText();
-                String number = module.get("number").asText();
-                ModuleLeipzig moduleLeipzig = new ModuleLeipzig(name, number, true);
-                if (modulLeipzigRepo.existsById(moduleLeipzig.getName()) == false) {
-                    modulLeipzigRepo.save(moduleLeipzig);
-                }
+                String moduleName = module.get("name").asText();
+                String moduleCode = module.get("number").asText();
+                ModuleLeipzig moduleLeipzig = modulLeipzigRepo.findByName(moduleName)
+                        .orElseGet(() -> {
+                            return modulLeipzigRepo.save(new ModuleLeipzig(moduleName, moduleCode));
+                        });
 
-                CourseLeipzig cLdB = courseLeipzigRepo.findById(courseLeipzig.getName()).get();
-                ModuleLeipzig mLdB = modulLeipzigRepo.findById(moduleLeipzig.getName()).get();
-
-                List<ModuleLeipzig> mList = cLdB.getModulesLeipzigCourse(); ;
-                mList.add(mLdB);
-                cLdB.setModulesLeipzigCourse(mList);
-
-                List<CourseLeipzig> cList = mLdB.getCoursesLeipzig();
-                cList.add(cLdB);
-                mLdB.setCoursesLeipzig(cList);
-
-                courseLeipzigRepo.save(cLdB);
-                modulLeipzigRepo.save(mLdB);
+                courseLeipzig.addModulesLeipzig(moduleLeipzig);
+                courseLeipzigRepo.save(courseLeipzig);
             }
         }
-        System.out.println("Dataloader: Data successfully loaded into Database \n"); 
+        System.out.println("Dataloader: Data successfully loaded into Database \n");
     }
+
+
 
     /**
      * The `createTestData` function generates dummy data for testing purposes by creating random
@@ -210,9 +192,10 @@ public class DataLoader implements CommandLineRunner {
 
         int open = applicationSettingsNode.get("new").asInt();
         int studyOffice = applicationSettingsNode.get("study-office").asInt();
+        int formfehler = applicationSettingsNode.get("formfehler").asInt();
         int pav = applicationSettingsNode.get("pav").asInt();
         int closed = applicationSettingsNode.get("closed").asInt();
-        int total = open + studyOffice + pav + closed;
+        int total = open + studyOffice + formfehler + pav + closed;
         
         List<CourseLeipzig> listOfCourseLeipzig = new ArrayList<>();
         List<CourseLeipzig> listOfCLinDB = courseLeipzigRepo.findAll();
@@ -225,30 +208,30 @@ public class DataLoader implements CommandLineRunner {
 
         System.out.println("Dataloader: Generating random Dummy Applications:");
         for (CourseLeipzig cL : listOfCourseLeipzig) {
-            List<ModulesConnectionCreateDTO> listModuleCreateDTO = new ArrayList<>();
+            List<ModulesConnectionDTO> listModuleCreateDTO = new ArrayList<>();
 
-            ApplicationCreateDTO applicationCreateDTO = new ApplicationCreateDTO();
+            ApplicationDTO applicationDTO = new ApplicationDTO();
 
-            applicationCreateDTO.setCourseLeipzig(cL.getName());
+            applicationDTO.setCourseLeipzig(cL.getName());
 
             int rIdx = rand.nextInt(3) + 2;
             for (int i = 0; i < rIdx; i++) {
-                ModulesConnectionCreateDTO modulesConnection = createModulesConnectionDTO(cL, moduleSettingsNode);
+                ModulesConnectionDTO modulesConnection = createModulesConnectionDTO(cL, moduleSettingsNode);
                 listModuleCreateDTO.add(modulesConnection);
             }
 
-            applicationCreateDTO.setModulesConnections(listModuleCreateDTO);
+            applicationDTO.setModulesConnections(listModuleCreateDTO);
 
-            String vorgangsnummer = applicationService.createApplication(applicationCreateDTO);
+            String vorgangsnummer = applicationService.createApplication(applicationDTO);
             
 
             // updating the status of those randomGen Applications:
-            ApplicationUpdateDTO applicationUpdateDTO = new ApplicationUpdateDTO();
+            ApplicationDTO applicationUpdateDTO = new ApplicationDTO();
             Application application = applicationService.getApplicationById(vorgangsnummer);
 
             String updatedData = "";
             if (closed > 0) { // update application to ABGESCHLOSSEN
-                List<ModulesConnectionUpdateDTO> mcuDTO = new ArrayList<>();
+                List<ModulesConnectionDTO> mcuDTO = new ArrayList<>();
                 mcuDTO = updateModulesConnectionDTO(ABGESCHLOSSEN, application);
                 applicationUpdateDTO.setModulesConnections(mcuDTO);
 
@@ -259,7 +242,7 @@ public class DataLoader implements CommandLineRunner {
                 closed--;
             }
             else if (pav > 0) { // update application to PRUEFUNGSAUSSCHUSS
-                List<ModulesConnectionUpdateDTO> mcuDTO = new ArrayList<>();
+                List<ModulesConnectionDTO> mcuDTO = new ArrayList<>();
                 mcuDTO = updateModulesConnectionDTO(PRÜFUNGSAUSSCHUSS, application);
                 applicationUpdateDTO.setModulesConnections(mcuDTO);
 
@@ -271,14 +254,25 @@ public class DataLoader implements CommandLineRunner {
                 pav--;
             }
             else if (studyOffice > 0) { // update application to STUDIENBUERO
-                List<ModulesConnectionUpdateDTO> mcuDTO = new ArrayList<>();
-                mcuDTO = updateModulesConnectionDTO(STUDIENBÜRO, application);
-                applicationUpdateDTO.setModulesConnections(mcuDTO);
+                List<ModulesConnectionDTO> mcuDTOs = new ArrayList<>();
+                mcuDTOs = updateModulesConnectionDTO(STUDIENBÜRO, application);
+                applicationUpdateDTO.setModulesConnections(mcuDTOs);
                 applicationService.updateApplication(vorgangsnummer, applicationUpdateDTO, "study-office");
                 applicationService.updateApplicationStatus(vorgangsnummer);
                 updatedData = "studyOffice";
                 studyOffice--;
             }
+            
+            else if (formfehler > 0) { // update application to FORMFEHLER
+                List<ModulesConnectionDTO> mcuDTOs = new ArrayList<>();
+                mcuDTOs = updateModulesConnectionDTO(FORMFEHLER, application);
+                applicationUpdateDTO.setModulesConnections(mcuDTOs);
+                applicationService.updateApplication(vorgangsnummer, applicationUpdateDTO, "study-office");
+                applicationService.updateApplicationStatus(vorgangsnummer);
+                updatedData = "formfehler";
+                formfehler--;
+            }
+            
             else if (open > 0) { // update application to ABGESCHLOSSEN
                 updatedData = "open";
                 open--;
@@ -343,43 +337,45 @@ public class DataLoader implements CommandLineRunner {
      * properties: name, university, points, pointsystem, comment.
      * @return The method is returning a ModuleBlockCreateDTO object.
      */
-    private ModulesConnectionCreateDTO createModulesConnectionDTO(CourseLeipzig cL, JsonNode moduleSettingNode) {
-        ModulesConnectionCreateDTO modulesConnectionCreateDTO = new ModulesConnectionCreateDTO();
+    private ModulesConnectionDTO createModulesConnectionDTO(CourseLeipzig cL, JsonNode moduleSettingNode) {
+        ModulesConnectionDTO modulesConnectionDTO = new ModulesConnectionDTO();
         Random rdm = new Random();
 
-        modulesConnectionCreateDTO.setCommentApplicant(getRandValueOfNode(moduleSettingNode, "comment", rdm));
+        modulesConnectionDTO.setCommentApplicant(getRandValueOfNode(moduleSettingNode, "comment", rdm));
 
-        List<ExternalModuleCreateDTO> externalModulesCreateDTOs = new ArrayList<>();
+        List<ExternalModuleDTO> externalModulesCreateDTOs = new ArrayList<>();
         int numberofExternalModules = rdm.nextInt(3)+1;
         for (int i = 0; i < numberofExternalModules; i++) {
             externalModulesCreateDTOs.add(createExternalModuleDTO(moduleSettingNode));
         }
-        modulesConnectionCreateDTO.setExternalModules(externalModulesCreateDTOs);
+        modulesConnectionDTO.setExternalModules(externalModulesCreateDTOs);
 
-        List<String> listModuleLeipzig = new ArrayList<>();
+        List<ModuleLeipzigDTO> listModuleLeipzig = new ArrayList<>();
         int numberOfModulesLeipzig = rdm.nextInt(3)+1;
         for (int i = 0; i < numberOfModulesLeipzig; i++) {
             int idxR = rdm.nextInt(cL.getModulesLeipzigCourse().size());
-            listModuleLeipzig.add(cL.getModulesLeipzigCourse().get(idxR).getName());
+            ModuleLeipzigDTO moduleLeipzigDTO = new ModuleLeipzigDTO();
+            moduleLeipzigDTO.setName(cL.getModulesLeipzigCourse().get(idxR).getName());
+            listModuleLeipzig.add(moduleLeipzigDTO);
         }
-        modulesConnectionCreateDTO.setModulesLeipzig(listModuleLeipzig);
+        modulesConnectionDTO.setModulesLeipzig(listModuleLeipzig);
 
-        return modulesConnectionCreateDTO;
+        return modulesConnectionDTO;
     }
 
-    private ExternalModuleCreateDTO createExternalModuleDTO(JsonNode moduleSettingNode) {
-        ExternalModuleCreateDTO externalModuleCreateDTO = new ExternalModuleCreateDTO();
+    private ExternalModuleDTO createExternalModuleDTO(JsonNode moduleSettingNode) {
+        ExternalModuleDTO externalModuleDTO = new ExternalModuleDTO();
 
         Random rdm = new Random();
-        externalModuleCreateDTO.setName(getRandValueOfNode(moduleSettingNode, "name", rdm));
-        externalModuleCreateDTO.setUniversity(getRandValueOfNode(moduleSettingNode, "uni", rdm));
-        externalModuleCreateDTO.setPoints(Integer.parseInt(getRandValueOfNode(moduleSettingNode, "points", rdm)));
-        externalModuleCreateDTO.setPointSystem(getRandValueOfNode(moduleSettingNode, "pointSystem", rdm));
+        externalModuleDTO.setName(getRandValueOfNode(moduleSettingNode, "name", rdm));
+        externalModuleDTO.setUniversity(getRandValueOfNode(moduleSettingNode, "uni", rdm));
+        externalModuleDTO.setPoints(Integer.parseInt(getRandValueOfNode(moduleSettingNode, "points", rdm)));
+        externalModuleDTO.setPointSystem(getRandValueOfNode(moduleSettingNode, "pointSystem", rdm));
 
         MultipartFile pdfMultipartFile = new MockMultipartFile("dummy", "dummy.pdf", "application/pdf", "pdf_data_mock".getBytes());
-        externalModuleCreateDTO.setDescription(pdfMultipartFile);
+        externalModuleDTO.setDescription(pdfMultipartFile);
 
-        return externalModuleCreateDTO;
+        return externalModuleDTO;
     }
 
     /**
@@ -400,22 +396,21 @@ public class DataLoader implements CommandLineRunner {
         return valueNode.get(rdmIdx).asText();
     }
 
-    private List<ModulesConnectionUpdateDTO> updateModulesConnectionDTO(EnumApplicationStatus status, Application application) {
-        
-        List<ModulesConnectionUpdateDTO> mcuDTO = new ArrayList<>();
+    private List<ModulesConnectionDTO> updateModulesConnectionDTO(EnumApplicationStatus status, Application application) {
+        List<ModulesConnectionDTO> mcuDTO = new ArrayList<>();
         boolean studyBool = true;
         boolean pavBool = true;
         for (ModulesConnection modCon : application.getModulesConnections()) { 
             //Modul listen
-            ModulesConnectionUpdateDTO modulesConnectionDTO = new ModulesConnectionUpdateDTO();
+            ModulesConnectionDTO modulesConnectionDTO = new ModulesConnectionDTO();
 
             modulesConnectionDTO.setId(modCon.getId());
             
             for (ModuleLeipzig mL : modCon.getModulesLeipzig()) {
-                ModuleLeipzigUpdateDTO mluDTO = new ModuleLeipzigUpdateDTO();
+                ModuleLeipzigDTO mluDTO = new ModuleLeipzigDTO();
                 mluDTO.setName(mL.getName());
                 if (modulesConnectionDTO.getModulesLeipzig() == null) {
-                    List<ModuleLeipzigUpdateDTO> mluDTOs = new ArrayList<>();
+                    List<ModuleLeipzigDTO> mluDTOs = new ArrayList<>();
                     mluDTOs.add(mluDTO);
                     modulesConnectionDTO.setModulesLeipzig(mluDTOs);
                 }
@@ -423,14 +418,14 @@ public class DataLoader implements CommandLineRunner {
             }
 
             for (ExternalModule eM : modCon.getExternalModules()) {
-                ExternalModuleUpdateDTO mauDTO = new ExternalModuleUpdateDTO();
+                ExternalModuleDTO mauDTO = new ExternalModuleDTO();
                 mauDTO.setId(eM.getId());
                 mauDTO.setName(eM.getName());
                 mauDTO.setUniversity(eM.getUniversity());
                 mauDTO.setPoints(eM.getPoints());
                 mauDTO.setPointSystem(eM.getPointSystem());
                 if (modulesConnectionDTO.getExternalModules() == null) {
-                    List<ExternalModuleUpdateDTO> emuDTOs = new ArrayList<>();
+                    List<ExternalModuleDTO> emuDTOs = new ArrayList<>();
                     emuDTOs.add(mauDTO);
                     modulesConnectionDTO.setExternalModules(emuDTOs);
                 }
@@ -445,6 +440,11 @@ public class DataLoader implements CommandLineRunner {
                 else { modulesConnectionDTO.setDecisionSuggestion(generateDecision()); }
                 
                 modulesConnectionDTO.setCommentStudyOffice("liegt beim study office");
+            }
+
+            if(status == FORMFEHLER) {
+                modulesConnectionDTO.setFormalRejection(true);
+                modulesConnectionDTO.setFormalRejectionComment("Dickes F an Huy");
             }
 
             if(status == PRÜFUNGSAUSSCHUSS) {

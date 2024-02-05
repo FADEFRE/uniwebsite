@@ -48,6 +48,18 @@ Admin:
 
 .
 
+## JAVADOC GENERATION
+
+to (re)generate the Javadoc for this project run these commands in \backend\modulecrediting
+
+    mvn clean (optional)
+    mvn install
+
+afterwards the documentation can be found under \backend\modulecrediting\target\apidocs\index.html      
+it is recommended to open the file with a browser and not in an IDE, du to the structure of javadoc.
+
+.
+
 # API ENDPOINTS
 
 ## Application: "ApplicationController"
@@ -55,7 +67,8 @@ Admin:
 ### GET - Requests:
 
 http://localhost:8090/api/applications -> returns a "List" of all "Applications"    
-"Views.ApplicationOverview.class"
+"Views.ApplicationOverview.class"   
+http://localhost:8090/api/applications/original -> returns a "List" of all "OriginalApplications"   
 
     [
         {
@@ -85,7 +98,8 @@ http://localhost:8090/api/applications -> returns a "List" of all "Applications"
 .
 
 http://localhost:8090/api/applications/{id} -> needs {id}, returns corresponding "Application"    
-"Views.ApplicationLogin.class"
+"Views.ApplicationLogin.class"      
+http://localhost:8090/api/applications/{id}/original -> needs {id}, returns corresponding "OriginalApplications"  
 
     "id": id,
     "fullStatus": NEU / FORMFEHLER / STUDIENBÜRO / PRÜFUNGSAUSSCHUSS / ABGESCHLOSSEN,

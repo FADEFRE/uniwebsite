@@ -4,7 +4,7 @@ props:
   - readonly
   - selectedFile (File object)
 exposes:
-  - selectedFile
+  - selectedFile (might be File Object OR object with properties name and id)
 displays:
   - drop area
   - file name inside drop area if file is selected
@@ -88,36 +88,48 @@ const dropHandler = (e) => {
   console.log(selectedFile.value);
 }
 
+const isValid = ref(true)
+
+const checkValidity = () => {
+  // setting invalid styles
+  isValid.value = Boolean(props.selectedFile || selectedFile.value)
+  // return
+  return isValid
+}
+
 defineExpose({
-  selectedFile
+  selectedFile, checkValidity  // exposed selectedFile might be File Object OR object with properties name and id
 })
 </script>
 
 <template>
-  <div v-if="readonly" class="read-only-container">
-    <p class="ellipsis-text-overflow">{{ props.selectedFile?.name }}</p>
-    <ButtonLink @click="openFile">PDF öffnen</ButtonLink>
-  </div>
-
-  <div v-else class="edit-container" @click="openFileDialog" @dragover.prevent="dragOverHandler"
-    @dragleave.prevent="dragLeaveHandler" @drop.prevent="dropHandler">
-
-    <p v-if="selectedFile?.name" class="ellipsis-text-overflow">{{ selectedFile?.name }}</p>
-
-    <p v-else-if="props.selectedFile?.name" class="ellipsis-text-overflow">{{ props.selectedFile?.name }}</p>
-
-    <div v-else class="file-drop-unselected">
-      <p class="ellipsis-text-overflow">Modulbeschreibung hochladen</p>
-      <img src="../assets/icons/Upload.svg">
+  <div>
+    <div v-if="readonly" class="read-only-container" :class="{ 'invalid': !isValid }">
+      <p class="ellipsis-text-overflow">{{ props.selectedFile?.name }}</p>
+      <ButtonLink @click="openFile">PDF öffnen</ButtonLink>
     </div>
-    <input type="file" ref="fileInput" @change="handleFiles" />
 
+    <div v-else class="edit-container" @click="openFileDialog" @dragover.prevent="dragOverHandler"
+         @dragleave.prevent="dragLeaveHandler" @drop.prevent="dropHandler" :class="{ 'invalid': !isValid }">
+
+      <p v-if="selectedFile?.name" class="ellipsis-text-overflow">{{ selectedFile?.name }}</p>
+
+      <p v-else-if="props.selectedFile?.name" class="ellipsis-text-overflow">{{ props.selectedFile?.name }}</p>
+
+      <div v-else class="file-drop-unselected">
+        <p class="ellipsis-text-overflow">Modulbeschreibung hochladen</p>
+        <img src="../assets/icons/Upload.svg">
+      </div>
+      <input type="file" ref="fileInput" @change="handleFiles" />
+
+    </div>
+    <small v-if="!isValid" class="invalid-text">Es muss eine Datei ausgewählt sein</small>
   </div>
 </template>
 
 <style scoped lang="scss">
-@import '../assets/mixins.scss';
-@import '../assets/variables.scss';
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
 
 .read-only-container {
   width: 100%;
@@ -134,7 +146,7 @@ defineExpose({
 .edit-container {
   width: 100%;
   border: 2px dashed $black;
-  padding: 0.625rem 0rem;
+  padding: 0.5rem 0rem;
   cursor: pointer;
 
   &:hover {
@@ -153,7 +165,7 @@ defineExpose({
 .file-drop-unselected {
   display: flex;
   overflow: hidden;
-  padding-right: 0.625rem;
+  padding-right: 0.5rem;
 }
 
 input {
@@ -163,6 +175,15 @@ input {
 .ellipsis-text-overflow {
   @include ellipsisTextOverflow();
   width: 100%;
-  padding: 0 0.625rem;
+  padding: 0 0.5rem;
+}
+
+.invalid-text {
+  color: $red;
+}
+
+.invalid {
+  border: 2px dashed $red;
+  box-shadow: none;
 }
 </style>

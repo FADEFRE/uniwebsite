@@ -13,7 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
-import swtp12.modulecrediting.dto.CourseLeipzigCreateDTO;
+import swtp12.modulecrediting.dto.CourseLeipzigDTO;
 import swtp12.modulecrediting.model.CourseLeipzig;
 import swtp12.modulecrediting.repository.CourseLeipzigRepository;
 
@@ -46,47 +46,45 @@ public class CourseLeipzigServiceTest {
 
     @Test
     void shouldGetCourseLeipzigByName() {
-        Optional<CourseLeipzig> coursesLeipzig = Optional.of(new CourseLeipzig("test course", true));
+        Optional<CourseLeipzig> coursesLeipzig = Optional.of(new CourseLeipzig("test course"));
 
 
-        Mockito.when(courseLeipzigRepository.findById("test course")).thenReturn(coursesLeipzig);
+        Mockito.when(courseLeipzigRepository.findByName("test course")).thenReturn(coursesLeipzig);
 
         CourseLeipzig expectedCoursesLeipzig = courseLeipzigService.getCourseLeipzigByName("test course");
 
         assertEquals(expectedCoursesLeipzig.getName(), coursesLeipzig.get().getName());
 
 
-        Mockito.when(courseLeipzigRepository.findById("test course fails")).thenReturn(Optional.empty());
+        Mockito.when(courseLeipzigRepository.findByName("test course fails")).thenReturn(Optional.empty());
 
         ResponseStatusException e = assertThrows(ResponseStatusException.class, () -> { courseLeipzigService.getCourseLeipzigByName("test course fails"); });
         assertTrue(e.getStatusCode().equals(HttpStatus.NOT_FOUND));
     }
 
     @Test
-    void shouldCreateCourseLeipzig() {
+    public void shouldCreateCourseLeipzig() {
         String testName = "test course";
-        CourseLeipzigCreateDTO courseLeipzigCreateDTO = new CourseLeipzigCreateDTO();
+        CourseLeipzigDTO courseLeipzigDTO = new CourseLeipzigDTO();
+        courseLeipzigDTO.setCourseName(testName);
 
-        ResponseStatusException e1 = assertThrows(ResponseStatusException.class, () -> { courseLeipzigService.createCourseLeipzig(null); });
-        assertTrue(e1.getStatusCode().equals(HttpStatus.BAD_REQUEST));
-
-        ResponseStatusException e2 = assertThrows(ResponseStatusException.class, () -> { courseLeipzigService.createCourseLeipzig(courseLeipzigCreateDTO); });
-        assertTrue(e2.getStatusCode().equals(HttpStatus.BAD_REQUEST));
-
-
-        courseLeipzigCreateDTO.setCourseName(testName);
-
-        CourseLeipzig courseLeipzig = new CourseLeipzig(testName, true);
+        // Mock the behavior when saving a new course
+        CourseLeipzig courseLeipzig = new CourseLeipzig(testName);
         Mockito.when(courseLeipzigRepository.save(any())).thenReturn(courseLeipzig);
-        String expectedCourseLeipzigName = courseLeipzigService.createCourseLeipzig(courseLeipzigCreateDTO);
-        assertEquals(expectedCourseLeipzigName, testName);
-        
-        
-        Optional<CourseLeipzig> optionalCourseLeipzig = Optional.of(new CourseLeipzig(testName, true));
-        Mockito.when(courseLeipzigRepository.findById(testName)).thenReturn(optionalCourseLeipzig);
-        ResponseStatusException e3 = assertThrows(ResponseStatusException.class, () -> { courseLeipzigService.createCourseLeipzig(courseLeipzigCreateDTO); });
-        assertTrue(e3.getStatusCode().equals(HttpStatus.BAD_REQUEST));
+
+        // First attempt to create the course should succeed
+        String resultCreate = courseLeipzigService.createCourseLeipzig(courseLeipzigDTO);
+        assertEquals(testName, resultCreate);
+
+        // Mock the behavior when finding an existing course
+        Optional<CourseLeipzig> optionalCourseLeipzig = Optional.of(courseLeipzig);
+        Mockito.when(courseLeipzigRepository.findByName(testName)).thenReturn(optionalCourseLeipzig);
+
+        // Second attempt to create the same course should return "exists"
+        String resultDuplicate = courseLeipzigService.createCourseLeipzig(courseLeipzigDTO);
+        assertEquals("exists", resultDuplicate);
     }
+
 
     @Test
     void shouldDeleteCourseLeipzig() {

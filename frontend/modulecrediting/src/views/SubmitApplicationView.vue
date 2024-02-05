@@ -50,13 +50,21 @@ const deleteModuleConnection = (key) => {
   moduleConnections.value = moduleConnections.value.filter(el => el !== key)
 }
 
+const courseValid = ref(true)
+
+const checkValidity = () => {
+  courseValid.value = Boolean(selectedCourse.value)
+  const connectionValidity = moduleConnectionsRef.value.map(c => c.checkValidity()).every(Boolean)
+  return courseValid.value && connectionValidity
+}
+
 const triggerPostApplication = () => {
-  console.log(selectedCourse.value)
-  console.log(moduleConnectionsRef.value)
-  postApplication(selectedCourse.value, moduleConnectionsRef.value)
-    .then(id => {
-      router.push({ name: 'confirmation', params: { id: id } })
-    })
+  if (checkValidity()) {
+    postApplication(selectedCourse.value, moduleConnectionsRef.value)
+      .then(id => {
+        router.push({ name: 'confirmation', params: { id: id } })
+      })
+  }
 }
 </script>
 
@@ -68,11 +76,12 @@ const triggerPostApplication = () => {
       <ApplicationOverview :creation-date="getFormattedDate(creationDate)" :last-edited-date="undefined"
         :decision-date="undefined" status="NEU">
         <Dropdown v-model="selectedCourse" :options="courses" placeholder="Studiengang wählen"
-          @change="setSelectableModules">
+          @change="setSelectableModules" :class="{ 'invalid': !courseValid }">
           <template #dropdownicon>
             <img src="../assets/icons/ArrowWhite.svg">
           </template>
         </Dropdown>
+        <small v-if="!courseValid" class="invalid-text">Es muss ein Studiengang ausgewählt werden</small>
       </ApplicationOverview>
 
       <ApplicationPanel v-for="item in moduleConnections" :key="item" :selectable-modules="selectableModules"
@@ -116,10 +125,10 @@ const triggerPostApplication = () => {
             <h4>Sprechzeiten</h4>
             <p>Dienstag und Donnerstag: 9:00 - 11:30 Uhr und 12:30 - 16:00 Uhr</p>
           </div>
-          <a href="https://www.mathcs.uni-leipzig.de/studium/studienbuero" class="link-container">
+          <a href="https://www.mathcs.uni-leipzig.de/studium/studienbuero">
             Zum Studienbüro
             <img src="../assets/icons/ArrowWhite.svg" class="arrow-icon" alt="Arrow Icon">
-          </a>
+          </a><!-- as button link-->
         </div>
 
       </SideInfoContainer>
@@ -130,34 +139,30 @@ const triggerPostApplication = () => {
 </template>
 
 <style scoped lang="scss">
-@import '../assets/variables.scss';
-@import '../assets/mixins.scss';
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
 
 .main {
   @include main();
 }
 
 .submit-application-container {
-  @include verticalList(small);
-  width: 100%;
-  overflow: hidden;
+  @include applicationContainer(split);
 }
 
 .side-infos-container {
-  @include sideInfoContainer();
+  @include sideInfoListContainer();
 }
 
-.link-container {
-  &:hover {
-    .arrow-icon {
-      transform: translate(0.15rem) rotate(-90deg);
-    }
-  }
-}
+
 
 .arrow-icon {
   transform: rotate(-90deg);
   transition: 0.1s ease-in-out;
+}
+
+.invalid-text {
+  color: $red;
 }
 </style>
 

@@ -62,20 +62,9 @@ public class SecurityConfig {
             .formLogin(login -> login.disable())
             .httpBasic(basic -> basic.disable())
             .exceptionHandling(handling -> handling.authenticationEntryPoint(new RestAuthenticationEntryPoint()))
-            .authorizeHttpRequests(requests -> requests
-                .requestMatchers("/**",
-                    "/error",
-                    "/favicon.ico",
-                    "/**/*.png",
-                    "/**/*.gif",
-                    "/**/*.svg",
-                    "/**/*.jpg",
-                    "/**/*.html",
-                    "/**/*.css",
-                    "/**/*.js",
-                    "/auth/**").permitAll()
-                .requestMatchers("/auth/**").permitAll()
-                .anyRequest().authenticated());
+            .authorizeHttpRequests(requests -> 
+                requests.requestMatchers("/**").permitAll() //securing api entry points with @PreAuthorize
+                        .anyRequest().authenticated());
         http.authenticationProvider(authenticationProvider());
         http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();

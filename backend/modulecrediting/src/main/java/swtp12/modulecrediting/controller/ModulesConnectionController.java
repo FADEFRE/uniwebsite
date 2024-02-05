@@ -11,7 +11,6 @@ import swtp12.modulecrediting.service.ModulesConnectionService;
 import java.util.List;
 
 @RestController
-@CrossOrigin
 @RequestMapping("/api/modules-connection")
 public class ModulesConnectionController {
     @Autowired
@@ -22,5 +21,10 @@ public class ModulesConnectionController {
     @PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR')")
     ResponseEntity<List<ModulesConnection>> getRelatedModulesConnections(@PathVariable Long id) {
         return ResponseEntity.ok(modulesConnectionService.getRelatedModulesConnections(id));
+    }
+
+    @GetMapping("/{id}")
+    ResponseEntity<ModulesConnection> getRelatedModus(@PathVariable Long id) {
+        return ResponseEntity.ok(modulesConnectionService.getModulesConnectionById(id));
     }
 }

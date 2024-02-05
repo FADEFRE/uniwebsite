@@ -53,9 +53,9 @@ const emit = defineEmits(['change'])
 const id = props.connectionData['id']
 
 const decisionSuggestion = props.connectionData['decisionSuggestion'] !== 'unedited'
-    ? props.connectionData['decisionSuggestion'] : undefined
+  ? props.connectionData['decisionSuggestion'] : undefined
 const decisionFinal = props.connectionData['decisionFinal'] !== 'unedited'
-    ? props.connectionData['decisionFinal'] : undefined
+  ? props.connectionData['decisionFinal'] : undefined
 
 const panelExternalModules = ref()
 const panelInternalModules = ref()
@@ -91,6 +91,12 @@ const setCollapsed = (value) => {
   panel.value.setCollapsed(value)
 }
 
+const checkValidity = () => {
+  const validity = panelExternalModules.value.checkValidity()
+  panel.value.setCollapsed(validity)
+  return validity
+}
+
 defineExpose({
   id,
   externalModules,
@@ -98,83 +104,61 @@ defineExpose({
   formalRejectionData,
   studyOfficeDecisionData,
   chairmanDecisionData,
-  setCollapsed
+  setCollapsed,
+  checkValidity
 })
 </script>
 
 <template>
-  <div>
+  <CustomPanel ref="panel">
 
-    <CustomPanel ref="panel">
+    <template #header>
+      <PanelHeader :external-modules="externalModules?.map(m => m.name).filter(name => name !== '')"
+        :internal-modules="internalModules" />
+    </template>
 
-      <template #header>
-        <PanelHeader :external-modules="externalModules?.map(m => m.name).filter(name => name !== '')" :internal-modules="internalModules" />
-      </template>
+    <template #icons>
+      <PanelStatusIcons :formal-rejection="formalRejection" :decision-suggestion="decisionSuggestion"
+        :decision-final="decisionFinal" />
+    </template>
 
-      <template #icons>
-        <PanelStatusIcons :formal-rejection="formalRejection" :decision-suggestion="decisionSuggestion" :decision-final="decisionFinal" />
-      </template>
+    <PanelExternalModules :allow-text-edit="!readonly" :allow-file-edit="false" :allow-delete="false" :allow-add="false"
+      :modules-data="connectionData['externalModules']" ref="panelExternalModules" @change="emit('change')" />
+    <PanelInternalModules :allow-select="!readonly" :allow-delete="!readonly"
+      :selected-modules="connectionData['modulesLeipzig'].map(m => m['name'])" :options="selectableModules"
+      ref="panelInternalModules" @change="emit('change')" />
+    <PanelComment :readonly="true" :comment="connectionData['commentApplicant']" />
+    <PanelRelatedModules :connection-id="connectionData['id']" />
 
-      <PanelExternalModules
-          :type="readonly ? 'readonly' : 'edit'"
-          :modules-data="connectionData['externalModules']"
-          ref="panelExternalModules"
-          @change="emit('change')"
-      />
-      <PanelInternalModules
-          :type="readonly ? 'readonly' : 'edit'"
-          :selected-modules="connectionData['modulesLeipzig'].map(m => m['name'])"
-          :options="selectableModules"
-          ref="panelInternalModules"
-          @change="emit('change')"
-      />
-      <PanelComment
-          type="readonly"
-          :comment="connectionData['commentApplicant']"
-      />
-      <PanelRelatedModules
-          :connection-id="connectionData['id']"
-      />
+    <div v-if="formalRejection">
+      <PanelDecision type="single">
+        <PanelFormalRejectionBlock :readonly="readonly" :comment="connectionData['formalRejectionComment']"
+          ref="formalRejectionRef" />
+      </PanelDecision>
+      <Button v-if="!readonly && type === 'study-office'" @click="unsetFormalRejection">Formfehler zurücknehmen</Button>
+    </div>
 
-      <div v-if="formalRejection">
-        <PanelDecision type="single">
-          <PanelFormalRejectionBlock type="edit" :comment="connectionData['formalRejectionComment']" ref="formalRejectionRef" />
-        </PanelDecision>
-        <Button @click="unsetFormalRejection">Formfehler zurücknehmen</Button>
-      </div>
+    <div v-else>
+      <PanelDecision type="study-office-chairman">
+        <template #study-office>
+          <PanelDecisionBlock :readonly="type !== 'study-office' || readonly" :display-decision="decisionSuggestion"
+            :comment="connectionData['commentStudyOffice']" ref="studyOfficeDecisionData" @change="emit('change')" />
+        </template>
+        <template #chairman>
+          <PanelDecisionBlock :readonly="type !== 'chairman' || readonly" :display-decision="decisionFinal"
+            :comment="connectionData['commentDecision']" ref="chairmanDecisionData" @change="emit('change')" />
+        </template>
+      </PanelDecision>
+      <Button v-if="!readonly && type === 'study-office'" @click="setFormalRejection">Als Formfehler markieren</Button>
+    </div>
 
-      <div v-else>
-        <PanelDecision type="study-office-chairman">
-          <template #study-office>
-            <PanelDecisionBlock
-                :type="(type === 'study-office' && !readonly) ? 'edit' : 'readonly'"
-                :display-decision="decisionSuggestion"
-                :comment="connectionData['commentStudyOffice']"
-                ref="studyOfficeDecisionData"
-                @change="emit('change')"
-            />
-          </template>
-          <template #chairman>
-            <PanelDecisionBlock
-                :type="(type === 'chairman' && !readonly) ? 'edit' : 'readonly'"
-                :display-decision="decisionFinal"
-                :comment="connectionData['commentDecision']"
-                ref="chairmanDecisionData"
-                @change="emit('change')"
-            />
-          </template>
-        </PanelDecision>
-        <Button @click="setFormalRejection">Als Formfehler markieren</Button>
-      </div>
-
-    </CustomPanel>
-
-  </div>
+  </CustomPanel>
 </template>
 
 <style scoped lang="scss">
-@import '../assets/variables.scss';
-@import '../assets/mixins.scss';
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
+
 .connection-highlight {
   border-left: 1rem solid $dark-gray;
 }

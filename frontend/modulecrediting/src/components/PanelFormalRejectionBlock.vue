@@ -2,12 +2,9 @@
 import { ref } from "vue";
 
 const props = defineProps({
-  type: {
+  readonly: {
     required: true,
-    type: String,
-    validator(value) {
-      return ['edit', 'readonly'].includes(value)
-    }
+    type: Boolean
   },
   comment: {
     type: String
@@ -26,13 +23,13 @@ defineExpose({
     <div class="formal-rejection-container">
       <p class="formal-rejection-text">Formfehler</p>
     </div>
-    <textarea :readonly="type === 'readonly'" v-model="comment"></textarea>
+    <textarea :readonly="readonly" v-model="comment"></textarea>
   </div>
 </template>
 
 <style scoped lang="scss">
-@import '@/assets/mixins.scss';
-@import '@/assets/variables.scss';
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
 
 .panel-formal-rejection-block {
   display: flex;
@@ -59,12 +56,8 @@ defineExpose({
   width: max-content;
 
   color: $white;
-  font-size: 1.125rem;
+  font-size: 1.1rem;
   font-weight: 600;
-
-
-
-
 }
 
 textarea {

@@ -30,23 +30,23 @@ const attemptLogin = () => {
 
             <div class="input-container">
                 <InputText type="text" placeholder="Benutzername" v-model="login_username" class="input-text"
-                    :class="{ 'p-invalid': styleInvalid }" />
+                    :class="{ 'invalid': styleInvalid }" />
 
                 <InputText type="password" placeholder="Passwort" v-model="login_password" class="input-text"
-                    :class="{ 'p-invalid': styleInvalid }" @keydown.enter.prevent="attemptLogin" />
+                    :class="{ 'invalid': styleInvalid }" @keydown.enter.prevent="attemptLogin" />
             </div>
 
             <div class="button-container">
                 <ButtonLink @click="attemptLogin" class="button-login">Anmelden</ButtonLink>
             </div>
-                <p v-if="styleInvalid" class="error-message">{{ errorMessage }}</p>
+                <small v-if="styleInvalid" class="invalid-text">{{ errorMessage }}</small>
             </div>
     </div>
 </template>
 
 <style scoped lang="scss">
-@import '../assets/mixins.scss';
-@import '../assets/variables.scss';
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
 
 .login-container {
     @include singleContainer();
@@ -56,8 +56,8 @@ const attemptLogin = () => {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 27.42188rem;
-    height: 11.25rem;
+    width: 27rem;
+    height: 11rem;
 }
 
 .login-content {
@@ -66,7 +66,7 @@ const attemptLogin = () => {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 1.5625rem;
+    gap: 1.5rem;
 }
 
 .input-container {
@@ -75,7 +75,7 @@ const attemptLogin = () => {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 0.625rem;
+    gap: 0.5rem;
 
     & .p-inputtext {
         width: 100%;
@@ -85,10 +85,12 @@ const attemptLogin = () => {
     }
 }
 
-.error-message {
-    color: $red;
-    margin-top: 0.625rem;
+.invalid {
+  border: 2px solid $red;
 }
 
+.invalid-text {
+  color: $red;
+}
 
 </style>

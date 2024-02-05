@@ -2,7 +2,7 @@
 filter selectors
 exposes:
   - searchString
-  - dateType (may be 'creation', 'lastEdit' or 'decision')
+  - dateType (may be 'creationDate', 'lastEditedDate' or 'decisionDate')
   - earliestDate
   - statusTypes (array, may include 'new', 'open', 'studyOffice', 'pav', 'closed')
   - selectedCourse (may be course registered in database)
@@ -15,7 +15,7 @@ import { getCoursesLeipzig } from "@/scripts/axios-requests";
 
 const searchString = ref()
 
-const dateType = ref('creation')  // creation, lastEdit or decision
+const dateType = ref('creationDate')  // creationDate, lastEditedDate or decisionDate
 const dateOptions = ['Letzte Woche', 'Letzter Monat', 'Letzte 6 Monate', 'Letztes Jahr', 'Alle']
 const selectedDateOption = ref('Letzter Monat')
 
@@ -57,7 +57,7 @@ onBeforeMount(() => {
 
 const setDateTypeCreation = () => {
   // setting dateType
-  dateType.value = 'creation'
+  dateType.value = 'creationDate'
   // setting status
   statusNew.value = true
   statusFormalRejection.value = true
@@ -68,7 +68,7 @@ const setDateTypeCreation = () => {
 
 const setDateTypeLastEdit = () => {
   // setting dateType
-  dateType.value = 'lastEdit'
+  dateType.value = 'lastEditedDate'
   // setting status
   statusNew.value = false
   statusFormalRejection.value = true
@@ -79,7 +79,7 @@ const setDateTypeLastEdit = () => {
 
 const setDateTypeDecision = () => {
   // setting dateType
-  dateType.value = 'decision'
+  dateType.value = 'decisionDate'
   // setting status
   statusNew.value = false
   statusFormalRejection.value = false
@@ -91,32 +91,32 @@ const setDateTypeDecision = () => {
 const toggleStatusNew = () => {
   statusNew.value = !statusNew.value
   // change dateType if necessary
-  if (dateType.value === 'decision' || dateType.value === 'lastEdit') {
-    dateType.value = 'creation'
+  if (dateType.value === 'decisionDate' || dateType.value === 'lastEditedDate') {
+    dateType.value = 'creationDate'
   }
 }
 
 const toggleStatusFormalRejection = () => {
   statusFormalRejection.value = !statusFormalRejection.value
   // change dateType if necessary
-  if (dateType.value === 'decision') {
-    dateType.value = 'lastEdit'
+  if (dateType.value === 'decisionDate') {
+    dateType.value = 'lastEditedDate'
   }
 }
 
 const toggleStatusStudyOffice = () => {
   statusStudyOffice.value = !statusStudyOffice.value
   // change dateType if necessary
-  if (dateType.value === 'decision') {
-    dateType.value = 'lastEdit'
+  if (dateType.value === 'decisionDate') {
+    dateType.value = 'lastEditedDate'
   }
 }
 
 const toggleStatusChairman = () => {
   statusChairman.value = !statusChairman.value
   // change dateType if necessary
-  if (dateType.value === 'decision') {
-    dateType.value = 'lastEdit'
+  if (dateType.value === 'decisionDate') {
+    dateType.value = 'lastEditedDate'
   }
 }
 
@@ -137,9 +137,12 @@ defineExpose({
 
     <div class="search-container">
       <h4>Suchen</h4>
-      <InputText v-model="searchString" placeholder="Antrag suchen">
-        <!-- search icon -->
-      </InputText>
+      <div class="input-search-field-container">
+        <InputText v-model="searchString" placeholder="Antrag suchen">
+
+        </InputText>
+        <img src="@/assets/icons/SearchIcon.svg" class="search-icon">
+      </div>
 
       <small>Suchen nach: Vorgangsnummer, Modulname, Universität</small>
     </div>
@@ -147,19 +150,19 @@ defineExpose({
     <div class="general-container">
       <h4>Allgemein</h4>
       <div class="date-filter-container">
-        <div @click="setDateTypeCreation" class="date-block" :class="{ 'selected': dateType === 'creation' }">
+        <div @click="setDateTypeCreation" class="date-block" :class="{ 'selected': dateType === 'creationDate' }">
           <img src="../assets/icons/CreationDate.svg">
-            <p v-if="dateType === 'creation'">Erstellt</p>
+          <p v-if="dateType === 'creationDate'">Erstellt</p>
 
         </div>
-        <div @click="setDateTypeLastEdit" class="date-block" :class="{ 'selected': dateType === 'lastEdit' }">
+        <div @click="setDateTypeLastEdit" class="date-block" :class="{ 'selected': dateType === 'lastEditedDate' }">
           <img src="../assets/icons/LastEditedDate.svg">
-            <p v-if="dateType === 'lastEdit'">Zuletzt bearbeitet</p>
+          <p v-if="dateType === 'lastEditedDate'">Zuletzt bearbeitet</p>
 
         </div>
-        <div @click="setDateTypeDecision" class="date-block" :class="{ 'selected': dateType === 'decision' }">
+        <div @click="setDateTypeDecision" class="date-block" :class="{ 'selected': dateType === 'decisionDate' }">
           <img src="../assets/icons/DecisionDate.svg">
-            <p v-if="dateType === 'decision'">Beschlossen</p>
+          <p v-if="dateType === 'decisionDate'">Beschlossen</p>
         </div>
       </div>
       <div>
@@ -208,12 +211,13 @@ defineExpose({
 </template>
 
 <style scoped lang="scss">
-@import '../assets/mixins.scss';
-@import '../assets/variables.scss';
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
 
 .clear-icon {
   opacity: 0.9;
   transition: 0.2s ease-in-out;
+  margin-right: 0.5rem;
 
   &:hover {
     opacity: 1;
@@ -226,19 +230,21 @@ defineExpose({
   @include basicContainer();
   width: 30%;
 
-  @media only screen and (max-width: 1100px) {
+  @media only screen and (max-width: 1200px) {
     width: 100%;
   }
 }
 
-.p-inputtext {
+.search-container {
   width: 100%;
-  transition: 0.1s ease-in-out;
-
-  &:hover{
-    background-color: $white-hover;
-  }
+  display: flex;
+  flex-direction: column;
 }
+
+.input-search-field-container {
+   @include searchFieldContainer();
+}
+
 
 .general-container {
   @include verticalList(small);
@@ -261,7 +267,6 @@ defineExpose({
   justify-content: center;
   align-items: center;
   background-color: $white;
-  transition: 0.1s ease-in-out;
   cursor: pointer;
 
   &.selected {
@@ -299,6 +304,7 @@ defineExpose({
     background-color: $gray-hover;
   }
 }
+
 .selected {
   .overview-text {
     color: $white;
@@ -324,6 +330,7 @@ defineExpose({
   &.statusFormalRejection,
   &.statusClosed {
     background-color: $red;
+
     &:hover {
       background-color: $red-hover;
     }
@@ -332,6 +339,4 @@ defineExpose({
 
 .overview-text {
   color: $dark-gray;
-}
-
-</style>
+}</style>

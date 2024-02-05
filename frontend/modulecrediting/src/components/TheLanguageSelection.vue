@@ -1,16 +1,21 @@
 <script setup>
+import { useUserStore } from "@/store/userStore";
+import translate from '@/i18n/translate';
+
+const store = useUserStore()
+
 </script>
 
 <template>
     <div class="language-selection-container">
-        <Button @click="$i18n.locale = 'DE'" class="language-button" :class="{ 'active': $i18n.locale == 'DE'}">DE</Button>
-        <Button @click="$i18n.locale = 'EN'" class="language-button" :class="{ 'active': $i18n.locale == 'EN' }">EN</Button>
+        <Button @click="translate.switchLanguage('de')" class="language-button" :class="{ 'active': store.locale == 'de' }">DE</Button>
+        <Button @click="translate.switchLanguage('en')" class="language-button" :class="{ 'active': store.locale == 'en' }">EN</Button>
     </div>
 </template>
 
 <style scoped lang="scss">
-@import '../assets/variables.scss';
-@import '../assets/mixins.scss';
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
 
 .language-selection-container {
     width: fit-content;
@@ -22,9 +27,9 @@
 
     color: $white;
     font-family: "Jost";
-    font-size: 1.125rem;
+    font-size: 1rem;
     font-weight: 400;
-    line-height: 1.5rem;
+    line-height: 1.25rem;
 
     &:first-child {
         border-right: 1px solid $white;

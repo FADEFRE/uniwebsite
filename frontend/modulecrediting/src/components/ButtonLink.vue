@@ -9,6 +9,10 @@ const props = defineProps({
   disabled: {
     type: Boolean,
     default: false
+  },
+  redButton: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -20,7 +24,7 @@ const style = computed(() => {
 
 <template>
   <div class="button-link-container">
-    <Button :disabled="disabled" :class="{ ' fixed-button': fixed, 'disabled': disabled }">
+    <Button :disabled="disabled" :class="{ ' fixed-button': fixed, 'disabled': disabled, 'red-button': redButton }">
       <slot />
       <img src="../assets/icons/ArrowWhite.svg" class="arrow-icon" alt="Arrow Icon">
     </Button>
@@ -28,7 +32,9 @@ const style = computed(() => {
 </template>
 
 <style scoped lang="scss">
-@import '../assets/variables.scss';
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
+@use '@/assets/styles/components' as *;
 
 .button-link-container {
   &:hover {
@@ -39,26 +45,46 @@ const style = computed(() => {
 }
 
 .p-button {
+  @include smallHighlightBox();
+  width: max-content;
+
+  background-color: $dark-gray;
+
+  &:hover {
+    background-color: $dark-gray-hover;
+  }
+
   display: flex;
-  gap: 0.625rem;
+  gap: 0.5rem;
 }
+
 
 .arrow-icon {
   transform: rotate(-90deg);
   transition: 0.1s ease-in-out;
 }
 
+.red-button {
+  background-color: $red;
+
+  &:hover {
+    background-color: $red-hover;
+  }
+}
+
 .fixed-button {
   background-color: $red;
   position: fixed;
   z-index: 3;
-  bottom: 1rem;
+  bottom: 2rem;
   right: 1rem;
 
   &:hover {
     background-color: $red-hover;
   }
 }
+
+
 
 .disabled {
   opacity: 0.5;

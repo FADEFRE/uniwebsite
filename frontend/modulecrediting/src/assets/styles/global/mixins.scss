@@ -1,0 +1,173 @@
+@use '@/assets/styles/util' as *;
+
+@mixin main() {
+  max-width: 1500px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  padding: 3rem 4.5rem;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 2rem;
+
+  @media only screen and (max-width: 1200px) {
+    flex-direction: column;
+  }
+
+  @media only screen and (max-width: 950px) {
+    padding: 2rem 2rem;
+  }
+
+  @media only screen and (max-width: 700px) {
+    padding: 2rem 1rem;
+  }
+}
+
+@mixin verticalList($gapSize) {
+  display: flex;
+  flex-direction: column;
+
+  @if $gapSize == small {
+    gap: 0.5rem;
+  } @else if $gapSize == big {
+    gap: 1.5rem;
+  } @else if $gapSize == mid {
+    gap: 1rem;
+  }
+}
+
+@mixin verticalListItem($background-color) {
+  background-color: $background-color;
+  justify-content: space-between;
+  border-left: 3px solid $red;
+}
+
+@mixin singleContainer() {
+  width: fit-content;
+  max-width: 100%;
+  background-color: $white;
+  display: flex;
+  padding: 4rem;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+
+  @include boxShadow(big);
+}
+
+@mixin basicContainer() {
+  width: auto;
+  background-color: $white;
+  padding: 1.5rem 1.5rem;
+  @include boxShadow(big);
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+@mixin applicationContainer($type) {
+  @include verticalList(mid);
+  width: 100%;
+
+  @if ($type == split) {
+    width: 78%;
+  }
+
+  @media only screen and (max-width: 1200px) {
+    width: 100%;
+  }
+}
+
+@mixin sideInfoListContainer() {
+  @include verticalList(big);
+  width: 22%;
+
+  @media only screen and (max-width: 1200px) {
+    width: 100%;
+  }
+}
+
+@mixin panelComponent() {
+  width: 100%;
+  padding: 0.5rem 0rem;
+  background-color: $white;
+  border-top: 1px solid $dark-gray;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+@mixin screenSplit() {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+@mixin rightArrow() {
+  transform: rotate(-90deg);
+}
+
+@mixin smallHighlightBox() {
+  width: max-content;
+  padding: 0.5rem 1rem;
+  border: none;
+
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+@mixin ellipsisTextOverflow() {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@mixin trashIconAnimation() {
+  background-color: transparent;
+  padding: 0.5rem 1.2rem;
+  transition: 0.1s ease-in-out;
+  cursor: pointer;
+  &:hover {
+    background: $white-hover;
+  }
+}
+
+@mixin searchFieldContainer() {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
+  & .p-inputtext {
+    &:hover {
+      background-color: $white-hover;
+    }
+  }
+
+  & .search-icon {
+    width: 1rem;
+    height: 1rem;
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
+
+@mixin boxShadow($size) {
+  @if $size == small {
+    box-shadow: $box-shadow-m;
+  } @else if $size == big {
+    box-shadow: $box-shadow-l;
+  }
+}

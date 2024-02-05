@@ -7,10 +7,14 @@ import PanelDecisionBlock from "@/components/PanelDecisionBlock.vue";
 import PanelExternalModules from "@/components/PanelExternalModules.vue";
 import PanelFormalRejectionBlock from "@/components/PanelFormalRejectionBlock.vue";
 import PanelDecision from "@/components/PanelDecision.vue";
-import {computed, ref} from "vue";
+import { ref, computed } from "vue";
 
 const props = defineProps({
   readonly: {
+    required: true,
+    type: Boolean
+  },
+  allowDelete: {
     required: true,
     type: Boolean
   },
@@ -25,6 +29,8 @@ const props = defineProps({
   }
 })
 
+const emit = defineEmits(['deleteSelf'])
+
 const id = props.connection['id']
 
 const panelExternalModules = ref()
@@ -35,16 +41,25 @@ const externalModules = computed(() => panelExternalModules.value?.externalModul
 const internalModules = computed(() => panelInternalModules.value?.selectedModules)
 const commentApplicant = computed(() => panelComment.value?.comment)
 
+const panelRef = ref()
+
+const checkValidity = () => {
+  const validity = panelExternalModules.value.checkValidity()
+  panelRef.value.setCollapsed(validity)
+  return validity
+}
+
 defineExpose({
   id,
   externalModules,
   internalModules,
-  commentApplicant
+  commentApplicant,
+  checkValidity
 })
 </script>
 
 <template>
-  <CustomPanel>
+  <CustomPanel ref="panelRef">
 
     <template #header>
       <PanelHeader
@@ -57,23 +72,28 @@ defineExpose({
       <img v-if="connection['decisionFinal'] === 'accepted'" src="@/assets/icons/ModuleAccepted.svg">
       <img v-else-if="connection['decisionFinal'] === 'asExamCertificate'" src="@/assets/icons/ModuleAsExamCertificate.svg">
       <img v-else-if="connection['decisionFinal'] === 'denied'" src="@/assets/icons/ModuleDenied.svg">
+      <img v-if="allowDelete" src="@/assets/icons/Trash.svg" @click="emit('deleteSelf')" class="trash-icon">
     </template>
 
     <div>
       <PanelExternalModules
-          :type="readonly ? 'readonly' : 'edit-full'"
+          :allow-text-edit="!readonly"
+          :allow-file-edit="!readonly"
+          :allow-delete="!readonly"
+          :allow-add="!readonly"
           :modules-data="connection['externalModules']"
           ref="panelExternalModules"
       />
       <PanelInternalModules
-          :type="readonly ? 'readonly' : 'edit'"
+          :allow-select="!readonly"
+          :allow-delete="!readonly"
           :options="selectableModules"
           :selected-modules="connection['modulesLeipzig'].map(m => m.name)"
           ref="panelInternalModules"
       />
       <PanelComment
           v-if="connection['commentApplicant'] || readonly === false"
-          :type="readonly ? 'readonly' : 'edit'"
+          :readonly="readonly"
           :comment="connection['commentApplicant']"
           ref="panelComment"
       />
@@ -81,14 +101,14 @@ defineExpose({
         <div v-if="!readonly">
           <PanelFormalRejectionBlock
               v-if="connection['formalRejection']"
-              type="readonly"
+              :readonly="true"
               :comment="connection['formalRejectionComment']"
           />
         </div>
         <div v-else>
           <PanelDecisionBlock
               v-if="connection['decisionFinal'] !== 'unedited'"
-              type="readonly"
+              :readonly="true"
               :display-decision="connection['decisionFinal']"
               :comment="connection['commentDecision']"
           />
@@ -101,5 +121,10 @@ defineExpose({
 </template>
 
 <style scoped lang="scss">
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
 
+.trash-icon {
+  @include trashIconAnimation();
+}
 </style>

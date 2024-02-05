@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +18,6 @@ import swtp12.modulecrediting.service.PdfDocumentService;
 
 @RestController
 @RequestMapping("/file/pdf-documents")
-@CrossOrigin
 public class PdfDocumentContoller {
     @Autowired
     private PdfDocumentService pdfDocumentService;
@@ -38,7 +36,7 @@ public class PdfDocumentContoller {
         headers.setContentType(MediaType.APPLICATION_PDF);
         headers.setContentDispositionFormData("attachment", "Antrag.pdf");
 
-        byte[] pdfBytes = generatedPdfService.generatePdfFromHtml();
+        byte[] pdfBytes = generatedPdfService.generatePdfFromHtml(id);
 
         return ResponseEntity.ok()
                 .headers(headers)

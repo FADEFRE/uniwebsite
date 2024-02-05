@@ -5,7 +5,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,7 +13,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,9 +33,9 @@ import swtp12.modulecrediting.service.UserService;
 import swtp12.modulecrediting.util.SecurityCipher;
 
 
+
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin
 public class AuthController {
     
     @Value("${app.auth.accessTokenCookieName}")
@@ -75,15 +73,18 @@ public class AuthController {
         return userService.login(loginRequest, decryptedAccessToken, decryptedRefreshToken);
     }
 
-    @PostMapping(value = "/refresh", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<LoginResponse> refreshToken(@CookieValue(name = "accessToken", required = false) String accessToken, @CookieValue(name = "refreshToken", required = false) String refreshToken) {
+    @PostMapping("/refresh")
+    public ResponseEntity<LoginResponse> refreshToken(
+            @CookieValue(name = "accessToken", required = false) String accessToken, 
+            @CookieValue(name = "refreshToken", required = false) String refreshToken) {
         String decryptedAccessToken = SecurityCipher.decrypt(accessToken);
         String decryptedRefreshToken = SecurityCipher.decrypt(refreshToken);
         return userService.refresh(decryptedAccessToken, decryptedRefreshToken);
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<LogoutResponse> logout(HttpServletRequest request) {      
+    public ResponseEntity<LogoutResponse> logout(HttpServletRequest request) {
+        LogoutResponse logoutResponse = new LogoutResponse(LogoutResponse.SuccessFailure.ERROR, "Error in api/auth/logout");
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
@@ -91,16 +92,15 @@ public class AuthController {
                     return userService.logout();
                 }
             }
-        }
-        LogoutResponse logoutResponse = new LogoutResponse(LogoutResponse.SuccessFailure.SUCCESS, "No cookies");
+        } 
+        else logoutResponse = new LogoutResponse(LogoutResponse.SuccessFailure.SUCCESS, "No cookies");
         return ResponseEntity.ok().body(logoutResponse);
     }
     
 
-    @PostMapping(value = "/register")
+    @PostMapping("/register")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<String> registerUser(@Valid @RequestBody RegisterRequest registerRequest) {
-
         Optional<User> userCandidate = userRepository.findByUsername(registerRequest.getUsername());
 
         if (!userCandidate.isPresent()) {
@@ -122,7 +122,6 @@ public class AuthController {
                 return new ResponseEntity<>("User registered successfully!", HttpStatus.OK);
             }
         }
-
         return new ResponseEntity<>("Username already exists!", HttpStatus.BAD_REQUEST);
     }
 }

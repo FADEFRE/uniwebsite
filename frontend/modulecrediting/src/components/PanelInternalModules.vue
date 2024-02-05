@@ -1,27 +1,29 @@
 <!--
 choose modules form a list of options
 props:
-  - type (may be 'new', 'edit' or 'readonly')
-  - options (arrays of selectable modules, should be given if type is 'new' or 'edit')
+  - allowSelect
+  - allowDelete
+  - options (should be given if allowSelect)
   - selectedModules (optional, elements must be elements of options)
 exposes:
   - selectedModules
 displays:
-  - dropdown with filter, without selection shown (if type is 'new' or 'edit')
+  - dropdown with filter, without selection shown (if allowSelect)
   - selected modules as separate list with
-  - delete icon for every selected module (if type is 'new' or 'edit')
+  - delete icon for every selected module (if allowDelete)
 -->
 
 <script setup>
-import { ref, onBeforeMount } from "vue";
+import { ref } from "vue";
 
 const props = defineProps({
-  type: {
+  allowSelect: {
     required: true,
-    type: String,
-    validator(value) {
-      return ['new', 'edit', 'readonly'].includes(value)  // new and edit behave the same
-    }
+    type: Boolean,
+  },
+  allowDelete: {
+    required: true,
+    type: Boolean,
   },
   options: {
     type: Array
@@ -56,7 +58,8 @@ defineExpose({
     <h4>Module der Universität Leipzig</h4>
 
     <div class="screen-split">
-      <div class="module-dropdown" v-if="type === 'new' || type === 'edit'">
+
+      <div class="module-dropdown" v-if="allowSelect">
         <Dropdown filter :options="options" placeholder="Modul auswählen" emptyMessage="Studiengang auswählen" emptyFilterMessage="Modul nicht gefunden" @change="e => addSelectedModule(e.value)">
           <template #filtericon>
             <img class="search-icon" src="@/assets/icons/SearchIcon.svg">
@@ -67,22 +70,27 @@ defineExpose({
         </Dropdown>
       </div>
 
-      <div class="module-list" :class="{ 'module-list-full': type === 'readonly' }">
-        <div v-for="(module, index) in selectedModules" class="module-list-item">
+      <div class="module-list" :class="{ 'module-list-full': !allowSelect }">
+        <div v-if="selectedModules.length > 0" v-for="(module, index) in selectedModules" class="module-list-item">
           <p>{{ module }}</p>
-          <div v-if="type === 'new' || type === 'edit'">
+          <div v-if="allowDelete">
             <img src="../assets/icons/Trash.svg" @click="removeSelectedModule(index)" class="trash-icon">
           </div>
+        </div>
+        <div v-else-if="!allowSelect">
+          <p>Es sind keine Module der Universität Leipzig ausgewählt.</p>
         </div>
       </div>
 
     </div>
+
   </div>
 </template>
 
 <style scoped lang="scss">
-@import '@/assets/mixins.scss';
-@import '@/assets/variables.scss';
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
+
 
 .panel-internal-modules {
   @include panelComponent();
@@ -123,7 +131,7 @@ defineExpose({
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  right: 0.625rem;
+  right: 0.5rem;
 }
 .trash-icon {
   @include trashIconAnimation();

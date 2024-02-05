@@ -6,8 +6,6 @@ props:
 -->
 
 <script setup>
-import PanelHeader from "@/components/PanelHeader.vue";
-
 const props = defineProps({
   connectionsData: {
     required: true,
@@ -25,7 +23,7 @@ const props = defineProps({
     <h2>Übersicht</h2>
 
     <a v-for="connection in connectionsData" :href="'#' + connection.id" class="connection-link-container">
-      <p class="connection-text"> {{ connection.externalModules.join(', ') }}</p>
+      <p class="connection-text"> {{ connection.externalModules.join(', ') || '...' }}</p>
       <div>
         <img src="@/assets/icons/ArrowRed.svg" alt="arrow-icon" class="arrow-icon">
       </div>
@@ -35,29 +33,30 @@ const props = defineProps({
 </template>
 
 <style scoped lang="scss">
-@import '../assets/variables.scss';
-@import '../assets/mixins.scss';
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
 
 .application-connection-links-container {
   @include basicContainer();
   width: 22%;
+  min-width: 22%;
 
   position: sticky;
   top: 1rem;
 
-  @media only screen and (max-width: 1300px) {
+  @media only screen and (max-width: 1200px) {
     display: none;
   }
 }
 
 .connection-link-container {
-  padding: 0.25rem 0.625rem;
+  padding: 0.25rem 0.5rem;
   width: 100%;
   background-color: transparent;
 
   border-top: 2px solid $dark-gray;
   border-bottom: 2px solid $dark-gray;
-  gap: 0.08rem;
+  gap: 0.1rem;
 
   &:hover{
     background-color: $white-hover;
@@ -65,7 +64,6 @@ const props = defineProps({
       transform: translateX(0.1rem) rotate(-90deg);
     }
   }
-
 }
 
 .connection-text {

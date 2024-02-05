@@ -32,13 +32,22 @@ const props = defineProps({
     },
     forward: {
         type: String,
+    },
+    adminSelectionView: {
+        type: Boolean,
+        default: false
     }
 });
 
 const statusStyle = computed(() => {
-    if (props.status === "NEU") return "status-container greenBackground";
-    if (props.status === "STUDIENBÜRO" || props.status === "PRÜFUNGSAUSSCHUSS" || props.status === "IN BEARBEITUNG") return "status-container orangeBackground";
-    if (props.status === "ABGESCHLOSSEN" || props.status === "FORMFEHLER") return "status-container redBackground";
+    let style = "";
+    if (props.status === "NEU") style += "greenBackground";
+    if (props.status === "STUDIENBÜRO" || props.status === "PRÜFUNGSAUSSCHUSS" || props.status === "IN BEARBEITUNG") style += "orangeBackground";
+    if (props.status === "ABGESCHLOSSEN" || props.status === "FORMFEHLER") style += "redBackground";
+
+    if (props.adminSelectionView) style += " admin-selection-view"
+
+    return style;
 })
 
 const triggerForward = () => {
@@ -47,14 +56,11 @@ const triggerForward = () => {
     }
 }
 
-const containerStyle = computed(() => {
-    if (props.forward) return "application-overview-container selection-view";
-    return "application-overview-container";
-});
 </script>
 
 <template>
-    <div :class="containerStyle" @click="triggerForward">
+    <div @click="triggerForward" class="application-overview-container"
+        :class="{ 'admin-selection-view': adminSelectionView }">
         <div class="dates">
             <!-- Div-Block Creation Date -->
             <div v-if="creationDate" class="date-block">
@@ -77,21 +83,25 @@ const containerStyle = computed(() => {
 
         <!-- remaining data -->
         <div class="application-info">
-            <div v-if="id" class="vorgangsnummer-container">
-                <div class="vorgangsnummer-text overview-text">Vorgangsnummer: {{ id || 'Placeholder for Vorgangsnummer' }}
+            <div v-if="id" class="vorgangsnummer-container info-container"
+                :class="{ 'admin-selection-view': adminSelectionView }">
+                <div class="vorgangsnummer-text overview-text">
+                    Vorgangsnummer: {{ id || 'Placeholder for Vorgangsnummer' }}
                 </div>
             </div>
 
             <!-- Slot study course -->
-            <div>
+            <div class="course-selection-container info-container">
                 <slot>
-                    <div class="course-container">
+                    <div class="course-container info-container" :class="{ 'admin-selection-view': adminSelectionView }">
                         <div class="overview-text">{{ course }}</div>
                     </div>
                 </slot>
             </div>
 
-            <div :class="statusStyle">
+
+
+            <div :class="statusStyle" class="info-container status-container">
                 <div class="status-text overview-text">Status: {{ status || 'Placeholder for Status' }}</div>
             </div>
         </div>
@@ -99,55 +109,102 @@ const containerStyle = computed(() => {
 </template>
 
 <style scoped lang="scss">
-@import '../assets/mixins.scss';
-@import '../assets/variables.scss';
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
 
 
 
 .application-overview-container {
     background-color: $white;
     display: flex;
-    padding: 0.625rem 0.625rem 0.625rem 1.25rem;
+    padding: 0.5rem 0.5rem 0.5rem 1rem;
     justify-content: space-between;
-    row-gap: 0.625rem;
+    gap: 0.5rem;
     align-self: stretch;
     flex-wrap: wrap;
-    
-}
-.admin-selection-view:hover {
     transition: 0.1s ease-in-out;
-    background-color: $white-hover;
-    cursor: pointer;
-}
+    @include boxShadow(small);
 
-.selection-view {
-    flex-direction: column;
+    &.admin-selection-view {
+        flex-direction: column;
+
+        &:hover {
+            background-color: $white-hover;
+            cursor: pointer;
+        }
+    }
+
+    @media only screen and (max-width: 600px) {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
 }
 
 
 .application-info {
     display: flex;
-    align-items: center;
-    align-content: center;
-    gap: 0.9375rem;
-    max-width: max-content;
+    gap: 1rem;
+    max-width: 100%;
     flex-wrap: wrap;
+
+    @media only screen and (max-width: 600px) {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
 }
+
+
 
 .course-container {
     @include smallHighlightBox();
     background-color: $dark-gray;
     color: $white;
+
+    &.admin-selection-view {
+        min-width: max-content;
+        width: 12rem;
+        @media only screen and (max-width: 600px) {
+        width: 100%;
+    }
+    }
+}
+
+.course-selection-container {
+    width: min-content;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.05rem;
 }
 
 .vorgangsnummer-container {
     @include smallHighlightBox();
     background-color: $gray;
+
+    &.admin-selection-view {
+        width: 19rem;
+        @media only screen and (max-width: 600px) {
+        width: 100%;
+    }
+    }
 }
 
 .status-container {
     @include smallHighlightBox();
     color: $white;
+
+    &.admin-selection-view {
+        width: 19rem;
+        @media only screen and (max-width: 600px) {
+        width: 100%;
+    }
+    }
+}
+
+.info-container {
+    @media only screen and (max-width: 600px) {
+        width: 100%;
+    }
 }
 
 .greenBackground {
@@ -165,13 +222,13 @@ const containerStyle = computed(() => {
 .dates {
     display: flex;
     align-items: center;
-    gap: 0.9375rem;
+    gap: 1rem;
     flex-wrap: wrap;
 }
 
 .date-block {
     display: flex;
     align-items: center;
-    gap: 0.625rem;
+    gap: 0.5rem;
 }
 </style>

@@ -11,11 +11,12 @@ import LoginContainer from '../components/LoginContainer.vue';
 
 
 <style scoped lang="scss">
-@import '../assets/variables.scss';
-@import '../assets/mixins.scss';
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
 
 .main {
   @include main();
+  flex-direction: row !important;
 }
 
 </style>

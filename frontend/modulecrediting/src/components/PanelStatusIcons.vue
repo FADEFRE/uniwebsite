@@ -8,8 +8,6 @@ displays:
 -->
 
 <script setup>
-import { defineProps } from 'vue';
-
 const props = defineProps({
     formalRejection: {
       type: Boolean
@@ -56,12 +54,13 @@ const props = defineProps({
 </template>
 
 <style scoped lang="scss">
-@import '../assets/mixins.scss';
-@import '../assets/variables.scss';
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
 .panel-status-icons {
     display: flex;
     justify-content: center;
-    gap: 0.9375rem;
+    gap: 1rem;
+    margin-right: 0.5rem
 }
 .arrow-icon {
     @include rightArrow();

@@ -38,15 +38,28 @@ public class User implements Serializable{
     )
     private Role role;
 
+
+    /**
+     * Constructor for {@link User}.
+     * <p>Creates {@link User} with given {@link String roleName}, {@link String password} and {@link Boolean enabled}.
+     * 
+     * @see User
+     */
     public User(String username, String password, Boolean enabled) {
         this.username = username;
         this.password = password;
         this.enabled = enabled;
     }
 
+    /**
+     * Constructor for {@link UserSummary} of this {@link User}.
+     * <p>Creates {@link UserSummary} with {@link Long userId} of this {@link User}.
+     * 
+     * @see User
+     * @see UserSummary
+     */
     public UserSummary toUserSummary() {
         UserSummary userSummary = new UserSummary();
-        userSummary.setUsername(this.username);
         userSummary.setUserId(this.userId);
         return userSummary;
     }

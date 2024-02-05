@@ -6,7 +6,7 @@ import AdministrativePanel from "@/components/AdministrativePanel.vue";
 import ButtonLink from "@/components/ButtonLink.vue";
 import {
   getApplicationById, getModulesByCourse,
-  getUpdateStatusAllowed, updateStatus, putApplicationStudyOffice
+  getUpdateStatusAllowed, updateStatus, putApplicationStudyOffice, putApplicationChairman
 } from "@/scripts/axios-requests";
 import { parseRequestDate } from "@/scripts/date-utils";
 import ApplicationConnectionLinks from "@/components/ApplicationConnectionLinks.vue";
@@ -77,6 +77,11 @@ const unCollapseAll = () => {
   }
 }
 
+const scrollTop = () => {
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
+}
+
 const unsaved = ref(false)
 
 const setUnsaved = () => {
@@ -87,10 +92,19 @@ const discardChanges = () => {
   location.reload()
 }
 
+const checkValidity = () => {
+  return moduleConnections.value.map(c => c.checkValidity()).every(Boolean)
+}
+
 const saveChanges = () => {
-  if (type === 'study-office') {
-    putApplicationStudyOffice(id, applicationData.value['courseLeipzig']['name'], moduleConnections.value)
-      .then(_ => location.reload())
+  if (checkValidity()) {
+    if (type === 'study-office') {
+      putApplicationStudyOffice(id, applicationData.value['courseLeipzig']['name'], moduleConnections.value)
+          .then(_ => location.reload())
+    } else if (type === 'chairman') {
+      putApplicationChairman(id, applicationData.value['courseLeipzig']['name'], moduleConnections.value)
+          .then(_ => location.reload())
+    }
   }
 }
 
@@ -101,16 +115,16 @@ const triggerPassOn = () => {
 </script>
 
 <template>
-
   <div v-if="applicationData" class="main">
 
     <ApplicationConnectionLinks :connections-data="connectionsData" />
+    
     <div class="administrative-detail-container">
 
-        <ApplicationOverview :creation-date="parseRequestDate(applicationData['creationDate'])"
-          :last-edited-date="parseRequestDate(applicationData['lastEditedDate'])"
-          :decision-date="parseRequestDate(applicationData['decisionDate'])" :id="applicationData['id']"
-          :course="applicationData['courseLeipzig']['name']" :status="applicationData['fullStatus']" />
+      <ApplicationOverview :creation-date="parseRequestDate(applicationData['creationDate'])"
+        :last-edited-date="parseRequestDate(applicationData['lastEditedDate'])"
+        :decision-date="parseRequestDate(applicationData['decisionDate'])" :id="applicationData['id']"
+        :course="applicationData['courseLeipzig']['name']" :status="applicationData['fullStatus']" />
 
       <div v-for="connection in applicationData['modulesConnections']">
 
@@ -139,6 +153,10 @@ const triggerPassOn = () => {
       <Button @click="unCollapseAll" class="collapse-expand-button">
         <img src="@/assets/icons/ExpandAll.svg">
       </Button>
+
+      <Button @click="scrollTop" class="move-top-button">
+        <img src="@/assets/icons/ArrowWhite.svg" class="arrow-icon">
+      </Button>
     </div>
 
     <div v-if="!readonly">
@@ -152,17 +170,16 @@ const triggerPassOn = () => {
 </template>
 
 <style scoped lang="scss">
-@import '../assets/variables.scss';
-@import '../assets/mixins.scss';
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
+
 
 .main {
   @include main();
 }
 
 .administrative-detail-container {
-  @include verticalList(small);
-  width: 100%;
-  overflow: hidden;
+  @include applicationContainer(split);
 }
 
 
@@ -171,12 +188,13 @@ const triggerPassOn = () => {
   width: 100%;
   justify-content: flex-start;
   flex-wrap: wrap;
-  gap: 0.625rem 1rem;
+  gap: 0.5rem 1rem;
 
   @media only screen and (max-width: 700px) {
-    padding: 0 0.625rem;
+    padding: 0 0.5rem;
   }
 }
+
 
 
 .mid-right-fixed-container {
@@ -187,19 +205,15 @@ const triggerPassOn = () => {
   align-items: flex-end;
 
   position: fixed;
-  top: 50vh;
+  bottom: 5.5rem;
   right: 1rem;
-
-  transform: translateY(-50%);
-
-  @media only screen and (max-width: 1000px) {
-    display: none;
-  }
 }
+
+
 .unsaved-notification {
   background-color: $red;
-  width: 3.125rem;
-  height: 3.125rem;
+  width: 3rem;
+  height: 3rem;
 
   display: flex;
   justify-content: center;
@@ -207,7 +221,22 @@ const triggerPassOn = () => {
 }
 
 .collapse-expand-button {
-  width: 3.125rem;
-  height: 3.7rem;
+  width: 3rem;
+  height: 4rem;
+
+  @media only screen and (max-width: 950px) {
+    display: none;
+  }
+}
+
+.move-top-button {
+  width: 3rem;
+  height: 3rem;
+
+  & .arrow-icon {
+    transform: rotate(180deg);
+    width: 18px;
+    height: 12px;
+  }
 }
 </style>

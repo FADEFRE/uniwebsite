@@ -27,27 +27,29 @@ defineExpose({
 </script>
 
 <template>
-  <Panel toggleable v-model:collapsed="d_collapsed">
-    <template #header>
-      <slot name="header"></slot>
-    </template>
-    <template #icons>
-      <slot name="icons"></slot>
-    </template>
-    <template #togglericon>
-      <img src="@/assets/icons/ArrowRed.svg" :class="arrowStyle">
-    </template>
-    <slot></slot>
-  </Panel>
+  <div class="custom-panel-container">
+    <Panel toggleable v-model:collapsed="d_collapsed">
+      <template #header>
+        <slot name="header"></slot>
+      </template>
+      <template #icons>
+        <slot name="icons"></slot>
+      </template>
+      <template #togglericon>
+        <img src="@/assets/icons/ArrowRed.svg" :class="arrowStyle">
+      </template>
+      <slot></slot>
+    </Panel>
+  </div>
 </template>
 
 <style scoped lang="scss">
-@import '@/assets/mixins.scss';
-@import '@/assets/variables.scss';
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
 
 :deep(.p-panel) {
+  @include boxShadow(big);
   width: 100%;
-  background-color: $white;
 }
 
 :deep(.p-panel-header) {
@@ -60,7 +62,6 @@ defineExpose({
   border-bottom: 2px solid $dark-gray;
 
   display: flex;
-  padding: 1.25rem;
   justify-content: space-between;
   align-items: center;
 }
@@ -68,20 +69,20 @@ defineExpose({
 :deep(.p-panel-icons) {
   display: flex;
   align-items: center;
-  gap: 1.875rem;
-  margin-left: 0.625rem;
+  margin-left: 0.5rem;
 }
 
 :deep(.p-panel-content) {
   border: none;
-  padding: 1.25rem 6.25rem;
+  padding: 1.25rem 9%;
   border-bottom: 2px solid $dark-gray;
 
   @include verticalList(small);
-  
-  @media only screen and (max-width: 1000px) {
-    padding: 1.25rem 2rem;
+
+  @media only screen and (max-width: 1350px) {
+    padding: 1.25rem 5%;
   }
+
   @media only screen and (max-width: 700px) {
     padding: 1.25rem 1.5rem;
   }

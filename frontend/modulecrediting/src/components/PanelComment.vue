@@ -14,12 +14,9 @@ displays:
 import { ref } from 'vue';
 
 const props = defineProps({
-  type: {
+  readonly: {
     required: true,
-    type: String,
-    validator(value) {
-      return ['new', 'edit', 'readonly'].includes(value)
-    }
+    Boolean
   },
   comment: {
     type: String
@@ -39,15 +36,15 @@ defineExpose({
 <template>
   <div class="panel-comment">
     <h4>Kommentar</h4>
-    <textarea :readonly="!(type === 'new' || type === 'edit')" rows="3" v-model="comment">
+    <textarea :readonly="readonly" rows="3" v-model="comment">
 
     </textarea>
   </div>
 </template>
 
 <style scoped lang="scss">
-@import '@/assets/mixins.scss';
-@import '@/assets/variables.scss';
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
 
 .panel-comment {
   @include panelComponent();

@@ -4,12 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-import swtp12.modulecrediting.dto.ExternalModuleCreateDTO;
-import swtp12.modulecrediting.dto.ExternalModuleUpdateDTO;
+import swtp12.modulecrediting.dto.ExternalModuleDTO;
 import swtp12.modulecrediting.model.ExternalModule;
+import swtp12.modulecrediting.model.ModulesConnection;
 import swtp12.modulecrediting.model.PdfDocument;
 import swtp12.modulecrediting.repository.ExternalModuleRepository;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -21,19 +20,30 @@ public class ExternalModuleService {
     @Autowired
     ExternalModuleRepository externalModuleRepository;
 
-    public List<ExternalModule> createExternalModules(List<ExternalModuleCreateDTO> externalModuleCreateDTOs) {
-        if(externalModuleCreateDTOs == null || externalModuleCreateDTOs.size() == 0)
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, " No Module Applications provided in the request");
+    public List<ExternalModule> createExternalModules(List<ExternalModuleDTO> externalModuleDTOS) {
+        if(externalModuleDTOS == null || externalModuleDTOS.size() == 0)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, " No External Modules provided in the request");
+
         List<ExternalModule> externalModules = new ArrayList<>();
 
-        for(ExternalModuleCreateDTO ma : externalModuleCreateDTOs) {
+        for(ExternalModuleDTO externalModuleDTO : externalModuleDTOS) {
             ExternalModule externalModule = new ExternalModule();
-            externalModule.setName(ma.getName());
-            externalModule.setUniversity(ma.getUniversity());
-            externalModule.setPoints(ma.getPoints());
-            externalModule.setPointSystem(ma.getPointSystem());
 
-            PdfDocument pdfDocument = pdfDocumentService.createPdfDocument(ma.getDescription());
+            if(externalModuleDTO.getName() == null)
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, " No External Module Module Name provided in the request");
+            if(externalModuleDTO.getUniversity() == null)
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, " No External Module University provided in the request");
+            if(externalModuleDTO.getPoints() == null)
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, " No External Module Point System provided in the request");
+            if(externalModuleDTO.getPointSystem() == null)
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, " No External Module Points provided in the request");
+
+            externalModule.setName(externalModuleDTO.getName());
+            externalModule.setUniversity(externalModuleDTO.getUniversity());
+            externalModule.setPoints(externalModuleDTO.getPoints());
+            externalModule.setPointSystem(externalModuleDTO.getPointSystem());
+
+            PdfDocument pdfDocument = pdfDocumentService.createOrGetPdfDocument(externalModuleDTO.getDescription(), externalModuleDTO.getId());
             externalModule.setPdfDocument(pdfDocument);
 
             externalModules.add(externalModule);
@@ -42,31 +52,28 @@ public class ExternalModuleService {
         return externalModules;
     }
 
-    public void updateExternalModules(List<ExternalModuleUpdateDTO> externalModuleUpdateDTOs, String userRole) {
-        for(ExternalModuleUpdateDTO ma : externalModuleUpdateDTOs) {
+
+    public void updateExternalModules(List<ExternalModuleDTO> externalModuleUpdateDTOs) {
+        for(ExternalModuleDTO ma : externalModuleUpdateDTOs) {
             if(ma.getId() == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Module Application id must not be null");
             ExternalModule externalModule = getExternalModuleById(ma.getId());
-
-
-            if(ma.getName() != null)
+            
+            if(ma.getName() != null) {
                 externalModule.setName(ma.getName());
-
-            if(ma.getUniversity() != null)
+            }
+            if(ma.getUniversity() != null) {
                 externalModule.setUniversity(ma.getUniversity());
-
-            if(ma.getPoints() != null)
+            }
+            if(ma.getPoints() != null) {
                 externalModule.setPoints(ma.getPoints());
-
-            if(ma.getPointSystem() != null)
+            }
+            if(ma.getPointSystem() != null) {
                 externalModule.setPointSystem(ma.getPointSystem());
-
-            if(userRole.equals("standard") && ma.getDescription() != null) {
-                PdfDocument pdfDocument = pdfDocumentService.createPdfDocument(ma.getDescription());
-                externalModule.setPdfDocument(pdfDocument);
             }
         }
-
     }
+
+
 
     public ExternalModule getExternalModuleById(Long id) {
         Optional<ExternalModule> optionalExternalModule = externalModuleRepository.findById(id);
@@ -78,7 +85,8 @@ public class ExternalModuleService {
 
     public void deleteExternalModuleById(Long id) {
         ExternalModule externalModule = getExternalModuleById(id);
-        externalModule.getModulesConnection().removeExternalModules(List.of(externalModule));
+        ModulesConnection modulesConnection = externalModule.getModulesConnection();
+        modulesConnection.removeExternalModules(List.of(externalModule));
         externalModuleRepository.deleteById(id);
     }
 }

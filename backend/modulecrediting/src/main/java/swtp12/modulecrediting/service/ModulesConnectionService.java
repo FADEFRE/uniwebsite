@@ -5,11 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-import swtp12.modulecrediting.dto.ExternalModuleUpdateDTO;
-import swtp12.modulecrediting.dto.ModuleLeipzigUpdateDTO;
-import swtp12.modulecrediting.dto.ModulesConnectionCreateDTO;
-import swtp12.modulecrediting.dto.ModulesConnectionUpdateDTO;
-import swtp12.modulecrediting.dto.StudentModulesConnectionDTO;
+import swtp12.modulecrediting.dto.ExternalModuleDTO;
+import swtp12.modulecrediting.dto.ModuleLeipzigDTO;
+import swtp12.modulecrediting.dto.ModulesConnectionDTO;
 import swtp12.modulecrediting.model.ExternalModule;
 import swtp12.modulecrediting.model.ModuleLeipzig;
 import swtp12.modulecrediting.model.ModulesConnection;
@@ -29,13 +27,52 @@ public class ModulesConnectionService {
     @Autowired
     ModuleLeipzigService moduleLeipzigService;
 
+    public List<ModulesConnection> createModulesConnectionsWithDuplicate(List<ModulesConnectionDTO> modulesConnectionsDTO) {
+        if(modulesConnectionsDTO == null || modulesConnectionsDTO.size() == 0)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, " No Modules Connections provided in the request");
 
-    public void updateModulesConnection(List<ModulesConnectionUpdateDTO> modulesConnectionsDTO, String userRole) {
-        for(ModulesConnectionUpdateDTO mcuDTO : modulesConnectionsDTO) {
+        List<ModulesConnection> modulesConnections = new ArrayList<>();
+
+        for(ModulesConnectionDTO modulesConnectionDTO : modulesConnectionsDTO) {
+            ModulesConnection modulesConnection = createModulesConnection(modulesConnectionDTO);
+            ModulesConnection modulesConnectionOriginal = createModulesConnection(modulesConnectionDTO);
+
+            modulesConnection.setModulesConnectionOriginal(modulesConnectionOriginal);
+
+            modulesConnections.add(modulesConnection);
+        }
+        return modulesConnections;
+    }
+
+    private ModulesConnection createModulesConnection(ModulesConnectionDTO modulesConnectionDTO) {
+        ModulesConnection modulesConnection = new ModulesConnection();
+
+        // create external modules
+        List<ExternalModule> externalModules = externalModuleService.createExternalModules(modulesConnectionDTO.getExternalModules());
+        modulesConnection.setExternalModules(externalModules);
+
+        // create modules lepizig relation
+        if(modulesConnectionDTO.getModulesLeipzig() != null) { // no modules leipzig sent in dto
+            List<ModuleLeipzig> modulesLeipzig = moduleLeipzigService.getModulesLeipzigByNames(modulesConnectionDTO.getModulesLeipzig());
+            modulesConnection.setModulesLeipzig(modulesLeipzig);
+        }
+
+        // create set comment applicant
+        modulesConnection.setCommentApplicant(modulesConnectionDTO.getCommentApplicant());
+
+        return modulesConnection;
+    }
+
+
+    public void updateModulesConnection(List<ModulesConnectionDTO> modulesConnectionsDTO, String userRole) { // todo: change name for login specfiic update
+        if(modulesConnectionsDTO == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Modules Connections must not be null");
+
+        for(ModulesConnectionDTO mcuDTO : modulesConnectionsDTO) {
             if(mcuDTO.getId() == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Modules Connection id must not be null");
+
             ModulesConnection modulesConnection = getModulesConnectionById(mcuDTO.getId());
 
-            // handle decision block
+            // handle study office decision
             if(userRole.equals("study-office")) {
                 if (mcuDTO.getCommentStudyOffice() != null)
                     modulesConnection.setCommentStudyOffice(mcuDTO.getCommentStudyOffice());
@@ -43,6 +80,7 @@ public class ModulesConnectionService {
                 if (mcuDTO.getDecisionSuggestion() != null)
                     modulesConnection.setDecisionSuggestion(mcuDTO.getDecisionSuggestion());
 
+                // allow only study-office to reject as formal rejection
                 if(mcuDTO.getFormalRejection() != null)
                     modulesConnection.setFormalRejection(mcuDTO.getFormalRejection());
 
@@ -50,6 +88,7 @@ public class ModulesConnectionService {
                     modulesConnection.setFormalRejectionComment(mcuDTO.getFormalRejectionComment());
             }
 
+            // handle chairman decision
             if(userRole.equals("chairman")) {
                 if (mcuDTO.getCommentDecision() != null)
                     modulesConnection.setCommentDecision(mcuDTO.getCommentDecision());
@@ -58,146 +97,114 @@ public class ModulesConnectionService {
                     modulesConnection.setDecisionFinal(mcuDTO.getDecisionFinal());
             }
 
-            if(userRole.equals("standard")) {
-                // when user corrects application, the status of connection goes back to non rejecting
-                modulesConnection.setFormalRejection(false);
-                modulesConnection.setFormalRejectionComment("");
-
-                if(mcuDTO.getCommentApplicant() != null)
-                    modulesConnection.setCommentApplicant(mcuDTO.getCommentApplicant());
-            }
-
-
+            // TODO: create function
             // handle module applications changes
             if(mcuDTO.getExternalModules() == null)  throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You cant delete all External Modules of a Modules Connection " + mcuDTO.getId());
 
+            // check difference saved external modules <-> external modules sent in dto => remove deleted external modules
             List<Long> savedIdList = getIdListFromModuleConnection(modulesConnection);
             List<Long> updatedIdList = getIdListFromModuleConnectionUpdateDTO(mcuDTO);
             List<Long> deleteIdList = new ArrayList<>(savedIdList);
             deleteIdList.removeAll(updatedIdList);
-
             removeAllDeletedExternalModules(deleteIdList);
-            externalModuleService.updateExternalModules(mcuDTO.getExternalModules(), userRole);
+            // update external modules data
+            externalModuleService.updateExternalModules(mcuDTO.getExternalModules());
 
             // handle modules leipzig changes
             if(mcuDTO.getModulesLeipzig() == null) modulesConnection.removeAllModulesLeipzig(); // remove all module leipzig
             else{
+                // check difference saved modules leipzig <-> modules leipzig sent in dto => remove relation deleted module leipzig
                 List<String> savedNameList = getModuleLeipzigNameFromModuleConnection(modulesConnection);
                 List<String> updatedNameList = getModuleLeipzigNameFromModuleConnectionUpdateDTO(mcuDTO);
                 List<String> deleteNameList = new ArrayList<>(savedNameList);
                 deleteNameList.removeAll(updatedNameList);
                 removeAllDeletedModulesLeipzig(modulesConnection, deleteNameList);
-                moduleLeipzigService.updateModulesLeipzig(modulesConnection, mcuDTO.getModulesLeipzig());
+                // update relation (create new, ignoring old)
+                moduleLeipzigService.updateRelationModulesConnectionToModulesLeipzig(modulesConnection, mcuDTO.getModulesLeipzig());
             }
 
             // modulesConnection will be saved in application service due to cascade all
         }
     }
 
-    // modules leipzig helper methods
-    void removeAllDeletedModulesLeipzig(ModulesConnection modulesConnection, List<String> deleteIdList) {
+
+    // modules leipzig helper methods for update application
+    private void removeAllDeletedModulesLeipzig(ModulesConnection modulesConnection, List<String> deleteIdList) {
         ArrayList<ModuleLeipzig> modulesLeipzig = new ArrayList<>();
         for(String name : deleteIdList) {
             modulesLeipzig.add(moduleLeipzigService.getModuleLeipzigByName(name));
         }
         modulesConnection.removeModulesLeipzig(modulesLeipzig);
     }
-    List<String> getModuleLeipzigNameFromModuleConnection(ModulesConnection modulesConnection) {
+    private List<String> getModuleLeipzigNameFromModuleConnection(ModulesConnection modulesConnection) {
         ArrayList<String> nameList = new ArrayList<>();
         for(ModuleLeipzig ml : modulesConnection.getModulesLeipzig()) {
             nameList.add(ml.getName());
         }
         return nameList;
     }
-    List<String> getModuleLeipzigNameFromModuleConnectionUpdateDTO(ModulesConnectionUpdateDTO modulesConnection) {
+    private List<String> getModuleLeipzigNameFromModuleConnectionUpdateDTO(ModulesConnectionDTO modulesConnection) {
         ArrayList<String> nameList = new ArrayList<>();
-        for(ModuleLeipzigUpdateDTO ml : modulesConnection.getModulesLeipzig()) {
+        for(ModuleLeipzigDTO ml : modulesConnection.getModulesLeipzig()) {
             nameList.add(ml.getName());
         }
         return nameList;
     }
 
-    // module applications helper methos (external modules)
-    void removeAllDeletedExternalModules(List<Long> deleteIdList) {
+
+    // external modules helper methods for update application
+    private void removeAllDeletedExternalModules(List<Long> deleteIdList) {
         for(Long id : deleteIdList) {
             externalModuleService.deleteExternalModuleById(id);
         }
     }
-    List<Long> getIdListFromModuleConnection(ModulesConnection modulesConnection) {
+    private List<Long> getIdListFromModuleConnection(ModulesConnection modulesConnection) {
         ArrayList<Long> idList = new ArrayList<>();
         for(ExternalModule eM : modulesConnection.getExternalModules()) {
             idList.add(eM.getId());
         }
         return idList;
     }
-    List<Long> getIdListFromModuleConnectionUpdateDTO(ModulesConnectionUpdateDTO modulesConnection) {
+    private List<Long> getIdListFromModuleConnectionUpdateDTO(ModulesConnectionDTO modulesConnection) {
         ArrayList<Long> idList = new ArrayList<>();
-        for(ExternalModuleUpdateDTO eM : modulesConnection.getExternalModules()) {
+        for(ExternalModuleDTO eM : modulesConnection.getExternalModules()) {
             idList.add(eM.getId());
         }
         return idList;
     }
 
-    public void removeAllDecisions(List<ModulesConnection> modulesConnections) {
-        for(ModulesConnection mc : modulesConnections) {
-            mc.setDecisionSuggestion(unedited);
-            mc.setCommentStudyOffice("");
-            mc.setDecisionFinal(unedited);
-            mc.setCommentDecision("");
+
+    // helper methods to build correct modules connection for student get request (stauts view page)
+    public List<ModulesConnection> getOriginalModulesConnections(List<ModulesConnection> modulesConnections) {
+        ArrayList<ModulesConnection> modulesConnectionsOriginal = new ArrayList<>();
+
+        for(ModulesConnection modulesConnection : modulesConnections) {
+            modulesConnectionsOriginal.add(modulesConnection.getModulesConnectionOriginal());
         }
+        return modulesConnectionsOriginal;
     }
-
-    public List<ModulesConnection> createModulesConnections(List<ModulesConnectionCreateDTO> modulesConnectionsDTO) {
-        if(modulesConnectionsDTO == null || modulesConnectionsDTO.size() == 0)
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, " No Modules Connections provided in the request");
-        List<ModulesConnection> modulesConnections = new ArrayList<>();
-
-        for(ModulesConnectionCreateDTO mc : modulesConnectionsDTO) {
-            ModulesConnection modulesConnection = new ModulesConnection();
-            modulesConnection.setCommentApplicant(mc.getCommentApplicant());
-
-            List<ExternalModule> externalModules = externalModuleService.createExternalModules(mc.getExternalModules());
-            modulesConnection.setExternalModules(externalModules);
-
-            if(mc.getModulesLeipzig() != null) { // no modules leipzig sent
-                List<ModuleLeipzig> modulesLeipzig = moduleLeipzigService.getModulesLeipzigByNames(mc.getModulesLeipzig());
-                modulesConnection.setModulesLeipzig(modulesLeipzig);
-            }
-
-            modulesConnections.add(modulesConnection);
+    public List<ModulesConnection> removeOriginalModulesConnections(List<ModulesConnection> modulesConnections) {
+        for(ModulesConnection modulesConnection : modulesConnections) {
+            modulesConnection.setModulesConnectionOriginal(null);
         }
-
         return modulesConnections;
     }
+    public List<ModulesConnection> getOriginalModulesConnectionsWithFormalRejectionData(List<ModulesConnection> editModulesConnections) {
+        ArrayList<ModulesConnection> modulesConnectionsOriginal = new ArrayList<>();
 
-    public StudentModulesConnectionDTO getStudentModulesConnectionDTO(Long moduleConnectionId, boolean applicationEditFinished) {
-        StudentModulesConnectionDTO studentModulesConnectionDTO = new StudentModulesConnectionDTO();
-        Optional<ModulesConnection> modulesConnectionCandidate = modulesConnectionRepository.findById(moduleConnectionId);
-        if (!modulesConnectionCandidate.isPresent()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "ModulesConnection with id: " + moduleConnectionId + " not Found");
+        for(ModulesConnection editModulesConnection : editModulesConnections) {
 
-        ModulesConnection modulesConnection = modulesConnectionCandidate.get();
-        studentModulesConnectionDTO.setId(modulesConnection.getId());
-        
-        studentModulesConnectionDTO.setCommentApplicant(modulesConnection.getCommentApplicant());
+            ModulesConnection modulesConnectionOriginal = editModulesConnection.getModulesConnectionOriginal();
+            // adding formal rejection data
+            modulesConnectionOriginal.setFormalRejection(editModulesConnection.getFormalRejection());
+            modulesConnectionOriginal.setFormalRejectionComment(editModulesConnection.getFormalRejectionComment());
 
-        studentModulesConnectionDTO.setExternalModules(modulesConnection.getExternalModules());
-        studentModulesConnectionDTO.setModulesLeipzig(modulesConnection.getModulesLeipzig());
-
-        if (modulesConnection.getDecisionFinal() == null) throw new ResponseStatusException(HttpStatus.I_AM_A_TEAPOT, "ModulesConnection with id: " + moduleConnectionId + " has no decisionFinal");
-        if (applicationEditFinished) {
-            studentModulesConnectionDTO.setDecisionFinal(modulesConnection.getDecisionFinal());
-            if (modulesConnection.getDecisionFinal() == null) throw new ResponseStatusException(HttpStatus.I_AM_A_TEAPOT, "ModulesConnection with id: " + moduleConnectionId + " has no commentDecision");
-            studentModulesConnectionDTO.setCommentDecision(modulesConnection.getCommentDecision());
+            modulesConnectionsOriginal.add(modulesConnectionOriginal);
         }
-
-        studentModulesConnectionDTO.setFormalRejection(modulesConnection.getFormalRejection());
-        if (modulesConnection.getFormalRejection()) studentModulesConnectionDTO.setFormalRejectionComment(modulesConnection.getFormalRejectionComment());
-
-        return studentModulesConnectionDTO;
+        return modulesConnectionsOriginal;
     }
 
 
-    // METHODS FOR RELATED MODULES //
 
     public ArrayList<ModulesConnection> getRelatedModulesConnections(Long id) {
         ModulesConnection baseModulesConnection = getModulesConnectionById(id);
@@ -206,7 +213,7 @@ public class ModulesConnectionService {
 
         for(ModulesConnection m : allModulesConnections) {
             if(m.getId() == baseModulesConnection.getId()) continue;
-
+            // todo: add only abgeschlossene applciaitons
             if(m.getDecisionFinal() == unedited || m.getDecisionFinal() == asExamCertificate) continue;
 
             if(checkSimilarityOfModulesConnection(baseModulesConnection,m)) relatedModuleConnections.add(m);
@@ -214,8 +221,10 @@ public class ModulesConnectionService {
         return relatedModuleConnections;
     }
 
+
+    // helper methods for related modules
     // checks if a module connection is similar, based on if any of a modulename, university pair matches with another pair.
-    public boolean checkSimilarityOfModulesConnection(ModulesConnection baseModulesConnection, ModulesConnection relatedModulesConnection) {
+    private boolean checkSimilarityOfModulesConnection(ModulesConnection baseModulesConnection, ModulesConnection relatedModulesConnection) {
         for(ExternalModule emBase : baseModulesConnection.getExternalModules()) {
             for(ExternalModule emRel : relatedModulesConnection.getExternalModules()) {
                 int distanceModuleName = checkSimilarityOfStrings(emBase.getName(), emRel.getName());
@@ -226,8 +235,7 @@ public class ModulesConnectionService {
         }
         return false;
     }
-
-    public int checkSimilarityOfStrings(String name1, String name2) {
+    private int checkSimilarityOfStrings(String name1, String name2) {
         LevenshteinDistance levenshteinDistance = new LevenshteinDistance();
         String name1Clean = name1.toLowerCase().replaceAll(" ", "");
         String name2Clean = name2.toLowerCase().replaceAll(" ", "");
@@ -235,7 +243,6 @@ public class ModulesConnectionService {
     }
 
 
-    // GENERALL METHODS //
     public ModulesConnection getModulesConnectionById(Long id) {
         Optional<ModulesConnection> modulesConnection = modulesConnectionRepository.findById(id);
         if(modulesConnection.isPresent()) return modulesConnection.get();

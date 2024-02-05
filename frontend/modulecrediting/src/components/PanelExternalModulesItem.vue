@@ -1,16 +1,14 @@
 <!--
 single external module
 props:
-  - type (may be 'new', 'edit' or 'readonly')
-      type 'new' allows editing all data and deleting self
-      type 'edit' allows editing all data except selected file
-      type 'readonly' allows no editing
-  - moduleName (should be given if type is 'edit' or 'readonly')
-  - university (should be given if type is 'edit' or 'readonly')
-  - points (should be given if type is 'edit' or 'readonly')
-  - pointSystem (should be given if type is 'edit' or 'readonly')
-  - selectedFile (should be given if type is 'edit' or 'readonly')
-  - allowDelete (Boolean, defaults to false)
+  - allowTextEdit (toggles InputText elements readonly)
+  - allowFileEdit (toggles FileInput elements readonly)
+  - allowDelete
+  - moduleName
+  - university
+  - points
+  - pointSystem
+  - selectedFile
 emits:
   - deleteSelf (called on trash button click)
 exposes:
@@ -22,7 +20,7 @@ exposes:
 displays:
   - input fields for moduleName, university, creditPoints, pointSystem
   - drop zone for module description
-  - delete icon (if type is 'new')
+  - delete icon (if allowDelete)
 -->
 
 <script setup>
@@ -30,12 +28,17 @@ import { ref, computed, watch, onBeforeMount } from "vue";
 import FileInput from "@/components/FileInput.vue";
 
 const props = defineProps({
-  type: {
+  allowTextEdit: {
     required: true,
-    type: String,
-    validator(value) {
-      return ['new', 'edit', 'readonly'].includes(value)
-    }
+    type: Boolean
+  },
+  allowFileEdit: {
+    required: true,
+    type: Boolean
+  },
+  allowDelete: {
+    required: true,
+    type: Boolean,
   },
   id: {
     type: Number,
@@ -54,33 +57,12 @@ const props = defineProps({
   },
   selectedFile: {
     type: Object
-  },
-  allowDelete: {
-    type: Boolean,
-    default: false
   }
 })
 
 const emit = defineEmits(['deleteSelf', 'change'])
 
 const id = props.id ? props.id : undefined
-
-// checking props
-onBeforeMount(() => {
-  const warn = (prop) => {
-    console.warn(`PanelExternalModulesItem: prop ${prop} should be given if type is ${props.type}`)
-  }
-
-  if (props.type === 'edit' || props.type === 'readonly') {
-    if (!props.name) warn('name')
-    if (!props.university) warn('university')
-    if (!props.points) warn('points')
-    if (!props.pointSystem) warn('pointSystem')
-    if (!props.selectedFile) warn('selectedFile')
-  }
-})
-
-const readonly = props.type === 'readonly'
 
 const name = ref(props.name || "")
 const university = ref(props.university || "")
@@ -90,10 +72,29 @@ const pointSystem = ref(props.pointSystem || "")
 const fileInput = ref()
 const selectedFile = computed(() => fileInput.value?.selectedFile)
 
-watch([name, university, points, pointSystem], () => emit('change'))
+watch([name, university, points, pointSystem, selectedFile], () => emit('change'))
+
+const nameValid = ref(true)
+const universityValid = ref(true)
+const pointsValid = ref(true)
+const pointSystemValid = ref(true)
+
+const numberRegExp = new RegExp('\\d+')
+
+const checkValidity = () => {
+  // setting validity
+  nameValid.value = Boolean(name.value)
+  universityValid.value = Boolean(university.value)
+  pointsValid.value = numberRegExp.test(points.value)
+  pointSystemValid.value = Boolean(pointSystem.value)
+  // cascading calls
+  const fileValid = fileInput.value.checkValidity()
+  // return
+  return nameValid.value && universityValid.value && pointsValid.value && pointSystemValid.value && fileValid.value
+}
 
 defineExpose({
-  id, name, university, points, pointSystem, selectedFile
+  id, name, university, points, pointSystem, selectedFile, checkValidity
 })
 </script>
 
@@ -101,39 +102,53 @@ defineExpose({
   <div class="external-modules-item">
     <div class="screen-split">
       <div class="left-side">
-        <InputText :readonly="readonly" type="text" placeholder="Modulname" v-model="name" />
-        <InputText :readonly="readonly" type="text" placeholder="Universität" v-model="university" />
+        <div class="input-container">
+          <InputText :readonly="!allowTextEdit" type="text" placeholder="Modulname" v-model="name" :class="{ 'invalid': !nameValid }" />
+          <small v-if="!nameValid" class="invalid-text">Modulname darf nicht leer sein</small>
+        </div>
+        <div class="input-container">
+          <InputText :readonly="!allowTextEdit" type="text" placeholder="Universität" v-model="university" :class="{ 'invalid': !universityValid }" />
+          <small v-if="!universityValid" class="invalid-text">Universität darf nicht leer sein</small>
+        </div>
       </div>
 
       <div class="right-side">
 
         <div class="point-container">
-          <InputText :readonly="readonly" type="text" placeholder="Punkte" v-model="points" />
-          <InputText :readonly="readonly" type="text" placeholder="Punktesystem" v-model="pointSystem" />
+          <div class="input-container">
+            <InputText :readonly="!allowTextEdit" type="text" placeholder="Punkte" v-model="points" :class="{ 'invalid': !pointsValid }" />
+            <small v-if="!pointsValid" class="invalid-text">Punkte müssen als Zahl angegeben werden</small>
+          </div>
+          
+          <div class="input-container">
+            <InputText :readonly="!allowTextEdit" type="text" placeholder="Punktesystem" v-model="pointSystem" :class="{ 'invalid': !pointSystemValid }" />
+            <small v-if="!pointSystemValid" class="invalid-text">Punktsystem darf nicht leer sein</small>
+          </div>
+          
         </div>
 
-        <FileInput :readonly="type === 'edit' || type === 'readonly'" :selected-file="props.selectedFile" ref="fileInput" />
+        <FileInput :readonly="!allowFileEdit" :selected-file="props.selectedFile" ref="fileInput" />
       </div>
 
     </div>
 
-    <div v-if="type === 'new'">
-      <img v-if="allowDelete" src="../assets/icons/Trash.svg" @click="emit('deleteSelf')" class="trash-icon">
+    <div v-if="allowDelete">
+      <img src="../assets/icons/Trash.svg" @click="emit('deleteSelf')" class="trash-icon">
     </div>
 
   </div>
 </template>
 
 <style scoped lang="scss">
-@import '../assets/mixins.scss';
-@import '../assets/variables.scss';
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
 
 
 .external-modules-item {
   @include verticalListItem($gray);
 
   width: 100%;
-  padding: 0.625rem 0.5rem 0.625rem 1.25rem;
+  padding: 0.5rem 0.5rem 0.5rem 1.25rem;
 
   display: flex;
   flex-direction: row;
@@ -178,10 +193,17 @@ defineExpose({
 
 .point-container {
   display: flex;
-  gap: 0.625rem;
+  gap: 0.5rem;
   & .p-inputtext {
     width: 100%;
   }
+}
+
+.input-container {
+  display: flex;
+  gap: 0.5rem;
+  flex-direction: column;
+  width: 100%;
 }
 
 .trash-icon {
@@ -190,5 +212,13 @@ defineExpose({
   &:hover {
     background-color: $gray-hover;
   }
+}
+
+.invalid {
+  border: 2px solid $red;
+}
+
+.invalid-text {
+  color: $red;
 }
 </style>

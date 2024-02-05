@@ -1,0 +1,13 @@
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
+
+a,Button,.p-button {
+  @include smallHighlightBox();
+  width: max-content;
+
+  background-color: $dark-gray;
+
+  &:hover {
+    background-color: $dark-gray-hover;
+  }
+}

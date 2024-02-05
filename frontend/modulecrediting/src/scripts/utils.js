@@ -1,14 +1,14 @@
 import httpResource from "./httpResource";
-import { useAuthStore } from '@/store/authStore';
+import { performLogout } from '@/router/logout'
 
 export function parseApierror(error) {
-    console.log("parseapierror", error);
+    //console.debug("parseapierror", error);
     try {
         if (error && error.hasOwnProperty("response") && error.response.hasOwnProperty("data")) {
             const apierror = error.response.data;
             return {
-                status: apierror.status,
-                statusCode: error.status,
+                status: error.code,
+                statusCode: apierror.status,
                 timestamp: apierror.timestamp,
                 message: apierror.message
             };
@@ -16,24 +16,16 @@ export function parseApierror(error) {
     } 
     catch (parseError) {
         return {
-            status: "INTERNAL_SERVER_ERROR",
-            statusCode: 500,
+            status: "SERVICE_UNAVAILABLE",
+            statusCode: 503,
             timestamp: new Date(),
             message: "Server is not responding.."
         };
     }
 }
 
-export async function performLogout() {
-    const response = await httpResource.post("/api/auth/logout");
-    console.log(response)
-    const authUserStore = useAuthStore();
-    const intervalName = authUserStore.getIntervalName;
-    if (intervalName) clearInterval(intervalName);
-    authUserStore.logout();
-}
-
 export async function refreshTokenInternal() {
+    console.debug("refreshTokenInternal()");
     try {
         const response = await httpResource.post("/api/auth/refresh");
         if (response.status !== 200) performLogout();
@@ -42,25 +34,9 @@ export async function refreshTokenInternal() {
 }
 
 export async function refreshToken() {
+    console.debug("refreshToken()");
     const response = await httpResource.post("/api/auth/refresh");
     return response.status;
 }
 
-export async function getAuthenticatedUser() {
-    try {
-        const response = await httpResource.get("/api/user/me");
-        if (response.data.username !== null) {
-            const currentUser = response.data;
-            const authUserStore = useAuthStore();
-            authUserStore.setCurrentUser(currentUser);
-            authUserStore.setIsAuthenticated(true);
-            await refreshTokenInternal();
-            const intervalName = setInterval(async () => { await refreshTokenInternal(); } , intervalMilliSeconds);
-            authUserStore.setIntervalName(intervalName);
-        } 
-        else { performLogout(); }
-    } 
-    catch (error) { performLogout(); }
-}
-
-export const intervalMilliSeconds = 1800000; // 30 minutes
+export const intervalMilliSeconds = 600000; // 10 minutes

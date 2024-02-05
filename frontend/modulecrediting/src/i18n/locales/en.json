@@ -1,0 +1,24 @@
+{
+    "navigation": {
+        "homepage": "Home page",
+        "login": "Log-in internally"
+    },
+
+    "homepage": {
+        "makeApplication": "Create application",
+        "makeApplicationExplanation": "Create an application to have modules from other universities recognized at the University of Leipzig.",
+    
+        "viewStatus": "View status",
+        "viewStatusExplanation": "View the status of applications that have already been submitted using the 6-digit process number.",
+
+        "sideInfo": {
+            "applicationProcess": "Application process",
+            "submitApplication": "Submit an application online",
+            "viewStatus": "View status online using process number",
+            "wait": "Wait for the PAV's decision",
+            "goToStudy": "Go to the study office with the completed application"
+        }
+
+    }
+
+}
