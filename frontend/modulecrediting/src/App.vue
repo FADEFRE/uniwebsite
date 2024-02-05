@@ -47,9 +47,10 @@ function closeMenu() {
 
 
 <style lang="scss">
-@import './assets/mixins.scss';
-@import './assets/variables.scss';
-@import './assets/main.scss';
+@use '@/assets/styles/global' as *;
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/components' as *;
+
 
 .header-background {
   background-color: $white;

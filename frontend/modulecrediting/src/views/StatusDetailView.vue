@@ -12,6 +12,7 @@ import StatusPanel from "@/components/StatusPanel.vue";
 import ApplicationPanel from "../components/ApplicationPanel.vue";
 import ButtonLink from '@/components/ButtonLink.vue';
 import ButtonAdd from "../components/ButtonAdd.vue";
+import ButtonDownloadVue from '../components/ButtonDownload.vue';
 import { url } from "@/scripts/url-config"
 import { getApplicationByIdForStatus, getModulesByCourse, putApplicationStudent } from "@/scripts/axios-requests";
 import { parseRequestDate } from "@/scripts/date-utils";
@@ -117,11 +118,7 @@ const triggerSubmit = () => {
         <ButtonAdd @click="addNewConnection">Modulzuweisung hinzufügen</ButtonAdd>
       </div>
 
-      <Button @click="openSummaryDocument">
-        Antrag herunterladen
-        <img src="../assets/icons/Download.svg">
-      </Button>
-
+      <ButtonDownloadVue @click="openSummaryDocument"/>
       <ButtonLink v-if="applicationData['fullStatus'] === 'FORMFEHLER'" :fixed="true" @click="triggerSubmit">
         Neu einreichen
       </ButtonLink>
@@ -172,8 +169,8 @@ const triggerSubmit = () => {
 </template>
 
 <style scoped lang="scss">
-@import '../assets/variables.scss';
-@import '../assets/mixins.scss';
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
 
 .main {
   @include main();

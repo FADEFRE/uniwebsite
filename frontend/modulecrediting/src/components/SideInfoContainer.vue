@@ -10,8 +10,8 @@ const props = defineProps(['heading'])
 </template>
 
 <style lang="scss" scoped>
-@import '../assets/mixins.scss';
-@import '../assets/variables.scss';
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
 
 .sideinfo-container {
     @include basicContainer();

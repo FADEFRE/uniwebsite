@@ -61,8 +61,19 @@ const specificRole = computed(() => navStore.getCurrentRoleNav)
 </template>
 
 <style scoped lang="scss">
-@import '../assets/variables.scss';
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
 
+a,.p-button {
+  @include smallHighlightBox();
+  width: max-content;
+
+  background-color: $dark-gray;
+
+  &:hover {
+    background-color: $dark-gray-hover;
+  }
+}
 
 .links-container {
   width: 100%;

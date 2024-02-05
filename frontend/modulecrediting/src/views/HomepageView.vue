@@ -87,8 +87,8 @@ const getFormattedId = () => {
 
 
 <style scoped lang="scss">
-@import '../assets/variables.scss';
-@import '../assets/mixins.scss';
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
 
 .main {
     @include main();
@@ -104,6 +104,8 @@ const getFormattedId = () => {
 }
 
 .status-input {
+    border: none;
+    background-color: $gray;
     &:hover {
         background-color: $gray-hover;
     }

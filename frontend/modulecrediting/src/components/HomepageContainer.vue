@@ -23,8 +23,8 @@ const props = defineProps(['header', 'text'])
 
 
 <style lang="scss" scoped>
-@import '../assets/mixins.scss';
-@import '../assets/variables.scss';
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
 
 .homepage-container {
     @include basicContainer();

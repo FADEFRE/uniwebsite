@@ -24,7 +24,7 @@ const style = computed(() => {
 
 <template>
   <div class="button-link-container">
-    <Button :disabled="disabled" :class="{ ' fixed-button': fixed, 'disabled': disabled, 'red-button': redButton}">
+    <Button :disabled="disabled" :class="{ ' fixed-button': fixed, 'disabled': disabled, 'red-button': redButton }">
       <slot />
       <img src="../assets/icons/ArrowWhite.svg" class="arrow-icon" alt="Arrow Icon">
     </Button>
@@ -32,7 +32,9 @@ const style = computed(() => {
 </template>
 
 <style scoped lang="scss">
-@import '../assets/variables.scss';
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
+@use '@/assets/styles/components' as *;
 
 .button-link-container {
   &:hover {
@@ -43,9 +45,19 @@ const style = computed(() => {
 }
 
 .p-button {
+  @include smallHighlightBox();
+  width: max-content;
+
+  background-color: $dark-gray;
+
+  &:hover {
+    background-color: $dark-gray-hover;
+  }
+
   display: flex;
   gap: 0.5rem;
 }
+
 
 .arrow-icon {
   transform: rotate(-90deg);
@@ -54,6 +66,7 @@ const style = computed(() => {
 
 .red-button {
   background-color: $red;
+
   &:hover {
     background-color: $red-hover;
   }

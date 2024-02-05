@@ -97,8 +97,9 @@ defineExpose({
 
 
 <style scoped lang="scss">
-@import '../assets/variables.scss';
-@import '../assets/mixins.scss';
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
+
 .trash-icon {
   @include trashIconAnimation();
 }

@@ -211,8 +211,8 @@ defineExpose({
 </template>
 
 <style scoped lang="scss">
-@import '../assets/mixins.scss';
-@import '../assets/variables.scss';
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
 
 .clear-icon {
   opacity: 0.9;

@@ -54,8 +54,8 @@ const props = defineProps({
 </template>
 
 <style scoped lang="scss">
-@import '../assets/mixins.scss';
-@import '../assets/variables.scss';
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
 .panel-status-icons {
     display: flex;
     justify-content: center;

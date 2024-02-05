@@ -125,10 +125,10 @@ const triggerPostApplication = () => {
             <h4>Sprechzeiten</h4>
             <p>Dienstag und Donnerstag: 9:00 - 11:30 Uhr und 12:30 - 16:00 Uhr</p>
           </div>
-          <a href="https://www.mathcs.uni-leipzig.de/studium/studienbuero" class="link-container">
+          <a href="https://www.mathcs.uni-leipzig.de/studium/studienbuero">
             Zum Studienbüro
             <img src="../assets/icons/ArrowWhite.svg" class="arrow-icon" alt="Arrow Icon">
-          </a>
+          </a><!-- as button link-->
         </div>
 
       </SideInfoContainer>
@@ -139,8 +139,8 @@ const triggerPostApplication = () => {
 </template>
 
 <style scoped lang="scss">
-@import '../assets/variables.scss';
-@import '../assets/mixins.scss';
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
 
 .main {
   @include main();
@@ -154,13 +154,7 @@ const triggerPostApplication = () => {
   @include sideInfoListContainer();
 }
 
-.link-container {
-  &:hover {
-    .arrow-icon {
-      transform: translate(0.15rem) rotate(-90deg);
-    }
-  }
-}
+
 
 .arrow-icon {
   transform: rotate(-90deg);

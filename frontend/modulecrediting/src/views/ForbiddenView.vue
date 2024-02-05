@@ -19,8 +19,8 @@ const props = defineProps(['customTitle', 'customMessage']);
 </template>
 
 <style scoped lang="scss">
-@import '../assets/variables.scss';
-@import '../assets/mixins.scss';
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
 
 .main {
     @include main();

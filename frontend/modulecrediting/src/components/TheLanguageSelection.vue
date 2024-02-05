@@ -14,8 +14,8 @@ const store = useUserStore()
 </template>
 
 <style scoped lang="scss">
-@import '../assets/variables.scss';
-@import '../assets/mixins.scss';
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
 
 .language-selection-container {
     width: fit-content;

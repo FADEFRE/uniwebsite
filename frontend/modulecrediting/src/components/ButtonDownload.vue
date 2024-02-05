@@ -1,8 +1,3 @@
-<!--
-button with add icon
-slots:
-  - default slot for button name
--->
 
 <script setup>
 
@@ -10,8 +5,8 @@ slots:
 
 <template>
     <Button class="button-container">
-      <slot></slot>
-      <img src="../assets/icons/PlusIcon.svg">
+        Antrag herunterladen
+        <img src="../assets/icons/Download.svg">
     </Button>
 </template>
 
@@ -20,10 +15,8 @@ slots:
 @use '@/assets/styles/global' as *;
 @use '@/assets/styles/components' as *;
 
-.button-container{
-  display: flex;
-  gap: 0.5rem;
+.button-container {
+    display: flex;
+    gap: 0.5rem;
 }
-
-
 </style>

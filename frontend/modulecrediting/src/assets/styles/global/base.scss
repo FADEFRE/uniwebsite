@@ -1,9 +1,11 @@
-@use '../util' as *;
+@use '@/assets/styles/util' as *;
+
 
 *,
 *::before,
 *::after {
   box-sizing: border-box;
+  border: none;
   margin: 0;
   padding: 0;
   border-radius: 0;
@@ -24,8 +26,13 @@ ul {
 *:focus {
   outline: none;
   box-shadow: none;
+  border: none;
 }
 
-div {
-  display: block;
+
+
+html {
+  @media only screen and (max-width: 600px) {
+    font-size: 15px;
+  }
 }

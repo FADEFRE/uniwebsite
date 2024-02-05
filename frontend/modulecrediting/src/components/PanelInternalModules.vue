@@ -88,8 +88,9 @@ defineExpose({
 </template>
 
 <style scoped lang="scss">
-@import '@/assets/mixins.scss';
-@import '@/assets/variables.scss';
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
+
 
 .panel-internal-modules {
   @include panelComponent();
