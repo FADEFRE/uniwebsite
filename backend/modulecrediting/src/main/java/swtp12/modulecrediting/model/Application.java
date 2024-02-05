@@ -83,7 +83,7 @@ public class Application {
      */
     public void setModulesConnections(List<ModulesConnection> modulesConnections) {
         for(ModulesConnection mc : modulesConnections) {
-            mc.setApplication(this);
+            if(mc.getApplication() != null) mc.setApplication(this);
         }
         this.modulesConnections = modulesConnections;
     }
