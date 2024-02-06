@@ -139,7 +139,7 @@ public class UserService {
     /**
      * This method deletes the {@link Token accessToken} by creating a new {@code accessToken} with a {@code MaxAge} of {@code 0}
      * and putting it into {@link HttpHeaders} as {@link HttpCookie HttpCookies}. 
-     * This cookie is returned by the {@link CookieUtil#createAccessTokenCookie createAccessTokenCookie()} method in {@link CookieUtil}.
+     * This cookie is returned by the {@link CookieUtil#deleteAccessTokenCookie createAccessTokenCookie()} method in {@link CookieUtil}.
      * 
      * @return {@link ResponseEntity} with the created {@link HttpHeaders} and a {@link LogoutResponse} as body.
      * 
@@ -158,6 +158,31 @@ public class UserService {
         responseHeaders.add(HttpHeaders.SET_COOKIE, cookieUtil.deleteAccessTokenCookie().toString());
 
         logoutResponse = new LogoutResponse(LogoutResponse.SuccessFailure.SUCCESS, "Successfully logged out");
+        return ResponseEntity.ok().headers(responseHeaders).body(logoutResponse);
+    }
+
+    /**
+     * This method deletes the {@link Token refreshToken} by creating a new {@code refreshToken} with a {@code MaxAge} of {@code 0}
+     * and putting it into {@link HttpHeaders} as {@link HttpCookie HttpCookies}. 
+     * This cookie is returned by the {@link CookieUtil#deleteRefreshTokenCookie deleteRefreshTokenCookie()} method in {@link CookieUtil}.
+     * <p>This method is called when there is an error while decrypting the token, which happens most likely when the {@code refreshToken} 
+     * was created on a diffrent version of the backend.
+     * 
+     * @return {@link ResponseEntity} with the created {@link HttpHeaders} and a {@link LogoutResponse} as body.
+     * 
+     * @see CookieUtil
+     * @see CookieUtil#createAccessTokenCookie
+     * @see LogoutResponse
+     * @see Token
+     * @see <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/http/ResponseEntity.html"> HttpCookie </a>
+     * @see <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/http/ResponseEntity.html"> HttpHeaders </a>
+     * @see <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/http/ResponseEntity.html"> ResponseEntity </a>
+     */
+    public ResponseEntity<LogoutResponse> deleteRefreshCookie() {
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add(HttpHeaders.SET_COOKIE, cookieUtil.deleteRefreshTokenCookie().toString());
+
+        LogoutResponse logoutResponse = new LogoutResponse(LogoutResponse.SuccessFailure.SUCCESS, "Successfully deleted refreshToken");
         return ResponseEntity.ok().headers(responseHeaders).body(logoutResponse);
     }
 

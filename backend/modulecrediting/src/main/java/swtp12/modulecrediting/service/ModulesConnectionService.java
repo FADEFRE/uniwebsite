@@ -8,6 +8,7 @@ import org.springframework.web.server.ResponseStatusException;
 import swtp12.modulecrediting.dto.ExternalModuleDTO;
 import swtp12.modulecrediting.dto.ModuleLeipzigDTO;
 import swtp12.modulecrediting.dto.ModulesConnectionDTO;
+import swtp12.modulecrediting.model.EnumApplicationStatus;
 import swtp12.modulecrediting.model.ExternalModule;
 import swtp12.modulecrediting.model.ModuleLeipzig;
 import swtp12.modulecrediting.model.ModulesConnection;
@@ -212,8 +213,14 @@ public class ModulesConnectionService {
         ArrayList<ModulesConnection> relatedModuleConnections = new ArrayList<>();
 
         for(ModulesConnection m : allModulesConnections) {
+            // skip if its the same modules connection
             if(m.getId() == baseModulesConnection.getId()) continue;
-            // todo: add only abgeschlossene applciaitons
+
+            // skip original modules connections
+            if(m.getModulesConnectionOriginal() == null) continue;
+
+            if(m.getApplication().getFullStatus() != EnumApplicationStatus.ABGESCHLOSSEN) continue;
+
             if(m.getDecisionFinal() == unedited || m.getDecisionFinal() == asExamCertificate) continue;
 
             if(checkSimilarityOfModulesConnection(baseModulesConnection,m)) relatedModuleConnections.add(m);
