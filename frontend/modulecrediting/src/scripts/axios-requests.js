@@ -47,9 +47,9 @@ function putCourseLeipzigEdit(coursename, moduleList) {
 
   const formData = new FormData();
 
-  moduleList.forEach((module, moduleIndex) => {
-    formData.append(`modulesLeipzig[${moduleIndex}].name`, module.name);
-    formData.append(`modulesLeipzig[${moduleIndex}].code`, module.code);
+  moduleList.forEach((moduleLeipzig, moduleIndex) => {
+    formData.append(`modulesLeipzig[${moduleIndex}].name`, moduleLeipzig.name);
+    formData.append(`modulesLeipzig[${moduleIndex}].code`, moduleLeipzig.code);
   });
 
   return httpResource
@@ -110,8 +110,11 @@ function getModulesNameCode() {
     .get("/api/modules-leipzig")
     .then((response) => {
       return response.data
-        .filter((module) => module.isActive)
-        .map((module) => ({ name: module.name, code: module.code }))
+        .filter((singleModule) => singleModule.isActive)
+        .map((singleModule) => ({
+          name: singleModule.name,
+          code: singleModule.code,
+        }))
         .sort((a, b) => a.name.localeCompare(b.name));
     })
     .catch((_) => {});

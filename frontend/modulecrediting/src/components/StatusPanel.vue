@@ -63,8 +63,8 @@ defineExpose({
 
     <template #header>
       <PanelHeader
-          :external-modules="connection['externalModules'].map(module => module['name'])"
-          :internal-modules="connection['modulesLeipzig'].map(module => module['name'])"
+          :external-modules="connection['externalModules'].map(singleModule => singleModule['name'])"
+          :internal-modules="connection['modulesLeipzig'].map(singleModule => singleModule['name'])"
       />
     </template>
 

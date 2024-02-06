@@ -50,8 +50,8 @@ const addModuleToCourse = (clickedModule) => {
 }
 
 const removeModuleFromCourse = (clickedModule) => {
-    selectedModules.value = selectedModules.value.filter(module => module.name !== clickedModule.name);
-    addedModules.value = addedModules.value.filter(module => module.name !== clickedModule.name);
+    selectedModules.value = selectedModules.value.filter(singleModule => singleModule.name !== clickedModule.name);
+    addedModules.value = addedModules.value.filter(singleModule => singleModule.name !== clickedModule.name);
 }
 
 const saveCourseLeipzig = () => {
