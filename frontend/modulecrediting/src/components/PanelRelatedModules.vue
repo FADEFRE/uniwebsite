@@ -57,7 +57,8 @@ const openRelatedModule = (singleModule) => {
     <h4>Ähnliche Module:</h4>
 
     <div v-if="relatedModules && relatedModules.length > 0" class="related-modules-list-container">
-      <div v-for="relatedModule in relatedModules" class="single-related-module-container" @click="openRelatedModule(relatedModule)">
+      <div v-for="relatedModule in relatedModules" class="single-related-module-container"
+        @click="openRelatedModule(relatedModule)">
 
         <div v-if="relatedModule['decisionFinal'] === 'accepted'">
           <img src="../assets/icons/ModuleAccepted.svg">
@@ -68,7 +69,8 @@ const openRelatedModule = (singleModule) => {
         <div v-else-if="relatedModule['decisionFinal'] === 'denied'">
           <img src="../assets/icons/ModuleDenied.svg">
         </div>
-        <PanelHeader :external-modules="relatedModule['externalModules'].map(m => m.name)"
+        <PanelHeader v-if="relatedModule['externalModules'] && relatedModule['modulesLeipzig']"
+          :external-modules="relatedModule['externalModules'].map(m => m.name)"
           :internal-modules="relatedModule['modulesLeipzig'].map(m => m.name)" :relatedModules="true" />
 
         <div class="date-block">
@@ -129,6 +131,5 @@ const openRelatedModule = (singleModule) => {
   gap: 0.5rem;
 }
 
-.course {
-}
+.course {}
 </style>
