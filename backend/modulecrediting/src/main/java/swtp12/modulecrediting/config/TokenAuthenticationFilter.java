@@ -18,6 +18,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import swtp12.modulecrediting.service.CustomUserDetailsServiceImpl;
 import swtp12.modulecrediting.service.TokenProvider;
+import swtp12.modulecrediting.util.IncorrectKeyOnDecryptException;
 import swtp12.modulecrediting.util.SecurityCipher;
 
 public class TokenAuthenticationFilter extends OncePerRequestFilter{
@@ -55,7 +56,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter{
         }
     }
 
-    private String getJwtFromRequest(HttpServletRequest request) {
+    private String getJwtFromRequest(HttpServletRequest request) throws IncorrectKeyOnDecryptException {
         String bearerToken = request.getHeader("Authorization");
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
             String accessToken = bearerToken.substring(7);
@@ -66,7 +67,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter{
         return null;
     }
 
-    private String getJwtFromCookie(HttpServletRequest request) {
+    private String getJwtFromCookie(HttpServletRequest request) throws IncorrectKeyOnDecryptException {
         Cookie[] cookies = request.getCookies();
         if (cookies == null) {
             return null;
@@ -82,7 +83,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter{
         return null;
     }
 
-    private String getJwtToken(HttpServletRequest request, boolean fromCookie) {
+    private String getJwtToken(HttpServletRequest request, boolean fromCookie) throws IncorrectKeyOnDecryptException {
         if (fromCookie) return getJwtFromCookie(request);
 
         return getJwtFromRequest(request);

@@ -30,6 +30,7 @@ import swtp12.modulecrediting.model.User;
 import swtp12.modulecrediting.repository.RoleRepository;
 import swtp12.modulecrediting.repository.UserRepository;
 import swtp12.modulecrediting.service.UserService;
+import swtp12.modulecrediting.util.IncorrectKeyOnDecryptException;
 import swtp12.modulecrediting.util.SecurityCipher;
 
 
@@ -64,7 +65,7 @@ public class AuthController {
             @CookieValue(name = "accessToken", required = false) String accessToken,
             @CookieValue(name = "refreshToken", required = false) String refreshToken,
             @Valid @RequestBody LoginRequest loginRequest
-    ) {
+    ) throws IncorrectKeyOnDecryptException {
         Authentication authenticationRequest = UsernamePasswordAuthenticationToken.unauthenticated(loginRequest.getUsername().toString(), loginRequest.getPassword().toString());
         Authentication authenticationResponse = authenticationManager.authenticate(authenticationRequest);
         SecurityContextHolder.getContext().setAuthentication(authenticationResponse);
@@ -76,7 +77,7 @@ public class AuthController {
     @PostMapping("/refresh")
     public ResponseEntity<LoginResponse> refreshToken(
             @CookieValue(name = "accessToken", required = false) String accessToken, 
-            @CookieValue(name = "refreshToken", required = false) String refreshToken) {
+            @CookieValue(name = "refreshToken", required = false) String refreshToken) throws IncorrectKeyOnDecryptException {
         String decryptedAccessToken = SecurityCipher.decrypt(accessToken);
         String decryptedRefreshToken = SecurityCipher.decrypt(refreshToken);
         return userService.refresh(decryptedAccessToken, decryptedRefreshToken);
