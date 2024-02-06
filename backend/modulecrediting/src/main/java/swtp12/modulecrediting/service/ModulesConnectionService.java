@@ -212,8 +212,12 @@ public class ModulesConnectionService {
         ArrayList<ModulesConnection> relatedModuleConnections = new ArrayList<>();
 
         for(ModulesConnection m : allModulesConnections) {
+            // skip if its the same modules connection
             if(m.getId() == baseModulesConnection.getId()) continue;
-            // todo: add only abgeschlossene applciaitons
+
+            // skip original modules connections
+            if(m.getModulesConnectionOriginal() == null) continue;
+
             if(m.getDecisionFinal() == unedited || m.getDecisionFinal() == asExamCertificate) continue;
 
             if(checkSimilarityOfModulesConnection(baseModulesConnection,m)) relatedModuleConnections.add(m);
