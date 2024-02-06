@@ -38,6 +38,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(IncorrectKeyOnDecryptException.class)
     public ResponseEntity<String> handleConstraintViolationException(IncorrectKeyOnDecryptException ex) {
         userService.deleteRefreshCookie();
+        userService.logout();
         return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).body(ex.getMessage());
     }
 }
