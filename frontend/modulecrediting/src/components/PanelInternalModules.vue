@@ -36,9 +36,9 @@ const props = defineProps({
 const emit = defineEmits(['change'])
 
 const selectedModules = ref(props.selectedModules || [])
-const addSelectedModule = (module) => {
-  if (!selectedModules.value.includes(module)) {
-    selectedModules.value.push(module)
+const addSelectedModule = (singleModule) => {
+  if (!selectedModules.value.includes(singleModule)) {
+    selectedModules.value.push(singleModule)
     emit('change')
   }
 }

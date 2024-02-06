@@ -113,18 +113,18 @@ defineExpose({
 
     <div v-if="existingModulesList" class="external-modules-list">
       <PanelExternalModulesItem
-          v-for="module in existingModulesList"
-          :key="module.id"
+          v-for="externalModule in existingModulesList"
+          :key="externalModule.id"
           :allow-text-edit="allowTextEdit"
           :allow-file-edit="allowFileEdit"
           :allow-delete="allowDelete && externalModules.length > 1"
-          :id="module.id"
-          :name="module.name"
-          :university="module.university"
-          :points="module.points"
-          :point-system="module.pointSystem"
-          :selected-file="module.pdfDocument"
-          @delete-self="deleteExistingModule(module.id)"
+          :id="externalModule.id"
+          :name="externalModule.name"
+          :university="externalModule.university"
+          :points="externalModule.points"
+          :point-system="externalModule.pointSystem"
+          :selected-file="externalModule.pdfDocument"
+          @delete-self="deleteExistingModule(externalModule.id)"
           @change="emit('change')"
           ref="existingModulesRef"
       />

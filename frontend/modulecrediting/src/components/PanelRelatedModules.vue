@@ -43,9 +43,9 @@ if (type === 'study-office') {
   console.warn("PanelRelatedModules: component should only be used with route types 'study-office' or 'chairman'")
 }
 
-const openRelatedModule = (module) => {
-  const connectionId = module['id']
-  const routeData = router.resolve({ name: redirectRouteName, params: { id: module['application']['id'], connection: connectionId } })
+const openRelatedModule = (singleModule) => {
+  const connectionId = singleModule['id']
+  const routeData = router.resolve({ name: redirectRouteName, params: { id: singleModule['application']['id'], connection: connectionId } })
   window.open(routeData.href, '_blank')
 }
 
@@ -57,26 +57,26 @@ const openRelatedModule = (module) => {
     <h4>Ähnliche Module:</h4>
 
     <div v-if="relatedModules && relatedModules.length > 0" class="related-modules-list-container">
-      <div v-for="module in relatedModules" class="single-related-module-container" @click="openRelatedModule(module)">
+      <div v-for="relatedModule in relatedModules" class="single-related-module-container" @click="openRelatedModule(relatedModule)">
 
-        <div v-if="module['decisionFinal'] === 'accepted'">
+        <div v-if="relatedModule['decisionFinal'] === 'accepted'">
           <img src="../assets/icons/ModuleAccepted.svg">
         </div>
-        <div v-else-if="module['decisionFinal'] === 'asExamCertificate'">
+        <div v-else-if="relatedModule['decisionFinal'] === 'asExamCertificate'">
           <img src="../assets/icons/ModuleAsExamCertificate.svg">
         </div>
-        <div v-else-if="module['decisionFinal'] === 'denied'">
+        <div v-else-if="relatedModule['decisionFinal'] === 'denied'">
           <img src="../assets/icons/ModuleDenied.svg">
         </div>
-        <PanelHeader :external-modules="module['externalModules'].map(m => m.name)"
-          :internal-modules="module['modulesLeipzig'].map(m => m.name)" :relatedModules="true" />
+        <PanelHeader :external-modules="relatedModule['externalModules'].map(m => m.name)"
+          :internal-modules="relatedModule['modulesLeipzig'].map(m => m.name)" :relatedModules="true" />
 
         <div class="date-block">
           <img src="../assets/icons/DecisionDate.svg" alt="DecisionDate">
-          <p>{{ parseRequestDate(module['application']['decisionDate']) }}</p>
+          <p>{{ parseRequestDate(relatedModule['application']['decisionDate']) }}</p>
         </div>
 
-        <p class="course">{{ module['application']['courseLeipzig']['name'] }}</p>
+        <p class="course">{{ relatedModule['application']['courseLeipzig']['name'] }}</p>
       </div>
     </div>
 
