@@ -11,19 +11,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import swtp12.modulecrediting.dto.CustomUserDetails;
-import swtp12.modulecrediting.dto.LoginRequest;
 import swtp12.modulecrediting.dto.UserSummary;
 import swtp12.modulecrediting.model.User;
 import swtp12.modulecrediting.repository.UserRepository;
 
 /**
- * {@link UserService} is a {@link Service} and provides the {@link #login(LoginRequest, String, String) login},
- * {@link #refresh(String, String) refresh}, {@link #logout() logout} 
+ * {@link UserService} is a {@link Service} and provides the 
  * and {@link #getUserProfile() getUserProfile} methods.
  * 
- * @see #login(LoginRequest, String, String)
- * @see #refresh(String, String)
- * @see #logout()
  * @see #getUserProfile()
  * @see <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/stereotype/Service.html"> Springboot @Service </a>
  * 
@@ -73,7 +68,6 @@ public class UserService {
             userSummary.setRole(user.getRole().getRoleName());
             userSummaries.add(userSummary);
         }
-
         return userSummaries;
     }
 
