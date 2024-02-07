@@ -65,6 +65,7 @@ public class UserService {
         for (User user : users) {
             UserSummary userSummary = new UserSummary();
             userSummary.setUsername(user.getUsername());
+            userSummary.setUserId(user.getUserId());
             userSummary.setRole(user.getRole().getRoleName());
             userSummaries.add(userSummary);
         }
