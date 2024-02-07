@@ -9,11 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 import swtp12.modulecrediting.dto.EditUserDTO;
@@ -23,6 +19,7 @@ import swtp12.modulecrediting.model.User;
 import swtp12.modulecrediting.repository.UserRepository;
 import swtp12.modulecrediting.service.UserService;
 
+import javax.enterprise.inject.Model;
 
 
 @RestController
@@ -87,19 +84,19 @@ public class UserController {
 
     @PutMapping("/change/username")
     @PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR') or hasRole('ROLE_ADMIN')")
-    public ResponseEntity<String> changeUsername(@Valid @RequestBody EditUserDTO changeRequest) {
+    public ResponseEntity<String> changeUsername(@ModelAttribute EditUserDTO changeRequest) {
         return ResponseEntity.ok(userService.changeUsername(changeRequest));
     }
 
     @PutMapping("/change/password")
     @PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR') or hasRole('ROLE_ADMIN')")
-    public ResponseEntity<String> changePassword(@Valid @RequestBody EditUserDTO changeRequest) {
+    public ResponseEntity<String> changePassword(@ModelAttribute EditUserDTO changeRequest) {
         return ResponseEntity.ok(userService.changePassword(changeRequest));
     }
 
     @PutMapping("/change/role")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<String> changeRole(@Valid @RequestBody EditUserDTO changeRequest) {
+    public ResponseEntity<String> changeRole(@ModelAttribute EditUserDTO changeRequest) {
         return ResponseEntity.ok(userService.changeRole(changeRequest));
     }
 }
