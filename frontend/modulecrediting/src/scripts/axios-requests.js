@@ -576,11 +576,9 @@ function createUser (username, password, passwordConfirm, role) {
     formData.append('passwordConfirm', passwordConfirm)
     formData.append('role', role)
 
-    console.log([...formData])
-
     return httpResource.post("/api/auth/register", formData)
         .then(response => response.data)
-        .catch(_ => console.log(_))
+        .catch(_ => {})
 
 }
 
