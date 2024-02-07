@@ -39,7 +39,7 @@ public class UserController {
      * @see UserSummary
      */
     @GetMapping("/me")
-    public ResponseEntity<UserSummary> getMeUser() {
+    public ResponseEntity<UserSummary> getMeUserId() {
         return ResponseEntity.ok(userService.getUserProfile());
     }
 

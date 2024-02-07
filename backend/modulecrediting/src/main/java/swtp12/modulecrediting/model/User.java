@@ -52,16 +52,16 @@ public class User implements Serializable{
     }
 
     /**
-     * Constructor for {@link UserSummary} of this {@link User}.
-     * <p>Creates {@link UserSummary} with {@link Long userId} of this {@link User}.
+     * Creates {@link UserSummary} with only the {@link Long userId} of this {@link User}.
      * 
      * @see User
      * @see UserSummary
      */
-    public UserSummary toUserSummary() {
+    public UserSummary toUserSummaryId() {
         UserSummary userSummary = new UserSummary();
         userSummary.setUserId(this.userId);
         return userSummary;
     }
+
 
 }
