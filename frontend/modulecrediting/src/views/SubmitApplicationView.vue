@@ -126,9 +126,10 @@ const triggerPostApplication = () => {
             <p>Dienstag und Donnerstag: 9:00 - 11:30 Uhr und 12:30 - 16:00 Uhr</p>
           </div>
           <a href="https://www.mathcs.uni-leipzig.de/studium/studienbuero">
-            Zum Studienbüro
-            <img src="../assets/icons/ArrowWhite.svg" class="arrow-icon" alt="Arrow Icon">
-          </a><!-- as button link-->
+            <ButtonLink>
+              Zum Studienbüro
+            </ButtonLink>
+          </a>
         </div>
 
       </SideInfoContainer>
