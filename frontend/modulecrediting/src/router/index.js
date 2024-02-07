@@ -37,12 +37,6 @@ const router = createRouter({
       meta: { authType: "standard" },
     },
     {
-      path: "/verwaltungsbereich",
-      name: "management",
-      component: () => import("../views/ManagementView.vue"),
-      meta: { authType: "internal" },
-    },
-    {
       path: "/studienbuero",
       name: "studyOfficeSelection",
       component: () => import("../views/AdministrativeSelectionView.vue"),
@@ -77,6 +71,26 @@ const router = createRouter({
       name: "chairmanDetailHighlight",
       component: () => import("../views/AdministrativeDetailView.vue"),
       meta: { authType: "chairman" },
+    },
+    {
+      path: "/verwaltungsbereich",
+      name: "management",
+      component: () => import("../views/ManagementView.vue"),
+      meta: { authType: "internal" },
+    },
+    {
+      path: "/account",
+      name: "account",
+      component: () => import("../views/AccountView.vue"),
+      meta: { authType: "internal" },
+      children: [
+        {
+          path: "admin",
+          name: "accountAdmin",
+          component: () => import("../views/AccountViewAdminChild.vue"),
+          meta: { authType: "admin" }
+        }
+      ]
     },
     {
       path: "/:pathMatch(.*)*",
