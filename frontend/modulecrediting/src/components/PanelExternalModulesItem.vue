@@ -69,6 +69,12 @@ const university = ref(props.university || "")
 const points = ref(props.points || "")
 const pointSystem = ref(props.pointSystem || "")
 
+const validatePointInput = () => {
+  console.log(points.value)
+  console.log(points.value.replace(/[^0-9]/g, ''))
+  points.value = points.value.replace(/[^0-9]/g, '')
+}
+
 const fileInput = ref()
 const selectedFile = computed(() => fileInput.value?.selectedFile)
 
@@ -116,7 +122,7 @@ defineExpose({
 
         <div class="point-container">
           <div class="input-container">
-            <InputText :readonly="!allowTextEdit" type="text" placeholder="Punkte" v-model="points" :class="{ 'invalid': !pointsValid }" />
+            <InputText :readonly="!allowTextEdit" type="text" placeholder="Punkte" v-model="points" @input.prevent="validatePointInput" :class="{ 'invalid': !pointsValid }" />
             <small v-if="!pointsValid" class="invalid-text">Punkte müssen als Zahl angegeben werden</small>
           </div>
           

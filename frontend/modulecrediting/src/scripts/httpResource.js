@@ -85,6 +85,10 @@ const errorHandler = (error) => {
       router.push({ name: "IdError" }); //TODO catch multiple 404?
     }
 
+    if (apiError.statusCode === 409) {
+      console.error(apiError)
+    }
+
 
     //debug
     if (error.response.status === 402) {

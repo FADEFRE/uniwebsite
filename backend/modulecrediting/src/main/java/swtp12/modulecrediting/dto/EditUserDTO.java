@@ -3,10 +3,10 @@ package swtp12.modulecrediting.dto;
 import lombok.Data;
 
 @Data
-public class UserSummary {
+public class EditUserDTO {
+    private Long id;
     private String username;
-    
-    private Long userId;
-
+    private String password;
+    private String passwordConfirm;
     private String role;
 }

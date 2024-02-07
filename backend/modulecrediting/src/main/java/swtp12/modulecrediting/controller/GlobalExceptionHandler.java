@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
-import swtp12.modulecrediting.service.UserService;
+import swtp12.modulecrediting.service.AuthService;
 import swtp12.modulecrediting.util.IncorrectKeyOnDecryptException;
 
 @RestControllerAdvice
@@ -33,12 +33,12 @@ public class GlobalExceptionHandler {
     }
     */
 
-    private UserService userService;
+    private AuthService authService;
 
     @ExceptionHandler(IncorrectKeyOnDecryptException.class)
     public ResponseEntity<String> handleConstraintViolationException(IncorrectKeyOnDecryptException ex) {
-        userService.deleteRefreshCookie();
-        userService.logout();
+        authService.deleteRefreshCookie();
+        authService.logout();
         return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).body(ex.getMessage());
     }
 }
