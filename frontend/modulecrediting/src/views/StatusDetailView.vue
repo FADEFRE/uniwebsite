@@ -94,7 +94,7 @@ const triggerSubmit = () => {
 <template>
   <div class="main">
 
-    <div v-if="applicationData" class="status-detail-container">
+    <div v-if="applicationData" class="content-container split">
 
       <div v-if="applicationData['fullStatus'] === 'FORMFEHLER'" class="formal-rejection-info-container">
         <FormalRejectionInfoBox />
@@ -118,12 +118,13 @@ const triggerSubmit = () => {
         <ButtonAdd @click="addNewConnection">Modulzuweisung hinzufügen</ButtonAdd>
       </div>
 
-      <ButtonDownloadVue @click="openSummaryDocument"/>
+      <ButtonDownloadVue @click="openSummaryDocument" />
       <ButtonLink v-if="applicationData['fullStatus'] === 'FORMFEHLER'" :fixed="true" @click="triggerSubmit">
         Neu einreichen
       </ButtonLink>
     </div>
-    <div class="side-infos-container">
+
+    <div class="side-infos-list">
       <!--SideInfoContainerfür Antragprozess -->
       <SideInfoContainer :heading="'ANTRAGSPROZESS'">
         <ul class="list-container">
@@ -164,21 +165,12 @@ const triggerSubmit = () => {
 
       </SideInfoContainer>
     </div>
-
   </div>
 </template>
 
 <style scoped lang="scss">
 @use '@/assets/styles/util' as *;
 @use '@/assets/styles/global' as *;
-
-.main {
-  @include main();
-}
-
-.status-detail-container {
-  @include applicationContainer(split);
-}
 
 .formal-rejection-info-container {
   margin-bottom: 1rem;
@@ -190,10 +182,6 @@ const triggerSubmit = () => {
   overflow: hidden;
 }
 
-
-.side-infos-container {
-  @include sideInfoListContainer();
-}
 
 .formal-rejection-highlight {
   border-left: 1rem solid $red;

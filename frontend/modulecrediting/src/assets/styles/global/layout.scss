@@ -1,55 +1,54 @@
-@use '@/assets/styles/util' as *;
-// needs to be added from main.scss
+@use "@/assets/styles/util" as *;
 
+.main {
+  max-width: 1500px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  padding: 3rem 4.5rem;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 2rem;
 
-// !! careful: not project related !! to be deleted
-/*
-header {
-  position: sticky;
-  top: 0;
-  background-color: #023047;
-  color: $white;
-  z-index: 98;
+  @media only screen and (max-width: 1200px) {
+    @include verticalList(big);
+    flex-direction: column;
 
-  .content {
+    &.centered {
+      flex-direction: row;
+    }
+  }
+
+  @media only screen and (max-width: 950px) {
     padding: 2rem 2rem;
-    h1 {
-      font-weight: 700;
-      font-size: 1.65rem;
-      color: white;
-      line-height: 1.25;
+  }
 
-      display: flex;
-      align-items: center;
-      gap: 1rem;
+  @media only screen and (max-width: 700px) {
+    padding: 2rem 1rem;
+  }
+}
+
+.content-container {
+  @include verticalList(mid);
+  width: 100%;
+
+  &.split {
+    width: 78%;
+  }
+
+  @media only screen and (max-width: 1200px) {
+    width: 100%;
+    &.split {
+      width: 100%;
     }
   }
 }
 
-main {
-  border-radius: 15px 15px 0px 0px;
-  top: -10px;
-  z-index: 99;
-  background-color: white;
-  position: relative;
-}
+.side-infos-list {
+  @include verticalList(big);
+  width: 22%;
 
-.container {
-  width: 100%;
-  padding-left: 2.5rem;
-  padding-right: 2.5rem;
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 1320px;
-
-  @include breakpoint-down('medium') {
-    padding-left: 2rem;
-    padding-right: 2rem;
-  }
-
-  @include breakpoint-down('small') {
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
+  @media only screen and (max-width: 1200px) {
+    width: 100%;
   }
 }
-*/

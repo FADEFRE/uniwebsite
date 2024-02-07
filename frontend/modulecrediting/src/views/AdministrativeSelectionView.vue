@@ -62,9 +62,6 @@ const filteredApplications = computed(() => {
 @use '@/assets/styles/util' as *;
 @use '@/assets/styles/global' as *;
 
-.main {
-  @include main();
-}
 
 .overview-list {
   @include verticalList(big);

@@ -13,7 +13,7 @@ const goBack = () => {
 </script>
 
 <template>
-    <div class="main">
+    <div class="main centered">
         <ErrorContainer :customTitle="'404 Fehler: Seite nicht gefunden'"
             :customMessage="'Leider kann die gewünschte Seite nicht angezeigt werden'">
             <template #default>
@@ -26,9 +26,4 @@ const goBack = () => {
 <style scoped lang="scss">
 @use '@/assets/styles/util' as *;
 @use '@/assets/styles/global' as *;
-
-.main {
-    @include main();
-    flex-direction: row !important;
-}
 </style>

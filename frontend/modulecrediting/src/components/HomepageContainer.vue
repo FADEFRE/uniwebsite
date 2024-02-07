@@ -23,8 +23,9 @@ const props = defineProps(['header', 'text'])
 
 
 <style lang="scss" scoped>
-@use '@/assets/styles/util' as *;
 @use '@/assets/styles/global' as *;
+@use '@/assets/styles/util' as *;
+
 
 .homepage-container {
     @include basicContainer();
@@ -59,8 +60,9 @@ const props = defineProps(['header', 'text'])
         border: 2px solid $red;
     }
 }
+
 :slotted(.invalid-text) {
-  color: $red;
+    color: $red;
 }
 </style>
 

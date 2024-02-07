@@ -100,10 +100,10 @@ const saveChanges = () => {
   if (checkValidity()) {
     if (type === 'study-office') {
       putApplicationStudyOffice(id, applicationData.value['courseLeipzig']['name'], moduleConnections.value)
-          .then(_ => location.reload())
+        .then(_ => location.reload())
     } else if (type === 'chairman') {
       putApplicationChairman(id, applicationData.value['courseLeipzig']['name'], moduleConnections.value)
-          .then(_ => location.reload())
+        .then(_ => location.reload())
     }
   }
 }
@@ -118,8 +118,8 @@ const triggerPassOn = () => {
   <div v-if="applicationData" class="main">
 
     <ApplicationConnectionLinks :connections-data="connectionsData" />
-    
-    <div class="administrative-detail-container">
+
+    <div class="content-container split">
 
       <ApplicationOverview :creation-date="parseRequestDate(applicationData['creationDate'])"
         :last-edited-date="parseRequestDate(applicationData['lastEditedDate'])"
@@ -172,15 +172,6 @@ const triggerPassOn = () => {
 <style scoped lang="scss">
 @use '@/assets/styles/util' as *;
 @use '@/assets/styles/global' as *;
-
-
-.main {
-  @include main();
-}
-
-.administrative-detail-container {
-  @include applicationContainer(split);
-}
 
 
 .save-controlls-container {

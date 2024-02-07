@@ -71,7 +71,7 @@ const triggerPostApplication = () => {
 <template>
   <div class="main">
 
-    <div class="submit-application-container">
+    <div class="content-container split">
 
       <ApplicationOverview :creation-date="getFormattedDate(creationDate)" :last-edited-date="undefined"
         :decision-date="undefined" status="NEU">
@@ -92,7 +92,7 @@ const triggerPostApplication = () => {
       <ButtonLink @click="triggerPostApplication" :fixed="true">Absenden</ButtonLink>
     </div>
 
-    <div class="side-infos-container">
+    <div class="side-infos-list">
       <!--SideInfoContainerfür Antragprozess -->
       <SideInfoContainer :heading="'ANTRAGSPROZESS'">
         <ul>
@@ -141,19 +141,6 @@ const triggerPostApplication = () => {
 <style scoped lang="scss">
 @use '@/assets/styles/util' as *;
 @use '@/assets/styles/global' as *;
-
-.main {
-  @include main();
-}
-
-.submit-application-container {
-  @include applicationContainer(split);
-}
-
-.side-infos-container {
-  @include sideInfoListContainer();
-}
-
 
 
 .arrow-icon {

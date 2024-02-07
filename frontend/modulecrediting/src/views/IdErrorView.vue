@@ -13,7 +13,7 @@ const goBack = () => {
 </script>
 
 <template>
-    <div class="main">
+    <div class="main centered">
         <ErrorContainer :customTitle="'Antragsnummer existiert nicht'" :customMessage="'Antrag existiert nicht '">
             <template #default>
                 <ButtonLink @click="goBack">Zurück</ButtonLink>
@@ -25,9 +25,4 @@ const goBack = () => {
 <style scoped lang="scss">
 @use '@/assets/styles/util' as *;
 @use '@/assets/styles/global' as *;
-
-.main {
-    @include main();
-    flex-direction: row !important;
-}
 </style>

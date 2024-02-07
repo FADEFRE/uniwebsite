@@ -51,26 +51,24 @@ const getFormattedId = () => {
 
 <template>
     <div class="main">
-        <div class="homepage-content">
+        <div class="content-container split">
             <!-- HomepageContainer Application -->
-            <HomepageContainer :header="$t('homepage.makeApplication')"
-                :text="$t('homepage.makeApplicationExplanation')">
+            <HomepageContainer :header="$t('homepage.makeApplication')" :text="$t('homepage.makeApplicationExplanation')">
                 <ButtonLink @click="goToSubmitApplication">{{ $t('homepage.makeApplication') }}</ButtonLink>
             </HomepageContainer>
 
             <!-- HomepageContainer StatusView -->
-            <HomepageContainer :header="$t('homepage.viewStatus')"
-                :text="$t('homepage.viewStatusExplanation')">
+            <HomepageContainer :header="$t('homepage.viewStatus')" :text="$t('homepage.viewStatusExplanation')">
                 <div class="input-button-container">
-                    <InputText v-model="id" :class="{ 'invalid': isInvalid }" class="status-input"
-                        placeholder="0-0-0-0-0-0" @keydown.enter.prevent="openDetailView" @input="validateInput" />
+                    <InputText v-model="id" :class="{ 'invalid': isInvalid }" class="status-input" placeholder="0-0-0-0-0-0"
+                        @keydown.enter.prevent="openDetailView" @input="validateInput" />
                     <ButtonLink @click="openDetailView">{{ $t('homepage.viewStatus') }}</ButtonLink>
                 </div>
                 <small v-if="isInvalid" class="invalid-text">Punkte müssen als Zahl angegeben werden</small>
             </HomepageContainer>
         </div>
 
-        <div class="side-infos-container">
+        <div class="side-infos-list">
             <!--SideInfoContainerfür Antragprozess -->
             <SideInfoContainer :heading="$t('homepage.sideInfo.applicationProcess')">
                 <ul class="list-container">
@@ -90,25 +88,15 @@ const getFormattedId = () => {
 @use '@/assets/styles/util' as *;
 @use '@/assets/styles/global' as *;
 
-.main {
-    @include main();
-}
-
-.homepage-content {
-    @include verticalList(big);
-    width: 100%;
-}
-
-.side-infos-container {
-    @include sideInfoListContainer();
-}
 
 .status-input {
     border: none;
     background-color: $gray;
+
     &:hover {
         background-color: $gray-hover;
     }
+
     &:focus::placeholder {
         color: transparent;
     }
