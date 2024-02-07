@@ -24,12 +24,12 @@ import jakarta.validation.Valid;
 import swtp12.modulecrediting.dto.LoginRequest;
 import swtp12.modulecrediting.dto.LoginResponse;
 import swtp12.modulecrediting.dto.LogoutResponse;
-import swtp12.modulecrediting.dto.RegisterRequest;
+import swtp12.modulecrediting.dto.EditUserDTO;
 import swtp12.modulecrediting.model.Role;
 import swtp12.modulecrediting.model.User;
 import swtp12.modulecrediting.repository.RoleRepository;
 import swtp12.modulecrediting.repository.UserRepository;
-import swtp12.modulecrediting.service.UserService;
+import swtp12.modulecrediting.service.AuthService;
 import swtp12.modulecrediting.util.IncorrectKeyOnDecryptException;
 import swtp12.modulecrediting.util.SecurityCipher;
 
@@ -49,7 +49,7 @@ public class AuthController {
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    private UserService userService;
+    private AuthService authService;
 
     @Autowired
     private PasswordEncoder encoder;
@@ -71,7 +71,7 @@ public class AuthController {
         SecurityContextHolder.getContext().setAuthentication(authenticationResponse);
         String decryptedAccessToken = SecurityCipher.decrypt(accessToken);
         String decryptedRefreshToken = SecurityCipher.decrypt(refreshToken);
-        return userService.login(loginRequest, decryptedAccessToken, decryptedRefreshToken);
+        return authService.login(loginRequest, decryptedAccessToken, decryptedRefreshToken);
     }
 
     @PostMapping("/refresh")
@@ -80,7 +80,7 @@ public class AuthController {
             @CookieValue(name = "refreshToken", required = false) String refreshToken) throws IncorrectKeyOnDecryptException {
         String decryptedAccessToken = SecurityCipher.decrypt(accessToken);
         String decryptedRefreshToken = SecurityCipher.decrypt(refreshToken);
-        return userService.refresh(decryptedAccessToken, decryptedRefreshToken);
+        return authService.refresh(decryptedAccessToken, decryptedRefreshToken);
     }
 
     @PostMapping("/logout")
@@ -90,7 +90,7 @@ public class AuthController {
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals(accessTokenCookieName)) {
-                    return userService.logout();
+                    return authService.logout();
                 }
             }
         } 
@@ -101,7 +101,7 @@ public class AuthController {
 
     @PostMapping("/register")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<String> registerUser(@Valid @RequestBody RegisterRequest registerRequest) {
+    public ResponseEntity<String> registerUser(@Valid @RequestBody EditUserDTO registerRequest) {
         Optional<User> userCandidate = userRepository.findByUsername(registerRequest.getUsername());
 
         if (!userCandidate.isPresent()) {
