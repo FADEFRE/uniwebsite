@@ -110,7 +110,7 @@ public class AuthController {
                 encoder.encode(registerRequest.getPassword()),
                 true
             );
-            Optional<Role> roleCandidate = roleRepository.findByRoleName(registerRequest.getRole().getRoleName());
+            Optional<Role> roleCandidate = roleRepository.findByRoleName(registerRequest.getRole());
             if (roleCandidate.isPresent()) {
                 if(user.getRole() == null) {
                     Role role = new Role();
