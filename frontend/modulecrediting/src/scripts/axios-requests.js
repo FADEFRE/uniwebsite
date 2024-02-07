@@ -563,6 +563,13 @@ function postModuleLeipzig(modulename, modulecode) {
     .catch((_) => {});
 }
 
+function getAllUsers () {
+    console.debug("%c" + "getAllUsers ()", axiosColor);
+
+    return httpResource.get("/api/user/all")
+        .then(response => response.data)
+}
+
 function createUser (username, password, passwordConfirm, role) {
     console.debug(
         "%c" + "create user (username: " + username + ", role: " + role + ")",
@@ -604,5 +611,6 @@ export {
   updateStatus,
   postCourseLeipzig,
   postModuleLeipzig,
+  getAllUsers,
   createUser
 };
