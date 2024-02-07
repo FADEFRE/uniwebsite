@@ -3,9 +3,11 @@
 </script>
 
 <template>
-  <div>
-    Account View
-    <router-view />
+  <div class="main">
+    <div class="content-container">
+      Account View
+      <router-view />
+    </div>
   </div>
 </template>
 
