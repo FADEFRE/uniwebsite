@@ -63,7 +63,7 @@ const getFormattedId = () => {
                 :text="$t('homepage.viewStatusExplanation')">
                 <div class="input-button-container">
                     <InputText v-model="id" :class="{ 'invalid': isInvalid }" class="status-input"
-                        placeholder="0-0-0-0-0-0" @keydown.enter.prevent="openDetailView" @input="validateInput" />
+                        placeholder="0-0-0-0-0-0" @keydown.enter.prevent="openDetailView" @input.prevent="validateInput" />
                     <ButtonLink @click="openDetailView">{{ $t('homepage.viewStatus') }}</ButtonLink>
                 </div>
                 <small v-if="isInvalid" class="invalid-text">Punkte müssen als Zahl angegeben werden</small>
