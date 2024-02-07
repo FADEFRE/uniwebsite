@@ -1,5 +1,6 @@
 package swtp12.modulecrediting.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import swtp12.modulecrediting.model.Role;
 import swtp12.modulecrediting.model.User;
 import swtp12.modulecrediting.repository.UserRepository;
 import swtp12.modulecrediting.service.UserService;
+
 
 
 @RestController
@@ -39,7 +41,7 @@ public class UserController {
      * @see UserSummary
      */
     @GetMapping("/me")
-    public ResponseEntity<UserSummary> getMeUser() {
+    public ResponseEntity<UserSummary> getMeUserId() {
         return ResponseEntity.ok(userService.getUserProfile());
     }
 
@@ -71,4 +73,11 @@ public class UserController {
         return new ResponseEntity<>("User doesnt exists!", HttpStatus.NOT_FOUND); 
     }
 
+
+    @GetMapping("/all")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<List<UserSummary>> getAllUsers() {
+        return ResponseEntity.ok(userService.getAllUsers());
+    }
+    
 }
