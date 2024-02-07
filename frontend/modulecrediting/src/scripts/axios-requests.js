@@ -568,6 +568,20 @@ function getAllUsers () {
 
     return httpResource.get("/api/user/all")
         .then(response => response.data)
+        .catch(_ => {})
+}
+
+function putUserRole (id, role) {
+    console.debug("%c" + "getAllUsers (id: " + id + "role: " + role + ")", axiosColor);
+
+    const formData = new FormData()
+
+    formData.append('id', id)
+    formData.append('role', role)
+
+    return httpResource.put('/api/user/change/role', formData)
+        .then(response => response.data)
+        .catch(_ => {})
 }
 
 function createUser (username, password, passwordConfirm, role) {
@@ -612,5 +626,6 @@ export {
   postCourseLeipzig,
   postModuleLeipzig,
   getAllUsers,
+  putUserRole,
   createUser
 };
