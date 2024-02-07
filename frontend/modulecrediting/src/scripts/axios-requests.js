@@ -578,7 +578,7 @@ function createUser (username, password, passwordConfirm, role) {
 
     return httpResource.post("/api/auth/register", formData)
         .then(response => response.data)
-        .catch(_ => {})
+        .catch(error => Promise.reject(error))
 
 }
 

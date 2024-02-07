@@ -14,8 +14,18 @@ const roleOptions = [
 ]
 const role = ref()
 
+const createFailed = ref(false)
+
 const triggerCreateUser = () => {
   createUser(username.value, password.value, passwordConfirm.value, role.value)
+      .then(_ => location.reload())
+      .catch(error => {
+        if (error.response.status) {
+          createFailed.value = true
+        } else {
+          location.reload()
+        }
+      })
 }
 </script>
 
@@ -24,7 +34,8 @@ const triggerCreateUser = () => {
 
     <h2>Benutzer erstellen</h2>
 
-    <InputText type="text" placeholder="Benutzername" v-model="username" />
+    <InputText type="text" placeholder="Benutzername" v-model="username" :class="{ 'invalid': createFailed }" />
+    <small v-if="createFailed">Es existiert bereits ein Benutzer mit diesem Namen</small>
     <InputText type="text" placeholder="Passwort" v-model="password" />
     <InputText type="text" placeholder="Passwort bestätigen" v-model="passwordConfirm" />
 
@@ -42,5 +53,6 @@ const triggerCreateUser = () => {
 </template>
 
 <style scoped lang="scss">
-
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
 </style>
