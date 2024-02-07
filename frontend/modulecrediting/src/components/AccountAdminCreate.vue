@@ -2,16 +2,11 @@
 import { ref } from "vue";
 import ButtonLink from "./ButtonLink.vue";
 import { createUser } from "../scripts/axios-requests";
+import RoleDropdown from "./RoleDropdown.vue";
 
 const username = ref()
 const password = ref()
 const passwordConfirm = ref()
-
-const roleOptions = [
-  { value: 'ROLE_STUDY', label: 'STUDIENBUERO' },
-  { value: 'ROLE_CHAIR', label: 'PRUEFUNGSAUSSCHUSS' },
-  { value: 'ROLE_ADMIN', label: 'ADMIN' }
-]
 const role = ref()
 
 const createFailed = ref(false)
@@ -39,11 +34,9 @@ const triggerCreateUser = () => {
     <InputText type="text" placeholder="Passwort" v-model="password" />
     <InputText type="text" placeholder="Passwort bestätigen" v-model="passwordConfirm" />
 
-    <Dropdown placeholder="Rolle" v-model="role" :options="roleOptions" option-value="value" option-label="label" >
-      <template #dropdownicon>
-        <img src="../assets/icons/ArrowWhite.svg">
-      </template>
-    </Dropdown>
+    <RoleDropdown v-model="role" />
+
+    {{ role }}
 
     <ButtonLink :red-button="true" @click="triggerCreateUser">
       <p>Benutzer erstellen</p>
