@@ -1,9 +1,15 @@
 package swtp12.modulecrediting.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
 import swtp12.modulecrediting.dto.CustomUserDetails;
 import swtp12.modulecrediting.dto.LoginRequest;
 import swtp12.modulecrediting.dto.UserSummary;
@@ -51,6 +57,24 @@ public class UserService {
             }
         }
         return user.toUserSummaryId();
+    }
+
+
+
+    public List<UserSummary> getAllUsers() {
+        List<User> users = userRepository.findAll();
+        List<UserSummary> userSummaries = new ArrayList<>();
+
+        if(users.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "there are no users in the database");
+
+        for (User user : users) {
+            UserSummary userSummary = new UserSummary();
+            userSummary.setUsername(user.getUsername());
+            userSummary.setRole(user.getRole().getRoleName());
+            userSummaries.add(userSummary);
+        }
+
+        return userSummaries;
     }
 
 }
