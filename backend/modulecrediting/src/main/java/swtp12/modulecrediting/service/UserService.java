@@ -72,36 +72,51 @@ public class UserService {
     }
 
 
+    public String register(EditUserDTO registerRequest) {
+        Optional<User> userCandidate = userRepository.findByUsername(registerRequest.getUsername());
+        
+        if(userCandidate.isPresent()) throw new ResponseStatusException(HttpStatus.CONFLICT, "Username already exists!");
+
+        Optional<Role> roleCandidate = roleRepository.findByRoleName(registerRequest.getRole());
+        if (!roleCandidate.isPresent()) throw new ResponseStatusException(HttpStatus.CONFLICT, "Role does not exist!"); 
+
+        User user = new User(
+            registerRequest.getUsername(),
+            encoder.encode(registerRequest.getPassword()),
+            true
+        );
+        
+        user.setRole(roleCandidate.get());
+        userRepository.save(user);
+        return "User registered successfully!";
+    }
+
+
 
     public String changeUsername(EditUserDTO changeRequest) {
+        if(changeRequest.getUsername() == null || changeRequest.getUsername().isBlank()) throw new ResponseStatusException(HttpStatus.CONFLICT, "Username cannot be empty");
         User user = identifyUser();
         if (user.getUserId() != changeRequest.getId()) throw new ResponseStatusException(HttpStatus.CONFLICT, "User id is not matching");
-        Optional<User> userOptional = userRepository.findById(changeRequest.getId());
-        if (!userOptional.isPresent()) throw new ResponseStatusException(HttpStatus.CONFLICT, "User not found in database");
-        User userDb = userOptional.get();
+        User userDb = getUser(changeRequest.getId());
         userDb.setUsername(changeRequest.getUsername());
         userRepository.save(userDb);
         return "Username changed successfully";
     }
 
     public String changePassword(EditUserDTO changeRequest) {
+        if(changeRequest.getPassword() == null || changeRequest.getPassword().isBlank()) throw new ResponseStatusException(HttpStatus.CONFLICT, "Password cannot be empty");
         User user = identifyUser();
         if (user.getUserId() != changeRequest.getId()) throw new ResponseStatusException(HttpStatus.CONFLICT, "User id is not matching");
-        Optional<User> userOptional = userRepository.findById(changeRequest.getId());
-        if (!userOptional.isPresent()) throw new ResponseStatusException(HttpStatus.CONFLICT, "User not found in database");
-        User userDb = userOptional.get();
-        if(changeRequest.getPassword() == null || changeRequest.getPassword().isBlank()) throw new ResponseStatusException(HttpStatus.CONFLICT, "Password cannot be empty");
+        User userDb = getUser(changeRequest.getId());
         if(changeRequest.getPassword().equals(changeRequest.getPasswordConfirm())) throw new ResponseStatusException(HttpStatus.CONFLICT, "Passwords are not matching");
-
         userDb.setPassword(encoder.encode(changeRequest.getPassword()));
         userRepository.save(userDb);
         return "Password changed successfully";
     }
 
     public String changeRole(EditUserDTO changeRequest) {
-        Optional<User> userOptional = userRepository.findById(changeRequest.getId());
-        if (!userOptional.isPresent()) throw new ResponseStatusException(HttpStatus.CONFLICT, "User not found in database");
-        User userDb = userOptional.get();
+        if(changeRequest.getRole() == null || changeRequest.getRole().isBlank()) throw new ResponseStatusException(HttpStatus.CONFLICT, "Role cannot be empty");
+        User userDb = getUser(changeRequest.getId());
         Optional<Role> roleOptional = roleRepository.findByRoleName(changeRequest.getRole());
         if (!roleOptional.isPresent()) throw new ResponseStatusException(HttpStatus.CONFLICT, "User not found in database");
         Role role = roleOptional.get();
@@ -124,6 +139,12 @@ public class UserService {
             }
         }
         return user;
+    }
+
+    private User getUser(Long id) {
+        Optional<User> userOptional = userRepository.findById(id);
+        if (!userOptional.isPresent()) throw new ResponseStatusException(HttpStatus.CONFLICT, "User not found in database");
+        return userOptional.get();
     }
 
 }
