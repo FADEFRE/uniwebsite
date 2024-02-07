@@ -72,10 +72,10 @@ const getFormattedId = () => {
             <!--SideInfoContainerfür Antragprozess -->
             <SideInfoContainer :heading="$t('homepage.sideInfo.applicationProcess')">
                 <ul class="list-container">
-                    <li class="list-item">{{ $t('homepage.sideInfo.submitApplication') }}</li>
-                    <li class="list-item">{{ $t('homepage.sideInfo.viewStatus') }}</li>
-                    <li class="list-item">{{ $t('homepage.sideInfo.wait') }}</li>
-                    <li class="list-item">{{ $t('homepage.sideInfo.goToStudy') }}</li>
+                    <li class="list-item"><p>{{ $t('homepage.sideInfo.submitApplication') }}</p></li>
+                    <li class="list-item"><p>{{ $t('homepage.sideInfo.viewStatus') }}</p></li>
+                    <li class="list-item"><p>{{ $t('homepage.sideInfo.wait') }}</p></li>
+                    <li class="list-item"><p>{{ $t('homepage.sideInfo.goToStudy') }}</p></li>
                 </ul>
             </SideInfoContainer>
         </div>
