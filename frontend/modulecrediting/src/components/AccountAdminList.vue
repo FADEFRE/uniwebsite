@@ -21,8 +21,6 @@ const triggerChangeRole = (id, newRole) => {
 
     <h2>Alle Benutzer</h2>
 
-    {{ userList }}
-
     <div v-for="user in userList">
       <p>{{ user.username }}</p>
       <RoleDropdown :model-value="user.role" @update:model-value="(newRole) => triggerChangeRole(user.userId, newRole)" />
