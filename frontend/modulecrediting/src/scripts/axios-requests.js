@@ -563,6 +563,27 @@ function postModuleLeipzig(modulename, modulecode) {
     .catch((_) => {});
 }
 
+function createUser (username, password, passwordConfirm, role) {
+    console.debug(
+        "%c" + "create user (username: " + username + ", role: " + role + ")",
+        axiosColor
+    );
+
+    const formData = new FormData()
+
+    formData.append('username', username)
+    formData.append('password', password)
+    formData.append('passwordConfirm', passwordConfirm)
+    formData.append('role', role)
+
+    console.log([...formData])
+
+    return httpResource.post("/api/auth/register", formData)
+        .then(response => response.data)
+        .catch(_ => console.log(_))
+
+}
+
 export {
   getCoursesLeipzig,
   getModulesByCourse,
@@ -585,4 +606,5 @@ export {
   updateStatus,
   postCourseLeipzig,
   postModuleLeipzig,
+  createUser
 };

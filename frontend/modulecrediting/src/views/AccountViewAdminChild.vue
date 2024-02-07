@@ -1,10 +1,10 @@
 <script setup>
-
+import AccountAdminCreate from "../components/AccountAdminCreate.vue";
 </script>
 
 <template>
   <div>
-    Admin Child
+    <AccountAdminCreate />
   </div>
 </template>
 
