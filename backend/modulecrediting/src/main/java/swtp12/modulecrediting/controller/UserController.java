@@ -10,9 +10,13 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
+import swtp12.modulecrediting.dto.EditUserDTO;
 import swtp12.modulecrediting.dto.UserSummary;
 import swtp12.modulecrediting.model.Role;
 import swtp12.modulecrediting.model.User;
@@ -80,4 +84,22 @@ public class UserController {
         return ResponseEntity.ok(userService.getAllUsers());
     }
     
+
+    @PutMapping("/change/username")
+    @PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR') or hasRole('ROLE_ADMIN')")
+    public ResponseEntity<String> changeUsername(@Valid @RequestBody EditUserDTO changeRequest) {
+        return ResponseEntity.ok(userService.changeUsername(changeRequest));
+    }
+
+    @PutMapping("/change/password")
+    @PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR') or hasRole('ROLE_ADMIN')")
+    public ResponseEntity<String> changePassword(@Valid @RequestBody EditUserDTO changeRequest) {
+        return ResponseEntity.ok(userService.changePassword(changeRequest));
+    }
+
+    @PutMapping("/change/role")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<String> changeRole(@Valid @RequestBody EditUserDTO changeRequest) {
+        return ResponseEntity.ok(userService.changeRole(changeRequest));
+    }
 }
