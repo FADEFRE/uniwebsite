@@ -72,7 +72,7 @@ public class ModuleLeipzigService {
 
         if (moduleLeipzigOptional.isPresent()) {
             ModuleLeipzig moduleLeipzig = moduleLeipzigOptional.get();
-            if (moduleLeipzig.getIsActive()) return "exists";
+            if (moduleLeipzig.getIsActive()) throw new ResponseStatusException(HttpStatus.CONFLICT, "The Module already exists:" + moduleLeipzigDTO.getName() );
             else {
                 // reactivate with new module code
                 moduleLeipzig.setIsActive(true);

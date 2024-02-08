@@ -531,10 +531,8 @@ function postCourseLeipzig(coursename) {
 
   return httpResource
     .post("/api/courses-leipzig", formData)
-    .then((response) => {
-      return response.data;
-    })
-    .catch((_) => {});
+    .then((response) => response.data)
+    .catch((error) => Promise.reject(error));
 }
 
 /*
@@ -557,10 +555,8 @@ function postModuleLeipzig(modulename, modulecode) {
 
   return httpResource
     .post("/api/modules-leipzig", formData)
-    .then((response) => {
-      return response.data;
-    })
-    .catch((_) => {});
+    .then((response) => response.data)
+    .catch((error) => Promise.reject(error));
 }
 
 function getAllUsers () {

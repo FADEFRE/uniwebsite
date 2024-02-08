@@ -19,25 +19,24 @@ const moduleExists = ref(false);
 
 const createCourseLeipzig = () => {
     postCourseLeipzig(coursename.value)
-        .then((result) => {
-            if (result === 'exists') {
+        .then(_ => location.reload())
+        .catch(error => {
+            if (error.response.status) {
                 courseExists.value = true
-                return   
+            } else {
+                location.reload()
             }
-            coursename.value = '';
-            location.reload();
         })
 }
 const createModuleLeipzig = () => {
     postModuleLeipzig(modulename.value, modulecode.value)
-        .then((result) => {
-            if (result === 'exists') {
+        .then(_ => location.reload())
+        .catch(error => {
+            if (error.response.status) {
                 moduleExists.value = true
-                return
+            } else {
+                location.reload()
             }
-            modulename.value = '';
-            modulecode.value = '';
-            location.reload();
         })
 }
 
@@ -47,7 +46,8 @@ const createModuleLeipzig = () => {
     <div v-if="type === 'course'" class="management-create-container">
         <h2>Studiengang erstellen</h2>
         <div class="input-container">
-            <InputText type="text" placeholder="Name des Studiengangs" v-model="coursename" :class="{ 'invalid': courseExists }" />
+            <InputText type="text" placeholder="Name des Studiengangs" v-model="coursename"
+                :class="{ 'invalid': courseExists }" />
             <small v-if="courseExists" class="invalid-text">Studiengang existiert bereits</small>
         </div>
         <ButtonAdd @click="createCourseLeipzig">Studiengang hinzufügen</ButtonAdd>
@@ -58,8 +58,8 @@ const createModuleLeipzig = () => {
         <h2>Modul erstellen</h2>
         <div class="input-container">
             <div class="module-input-container">
-                <InputText type="text" placeholder="Modulname" v-model="modulename" :class="{ 'invalid': moduleExists}"/>
-                <InputText type="text" placeholder="Modulcode" v-model="modulecode" :class="{ 'invalid': moduleExists }"/>
+                <InputText type="text" placeholder="Modulname" v-model="modulename" :class="{ 'invalid': moduleExists }" />
+                <InputText type="text" placeholder="Modulcode" v-model="modulecode" :class="{ 'invalid': moduleExists }" />
             </div>
             <small v-if="moduleExists" class="invalid-text">Studiengang existiert bereits</small>
         </div>
@@ -82,6 +82,7 @@ const createModuleLeipzig = () => {
 .input-container {
     width: 100%
 }
+
 .module-input-container {
     @include screenSplit();
     width: 100%;
@@ -96,10 +97,10 @@ const createModuleLeipzig = () => {
 }
 
 .invalid {
-  border: 2px solid $red;
+    border: 2px solid $red;
 }
 
 .invalid-text {
-  color: $red;
+    color: $red;
 }
 </style>

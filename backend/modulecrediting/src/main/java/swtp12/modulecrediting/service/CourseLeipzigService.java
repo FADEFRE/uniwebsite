@@ -48,7 +48,7 @@ public class CourseLeipzigService {
         Optional<CourseLeipzig> courseLeipzigOptional = courseLeipzigRepository.findByName(courseLeipzigDTO.getCourseName());
         if (courseLeipzigOptional.isPresent()) {
             CourseLeipzig courseLeipzig = courseLeipzigOptional.get();
-            if(courseLeipzig.getIsActive()) return "exists";
+            if(courseLeipzig.getIsActive()) throw new ResponseStatusException(HttpStatus.CONFLICT, "The Course already exists:" + courseLeipzigDTO.getCourseName() );
             else {
                 courseLeipzig.setIsActive(true);
                 System.out.println("Reactivated Course Leipzig: " + courseLeipzig.getName());
