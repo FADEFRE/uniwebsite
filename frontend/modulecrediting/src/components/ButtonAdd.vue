@@ -19,11 +19,4 @@ slots:
 @use '@/assets/styles/util' as *;
 @use '@/assets/styles/global' as *;
 @use '@/assets/styles/components' as *;
-
-.button-container{
-  display: flex;
-  gap: 0.5rem;
-}
-
-
 </style>

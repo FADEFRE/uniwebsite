@@ -115,13 +115,14 @@ const triggerSubmit = () => {
       <div v-if="applicationData['fullStatus'] === 'FORMFEHLER'" class="modules-connections-container">
         <ApplicationPanel v-for="key in newConnections" :key="key" :selectable-modules="moduleOptions"
           :allow-delete="moduleConnections.length > 1" @delete-self="deleteNewConnection(key)" ref="newConnectionsRef" />
-        <ButtonAdd @click="addNewConnection">Modulzuweisung hinzufügen</ButtonAdd>
+        
       </div>
 
-      <ButtonDownloadVue @click="openSummaryDocument" />
-      <ButtonLink v-if="applicationData['fullStatus'] === 'FORMFEHLER'" :fixed="true" @click="triggerSubmit">
-        Neu einreichen
-      </ButtonLink>
+      <ButtonDownloadVue @click="openSummaryDocument" :fixed="true"/>
+      <div class="application-buttons-container">
+        <ButtonAdd v-if="applicationData['fullStatus'] === 'FORMFEHLER'" @click="addNewConnection">Modulzuweisung hinzufügen</ButtonAdd>
+        <ButtonLink v-if="applicationData['fullStatus'] === 'FORMFEHLER'" :redButton="true" @click="triggerSubmit">Neu einreichen</ButtonLink>
+      </div>
     </div>
 
     <div class="side-infos-list">

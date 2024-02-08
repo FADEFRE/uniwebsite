@@ -88,8 +88,10 @@ const triggerPostApplication = () => {
         :allow-delete="moduleConnections.length > 1" ref="moduleConnectionsRef"
         @delete-self="deleteModuleConnection(item)" />
 
-      <ButtonAdd @click="addModuleConnection">Modulzuweisung hinzufügen</ButtonAdd>
-      <ButtonLink @click="triggerPostApplication" :fixed="true">Absenden</ButtonLink>
+      <div class="application-buttons-container">
+        <ButtonAdd @click="addModuleConnection">Modulzuweisung hinzufügen</ButtonAdd>
+        <ButtonLink @click="triggerPostApplication" :redButton="true">Absenden</ButtonLink>
+      </div>
     </div>
 
     <div class="side-infos-list">

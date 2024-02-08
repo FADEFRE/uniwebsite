@@ -1,13 +1,21 @@
 
 <script setup>
-
+const props = defineProps({
+    fixed: {
+        type: Boolean,
+        default: false
+    }
+})
 </script>
 
 <template>
-    <Button class="button-container">
-        Antrag herunterladen
-        <img src="../assets/icons/Download.svg">
-    </Button>
+    <div class="button-container">
+        <Button :class="{ ' fixed-button': fixed }">
+            Antrag herunterladen
+            <img src="../assets/icons/Download.svg">
+        </Button>
+    </div>
+    
 </template>
 
 <style scoped lang="scss">

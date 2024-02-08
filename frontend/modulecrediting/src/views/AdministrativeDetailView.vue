@@ -135,9 +135,9 @@ const triggerPassOn = () => {
 
       </div>
 
-      <div v-if="!readonly" class="save-controlls-container">
-        <ButtonLink @click="saveChanges">Speichern</ButtonLink>
+      <div v-if="!readonly" class="application-buttons-container">
         <ButtonLink @click="discardChanges">Änderungen verwerfen</ButtonLink>
+        <ButtonLink @click="saveChanges">Speichern</ButtonLink>
       </div>
 
     </div>
@@ -160,10 +160,10 @@ const triggerPassOn = () => {
     </div>
 
     <div v-if="!readonly">
-      <ButtonLink v-if="passOnStatus === 'NOT_ALLOWED'" :disabled="true" :fixed="true">Weitergeben</ButtonLink>
-      <ButtonLink v-else-if="passOnStatus === 'PASSON'" :fixed="true" @click="triggerPassOn">Weitergeben
+      <ButtonLink v-if="passOnStatus === 'NOT_ALLOWED'" :disabled="true" :fixed="true" :redButton="true">Weitergeben</ButtonLink>
+      <ButtonLink v-else-if="passOnStatus === 'PASSON'" :fixed="true" :redButton="true" @click="triggerPassOn">Weitergeben
       </ButtonLink>
-      <ButtonLink v-else-if="passOnStatus === 'REJECT'" :fixed="true" @click="triggerPassOn">Zurückweisen
+      <ButtonLink v-else-if="passOnStatus === 'REJECT'" :fixed="true" :redButton="true" @click="triggerPassOn">Zurückweisen
       </ButtonLink>
     </div>
   </div>
@@ -173,18 +173,6 @@ const triggerPassOn = () => {
 @use '@/assets/styles/util' as *;
 @use '@/assets/styles/global' as *;
 
-
-.save-controlls-container {
-  display: flex;
-  width: 100%;
-  justify-content: flex-start;
-  flex-wrap: wrap;
-  gap: 0.5rem 1rem;
-
-  @media only screen and (max-width: 700px) {
-    padding: 0 0.5rem;
-  }
-}
 
 
 

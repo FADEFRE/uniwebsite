@@ -52,3 +52,10 @@
     width: 100%;
   }
 }
+
+.application-buttons-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}

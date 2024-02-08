@@ -11,3 +11,23 @@ a,Button,.p-button {
     background-color: $dark-gray-hover;
   }
 }
+
+.disabled {
+  opacity: 0.5;
+}
+
+.red-button {
+  background-color: $red;
+
+  &:hover {
+    background-color: $red-hover;
+  }
+}
+
+.fixed-button {
+  position: fixed;
+  z-index: 3;
+  bottom: 2rem;
+  right: 1rem;
+}
+
