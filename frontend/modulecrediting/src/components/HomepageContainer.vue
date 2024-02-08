@@ -48,13 +48,13 @@ const props = defineProps(['header', 'text'])
 
 :deep(.p-inputtext) {
     border: none;
+    width: 100%;
+    max-width: 250px;
 
     text-align: center;
     font-family: 'Jost';
     font-weight: 500;
     letter-spacing: 0.3rem;
-    width: 100%;
-    max-width: 250px;
 }
 </style>
 

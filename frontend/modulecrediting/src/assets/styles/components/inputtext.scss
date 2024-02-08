@@ -39,8 +39,9 @@ textarea {
 textarea {
   min-height: 6rem;
   resize: none;
+  border: none;
   &:focus {
-    border: 2px solid $dark-gray;
+    border: none;
   }
 }
 

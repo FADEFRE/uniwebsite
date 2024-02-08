@@ -1,15 +1,24 @@
 @use '@/assets/styles/util' as *;
 @use '@/assets/styles/global' as *;
 
-Button,.p-button {
+Button,.p-button, .router-link {
   @include smallHighlightBox();
   width: max-content;
 
   background-color: $dark-gray;
+  &.white {
+    background-color: $white;
+  }
 
   &:hover {
     background-color: $dark-gray-hover;
+
+    &.white {
+      background-color: $white-hover;
+    }
   }
+
+
 }
 
 .disabled {

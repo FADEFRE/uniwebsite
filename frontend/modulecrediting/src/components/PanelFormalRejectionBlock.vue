@@ -30,6 +30,7 @@ defineExpose({
 <style scoped lang="scss">
 @use '@/assets/styles/util' as *;
 @use '@/assets/styles/global' as *;
+@use '@/assets/styles/components' as *;
 
 .panel-formal-rejection-block {
   display: flex;
@@ -60,9 +61,4 @@ defineExpose({
   font-weight: 600;
 }
 
-textarea {
-  width: 100%;
-  resize: none;
-  border: none;
-}
 </style>

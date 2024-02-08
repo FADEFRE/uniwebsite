@@ -18,13 +18,13 @@ const specificRole = computed(() => navStore.getCurrentRoleNav)
 
 <template>
   <div v-if="isNavType === 'standard'" class="links-container" :class="{ 'small-screen-links-container': isMenuOpen }">
-    <router-link :to="{ name: 'home' }" class="router-link" :class="{ 'white-router-link': isMenuOpen }"
+    <router-link :to="{ name: 'home' }" class="router-link" :class="{ 'white': isMenuOpen }"
       @click="$emit('linkClicked')">
       {{ $t('navigation.homepage') }}
       <img src="@/assets/icons/ArrowWhite.svg" class="arrow-icon">
     </router-link>
     <router-link :to="{ name: 'login' }" @click="$emit('linkClicked')" class="router-link"
-      :class="{ 'white-router-link': isMenuOpen }">
+      :class="{ 'white': isMenuOpen }">
       {{ $t('navigation.login') }}
       <img src="@/assets/icons/LoginWhite.svg" class="login-logout-icon login-icon">
     </router-link>
@@ -33,27 +33,27 @@ const specificRole = computed(() => navStore.getCurrentRoleNav)
   <div v-else-if="isNavType === 'internal'" class="links-container"
     :class="{ 'small-screen-links-container': isMenuOpen }">
     <router-link :to="{ name: 'management' }" class="router-link" @click="$emit('linkClicked')"
-      :class="{ 'white-router-link': isMenuOpen }">
+      :class="{ 'white': isMenuOpen }">
       Verwaltung
       <img src="@/assets/icons/ArrowWhite.svg" class="arrow-icon">
     </router-link>
 
     <div v-if="specificRole === 'study'" :class="{ 'user-specific-container': isMenuOpen }">
       <router-link :to="{ name: 'studyOfficeSelection' }" @click="$emit('linkClicked')" class="router-link"
-        :class="{ 'white-router-link': isMenuOpen }">
+        :class="{ 'white': isMenuOpen }">
         Übersicht
         <img src="@/assets/icons/ArrowWhite.svg" class="arrow-icon">
       </router-link>
     </div>
     <div v-else-if="specificRole === 'chair'" :class="{ 'user-specific-container': isMenuOpen }">
       <router-link :to="{ name: 'chairmanSelection' }" @click="$emit('linkClicked')" class="router-link"
-        :class="{ 'white-router-link': isMenuOpen }">
+        :class="{ 'white': isMenuOpen }">
         Übersicht
         <img src="@/assets/icons/ArrowWhite.svg" class="arrow-icon">
       </router-link>
     </div>
 
-    <Button @click="logout" class="router-link" :class="{ 'white-router-link': isMenuOpen }">
+    <Button @click="logout" class="router-link" :class="{ 'white': isMenuOpen }">
       Logout
       <img src="@/assets/icons/LogoutWhite.svg" class="login-logout-icon logout-icon">
     </Button>
@@ -64,16 +64,6 @@ const specificRole = computed(() => navStore.getCurrentRoleNav)
 @use '@/assets/styles/util' as *;
 @use '@/assets/styles/global' as *;
 
-a,.p-button {
-  @include smallHighlightBox();
-  width: max-content;
-
-  background-color: $dark-gray;
-
-  &:hover {
-    background-color: $dark-gray-hover;
-  }
-}
 
 .links-container {
   width: 100%;
@@ -96,26 +86,8 @@ a,.p-button {
 }
 
 
-.router-link {
-  display: flex;
-  gap: 0.5rem;
 
-  &:hover {
-    background-color: $dark-gray-hover;
-
-    .arrow-icon {
-      transform: translate(0.15rem) rotate(-90deg);
-    }
-
-    .login-logout-icon {
-      transform: translate(0.15rem);
-    }
-  }
-}
-
-.white-router-link {
-  background-color: $white;
-  color: $dark-gray;
+.white {
   width: 100%;
 
   & .arrow-icon {
@@ -129,10 +101,6 @@ a,.p-button {
   & .logout-icon {
     content: url("@/assets/icons/LogoutDark.svg");
   }
-
-  &:hover {
-    background-color: $gray;
-  }
 }
 
 .arrow-icon {
@@ -142,4 +110,6 @@ a,.p-button {
 
 .login-logout-icon {
   transition: 0.1s ease-in-out;
-}</style>
+}
+
+</style>

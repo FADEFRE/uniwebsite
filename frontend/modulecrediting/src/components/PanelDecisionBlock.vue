@@ -41,12 +41,7 @@ defineExpose({
 
 
     <div v-if="!readonly">
-      <SelectButton :allow-empty="false" :options="decisionOptions" optionLabel="label" optionValue="value"
-        v-model="decision">
-        <!--template #option="optionProps">
-          <div class="select-button" :class="optionProps.option.class">{{ optionProps.option.label }}</div>
-        </template-->
-      </SelectButton>
+      <SelectButton :allow-empty="false" :options="decisionOptions" optionLabel="label" optionValue="value" v-model="decision"/>
     </div>
 
     <div v-else class="readonly-decision-container">
@@ -96,15 +91,6 @@ defineExpose({
 
   &.highlight {
     background-color: $gray;
-  }
-}
-
-textarea {
-  width: 100%;
-  resize: none;
-  border: none;
-  &:focus {
-    border: none;
   }
 }
 

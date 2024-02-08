@@ -177,6 +177,8 @@ const triggerPassOn = () => {
 @use '@/assets/styles/util' as *;
 @use '@/assets/styles/global' as *;
 
+
+
 .side-infos-list {
   position: sticky;
   top: 1rem;

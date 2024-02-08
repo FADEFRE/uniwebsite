@@ -42,7 +42,6 @@ const store = useUserStore()
 }
 
 
-
 .active {
     font-weight: 550;
     &:hover {

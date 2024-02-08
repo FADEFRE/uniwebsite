@@ -75,10 +75,4 @@ const props = defineProps({
   @include rightArrow();
   // Ensure the arrow icon doesn't cause unnecessary wrapping
 }
-
-.related-modules-text {
-  text-transform: none;
-  font-size: 1rem;
-  font-weight: 500;
-}
 </style>

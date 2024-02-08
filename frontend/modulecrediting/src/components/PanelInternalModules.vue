@@ -127,6 +127,8 @@ defineExpose({
   @include verticalListItem($gray);
   width: 100%;
 }
+
+
 .search-icon {
   position: absolute;
   top: 50%;

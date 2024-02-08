@@ -95,7 +95,6 @@ const openRelatedModule = (singleModule) => {
 
 .panel-related-modules {
   @include panelComponent();
-
 }
 
 .related-modules-list-container {
@@ -130,6 +129,4 @@ const openRelatedModule = (singleModule) => {
   align-items: center;
   gap: 0.5rem;
 }
-
-.course {}
 </style>
