@@ -47,7 +47,6 @@ const props = defineProps(['header', 'text'])
 }
 
 :deep(.p-inputtext) {
-    border: none;
     width: 100%;
     max-width: 250px;
 

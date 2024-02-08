@@ -37,7 +37,7 @@ defineExpose({
   <div class="panel-comment">
     <h4>Kommentar</h4>
     <div class="textarea-container">
-      <textarea :readonly="readonly" rows="3" v-model="comment" />
+      <textarea :readonly="readonly" rows="3" v-model="comment" class="white" />
     </div>
 
   </div>

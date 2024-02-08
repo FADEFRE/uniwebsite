@@ -29,10 +29,11 @@ const props = defineProps({
 <template>
   <div class="panel-heading-container">
     <div class="modules-container">
-      <h3 v-if="externalModules && externalModules.length" :class="{ 'related-modules-text': relatedModules }" class="single-module">
-          {{ externalModules.join(', ') }}
-        </h3>
-        <h3 v-else>...</h3>
+      <h3 v-if="externalModules && externalModules.length" :class="{ 'related-modules-text': relatedModules }"
+        class="single-module">
+        {{ externalModules.join(', ') }}
+      </h3>
+      <h3 v-else>...</h3>
     </div>
 
     <div class="arrow-icon">
@@ -40,7 +41,8 @@ const props = defineProps({
     </div>
 
     <div class="modules-container">
-      <h3 v-if="internalModules && internalModules.length" :class="{ 'related-modules-text': relatedModules }" class="single-module">
+      <h3 v-if="internalModules && internalModules.length" :class="{ 'related-modules-text': relatedModules }"
+        class="single-module">
         {{ internalModules.join(', ') }}
       </h3>
       <h3 v-else>...</h3>
@@ -54,17 +56,18 @@ const props = defineProps({
 
 .panel-heading-container {
   display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 0.5rem;
+  gap: 0.25rem;
   width: 100%;
   overflow: hidden;
 }
 
 .modules-container {
-  display: flex;
-  gap: 0.3rem;
   overflow: hidden;
+  
+  &:last-child {
+    margin-left: 0.25rem;
+  }
+
 }
 
 .single-module {

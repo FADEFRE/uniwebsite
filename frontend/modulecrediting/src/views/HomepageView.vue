@@ -72,10 +72,18 @@ const getFormattedId = () => {
             <!--SideInfoContainerfür Antragprozess -->
             <SideInfoContainer :heading="$t('homepage.sideInfo.applicationProcess')">
                 <ul class="list-container">
-                    <li class="list-item"><p>{{ $t('homepage.sideInfo.submitApplication') }}</p></li>
-                    <li class="list-item"><p>{{ $t('homepage.sideInfo.viewStatus') }}</p></li>
-                    <li class="list-item"><p>{{ $t('homepage.sideInfo.wait') }}</p></li>
-                    <li class="list-item"><p>{{ $t('homepage.sideInfo.goToStudy') }}</p></li>
+                    <li class="list-item">
+                        <p>{{ $t('homepage.sideInfo.submitApplication') }}</p>
+                    </li>
+                    <li class="list-item">
+                        <p>{{ $t('homepage.sideInfo.viewStatus') }}</p>
+                    </li>
+                    <li class="list-item">
+                        <p>{{ $t('homepage.sideInfo.wait') }}</p>
+                    </li>
+                    <li class="list-item">
+                        <p>{{ $t('homepage.sideInfo.goToStudy') }}</p>
+                    </li>
                 </ul>
             </SideInfoContainer>
         </div>
@@ -89,13 +97,14 @@ const getFormattedId = () => {
 @use '@/assets/styles/global' as *;
 @use '@/assets/styles/components' as *;
 
-
 .status-input {
     border: none;
     background-color: $gray;
+
     &:focus::placeholder {
         color: transparent;
     }
+
     &.invalid {
         border: 2px solid $red;
     }

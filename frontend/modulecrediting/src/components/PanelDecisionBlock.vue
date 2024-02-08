@@ -61,7 +61,7 @@ defineExpose({
       </div>
     </div>
 
-    <textarea :readonly="readonly" v-model="comment" @change="emit('change')"></textarea>
+    <textarea :readonly="readonly" v-model="comment" @change="emit('change')" :class="{ 'white': !readonly}"></textarea>
   </div>
 </template>
 
