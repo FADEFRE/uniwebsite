@@ -25,6 +25,7 @@ const props = defineProps(['header', 'text'])
 <style lang="scss" scoped>
 @use '@/assets/styles/global' as *;
 @use '@/assets/styles/util' as *;
+@use '@/assets/styles/components' as *;
 
 
 .homepage-container {
@@ -46,7 +47,6 @@ const props = defineProps(['header', 'text'])
 }
 
 :deep(.p-inputtext) {
-    background-color: $gray;
     border: none;
 
     text-align: center;
