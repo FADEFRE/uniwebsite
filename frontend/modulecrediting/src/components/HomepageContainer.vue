@@ -55,14 +55,6 @@ const props = defineProps(['header', 'text'])
     letter-spacing: 0.3rem;
     width: 100%;
     max-width: 250px;
-
-    &.invalid {
-        border: 2px solid $red;
-    }
-}
-
-:slotted(.invalid-text) {
-    color: $red;
 }
 </style>
 

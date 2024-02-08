@@ -116,8 +116,10 @@ const triggerPassOn = () => {
 
 <template>
   <div v-if="applicationData" class="main">
+    <div class="side-infos-list">
+      <ApplicationConnectionLinks :connections-data="connectionsData" />
+    </div>
 
-    <ApplicationConnectionLinks :connections-data="connectionsData" />
 
     <div class="content-container split">
 
@@ -160,10 +162,12 @@ const triggerPassOn = () => {
     </div>
 
     <div v-if="!readonly">
-      <ButtonLink v-if="passOnStatus === 'NOT_ALLOWED'" :disabled="true" :fixed="true" :redButton="true">Weitergeben</ButtonLink>
+      <ButtonLink v-if="passOnStatus === 'NOT_ALLOWED'" :disabled="true" :fixed="true" :redButton="true">Weitergeben
+      </ButtonLink>
       <ButtonLink v-else-if="passOnStatus === 'PASSON'" :fixed="true" :redButton="true" @click="triggerPassOn">Weitergeben
       </ButtonLink>
-      <ButtonLink v-else-if="passOnStatus === 'REJECT'" :fixed="true" :redButton="true" @click="triggerPassOn">Zurückweisen
+      <ButtonLink v-else-if="passOnStatus === 'REJECT'" :fixed="true" :redButton="true" @click="triggerPassOn">
+        Zurückweisen
       </ButtonLink>
     </div>
   </div>
@@ -173,11 +177,20 @@ const triggerPassOn = () => {
 @use '@/assets/styles/util' as *;
 @use '@/assets/styles/global' as *;
 
+.side-infos-list {
+  position: sticky;
+  top: 1rem;
+
+  @media only screen and (max-width: 1200px) {
+    display: none;
+  }
+}
 
 
 
 .mid-right-fixed-container {
   @include verticalList(small);
+  width: fit-content;
 
   display: flex;
   flex-direction: column;

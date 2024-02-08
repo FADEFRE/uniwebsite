@@ -36,23 +36,16 @@ defineExpose({
 <template>
   <div class="panel-comment">
     <h4>Kommentar</h4>
-    <textarea :readonly="readonly" rows="3" v-model="comment">
-
-    </textarea>
+    <textarea :readonly="readonly" rows="3" v-model="comment"/>
   </div>
 </template>
 
 <style scoped lang="scss">
 @use '@/assets/styles/util' as *;
 @use '@/assets/styles/global' as *;
+@use '@/assets/styles/components' as *;
 
 .panel-comment {
   @include panelComponent();
-}
-
-textarea {
-  width: 100%;
-  min-height: 6rem;
-  resize: none;
 }
 </style>

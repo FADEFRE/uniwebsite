@@ -11,6 +11,12 @@
   border-radius: 0;
 }
 
+*:focus {
+  outline: none;
+  box-shadow: none;
+  border: none;
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -23,11 +29,6 @@ ul {
   margin: 0;
 }
 
-*:focus {
-  outline: none;
-  box-shadow: none;
-  border: none;
-}
 
 
 

@@ -1,7 +1,7 @@
 @use '@/assets/styles/util' as *;
 @use '@/assets/styles/global' as *;
 
-a,Button,.p-button {
+Button,.p-button {
   @include smallHighlightBox();
   width: max-content;
 

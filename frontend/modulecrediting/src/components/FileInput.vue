@@ -177,13 +177,4 @@ input {
   width: 100%;
   padding: 0 0.5rem;
 }
-
-.invalid-text {
-  color: $red;
-}
-
-.invalid {
-  border: 2px dashed $red;
-  box-shadow: none;
-}
 </style>

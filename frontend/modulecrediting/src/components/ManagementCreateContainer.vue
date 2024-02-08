@@ -71,6 +71,7 @@ const createModuleLeipzig = () => {
 <style lang="scss" scoped>
 @use '@/assets/styles/util' as *;
 @use '@/assets/styles/global' as *;
+@use '@/assets/styles/components' as *;
 
 .management-create-container {
     @include basicContainer();
@@ -79,28 +80,9 @@ const createModuleLeipzig = () => {
     width: 100%;
 }
 
-.input-container {
-    width: 100%
-}
-
 .module-input-container {
     @include screenSplit();
     width: 100%;
 }
 
-.p-inputtext {
-    width: 100%;
-
-    &:hover {
-        background-color: $white-hover;
-    }
-}
-
-.invalid {
-    border: 2px solid $red;
-}
-
-.invalid-text {
-    color: $red;
-}
 </style>

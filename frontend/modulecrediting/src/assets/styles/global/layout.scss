@@ -34,6 +34,9 @@
 
   &.split {
     width: 78%;
+    &.narow {
+      width: 70%;
+    }
   }
 
   @media only screen and (max-width: 1200px) {
@@ -48,8 +51,15 @@
   @include verticalList(big);
   width: 22%;
 
+  &.wide {
+    width: 30%;
+  }
+
   @media only screen and (max-width: 1200px) {
     width: 100%;
+    &.wide {
+      width: 100%;
+    }
   }
 }
 

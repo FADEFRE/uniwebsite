@@ -1,5 +1,5 @@
 <script setup>
-import {ref, watch} from "vue";
+import { ref, watch } from "vue";
 
 const props = defineProps(['modelValue'])
 const emit = defineEmits(['update:modelValue'])
@@ -15,13 +15,17 @@ watch(role, (newRole) => emit('update:modelValue', newRole))
 </script>
 
 <template>
-  <Dropdown placeholder="Rolle" v-model="role" :options="roleOptions" option-value="value" option-label="label" >
-    <template #dropdownicon>
-      <img src="../assets/icons/ArrowWhite.svg">
-    </template>
-  </Dropdown>
+  <div class="role-dropdown-container">
+    <Dropdown placeholder="Rolle" v-model="role" :options="roleOptions" option-value="value" option-label="label">
+      <template #dropdownicon>
+        <img src="../assets/icons/ArrowWhite.svg">
+      </template>
+    </Dropdown>
+  </div>
 </template>
 
 <style scoped lang="scss">
-
+.role-dropdown-container {
+  width: 16rem;
+}
 </style>

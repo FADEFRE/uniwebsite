@@ -35,18 +35,10 @@ const props = defineProps({
 <style scoped lang="scss">
 @use '@/assets/styles/util' as *;
 @use '@/assets/styles/global' as *;
+@use '@/assets/styles/components' as *;
 
 .application-connection-links-container {
   @include basicContainer();
-  width: 22%;
-  min-width: 22%;
-
-  position: sticky;
-  top: 1rem;
-
-  @media only screen and (max-width: 1200px) {
-    display: none;
-  }
 }
 
 .connection-link-container {
@@ -56,10 +48,12 @@ const props = defineProps({
 
   border-top: 2px solid $dark-gray;
   border-bottom: 2px solid $dark-gray;
+  display: flex;
   gap: 0.1rem;
 
-  &:hover{
+  &:hover {
     background-color: $white-hover;
+
     & .arrow-icon {
       transform: translateX(0.1rem) rotate(-90deg);
     }

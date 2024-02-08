@@ -4,6 +4,7 @@
 @mixin verticalList($gapSize) {
   display: flex;
   flex-direction: column;
+  width: 100%;
 
   @if $gapSize == small {
     gap: 0.5rem;
@@ -16,8 +17,10 @@
 
 @mixin verticalListItem($background-color) {
   background-color: $background-color;
+  display: flex;
   justify-content: space-between;
   border-left: 3px solid $red;
+  width: 100%;
 }
 
 @mixin singleContainer() {

@@ -13,34 +13,35 @@ const createFailed = ref(false)
 
 const triggerCreateUser = () => {
   createUser(username.value, password.value, passwordConfirm.value, role.value)
-      .then(_ => location.reload())
-      .catch(error => {
-        if (error.response.status) {
-          createFailed.value = true
-        } else {
-          location.reload()
-        }
-      })
+    .then(_ => location.reload())
+    .catch(error => {
+      if (error.response.status) {
+        createFailed.value = true
+      } else {
+        location.reload()
+      }
+    })
 }
 </script>
 
 <template>
-  <div>
+  <div class="admin-create-container">
 
     <h2>Benutzer erstellen</h2>
+    <div>
+      <InputText type="text" placeholder="Benutzername" v-model="username" :class="{ 'invalid': createFailed }" />
+      <small v-if="createFailed" class="invalid-text">Es existiert bereits ein Benutzer mit diesem Namen</small>
+      <RoleDropdown v-model="role" />
+    </div>
 
-    <InputText type="text" placeholder="Benutzername" v-model="username" :class="{ 'invalid': createFailed }" />
-    <small v-if="createFailed">Es existiert bereits ein Benutzer mit diesem Namen</small>
     <InputText type="text" placeholder="Passwort" v-model="password" />
     <InputText type="text" placeholder="Passwort bestätigen" v-model="passwordConfirm" />
 
-    <RoleDropdown v-model="role" />
+
 
     {{ role }}
 
-    <ButtonLink :red-button="true" @click="triggerCreateUser">
-      <p>Benutzer erstellen</p>
-    </ButtonLink>
+    <ButtonLink :redButton="true" @click="triggerCreateUser">Benutzer erstellen</ButtonLink>
 
   </div>
 </template>
@@ -48,4 +49,9 @@ const triggerCreateUser = () => {
 <style scoped lang="scss">
 @use '@/assets/styles/util' as *;
 @use '@/assets/styles/global' as *;
+@use '@/assets/styles/components' as *;
+
+.admin-create-container {
+  @include basicContainer();
+}
 </style>

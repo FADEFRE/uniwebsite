@@ -4,12 +4,8 @@ import AccountAdminList from "../components/AccountAdminList.vue";
 </script>
 
 <template>
-  <div>
-    <AccountAdminList />
-    <AccountAdminCreate />
-  </div>
+  <AccountAdminList />
+  <AccountAdminCreate />
 </template>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

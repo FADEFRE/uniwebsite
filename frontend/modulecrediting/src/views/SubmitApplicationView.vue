@@ -144,15 +144,12 @@ const triggerPostApplication = () => {
 <style scoped lang="scss">
 @use '@/assets/styles/util' as *;
 @use '@/assets/styles/global' as *;
+@use '@/assets/styles/components' as *;
 
 
 .arrow-icon {
   transform: rotate(-90deg);
   transition: 0.1s ease-in-out;
-}
-
-.invalid-text {
-  color: $red;
 }
 </style>
 

@@ -213,6 +213,7 @@ defineExpose({
 <style scoped lang="scss">
 @use '@/assets/styles/util' as *;
 @use '@/assets/styles/global' as *;
+@use '@/assets/styles/components' as *;
 
 .clear-icon {
   opacity: 0.9;
@@ -225,14 +226,8 @@ defineExpose({
 }
 
 
-
 .filter-container {
   @include basicContainer();
-  width: 30%;
-
-  @media only screen and (max-width: 1200px) {
-    width: 100%;
-  }
 }
 
 .search-container {
@@ -339,4 +334,6 @@ defineExpose({
 
 .overview-text {
   color: $dark-gray;
-}</style>
+}
+
+</style>

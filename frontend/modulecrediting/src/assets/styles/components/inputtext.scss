@@ -1,0 +1,49 @@
+@use "@/assets/styles/util" as *;
+@use "@/assets/styles/global" as *;
+
+.input-container {
+  display: flex;
+  gap: 0.5rem;
+  flex-direction: column;
+  width: 100%;
+}
+
+.p-inputtext,
+input,
+textarea {
+  border: 2px solid $dark-gray;
+  background-color: transparent;
+  width: 100%;
+
+  padding: 0.5rem;
+  min-width: 0;
+
+  &:hover {
+    &.gray {
+      background-color: $gray-hover;
+    }
+    &.white {
+      background-color: $white-hover;
+    }
+  }
+  &:focus {
+    &.gray {
+      background-color: $gray-hover;
+    }
+    &.white {
+      background-color: $white-hover;
+    }
+  }
+}
+
+textarea {
+  min-height: 6rem;
+  resize: none;
+  &:focus {
+    border: 2px solid $dark-gray;
+  }
+}
+
+.invalid {
+  border: 2px solid $red;
+}
