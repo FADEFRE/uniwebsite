@@ -93,6 +93,10 @@ const saveCourseLeipzig = () => {
                     <img src="@/assets/icons/ArrowRed.svg" class="arrow-icon">
                 </div>
 
+                <div v-if="selectableModules.length === 0">
+                  <p>Alle Module sind dem Studiengang hinzugefügt.</p>
+                </div>
+
             </div>
 
             <div class="selected-modules-container">
@@ -120,6 +124,10 @@ const saveCourseLeipzig = () => {
                         <small>{{ singleModule.code }}</small>
                     </div>
                 </div>
+
+              <div v-if="addedModules.length === 0 && selectedModules.length === 0">
+                <p>Es sind keine Module zum Studiengang hinzugefügt.</p>
+              </div>
 
             </div>
         </div>
