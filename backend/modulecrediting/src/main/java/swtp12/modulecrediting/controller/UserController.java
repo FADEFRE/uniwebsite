@@ -11,15 +11,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import jakarta.validation.Valid;
 import swtp12.modulecrediting.dto.EditUserDTO;
 import swtp12.modulecrediting.dto.UserSummary;
 import swtp12.modulecrediting.model.Role;
 import swtp12.modulecrediting.model.User;
 import swtp12.modulecrediting.repository.UserRepository;
 import swtp12.modulecrediting.service.UserService;
-
-import javax.enterprise.inject.Model;
 
 
 @RestController
