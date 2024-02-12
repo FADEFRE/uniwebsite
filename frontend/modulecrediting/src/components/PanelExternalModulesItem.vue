@@ -159,13 +159,13 @@ defineExpose({
   @include verticalListItem($gray);
 
   width: 100%;
-  padding: 0.5rem 0.5rem 0.5rem 1.25rem;
+  padding: spacing(s);
 
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  gap: 0.5rem;
+  gap: spacing(s);
 }
 
 .screen-split {
@@ -200,12 +200,12 @@ defineExpose({
 
 .point-container {
   display: flex;
-  gap: 0.5rem;
+  gap: spacing(s);
 }
 
 .trash-icon {
   @include trashIconAnimation();
-  padding: 0.5rem 0.5rem;
+  padding: spacing(s);
 
   &:hover {
     background-color: $gray-hover;

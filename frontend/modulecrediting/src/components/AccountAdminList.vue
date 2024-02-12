@@ -48,7 +48,7 @@ const triggerChangeRole = (id, newRole) => {
 
 .user-container {
   @include verticalListItem($gray);
-  padding: 0 1rem;
+  padding: 0 spacing(m);
   align-items: center;
 }
 </style>

@@ -56,17 +56,13 @@ const props = defineProps({
 
 .panel-heading-container {
   display: flex;
-  gap: 0.25rem;
+  gap: spacing(s);
   width: 100%;
   overflow: hidden;
 }
 
 .modules-container {
   overflow: hidden;
-  
-  &:last-child {
-    margin-left: 0.25rem;
-  }
 
 }
 

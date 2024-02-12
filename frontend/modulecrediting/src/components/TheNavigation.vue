@@ -69,13 +69,13 @@ const specificRole = computed(() => navStore.getCurrentRoleNav)
   width: 100%;
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: spacing(m);
   flex-wrap: wrap;
 }
 
 .small-screen-links-container {
   flex-direction: column;
-  gap: 1rem;
+  gap: spacing(m);
 
   max-width: 350px;
   width: 100%;

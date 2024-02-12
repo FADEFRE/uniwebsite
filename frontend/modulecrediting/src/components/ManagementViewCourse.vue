@@ -65,7 +65,7 @@ const filteredCourses = computed(() => {
 .icons-container {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: spacing(xs);
 }
 
 .trash-icon {

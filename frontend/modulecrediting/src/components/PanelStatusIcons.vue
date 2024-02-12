@@ -59,8 +59,8 @@ const props = defineProps({
 .panel-status-icons {
     display: flex;
     justify-content: center;
-    gap: 1rem;
-    margin-right: 0.5rem
+    gap: spacing(m);
+    margin-right: spacing(s);
 }
 .arrow-icon {
     @include rightArrow();

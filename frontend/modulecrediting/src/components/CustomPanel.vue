@@ -53,7 +53,7 @@ defineExpose({
 
 :deep(.p-panel-header) {
   width: 100%;
-  padding: 1.25rem;
+  padding: spacing(l);
   background-color: $white;
 
   border: none;
@@ -68,22 +68,22 @@ defineExpose({
 :deep(.p-panel-icons) {
   display: flex;
   align-items: center;
-  margin-left: 0.5rem;
+  margin-left: spacing(s);
 }
 
 :deep(.p-panel-content) {
   border: none;
-  padding: 1.25rem 9%;
+  padding: spacing(l) 9%;
   border-bottom: 2px solid $dark-gray;
 
   @include verticalList(small);
 
   @media only screen and (max-width: 1350px) {
-    padding: 1.25rem 5%;
+    padding: spacing(m) 5%;
   }
 
   @media only screen and (max-width: 700px) {
-    padding: 1.25rem 1.5rem;
+    padding: spacing(l);
   }
 }
 

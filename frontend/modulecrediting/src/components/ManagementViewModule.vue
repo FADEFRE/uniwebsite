@@ -76,7 +76,7 @@ const deleteModuleLeipzigClick = (singleModule) => {
 .icons-container {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: spacing(s);
 }
 
 .trash-icon {

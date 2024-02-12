@@ -108,14 +108,14 @@ function closeMenu() {
 .nav-menu-container {
   display: flex;
   flex-direction: column;
-  padding: 0rem 2rem;
-  gap: 0.5rem;
+  padding: spacing(xl);
+  gap: spacing(s);
 }
 
 .burger-menu {
   background-color: $white;
-  margin-right: 0.5rem;
-  padding: 1rem;
+  margin-right: spacing(m);
+  padding: spacing(m);
 
   &:hover {
     background-color: $gray;
@@ -127,7 +127,7 @@ function closeMenu() {
 .close-menu {
   position: fixed;
   top: 1.8rem;
-  right: 0.5rem;
+  right: spacing(m);
   z-index: 5;
   border: 2px solid $white;
   padding: 1.2rem;
@@ -156,7 +156,7 @@ function closeMenu() {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 2rem;
+    gap: spacing(xl);
 
     &.closed {
       display: none;
@@ -171,7 +171,7 @@ footer {
   width: 100%;
   min-height: 700px;
 
-  padding: 1rem 1rem;
+  padding: spacing(m);
 
   display: flex;
   justify-content: center;
@@ -180,7 +180,7 @@ footer {
 
 ul {
   display: flex;
-  gap: 1rem;
+  gap: spacing(m);
 
   li p 
   {

@@ -23,13 +23,13 @@ const store = useUserStore()
 }
 .language-button {
     background-color: transparent;
-    padding: 0 0.5rem;
+    padding: 0 spacing(s);
 
     color: $white;
     font-family: "Jost";
     font-size: 1rem;
     font-weight: 400;
-    line-height: 1.25rem;
+    line-height: spacing(m);
 
     &:first-child {
         border-right: 1px solid $white;

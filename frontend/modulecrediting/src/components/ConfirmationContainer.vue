@@ -48,7 +48,7 @@ function formatId(id) {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1rem;
+    gap: spacing(m);
 }
 
 .id-section {
@@ -56,14 +56,14 @@ function formatId(id) {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 1rem;
+    gap: spacing(m);
     width: min-content;
 }
 
 .id-container {
     position: relative;
     width: max-content;
-    padding: 1rem 2rem;
+    padding: spacing(m) spacing(xl);
     background-color: $gray;
     border: solid 1px $dark-gray;
 }
@@ -74,8 +74,8 @@ function formatId(id) {
 }
 .copy-icon {
     position: absolute;
-    top: 0.5rem;
-    right: 0.5rem;
+    top: spacing(s);
+    right: spacing(s);
 
     transition: 0.05s ease-in-out;
 

@@ -83,12 +83,11 @@ defineExpose({
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+  border-right: 2px solid $black;
 }
 
 .icon-container {
-  padding: 0.5rem 1.25rem;
-  border-right: 2px solid $black;
-
+  padding: spacing(s) spacing(m);
   &.highlight {
     background-color: $gray;
   }

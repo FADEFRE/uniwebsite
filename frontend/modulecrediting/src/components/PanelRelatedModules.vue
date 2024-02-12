@@ -121,13 +121,13 @@ const openRelatedModule = (singleModule) => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 1rem;
+  gap: spacing(m);
 }
 
 .date-block {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: spacing(s);
 }
 
 .info-text {

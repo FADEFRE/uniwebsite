@@ -69,6 +69,11 @@
   border: none;
 }
 
+.p-dropdown-items {
+  display: flex;
+  flex-direction: column;
+}
+
 .p-dropdown-item {
   color: $black;
   font-family: "Jost";

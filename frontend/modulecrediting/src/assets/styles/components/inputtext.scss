@@ -3,7 +3,7 @@
 
 .input-container {
   display: flex;
-  gap: 0.5rem;
+  gap: spacing(s);
   flex-direction: column;
   width: 100%;
 }
@@ -17,7 +17,7 @@ textarea {
   background-color: transparent;
   width: 100%;
 
-  padding: 0.5rem;
+  padding: spacing(s);
   min-width: 0;
 
   &:hover {

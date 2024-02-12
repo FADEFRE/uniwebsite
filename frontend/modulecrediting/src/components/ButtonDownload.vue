@@ -25,6 +25,6 @@ const props = defineProps({
 
 .button-container {
     display: flex;
-    gap: 0.5rem;
+    gap: spacing(s);
 }
 </style>

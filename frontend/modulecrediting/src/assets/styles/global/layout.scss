@@ -5,10 +5,10 @@
   margin: 0 auto;
   display: flex;
   flex-direction: row;
-  padding: 3rem 4.5rem;
+  padding: spacing(xxxl);
   justify-content: center;
   align-items: flex-start;
-  gap: 2rem;
+  gap: spacing(xl);
 
   @media only screen and (max-width: 1200px) {
     @include verticalList(big);
@@ -20,11 +20,11 @@
   }
 
   @media only screen and (max-width: 950px) {
-    padding: 2rem 2rem;
+    padding: spacing(xl);
   }
 
   @media only screen and (max-width: 700px) {
-    padding: 2rem 1rem;
+    padding: spacing(xl) spacing(m);
   }
 }
 
@@ -66,6 +66,6 @@
 .application-buttons-container {
   display: flex;
   justify-content: space-between;
-  gap: 0.5rem;
+  gap: spacing(s);
   flex-wrap: wrap;
 }

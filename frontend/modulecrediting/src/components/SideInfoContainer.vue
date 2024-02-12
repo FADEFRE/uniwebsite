@@ -25,7 +25,7 @@ const props = defineProps(['heading'])
 :slotted(.info-group-container){
     display: flex;
     flex-direction: column;
-    gap: 0.3rem;
+    gap: spacing(xs);
 }
 
 .heading {
@@ -37,12 +37,12 @@ const props = defineProps(['heading'])
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 0.5rem;
+    gap: spacing(s);
 }
 
 :slotted(li) {
     position: relative;
-    padding-left: 1rem;
+    padding-left: spacing(m);
     list-style: none;
     width: 100%;
 

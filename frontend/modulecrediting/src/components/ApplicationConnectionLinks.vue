@@ -42,20 +42,20 @@ const props = defineProps({
 }
 
 .connection-link-container {
-  padding: 0.25rem 0.5rem;
+  padding: spacing(s);
   width: 100%;
   background-color: transparent;
 
   border-top: 2px solid $dark-gray;
   border-bottom: 2px solid $dark-gray;
   display: flex;
-  gap: 0.1rem;
+  gap: spacing(xs);
 
   &:hover {
     background-color: $white-hover;
 
     & .arrow-icon {
-      transform: translateX(0.1rem) rotate(-90deg);
+      transform: translateX(spacing(xs)) rotate(-90deg);
     }
   }
 }

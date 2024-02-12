@@ -27,12 +27,12 @@ const props = defineProps(['customTitle', 'customMessage']);
     width: min-content;
     display: flex;
     align-items: center;
-    gap: 2rem;
+    gap: spacing(xl);
 }
 .text-container {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: spacing(m);
 }
 
 h3 {

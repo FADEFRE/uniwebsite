@@ -185,7 +185,7 @@ const triggerSubmit = () => {
 @use '@/assets/styles/global' as *;
 
 .formal-rejection-info-container {
-  margin-bottom: 1rem;
+  margin-bottom: spacing(m);
 }
 
 .modules-connections-container {
@@ -196,13 +196,13 @@ const triggerSubmit = () => {
 
 
 .formal-rejection-highlight {
-  border-left: 1rem solid $red;
+  border-left: spacing(m) solid $red;
 }
 
 .link-container {
   &:hover {
     .arrow-icon {
-      transform: translate(0.15rem) rotate(-90deg);
+      transform: translate(spacing(xs)) rotate(-90deg);
     }
   }
 }

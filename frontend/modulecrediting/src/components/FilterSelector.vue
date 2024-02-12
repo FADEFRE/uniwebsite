@@ -135,19 +135,17 @@ defineExpose({
 
     <h3>Filteroptionen</h3>
 
-    <div class="search-container">
+    <div class="single-filter-container">
       <h4>Suchen</h4>
       <div class="input-search-field-container">
-        <InputText v-model="searchString" placeholder="Antrag suchen">
-
-        </InputText>
+        <InputText v-model="searchString" placeholder="Antrag suchen"/>
         <img src="@/assets/icons/SearchIcon.svg" class="search-icon">
       </div>
 
       <small>Suchen nach: Vorgangsnummer, Modulname, Universität</small>
     </div>
 
-    <div class="general-container">
+    <div class="single-filter-container">
       <h4>Allgemein</h4>
       <div class="date-filter-container">
         <div @click="setDateTypeCreation" class="date-block" :class="{ 'selected': dateType === 'creationDate' }">
@@ -174,7 +172,7 @@ defineExpose({
       </div>
     </div>
 
-    <div class="status-list-container">
+    <div class="single-filter-container">
       <h4>Status</h4>
       <div :class="{ 'selected': statusNew }" class="statusNew status-container" @click="toggleStatusNew">
         <p class="overview-text">NEU</p>
@@ -195,7 +193,7 @@ defineExpose({
       </div>
     </div>
 
-    <div class="course-container">
+    <div class="single-filter-container">
       <h4>Studiengang</h4>
       <Dropdown show-clear v-model="course" :options="courses" placeholder="Studiengang auswählen">
         <template #clearicon>
@@ -215,36 +213,20 @@ defineExpose({
 @use '@/assets/styles/global' as *;
 @use '@/assets/styles/components' as *;
 
-.clear-icon {
-  opacity: 0.9;
-  transition: 0.2s ease-in-out;
-  margin-right: 0.5rem;
-
-  &:hover {
-    opacity: 1;
-  }
-}
-
 
 .filter-container {
   @include basicContainer();
 }
-
-.search-container {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
+.single-filter-container {
+  @include verticalList(xs);
 }
+
 
 .input-search-field-container {
    @include searchFieldContainer();
 }
 
 
-.general-container {
-  @include verticalList(small);
-  width: 100%;
-}
 
 .date-filter-container {
   border: 2px $dark-gray solid;
@@ -254,7 +236,6 @@ defineExpose({
   align-items: flex-start;
   align-self: stretch;
 }
-
 .date-block {
   @include smallHighlightBox();
   width: 20%;
@@ -278,15 +259,7 @@ defineExpose({
   }
 }
 
-.course-container {
-  width: 100%;
-}
 
-.status-list-container {
-  @include verticalList(small);
-  gap: 0.2rem;
-  width: 100%;
-}
 
 .status-container {
   @include smallHighlightBox();
@@ -334,6 +307,16 @@ defineExpose({
 
 .overview-text {
   color: $dark-gray;
+}
+
+.clear-icon {
+  opacity: 0.9;
+  transition: 0.2s ease-in-out;
+  margin-right: spacing(s);
+
+  &:hover {
+    opacity: 1;
+  }
 }
 
 </style>

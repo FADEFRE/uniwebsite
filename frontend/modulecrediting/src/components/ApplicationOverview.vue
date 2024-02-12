@@ -117,9 +117,10 @@ const triggerForward = () => {
 .application-overview-container {
     background-color: $white;
     display: flex;
-    padding: 0.5rem 0.5rem 0.5rem 1rem;
+    padding: spacing(s);
+    padding-left: spacing(m);
     justify-content: space-between;
-    gap: 0.5rem;
+    gap: spacing(s);
     align-self: stretch;
     flex-wrap: wrap;
     transition: 0.1s ease-in-out;
@@ -135,20 +136,20 @@ const triggerForward = () => {
 
     @media only screen and (max-width: 600px) {
         flex-direction: column;
-        gap: 0.5rem;
+        gap: spacing(s);
     }
 }
 
 
 .application-info {
     display: flex;
-    gap: 1rem;
+    gap: spacing(m);
     max-width: 100%;
     flex-wrap: wrap;
 
     @media only screen and (max-width: 600px) {
         flex-direction: column;
-        gap: 0.5rem;
+        gap: spacing(s);
     }
 }
 
@@ -173,7 +174,6 @@ const triggerForward = () => {
     position: relative;
     display: flex;
     flex-direction: column;
-    gap: 0.05rem;
 }
 
 .vorgangsnummer-container {
@@ -221,13 +221,13 @@ const triggerForward = () => {
 .dates {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: spacing(m);
     flex-wrap: wrap;
 }
 
 .date-block {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: spacing(s);
 }
 </style>

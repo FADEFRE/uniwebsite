@@ -67,6 +67,6 @@ const attemptLogin = () => {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 1.5rem;
+    gap: spacing(l);
 }
 </style>

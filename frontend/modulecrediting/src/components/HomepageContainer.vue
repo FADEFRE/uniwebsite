@@ -37,7 +37,7 @@ const props = defineProps(['header', 'text'])
 .input-button-with-invalid-container {
     display: flex;
     flex-direction: column;
-    gap: 0.2rem;
+    gap: spacing(xs);
 }
 
 :slotted(.input-button-container) {

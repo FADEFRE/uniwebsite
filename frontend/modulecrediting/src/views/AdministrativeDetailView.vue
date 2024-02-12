@@ -181,7 +181,7 @@ const triggerPassOn = () => {
 
 .side-infos-list {
   position: sticky;
-  top: 1rem;
+  top: spacing(m);
 
   @media only screen and (max-width: 1200px) {
     display: none;
@@ -199,8 +199,8 @@ const triggerPassOn = () => {
   align-items: flex-end;
 
   position: fixed;
-  bottom: 5.5rem;
-  right: 1rem;
+  bottom: calc(spacing(l) + spacing(xxxl));
+  right: spacing(m);
 }
 
 

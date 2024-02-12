@@ -36,7 +36,7 @@ Button,.p-button, .router-link {
 .fixed-button {
   position: fixed;
   z-index: 3;
-  bottom: 2rem;
-  right: 1rem;
+  bottom: spacing(xl);
+  right: spacing(m);
 }
 

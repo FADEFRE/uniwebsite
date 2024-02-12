@@ -13,15 +13,15 @@ const addedModules = ref([])
 const selectedModules = ref([])
 
 const selectableModules = computed(() => {
-  const selectedModuleNames = [...selectedModules.value, ...addedModules.value].map(singleModule => singleModule.name);
+    const selectedModuleNames = [...selectedModules.value, ...addedModules.value].map(singleModule => singleModule.name);
 
-  const selectableModules = allModules.value.filter(singleModule => !selectedModuleNames.includes(singleModule.name));
+    const selectableModules = allModules.value.filter(singleModule => !selectedModuleNames.includes(singleModule.name));
 
-  if (searchString.value === '') return selectableModules;
+    if (searchString.value === '') return selectableModules;
 
-  return selectableModules.filter(singleModule => {
-    return singleModule.name.toLocaleLowerCase().includes(searchString.value.toLocaleLowerCase());
-  })
+    return selectableModules.filter(singleModule => {
+        return singleModule.name.toLocaleLowerCase().includes(searchString.value.toLocaleLowerCase());
+    })
 });
 
 // search in selectable modules
@@ -79,8 +79,8 @@ const saveCourseLeipzig = () => {
         <div v-if="selectedCourse" class="screen-split">
             <div class="selectable-modules-container">
                 <h3>Wählbare Module</h3>
-                <div class="search-container">
-                    <InputText v-model="searchString" placeholder="Modul suchen"></InputText>
+                <div class="input-search-field-container">
+                    <InputText v-model="searchString" placeholder="Modul suchen" />
                     <img src="@/assets/icons/SearchIcon.svg" class="search-icon">
                 </div>
 
@@ -94,7 +94,7 @@ const saveCourseLeipzig = () => {
                 </div>
 
                 <div v-if="selectableModules.length === 0">
-                  <p>Alle Module sind dem Studiengang hinzugefügt.</p>
+                    <p>Alle Module sind dem Studiengang hinzugefügt.</p>
                 </div>
 
             </div>
@@ -125,9 +125,9 @@ const saveCourseLeipzig = () => {
                     </div>
                 </div>
 
-              <div v-if="addedModules.length === 0 && selectedModules.length === 0">
-                <p>Es sind keine Module zum Studiengang hinzugefügt.</p>
-              </div>
+                <div v-if="addedModules.length === 0 && selectedModules.length === 0">
+                    <p>Es sind keine Module zum Studiengang hinzugefügt.</p>
+                </div>
 
             </div>
         </div>
@@ -137,6 +137,7 @@ const saveCourseLeipzig = () => {
 <style scoped lang="scss">
 @use '@/assets/styles/util' as *;
 @use '@/assets/styles/global' as *;
+@use '@/assets/styles/components' as *;
 
 .management-edit-course-container {
     @include basicContainer();
@@ -149,7 +150,7 @@ const saveCourseLeipzig = () => {
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    gap: 1rem 1.5rem;
+    gap: spacing(m) spacing(xl);
 }
 
 .dropdown {
@@ -159,23 +160,20 @@ const saveCourseLeipzig = () => {
 .saving-buttons-container {
     display: flex;
     flex-wrap: wrap;
-    gap: 1rem
+    gap: spacing(m);
 }
 
 
 .screen-split {
     @include screenSplit();
-    gap: 1.3rem;
-    width: 100%;
 }
 
 .selectable-modules-container {
     @include verticalList(small);
     width: 100%;
 }
-.search-container {
-    @include searchFieldContainer();
-}
+
+
 .single-selectable-module-item {
     @include smallHighlightBox();
     @include verticalListItem($gray);
@@ -184,7 +182,7 @@ const saveCourseLeipzig = () => {
 
     display: flex;
     justify-content: space-between;
-    gap: 0.8rem;
+    gap: spacing(m);
 
 
     & .arrow-icon {
@@ -216,15 +214,17 @@ const saveCourseLeipzig = () => {
 
 .break-container {
     width: 100%;
-    margin: 1rem 0;
-    padding: 0 1rem;
+    margin: spacing(m) 0;
+    padding: 0 spacing(m);
     position: relative;
 }
+
 .break-line {
     width: 100%;
     height: 2px;
     background-color: $dark-gray;
 }
+
 .break-text {
     width: 3rem;
     text-align: center;
@@ -273,4 +273,9 @@ const saveCourseLeipzig = () => {
         }
     }
 }
+
+.input-search-field-container {
+   @include searchFieldContainer();
+}
+
 </style>

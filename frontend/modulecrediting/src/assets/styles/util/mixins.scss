@@ -7,11 +7,13 @@
   width: 100%;
 
   @if $gapSize == small {
-    gap: 0.5rem;
+    gap: spacing(s);
   } @else if $gapSize == big {
-    gap: 1.5rem;
+    gap: spacing(l);
   } @else if $gapSize == mid {
-    gap: 1rem;
+    gap: spacing(m);
+  } @else if $gapSize == xs {
+    gap: spacing(xs)
   }
 }
 
@@ -28,27 +30,27 @@
   max-width: 100%;
   background-color: $white;
   display: flex;
-  padding: 4rem;
+  padding: spacing(xxxl);
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 2rem;
+  gap: spacing(xl);
 }
 
 @mixin basicContainer() {
   width: auto;
   background-color: $white;
-  padding: 1.5rem 1.5rem;
+  padding: spacing(l);
 
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 0.5rem;
+  gap: spacing(s);
 }
 
 @mixin panelComponent() {
   width: 100%;
-  padding: 0.5rem 0rem;
+  padding: spacing(s) 0;
   background-color: $white;
   border-top: 1px solid $dark-gray;
 
@@ -56,14 +58,14 @@
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  gap: 0.5rem;
+  gap: spacing(m);
 }
 
 @mixin screenSplit() {
   width: 100%;
   display: flex;
   align-items: flex-start;
-  gap: 1rem;
+  gap: spacing(m);
 }
 
 @mixin rightArrow() {
@@ -72,14 +74,14 @@
 
 @mixin smallHighlightBox() {
   width: max-content;
-  padding: 0.5rem 1rem;
+  padding: spacing(s) spacing(m);
   border: none;
 
   display: flex;
 
   justify-content: center;
   align-items: center;
-  gap: 0.5rem;
+  gap: spacing(s);
 }
 
 @mixin ellipsisTextOverflow() {
@@ -90,7 +92,7 @@
 
 @mixin trashIconAnimation() {
   background-color: transparent;
-  padding: 0.5rem 1.2rem;
+  padding: spacing(s) spacing(m);
   transition: 0.1s ease-in-out;
   cursor: pointer;
   &:hover {
@@ -111,10 +113,10 @@
   }
 
   & .search-icon {
-    width: 1rem;
-    height: 1rem;
+    width: spacing(m);
+    height: spacing(m);
     position: absolute;
-    right: 1rem;
+    right: spacing(m);
     top: 50%;
     transform: translateY(-50%);
   }
