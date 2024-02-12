@@ -175,6 +175,13 @@ public class ModulesConnectionService {
     }
 
 
+    public void deleteOriginalModulesConnections(List<ModulesConnection> modulesConnections) {
+        for(ModulesConnection modulesConnection : modulesConnections) {
+            modulesConnection.setModulesConnectionOriginal(null);
+            modulesConnectionRepository.save(modulesConnection);
+        }
+    }
+
     // helper methods to build correct modules connection for student get request (stauts view page)
     public List<ModulesConnection> getOriginalModulesConnections(List<ModulesConnection> modulesConnections) {
         ArrayList<ModulesConnection> modulesConnectionsOriginal = new ArrayList<>();
@@ -183,12 +190,6 @@ public class ModulesConnectionService {
             modulesConnectionsOriginal.add(modulesConnection.getModulesConnectionOriginal());
         }
         return modulesConnectionsOriginal;
-    }
-    public List<ModulesConnection> removeOriginalModulesConnections(List<ModulesConnection> modulesConnections) {
-        for(ModulesConnection modulesConnection : modulesConnections) {
-            modulesConnection.setModulesConnectionOriginal(null);
-        }
-        return modulesConnections;
     }
     public List<ModulesConnection> getOriginalModulesConnectionsWithFormalRejectionData(List<ModulesConnection> editModulesConnections) {
         ArrayList<ModulesConnection> modulesConnectionsOriginal = new ArrayList<>();

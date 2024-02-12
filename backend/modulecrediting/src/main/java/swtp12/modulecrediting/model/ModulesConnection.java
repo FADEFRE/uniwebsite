@@ -16,7 +16,6 @@ import static swtp12.modulecrediting.model.EnumModuleConnectionDecision.*;
 
 @Data
 @Entity
-// TODO: serilize only first iteration of cylic relation (modules connection original)
 public class ModulesConnection {
     @Id
     @GeneratedValue
