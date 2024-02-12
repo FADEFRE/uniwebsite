@@ -41,7 +41,15 @@ function closeMenu() {
         </div>
       </div>
     </header>
+
     <router-view class="main-content" />
+
+    <footer>
+      <ul>
+        <li><p>Impressum</p></li>
+        <li><p>Datenschutz</p></li>
+      </ul>
+    </footer>
   </div>
 </template>
 
@@ -153,6 +161,30 @@ function closeMenu() {
     &.closed {
       display: none;
     }
+  }
+}
+
+
+footer {
+  background-image: url('@/assets/icons/footer.svg');
+  background-size: cover;
+  width: 100%;
+  min-height: 700px;
+
+  padding: 1rem 1rem;
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+ul {
+  display: flex;
+  gap: 1rem;
+
+  li p 
+  {
+    color: $white;
   }
 }
 </style>
