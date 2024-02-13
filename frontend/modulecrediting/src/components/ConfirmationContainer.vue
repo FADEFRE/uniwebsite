@@ -1,5 +1,6 @@
 <script setup>
 import { computed, ref } from 'vue';
+import { useClipboard } from '@vueuse/core'
 
 const props = defineProps({
     id: {
@@ -8,11 +9,14 @@ const props = defineProps({
     }
 });
 
+const { copy, copied, isSupported } = useClipboard({ props })
+
 const formattedId = computed(() => formatId(props.id));
 
-const iconClicked = ref(false);
+const iconClicked = ref(false); //TODO use copied instead of this custom code -> copied has a 1.5sec cooldown
+
 const copyId = () => {
-    navigator.clipboard.writeText(props.id);
+    copy(props.id);
     iconClicked.value = true;
 };
 
@@ -26,7 +30,7 @@ function formatId(id) {
         <div class="id-section">
             <div class="id-container">
                 <h2 class="id">{{ formattedId }}</h2>
-                <img @click="copyId" :class="{ 'icon-clicked': iconClicked }" class="copy-icon" src="@/assets/icons/CopyIcon.svg" alt="Copy Icon">
+                <img v-if="isSupported" @click=copyId :class="{ 'icon-clicked': iconClicked }" class="copy-icon" src="@/assets/icons/CopyIcon.svg" alt="Copy Icon">
             </div>
             <p class="description-text">Mit der Vorgangsnummer kannst du immer den Status deines Antrags überprüfen</p>
         </div>
