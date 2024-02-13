@@ -8,6 +8,8 @@ displays:
 -->
 
 <script setup>
+import ArrowIcon from '@/assets/icons/ArrowIcon.vue';
+
 const props = defineProps({
     formalRejection: {
       type: Boolean
@@ -41,7 +43,7 @@ const props = defineProps({
         <img v-else src="@/assets/icons/ModuleUnedited.svg">
       </div>
 
-      <img src="@/assets/icons/ArrowDark.svg" class="arrow-icon">
+      <ArrowIcon direction="right" color="dark-gray"></ArrowIcon>
 
       <div>
         <img v-if="decisionFinal === 'accepted'" src="@/assets/icons/ModuleAccepted.svg">
@@ -59,10 +61,8 @@ const props = defineProps({
 .panel-status-icons {
     display: flex;
     justify-content: center;
+    align-items: center;
     gap: spacing(m);
     margin-right: spacing(s);
-}
-.arrow-icon {
-    @include rightArrow();
 }
 </style>

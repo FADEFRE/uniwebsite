@@ -1,4 +1,5 @@
 <script setup>
+import ArrowIcon from '@/assets/icons/ArrowIcon.vue';
 
 const props = defineProps({
   fixed: {
@@ -19,9 +20,9 @@ const props = defineProps({
 
 <template>
   <div class="button-container">
-    <Button :disabled="disabled" :class="{ ' fixed-button': fixed, 'disabled': disabled, 'red-button': redButton }">
+    <Button :disabled="disabled" :class="{ ' fixed-button': fixed, 'disabled': disabled, 'red-button': redButton }" class="icon-hover-right">
       <slot />
-      <img src="../assets/icons/ArrowWhite.svg" class="arrow-icon" alt="Arrow Icon">
+      <ArrowIcon direction="right" :hover="true"/>
     </Button>
   </div>
 </template>

@@ -18,7 +18,7 @@ watch(role, (newRole) => emit('update:modelValue', newRole))
   <div class="role-dropdown-container">
     <Dropdown placeholder="Rolle" v-model="role" :options="roleOptions" option-value="value" option-label="label">
       <template #dropdownicon>
-        <img src="../assets/icons/ArrowWhite.svg">
+        <ArrowIcon color="white" direction="down"/>
       </template>
     </Dropdown>
   </div>

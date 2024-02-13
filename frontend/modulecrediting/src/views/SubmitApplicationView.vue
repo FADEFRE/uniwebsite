@@ -21,6 +21,7 @@ import SideInfoContainer from "@/components/SideInfoContainer.vue";
 import ButtonAdd from "@/components/ButtonAdd.vue";
 import ButtonLink from "@/components/ButtonLink.vue";
 import ApplicationOverview from "@/components/ApplicationOverview.vue";
+import ArrowIcon from "../assets/icons/ArrowIcon.vue";
 
 const creationDate = new Date()
 
@@ -78,7 +79,7 @@ const triggerPostApplication = () => {
         <Dropdown v-model="selectedCourse" :options="courses" placeholder="Studiengang wählen"
           @change="setSelectableModules" :class="{ 'invalid': !courseValid }">
           <template #dropdownicon>
-            <img src="../assets/icons/ArrowWhite.svg">
+            <ArrowIcon direction="down"/>
           </template>
         </Dropdown>
         <small v-if="!courseValid" class="invalid-text">Es muss ein Studiengang ausgewählt werden</small>
@@ -145,11 +146,5 @@ const triggerPostApplication = () => {
 @use '@/assets/styles/util' as *;
 @use '@/assets/styles/global' as *;
 @use '@/assets/styles/components' as *;
-
-
-.arrow-icon {
-  transform: rotate(-90deg);
-  transition: 0.1s ease-in-out;
-}
 </style>
 

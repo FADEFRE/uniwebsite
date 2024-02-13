@@ -12,6 +12,7 @@ exposes:
 import { ref, computed, onBeforeMount } from "vue";
 import { getWeekAgo, getMonthAgo, getSixMonthAgo, getYearAgo } from "@/scripts/date-utils";
 import { getCoursesLeipzig } from "@/scripts/axios-requests";
+import ArrowIcon from "../assets/icons/ArrowIcon.vue";
 
 const searchString = ref()
 
@@ -145,7 +146,7 @@ defineExpose({
               <img src="@/assets/icons/TrashWhite.svg" class="clear-icon" @click="deleteCourse">
             </template>
             <template #dropdownicon>
-              <img src="../assets/icons/ArrowWhite.svg">
+              <ArrowIcon color="white" direction="down"/>
             </template>
           </Dropdown>
         </div>
@@ -182,7 +183,7 @@ defineExpose({
           <div>
             <Dropdown v-model="selectedDateOption" :options="dateOptions">
               <template #dropdownicon>
-                <img src="../assets/icons/ArrowWhite.svg">
+                <ArrowIcon color="white" direction="down"/>
               </template>
             </Dropdown>
           </div>

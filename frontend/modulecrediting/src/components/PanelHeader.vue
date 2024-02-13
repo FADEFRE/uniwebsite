@@ -11,6 +11,7 @@ displays:
 
 <script setup>
 import { computed } from "vue";
+import ArrowIcon from "../assets/icons/ArrowIcon.vue";
 
 const props = defineProps({
   externalModules: {
@@ -37,7 +38,7 @@ const props = defineProps({
     </div>
 
     <div class="arrow-icon">
-      <img src="@/assets/icons/ArrowRed.svg" alt="Arrow Icon" />
+      <ArrowIcon color="red" direction="right"/>
     </div>
 
     <div class="modules-container">
@@ -68,10 +69,5 @@ const props = defineProps({
 
 .single-module {
   @include ellipsisTextOverflow();
-}
-
-.arrow-icon {
-  @include rightArrow();
-  // Ensure the arrow icon doesn't cause unnecessary wrapping
 }
 </style>

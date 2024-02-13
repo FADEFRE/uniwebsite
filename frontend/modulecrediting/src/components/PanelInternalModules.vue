@@ -14,6 +14,7 @@ displays:
 -->
 
 <script setup>
+import ArrowIcon from "../assets/icons/ArrowIcon.vue";
 import { ref } from "vue";
 
 const props = defineProps({
@@ -65,7 +66,7 @@ defineExpose({
             <img class="search-icon" src="@/assets/icons/SearchIcon.svg">
           </template>
           <template #dropdownicon>
-              <img src="../assets/icons/ArrowWhite.svg">
+            <ArrowIcon color="white" direction="down"/>
             </template>
         </Dropdown>
       </div>

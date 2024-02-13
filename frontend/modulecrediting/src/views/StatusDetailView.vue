@@ -9,7 +9,7 @@ import ApplicationOverview from "@/components/ApplicationOverview.vue";
 import FormalRejectionInfoBox from "@/components/FormalRejectionInfoBox.vue";
 import SideInfoContainer from '../components/SideInfoContainer.vue';
 import StatusPanel from "@/components/StatusPanel.vue";
-import ApplicationPanel from "../components/ApplicationPanel.vue";
+import ApplicationPanel from "@/components/ApplicationPanel.vue";
 import ButtonLink from '@/components/ButtonLink.vue';
 import ButtonAdd from "../components/ButtonAdd.vue";
 import ButtonDownloadVue from '../components/ButtonDownload.vue';
@@ -199,16 +199,4 @@ const triggerSubmit = () => {
 .formal-rejection-highlight {
   border-left: spacing(m) solid $red;
 }
-
-.link-container {
-  &:hover {
-    .arrow-icon {
-      transform: translate(spacing(xs)) rotate(-90deg);
-    }
-  }
-}
-
-.arrow-icon {
-  transform: rotate(-90deg);
-  transition: 0.1s ease-in-out;
-}</style>
+</style>

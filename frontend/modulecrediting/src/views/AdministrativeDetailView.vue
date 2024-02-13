@@ -4,6 +4,7 @@ import { ref, computed, onBeforeMount } from "vue";
 import ApplicationOverview from "@/components/ApplicationOverview.vue";
 import AdministrativePanel from "@/components/AdministrativePanel.vue";
 import ButtonLink from "@/components/ButtonLink.vue";
+import ArrowIcon from "../assets/icons/ArrowIcon.vue";
 import {
   getApplicationById, getModulesByCourse,
   getUpdateStatusAllowed, updateStatus, putApplicationStudyOffice, putApplicationChairman
@@ -157,7 +158,7 @@ const triggerPassOn = () => {
       </Button>
 
       <Button @click="scrollTop" class="move-top-button">
-        <img src="@/assets/icons/ArrowWhite.svg" class="arrow-icon">
+        <ArrowIcon color="white" direction="up" size="big"/>
       </Button>
     </div>
 
@@ -226,11 +227,5 @@ const triggerPassOn = () => {
 .move-top-button {
   width: 3rem;
   height: 3rem;
-
-  & .arrow-icon {
-    transform: rotate(180deg);
-    width: 18px;
-    height: 12px;
-  }
 }
 </style>

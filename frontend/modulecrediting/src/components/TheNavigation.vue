@@ -2,6 +2,8 @@
 import { logout } from "@/router/logout";
 import { useUserStore } from "@/store/userStore"
 import { computed } from "vue";
+import ArrowIcon from "../assets/icons/ArrowIcon.vue";
+import AuthIcon from "../assets/icons/AuthIcon.vue";
 
 const props = defineProps(['isMenuOpen'])
 
@@ -18,44 +20,45 @@ const specificRole = computed(() => navStore.getCurrentRoleNav)
 
 <template>
   <div v-if="isNavType === 'standard'" class="links-container" :class="{ 'small-screen-links-container': isMenuOpen }">
-    <router-link :to="{ name: 'home' }" class="router-link" :class="{ 'white': isMenuOpen }"
+    <router-link :to="{ name: 'home' }" class="router-link icon-hover-right" :class="{ 'white': isMenuOpen }"
       @click="$emit('linkClicked')">
       {{ $t('navigation.homepage') }}
-      <img src="@/assets/icons/ArrowWhite.svg" class="arrow-icon">
+      <ArrowIcon direction="right" :color="isMenuOpen ? 'dark-gray' : 'white'"/>
     </router-link>
-    <router-link :to="{ name: 'login' }" @click="$emit('linkClicked')" class="router-link"
+    <router-link :to="{ name: 'login' }" @click="$emit('linkClicked')" class="router-link icon-hover-right"
       :class="{ 'white': isMenuOpen }">
       {{ $t('navigation.login') }}
-      <img src="@/assets/icons/LoginWhite.svg" class="login-logout-icon login-icon">
+
+      <AuthIcon type="login" :color="isMenuOpen ? 'dark-gray' : 'white'"/>
     </router-link>
   </div>
 
   <div v-else-if="isNavType === 'internal'" class="links-container"
     :class="{ 'small-screen-links-container': isMenuOpen }">
-    <router-link :to="{ name: 'management' }" class="router-link" @click="$emit('linkClicked')"
+    <router-link :to="{ name: 'management' }" class="router-link icon-hover-right" @click="$emit('linkClicked')"
       :class="{ 'white': isMenuOpen }">
       Verwaltung
-      <img src="@/assets/icons/ArrowWhite.svg" class="arrow-icon">
+      <ArrowIcon direction="right" :color="isMenuOpen ? 'dark-gray' : 'white'"/>
     </router-link>
 
     <div v-if="specificRole === 'study'" :class="{ 'user-specific-container': isMenuOpen }">
-      <router-link :to="{ name: 'studyOfficeSelection' }" @click="$emit('linkClicked')" class="router-link"
-        :class="{ 'white': isMenuOpen }">
+      <router-link :to="{ name: 'studyOfficeSelection' }" @click="$emit('linkClicked')"
+        class="router-link icon-hover-right" :class="{ 'white': isMenuOpen }">
         Übersicht
-        <img src="@/assets/icons/ArrowWhite.svg" class="arrow-icon">
+        <ArrowIcon direction="right" :color="isMenuOpen ? 'dark-gray' : 'white'"/>
       </router-link>
     </div>
     <div v-else-if="specificRole === 'chair'" :class="{ 'user-specific-container': isMenuOpen }">
-      <router-link :to="{ name: 'chairmanSelection' }" @click="$emit('linkClicked')" class="router-link"
+      <router-link :to="{ name: 'chairmanSelection' }" @click="$emit('linkClicked')" class="router-link icon-hover-right"
         :class="{ 'white': isMenuOpen }">
         Übersicht
-        <img src="@/assets/icons/ArrowWhite.svg" class="arrow-icon">
+        <ArrowIcon direction="right" :color="isMenuOpen ? 'dark-gray' : 'white'"/>
       </router-link>
     </div>
 
-    <Button @click="logout" class="router-link" :class="{ 'white': isMenuOpen }">
+    <Button @click="logout" class="router-link icon-hover-right" :class="{ 'white': isMenuOpen }">
       Logout
-      <img src="@/assets/icons/LogoutWhite.svg" class="login-logout-icon logout-icon">
+      <AuthIcon type="logout" :color="isMenuOpen ? 'dark-gray' : 'white'"/>
     </Button>
   </div>
 </template>
@@ -85,31 +88,7 @@ const specificRole = computed(() => navStore.getCurrentRoleNav)
   width: 100%;
 }
 
-
-
 .white {
   width: 100%;
-
-  & .arrow-icon {
-    content: url("@/assets/icons/ArrowDark.svg");
-  }
-
-  & .login-icon {
-    content: url("@/assets/icons/LoginDark.svg");
-  }
-
-  & .logout-icon {
-    content: url("@/assets/icons/LogoutDark.svg");
-  }
 }
-
-.arrow-icon {
-  transform: rotate(-90deg);
-  transition: 0.1s ease-in-out;
-}
-
-.login-logout-icon {
-  transition: 0.1s ease-in-out;
-}
-
 </style>

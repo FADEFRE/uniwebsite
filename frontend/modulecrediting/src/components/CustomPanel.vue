@@ -6,6 +6,7 @@ slots header, icons and default are passed on to PrimeVue Panel
 
 <script setup>
 import { ref, computed } from "vue";
+import ArrowIcon from "../assets/icons/ArrowIcon.vue";
 
 const props = defineProps({
   initialCollapsedState: {
@@ -15,7 +16,6 @@ const props = defineProps({
 })
 
 const d_collapsed = ref(props.initialCollapsedState)
-const arrowStyle = computed(() => d_collapsed.value ? 'arrow-icon' : 'arrow-icon arrow-up')
 
 const setCollapsed = (value) => {
   d_collapsed.value = value
@@ -36,7 +36,7 @@ defineExpose({
         <slot name="icons"></slot>
       </template>
       <template #togglericon>
-        <img src="@/assets/icons/ArrowRed.svg" :class="arrowStyle">
+        <ArrowIcon :direction="d_collapsed ? 'down' : 'up'" color="red"/>
       </template>
       <slot></slot>
     </Panel>
@@ -94,13 +94,5 @@ defineExpose({
   &:hover {
     background-color: $white-hover;
   }
-}
-
-.arrow-icon {
-  transition: 0.3s ease-in-out;
-}
-
-.arrow-up {
-  transform: rotate(180deg);
 }
 </style>

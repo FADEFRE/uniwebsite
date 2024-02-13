@@ -56,9 +56,6 @@
   gap: spacing(m);
 }
 
-@mixin rightArrow() {
-  transform: rotate(-90deg);
-}
 
 @mixin smallHighlightBox() {
   width: max-content;

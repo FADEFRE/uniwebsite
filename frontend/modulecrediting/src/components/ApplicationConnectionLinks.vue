@@ -6,6 +6,8 @@ props:
 -->
 
 <script setup>
+import ArrowIcon from '../assets/icons/ArrowIcon.vue';
+
 const props = defineProps({
   connectionsData: {
     required: true,
@@ -25,7 +27,7 @@ const props = defineProps({
     <a v-for="connection in connectionsData" :href="'#' + connection.id" class="connection-link-container">
       <p class="connection-text"> {{ connection.externalModules.join(', ') || '...' }}</p>
       <div>
-        <img src="@/assets/icons/ArrowRed.svg" alt="arrow-icon" class="arrow-icon">
+        <ArrowIcon direction="right" color="red"/>
       </div>
     </a>
 
@@ -53,10 +55,6 @@ const props = defineProps({
 
   &:hover {
     background-color: $white-hover;
-
-    & .arrow-icon {
-      transform: translateX(spacing(xs)) rotate(-90deg);
-    }
   }
 }
 
@@ -66,10 +64,5 @@ const props = defineProps({
   overflow: hidden;
   text-overflow: ellipsis;
   text-transform: none;
-}
-
-.arrow-icon {
-  transition: 0.1s ease-in-out;
-  transform: rotate(-90deg);
 }
 </style>

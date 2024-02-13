@@ -2,6 +2,7 @@
 import { ref, onBeforeMount, computed } from "vue";
 import ButtonLink from "@/components/ButtonLink.vue"
 import { getCoursesLeipzig, getModulesNameCodeByCourse, getModulesNameCode, putCourseLeipzigEdit } from "@/scripts/axios-requests";
+import ArrowIcon from "../assets/icons/ArrowIcon.vue";
 
 const courses = ref()
 const selectedCourse = ref()
@@ -67,7 +68,7 @@ const saveCourseLeipzig = () => {
             <Dropdown v-model="selectedCourse" :options="courses" placeholder="Studiengang wählen"
                 @change="setSelectedModules" class="dropdown" v-if="!selectedCourse">
                 <template #dropdownicon>
-                    <img src="../assets/icons/ArrowWhite.svg">
+                    <ArrowIcon color="white" direction="down"/>
                 </template>
             </Dropdown>
             <div v-else class="saving-buttons-container">
@@ -85,12 +86,12 @@ const saveCourseLeipzig = () => {
                 </div>
 
                 <div v-for="singleModule in selectableModules" :key="singleModule.name"
-                    @click="addModuleToCourse(singleModule)" class="single-selectable-module-item">
+                    @click="addModuleToCourse(singleModule)" class="single-selectable-module-item icon-hover-right">
                     <div class="module-text-container">
                         <p>{{ singleModule.name }}</p>
                         <small>{{ singleModule.code }}</small>
                     </div>
-                    <img src="@/assets/icons/ArrowRed.svg" class="arrow-icon">
+                    <ArrowIcon color="red" direction="right"/>
                 </div>
 
                 <div v-if="selectableModules.length === 0">
@@ -103,8 +104,8 @@ const saveCourseLeipzig = () => {
                 <h3>Module in {{ selectedCourse }}</h3>
 
                 <div v-for="singleModule in addedModules" @click="removeModuleFromCourse(singleModule)"
-                    class="single-selected-module-item">
-                    <img src="@/assets/icons/ArrowRed.svg" class="arrow-icon">
+                    class="single-selected-module-item icon-hover-left">
+                    <ArrowIcon color="red" direction="left"/>
                     <div class="module-text-container">
                         <p>{{ singleModule.name }}</p>
                         <small>{{ singleModule.code }}</small>
@@ -117,8 +118,8 @@ const saveCourseLeipzig = () => {
                 </div>
 
                 <div v-for="singleModule in selectedModules" @click="removeModuleFromCourse(singleModule)"
-                    class="single-selected-module-item">
-                    <img src="@/assets/icons/ArrowRed.svg" class="arrow-icon">
+                    class="single-selected-module-item icon-hover-left">
+                    <ArrowIcon color="red" direction="left"/>
                     <div class="module-text-container">
                         <p>{{ singleModule.name }}</p>
                         <small>{{ singleModule.code }}</small>
@@ -184,12 +185,6 @@ const saveCourseLeipzig = () => {
     justify-content: space-between;
     gap: spacing(m);
 
-
-    & .arrow-icon {
-        @include rightArrow();
-        transition: 0.1s ease-in-out;
-    }
-
     & .module-text-container {
         display: flex;
         flex-direction: column;
@@ -198,10 +193,6 @@ const saveCourseLeipzig = () => {
 
     &:hover {
         background-color: $gray-hover;
-
-        & .arrow-icon {
-            transform: translateX(0.15rem) rotate(-90deg);
-        }
     }
 }
 
@@ -248,12 +239,6 @@ const saveCourseLeipzig = () => {
     justify-content: space-between;
     gap: 0.8rem;
 
-
-    & .arrow-icon {
-        transform: rotate(90deg);
-        transition: 0.1s ease-in-out;
-    }
-
     & .module-text-container {
         display: flex;
         flex-direction: column;
@@ -267,10 +252,6 @@ const saveCourseLeipzig = () => {
 
     &:hover {
         background-color: $gray-hover;
-
-        & .arrow-icon {
-            transform: translateX(-0.15rem) rotate(90deg);
-        }
     }
 }
 
