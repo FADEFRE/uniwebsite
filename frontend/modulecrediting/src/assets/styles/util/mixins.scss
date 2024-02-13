@@ -48,19 +48,6 @@
   gap: spacing(s);
 }
 
-@mixin panelComponent() {
-  width: 100%;
-  padding: spacing(s) 0;
-  background-color: $white;
-  border-top: 1px solid $dark-gray;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  gap: spacing(m);
-}
-
 @mixin screenSplit() {
   width: 100%;
   display: flex;

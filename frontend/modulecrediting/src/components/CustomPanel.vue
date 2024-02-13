@@ -76,13 +76,12 @@ defineExpose({
   padding: spacing(l) 9%;
   border-bottom: 2px solid $dark-gray;
 
-  @include verticalList(small);
 
-  @media only screen and (max-width: 1350px) {
+  @include breakpoint(xl) {
     padding: spacing(m) 5%;
   }
 
-  @media only screen and (max-width: 700px) {
+  @include breakpoint(s) {
     padding: spacing(l);
   }
 }

@@ -183,7 +183,7 @@ const triggerPassOn = () => {
   position: sticky;
   top: spacing(m);
 
-  @media only screen and (max-width: 1200px) {
+  @include breakpoint(l) {
     display: none;
   }
 }
@@ -218,7 +218,7 @@ const triggerPassOn = () => {
   width: 3rem;
   height: 4rem;
 
-  @media only screen and (max-width: 950px) {
+  @include breakpoint(m) {
     display: none;
   }
 }

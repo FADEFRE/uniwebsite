@@ -171,8 +171,9 @@ defineExpose({
 .screen-split {
   @include screenSplit();
 
-  @media only screen and (max-width: 700px) {
+  @include breakpoint(s) {
     flex-wrap: wrap;
+    flex-direction: column;
   }
 }
 
@@ -182,7 +183,7 @@ defineExpose({
   align-self: stretch;
   width: 50%;
 
-  @media only screen and (max-width: 700px) {
+  @include breakpoint(s) {
     width: 100%;
   }
 }
@@ -193,7 +194,7 @@ defineExpose({
   align-self: stretch;
   width: 50%;
 
-  @media only screen and (max-width: 700px) {
+  @include breakpoint(s) {
     width: 100%;
   }
 }

@@ -107,7 +107,7 @@ defineExpose({
 </script>
 
 <template>
-  <div class="panel-external-modules">
+  <div class="panel-container" id="exteral-modules-container">
 
     <h4>Anzurechnende Module</h4>
 
@@ -152,8 +152,7 @@ defineExpose({
 @use '@/assets/styles/util' as *;
 @use '@/assets/styles/global' as *;
 
-.panel-external-modules {
-  @include panelComponent();
+#exteral-modules-container {
   border-top: none;
 }
 

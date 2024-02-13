@@ -21,7 +21,7 @@ const props = defineProps({
 </script>
 
 <template>
-  <div class="panel-decision">
+  <div class="panel-container">
     <h4>Entscheidung</h4>
 
     <div v-if="type === 'single'" class="decision-container">
@@ -39,18 +39,16 @@ const props = defineProps({
 <style scoped lang="scss">
 @use '@/assets/styles/util' as *;
 @use '@/assets/styles/global' as *;
-
-.panel-decision {
-  @include panelComponent();
-}
+@use '@/assets/styles/components' as *;
 
 .decision-split-container {
   @include screenSplit();
   width: 100%;
   height: min-content;
 
-  @media only screen and (max-width: 1000px) {
+  @include breakpoint(m) {
     flex-wrap: wrap;
+    flex-direction: column;
   }
 }
 

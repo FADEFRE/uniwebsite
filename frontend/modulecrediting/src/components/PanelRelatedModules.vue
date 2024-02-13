@@ -52,7 +52,7 @@ const openRelatedModule = (singleModule) => {
 </script>
 
 <template>
-  <div class="panel-related-modules">
+  <div class="panel-container">
 
     <h4>Ähnliche Module:</h4>
 
@@ -98,10 +98,6 @@ const openRelatedModule = (singleModule) => {
 <style scoped lang="scss">
 @use '@/assets/styles/util' as *;
 @use '@/assets/styles/global' as *;
-
-.panel-related-modules {
-  @include panelComponent();
-}
 
 .related-modules-list {
   @include verticalList(small);

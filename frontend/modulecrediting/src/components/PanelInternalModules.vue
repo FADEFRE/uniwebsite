@@ -53,7 +53,7 @@ defineExpose({
 </script>
 
 <template>
-  <div class="panel-internal-modules">
+  <div class="panel-container">
 
     <h4>Module der Universität Leipzig</h4>
 
@@ -92,20 +92,18 @@ defineExpose({
 @use '@/assets/styles/global' as *;
 
 
-.panel-internal-modules {
-  @include panelComponent();
-}
 .screen-split {
   @include screenSplit();
   
-  @media only screen and (max-width: 700px) {
+  @include breakpoint(s) {
     flex-wrap: wrap;
+    flex-direction: column;
   }
 }
 .module-dropdown {
   width: 50%;
 
-  @media only screen and (max-width: 700px) {
+  @include breakpoint(s) {
     width: 100%;
   }
 }
@@ -115,7 +113,7 @@ defineExpose({
   align-self: stretch;
   width: 50%;
 
-  @media only screen and (max-width: 700px) {
+  @include breakpoint(s) {
     width: 100%;
   }
 }

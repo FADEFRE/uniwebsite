@@ -75,7 +75,7 @@ function closeMenu() {
   background-size: contain;
   background-position: right;
 
-  @media screen and (max-width: 920px) {
+  @include breakpoint(m) {
     background-image: none;
   }
 }
@@ -94,12 +94,12 @@ function closeMenu() {
   width: 27rem;
   height: 11rem;
 
-  @media only screen and (max-width: 1170px) {
+  @include breakpoint(l) {
     width: 21rem;
     height: 9rem;
   }
 
-  @media only screen and (max-width: 920px) {
+  @include breakpoint(m) {
     width: 16rem;
     height: 7rem;
   }
@@ -135,7 +135,7 @@ function closeMenu() {
   display: none;
 }
 
-@media (max-width: 920px) {
+@include breakpoint(m) {
   .burger-menu {
     display: flex;
   }

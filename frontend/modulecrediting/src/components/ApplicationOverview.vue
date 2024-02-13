@@ -134,7 +134,7 @@ const triggerForward = () => {
         }
     }
 
-    @media only screen and (max-width: 600px) {
+    @include breakpoint(xs) {
         flex-direction: column;
         gap: spacing(s);
     }
@@ -143,11 +143,11 @@ const triggerForward = () => {
 
 .application-info {
     display: flex;
-    gap: spacing(m);
+    gap: spacing(s);
     max-width: 100%;
     flex-wrap: wrap;
 
-    @media only screen and (max-width: 600px) {
+    @include breakpoint(xs) {
         flex-direction: column;
         gap: spacing(s);
     }
@@ -163,7 +163,7 @@ const triggerForward = () => {
     &.admin-selection-view {
         min-width: max-content;
         width: 12rem;
-        @media only screen and (max-width: 600px) {
+        @include breakpoint(xs) {
         width: 100%;
     }
     }
@@ -182,7 +182,7 @@ const triggerForward = () => {
 
     &.admin-selection-view {
         width: 19rem;
-        @media only screen and (max-width: 600px) {
+        @include breakpoint(xs) {
         width: 100%;
     }
     }
@@ -194,14 +194,14 @@ const triggerForward = () => {
 
     &.admin-selection-view {
         width: 19rem;
-        @media only screen and (max-width: 600px) {
+        @include breakpoint(xs) {
         width: 100%;
     }
     }
 }
 
 .info-container {
-    @media only screen and (max-width: 600px) {
+    @include breakpoint(xs) {
         width: 100%;
     }
 }
