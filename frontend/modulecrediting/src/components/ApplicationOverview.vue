@@ -153,20 +153,27 @@ const triggerForward = () => {
     }
 }
 
+.info-container {
 
+    color: $white;
+
+    @include breakpoint(xs) {
+        width: 100%;
+    }
+}
 
 .course-container {
     @include smallHighlightBox();
     background-color: $dark-gray;
-    color: $white;
 
     &.admin-selection-view {
         min-width: max-content;
         width: 12rem;
-        @include breakpoint(xs) {
-        width: 100%;
     }
-    }
+
+    @include breakpoint(xs) {
+            width: 100%;
+        }
 }
 
 .course-selection-container {
@@ -174,37 +181,37 @@ const triggerForward = () => {
     position: relative;
     display: flex;
     flex-direction: column;
+
+    @include breakpoint(xs) {
+        width: 100%;
+    }
 }
 
 .vorgangsnummer-container {
     @include smallHighlightBox();
     background-color: $gray;
+    color: $dark-gray;
 
     &.admin-selection-view {
         width: 19rem;
-        @include breakpoint(xs) {
-        width: 100%;
     }
+
+    @include breakpoint(xs) {
+        width: 100%;
     }
 }
 
 .status-container {
     @include smallHighlightBox();
-    color: $white;
 
     &.admin-selection-view {
         width: 19rem;
-        @include breakpoint(xs) {
-        width: 100%;
     }
+    @include breakpoint(xs) {
+            width: 100%;
     }
 }
 
-.info-container {
-    @include breakpoint(xs) {
-        width: 100%;
-    }
-}
 
 .greenBackground {
     background-color: $green;

@@ -14,4 +14,9 @@ $breakpoints-down: (
     }
 }
 
+@mixin breakpoint-up($size) {
+    @media (min-width: map-get($breakpoints-down, $size)) {
+        @content;
+    }
+}
 

@@ -112,17 +112,18 @@ const triggerSubmit = () => {
           @delete-self="deleteExistingConnection(connection.id)" ref="existingConnectionsRef"
           :class="{ 'formal-rejection-highlight': connection['formalRejection'] }" />
       </div>
+
       <div v-if="applicationData['fullStatus'] === 'FORMFEHLER'" class="modules-connections-container">
         <ApplicationPanel v-for="key in newConnections" :key="key" :selectable-modules="moduleOptions"
           :allow-delete="moduleConnections.length > 1" @delete-self="deleteNewConnection(key)" ref="newConnectionsRef" />
-        
       </div>
 
-      <ButtonDownloadVue @click="openSummaryDocument" :fixed="true"/>
+      
       <div class="application-buttons-container">
         <ButtonAdd v-if="applicationData['fullStatus'] === 'FORMFEHLER'" @click="addNewConnection">Modulzuweisung hinzufügen</ButtonAdd>
         <ButtonLink v-if="applicationData['fullStatus'] === 'FORMFEHLER'" :redButton="true" @click="triggerSubmit">Neu einreichen</ButtonLink>
       </div>
+      <ButtonDownloadVue @click="openSummaryDocument" :fixed="true"/>
     </div>
 
     <div class="side-infos-list">
@@ -189,7 +190,7 @@ const triggerSubmit = () => {
 }
 
 .modules-connections-container {
-  @include verticalList(small);
+  @include verticalList(mid);
   width: 100%;
   overflow: hidden;
 }

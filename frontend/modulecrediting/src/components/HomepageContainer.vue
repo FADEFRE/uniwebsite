@@ -38,17 +38,28 @@ const props = defineProps(['header', 'text'])
     display: flex;
     flex-direction: column;
     gap: spacing(xs);
+
+    @include breakpoint(xs) {
+        width: 100%;
+    }
 }
 
 :slotted(.input-button-container) {
     width: 100%;
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: row;
+    @include breakpoint(xs) {
+        flex-direction: column;
+    }
 }
 
 :deep(.p-inputtext) {
     width: 100%;
     max-width: 250px;
+
+    @include breakpoint(xs) {
+        max-width: 100%;
+    }
 
     text-align: center;
     font-family: 'Jost';
