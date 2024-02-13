@@ -1,13 +1,21 @@
 <script setup>
 import { useUserStore } from "@/store/userStore";
 import translate from '@/i18n/translate';
+import { useRoute } from "vue-router";
+import { computed } from "vue";
 
 const store = useUserStore()
+const route = useRoute()
+const type = route.meta['authType']
+const showLanguage = computed(() => {
+    if (type !== "standard") { return false }
+    return true
+});
 
 </script>
 
 <template>
-    <div class="language-selection-container">
+    <div v-if="showLanguage" class="language-selection-container">
         <Button @click="translate.switchLanguage('de')" class="language-button" :class="{ 'active': store.locale == 'de' }">DE</Button>
         <Button @click="translate.switchLanguage('en')" class="language-button" :class="{ 'active': store.locale == 'en' }">EN</Button>
     </div>
