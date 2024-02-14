@@ -1,11 +1,10 @@
-@use '@/assets/styles/util' as *;
+@use "@/assets/styles/util" as *;
 
 @font-face {
   font-family: "Jost";
   src: url("@/assets/fonts/Jost-VariableFont_wght.ttf"); /* Adjust the file path and format */
   font-weight: 1 999;
 }
-
 
 h2 {
   color: $dark-gray;
@@ -41,16 +40,10 @@ p {
 .p-inputtext,
 input,
 textarea {
-  border: 2px solid $dark-gray;
-  background-color: transparent;
-  padding: 0.5rem;
-
   color: $black;
   font-family: "Jost";
   font-size: 1rem;
   font-weight: 400;
-
-  min-width: 0;
 }
 
 ::placeholder {
@@ -58,10 +51,11 @@ textarea {
   font-family: "Jost";
   font-size: 1rem;
   font-weight: 400;
+  opacity: 0.6;
 }
 
 .helper-text {
-  margin-left: 0.5rem;
+  margin-left: spacing(s);
 }
 
 small {
@@ -89,11 +83,17 @@ Button,
   font-size: 1.1rem;
   font-weight: 500;
 
-  //@include smallHighlightBox();
-
-  background-color: $dark-gray;
-
-  &:hover {
-    background-color: $dark-gray-hover;
+  &.white {
+    color: $dark-gray;
   }
+}
+
+.related-modules-text {
+  text-transform: none;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.invalid-text {
+  color: $red;
 }

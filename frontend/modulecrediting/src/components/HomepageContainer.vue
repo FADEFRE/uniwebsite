@@ -23,8 +23,10 @@ const props = defineProps(['header', 'text'])
 
 
 <style lang="scss" scoped>
-@use '@/assets/styles/util' as *;
 @use '@/assets/styles/global' as *;
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/components' as *;
+
 
 .homepage-container {
     @include basicContainer();
@@ -35,32 +37,34 @@ const props = defineProps(['header', 'text'])
 .input-button-with-invalid-container {
     display: flex;
     flex-direction: column;
-    gap: 0.2rem;
+    gap: spacing(xs);
+
+    @include breakpoint(xs) {
+        width: 100%;
+    }
 }
 
 :slotted(.input-button-container) {
     width: 100%;
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: row;
+    @include breakpoint(xs) {
+        flex-direction: column;
+    }
 }
 
 :deep(.p-inputtext) {
-    background-color: $gray;
-    border: none;
+    width: 100%;
+    max-width: 250px;
+
+    @include breakpoint(xs) {
+        max-width: 100%;
+    }
 
     text-align: center;
     font-family: 'Jost';
     font-weight: 500;
     letter-spacing: 0.3rem;
-    width: 100%;
-    max-width: 250px;
-
-    &.invalid {
-        border: 2px solid $red;
-    }
-}
-:slotted(.invalid-text) {
-  color: $red;
 }
 </style>
 

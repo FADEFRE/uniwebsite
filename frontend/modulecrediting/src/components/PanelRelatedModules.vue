@@ -14,6 +14,8 @@ import { ref, onBeforeMount } from "vue";
 import { getRelatedModuleConnections } from "@/scripts/axios-requests";
 import { parseRequestDate } from "@/scripts/date-utils";
 import router from "@/router";
+import ModuleStatusIcon from "../assets/icons/ModuleStatusIcon.vue";
+import DateIcon from "../assets/icons/DateIcon.vue";
 
 
 //TODO: FIX Related Modules!!!!!! 
@@ -52,34 +54,36 @@ const openRelatedModule = (singleModule) => {
 </script>
 
 <template>
-  <div class="panel-related-modules">
+  <div class="panel-container">
 
     <h4>Ähnliche Module:</h4>
 
-    <div v-if="relatedModules && relatedModules.length > 0" class="related-modules-list-container">
-      <div v-for="relatedModule in relatedModules" class="single-related-module-container"
+    <div v-if="relatedModules && relatedModules.length > 0" class="related-modules-list">
+      <div v-for="relatedModule in relatedModules" class="related-module-container"
         @click="openRelatedModule(relatedModule)">
 
-        <div v-if="relatedModule['decisionFinal'] === 'accepted'">
-          <img src="../assets/icons/ModuleAccepted.svg">
-        </div>
-        <div v-else-if="relatedModule['decisionFinal'] === 'asExamCertificate'">
-          <img src="../assets/icons/ModuleAsExamCertificate.svg">
-        </div>
-        <div v-else-if="relatedModule['decisionFinal'] === 'denied'">
-          <img src="../assets/icons/ModuleDenied.svg">
-        </div>
+        <div class="main-info">
+          <ModuleStatusIcon :status-decision="relatedModule['decisionFinal']" size="small"/>
+
         <PanelHeader v-if="relatedModule['externalModules'] && relatedModule['modulesLeipzig']"
           :external-modules="relatedModule['externalModules'].map(m => m.name)"
           :internal-modules="relatedModule['modulesLeipzig'].map(m => m.name)" :relatedModules="true" />
+        </div>
+        
 
-        <div class="date-block">
-          <img src="../assets/icons/DecisionDate.svg" alt="DecisionDate">
-          <p>{{ parseRequestDate(relatedModule['application']['decisionDate']) }}</p>
+        <div class="additional-info">
+          <div class="date-block">
+            <DateIcon type="decision"/>
+            <p class="info-text">{{ parseRequestDate(relatedModule['application']['decisionDate']) }}</p>
+          </div>
+
+          <p class="info-text">{{ relatedModule['application']['courseLeipzig']['name'] }}</p>
+
+          
         </div>
 
-        <p class="course">{{ relatedModule['application']['courseLeipzig']['name'] }}</p>
       </div>
+
     </div>
 
     <div v-else>
@@ -93,43 +97,46 @@ const openRelatedModule = (singleModule) => {
 @use '@/assets/styles/util' as *;
 @use '@/assets/styles/global' as *;
 
-.panel-related-modules {
-  @include panelComponent();
-
-}
-
-.related-modules-list-container {
+.related-modules-list {
   @include verticalList(small);
-  width: 100%;
-  overflow: hidden;
 }
 
-.single-related-module-container {
+.related-module-container {
+  @include smallHighlightBox();
   @include verticalListItem($gray);
-
-  width: 100%;
-  padding: 0.5rem 1rem;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-
-  overflow: hidden;
+  
+  @include breakpoint(m) {
+    flex-direction: column-reverse;
+    align-items: flex-start;
+    gap: spacing(m);
+  }
+  
 }
 
-.left-side,
-.right-side {
+.main-info {
+  width: 70%;
   display: flex;
-  gap: 0.5rem;
+  gap: spacing(m);
+
+  @include breakpoint(m) {
+    width: 100%;
+  }
+}
+
+.additional-info {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
+  gap: spacing(m);
 }
 
 .date-block {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: spacing(s);
 }
 
-.course {}
+.info-text {
+  font-size: 0.9rem;
+}
 </style>

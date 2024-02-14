@@ -4,7 +4,7 @@ import LoginContainer from '../components/LoginContainer.vue';
 
 
 <template>
-  <div class="main">
+  <div class="main centered">
     <LoginContainer />
   </div>
 </template>
@@ -13,10 +13,4 @@ import LoginContainer from '../components/LoginContainer.vue';
 <style scoped lang="scss">
 @use '@/assets/styles/util' as *;
 @use '@/assets/styles/global' as *;
-
-.main {
-  @include main();
-  flex-direction: row !important;
-}
-
 </style>

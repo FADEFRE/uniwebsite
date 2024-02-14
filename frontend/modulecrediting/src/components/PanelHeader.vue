@@ -11,6 +11,7 @@ displays:
 
 <script setup>
 import { computed } from "vue";
+import ArrowIcon from "../assets/icons/ArrowIcon.vue";
 
 const props = defineProps({
   externalModules: {
@@ -29,18 +30,20 @@ const props = defineProps({
 <template>
   <div class="panel-heading-container">
     <div class="modules-container">
-      <h3 v-if="externalModules && externalModules.length" :class="{ 'related-modules-text': relatedModules }" class="single-module">
-          {{ externalModules.join(', ') }}
-        </h3>
-        <h3 v-else>...</h3>
+      <h3 v-if="externalModules && externalModules.length" :class="{ 'related-modules-text': relatedModules }"
+        class="single-module">
+        {{ externalModules.join(', ') }}
+      </h3>
+      <h3 v-else>...</h3>
     </div>
 
     <div class="arrow-icon">
-      <img src="@/assets/icons/ArrowRed.svg" alt="Arrow Icon" />
+      <ArrowIcon color="red" direction="right"/>
     </div>
 
     <div class="modules-container">
-      <h3 v-if="internalModules && internalModules.length" :class="{ 'related-modules-text': relatedModules }" class="single-module">
+      <h3 v-if="internalModules && internalModules.length" :class="{ 'related-modules-text': relatedModules }"
+        class="single-module">
         {{ internalModules.join(', ') }}
       </h3>
       <h3 v-else>...</h3>
@@ -54,31 +57,17 @@ const props = defineProps({
 
 .panel-heading-container {
   display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 0.5rem;
+  gap: spacing(s);
   width: 100%;
   overflow: hidden;
 }
 
 .modules-container {
-  display: flex;
-  gap: 0.3rem;
   overflow: hidden;
+
 }
 
 .single-module {
   @include ellipsisTextOverflow();
-}
-
-.arrow-icon {
-  @include rightArrow();
-  // Ensure the arrow icon doesn't cause unnecessary wrapping
-}
-
-.related-modules-text {
-  text-transform: none;
-  font-size: 1rem;
-  font-weight: 500;
 }
 </style>

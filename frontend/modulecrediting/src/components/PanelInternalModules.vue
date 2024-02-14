@@ -14,6 +14,7 @@ displays:
 -->
 
 <script setup>
+import ArrowIcon from "../assets/icons/ArrowIcon.vue";
 import { ref } from "vue";
 
 const props = defineProps({
@@ -53,7 +54,7 @@ defineExpose({
 </script>
 
 <template>
-  <div class="panel-internal-modules">
+  <div class="panel-container">
 
     <h4>Module der Universität Leipzig</h4>
 
@@ -65,7 +66,7 @@ defineExpose({
             <img class="search-icon" src="@/assets/icons/SearchIcon.svg">
           </template>
           <template #dropdownicon>
-              <img src="../assets/icons/ArrowWhite.svg">
+            <ArrowIcon color="white" direction="down"/>
             </template>
         </Dropdown>
       </div>
@@ -92,20 +93,18 @@ defineExpose({
 @use '@/assets/styles/global' as *;
 
 
-.panel-internal-modules {
-  @include panelComponent();
-}
 .screen-split {
   @include screenSplit();
   
-  @media only screen and (max-width: 700px) {
+  @include breakpoint(s) {
     flex-wrap: wrap;
+    flex-direction: column;
   }
 }
 .module-dropdown {
   width: 50%;
 
-  @media only screen and (max-width: 700px) {
+  @include breakpoint(s) {
     width: 100%;
   }
 }
@@ -115,7 +114,7 @@ defineExpose({
   align-self: stretch;
   width: 50%;
 
-  @media only screen and (max-width: 700px) {
+  @include breakpoint(s) {
     width: 100%;
   }
 }
@@ -127,11 +126,13 @@ defineExpose({
   @include verticalListItem($gray);
   width: 100%;
 }
+
+
 .search-icon {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  right: 0.5rem;
+  right: spacing(s);
 }
 .trash-icon {
   @include trashIconAnimation();

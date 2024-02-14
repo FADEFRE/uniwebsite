@@ -52,10 +52,8 @@ const emit = defineEmits(['change'])
 
 const id = props.connectionData['id']
 
-const decisionSuggestion = props.connectionData['decisionSuggestion'] !== 'unedited'
-  ? props.connectionData['decisionSuggestion'] : undefined
-const decisionFinal = props.connectionData['decisionFinal'] !== 'unedited'
-  ? props.connectionData['decisionFinal'] : undefined
+const decisionSuggestion = props.connectionData['decisionSuggestion']
+const decisionFinal = props.connectionData['decisionFinal']
 
 const panelExternalModules = ref()
 const panelInternalModules = ref()
@@ -158,6 +156,7 @@ defineExpose({
 <style scoped lang="scss">
 @use '@/assets/styles/util' as *;
 @use '@/assets/styles/global' as *;
+@use '@/assets/styles/components' as *;
 
 .connection-highlight {
   border-left: 1rem solid $dark-gray;

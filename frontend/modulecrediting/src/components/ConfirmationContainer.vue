@@ -1,5 +1,7 @@
 <script setup>
 import { computed, ref } from 'vue';
+import { useClipboard } from '@vueuse/core'
+import CopyIcon from '../assets/icons/CopyIcon.vue';
 
 const props = defineProps({
     id: {
@@ -8,12 +10,12 @@ const props = defineProps({
     }
 });
 
+const { copy, copied, isSupported } = useClipboard({ props })
+
 const formattedId = computed(() => formatId(props.id));
 
-const iconClicked = ref(false);
 const copyId = () => {
-    navigator.clipboard.writeText(props.id);
-    iconClicked.value = true;
+    copy(props.id);
 };
 
 function formatId(id) {
@@ -26,7 +28,9 @@ function formatId(id) {
         <div class="id-section">
             <div class="id-container">
                 <h2 class="id">{{ formattedId }}</h2>
-                <img @click="copyId" :class="{ 'icon-clicked': iconClicked }" class="copy-icon" src="@/assets/icons/CopyIcon.svg" alt="Copy Icon">
+                <div class="copy-icon-container" @click=copyId>
+                    <CopyIcon v-if="isSupported" :disabled="copied"/>
+                </div>
             </div>
             <p class="description-text">Mit der Vorgangsnummer kannst du immer den Status deines Antrags überprüfen</p>
         </div>
@@ -48,7 +52,7 @@ function formatId(id) {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1rem;
+    gap: spacing(m);
 }
 
 .id-section {
@@ -56,14 +60,14 @@ function formatId(id) {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 1rem;
+    gap: spacing(m);
     width: min-content;
 }
 
 .id-container {
     position: relative;
     width: max-content;
-    padding: 1rem 2rem;
+    padding: spacing(m) spacing(xl);
     background-color: $gray;
     border: solid 1px $dark-gray;
 }
@@ -72,21 +76,11 @@ function formatId(id) {
     font-weight: 800;
     letter-spacing: 0.5rem;
 }
-.copy-icon {
+.copy-icon-container {
     position: absolute;
-    top: 0.5rem;
-    right: 0.5rem;
-
-    transition: 0.05s ease-in-out;
-
-    &:hover {
-        transform: scale(1.1);
-    }
-
-    &.icon-clicked {
-        opacity: 0.5;
-        transform: scale(1);
-    }
+    top: 0;
+    right: 0;
+    padding: spacing(s);
 }
 
 .description-text {

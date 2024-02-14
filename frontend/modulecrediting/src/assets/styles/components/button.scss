@@ -1,13 +1,42 @@
 @use '@/assets/styles/util' as *;
 @use '@/assets/styles/global' as *;
 
-a,Button,.p-button {
+Button,.p-button, .router-link {
   @include smallHighlightBox();
   width: max-content;
 
   background-color: $dark-gray;
+  &.white {
+    background-color: $white;
+  }
 
   &:hover {
     background-color: $dark-gray-hover;
+
+    &.white {
+      background-color: $white-hover;
+    }
+  }
+
+
+}
+
+.disabled {
+  opacity: 0.5;
+}
+
+.red-button {
+  background-color: $red;
+
+  &:hover {
+    background-color: $red-hover;
   }
 }
+
+.fixed-button {
+  position: fixed;
+  z-index: 3;
+  bottom: spacing(xl);
+  right: spacing(m);
+}
+

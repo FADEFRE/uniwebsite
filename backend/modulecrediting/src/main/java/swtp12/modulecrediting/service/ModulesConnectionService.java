@@ -37,6 +37,7 @@ public class ModulesConnectionService {
         for(ModulesConnectionDTO modulesConnectionDTO : modulesConnectionsDTO) {
             ModulesConnection modulesConnection = createModulesConnection(modulesConnectionDTO);
             ModulesConnection modulesConnectionOriginal = createModulesConnection(modulesConnectionDTO);
+            modulesConnectionOriginal.setIsOriginalModulesConnection(true);
 
             modulesConnection.setModulesConnectionOriginal(modulesConnectionOriginal);
 
@@ -175,6 +176,13 @@ public class ModulesConnectionService {
     }
 
 
+    public void deleteOriginalModulesConnections(List<ModulesConnection> modulesConnections) {
+        for(ModulesConnection modulesConnection : modulesConnections) {
+            modulesConnection.setModulesConnectionOriginal(null);
+            modulesConnectionRepository.save(modulesConnection);
+        }
+    }
+
     // helper methods to build correct modules connection for student get request (stauts view page)
     public List<ModulesConnection> getOriginalModulesConnections(List<ModulesConnection> modulesConnections) {
         ArrayList<ModulesConnection> modulesConnectionsOriginal = new ArrayList<>();
@@ -183,12 +191,6 @@ public class ModulesConnectionService {
             modulesConnectionsOriginal.add(modulesConnection.getModulesConnectionOriginal());
         }
         return modulesConnectionsOriginal;
-    }
-    public List<ModulesConnection> removeOriginalModulesConnections(List<ModulesConnection> modulesConnections) {
-        for(ModulesConnection modulesConnection : modulesConnections) {
-            modulesConnection.setModulesConnectionOriginal(null);
-        }
-        return modulesConnections;
     }
     public List<ModulesConnection> getOriginalModulesConnectionsWithFormalRejectionData(List<ModulesConnection> editModulesConnections) {
         ArrayList<ModulesConnection> modulesConnectionsOriginal = new ArrayList<>();
@@ -217,8 +219,9 @@ public class ModulesConnectionService {
             if(m.getId() == baseModulesConnection.getId()) continue;
 
             // skip original modules connections
-            if(m.getModulesConnectionOriginal() == null) continue;
+            if(m.getIsOriginalModulesConnection()) continue;
 
+            // only abgeschlossene applications
             if(m.getApplication().getFullStatus() != EnumApplicationStatus.ABGESCHLOSSEN) continue;
 
             if(m.getDecisionFinal() == unedited || m.getDecisionFinal() == asExamCertificate) continue;

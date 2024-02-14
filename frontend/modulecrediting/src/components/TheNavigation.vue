@@ -2,6 +2,8 @@
 import { logout } from "@/router/logout";
 import { useUserStore } from "@/store/userStore"
 import { computed } from "vue";
+import ArrowIcon from "../assets/icons/ArrowIcon.vue";
+import AuthIcon from "../assets/icons/AuthIcon.vue";
 
 const props = defineProps(['isMenuOpen'])
 
@@ -18,44 +20,45 @@ const specificRole = computed(() => navStore.getCurrentRoleNav)
 
 <template>
   <div v-if="isNavType === 'standard'" class="links-container" :class="{ 'small-screen-links-container': isMenuOpen }">
-    <router-link :to="{ name: 'home' }" class="router-link" :class="{ 'white-router-link': isMenuOpen }"
+    <router-link :to="{ name: 'home' }" class="router-link icon-hover-right" :class="{ 'white': isMenuOpen }"
       @click="$emit('linkClicked')">
       {{ $t('navigation.homepage') }}
-      <img src="@/assets/icons/ArrowWhite.svg" class="arrow-icon">
+      <ArrowIcon direction="right" :color="isMenuOpen ? 'dark-gray' : 'white'"/>
     </router-link>
-    <router-link :to="{ name: 'login' }" @click="$emit('linkClicked')" class="router-link"
-      :class="{ 'white-router-link': isMenuOpen }">
+    <router-link :to="{ name: 'login' }" @click="$emit('linkClicked')" class="router-link icon-hover-right"
+      :class="{ 'white': isMenuOpen }">
       {{ $t('navigation.login') }}
-      <img src="@/assets/icons/LoginWhite.svg" class="login-logout-icon login-icon">
+
+      <AuthIcon type="login" :color="isMenuOpen ? 'dark-gray' : 'white'"/>
     </router-link>
   </div>
 
   <div v-else-if="isNavType === 'internal'" class="links-container"
     :class="{ 'small-screen-links-container': isMenuOpen }">
-    <router-link :to="{ name: 'management' }" class="router-link" @click="$emit('linkClicked')"
-      :class="{ 'white-router-link': isMenuOpen }">
+    <router-link :to="{ name: 'management' }" class="router-link icon-hover-right" @click="$emit('linkClicked')"
+      :class="{ 'white': isMenuOpen }">
       Verwaltung
-      <img src="@/assets/icons/ArrowWhite.svg" class="arrow-icon">
+      <ArrowIcon direction="right" :color="isMenuOpen ? 'dark-gray' : 'white'"/>
     </router-link>
 
     <div v-if="specificRole === 'study'" :class="{ 'user-specific-container': isMenuOpen }">
-      <router-link :to="{ name: 'studyOfficeSelection' }" @click="$emit('linkClicked')" class="router-link"
-        :class="{ 'white-router-link': isMenuOpen }">
+      <router-link :to="{ name: 'studyOfficeSelection' }" @click="$emit('linkClicked')"
+        class="router-link icon-hover-right" :class="{ 'white': isMenuOpen }">
         Übersicht
-        <img src="@/assets/icons/ArrowWhite.svg" class="arrow-icon">
+        <ArrowIcon direction="right" :color="isMenuOpen ? 'dark-gray' : 'white'"/>
       </router-link>
     </div>
     <div v-else-if="specificRole === 'chair'" :class="{ 'user-specific-container': isMenuOpen }">
-      <router-link :to="{ name: 'chairmanSelection' }" @click="$emit('linkClicked')" class="router-link"
-        :class="{ 'white-router-link': isMenuOpen }">
+      <router-link :to="{ name: 'chairmanSelection' }" @click="$emit('linkClicked')" class="router-link icon-hover-right"
+        :class="{ 'white': isMenuOpen }">
         Übersicht
-        <img src="@/assets/icons/ArrowWhite.svg" class="arrow-icon">
+        <ArrowIcon direction="right" :color="isMenuOpen ? 'dark-gray' : 'white'"/>
       </router-link>
     </div>
 
-    <Button @click="logout" class="router-link" :class="{ 'white-router-link': isMenuOpen }">
+    <Button @click="logout" class="router-link icon-hover-right" :class="{ 'white': isMenuOpen }">
       Logout
-      <img src="@/assets/icons/LogoutWhite.svg" class="login-logout-icon logout-icon">
+      <AuthIcon type="logout" :color="isMenuOpen ? 'dark-gray' : 'white'"/>
     </Button>
   </div>
 </template>
@@ -64,28 +67,18 @@ const specificRole = computed(() => navStore.getCurrentRoleNav)
 @use '@/assets/styles/util' as *;
 @use '@/assets/styles/global' as *;
 
-a,.p-button {
-  @include smallHighlightBox();
-  width: max-content;
-
-  background-color: $dark-gray;
-
-  &:hover {
-    background-color: $dark-gray-hover;
-  }
-}
 
 .links-container {
   width: 100%;
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: spacing(m);
   flex-wrap: wrap;
 }
 
 .small-screen-links-container {
   flex-direction: column;
-  gap: 1rem;
+  gap: spacing(m);
 
   max-width: 350px;
   width: 100%;
@@ -95,51 +88,7 @@ a,.p-button {
   width: 100%;
 }
 
-
-.router-link {
-  display: flex;
-  gap: 0.5rem;
-
-  &:hover {
-    background-color: $dark-gray-hover;
-
-    .arrow-icon {
-      transform: translate(0.15rem) rotate(-90deg);
-    }
-
-    .login-logout-icon {
-      transform: translate(0.15rem);
-    }
-  }
-}
-
-.white-router-link {
-  background-color: $white;
-  color: $dark-gray;
+.white {
   width: 100%;
-
-  & .arrow-icon {
-    content: url("@/assets/icons/ArrowDark.svg");
-  }
-
-  & .login-icon {
-    content: url("@/assets/icons/LoginDark.svg");
-  }
-
-  & .logout-icon {
-    content: url("@/assets/icons/LogoutDark.svg");
-  }
-
-  &:hover {
-    background-color: $gray;
-  }
 }
-
-.arrow-icon {
-  transform: rotate(-90deg);
-  transition: 0.1s ease-in-out;
-}
-
-.login-logout-icon {
-  transition: 0.1s ease-in-out;
-}</style>
+</style>

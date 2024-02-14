@@ -20,7 +20,7 @@ const route = useRoute()
 let allApplications = ref([])
 onBeforeMount(() => {
   getApplications()
-      .then(data => allApplications.value = data)
+    .then(data => allApplications.value = data)
 })
 
 const filter = ref()
@@ -36,22 +36,18 @@ const filteredApplications = computed(() => {
 
 <template>
   <div class="main">
-    <FilterSelector ref="filter" />
-    
-    <div class="overview-list">
+    <div class="side-infos-list wide">
+      <FilterSelector ref="filter" />
+    </div>
+
+    <div class="content-container split narrow">
 
       <div v-for="application in filteredApplications">
-        <ApplicationOverview
-            :id="application['id']"
-            :status="application['fullStatus']"
-            :course="application['courseLeipzig']['name']"
-            :creation-date="parseRequestDate(application['creationDate'])"
-            :last-edited-date="parseRequestDate(application['lastEditedDate'])"
-            :decision-date="parseRequestDate(application['decisionDate'])"
-            :forward="route.meta['forward']"
-            :adminSelectionView="true"
-            class="admin-selection-view"
-        />
+        <ApplicationOverview :id="application['id']" :status="application['fullStatus']"
+          :course="application['courseLeipzig']['name']" :creation-date="parseRequestDate(application['creationDate'])"
+          :last-edited-date="parseRequestDate(application['lastEditedDate'])"
+          :decision-date="parseRequestDate(application['decisionDate'])" :forward="route.meta['forward']"
+          :adminSelectionView="true" class="admin-selection-view" />
       </div>
 
     </div>
@@ -61,17 +57,4 @@ const filteredApplications = computed(() => {
 <style scoped lang="scss">
 @use '@/assets/styles/util' as *;
 @use '@/assets/styles/global' as *;
-
-.main {
-  @include main();
-}
-
-.overview-list {
-  @include verticalList(big);
-  width: 70%;
-
-  @media only screen and (max-width: 1200px) {
-    width: 100%;
-  }
-}
 </style>

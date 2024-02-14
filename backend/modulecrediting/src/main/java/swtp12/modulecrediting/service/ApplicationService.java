@@ -72,7 +72,12 @@ public class ApplicationService {
         application.setLastEditedDate(LocalDateTime.now());
 
         // when study office saves decision suggestions -> status from NEU to STUDEINBUERO
-        if(!allDecisionSuggestionUnedited(application) || containsFormalRejection(application)) application.setFullStatus(STUDIENBÜRO);
+        if((!allDecisionSuggestionUnedited(application) && application.getFullStatus() == NEU)
+                || (containsFormalRejection(application) && application.getFullStatus() == FORMFEHLER))
+        {
+            application.setFullStatus(STUDIENBÜRO);
+        }
+
 
         applicationRepository.save(application);
         return id;
@@ -109,6 +114,7 @@ public class ApplicationService {
         }else if(allDecisionsFinalEdited) {
             application.setFullStatus(ABGESCHLOSSEN);
             application.setDecisionDate(LocalDateTime.now());
+            modulesConnectionService.deleteOriginalModulesConnections(application.getModulesConnections());
         }else if(allDecisionSuggestionEdited) {
             application.setFullStatus(PRÜFUNGSAUSSCHUSS);
         }
@@ -180,10 +186,8 @@ public class ApplicationService {
 
         List<ModulesConnection> editModulesConnection = application.getModulesConnections();
 
-        // return edited application, without original application TODO: delte original application when status on abgeschlossen
+        // return edited application, (original modules connections are deleted)
         if(application.getFullStatus() == ABGESCHLOSSEN) {
-            List<ModulesConnection> adjModulesConnections = modulesConnectionService.removeOriginalModulesConnections(editModulesConnection);
-            application.setModulesConnections(adjModulesConnections);
             return application;
         }
 

@@ -46,9 +46,9 @@ const openPdf = () => {
 </script>
 
 <template>
-    <div class="main" v-if="applicationData">
+    <div class="main centered" v-if="applicationData">
         <ConfirmationContainer :id="id">
-            <ButtonDownload  @click="openPdf"/>
+            <ButtonDownload @click="openPdf" />
             <ButtonLink @click="openDetailView" class="status-button">Status einsehen</ButtonLink>
         </ConfirmationContainer>
     </div>
@@ -57,8 +57,4 @@ const openPdf = () => {
 <style scoped lang="scss">
 @use '@/assets/styles/util' as *;
 @use '@/assets/styles/global' as *;
-
-.main {
-    @include main();
-}
 </style>

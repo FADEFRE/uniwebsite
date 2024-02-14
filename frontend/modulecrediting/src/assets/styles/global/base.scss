@@ -11,6 +11,12 @@
   border-radius: 0;
 }
 
+*:focus {
+  outline: none;
+  box-shadow: none;
+  border: none;
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -21,18 +27,4 @@ ul {
   list-style-type: none;
   padding: 0;
   margin: 0;
-}
-
-*:focus {
-  outline: none;
-  box-shadow: none;
-  border: none;
-}
-
-
-
-html {
-  @media only screen and (max-width: 600px) {
-    font-size: 15px;
-  }
 }

@@ -1,10 +1,10 @@
 // Breakpoints
 $breakpoints-down: (
-    "xs": "36em", // phones vertical < 576px
-    "s": "48em", // phones horizontal < 768px 
-    "m": "62em", // tablets < 992px
-    "l": "75em", // desktops < 1200px
-    "xl": "87.5em" // large desktops < 1400px
+    xs: 36em, // phones vertical < 576px
+    s: 48em, // phones horizontal < 768px 
+    m: 62em, // tablets < 992px
+    l: 75em, // desktops < 1200px
+    xl: 87.5em // large desktops < 1400px
 ); 
 
 
@@ -14,4 +14,9 @@ $breakpoints-down: (
     }
 }
 
+@mixin breakpoint-up($size) {
+    @media (min-width: map-get($breakpoints-down, $size)) {
+        @content;
+    }
+}
 

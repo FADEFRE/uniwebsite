@@ -531,10 +531,8 @@ function postCourseLeipzig(coursename) {
 
   return httpResource
     .post("/api/courses-leipzig", formData)
-    .then((response) => {
-      return response.data;
-    })
-    .catch((_) => {});
+    .then((response) => response.data)
+    .catch((error) => Promise.reject(error));
 }
 
 /*
@@ -557,10 +555,48 @@ function postModuleLeipzig(modulename, modulecode) {
 
   return httpResource
     .post("/api/modules-leipzig", formData)
-    .then((response) => {
-      return response.data;
-    })
-    .catch((_) => {});
+    .then((response) => response.data)
+    .catch((error) => Promise.reject(error));
+}
+
+function getAllUsers () {
+    console.debug("%c" + "getAllUsers ()", axiosColor);
+
+    return httpResource.get("/api/user/all")
+        .then(response => response.data)
+        .catch(_ => {})
+}
+
+function putUserRole (id, role) {
+    console.debug("%c" + "getAllUsers (id: " + id + "role: " + role + ")", axiosColor);
+
+    const formData = new FormData()
+
+    formData.append('id', id)
+    formData.append('role', role)
+
+    return httpResource.put('/api/user/change/role', formData)
+        .then(response => response.data)
+        .catch(_ => {})
+}
+
+function createUser (username, password, passwordConfirm, role) {
+    console.debug(
+        "%c" + "create user (username: " + username + ", role: " + role + ")",
+        axiosColor
+    );
+
+    const formData = new FormData()
+
+    formData.append('username', username)
+    formData.append('password', password)
+    formData.append('passwordConfirm', passwordConfirm)
+    formData.append('role', role)
+
+    return httpResource.post("/api/auth/register", formData)
+        .then(response => response.data)
+        .catch(error => Promise.reject(error))
+
 }
 
 export {
@@ -585,4 +621,7 @@ export {
   updateStatus,
   postCourseLeipzig,
   postModuleLeipzig,
+  getAllUsers,
+  putUserRole,
+  createUser
 };

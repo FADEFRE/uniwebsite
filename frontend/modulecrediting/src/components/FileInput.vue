@@ -146,7 +146,7 @@ defineExpose({
 .edit-container {
   width: 100%;
   border: 2px dashed $black;
-  padding: 0.5rem 0rem;
+  padding: spacing(s) 0;
   cursor: pointer;
 
   &:hover {
@@ -165,7 +165,7 @@ defineExpose({
 .file-drop-unselected {
   display: flex;
   overflow: hidden;
-  padding-right: 0.5rem;
+  padding-right: spacing(s);
 }
 
 input {
@@ -175,15 +175,6 @@ input {
 .ellipsis-text-overflow {
   @include ellipsisTextOverflow();
   width: 100%;
-  padding: 0 0.5rem;
-}
-
-.invalid-text {
-  color: $red;
-}
-
-.invalid {
-  border: 2px dashed $red;
-  box-shadow: none;
+  padding: 0 spacing(s);
 }
 </style>

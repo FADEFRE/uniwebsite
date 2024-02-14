@@ -23,10 +23,6 @@ import ManagementViewModule from '../components/ManagementViewModule.vue';
 @use '@/assets/styles/util' as *;
 @use '@/assets/styles/global' as *;
 
-.main {
-    @include main();
-}
-
 .create-container-list {
     @include verticalList(big);
     width: 100%;

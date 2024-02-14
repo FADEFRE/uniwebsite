@@ -21,6 +21,7 @@ import SideInfoContainer from "@/components/SideInfoContainer.vue";
 import ButtonAdd from "@/components/ButtonAdd.vue";
 import ButtonLink from "@/components/ButtonLink.vue";
 import ApplicationOverview from "@/components/ApplicationOverview.vue";
+import ArrowIcon from "../assets/icons/ArrowIcon.vue";
 
 const creationDate = new Date()
 
@@ -71,14 +72,14 @@ const triggerPostApplication = () => {
 <template>
   <div class="main">
 
-    <div class="submit-application-container">
+    <div class="content-container split">
 
       <ApplicationOverview :creation-date="getFormattedDate(creationDate)" :last-edited-date="undefined"
         :decision-date="undefined" status="NEU">
         <Dropdown v-model="selectedCourse" :options="courses" placeholder="Studiengang wählen"
           @change="setSelectableModules" :class="{ 'invalid': !courseValid }">
           <template #dropdownicon>
-            <img src="../assets/icons/ArrowWhite.svg">
+            <ArrowIcon direction="down"/>
           </template>
         </Dropdown>
         <small v-if="!courseValid" class="invalid-text">Es muss ein Studiengang ausgewählt werden</small>
@@ -88,11 +89,13 @@ const triggerPostApplication = () => {
         :allow-delete="moduleConnections.length > 1" ref="moduleConnectionsRef"
         @delete-self="deleteModuleConnection(item)" />
 
-      <ButtonAdd @click="addModuleConnection">Modulzuweisung hinzufügen</ButtonAdd>
-      <ButtonLink @click="triggerPostApplication" :fixed="true">Absenden</ButtonLink>
+      <div class="application-buttons-container">
+        <ButtonAdd @click="addModuleConnection">Modulzuweisung hinzufügen</ButtonAdd>
+        <ButtonLink @click="triggerPostApplication" :redButton="true">Absenden</ButtonLink>
+      </div>
     </div>
 
-    <div class="side-infos-container">
+    <div class="side-infos-list">
       <!--SideInfoContainerfür Antragprozess -->
       <SideInfoContainer :heading="'ANTRAGSPROZESS'">
         <ul>
@@ -126,9 +129,10 @@ const triggerPostApplication = () => {
             <p>Dienstag und Donnerstag: 9:00 - 11:30 Uhr und 12:30 - 16:00 Uhr</p>
           </div>
           <a href="https://www.mathcs.uni-leipzig.de/studium/studienbuero">
-            Zum Studienbüro
-            <img src="../assets/icons/ArrowWhite.svg" class="arrow-icon" alt="Arrow Icon">
-          </a><!-- as button link-->
+            <ButtonLink>
+              Zum Studienbüro
+            </ButtonLink>
+          </a>
         </div>
 
       </SideInfoContainer>
@@ -141,28 +145,6 @@ const triggerPostApplication = () => {
 <style scoped lang="scss">
 @use '@/assets/styles/util' as *;
 @use '@/assets/styles/global' as *;
-
-.main {
-  @include main();
-}
-
-.submit-application-container {
-  @include applicationContainer(split);
-}
-
-.side-infos-container {
-  @include sideInfoListContainer();
-}
-
-
-
-.arrow-icon {
-  transform: rotate(-90deg);
-  transition: 0.1s ease-in-out;
-}
-
-.invalid-text {
-  color: $red;
-}
+@use '@/assets/styles/components' as *;
 </style>
 

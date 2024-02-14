@@ -4,6 +4,7 @@ import { ref, computed, onBeforeMount } from "vue";
 import ApplicationOverview from "@/components/ApplicationOverview.vue";
 import AdministrativePanel from "@/components/AdministrativePanel.vue";
 import ButtonLink from "@/components/ButtonLink.vue";
+import ArrowIcon from "../assets/icons/ArrowIcon.vue";
 import {
   getApplicationById, getModulesByCourse,
   getUpdateStatusAllowed, updateStatus, putApplicationStudyOffice, putApplicationChairman
@@ -100,10 +101,10 @@ const saveChanges = () => {
   if (checkValidity()) {
     if (type === 'study-office') {
       putApplicationStudyOffice(id, applicationData.value['courseLeipzig']['name'], moduleConnections.value)
-          .then(_ => location.reload())
+        .then(_ => location.reload())
     } else if (type === 'chairman') {
       putApplicationChairman(id, applicationData.value['courseLeipzig']['name'], moduleConnections.value)
-          .then(_ => location.reload())
+        .then(_ => location.reload())
     }
   }
 }
@@ -116,10 +117,12 @@ const triggerPassOn = () => {
 
 <template>
   <div v-if="applicationData" class="main">
+    <div class="side-infos-list">
+      <ApplicationConnectionLinks :connections-data="connectionsData" />
+    </div>
 
-    <ApplicationConnectionLinks :connections-data="connectionsData" />
-    
-    <div class="administrative-detail-container">
+
+    <div class="content-container split">
 
       <ApplicationOverview :creation-date="parseRequestDate(applicationData['creationDate'])"
         :last-edited-date="parseRequestDate(applicationData['lastEditedDate'])"
@@ -135,9 +138,9 @@ const triggerPassOn = () => {
 
       </div>
 
-      <div v-if="!readonly" class="save-controlls-container">
-        <ButtonLink @click="saveChanges">Speichern</ButtonLink>
+      <div v-if="!readonly" class="application-buttons-container">
         <ButtonLink @click="discardChanges">Änderungen verwerfen</ButtonLink>
+        <ButtonLink @click="saveChanges">Speichern</ButtonLink>
       </div>
 
     </div>
@@ -155,15 +158,17 @@ const triggerPassOn = () => {
       </Button>
 
       <Button @click="scrollTop" class="move-top-button">
-        <img src="@/assets/icons/ArrowWhite.svg" class="arrow-icon">
+        <ArrowIcon color="white" direction="up" size="big"/>
       </Button>
     </div>
 
     <div v-if="!readonly">
-      <ButtonLink v-if="passOnStatus === 'NOT_ALLOWED'" :disabled="true" :fixed="true">Weitergeben</ButtonLink>
-      <ButtonLink v-else-if="passOnStatus === 'PASSON'" :fixed="true" @click="triggerPassOn">Weitergeben
+      <ButtonLink v-if="passOnStatus === 'NOT_ALLOWED'" :disabled="true" :fixed="true" :redButton="true">Weitergeben
       </ButtonLink>
-      <ButtonLink v-else-if="passOnStatus === 'REJECT'" :fixed="true" @click="triggerPassOn">Zurückweisen
+      <ButtonLink v-else-if="passOnStatus === 'PASSON'" :fixed="true" :redButton="true" @click="triggerPassOn">Weitergeben
+      </ButtonLink>
+      <ButtonLink v-else-if="passOnStatus === 'REJECT'" :fixed="true" :redButton="true" @click="triggerPassOn">
+        Zurückweisen
       </ButtonLink>
     </div>
   </div>
@@ -174,24 +179,13 @@ const triggerPassOn = () => {
 @use '@/assets/styles/global' as *;
 
 
-.main {
-  @include main();
-}
 
-.administrative-detail-container {
-  @include applicationContainer(split);
-}
+.side-infos-list {
+  position: sticky;
+  top: spacing(m);
 
-
-.save-controlls-container {
-  display: flex;
-  width: 100%;
-  justify-content: flex-start;
-  flex-wrap: wrap;
-  gap: 0.5rem 1rem;
-
-  @media only screen and (max-width: 700px) {
-    padding: 0 0.5rem;
+  @include breakpoint(l) {
+    display: none;
   }
 }
 
@@ -199,14 +193,15 @@ const triggerPassOn = () => {
 
 .mid-right-fixed-container {
   @include verticalList(small);
+  width: fit-content;
 
   display: flex;
   flex-direction: column;
   align-items: flex-end;
 
   position: fixed;
-  bottom: 5.5rem;
-  right: 1rem;
+  bottom: calc(spacing(l) + spacing(xxxl));
+  right: spacing(m);
 }
 
 
@@ -224,7 +219,7 @@ const triggerPassOn = () => {
   width: 3rem;
   height: 4rem;
 
-  @media only screen and (max-width: 950px) {
+  @include breakpoint(m) {
     display: none;
   }
 }
@@ -232,11 +227,5 @@ const triggerPassOn = () => {
 .move-top-button {
   width: 3rem;
   height: 3rem;
-
-  & .arrow-icon {
-    transform: rotate(180deg);
-    width: 18px;
-    height: 12px;
-  }
 }
 </style>

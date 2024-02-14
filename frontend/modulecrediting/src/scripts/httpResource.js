@@ -56,6 +56,7 @@ const errorHandler = (error) => {
     console.log("%c" + "Error Interceptor", errorColor); //TODO remove debug log
 
     const apiError = parseApierror(error)
+    console.error(apiError)
 
     if (apiError.statusCode === 503) {
       console.error(apiError)
@@ -83,6 +84,10 @@ const errorHandler = (error) => {
     if (apiError.statusCode === 404) {
       console.error(apiError)
       router.push({ name: "IdError" }); //TODO catch multiple 404?
+    }
+
+    if (apiError.statusCode === 409) {
+      console.error(apiError)
     }
 
 

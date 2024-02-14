@@ -41,7 +41,15 @@ function closeMenu() {
         </div>
       </div>
     </header>
+
     <router-view class="main-content" />
+
+    <footer>
+      <ul>
+        <li><p>Impressum</p></li>
+        <li><p>Datenschutz</p></li>
+      </ul>
+    </footer>
   </div>
 </template>
 
@@ -67,7 +75,7 @@ function closeMenu() {
   background-size: contain;
   background-position: right;
 
-  @media screen and (max-width: 920px) {
+  @include breakpoint(m) {
     background-image: none;
   }
 }
@@ -86,12 +94,12 @@ function closeMenu() {
   width: 27rem;
   height: 11rem;
 
-  @media only screen and (max-width: 1170px) {
+  @include breakpoint(l) {
     width: 21rem;
     height: 9rem;
   }
 
-  @media only screen and (max-width: 920px) {
+  @include breakpoint(m) {
     width: 16rem;
     height: 7rem;
   }
@@ -100,14 +108,14 @@ function closeMenu() {
 .nav-menu-container {
   display: flex;
   flex-direction: column;
-  padding: 0rem 2rem;
-  gap: 0.5rem;
+  padding: spacing(xl);
+  gap: spacing(s);
 }
 
 .burger-menu {
   background-color: $white;
-  margin-right: 0.5rem;
-  padding: 1rem;
+  margin-right: spacing(m);
+  padding: spacing(m);
 
   &:hover {
     background-color: $gray;
@@ -119,7 +127,7 @@ function closeMenu() {
 .close-menu {
   position: fixed;
   top: 1.8rem;
-  right: 0.5rem;
+  right: spacing(m);
   z-index: 5;
   border: 2px solid $white;
   padding: 1.2rem;
@@ -127,7 +135,7 @@ function closeMenu() {
   display: none;
 }
 
-@media (max-width: 920px) {
+@include breakpoint(m) {
   .burger-menu {
     display: flex;
   }
@@ -148,11 +156,35 @@ function closeMenu() {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 2rem;
+    gap: spacing(xl);
 
     &.closed {
       display: none;
     }
+  }
+}
+
+
+footer {
+  background-image: url('@/assets/icons/footer.svg');
+  background-size: cover;
+  width: 100%;
+  min-height: 700px;
+
+  padding: spacing(m);
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+ul {
+  display: flex;
+  gap: spacing(m);
+
+  li p 
+  {
+    color: $white;
   }
 }
 </style>

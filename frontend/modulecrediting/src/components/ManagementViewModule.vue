@@ -50,6 +50,7 @@ const deleteModuleLeipzigClick = (singleModule) => {
 <style scoped lang="scss">
 @use '@/assets/styles/util' as *;
 @use '@/assets/styles/global' as *;
+@use '@/assets/styles/components' as *;
 
 .view-module-container {
     @include basicContainer();
@@ -75,7 +76,7 @@ const deleteModuleLeipzigClick = (singleModule) => {
 .icons-container {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: spacing(s);
 }
 
 .trash-icon {

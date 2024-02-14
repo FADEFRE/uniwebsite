@@ -16,7 +16,6 @@ import static swtp12.modulecrediting.model.EnumModuleConnectionDecision.*;
 
 @Data
 @Entity
-// TODO: serilize only first iteration of cylic relation (modules connection original)
 public class ModulesConnection {
     @Id
     @GeneratedValue
@@ -69,6 +68,8 @@ public class ModulesConnection {
     @JsonView(Views.RelatedModulesConnection.class)
     private Application application;
 
+    private Boolean isOriginalModulesConnection;
+
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonView(Views.ApplicationStudent.class)
     private ModulesConnection modulesConnectionOriginal;
@@ -81,6 +82,7 @@ public class ModulesConnection {
         commentStudyOffice = "";
         formalRejection = false;
         formalRejectionComment = "";
+        isOriginalModulesConnection = false;
     }
 
 

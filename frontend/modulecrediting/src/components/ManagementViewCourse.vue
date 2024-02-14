@@ -45,6 +45,7 @@ const filteredCourses = computed(() => {
 <style scoped lang="scss">
 @use '@/assets/styles/util' as *;
 @use '@/assets/styles/global' as *;
+@use '@/assets/styles/components' as *;
 
 .view-course-container {
     @include basicContainer();
@@ -64,7 +65,7 @@ const filteredCourses = computed(() => {
 .icons-container {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: spacing(xs);
 }
 
 .trash-icon {

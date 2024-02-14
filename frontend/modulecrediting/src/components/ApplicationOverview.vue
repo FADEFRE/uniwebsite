@@ -1,12 +1,9 @@
 <!-- ApplicationOverview.vue -->
 
 <script setup>
-import CreationDate from '@/assets/icons/CreationDate.svg';
-import LastEditedDate from '@/assets/icons/LastEditedDate.svg';
-import DecisionDate from '@/assets/icons/DecisionDate.svg';
-
 import { computed } from 'vue';
 import router from "@/router";
+import DateIcon from '../assets/icons/DateIcon.vue';
 
 const props = defineProps({
     creationDate: {
@@ -64,19 +61,19 @@ const triggerForward = () => {
         <div class="dates">
             <!-- Div-Block Creation Date -->
             <div v-if="creationDate" class="date-block">
-                <img :src="CreationDate" alt="Creation Date Icon" />
+                <DateIcon type="creation"/>
                 <p>{{ creationDate }}</p>
             </div>
 
             <!-- Div-Block Last edited Date -->
             <div v-if="lastEditedDate" class="date-block">
-                <img :src="LastEditedDate" alt="LastEdited Date Icon" />
+                <DateIcon type="lastEdited"/>
                 <p>{{ lastEditedDate }}</p>
             </div>
 
             <!-- Div-Block Decision Date -->
             <div v-if="decisionDate" class="date-block">
-                <img :src="DecisionDate" alt="Decision Date Icon" />
+                <DateIcon type="decision"/>
                 <p>{{ decisionDate }}</p>
             </div>
         </div>
@@ -117,9 +114,10 @@ const triggerForward = () => {
 .application-overview-container {
     background-color: $white;
     display: flex;
-    padding: 0.5rem 0.5rem 0.5rem 1rem;
+    padding: spacing(s);
+    padding-left: spacing(m);
     justify-content: space-between;
-    gap: 0.5rem;
+    gap: spacing(s);
     align-self: stretch;
     flex-wrap: wrap;
     transition: 0.1s ease-in-out;
@@ -133,39 +131,46 @@ const triggerForward = () => {
         }
     }
 
-    @media only screen and (max-width: 600px) {
+    @include breakpoint(xs) {
         flex-direction: column;
-        gap: 0.5rem;
+        gap: spacing(s);
     }
 }
 
 
 .application-info {
     display: flex;
-    gap: 1rem;
+    gap: spacing(s);
     max-width: 100%;
     flex-wrap: wrap;
 
-    @media only screen and (max-width: 600px) {
+    @include breakpoint(xs) {
         flex-direction: column;
-        gap: 0.5rem;
+        gap: spacing(s);
     }
 }
 
+.info-container {
 
+    color: $white;
+
+    @include breakpoint(xs) {
+        width: 100%;
+    }
+}
 
 .course-container {
     @include smallHighlightBox();
     background-color: $dark-gray;
-    color: $white;
 
     &.admin-selection-view {
         min-width: max-content;
         width: 12rem;
-        @media only screen and (max-width: 600px) {
-        width: 100%;
     }
-    }
+
+    @include breakpoint(xs) {
+            width: 100%;
+        }
 }
 
 .course-selection-container {
@@ -173,38 +178,37 @@ const triggerForward = () => {
     position: relative;
     display: flex;
     flex-direction: column;
-    gap: 0.05rem;
+
+    @include breakpoint(xs) {
+        width: 100%;
+    }
 }
 
 .vorgangsnummer-container {
     @include smallHighlightBox();
     background-color: $gray;
+    color: $dark-gray;
 
     &.admin-selection-view {
         width: 19rem;
-        @media only screen and (max-width: 600px) {
-        width: 100%;
     }
+
+    @include breakpoint(xs) {
+        width: 100%;
     }
 }
 
 .status-container {
     @include smallHighlightBox();
-    color: $white;
 
     &.admin-selection-view {
         width: 19rem;
-        @media only screen and (max-width: 600px) {
-        width: 100%;
     }
+    @include breakpoint(xs) {
+            width: 100%;
     }
 }
 
-.info-container {
-    @media only screen and (max-width: 600px) {
-        width: 100%;
-    }
-}
 
 .greenBackground {
     background-color: $green;
@@ -221,13 +225,13 @@ const triggerForward = () => {
 .dates {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: spacing(m);
     flex-wrap: wrap;
 }
 
 .date-block {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: spacing(s);
 }
 </style>

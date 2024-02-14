@@ -69,6 +69,12 @@ const university = ref(props.university || "")
 const points = ref(props.points || "")
 const pointSystem = ref(props.pointSystem || "")
 
+const validatePointInput = () => {
+  console.log(points.value)
+  console.log(points.value.replace(/[^0-9]/g, ''))
+  points.value = points.value.replace(/[^0-9]/g, '')
+}
+
 const fileInput = ref()
 const selectedFile = computed(() => fileInput.value?.selectedFile)
 
@@ -103,11 +109,13 @@ defineExpose({
     <div class="screen-split">
       <div class="left-side">
         <div class="input-container">
-          <InputText :readonly="!allowTextEdit" type="text" placeholder="Modulname" v-model="name" :class="{ 'invalid': !nameValid }" />
+          <InputText :readonly="!allowTextEdit" type="text" placeholder="Modulname" v-model="name"
+            :class="{ 'invalid': !nameValid }" class="gray"/>
           <small v-if="!nameValid" class="invalid-text">Modulname darf nicht leer sein</small>
         </div>
         <div class="input-container">
-          <InputText :readonly="!allowTextEdit" type="text" placeholder="Universität" v-model="university" :class="{ 'invalid': !universityValid }" />
+          <InputText :readonly="!allowTextEdit" type="text" placeholder="Universität" v-model="university"
+            :class="{ 'invalid': !universityValid }" class="gray" />
           <small v-if="!universityValid" class="invalid-text">Universität darf nicht leer sein</small>
         </div>
       </div>
@@ -116,15 +124,17 @@ defineExpose({
 
         <div class="point-container">
           <div class="input-container">
-            <InputText :readonly="!allowTextEdit" type="text" placeholder="Punkte" v-model="points" :class="{ 'invalid': !pointsValid }" />
+            <InputText :readonly="!allowTextEdit" type="text" placeholder="Punkte" v-model="points"
+              @input.prevent="validatePointInput" :class="{ 'invalid': !pointsValid }" class="gray"/>
             <small v-if="!pointsValid" class="invalid-text">Punkte müssen als Zahl angegeben werden</small>
           </div>
-          
+
           <div class="input-container">
-            <InputText :readonly="!allowTextEdit" type="text" placeholder="Punktesystem" v-model="pointSystem" :class="{ 'invalid': !pointSystemValid }" />
+            <InputText :readonly="!allowTextEdit" type="text" placeholder="Punktesystem" v-model="pointSystem"
+              :class="{ 'invalid': !pointSystemValid }" class="gray"/>
             <small v-if="!pointSystemValid" class="invalid-text">Punktsystem darf nicht leer sein</small>
           </div>
-          
+
         </div>
 
         <FileInput :readonly="!allowFileEdit" :selected-file="props.selectedFile" ref="fileInput" />
@@ -142,26 +152,28 @@ defineExpose({
 <style scoped lang="scss">
 @use '@/assets/styles/util' as *;
 @use '@/assets/styles/global' as *;
+@use '@/assets/styles/components' as *;
 
 
 .external-modules-item {
   @include verticalListItem($gray);
 
   width: 100%;
-  padding: 0.5rem 0.5rem 0.5rem 1.25rem;
+  padding: spacing(s);
 
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  gap: 0.5rem;
+  gap: spacing(s);
 }
 
 .screen-split {
   @include screenSplit();
 
-  @media only screen and (max-width: 700px) {
+  @include breakpoint(s) {
     flex-wrap: wrap;
+    flex-direction: column;
   }
 }
 
@@ -170,14 +182,10 @@ defineExpose({
   justify-content: space-between;
   align-self: stretch;
   width: 50%;
-  
-  @media only screen and (max-width: 700px) {
+
+  @include breakpoint(s) {
     width: 100%;
   }
-}
-
-:deep(.p-inputtext:hover) {
-  background-color: $gray-hover;
 }
 
 .right-side {
@@ -186,39 +194,21 @@ defineExpose({
   align-self: stretch;
   width: 50%;
 
-  @media only screen and (max-width: 700px) {
+  @include breakpoint(s) {
     width: 100%;
   }
 }
 
 .point-container {
   display: flex;
-  gap: 0.5rem;
-  & .p-inputtext {
-    width: 100%;
-  }
-}
-
-.input-container {
-  display: flex;
-  gap: 0.5rem;
-  flex-direction: column;
-  width: 100%;
+  gap: spacing(s);
 }
 
 .trash-icon {
   @include trashIconAnimation();
-  padding:  0.5rem 0.5rem;
+  padding: spacing(s);
+
   &:hover {
     background-color: $gray-hover;
   }
-}
-
-.invalid {
-  border: 2px solid $red;
-}
-
-.invalid-text {
-  color: $red;
-}
-</style>
+}</style>

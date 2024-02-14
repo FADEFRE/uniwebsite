@@ -2,9 +2,9 @@
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
 import { getApplicationExists } from "@/scripts/axios-requests";
-import HomepageContainer from '../components/HomepageContainer.vue';
-import SideInfoContainer from '../components/SideInfoContainer.vue';
-import ButtonLink from '../components/ButtonLink.vue';
+import HomepageContainer from '@/components/HomepageContainer.vue';
+import SideInfoContainer from '@/components/SideInfoContainer.vue';
+import ButtonLink from '@/components/ButtonLink.vue';
 
 const router = useRouter()
 
@@ -51,33 +51,39 @@ const getFormattedId = () => {
 
 <template>
     <div class="main">
-        <div class="homepage-content">
+        <div class="content-container split">
             <!-- HomepageContainer Application -->
-            <HomepageContainer :header="$t('homepage.makeApplication')"
-                :text="$t('homepage.makeApplicationExplanation')">
+            <HomepageContainer :header="$t('homepage.makeApplication')" :text="$t('homepage.makeApplicationExplanation')">
                 <ButtonLink @click="goToSubmitApplication">{{ $t('homepage.makeApplication') }}</ButtonLink>
             </HomepageContainer>
 
             <!-- HomepageContainer StatusView -->
-            <HomepageContainer :header="$t('homepage.viewStatus')"
-                :text="$t('homepage.viewStatusExplanation')">
+            <HomepageContainer :header="$t('homepage.viewStatus')" :text="$t('homepage.viewStatusExplanation')">
                 <div class="input-button-container">
-                    <InputText v-model="id" :class="{ 'invalid': isInvalid }" class="status-input"
-                        placeholder="0-0-0-0-0-0" @keydown.enter.prevent="openDetailView" @input="validateInput" />
+                    <InputText v-model="id" :class="{ 'invalid': isInvalid }" class="status-input gray"
+                        placeholder="0-0-0-0-0-0" @keydown.enter.prevent="openDetailView" @input.prevent="validateInput" />
                     <ButtonLink @click="openDetailView">{{ $t('homepage.viewStatus') }}</ButtonLink>
                 </div>
-                <small v-if="isInvalid" class="invalid-text">Punkte müssen als Zahl angegeben werden</small>
+                <small v-if="isInvalid" class="invalid-text">Dieser Vorgang existiert nicht</small>
             </HomepageContainer>
         </div>
 
-        <div class="side-infos-container">
+        <div class="side-infos-list">
             <!--SideInfoContainerfür Antragprozess -->
             <SideInfoContainer :heading="$t('homepage.sideInfo.applicationProcess')">
                 <ul class="list-container">
-                    <li class="list-item">{{ $t('homepage.sideInfo.submitApplication') }}</li>
-                    <li class="list-item">{{ $t('homepage.sideInfo.viewStatus') }}</li>
-                    <li class="list-item">{{ $t('homepage.sideInfo.wait') }}</li>
-                    <li class="list-item">{{ $t('homepage.sideInfo.goToStudy') }}</li>
+                    <li class="list-item">
+                        <p>{{ $t('homepage.sideInfo.submitApplication') }}</p>
+                    </li>
+                    <li class="list-item">
+                        <p>{{ $t('homepage.sideInfo.viewStatus') }}</p>
+                    </li>
+                    <li class="list-item">
+                        <p>{{ $t('homepage.sideInfo.wait') }}</p>
+                    </li>
+                    <li class="list-item">
+                        <p>{{ $t('homepage.sideInfo.goToStudy') }}</p>
+                    </li>
                 </ul>
             </SideInfoContainer>
         </div>
@@ -89,28 +95,18 @@ const getFormattedId = () => {
 <style scoped lang="scss">
 @use '@/assets/styles/util' as *;
 @use '@/assets/styles/global' as *;
-
-.main {
-    @include main();
-}
-
-.homepage-content {
-    @include verticalList(big);
-    width: 100%;
-}
-
-.side-infos-container {
-    @include sideInfoListContainer();
-}
+@use '@/assets/styles/components' as *;
 
 .status-input {
     border: none;
     background-color: $gray;
-    &:hover {
-        background-color: $gray-hover;
-    }
+
     &:focus::placeholder {
         color: transparent;
+    }
+
+    &.invalid {
+        border: 2px solid $red;
     }
 }
 </style>
