@@ -1,6 +1,7 @@
 <script setup>
 import { computed, ref } from 'vue';
 import { useClipboard } from '@vueuse/core'
+import CopyIcon from '../assets/icons/CopyIcon.vue';
 
 const props = defineProps({
     id: {
@@ -27,7 +28,9 @@ function formatId(id) {
         <div class="id-section">
             <div class="id-container">
                 <h2 class="id">{{ formattedId }}</h2>
-                <img v-if="isSupported" @click=copyId :class="{ 'icon-clicked': copied }" class="copy-icon" src="@/assets/icons/CopyIcon.svg" alt="Copy Icon">
+                <div class="copy-icon-container" @click=copyId>
+                    <CopyIcon v-if="isSupported" :disabled="copied"/>
+                </div>
             </div>
             <p class="description-text">Mit der Vorgangsnummer kannst du immer den Status deines Antrags überprüfen</p>
         </div>
@@ -73,21 +76,11 @@ function formatId(id) {
     font-weight: 800;
     letter-spacing: 0.5rem;
 }
-.copy-icon {
+.copy-icon-container {
     position: absolute;
-    top: spacing(s);
-    right: spacing(s);
-
-    transition: 0.05s ease-in-out;
-
-    &:hover {
-        transform: scale(1.1);
-    }
-
-    &.icon-clicked {
-        opacity: 0.5;
-        transform: scale(1);
-    }
+    top: 0;
+    right: 0;
+    padding: spacing(s);
 }
 
 .description-text {
