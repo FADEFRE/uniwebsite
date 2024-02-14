@@ -48,14 +48,14 @@ defineExpose({
     <div v-else class="readonly-decision-container">
 
       <div class="icon-container" :class="{ 'highlight': displayDecision === 'accepted' }">
-        <ModuleStatusIcon statusDecision="accepted" :gray="displayDecision !== 'accepted'"/>
+        <ModuleStatusIcon statusDecision="accepted" :gray="displayDecision !== 'accepted'" size="small"/>
       </div>
 
       <div class="icon-container" :class="{ 'highlight': displayDecision === 'asExamCertificate' }">
-        <ModuleStatusIcon statusDecision="asExamCertificate" :gray="displayDecision !== 'asExamCertificate'"/>
+        <ModuleStatusIcon statusDecision="asExamCertificate" :gray="displayDecision !== 'asExamCertificate'" size="small"/>
       </div>
       <div class="icon-container" :class="{ 'highlight': displayDecision === 'denied' }">
-        <ModuleStatusIcon statusDecision="denied" :gray="displayDecision !== 'denied'"/>
+        <ModuleStatusIcon statusDecision="denied" :gray="displayDecision !== 'denied'" size="small"/>
       </div>
     </div>
 

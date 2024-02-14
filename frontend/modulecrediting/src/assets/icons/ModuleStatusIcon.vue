@@ -59,8 +59,8 @@ const props = defineProps({
     height: rem(26px);
 }
 .small {
-    width: rem(23px);
-    height: rem(23px);
+    width: rem(24px);
+    height: rem(24px);
 }
  
 

@@ -2,6 +2,7 @@
 import { ref, onBeforeMount } from "vue";
 import { getAllUsers, putUserRole } from "../scripts/axios-requests";
 import RoleDropdown from "./RoleDropdown.vue";
+import TrashIcon from "../assets/icons/TrashIcon.vue";
 
 const userList = ref([])
 
@@ -26,7 +27,9 @@ const triggerChangeRole = (id, newRole) => {
         <p>{{ user.username }}</p>
         <RoleDropdown :model-value="user.role"
           @update:model-value="(newRole) => triggerChangeRole(user.userId, newRole)" />
-        <img src="@/assets/icons/Trash.svg">
+          <div class="trash-icon-wrapper">
+          <TrashIcon/>
+        </div>
       </div>
     </div>
 
@@ -50,5 +53,13 @@ const triggerChangeRole = (id, newRole) => {
   @include verticalListItem($gray);
   padding: 0 spacing(m);
   align-items: center;
+}
+
+.trash-icon-wrapper {
+  @include smallHighlightBox();
+  transition: 0.1s ease-in-out;
+  &:hover {
+    background-color: $gray-hover;
+  }
 }
 </style>

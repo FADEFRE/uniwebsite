@@ -15,6 +15,7 @@ import { getRelatedModuleConnections } from "@/scripts/axios-requests";
 import { parseRequestDate } from "@/scripts/date-utils";
 import router from "@/router";
 import ModuleStatusIcon from "../assets/icons/ModuleStatusIcon.vue";
+import DateIcon from "../assets/icons/DateIcon.vue";
 
 
 //TODO: FIX Related Modules!!!!!! 
@@ -72,7 +73,7 @@ const openRelatedModule = (singleModule) => {
 
         <div class="additional-info">
           <div class="date-block">
-            <img src="../assets/icons/DecisionDate.svg" alt="DecisionDate">
+            <DateIcon type="decision"/>
             <p class="info-text">{{ parseRequestDate(relatedModule['application']['decisionDate']) }}</p>
           </div>
 

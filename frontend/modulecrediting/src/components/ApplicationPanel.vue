@@ -21,6 +21,7 @@ import PanelComment from "@/components/PanelComment.vue";
 import PanelExternalModules from "@/components/PanelExternalModules.vue";
 import PanelInternalModules from "@/components/PanelInternalModules.vue";
 import { ref, computed } from "vue";
+import TrashIcon from "../assets/icons/TrashIcon.vue";
 
 const props = defineProps({
   selectableModules: {
@@ -70,7 +71,9 @@ defineExpose({
 
       <!-- Icons Slot -->
       <template #icons>
-        <img v-if="allowDelete" src="@/assets/icons/Trash.svg" @click="emit('deleteSelf')" class="trash-icon">
+        <div v-if="allowDelete" class="trash-icon-wrapper" @click="emit('deleteSelf')">
+          <TrashIcon/>
+        </div>
       </template>
 
       <!-- Panel Content -->
@@ -100,9 +103,14 @@ defineExpose({
 @use '@/assets/styles/util' as *;
 @use '@/assets/styles/global' as *;
 
-.trash-icon {
-  @include trashIconAnimation();
+.trash-icon-wrapper {
+  @include smallHighlightBox();
+  transition: 0.1s ease-in-out;
+  &:hover {
+    background-color: $white-hover;
+  }
 }
+
 </style>
 
 

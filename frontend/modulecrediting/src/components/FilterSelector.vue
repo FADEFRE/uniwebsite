@@ -13,6 +13,7 @@ import { ref, computed, onBeforeMount } from "vue";
 import { getWeekAgo, getMonthAgo, getSixMonthAgo, getYearAgo } from "@/scripts/date-utils";
 import { getCoursesLeipzig } from "@/scripts/axios-requests";
 import ArrowIcon from "../assets/icons/ArrowIcon.vue";
+import DateIcon from '../assets/icons/DateIcon.vue';
 
 const searchString = ref()
 
@@ -166,17 +167,17 @@ defineExpose({
           <h4>Zeit</h4>
           <div class="date-filter-container">
             <div @click="setDateTypeCreation" class="date-block" :class="{ 'selected': dateType === 'creationDate' }">
-              <img src="../assets/icons/CreationDate.svg">
+              <DateIcon type="creation"/>
               <p v-if="dateType === 'creationDate'">Erstellt</p>
 
             </div>
             <div @click="setDateTypeLastEdit" class="date-block" :class="{ 'selected': dateType === 'lastEditedDate' }">
-              <img src="../assets/icons/LastEditedDate.svg">
+              <DateIcon type="lastEdited"/>
               <p v-if="dateType === 'lastEditedDate'">Zuletzt bearbeitet</p>
 
             </div>
             <div @click="setDateTypeDecision" class="date-block" :class="{ 'selected': dateType === 'decisionDate' }">
-              <img src="../assets/icons/DecisionDate.svg">
+              <DateIcon type="decision"/>
               <p v-if="dateType === 'decisionDate'">Beschlossen</p>
             </div>
           </div>
@@ -348,6 +349,7 @@ defineExpose({
 }
 
 .clear-icon {
+  width: rem(17px);
   opacity: 0.9;
   transition: 0.2s ease-in-out;
   margin-right: spacing(s);

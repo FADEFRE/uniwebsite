@@ -1,12 +1,9 @@
 <!-- ApplicationOverview.vue -->
 
 <script setup>
-import CreationDate from '@/assets/icons/CreationDate.svg';
-import LastEditedDate from '@/assets/icons/LastEditedDate.svg';
-import DecisionDate from '@/assets/icons/DecisionDate.svg';
-
 import { computed } from 'vue';
 import router from "@/router";
+import DateIcon from '../assets/icons/DateIcon.vue';
 
 const props = defineProps({
     creationDate: {
@@ -64,19 +61,19 @@ const triggerForward = () => {
         <div class="dates">
             <!-- Div-Block Creation Date -->
             <div v-if="creationDate" class="date-block">
-                <img :src="CreationDate" alt="Creation Date Icon" />
+                <DateIcon type="creation"/>
                 <p>{{ creationDate }}</p>
             </div>
 
             <!-- Div-Block Last edited Date -->
             <div v-if="lastEditedDate" class="date-block">
-                <img :src="LastEditedDate" alt="LastEdited Date Icon" />
+                <DateIcon type="lastEdited"/>
                 <p>{{ lastEditedDate }}</p>
             </div>
 
             <!-- Div-Block Decision Date -->
             <div v-if="decisionDate" class="date-block">
-                <img :src="DecisionDate" alt="Decision Date Icon" />
+                <DateIcon type="decision"/>
                 <p>{{ decisionDate }}</p>
             </div>
         </div>

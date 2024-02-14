@@ -1,4 +1,5 @@
 <script setup>
+import ArrowIcon from "@/assets/icons/ArrowIcon.vue";
 import { ref, watch } from "vue";
 
 const props = defineProps(['modelValue'])
