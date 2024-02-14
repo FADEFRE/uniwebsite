@@ -37,6 +37,7 @@ public class ModulesConnectionService {
         for(ModulesConnectionDTO modulesConnectionDTO : modulesConnectionsDTO) {
             ModulesConnection modulesConnection = createModulesConnection(modulesConnectionDTO);
             ModulesConnection modulesConnectionOriginal = createModulesConnection(modulesConnectionDTO);
+            modulesConnectionOriginal.setIsOriginalModulesConnection(true);
 
             modulesConnection.setModulesConnectionOriginal(modulesConnectionOriginal);
 
@@ -218,8 +219,9 @@ public class ModulesConnectionService {
             if(m.getId() == baseModulesConnection.getId()) continue;
 
             // skip original modules connections
-            if(m.getModulesConnectionOriginal() == null) continue;
+            if(m.getIsOriginalModulesConnection()) continue;
 
+            // only abgeschlossene applications
             if(m.getApplication().getFullStatus() != EnumApplicationStatus.ABGESCHLOSSEN) continue;
 
             if(m.getDecisionFinal() == unedited || m.getDecisionFinal() == asExamCertificate) continue;
