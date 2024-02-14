@@ -14,6 +14,7 @@ import { getWeekAgo, getMonthAgo, getSixMonthAgo, getYearAgo } from "@/scripts/d
 import { getCoursesLeipzig } from "@/scripts/axios-requests";
 import ArrowIcon from "../assets/icons/ArrowIcon.vue";
 import DateIcon from '../assets/icons/DateIcon.vue';
+import TrashIcon from "../assets/icons/TrashIcon.vue";
 
 const searchString = ref()
 
@@ -144,7 +145,10 @@ defineExpose({
           <h4>Studiengang</h4>
           <Dropdown show-clear v-model="course" :options="courses" placeholder="Studiengang auswählen">
             <template #clearicon>
-              <img src="@/assets/icons/TrashWhite.svg" class="clear-icon" @click="deleteCourse">
+              <div class="trash-icon-container" @click="deleteCourse">
+                <TrashIcon color="white"/>
+              </div>
+              
             </template>
             <template #dropdownicon>
               <ArrowIcon color="white" direction="down"/>
@@ -348,14 +352,8 @@ defineExpose({
   color: $dark-gray;
 }
 
-.clear-icon {
-  width: rem(17px);
-  opacity: 0.9;
-  transition: 0.2s ease-in-out;
-  margin-right: spacing(s);
-
-  &:hover {
-    opacity: 1;
-  }
+.trash-icon-container {
+  display: flex;
+  align-items: center;
 }
 </style>

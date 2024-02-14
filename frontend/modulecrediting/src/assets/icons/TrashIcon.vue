@@ -27,13 +27,12 @@ const props = defineProps({
 
 .white {
     stroke: $white-hover;
+    &:hover {
+        stroke: $white;
+    }
 }
 
 .dark-gray {
     stroke: $dark-gray;
-}
-
-.icon-hover-white:hover .white {
-    stroke: $white;
 }
 </style>
