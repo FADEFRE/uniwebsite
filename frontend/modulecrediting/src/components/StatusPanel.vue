@@ -8,6 +8,7 @@ import PanelExternalModules from "@/components/PanelExternalModules.vue";
 import PanelFormalRejectionBlock from "@/components/PanelFormalRejectionBlock.vue";
 import PanelDecision from "@/components/PanelDecision.vue";
 import { ref, computed } from "vue";
+import ModuleStatusIcon from "../assets/icons/ModuleStatusIcon.vue";
 
 const props = defineProps({
   readonly: {
@@ -69,9 +70,7 @@ defineExpose({
     </template>
 
     <template #icons>
-      <img v-if="connection['decisionFinal'] === 'accepted'" src="@/assets/icons/ModuleAccepted.svg">
-      <img v-else-if="connection['decisionFinal'] === 'asExamCertificate'" src="@/assets/icons/ModuleAsExamCertificate.svg">
-      <img v-else-if="connection['decisionFinal'] === 'denied'" src="@/assets/icons/ModuleDenied.svg">
+      <ModuleStatusIcon v-if="connection['decisionFinal'] !== 'unedited'" :status-decision="connection['decisionFinal']"/>
       <img v-if="allowDelete" src="@/assets/icons/Trash.svg" @click="emit('deleteSelf')" class="trash-icon">
     </template>
 

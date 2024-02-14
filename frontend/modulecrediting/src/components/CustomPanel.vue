@@ -69,6 +69,7 @@ defineExpose({
   display: flex;
   align-items: center;
   margin-left: spacing(s);
+  gap: spacing(s);
 }
 
 :deep(.p-panel-content) {

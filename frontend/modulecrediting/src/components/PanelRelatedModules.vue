@@ -14,6 +14,7 @@ import { ref, onBeforeMount } from "vue";
 import { getRelatedModuleConnections } from "@/scripts/axios-requests";
 import { parseRequestDate } from "@/scripts/date-utils";
 import router from "@/router";
+import ModuleStatusIcon from "../assets/icons/ModuleStatusIcon.vue";
 
 
 //TODO: FIX Related Modules!!!!!! 
@@ -73,15 +74,7 @@ const openRelatedModule = (singleModule) => {
 
           <p class="info-text">{{ relatedModule['application']['courseLeipzig']['name'] }}</p>
 
-          <div v-if="relatedModule['decisionFinal'] === 'accepted'">
-            <img src="../assets/icons/ModuleAccepted.svg">
-          </div>
-          <div v-else-if="relatedModule['decisionFinal'] === 'asExamCertificate'">
-            <img src="../assets/icons/ModuleAsExamCertificate.svg">
-          </div>
-          <div v-else-if="relatedModule['decisionFinal'] === 'denied'">
-            <img src="../assets/icons/ModuleDenied.svg">
-          </div>
+          <ModuleStatusIcon :status-decision="relatedModule['decisionFinal']"/>
         </div>
 
       </div>

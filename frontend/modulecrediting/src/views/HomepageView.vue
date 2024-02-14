@@ -2,10 +2,9 @@
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
 import { getApplicationExists } from "@/scripts/axios-requests";
-import HomepageContainer from '../components/HomepageContainer.vue';
-import SideInfoContainer from '../components/SideInfoContainer.vue';
-import ButtonLink from '../components/ButtonLink.vue';
-import ArrowIcon from '../assets/icons/ArrowIcon.vue';
+import HomepageContainer from '@/components/HomepageContainer.vue';
+import SideInfoContainer from '@/components/SideInfoContainer.vue';
+import ButtonLink from '@/components/ButtonLink.vue';
 
 const router = useRouter()
 
