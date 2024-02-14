@@ -61,12 +61,16 @@ const openRelatedModule = (singleModule) => {
       <div v-for="relatedModule in relatedModules" class="related-module-container"
         @click="openRelatedModule(relatedModule)">
 
+        <div class="main-info">
+          <ModuleStatusIcon :status-decision="relatedModule['decisionFinal']" size="small"/>
+
         <PanelHeader v-if="relatedModule['externalModules'] && relatedModule['modulesLeipzig']"
           :external-modules="relatedModule['externalModules'].map(m => m.name)"
-          :internal-modules="relatedModule['modulesLeipzig'].map(m => m.name)" :relatedModules="true"
-          class="application-header" />
+          :internal-modules="relatedModule['modulesLeipzig'].map(m => m.name)" :relatedModules="true" />
+        </div>
+        
 
-        <div class="application-info">
+        <div class="additional-info">
           <div class="date-block">
             <img src="../assets/icons/DecisionDate.svg" alt="DecisionDate">
             <p class="info-text">{{ parseRequestDate(relatedModule['application']['decisionDate']) }}</p>
@@ -74,7 +78,7 @@ const openRelatedModule = (singleModule) => {
 
           <p class="info-text">{{ relatedModule['application']['courseLeipzig']['name'] }}</p>
 
-          <ModuleStatusIcon :status-decision="relatedModule['decisionFinal']"/>
+          
         </div>
 
       </div>
@@ -99,14 +103,26 @@ const openRelatedModule = (singleModule) => {
 .related-module-container {
   @include smallHighlightBox();
   @include verticalListItem($gray);
-  flex-wrap: wrap-reverse;
+  
+  @include breakpoint(m) {
+    flex-direction: column-reverse;
+    align-items: flex-start;
+    gap: spacing(m);
+  }
+  
 }
 
-.application-header {
-  width: 60%;
+.main-info {
+  width: 70%;
+  display: flex;
+  gap: spacing(m);
+
+  @include breakpoint(m) {
+    width: 100%;
+  }
 }
 
-.application-info {
+.additional-info {
   display: flex;
   justify-content: space-between;
   align-items: center;
