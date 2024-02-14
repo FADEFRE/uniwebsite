@@ -75,16 +75,6 @@
   text-overflow: ellipsis;
 }
 
-@mixin trashIconAnimation() {
-  background-color: transparent;
-  padding: spacing(s) spacing(m);
-  transition: 0.1s ease-in-out;
-  cursor: pointer;
-  &:hover {
-    background: $white-hover;
-  }
-}
-
 @mixin searchFieldContainer() {
   width: 100%;
   display: flex;

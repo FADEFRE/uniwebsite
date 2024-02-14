@@ -1,6 +1,7 @@
 <script setup>
 import { getModulesNameCode, deleteModuleLeipzig } from "@/scripts/axios-requests";
 import { ref, onBeforeMount, computed } from "vue";
+import TrashIcon from "../assets/icons/TrashIcon.vue";
 
 const modules = ref();
 
@@ -41,7 +42,9 @@ const deleteModuleLeipzigClick = (singleModule) => {
             </div>
             <div class="icons-container">
                 <img src="@/assets/icons/EditIcon.svg" class="edit-icon">
-                <img src="@/assets/icons/Trash.svg" @click="deleteModuleLeipzigClick(singleModule)" class="trash-icon">
+                <div class="trash-icon-container" @click="deleteModuleLeipzigClick(singleModule)">
+                    <TrashIcon />
+                </div>
             </div>
         </div>
     </div>
@@ -79,8 +82,9 @@ const deleteModuleLeipzigClick = (singleModule) => {
     gap: spacing(s);
 }
 
-.trash-icon {
-    @include trashIconAnimation();
+.trash-icon-container {
+    @include smallHighlightBox();
+    transition: 0.1s ease-in-out;
 
     &:hover {
         background-color: $gray-hover;
@@ -88,7 +92,8 @@ const deleteModuleLeipzigClick = (singleModule) => {
 }
 
 .edit-icon {
-    @include trashIconAnimation();
+    @include smallHighlightBox();
+    transition: 0.1s ease-in-out;
 
     &:hover {
         background-color: $gray-hover;

@@ -24,8 +24,9 @@ displays:
 -->
 
 <script setup>
-import { ref, computed, watch, onBeforeMount } from "vue";
+import { ref, computed, watch } from "vue";
 import FileInput from "@/components/FileInput.vue";
+import TrashIcon from "../assets/icons/TrashIcon.vue";
 
 const props = defineProps({
   allowTextEdit: {
@@ -142,8 +143,8 @@ defineExpose({
 
     </div>
 
-    <div v-if="allowDelete">
-      <img src="../assets/icons/Trash.svg" @click="emit('deleteSelf')" class="trash-icon">
+    <div class="trash-icon-container" v-if="allowDelete" @click="emit('deleteSelf')">
+      <TrashIcon/>
     </div>
 
   </div>
@@ -204,11 +205,12 @@ defineExpose({
   gap: spacing(s);
 }
 
-.trash-icon {
-  @include trashIconAnimation();
+.trash-icon-container {
+  transition: 0.1s ease-in-out;
   padding: spacing(s);
 
   &:hover {
     background-color: $gray-hover;
   }
-}</style>
+}
+</style>
