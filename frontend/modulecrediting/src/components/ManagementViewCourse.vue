@@ -1,6 +1,7 @@
 <script setup>
 import { getCoursesLeipzig, deleteCourseLeipzig, putUpdateCourseLeipzig } from "@/scripts/axios-requests";
 import { ref, onBeforeMount, computed } from "vue";
+import TrashIcon from "../assets/icons/TrashIcon.vue";
 
 const courses = ref();
 const searchString = ref('');
@@ -36,7 +37,9 @@ const filteredCourses = computed(() => {
             <p>{{ course }}</p>
             <div class="icons-container">
                 <img src="@/assets/icons/EditIcon.svg" class="edit-icon">
-                <img src="@/assets/icons/Trash.svg" @click="deleteCourseLeipzigClick(course)" class="trash-icon">
+                <div class="trash-icon-container" @click="deleteCourseLeipzigClick(course)">
+                    <TrashIcon/>
+                </div>
             </div>
         </div>
     </div>
@@ -68,16 +71,17 @@ const filteredCourses = computed(() => {
     gap: spacing(xs);
 }
 
-.trash-icon {
-    @include trashIconAnimation();
-
-    &:hover {
-        background-color: $gray-hover;
-    }
+.trash-icon-container {
+  @include smallHighlightBox();
+  transition: 0.1s ease-in-out;
+  &:hover {
+    background-color: $gray-hover;
+  }
 }
 
 .edit-icon {
-    @include trashIconAnimation();
+    @include smallHighlightBox();
+  transition: 0.1s ease-in-out;
 
     &:hover {
         background-color: $gray-hover;

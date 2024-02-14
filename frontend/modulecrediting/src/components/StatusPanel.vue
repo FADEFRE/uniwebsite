@@ -9,6 +9,7 @@ import PanelFormalRejectionBlock from "@/components/PanelFormalRejectionBlock.vu
 import PanelDecision from "@/components/PanelDecision.vue";
 import { ref, computed } from "vue";
 import ModuleStatusIcon from "../assets/icons/ModuleStatusIcon.vue";
+import TrashIcon from "../assets/icons/TrashIcon.vue";
 
 const props = defineProps({
   readonly: {
@@ -63,54 +64,35 @@ defineExpose({
   <CustomPanel ref="panelRef">
 
     <template #header>
-      <PanelHeader
-          :external-modules="connection['externalModules'].map(singleModule => singleModule['name'])"
-          :internal-modules="connection['modulesLeipzig'].map(singleModule => singleModule['name'])"
-      />
+      <PanelHeader :external-modules="connection['externalModules'].map(singleModule => singleModule['name'])"
+        :internal-modules="connection['modulesLeipzig'].map(singleModule => singleModule['name'])" />
     </template>
 
     <template #icons>
-      <ModuleStatusIcon v-if="connection['decisionFinal'] !== 'unedited'" :status-decision="connection['decisionFinal']"/>
-      <img v-if="allowDelete" src="@/assets/icons/Trash.svg" @click="emit('deleteSelf')" class="trash-icon">
+      <ModuleStatusIcon v-if="connection['decisionFinal'] !== 'unedited'"
+        :status-decision="connection['decisionFinal']" />
+
+      <div v-if="allowDelete" class="trash-icon-container" @click="emit('deleteSelf')">
+        <TrashIcon />
+      </div>
+      
     </template>
 
     <div>
-      <PanelExternalModules
-          :allow-text-edit="!readonly"
-          :allow-file-edit="!readonly"
-          :allow-delete="!readonly"
-          :allow-add="!readonly"
-          :modules-data="connection['externalModules']"
-          ref="panelExternalModules"
-      />
-      <PanelInternalModules
-          :allow-select="!readonly"
-          :allow-delete="!readonly"
-          :options="selectableModules"
-          :selected-modules="connection['modulesLeipzig'].map(m => m.name)"
-          ref="panelInternalModules"
-      />
-      <PanelComment
-          v-if="connection['commentApplicant'] || readonly === false"
-          :readonly="readonly"
-          :comment="connection['commentApplicant']"
-          ref="panelComment"
-      />
+      <PanelExternalModules :allow-text-edit="!readonly" :allow-file-edit="!readonly" :allow-delete="!readonly"
+        :allow-add="!readonly" :modules-data="connection['externalModules']" ref="panelExternalModules" />
+      <PanelInternalModules :allow-select="!readonly" :allow-delete="!readonly" :options="selectableModules"
+        :selected-modules="connection['modulesLeipzig'].map(m => m.name)" ref="panelInternalModules" />
+      <PanelComment v-if="connection['commentApplicant'] || readonly === false" :readonly="readonly"
+        :comment="connection['commentApplicant']" ref="panelComment" />
       <PanelDecision type="single">
         <div v-if="!readonly">
-          <PanelFormalRejectionBlock
-              v-if="connection['formalRejection']"
-              :readonly="true"
-              :comment="connection['formalRejectionComment']"
-          />
+          <PanelFormalRejectionBlock v-if="connection['formalRejection']" :readonly="true"
+            :comment="connection['formalRejectionComment']" />
         </div>
         <div v-else>
-          <PanelDecisionBlock
-              v-if="connection['decisionFinal'] !== 'unedited'"
-              :readonly="true"
-              :display-decision="connection['decisionFinal']"
-              :comment="connection['commentDecision']"
-          />
+          <PanelDecisionBlock v-if="connection['decisionFinal'] !== 'unedited'" :readonly="true"
+            :display-decision="connection['decisionFinal']" :comment="connection['commentDecision']" />
           <p v-else>Es wurde noch keine Entscheidung getroffen.</p>
         </div>
       </PanelDecision>
@@ -123,7 +105,12 @@ defineExpose({
 @use '@/assets/styles/util' as *;
 @use '@/assets/styles/global' as *;
 
-.trash-icon {
-  @include trashIconAnimation();
+.trash-icon-container {
+  @include smallHighlightBox();
+  transition: 0.1s ease-in-out;
+
+  &:hover {
+    background-color: $white-hover;
+  }
 }
 </style>

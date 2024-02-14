@@ -15,6 +15,7 @@ displays:
 
 <script setup>
 import ArrowIcon from "../assets/icons/ArrowIcon.vue";
+import TrashIcon from "../assets/icons/TrashIcon.vue";
 import { ref } from "vue";
 
 const props = defineProps({
@@ -61,21 +62,22 @@ defineExpose({
     <div class="screen-split">
 
       <div class="module-dropdown" v-if="allowSelect">
-        <Dropdown filter :options="options" placeholder="Modul auswählen" emptyMessage="Studiengang auswählen" emptyFilterMessage="Modul nicht gefunden" @change="e => addSelectedModule(e.value)">
+        <Dropdown filter :options="options" placeholder="Modul auswählen" emptyMessage="Studiengang auswählen"
+          emptyFilterMessage="Modul nicht gefunden" @change="e => addSelectedModule(e.value)">
           <template #filtericon>
             <img class="search-icon" src="@/assets/icons/SearchIcon.svg">
           </template>
           <template #dropdownicon>
-            <ArrowIcon color="white" direction="down"/>
-            </template>
+            <ArrowIcon color="white" direction="down" />
+          </template>
         </Dropdown>
       </div>
 
       <div class="module-list" :class="{ 'module-list-full': !allowSelect }">
         <div v-if="selectedModules.length > 0" v-for="(module, index) in selectedModules" class="module-list-item">
           <p>{{ module }}</p>
-          <div v-if="allowDelete">
-            <img src="../assets/icons/Trash.svg" @click="removeSelectedModule(index)" class="trash-icon">
+          <div class="trash-icon-container" v-if="allowDelete" @click="removeSelectedModule(index)">
+            <TrashIcon />
           </div>
         </div>
         <div v-else-if="!allowSelect">
@@ -95,12 +97,13 @@ defineExpose({
 
 .screen-split {
   @include screenSplit();
-  
+
   @include breakpoint(s) {
     flex-wrap: wrap;
     flex-direction: column;
   }
 }
+
 .module-dropdown {
   width: 50%;
 
@@ -108,7 +111,8 @@ defineExpose({
     width: 100%;
   }
 }
-.module-list{
+
+.module-list {
   @include verticalList(small);
   justify-content: space-between;
   align-self: stretch;
@@ -118,9 +122,11 @@ defineExpose({
     width: 100%;
   }
 }
+
 .module-list-full {
   width: 100%
 }
+
 .module-list-item {
   @include smallHighlightBox();
   @include verticalListItem($gray);
@@ -134,11 +140,12 @@ defineExpose({
   transform: translateY(-50%);
   right: spacing(s);
 }
-.trash-icon {
-  @include trashIconAnimation();
-  &:hover{
+
+.trash-icon-container {
+  @include smallHighlightBox();
+  transition: 0.1s ease-in-out;
+
+  &:hover {
     background-color: $gray-hover;
   }
-}
-
-</style>
+}</style>
