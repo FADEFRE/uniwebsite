@@ -38,6 +38,20 @@ public class UserController {
      * @see User
      * @see UserSummary
      */
+    @GetMapping("/me")
+    public ResponseEntity<UserSummary> getMeUser() {
+        return ResponseEntity.ok(userService.getUserProfile());
+    }
+
+    /**
+     * Get {@link GetMapping /api/user/me} 
+     * <p> Returns {@link UserSummary} of the currently logged in {@link User}
+     * 
+     * @return {@link UserSummary}
+     * @see GetMapping
+     * @see User
+     * @see UserSummary
+     */
     @GetMapping("/me/id")
     public ResponseEntity<UserSummary> getMeUserId() {
         return ResponseEntity.ok(userService.getUserProfileId());

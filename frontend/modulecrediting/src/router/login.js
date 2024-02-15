@@ -22,7 +22,7 @@ async function login (login_username, login_password) {
         const response = await httpResource.post("/api/auth/login", loginRequest);
         console.log(response)
         if (response.status === 200) {
-            const userResponse = await httpResource.get("/api/user/me");
+            const userResponse = await httpResource.get("/api/user/me/id");
             if (userResponse.data.userId !== null) {
                 authUserStore.setCurrentUser(true);
                 await refreshTokenInternal();

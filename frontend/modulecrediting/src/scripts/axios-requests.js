@@ -567,6 +567,22 @@ function getUserMe () {
         .catch(() => {})
 }
 
+function getUserMeId () {
+  console.debug("%c" + "getUserMe ()", axiosColor)
+
+  return httpResource.get("/api/user/me/id")
+      .then(response => response.data)
+      .catch(() => {})
+}
+
+function getUserMeName () {
+  console.debug("%c" + "getUserMe ()", axiosColor)
+
+  return httpResource.get("/api/user/me/name")
+      .then(response => response.data)
+      .catch(() => {})
+}
+
 function getAllUsers () {
     console.debug("%c" + "getAllUsers ()", axiosColor);
 

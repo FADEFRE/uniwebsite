@@ -38,6 +38,22 @@ public class UserService {
     @Autowired
     private PasswordEncoder encoder;
 
+
+    /**
+     * This method gets the {@link UserSummary} of a current authenticated {@link User}. 
+     * 
+     * @return {@code UserSummary} of the authenticated {@code User}.
+     * 
+     * @throws IllegalArgumentException if {@link User} could not be found in the database with the given {@code username}.
+     * 
+     * @see User
+     * @see UserSummary
+     */
+    public UserSummary getUserProfile() {
+        User user = identifyUser();
+        return user.toUserSummary();
+    }
+
     /**
      * This method gets the {@link UserSummary} of a current authenticated {@link User}. 
      * 
