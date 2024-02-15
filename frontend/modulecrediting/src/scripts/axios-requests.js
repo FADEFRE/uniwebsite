@@ -576,7 +576,7 @@ function getAllUsers () {
 }
 
 function putUserUsername (id, username) {
-    console.debug("%c" + "getUserUsername (id: " + id + "username: " + username + ")", axiosColor)
+    console.debug("%c" + "getUserUsername (id: " + id + ", username: " + username + ")", axiosColor)
 
     const formData = new FormData()
 
@@ -589,7 +589,7 @@ function putUserUsername (id, username) {
 }
 
 function putUserRole (id, role) {
-    console.debug("%c" + "getAllUsers (id: " + id + "role: " + role + ")", axiosColor);
+    console.debug("%c" + "getAllUsers (id: " + id + ", role: " + role + ")", axiosColor);
 
     const formData = new FormData()
 
