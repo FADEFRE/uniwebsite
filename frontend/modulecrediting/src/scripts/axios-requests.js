@@ -559,6 +559,14 @@ function postModuleLeipzig(modulename, modulecode) {
     .catch((error) => Promise.reject(error));
 }
 
+function getUserMe () {
+    console.debug("%c" + "getUserMe ()", axiosColor)
+
+    return httpResource.get("/api/user/me")
+        .then(response => response.data)
+        .catch(() => {})
+}
+
 function getAllUsers () {
     console.debug("%c" + "getAllUsers ()", axiosColor);
 
@@ -600,28 +608,29 @@ function createUser (username, password, passwordConfirm, role) {
 }
 
 export {
-  getCoursesLeipzig,
-  getModulesByCourse,
-  getModulesNameCodeByCourse,
-  getModulesNameCode,
-  deleteModuleLeipzig,
-  putCourseLeipzigEdit,
-  putUpdateCourseLeipzig,
-  deleteCourseLeipzig,
-  getApplications,
-  getApplicationById,
-  getApplicationByIdForStatus,
-  getApplicationExists,
-  getRelatedModuleConnections,
-  postApplication,
-  putApplicationStudent,
-  putApplicationStudyOffice,
-  putApplicationChairman,
-  getUpdateStatusAllowed,
-  updateStatus,
-  postCourseLeipzig,
-  postModuleLeipzig,
-  getAllUsers,
-  putUserRole,
-  createUser
+    getCoursesLeipzig,
+    getModulesByCourse,
+    getModulesNameCodeByCourse,
+    getModulesNameCode,
+    deleteModuleLeipzig,
+    putCourseLeipzigEdit,
+    putUpdateCourseLeipzig,
+    deleteCourseLeipzig,
+    getApplications,
+    getApplicationById,
+    getApplicationByIdForStatus,
+    getApplicationExists,
+    getRelatedModuleConnections,
+    postApplication,
+    putApplicationStudent,
+    putApplicationStudyOffice,
+    putApplicationChairman,
+    getUpdateStatusAllowed,
+    updateStatus,
+    postCourseLeipzig,
+    postModuleLeipzig,
+    getUserMe,
+    getAllUsers,
+    putUserRole,
+    createUser
 };
