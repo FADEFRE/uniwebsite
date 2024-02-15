@@ -575,6 +575,19 @@ function getAllUsers () {
         .catch(_ => {})
 }
 
+function putUserUsername (id, username) {
+    console.debug("%c" + "getUserUsername (id: " + id + "username: " + username + ")", axiosColor)
+
+    const formData = new FormData()
+
+    formData.append('id', id)
+    formData.append('username', username)
+
+    return httpResource.put('/api/user/change/username', formData)
+        .then(response => response.data)
+        .catch(_ => {})
+}
+
 function putUserRole (id, role) {
     console.debug("%c" + "getAllUsers (id: " + id + "role: " + role + ")", axiosColor);
 
@@ -631,6 +644,7 @@ export {
     postModuleLeipzig,
     getUserMe,
     getAllUsers,
+    putUserUsername,
     putUserRole,
     createUser
 };
