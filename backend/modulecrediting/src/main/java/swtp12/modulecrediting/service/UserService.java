@@ -48,9 +48,24 @@ public class UserService {
      * @see User
      * @see UserSummary
      */
-    public UserSummary getUserProfile() {
+    public UserSummary getUserProfileId() {
         User user = identifyUser();
         return user.toUserSummaryId();
+    }
+
+    /**
+     * This method gets the {@link UserSummary} of a current authenticated {@link User}. 
+     * 
+     * @return {@code UserSummary} of the authenticated {@code User}.
+     * 
+     * @throws IllegalArgumentException if {@link User} could not be found in the database with the given {@code username}.
+     * 
+     * @see User
+     * @see UserSummary
+     */
+    public UserSummary getUserProfileName() {
+        User user = identifyUser();
+        return user.toUserSummaryName();
     }
 
 
@@ -113,7 +128,14 @@ public class UserService {
         User user = identifyUser();
         if (user.getUserId() != changeRequest.getId()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User id is not matching");
         User userDb = getUser(changeRequest.getId());
+
+        System.out.println("pw " + changeRequest.getPassword());
+        System.out.println("pwC " + changeRequest.getPasswordConfirm());
+
         if(changeRequest.getPassword().equals(changeRequest.getPasswordConfirm())) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Passwords are not matching");
+
+
+
         userDb.setPassword(encoder.encode(changeRequest.getPassword()));
         userRepository.save(userDb);
         return "Password changed successfully";

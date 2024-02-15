@@ -63,5 +63,17 @@ public class User implements Serializable{
         return userSummary;
     }
 
+    /**
+     * Creates {@link UserSummary} with only the {@link String username} of this {@link User}.
+     * 
+     * @see User
+     * @see UserSummary
+     */
+    public UserSummary toUserSummaryName() {
+        UserSummary userSummary = new UserSummary();
+        userSummary.setUsername(this.username);
+        return userSummary;
+    }
+
 
 }

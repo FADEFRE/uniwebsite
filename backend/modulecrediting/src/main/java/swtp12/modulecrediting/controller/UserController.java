@@ -38,9 +38,23 @@ public class UserController {
      * @see User
      * @see UserSummary
      */
-    @GetMapping("/me")
+    @GetMapping("/me/id")
     public ResponseEntity<UserSummary> getMeUserId() {
-        return ResponseEntity.ok(userService.getUserProfile());
+        return ResponseEntity.ok(userService.getUserProfileId());
+    }
+
+        /**
+     * Get {@link GetMapping /api/user/me} 
+     * <p> Returns {@link UserSummary} of the currently logged in {@link User}
+     * 
+     * @return {@link UserSummary}
+     * @see GetMapping
+     * @see User
+     * @see UserSummary
+     */
+    @GetMapping("/me/name")
+    public ResponseEntity<UserSummary> getMeUserName() {
+        return ResponseEntity.ok(userService.getUserProfileName());
     }
 
 
