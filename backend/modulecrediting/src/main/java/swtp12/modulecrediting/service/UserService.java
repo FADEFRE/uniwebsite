@@ -105,7 +105,6 @@ public class UserService {
 
     public String register(EditUserDTO registerRequest) {
         Optional<User> userCandidate = userRepository.findByUsername(registerRequest.getUsername());
-        
         if(userCandidate.isPresent()) throw new ResponseStatusException(HttpStatus.CONFLICT, "Username already exists!");
 
         Optional<Role> roleCandidate = roleRepository.findByRoleName(registerRequest.getRole());
@@ -122,8 +121,9 @@ public class UserService {
         return "User registered successfully!";
     }
 
+
     public String deleteUser() {
-        throw new Error();
+        throw new Error("not implemented yet");
         //check for cant delete self
     }
 
@@ -132,6 +132,10 @@ public class UserService {
     public String changeUsername(EditUserDTO changeRequest) {
         if(changeRequest.getUsername() == null || changeRequest.getUsername().isBlank()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username cannot be empty");
         User user = identifyUser();
+
+        Optional<User> userCandidate = userRepository.findByUsername(changeRequest.getUsername());
+        if(userCandidate.isPresent()) throw new ResponseStatusException(HttpStatus.CONFLICT, "Username already exists!");
+
         if (user.getUserId() != changeRequest.getId()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User id is not matching");
         User userDb = getUser(changeRequest.getId());
         userDb.setUsername(changeRequest.getUsername());
