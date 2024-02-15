@@ -166,12 +166,7 @@ public class UserService {
         if (user.getUserId() != changeRequest.getId()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User id is not matching");
         User userDb = getUser(changeRequest.getId());
 
-        System.out.println("pw " + changeRequest.getPassword());
-        System.out.println("pwC " + changeRequest.getPasswordConfirm());
-
-        if(changeRequest.getPassword().equals(changeRequest.getPasswordConfirm())) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Passwords are not matching");
-
-
+        if(!changeRequest.getPassword().equals(changeRequest.getPasswordConfirm())) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Passwords are not matching");
 
         userDb.setPassword(encoder.encode(changeRequest.getPassword()));
         userRepository.save(userDb);
