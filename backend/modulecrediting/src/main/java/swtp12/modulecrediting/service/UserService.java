@@ -122,9 +122,26 @@ public class UserService {
     }
 
 
-    public String deleteUser() {
-        throw new Error("not implemented yet");
-        //check for cant delete self
+    public String deleteUser(EditUserDTO deleteRequest) {
+        User user = identifyUser();
+
+        if (deleteRequest.getId() == user.getUserId()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "You can't delete yourself");
+        List<User> usersDB = userRepository.findAll();
+        if(usersDB.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "there are no users in the database");
+        List<User> userAdmin = new ArrayList<>();
+        for (User userDB : usersDB) {
+            if (userDB.getRole().getRoleName().equals("ROLE_ADMIN")) {
+                userAdmin.add(userDB);
+            }
+        }
+        if (userAdmin.size() == 1) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "There has to be at least one admin user");
+
+        Optional<User> userDeleteOptional = userRepository.findById(deleteRequest.getId());
+        if(userDeleteOptional.isPresent()) throw new ResponseStatusException(HttpStatus.CONFLICT, "No user with this id found");
+
+        userRepository.delete(userDeleteOptional.get());
+
+        return "User deleted successfully!";
     }
 
 

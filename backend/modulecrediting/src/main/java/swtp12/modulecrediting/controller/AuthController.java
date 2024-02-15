@@ -89,4 +89,10 @@ public class AuthController {
     public ResponseEntity<String> registerUser(@ModelAttribute EditUserDTO registerRequest) {
         return ResponseEntity.ok(userService.register(registerRequest));
     }
+
+    @PostMapping("/delete")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<String> deleteUser(@ModelAttribute EditUserDTO deleteRequest) {
+        return ResponseEntity.ok(userService.deleteUser(deleteRequest));
+    }
 }
