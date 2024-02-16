@@ -601,7 +601,7 @@ function putUserUsername (id, username) {
 
     return httpResource.put('/api/user/change/username', formData)
         .then(response => response.data)
-        .catch(_ => {})
+        .catch(error => Promise.reject(error))
 }
 
 function putUserPassword (id, password, passwordConfirm) {

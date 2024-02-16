@@ -30,7 +30,11 @@ const saveUsername = () => {
   }
   putUserUsername(userId.value, username.value)
       .then(_ => logout())
-      // todo add catch for username exists
+      .catch(error => {
+        if (error.response.status === 409) {
+          usernameExists.value = true
+        }
+      })
 }
 
 const savePassword = () => {
@@ -60,6 +64,7 @@ const savePassword = () => {
       <label for="username">Benutzername</label>
       <InputText type="text" v-model="username" id="username" :class="{ 'invalid': usernameEmpty || usernameExists }"/>
       <small v-if="usernameEmpty" class="invalid-text">Benutzername darf nicht leer sein</small>
+      <small v-if="usernameExists" class="invalid-text">Benutzername existiert bereits</small>
       <Button @click="saveUsername">Speichern</Button>
     </div>
 
