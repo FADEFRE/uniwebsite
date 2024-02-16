@@ -568,7 +568,7 @@ function getUserMe () {
 }
 
 function getUserMeId () {
-  console.debug("%c" + "getUserMe ()", axiosColor)
+  console.debug("%c" + "getUserMeId ()", axiosColor)
 
   return httpResource.get("/api/user/me/id")
       .then(response => response.data)
@@ -576,7 +576,7 @@ function getUserMeId () {
 }
 
 function getUserMeName () {
-  console.debug("%c" + "getUserMe ()", axiosColor)
+  console.debug("%c" + "getUserMeName ()", axiosColor)
 
   return httpResource.get("/api/user/me/name")
       .then(response => response.data)
@@ -659,6 +659,8 @@ export {
     postCourseLeipzig,
     postModuleLeipzig,
     getUserMe,
+    getUserMeId,
+    getUserMeName,
     getAllUsers,
     putUserUsername,
     putUserRole,
