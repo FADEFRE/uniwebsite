@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onBeforeMount } from "vue";
-import {getAllUsers, getUserMeId, putUserRole} from "../scripts/axios-requests";
+import {deleteUser, getAllUsers, getUserMeId, putUserRole} from "../scripts/axios-requests";
 import RoleDropdown from "./RoleDropdown.vue";
 import TrashIcon from "../assets/icons/TrashIcon.vue";
 
@@ -22,6 +22,11 @@ const triggerChangeRole = (id, newRole) => {
   putUserRole(id, newRole)
     .then(_ => location.reload())
 }
+
+const triggerDeleteUser = (id) => {
+  deleteUser(id)
+      .then(_ => location.reload())
+}
 </script>
 
 <template>
@@ -35,7 +40,7 @@ const triggerChangeRole = (id, newRole) => {
         <RoleDropdown :model-value="user.role"
           @update:model-value="(newRole) => triggerChangeRole(user.userId, newRole)" />
           <div class="trash-icon-wrapper">
-          <TrashIcon/>
+          <TrashIcon @click="triggerDeleteUser(user.userId)" />
         </div>
       </div>
     </div>
