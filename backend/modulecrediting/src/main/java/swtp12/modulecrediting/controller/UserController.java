@@ -44,7 +44,7 @@ public class UserController {
     }
 
     /**
-     * Get {@link GetMapping /api/user/me} 
+     * Get {@link GetMapping /api/user/me/id} 
      * <p> Returns {@link UserSummary} of the currently logged in {@link User}
      * 
      * @return {@link UserSummary}
@@ -58,7 +58,7 @@ public class UserController {
     }
 
         /**
-     * Get {@link GetMapping /api/user/me} 
+     * Get {@link GetMapping /api/user/me/name} 
      * <p> Returns {@link UserSummary} of the currently logged in {@link User}
      * 
      * @return {@link UserSummary}
