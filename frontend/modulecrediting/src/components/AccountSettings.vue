@@ -1,6 +1,7 @@
 <script setup>
 import {onBeforeMount, ref} from "vue";
 import {getUserMe, putUserPassword, putUserUsername} from "../scripts/axios-requests";
+import { logout } from "../router/logout"
 
 const userId = ref()
 
@@ -28,7 +29,7 @@ const saveUsername = () => {
     return
   }
   putUserUsername(userId.value, username.value)
-      .then(_ => location.reload())
+      .then(_ => logout())
       // todo add catch for username exists
 }
 
