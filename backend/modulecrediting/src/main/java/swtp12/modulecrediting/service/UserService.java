@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -34,7 +35,7 @@ import swtp12.modulecrediting.util.IncorrectKeyOnDecryptException;
  */
 @Service
 public class UserService {
-    @Autowired
+
     private AuthController authController;
     @Autowired
     private UserRepository userRepository;
@@ -43,6 +44,10 @@ public class UserService {
     @Autowired
     private PasswordEncoder encoder;
 
+    
+    public  UserService(@Lazy AuthController authController) {
+        this.authController = authController;
+    }
 
     /**
      * This method gets the {@link UserSummary} of a current authenticated {@link User}. 
