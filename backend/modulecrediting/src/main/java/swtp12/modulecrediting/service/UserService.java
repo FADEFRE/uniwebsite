@@ -139,7 +139,7 @@ public class UserService {
         if (userAdmin.size() == 1) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "There has to be at least one admin user");
 
         Optional<User> userDeleteOptional = userRepository.findById(deleteRequest.getId());
-        if(userDeleteOptional.isPresent()) throw new ResponseStatusException(HttpStatus.CONFLICT, "No user with this id found");
+        if(userDeleteOptional.isPresent()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No user with this id found");
 
         userRepository.delete(userDeleteOptional.get());
 
