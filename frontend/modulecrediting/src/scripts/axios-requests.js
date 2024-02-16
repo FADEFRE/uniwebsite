@@ -604,6 +604,20 @@ function putUserUsername (id, username) {
         .catch(_ => {})
 }
 
+function putUserPassword (id, password, passwordConfirm) {
+    console.debug("%c" + "putUserPassword (id: " + id + ", password: [hidden]" + ", passwordConfirm: [hidden]" + ")", axiosColor)
+
+    const formData = new FormData()
+
+    formData.append('id', id)
+    formData.append('password', password)
+    formData.append('passwordConfirm', passwordConfirm)
+
+    return httpResource.put('/api/user/change/password', formData)
+        .then(response => response.data)
+        .catch(_ => {})
+}
+
 function putUserRole (id, role) {
     console.debug("%c" + "getAllUsers (id: " + id + ", role: " + role + ")", axiosColor);
 
@@ -663,6 +677,7 @@ export {
     getUserMeName,
     getAllUsers,
     putUserUsername,
+    putUserPassword,
     putUserRole,
     createUser
 };
