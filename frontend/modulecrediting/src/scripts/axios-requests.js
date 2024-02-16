@@ -631,6 +631,18 @@ function putUserRole (id, role) {
         .catch(_ => {})
 }
 
+function deleteUser (id) {
+    console.debug("%c" + "delteUser (id: " + id + ")", axiosColor)
+
+    const formData = new FormData()
+
+    formData.append('id', id)
+
+    return httpResource.post('api/auth/delete', formData)
+        .then(response => response.data)
+        .catch(_ => {})
+}
+
 function createUser (username, password, passwordConfirm, role) {
     console.debug(
         "%c" + "create user (username: " + username + ", role: " + role + ")",
@@ -679,5 +691,6 @@ export {
     putUserUsername,
     putUserPassword,
     putUserRole,
+    deleteUser,
     createUser
 };
