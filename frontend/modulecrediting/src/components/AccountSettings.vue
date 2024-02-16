@@ -13,7 +13,7 @@ onBeforeMount(() => {
   getUserMe()
       .then(data => {
         userId.value = data['userId']
-        username.value = data['username']  // todo fix username null in backend
+        username.value = data['username']
       })
 })
 
