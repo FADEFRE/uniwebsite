@@ -1,14 +1,21 @@
 <script setup>
 import { ref, onBeforeMount } from "vue";
-import { getAllUsers, putUserRole } from "../scripts/axios-requests";
+import {getAllUsers, getUserMeId, putUserRole} from "../scripts/axios-requests";
 import RoleDropdown from "./RoleDropdown.vue";
 import TrashIcon from "../assets/icons/TrashIcon.vue";
 
+let currentUserId = undefined
 const userList = ref([])
 
 onBeforeMount(() => {
-  getAllUsers()
-    .then(data => userList.value = data.toSorted((a, b) => a['userId'] - b['userId']))
+  getUserMeId()
+      .then(userData => {
+        currentUserId = userData['userId']
+        return getAllUsers()
+      })
+      .then(data => {
+        userList.value = data.filter(user => user['userId'] !== currentUserId).toSorted((a, b) => a['userId'] - b['userId'])
+      })
 })
 
 const triggerChangeRole = (id, newRole) => {
