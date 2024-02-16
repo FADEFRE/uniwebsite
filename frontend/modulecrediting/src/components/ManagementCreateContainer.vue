@@ -2,7 +2,6 @@
 import ButtonAdd from "@/components/ButtonAdd.vue";
 import { ref } from 'vue';
 import { postCourseLeipzig, postModuleLeipzig } from "@/scripts/axios-requests";
-import _default from "pinia-plugin-persistedstate";
 const props = defineProps({
     type: {
         required: true,
@@ -21,7 +20,7 @@ const createCourseLeipzig = () => {
     postCourseLeipzig(coursename.value)
         .then(_ => location.reload())
         .catch(error => {
-            if (error.response.status) {
+            if (error.response.status) {  // todo check for specific error
                 courseExists.value = true
             } else {
                 location.reload()
@@ -32,7 +31,7 @@ const createModuleLeipzig = () => {
     postModuleLeipzig(modulename.value, modulecode.value)
         .then(_ => location.reload())
         .catch(error => {
-            if (error.response.status) {
+            if (error.response.status) {  // todo check for specific error
                 moduleExists.value = true
             } else {
                 location.reload()
