@@ -37,10 +37,6 @@ const triggerCreateUser = () => {
     <InputText type="text" placeholder="Passwort" v-model="password" />
     <InputText type="text" placeholder="Passwort bestätigen" v-model="passwordConfirm" />
 
-
-
-    {{ role }}
-
     <ButtonLink :redButton="true" @click="triggerCreateUser">Benutzer erstellen</ButtonLink>
 
   </div>
