@@ -11,7 +11,6 @@ import java.util.Optional;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.mock.web.MockMultipartFile;
@@ -48,7 +47,7 @@ import swtp12.modulecrediting.service.ApplicationService;
  * The DataLoader class is responsible for reading JSON data and saving the data correctly into the database.
  */
 @Component
-public class DataLoader implements CommandLineRunner {
+public class TestDataLoader {
     @Autowired
     private ModuleLeipzigRepository modulLeipzigRepo;
 
@@ -70,7 +69,7 @@ public class DataLoader implements CommandLineRunner {
     private final ObjectMapper objectMapper;
 
 
-    public DataLoader(ObjectMapper objectMapper) {
+    public TestDataLoader(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
     }
 
@@ -79,13 +78,10 @@ public class DataLoader implements CommandLineRunner {
      * Reads Uni Leipzig Data from a JSON and writes it into the database
      * Reads test data from a Json and writes it into the databse
      */
-    @Override
     @Transactional
-    public void run(String... args) {
+    public void run() {
         String moduleLeipzigData = "/module_liste.json";
         String testData = "/test_data.json";
-
-        roleCreation();
 
         userCreation(testData);
 
@@ -94,21 +90,9 @@ public class DataLoader implements CommandLineRunner {
         createTestData(testData);
     }
 
-    //role creation
-    private void roleCreation() {
-        System.out.println("Creating Roles:");
-        Role admin = new Role("ROLE_ADMIN");
-        Role sb = new Role("ROLE_STUDY");
-        Role pav = new Role("ROLE_CHAIR");
-        roleRepository.save(admin);
-        roleRepository.save(sb);
-        roleRepository.save(pav);
-    }
-
 
     //creates users defined in filename (test data)
     private void userCreation(String fileName) {
-        System.out.println("Creating Users:");
         JsonNode userSettings = grabFirstNodeFromJson(fileName, "users");
         for (JsonNode user : userSettings) {
             String username = user.get("name").asText();
@@ -128,10 +112,12 @@ public class DataLoader implements CommandLineRunner {
                     if(userCreate.getRole() == null) {
                         userCreate.setRole(roleCandidate.get());
                     }
+                    System.out.println("Created User " + userCreate.getUsername());
                     userRepository.save(userCreate);
                 }
             }
         }
+        System.out.println();
     }
 
 
@@ -167,7 +153,7 @@ public class DataLoader implements CommandLineRunner {
                 courseLeipzigRepo.save(courseLeipzig);
             }
         }
-        System.out.println("Dataloader: Data successfully loaded into Database \n");
+        System.out.println("Leipzig-Data successfully loaded into Database \n");
     }
 
 
@@ -206,7 +192,7 @@ public class DataLoader implements CommandLineRunner {
         }
         
 
-        System.out.println("Dataloader: Generating random Dummy Applications:");
+        System.out.println("Generating random Dummy Applications:");
         for (CourseLeipzig cL : listOfCourseLeipzig) {
             List<ModulesConnectionDTO> listModuleCreateDTO = new ArrayList<>();
 
@@ -279,7 +265,6 @@ public class DataLoader implements CommandLineRunner {
             }
             System.out.println("Created Dummy Application: " + vorgangsnummer + " as: " + updatedData);
         }
-        System.out.println("Dataloader: Testdata successfully loaded into Database"); 
     }
 
 
