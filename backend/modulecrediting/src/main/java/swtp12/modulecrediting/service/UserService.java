@@ -12,13 +12,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import swtp12.modulecrediting.controller.AuthController;
 import swtp12.modulecrediting.dto.CustomUserDetails;
 import swtp12.modulecrediting.dto.EditUserDTO;
+import swtp12.modulecrediting.dto.LoginRequest;
 import swtp12.modulecrediting.dto.UserSummary;
 import swtp12.modulecrediting.model.Role;
 import swtp12.modulecrediting.model.User;
 import swtp12.modulecrediting.repository.RoleRepository;
 import swtp12.modulecrediting.repository.UserRepository;
+import swtp12.modulecrediting.util.IncorrectKeyOnDecryptException;
 
 /**
  * {@link UserService} is a {@link Service} and provides the 
@@ -31,6 +34,8 @@ import swtp12.modulecrediting.repository.UserRepository;
  */
 @Service
 public class UserService {
+    @Autowired
+    private AuthController authController;
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -146,7 +151,7 @@ public class UserService {
 
 
 
-    public String changeUsername(EditUserDTO changeRequest) {
+    public String changeUsername(EditUserDTO changeRequest) throws IncorrectKeyOnDecryptException {
         if(changeRequest.getUsername() == null || changeRequest.getUsername().isBlank()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username cannot be empty");
         User user = identifyUser();
 
@@ -157,6 +162,13 @@ public class UserService {
         User userDb = getUser(changeRequest.getId());
         userDb.setUsername(changeRequest.getUsername());
         userRepository.save(userDb);
+
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.setUsername(userDb.getUsername());
+        loginRequest.setPassword(userDb.getPassword());
+
+        authController.login(null, null, loginRequest);
+
         return "Username changed successfully";
     }
 
@@ -173,7 +185,7 @@ public class UserService {
         return "Password changed successfully";
     }
 
-    public String changeRole(EditUserDTO changeRequest) {
+    public String changeRole(EditUserDTO changeRequest) { //TODO cant change own role -> like delete
         if(changeRequest.getRole() == null || changeRequest.getRole().isBlank()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Role cannot be empty");
         User userDb = getUser(changeRequest.getId());
         Optional<Role> roleOptional = roleRepository.findByRoleName(changeRequest.getRole());
