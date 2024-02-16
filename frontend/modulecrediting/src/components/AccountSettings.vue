@@ -47,7 +47,7 @@ const savePassword = () => {
     return
   }
   putUserPassword(userId.value, password.value, passwordConfirm.value)
-      .then(_ => location.reload())
+      .then(_ => logout())
 }
 </script>
 
