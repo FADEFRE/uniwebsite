@@ -45,7 +45,7 @@ function closeMenu() {
     <router-view class="main-content" />
 
     <footer>
-      <ul>
+      <ul class="footer-content">
         <li><p>Impressum</p></li>
         <li><p>Datenschutz</p></li>
       </ul>
@@ -178,7 +178,7 @@ footer {
   align-items: flex-end;
 }
 
-ul {
+.footer-content {
   display: flex;
   gap: spacing(m);
 
