@@ -175,9 +175,10 @@ public class UserService {
         return "Password changed successfully";
     }
 
-    public String changeRole(EditUserDTO changeRequest) { //TODO cant change own role -> like delete
+    public String changeRole(EditUserDTO changeRequest) {
         if(changeRequest.getRole() == null || changeRequest.getRole().isBlank()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Role cannot be empty");
         User userDb = getUser(changeRequest.getId());
+        if (changeRequest.getId() == userDb.getUserId()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "You can't change your own Role");
         Optional<Role> roleOptional = roleRepository.findByRoleName(changeRequest.getRole());
         if (!roleOptional.isPresent()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found in database");
         Role role = roleOptional.get();
