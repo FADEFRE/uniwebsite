@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,10 +12,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import swtp12.modulecrediting.controller.AuthController;
 import swtp12.modulecrediting.dto.CustomUserDetails;
 import swtp12.modulecrediting.dto.EditUserDTO;
-import swtp12.modulecrediting.dto.LoginRequest;
 import swtp12.modulecrediting.dto.UserSummary;
 import swtp12.modulecrediting.model.Role;
 import swtp12.modulecrediting.model.User;
@@ -36,7 +33,6 @@ import swtp12.modulecrediting.util.IncorrectKeyOnDecryptException;
 @Service
 public class UserService {
 
-    private AuthController authController;
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -44,10 +40,6 @@ public class UserService {
     @Autowired
     private PasswordEncoder encoder;
 
-    
-    public  UserService(@Lazy AuthController authController) {
-        this.authController = authController;
-    }
 
     /**
      * This method gets the {@link UserSummary} of a current authenticated {@link User}. 
@@ -167,13 +159,6 @@ public class UserService {
         User userDb = getUser(changeRequest.getId());
         userDb.setUsername(changeRequest.getUsername());
         userRepository.save(userDb);
-
-        LoginRequest loginRequest = new LoginRequest();
-        loginRequest.setUsername(userDb.getUsername());
-        loginRequest.setPassword(userDb.getPassword());
-
-        authController.login(null, null, loginRequest);
-
         return "Username changed successfully";
     }
 
