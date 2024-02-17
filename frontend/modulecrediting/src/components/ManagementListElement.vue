@@ -10,10 +10,6 @@ const props = defineProps({
   code: {
     type: String
   },
-  id: {
-    required: true,
-    type: Number,
-  },
   deleteCallback: {
     required: true,
     type: Function
@@ -31,7 +27,7 @@ const props = defineProps({
 
     <div class="icons-container">
       <img src="@/assets/icons/EditIcon.svg" class="edit-icon">
-      <div class="trash-icon-container" @click="deleteCallback(id)">
+      <div class="trash-icon-container" @click="deleteCallback(name)">
         <TrashIcon />
       </div>
     </div>

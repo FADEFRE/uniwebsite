@@ -11,7 +11,7 @@ onBeforeMount(() => {
         .then(data => courses.value = data)
 })
 
-const deleteCourseLeipzigClick = (course) => {
+const triggerDeleteCourseLeipzig = (course) => {
     deleteCourseLeipzig(course)
         .then(_ => location.reload())
 }
@@ -36,8 +36,7 @@ const filteredCourses = computed(() => {
         <div v-for="course in filteredCourses" class="course-item">
             <ManagementListElement
                 :name="course"
-                :id="course"
-                :delete-callback="function (id) {}"
+                :delete-callback="triggerDeleteCourseLeipzig"
             />
         </div>
     </div>
