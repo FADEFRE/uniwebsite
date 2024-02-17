@@ -1,13 +1,13 @@
 <script setup>
-import { getCoursesLeipzig, deleteCourseLeipzig, putUpdateCourseLeipzig } from "@/scripts/axios-requests";
+import ManagementListElement from "./ManagementListElement.vue";
 import { ref, onBeforeMount, computed } from "vue";
-import TrashIcon from "../assets/icons/TrashIcon.vue";
+import { getCoursesLeipzigName, deleteCourseLeipzig } from "@/scripts/axios-requests";
 
 const courses = ref();
 const searchString = ref('');
 
 onBeforeMount(() => {
-    getCoursesLeipzig()
+    getCoursesLeipzigName()
         .then(data => courses.value = data)
 })
 
@@ -34,13 +34,11 @@ const filteredCourses = computed(() => {
             <img src="@/assets/icons/SearchIcon.svg" class="search-icon">
         </div>
         <div v-for="course in filteredCourses" class="course-item">
-            <p>{{ course }}</p>
-            <div class="icons-container">
-                <img src="@/assets/icons/EditIcon.svg" class="edit-icon">
-                <div class="trash-icon-container" @click="deleteCourseLeipzigClick(course)">
-                    <TrashIcon/>
-                </div>
-            </div>
+            <ManagementListElement
+                :name="course"
+                :id="course"
+                :delete-callback="function (id) {}"
+            />
         </div>
     </div>
 </template>
