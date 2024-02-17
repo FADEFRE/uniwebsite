@@ -29,8 +29,6 @@ const triggerDeleteModuleLeipzig = (module) => {
     deleteModuleLeipzig(module)
         .then(_ => location.reload())
 }
-
-// todo suche machen
 </script>
 
 <template>
