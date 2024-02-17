@@ -1,11 +1,6 @@
 package swtp12.modulecrediting.service;
 
-/*import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.kernel.pdf.PdfReader;
-import com.itextpdf.kernel.pdf.PdfWriter;*/
 
-
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.time.format.DateTimeFormatter;
@@ -20,20 +15,14 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
-import swtp12.modulecrediting.dto.StudentApplicationDTO;
-
 import org.thymeleaf.context.Context;
+import swtp12.modulecrediting.model.Application;
 
 
 @Service
 public class GeneratedPdfService {
     @Autowired
     private ApplicationService applicationService;
-
-    //helper to get DTO
-    private StudentApplicationDTO getDataForPDF(String id) {
-        return applicationService.getStudentApplicationById(id);
-    }
 
     public String GeneralDataTemplate(String id) {
         ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
@@ -42,48 +31,27 @@ public class GeneratedPdfService {
         templateResolver.setPrefix("templates/");
         TemplateEngine templateEngine = new TemplateEngine();
         templateEngine.setTemplateResolver(templateResolver);
-        
-        
-        StudentApplicationDTO application = getDataForPDF(id);
+
+
+        Application application = applicationService.getApplicationStudentById(id);
 
         Context context = new Context();
         context.setVariable("id", id);
         context.setVariable("Erstelldatum", application.getCreationDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
         context.setVariable("Status", application.getFullStatus());
         context.setVariable("Entscheidungsdatum", application.getDecisionDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
-        //context.setVariable("Studiengang", application.getCourseLeipzig());
 
         return templateEngine.process("GeneralData", context);
     }
 
-    public String ModuleConnectionTemplate(String id) {
-        ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
-        templateResolver.setSuffix(".html");
-        templateResolver.setTemplateMode(TemplateMode.HTML);
-        templateResolver.setPrefix("templates/");
-        TemplateEngine templateEngine = new TemplateEngine();
-        templateEngine.setTemplateResolver(templateResolver);
-        
-        
-        StudentApplicationDTO application = getDataForPDF(id);
-
-        Context context = new Context();
-
-        return templateEngine.process("ModulesConnection", context);
-    }
-
- 
     public byte[] generatePdfFromHtml(String id) throws IOException {
-    
-        StudentApplicationDTO application = getDataForPDF(id); 
+        Application application = applicationService.getApplicationStudentById(id);
         String html = GeneralDataTemplate(id);
-        String html2 = ModuleConnectionTemplate(id);
 
 
         OutputStream outputStream = new ByteArrayOutputStream();
 
         ITextRenderer renderer = new ITextRenderer();
-        
         renderer.setDocumentFromString(html);
         renderer.layout();
         renderer.createPDF(outputStream);
@@ -92,6 +60,8 @@ public class GeneratedPdfService {
 
         return ((ByteArrayOutputStream) outputStream).toByteArray();
     }
+}
+
 
     /* 
 
@@ -134,4 +104,4 @@ public class GeneratedPdfService {
     
         return outputStream.toByteArray();
     }*/
-}
+

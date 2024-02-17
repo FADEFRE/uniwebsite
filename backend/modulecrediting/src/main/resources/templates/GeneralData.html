@@ -1,0 +1,45 @@
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8"></meta>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
+        <link rel="stylesheet" th:href="@{classpath:static/main.css}"></link>
+        <title>Application</title>
+    </head>
+  <body>
+    <div class="layout">
+      <header>
+        
+            <img class="logo" th:src="@{classpath:/static/images/Universität_leipzig_Logo.png}" alt="Bildbeschreibung"> </img>
+              <h1 id="HeadingPDF">ANTRAG ZUR MODULANRECHNUNG</h1>
+              <h2 id="SubHeadingPDF">Allgemeine Informationen</h2>
+      
+      </header>
+
+      <table class="content-table">
+          <tbody>
+            <tr>
+              <td>Voragangsnummer</td>
+              <td th:text="${id}">nicht verfügbar</td>
+            </tr>
+            <tr>
+              <td>Erstelldatum</td>
+              <td th:text="${Erstelldatum}">nicht verfügbar</td>
+          
+            </tr>
+            <tr>
+              <td>Status</td>
+              <td th:text="${Status}">nicht verfügbar</td>
+            </tr>
+            <tr>
+              <td>Entscheidungsdatum</td>
+              <td th:text="${Entscheidungsdatum}">nicht verfügbar</td>
+            </tr>
+            <tr>
+              <td>Studiengang</td>
+              <td th:text="${Studiengang}">nicht verfügbar</td>
+            </tr>
+          </tbody>
+      </table>
+    </div>
+  </body>
+</html>
