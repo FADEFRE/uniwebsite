@@ -3,14 +3,6 @@ import httpResource from "@/scripts/httpResource";
 
 let axiosColor = "color:blue";
 
-function getCoursesLeipzig() {
-    console.debug("%c", "getCoursesLeipzig ()", axiosColor)
-
-    return httpResource.get("/api/courses-leipzig")
-        .then(response => response.data)
-        .catch(_ => {})
-}
-
 /*
 GET-Request to '/courses-leipzig' endpoint
 return list of all course names
@@ -672,7 +664,6 @@ function createUser (username, password, passwordConfirm, role) {
 }
 
 export {
-    getCoursesLeipzig,
     getCoursesLeipzigName,
     getModulesByCourse,
     getModulesNameCodeByCourse,
