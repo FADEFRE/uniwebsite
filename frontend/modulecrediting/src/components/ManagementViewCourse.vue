@@ -2,6 +2,7 @@
 import ManagementListElement from "./ManagementListElement.vue";
 import { ref, onBeforeMount, computed } from "vue";
 import { getCoursesLeipzigName, deleteCourseLeipzig } from "@/scripts/axios-requests";
+import {putUpdateCourseLeipzig} from "../scripts/axios-requests";
 
 const courses = ref();
 const searchString = ref('');
@@ -10,6 +11,11 @@ onBeforeMount(() => {
     getCoursesLeipzigName()
         .then(data => courses.value = data)
 })
+
+const triggerEditCourseLeipzig = (oldName, newName) => {
+  putUpdateCourseLeipzig(oldName, newName)
+      .then(_ => location.reload())
+}
 
 const triggerDeleteCourseLeipzig = (course) => {
     deleteCourseLeipzig(course)
@@ -36,6 +42,7 @@ const filteredCourses = computed(() => {
         <div v-for="course in filteredCourses" class="course-item">
             <ManagementListElement
                 :name="course"
+                :edit-callback="triggerEditCourseLeipzig"
                 :delete-callback="triggerDeleteCourseLeipzig"
             />
         </div>
