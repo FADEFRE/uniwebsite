@@ -130,16 +130,11 @@ public class UserService {
         if (deleteRequest.getId() == user.getUserId()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "You can't delete yourself");
         List<User> usersDB = userRepository.findAll();
         if(usersDB.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "there are no users in the database");
-        List<User> userAdmin = new ArrayList<>();
-        for (User userDB : usersDB) {
-            if (userDB.getRole().getRoleName().equals("ROLE_ADMIN")) {
-                userAdmin.add(userDB);
-            }
-        }
-        if (userAdmin.size() == 1) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "There has to be at least one admin user");
+        List<User> userAdmin = getAllUserWithRole("ROLE_ADMIN");
+        if (userAdmin.size() == 1 && userAdmin.get(0).getUserId() == deleteRequest.getId()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "There has to be at least one admin user");
 
         Optional<User> userDeleteOptional = userRepository.findById(deleteRequest.getId());
-        if(userDeleteOptional.isPresent()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No user with this id found");
+        if(!userDeleteOptional.isPresent()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No user with this id found");
 
         userRepository.delete(userDeleteOptional.get());
 
@@ -207,6 +202,17 @@ public class UserService {
         Optional<User> userOptional = userRepository.findById(id);
         if (!userOptional.isPresent()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found in database");
         return userOptional.get();
+    }
+
+    public List<User> getAllUserWithRole(String roleName) {
+        List<User> userWithRole = new ArrayList<>();
+        List<User> usersDB = userRepository.findAll();
+        for (User userDB : usersDB) {
+            if (userDB.getRole().getRoleName().equals(roleName)) {
+                userWithRole.add(userDB);
+            }
+        }
+        return userWithRole;
     }
 
 }
