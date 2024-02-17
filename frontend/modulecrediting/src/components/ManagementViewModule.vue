@@ -2,6 +2,7 @@
 import { getModulesNameCode, deleteModuleLeipzig } from "@/scripts/axios-requests";
 import { ref, onBeforeMount, computed } from "vue";
 import TrashIcon from "../assets/icons/TrashIcon.vue";
+import ManagementListElement from "./ManagementListElement.vue";
 
 const modules = ref();
 
@@ -36,16 +37,12 @@ const deleteModuleLeipzigClick = (singleModule) => {
             <img src="@/assets/icons/SearchIcon.svg" class="search-icon">
         </div>
         <div v-for="singleModule in filteredModules" class="module-item">
-            <div class="module-text-container">
-                <p>{{ singleModule.name }}</p>
-                <small>{{ singleModule.code }}</small>
-            </div>
-            <div class="icons-container">
-                <img src="@/assets/icons/EditIcon.svg" class="edit-icon">
-                <div class="trash-icon-container" @click="deleteModuleLeipzigClick(singleModule)">
-                    <TrashIcon />
-                </div>
-            </div>
+          <ManagementListElement
+              :name="singleModule['name']"
+              :code="singleModule['code']"
+              :id="singleModule['id']"
+              :delete-callback="function (id) {}"
+          />
         </div>
     </div>
 </template>
@@ -64,39 +61,8 @@ const deleteModuleLeipzigClick = (singleModule) => {
 }
 
 .module-item {
-    @include smallHighlightBox();
-    @include verticalListItem($gray);
-    width: 100%;
-}
-
-.module-text-container {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
-
-
-.icons-container {
-    display: flex;
-    align-items: center;
-    gap: spacing(s);
-}
-
-.trash-icon-container {
-    @include smallHighlightBox();
-    transition: 0.1s ease-in-out;
-
-    &:hover {
-        background-color: $gray-hover;
-    }
-}
-
-.edit-icon {
-    @include smallHighlightBox();
-    transition: 0.1s ease-in-out;
-
-    &:hover {
-        background-color: $gray-hover;
-    }
+  @include smallHighlightBox();
+  @include verticalListItem($gray);
+  width: 100%;
 }
 </style>
