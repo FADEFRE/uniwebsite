@@ -11,7 +11,7 @@ exposes:
 <script setup>
 import { ref, computed, onBeforeMount } from "vue";
 import { getWeekAgo, getMonthAgo, getSixMonthAgo, getYearAgo } from "@/scripts/date-utils";
-import { getCoursesLeipzig } from "@/scripts/axios-requests";
+import { getCoursesLeipzigName } from "@/scripts/axios-requests";
 import ArrowIcon from "../assets/icons/ArrowIcon.vue";
 import DateIcon from '../assets/icons/DateIcon.vue';
 import TrashIcon from "../assets/icons/TrashIcon.vue";
@@ -54,7 +54,7 @@ const deleteCourse = (e) => {
 }
 
 onBeforeMount(() => {
-  getCoursesLeipzig()
+  getCoursesLeipzigName()
     .then(data => courses.value = data)
 })
 

@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onBeforeMount, computed } from "vue";
 import ButtonLink from "@/components/ButtonLink.vue"
-import { getCoursesLeipzig, getModulesNameCodeByCourse, getModulesNameCode, putCourseLeipzigEdit } from "@/scripts/axios-requests";
+import { getCoursesLeipzigName, getModulesNameCodeByCourse, getModulesNameCode, putCourseLeipzigEdit } from "@/scripts/axios-requests";
 import ArrowIcon from "../assets/icons/ArrowIcon.vue";
 
 const courses = ref()
@@ -29,7 +29,7 @@ const selectableModules = computed(() => {
 const searchString = ref('');
 
 onBeforeMount(() => {
-    getCoursesLeipzig()
+    getCoursesLeipzigName()
         .then(data => courses.value = data)
     getModulesNameCode()
         .then(data => allModules.value = data)

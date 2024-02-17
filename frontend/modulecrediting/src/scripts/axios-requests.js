@@ -9,7 +9,7 @@ removes non active courses
 parameters:
     none
  */
-function getCoursesLeipzig() {
+function getCoursesLeipzigName() {
   console.debug("%c" + "getCoursesLeipzig ()", axiosColor);
 
   return httpResource
@@ -663,7 +663,7 @@ function createUser (username, password, passwordConfirm, role) {
 }
 
 export {
-    getCoursesLeipzig,
+    getCoursesLeipzigName,
     getModulesByCourse,
     getModulesNameCodeByCourse,
     getModulesNameCode,

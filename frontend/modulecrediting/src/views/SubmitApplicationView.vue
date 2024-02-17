@@ -15,7 +15,7 @@ functionality:
 import router from "@/router";
 import { ref, onBeforeMount } from "vue";
 import { getFormattedDate } from "@/scripts/date-utils";
-import { getCoursesLeipzig, getModulesByCourse, postApplication } from "@/scripts/axios-requests";
+import { getCoursesLeipzigName, getModulesByCourse, postApplication } from "@/scripts/axios-requests";
 import ApplicationPanel from "@/components/ApplicationPanel.vue";
 import SideInfoContainer from "@/components/SideInfoContainer.vue";
 import ButtonAdd from "@/components/ButtonAdd.vue";
@@ -29,7 +29,7 @@ const courses = ref()
 const selectedCourse = ref()
 
 onBeforeMount(() => {
-  getCoursesLeipzig()
+  getCoursesLeipzigName()
     .then(data => courses.value = data)
 })
 
