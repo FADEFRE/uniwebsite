@@ -15,22 +15,32 @@ const props = defineProps({
     type: Function
   }
 })
+
+const dialogVisible = ref(false)
+const name = ref(props.name)
+const code = ref(props.code)
 </script>
 
 <template>
   <div>
 
     <div class="module-text-container">
-      <p>{{ name }}</p>
-      <small v-if="code">{{ code }}</small>
+      <p>{{ props.name }}</p>
+      <small v-if="props.code">{{ props.code }}</small>
     </div>
 
     <div class="icons-container">
-      <img src="@/assets/icons/EditIcon.svg" class="edit-icon">
-      <div class="trash-icon-container" @click="deleteCallback(name)">
+      <img src="@/assets/icons/EditIcon.svg" class="edit-icon" @click="dialogVisible = !dialogVisible">
+      <div class="trash-icon-container" @click="deleteCallback(props.name)">
         <TrashIcon />
       </div>
     </div>
+
+    <Dialog modal :dismissable-mask="true" :draggable="false" v-model:visible="dialogVisible" header="Bearbeiten">
+      <InputText type="text" v-model="name" />
+      <InputText v-if="props.code" type="text" v-model="code" />
+      <Button>Speichern</Button>
+    </Dialog>
 
   </div>
 </template>
