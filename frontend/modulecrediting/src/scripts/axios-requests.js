@@ -2,6 +2,15 @@ import { url } from "@/scripts/url-config.js";
 import httpResource from "@/scripts/httpResource";
 
 let axiosColor = "color:blue";
+
+function getCoursesLeipzig() {
+    console.debug("%c", "getCoursesLeipzig ()", axiosColor)
+
+    return httpResource.get("/api/courses-leipzig")
+        .then(response => response.data)
+        .catch(_ => {})
+}
+
 /*
 GET-Request to '/courses-leipzig' endpoint
 return list of all course names
@@ -10,7 +19,7 @@ parameters:
     none
  */
 function getCoursesLeipzigName() {
-  console.debug("%c" + "getCoursesLeipzig ()", axiosColor);
+  console.debug("%c" + "getCoursesLeipzigName ()", axiosColor);
 
   return httpResource
     .get("/api/courses-leipzig")
@@ -663,6 +672,7 @@ function createUser (username, password, passwordConfirm, role) {
 }
 
 export {
+    getCoursesLeipzig,
     getCoursesLeipzigName,
     getModulesByCourse,
     getModulesNameCodeByCourse,
