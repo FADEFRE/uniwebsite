@@ -21,8 +21,8 @@ const filteredModules = computed(() => {
     })
 })
 
-const deleteModuleLeipzigClick = (singleModule) => {
-    deleteModuleLeipzig(singleModule.name)
+const triggerDeleteModuleLeipzig = (module) => {
+    deleteModuleLeipzig(module)
         .then(_ => location.reload())
 }
 
@@ -40,8 +40,7 @@ const deleteModuleLeipzigClick = (singleModule) => {
           <ManagementListElement
               :name="singleModule['name']"
               :code="singleModule['code']"
-              :id="singleModule['id']"
-              :delete-callback="function (id) {}"
+              :delete-callback="triggerDeleteModuleLeipzig"
           />
         </div>
     </div>
