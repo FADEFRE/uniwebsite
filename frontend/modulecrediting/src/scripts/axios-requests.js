@@ -59,14 +59,14 @@ function putCourseLeipzigEdit(coursename, moduleList) {
     .catch((_) => {});
 }
 
-function putUpdateCourseLeipzig(coursename, newCourseName) {
+function putUpdateCourseLeipzig(courseName, newCourseName) {
   console.debug("%c" + "putUpdateCourseLeipzig", axiosColor);
 
   const formData = new FormData();
   formData.append("courseName", newCourseName);
 
   return httpResource
-    .put(`/api/courses-leipzig/${coursename}`, formData)
+    .put(`/api/courses-leipzig/${courseName}`, formData)
     .then((response) => response.data)
     .catch((_) => {});
 }
@@ -79,7 +79,6 @@ function deleteCourseLeipzig(coursename) {
     .then((response) => response.data)
     .catch((_) => {});
 }
-
 
 /*
 GET-Request to '/courses-leipzig' endpoint
@@ -121,6 +120,19 @@ function getModulesNameCode() {
     .catch((_) => {});
 }
 
+function putUpdateModuleLeipzig(moduleName, newModuleName, newModuleCode) {
+    console.debug("%c" + "putUpdateModuleLeipzig (moduleName: " + moduleName + ", newModuleName: " + newModuleName + ", newModuleCode: " + newModuleCode + ")", axiosColor)
+
+    const formData = new FormData()
+
+    formData.append('name', newModuleName)
+    formData.append('code', newModuleCode)
+
+    return httpResource.put(`/api/modules-leipzig/${moduleName}`, formData)
+        .then(response => response.data)
+        .catch(_ => {})
+}
+
 function deleteModuleLeipzig(modulename) {
   console.debug("%c" + "deleteModuleLeipzig", axiosColor);
 
@@ -129,9 +141,6 @@ function deleteModuleLeipzig(modulename) {
     .then((response) => response.data)
     .catch((_) => {});
 }
-
-
-
 
 /*
 GET-Request to '/applications' endpoint
@@ -668,6 +677,7 @@ export {
     getModulesByCourse,
     getModulesNameCodeByCourse,
     getModulesNameCode,
+    putUpdateModuleLeipzig,
     deleteModuleLeipzig,
     putCourseLeipzigEdit,
     putUpdateCourseLeipzig,
