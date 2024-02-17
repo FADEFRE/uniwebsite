@@ -112,7 +112,7 @@ public class ModuleLeipzigService {
     public String deleteModuleLeipzig(String name) {
         ModuleLeipzig moduleLeipzig = getModuleLeipzigByName(name);
         if (!moduleLeipzig.getIsActive())
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Course Leipzig is already deactivated with name: " + name);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Module Leipzig is already deactivated with name: " + name);
 
         moduleLeipzig.setIsActive(false);
 
