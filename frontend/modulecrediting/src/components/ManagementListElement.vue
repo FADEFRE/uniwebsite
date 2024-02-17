@@ -23,6 +23,22 @@ const props = defineProps({
 const dialogVisible = ref(false)
 const name = ref(props.name)
 const code = ref(props.code)
+
+const nameEmpty = ref(false)
+const codeEmpty = ref(false)
+
+const triggerEdit = () => {
+  // checking name
+  nameEmpty.value = !name.value
+  // optionally checking code
+  if (props.code) {
+    codeEmpty.value = !code.value
+  }
+  // making request if nothing empty
+  if (!nameEmpty.value && (!props.code || !codeEmpty.value)) {
+    props.editCallback(props.name, name.value, code.value)
+  }
+}
 </script>
 
 <template>
@@ -41,9 +57,11 @@ const code = ref(props.code)
     </div>
 
     <Dialog modal :dismissable-mask="true" :draggable="false" v-model:visible="dialogVisible" header="Bearbeiten">
-      <InputText type="text" v-model="name" />
-      <InputText v-if="props.code" type="text" v-model="code" />
-      <Button @click="editCallback(props.name, name, code)">Speichern</Button>
+      <InputText type="text" v-model="name" :class="{ 'invalid': nameEmpty }" />
+      <small v-if="nameEmpty" class="invalid-text">Name darf nicht leer sein</small>
+      <InputText v-if="props.code" type="text" v-model="code" :class="{ 'invalid': codeEmpty }" />
+      <small v-if="props.code && codeEmpty" class="invalid-text">Code darf nicht leer sein</small>
+      <Button @click="triggerEdit">Speichern</Button>
     </Dialog>
 
   </div>
