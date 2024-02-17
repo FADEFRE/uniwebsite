@@ -96,7 +96,7 @@ public class ModuleLeipzigService {
         if (moduleLeipzigDTO == null)
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No data given");
         if (moduleLeipzigDTO.getName() == null || moduleLeipzigDTO.getName().isBlank() || moduleLeipzigDTO.getCode() == null || moduleLeipzigDTO.getCode().isBlank())
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No course name given");
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No module name or module code given || is blank");
 
         ModuleLeipzig moduleLeipzig = getModuleLeipzigByName(name);
 
@@ -112,7 +112,7 @@ public class ModuleLeipzigService {
     public String deleteModuleLeipzig(String name) {
         ModuleLeipzig moduleLeipzig = getModuleLeipzigByName(name);
         if (!moduleLeipzig.getIsActive())
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Course Leipzig is already deactivated with name: " + name);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Module Leipzig is already deactivated with name: " + name);
 
         moduleLeipzig.setIsActive(false);
 
