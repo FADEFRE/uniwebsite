@@ -35,23 +35,41 @@ const specificRole = computed(() => navStore.getCurrentRoleNav)
 
   <div v-else-if="isNavType === 'internal'" class="links-container"
     :class="{ 'small-screen-links-container': isMenuOpen }">
-    <router-link :to="{ name: 'management' }" class="router-link icon-hover-right" @click="$emit('linkClicked')"
-      :class="{ 'white': isMenuOpen }">
-      Verwaltung
-      <ArrowIcon direction="right" :color="isMenuOpen ? 'dark-gray' : 'white'"/>
-    </router-link>
 
     <div v-if="specificRole === 'study'" :class="{ 'user-specific-container': isMenuOpen }">
       <router-link :to="{ name: 'studyOfficeSelection' }" @click="$emit('linkClicked')"
-        class="router-link icon-hover-right" :class="{ 'white': isMenuOpen }">
+                   class="router-link icon-hover-right" :class="{ 'white': isMenuOpen }">
         Übersicht
         <ArrowIcon direction="right" :color="isMenuOpen ? 'dark-gray' : 'white'"/>
       </router-link>
     </div>
     <div v-else-if="specificRole === 'chair'" :class="{ 'user-specific-container': isMenuOpen }">
       <router-link :to="{ name: 'chairmanSelection' }" @click="$emit('linkClicked')" class="router-link icon-hover-right"
-        :class="{ 'white': isMenuOpen }">
+                   :class="{ 'white': isMenuOpen }">
         Übersicht
+        <ArrowIcon direction="right" :color="isMenuOpen ? 'dark-gray' : 'white'"/>
+      </router-link>
+    </div>
+
+    <div v-if="specificRole !== 'admin'" :class="{ 'user-specific-container': isMenuOpen }">
+      <router-link :to="{ name: 'management' }" class="router-link icon-hover-right" @click="$emit('linkClicked')"
+                   :class="{ 'white': isMenuOpen }">
+        Verwaltung
+        <ArrowIcon direction="right" :color="isMenuOpen ? 'dark-gray' : 'white'"/>
+      </router-link>
+    </div>
+
+    <div v-if="specificRole === 'admin'" :class="{ 'user-specific-container': isMenuOpen }">
+      <router-link :to="{ name: 'accountAdmin' }" @click="$emit('linkClicked')"
+                   class="router-link icon-hover-right" :class="{ 'white': isMenuOpen }">
+        Account
+        <ArrowIcon direction="right" :color="isMenuOpen ? 'dark-gray' : 'white'"/>
+      </router-link>
+    </div>
+    <div v-else :class="{ 'user-specific-container': isMenuOpen }">
+      <router-link :to="{ name: 'account' }" @click="$emit('linkClicked')"
+                   class="router-link icon-hover-right" :class="{ 'white': isMenuOpen }">
+        Account
         <ArrowIcon direction="right" :color="isMenuOpen ? 'dark-gray' : 'white'"/>
       </router-link>
     </div>
