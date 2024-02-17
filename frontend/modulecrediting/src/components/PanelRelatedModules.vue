@@ -14,6 +14,8 @@ import { ref, onBeforeMount } from "vue";
 import { getRelatedModuleConnections } from "@/scripts/axios-requests";
 import { parseRequestDate } from "@/scripts/date-utils";
 import router from "@/router";
+import ModuleStatusIcon from "../assets/icons/ModuleStatusIcon.vue";
+import DateIcon from "../assets/icons/DateIcon.vue";
 
 
 //TODO: FIX Related Modules!!!!!! 
@@ -43,41 +45,45 @@ if (type === 'study-office') {
   console.warn("PanelRelatedModules: component should only be used with route types 'study-office' or 'chairman'")
 }
 
-const openRelatedModule = (module) => {
-  const connectionId = module['id']
-  const routeData = router.resolve({ name: redirectRouteName, params: { id: module['application']['id'], connection: connectionId } })
+const openRelatedModule = (singleModule) => {
+  const connectionId = singleModule['id']
+  const routeData = router.resolve({ name: redirectRouteName, params: { id: singleModule['application']['id'], connection: connectionId } })
   window.open(routeData.href, '_blank')
 }
 
 </script>
 
 <template>
-  <div class="panel-related-modules">
+  <div class="panel-container">
 
     <h4>Ähnliche Module:</h4>
 
-    <div v-if="relatedModules && relatedModules.length > 0" class="related-modules-list-container">
-      <div v-for="module in relatedModules" class="single-related-module-container" @click="openRelatedModule(module)">
+    <div v-if="relatedModules && relatedModules.length > 0" class="related-modules-list">
+      <div v-for="relatedModule in relatedModules" class="related-module-container"
+        @click="openRelatedModule(relatedModule)">
 
-        <div v-if="module['decisionFinal'] === 'accepted'">
-          <img src="../assets/icons/ModuleAccepted.svg">
-        </div>
-        <div v-else-if="module['decisionFinal'] === 'asExamCertificate'">
-          <img src="../assets/icons/ModuleAsExamCertificate.svg">
-        </div>
-        <div v-else-if="module['decisionFinal'] === 'denied'">
-          <img src="../assets/icons/ModuleDenied.svg">
-        </div>
-        <PanelHeader :external-modules="module['externalModules'].map(m => m.name)"
-          :internal-modules="module['modulesLeipzig'].map(m => m.name)" :relatedModules="true" />
+        <div class="main-info">
+          <ModuleStatusIcon :status-decision="relatedModule['decisionFinal']" size="small"/>
 
-        <div class="date-block">
-          <img src="../assets/icons/DecisionDate.svg" alt="DecisionDate">
-          <p>{{ parseRequestDate(module['application']['decisionDate']) }}</p>
+        <PanelHeader v-if="relatedModule['externalModules'] && relatedModule['modulesLeipzig']"
+          :external-modules="relatedModule['externalModules'].map(m => m.name)"
+          :internal-modules="relatedModule['modulesLeipzig'].map(m => m.name)" :relatedModules="true" />
+        </div>
+        
+
+        <div class="additional-info">
+          <div class="date-block">
+            <DateIcon type="decision"/>
+            <p class="info-text">{{ parseRequestDate(relatedModule['application']['decisionDate']) }}</p>
+          </div>
+
+          <p class="info-text">{{ relatedModule['application']['courseLeipzig']['name'] }}</p>
+
+          
         </div>
 
-        <p class="course">{{ module['application']['courseLeipzig']['name'] }}</p>
       </div>
+
     </div>
 
     <div v-else>
@@ -88,48 +94,49 @@ const openRelatedModule = (module) => {
 </template>
 
 <style scoped lang="scss">
-@import '@/assets/mixins.scss';
-@import '@/assets/variables.scss';
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
 
-.panel-related-modules {
-  @include panelComponent();
-
-}
-
-.related-modules-list-container {
+.related-modules-list {
   @include verticalList(small);
-  width: 100%;
-  overflow: hidden;
 }
 
-.single-related-module-container {
+.related-module-container {
+  @include smallHighlightBox();
   @include verticalListItem($gray);
-
-  width: 100%;
-  padding: 0.625rem 1.125rem;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.965rem;
-
-  overflow: hidden;
+  
+  @include breakpoint(m) {
+    flex-direction: column-reverse;
+    align-items: flex-start;
+    gap: spacing(m);
+  }
+  
 }
 
-.left-side,
-.right-side {
+.main-info {
+  width: 70%;
   display: flex;
-  gap: 0.625rem;
+  gap: spacing(m);
+
+  @include breakpoint(m) {
+    width: 100%;
+  }
+}
+
+.additional-info {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
+  gap: spacing(m);
 }
 
 .date-block {
   display: flex;
   align-items: center;
-  gap: 0.625rem;
+  gap: spacing(s);
 }
 
-.course {
-  text-wrap: nowrap;
+.info-text {
+  font-size: 0.9rem;
 }
 </style>

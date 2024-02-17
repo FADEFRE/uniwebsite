@@ -92,7 +92,7 @@ const isValid = ref(true)
 
 const checkValidity = () => {
   // setting invalid styles
-  isValid.value = Boolean(selectedFile.value)
+  isValid.value = Boolean(props.selectedFile || selectedFile.value)
   // return
   return isValid
 }
@@ -128,8 +128,8 @@ defineExpose({
 </template>
 
 <style scoped lang="scss">
-@import '../assets/mixins.scss';
-@import '../assets/variables.scss';
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
 
 .read-only-container {
   width: 100%;
@@ -146,7 +146,7 @@ defineExpose({
 .edit-container {
   width: 100%;
   border: 2px dashed $black;
-  padding: 0.625rem 0rem;
+  padding: spacing(s) 0;
   cursor: pointer;
 
   &:hover {
@@ -165,7 +165,7 @@ defineExpose({
 .file-drop-unselected {
   display: flex;
   overflow: hidden;
-  padding-right: 0.625rem;
+  padding-right: spacing(s);
 }
 
 input {
@@ -175,10 +175,6 @@ input {
 .ellipsis-text-overflow {
   @include ellipsisTextOverflow();
   width: 100%;
-  padding: 0 0.625rem;
-}
-
-.invalid-text {
-  color: $red;
+  padding: 0 spacing(s);
 }
 </style>

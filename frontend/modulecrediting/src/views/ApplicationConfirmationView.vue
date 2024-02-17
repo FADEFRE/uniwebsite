@@ -6,6 +6,7 @@ import { url } from '@/scripts/url-config';
 import httpResource from "@/scripts/httpResource";
 import ConfirmationContainer from '../components/ConfirmationContainer.vue';
 import ButtonLink from "@/components/ButtonLink.vue";
+import ButtonDownload from '../components/ButtonDownload.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -45,19 +46,15 @@ const openPdf = () => {
 </script>
 
 <template>
-    <div class="main" v-if="applicationData">
+    <div class="main centered" v-if="applicationData">
         <ConfirmationContainer :id="id">
-            <ButtonLink @click="openPdf" class="pdf-button">Antrag herunterladen</ButtonLink>
+            <ButtonDownload @click="openPdf" />
             <ButtonLink @click="openDetailView" class="status-button">Status einsehen</ButtonLink>
         </ConfirmationContainer>
     </div>
 </template>
 
 <style scoped lang="scss">
-@import '../assets/variables.scss';
-@import '../assets/mixins.scss';
-
-.main {
-    @include main();
-}
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
 </style>

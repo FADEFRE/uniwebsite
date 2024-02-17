@@ -1,0 +1,83 @@
+@use "@/assets/styles/util" as *;
+
+.main {
+  max-width: 1500px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  padding: spacing(xxxl);
+  justify-content: center;
+  align-items: flex-start;
+  gap: spacing(xl);
+
+  @include breakpoint(l) {
+    @include verticalList(big);
+    flex-direction: column;
+
+    &.centered {
+      flex-direction: row;
+    }
+  }
+
+  @include breakpoint(m) {
+    padding: spacing(xl);
+  }
+
+  @include breakpoint(s) {
+    padding: spacing(xl) spacing(m);
+  }
+}
+
+.content-container {
+  @include verticalList(mid);
+  width: 100%;
+
+  &.split {
+    width: 78%;
+    &.narow {
+      width: 70%;
+    }
+  }
+
+  @include breakpoint(l) {
+    width: 100%;
+    &.split {
+      width: 100%;
+    }
+  }
+}
+
+.side-infos-list {
+  @include verticalList(big);
+  width: 22%;
+
+  &.wide {
+    width: 30%;
+  }
+
+  @include breakpoint(l) {
+    width: 100%;
+    &.wide {
+      width: 100%;
+    }
+  }
+}
+
+.application-buttons-container {
+  display: flex;
+  justify-content: space-between;
+  gap: spacing(s);
+  flex-wrap: wrap;
+}
+
+.panel-container {
+  width: 100%;
+  padding: spacing(l) 0;
+  border-top: 2px solid rgba($dark-gray,0.6);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: spacing(s);
+}

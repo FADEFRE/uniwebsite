@@ -7,10 +7,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
-
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -18,6 +18,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import swtp12.modulecrediting.service.CustomUserDetailsServiceImpl;
 import swtp12.modulecrediting.service.TokenProvider;
+import swtp12.modulecrediting.util.IncorrectKeyOnDecryptException;
 import swtp12.modulecrediting.util.SecurityCipher;
 
 public class TokenAuthenticationFilter extends OncePerRequestFilter{
@@ -44,14 +45,21 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter{
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } 
+        catch (UsernameNotFoundException uEx) {
+            System.out.println("doFilterInternal UsernameNotFoundException: This might be thrown due to a change of username by the user and SpringSecurities automatic doFilterInternal on the logout request");
         }
-
-        filterChain.doFilter(httpServletRequest, httpServletResponse);
+        catch (Exception ex) {
+            System.out.println("----------doFilterInternal error stacktrace start:-------------");
+            ex.printStackTrace();
+            System.out.println("----------end of doFilterInternal error stacktrace-------------");
+        } 
+        finally {
+            filterChain.doFilter(httpServletRequest, httpServletResponse);
+        }
     }
 
-    private String getJwtFromRequest(HttpServletRequest request) {
+    private String getJwtFromRequest(HttpServletRequest request) throws IncorrectKeyOnDecryptException {
         String bearerToken = request.getHeader("Authorization");
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
             String accessToken = bearerToken.substring(7);
@@ -62,7 +70,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter{
         return null;
     }
 
-    private String getJwtFromCookie(HttpServletRequest request) {
+    private String getJwtFromCookie(HttpServletRequest request) throws IncorrectKeyOnDecryptException {
         Cookie[] cookies = request.getCookies();
         if (cookies == null) {
             return null;
@@ -78,7 +86,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter{
         return null;
     }
 
-    private String getJwtToken(HttpServletRequest request, boolean fromCookie) {
+    private String getJwtToken(HttpServletRequest request, boolean fromCookie) throws IncorrectKeyOnDecryptException {
         if (fromCookie) return getJwtFromCookie(request);
 
         return getJwtFromRequest(request);

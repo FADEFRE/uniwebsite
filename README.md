@@ -48,6 +48,18 @@ Admin:
 
 .
 
+## JAVADOC GENERATION
+
+to (re)generate the Javadoc for this project run these commands in \backend\modulecrediting
+
+    mvn clean (optional)
+    mvn install
+
+afterwards the documentation can be found under \backend\modulecrediting\target\apidocs\index.html      
+it is recommended to open the file with a browser and not in an IDE, du to the structure of javadoc.
+
+.
+
 # API ENDPOINTS
 
 ## Application: "ApplicationController"

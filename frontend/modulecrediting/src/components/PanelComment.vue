@@ -34,25 +34,23 @@ defineExpose({
 </script>
 
 <template>
-  <div class="panel-comment">
+  <div class="panel-container">
     <h4>Kommentar</h4>
-    <textarea :readonly="readonly" rows="3" v-model="comment">
+    <div class="textarea-container">
+      <textarea :readonly="readonly" rows="3" v-model="comment" class="white" />
+    </div>
 
-    </textarea>
   </div>
 </template>
 
 <style scoped lang="scss">
-@import '@/assets/mixins.scss';
-@import '@/assets/variables.scss';
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
+@use '@/assets/styles/components' as *;
 
-.panel-comment {
-  @include panelComponent();
-}
 
-textarea {
+.textarea-container {
+  border: 2px solid $dark-gray;
   width: 100%;
-  min-height: 6rem;
-  resize: none;
 }
 </style>

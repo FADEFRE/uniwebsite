@@ -47,4 +47,14 @@ public class CookieUtil {
                 .build();
     }
 
+    public HttpCookie deleteRefreshTokenCookie() {
+        return ResponseCookie.from(refreshTokenCookieName, null)
+                .maxAge(0)
+                .httpOnly(true)
+                //.secure(true)
+                .sameSite("Strict")
+                .path("/")
+                .build();
+    }
+
 }

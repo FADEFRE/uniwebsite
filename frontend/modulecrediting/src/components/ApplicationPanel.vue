@@ -21,6 +21,7 @@ import PanelComment from "@/components/PanelComment.vue";
 import PanelExternalModules from "@/components/PanelExternalModules.vue";
 import PanelInternalModules from "@/components/PanelInternalModules.vue";
 import { ref, computed } from "vue";
+import TrashIcon from "../assets/icons/TrashIcon.vue";
 
 const props = defineProps({
   selectableModules: {
@@ -43,8 +44,12 @@ const commentApplicant = computed(() => panelComment.value?.comment)
 
 const emit = defineEmits(['deleteSelf'])
 
+const panelRef = ref()
+
 const checkValidity = () => {
-  panelExternalModules.value.checkValidity()
+  const validity = panelExternalModules.value.checkValidity()
+  panelRef.value.setCollapsed(validity)
+  return validity
 }
 
 defineExpose({
@@ -57,8 +62,7 @@ defineExpose({
 
 
 <template>
-  <div>
-    <CustomPanel :initial-collapsed-state="false">
+    <CustomPanel :initial-collapsed-state="false" ref="panelRef">
       <!-- Header Content -->
       <template #header>
         <PanelHeader :external-modules="externalModules?.map(m => m.name).filter(name => name !== '')"
@@ -67,7 +71,9 @@ defineExpose({
 
       <!-- Icons Slot -->
       <template #icons>
-        <img v-if="allowDelete" src="@/assets/icons/Trash.svg" @click="emit('deleteSelf')" class="trash-icon">
+        <div v-if="allowDelete" class="trash-icon-wrapper" @click="emit('deleteSelf')">
+          <TrashIcon/>
+        </div>
       </template>
 
       <!-- Panel Content -->
@@ -90,16 +96,21 @@ defineExpose({
           ref="panelComment"
       />
     </CustomPanel>
-  </div>
 </template>
 
 
 <style scoped lang="scss">
-@import '../assets/variables.scss';
-@import '../assets/mixins.scss';
-.trash-icon {
-  @include trashIconAnimation();
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
+
+.trash-icon-wrapper {
+  @include smallHighlightBox();
+  transition: 0.1s ease-in-out;
+  &:hover {
+    background-color: $white-hover;
+  }
 }
+
 </style>
 
 

@@ -4,18 +4,13 @@ import LoginContainer from '../components/LoginContainer.vue';
 
 
 <template>
-  <div class="main">
+  <div class="main centered">
     <LoginContainer />
   </div>
 </template>
 
 
 <style scoped lang="scss">
-@import '../assets/variables.scss';
-@import '../assets/mixins.scss';
-
-.main {
-  @include main();
-}
-
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
 </style>

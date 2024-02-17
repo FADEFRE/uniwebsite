@@ -14,6 +14,8 @@ displays:
 -->
 
 <script setup>
+import ArrowIcon from "../assets/icons/ArrowIcon.vue";
+import TrashIcon from "../assets/icons/TrashIcon.vue";
 import { ref } from "vue";
 
 const props = defineProps({
@@ -36,9 +38,9 @@ const props = defineProps({
 const emit = defineEmits(['change'])
 
 const selectedModules = ref(props.selectedModules || [])
-const addSelectedModule = (module) => {
-  if (!selectedModules.value.includes(module)) {
-    selectedModules.value.push(module)
+const addSelectedModule = (singleModule) => {
+  if (!selectedModules.value.includes(singleModule)) {
+    selectedModules.value.push(singleModule)
     emit('change')
   }
 }
@@ -53,85 +55,97 @@ defineExpose({
 </script>
 
 <template>
-  <div class="panel-internal-modules">
+  <div class="panel-container">
 
     <h4>Module der Universität Leipzig</h4>
 
     <div class="screen-split">
+
       <div class="module-dropdown" v-if="allowSelect">
-        <Dropdown filter :options="options" placeholder="Modul auswählen" emptyMessage="Studiengang auswählen" emptyFilterMessage="Modul nicht gefunden" @change="e => addSelectedModule(e.value)">
+        <Dropdown filter :options="options" placeholder="Modul auswählen" emptyMessage="Studiengang auswählen"
+          emptyFilterMessage="Modul nicht gefunden" @change="e => addSelectedModule(e.value)">
           <template #filtericon>
             <img class="search-icon" src="@/assets/icons/SearchIcon.svg">
           </template>
           <template #dropdownicon>
-              <img src="../assets/icons/ArrowWhite.svg">
-            </template>
+            <ArrowIcon color="white" direction="down" />
+          </template>
         </Dropdown>
       </div>
 
       <div class="module-list" :class="{ 'module-list-full': !allowSelect }">
-        <div v-for="(module, index) in selectedModules" class="module-list-item">
+        <div v-if="selectedModules.length > 0" v-for="(module, index) in selectedModules" class="module-list-item">
           <p>{{ module }}</p>
-          <div v-if="allowDelete">
-            <img src="../assets/icons/Trash.svg" @click="removeSelectedModule(index)" class="trash-icon">
+          <div class="trash-icon-container" v-if="allowDelete" @click="removeSelectedModule(index)">
+            <TrashIcon />
           </div>
+        </div>
+        <div v-else-if="!allowSelect">
+          <p>Es sind keine Module der Universität Leipzig ausgewählt.</p>
         </div>
       </div>
 
     </div>
+
   </div>
 </template>
 
 <style scoped lang="scss">
-@import '@/assets/mixins.scss';
-@import '@/assets/variables.scss';
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
 
-.panel-internal-modules {
-  @include panelComponent();
-}
+
 .screen-split {
   @include screenSplit();
-  
-  @media only screen and (max-width: 700px) {
+
+  @include breakpoint(s) {
     flex-wrap: wrap;
+    flex-direction: column;
   }
 }
+
 .module-dropdown {
   width: 50%;
 
-  @media only screen and (max-width: 700px) {
+  @include breakpoint(s) {
     width: 100%;
   }
 }
-.module-list{
+
+.module-list {
   @include verticalList(small);
   justify-content: space-between;
   align-self: stretch;
   width: 50%;
 
-  @media only screen and (max-width: 700px) {
+  @include breakpoint(s) {
     width: 100%;
   }
 }
+
 .module-list-full {
   width: 100%
 }
+
 .module-list-item {
   @include smallHighlightBox();
   @include verticalListItem($gray);
   width: 100%;
 }
+
+
 .search-icon {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  right: 0.625rem;
-}
-.trash-icon {
-  @include trashIconAnimation();
-  &:hover{
-    background-color: $gray-hover;
-  }
+  right: spacing(s);
 }
 
-</style>
+.trash-icon-container {
+  @include smallHighlightBox();
+  transition: 0.1s ease-in-out;
+
+  &:hover {
+    background-color: $gray-hover;
+  }
+}</style>

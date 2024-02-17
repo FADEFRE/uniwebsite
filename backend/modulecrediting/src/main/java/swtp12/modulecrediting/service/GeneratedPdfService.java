@@ -39,7 +39,10 @@ public class GeneratedPdfService {
         context.setVariable("id", id);
         context.setVariable("Erstelldatum", application.getCreationDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
         context.setVariable("Status", application.getFullStatus());
-        context.setVariable("Entscheidungsdatum", application.getDecisionDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+
+        // TODO: null check can be null on not decided applicaitons -> what is displayed in this scenario?
+        if(application.getDecisionDate() != null)
+            context.setVariable("Entscheidungsdatum", application.getDecisionDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
 
         return templateEngine.process("GeneralData", context);
     }

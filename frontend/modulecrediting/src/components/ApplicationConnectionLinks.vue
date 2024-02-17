@@ -6,7 +6,7 @@ props:
 -->
 
 <script setup>
-import PanelHeader from "@/components/PanelHeader.vue";
+import ArrowIcon from '../assets/icons/ArrowIcon.vue';
 
 const props = defineProps({
   connectionsData: {
@@ -25,9 +25,9 @@ const props = defineProps({
     <h2>Übersicht</h2>
 
     <a v-for="connection in connectionsData" :href="'#' + connection.id" class="connection-link-container">
-      <p class="connection-text"> {{ connection.externalModules.join(', ') }}</p>
+      <p class="connection-text"> {{ connection.externalModules.join(', ') || '...' }}</p>
       <div>
-        <img src="@/assets/icons/ArrowRed.svg" alt="arrow-icon" class="arrow-icon">
+        <ArrowIcon direction="right" color="red"/>
       </div>
     </a>
 
@@ -35,37 +35,27 @@ const props = defineProps({
 </template>
 
 <style scoped lang="scss">
-@import '../assets/variables.scss';
-@import '../assets/mixins.scss';
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
+@use '@/assets/styles/components' as *;
 
 .application-connection-links-container {
   @include basicContainer();
-  width: 22%;
-
-  position: sticky;
-  top: 1rem;
-
-  @media only screen and (max-width: 1300px) {
-    display: none;
-  }
 }
 
 .connection-link-container {
-  padding: 0.25rem 0.625rem;
+  padding: spacing(s);
   width: 100%;
   background-color: transparent;
 
   border-top: 2px solid $dark-gray;
   border-bottom: 2px solid $dark-gray;
-  gap: 0.08rem;
+  display: flex;
+  gap: spacing(xs);
 
-  &:hover{
+  &:hover {
     background-color: $white-hover;
-    & .arrow-icon {
-      transform: translateX(0.1rem) rotate(-90deg);
-    }
   }
-
 }
 
 .connection-text {
@@ -74,10 +64,5 @@ const props = defineProps({
   overflow: hidden;
   text-overflow: ellipsis;
   text-transform: none;
-}
-
-.arrow-icon {
-  transition: 0.1s ease-in-out;
-  transform: rotate(-90deg);
 }
 </style>

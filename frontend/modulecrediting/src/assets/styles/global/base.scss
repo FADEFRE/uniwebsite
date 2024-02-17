@@ -1,0 +1,30 @@
+@use '@/assets/styles/util' as *;
+
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  border: none;
+  margin: 0;
+  padding: 0;
+  border-radius: 0;
+}
+
+*:focus {
+  outline: none;
+  box-shadow: none;
+  border: none;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: $gray;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}

@@ -2,6 +2,7 @@ import axios from "axios";
 import { url } from "./url-config";
 import { performLogout } from "@/router/logout";
 import router from "@/router";
+import { parseApierror } from "@/scripts/utils";
 
 const isHandlerEnabled = (config = {}) => {
   return config.hasOwnProperty("handlerEnabled") && !config.handlerEnabled
@@ -44,43 +45,58 @@ const requestHandler = (request) => {
   return request;
 };
 
-const errorHandler = (error) => {
+const errorHandler = (error) => {  
+  // TODO 400 bad request? -> wohin? -> to calling function to correctly display?
   // TODO 401 route to login
   // TODO 403 route to forbidden error page
   // TODO 404 route to id does not exist error page
+  // TODO 503 
   // TODO else route to server error page
   if (isHandlerEnabled(error.config)) {
     console.log("%c" + "Error Interceptor", errorColor); //TODO remove debug log
 
-    if (error.response) {
-      if (error.response.status === 400) {
-        console.debug("%c" + "BAD REQUEST", errorColor, error.response.data); //TODO remove debug log
-        performLogout();
-        router.push({ name: "login" });
-      }
-      if (error.response.status === 401) {
-        console.debug("%c" + "LOGOUT", errorColor, error.response.data); //TODO remove debug log
-        performLogout();
-        router.push({ name: "login" });
-      }
-      if (error.response.status === 403) {
-        console.debug("%c" + "FORBIDDEN", errorColor, error.response.data); //TODO remove debug log
-        router.push({ name: "Forbidden" });
-      }
-        if (error.response.status === 404) {
-        console.debug("%c" + "NOT FOUND", errorColor, error.response.data); 
-        router.push({ name: "IdError" });
-      }
+    const apiError = parseApierror(error)
+    console.error(apiError)
 
-      //debug
-      if (error.response.status === 402) {
-        console.debug(
-          "%c" + "RestAuthenticationEntryPoint FEHLER",
-          errorColor,
-          error.response
-        );
-      }
+    if (apiError.statusCode === 503) {
+      console.error(apiError)
+      //TODO: ROUTE TO "SERVER NOT RESPONDING" ERROR VIEW tbd
+      //router.push({ name: "" }) 
     }
+
+    if (apiError.statusCode === 400) {
+      console.error(apiError)
+      //TODO: ROUTE TO "BAD_REQUEST" ERROR VIEW tbd
+      //router.push({ name: "" }) 
+    }
+
+    if (apiError.statusCode === 401) {
+      console.error(apiError)
+      performLogout();
+      router.push({ name: "login" });
+    }
+
+    if (apiError.statusCode === 403) {
+      console.error(apiError)
+      router.push({ name: "Forbidden" });
+    }
+
+    if (apiError.statusCode === 404) {
+      console.error(apiError)
+      router.push({ name: "IdError" }); //TODO catch multiple 404?
+    }
+
+    if (apiError.statusCode === 409) {
+      console.error(apiError)
+    }
+
+
+    //debug
+    if (error.response.status === 402) {
+      console.debug("%c" + "Debug 402 catch", errorColor);
+      console.error(apiError)
+    }
+
   }
   return Promise.reject({ ...error });
 };

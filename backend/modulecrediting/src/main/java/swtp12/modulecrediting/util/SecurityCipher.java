@@ -10,9 +10,6 @@ import java.util.Base64;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
-
 public class SecurityCipher {
     private static final String KEYVALUE = "JPnJqOfaEge";
     private static SecretKeySpec secretKey;
@@ -50,7 +47,7 @@ public class SecurityCipher {
     }
 
 
-    public static String decrypt(String strToDecrypt) {
+    public static String decrypt(String strToDecrypt) throws IncorrectKeyOnDecryptException {
         if (strToDecrypt == null) return null;
 
         /*
@@ -60,6 +57,9 @@ public class SecurityCipher {
          * 
          * Somebody more expirenced with this, might find the issue, why sometimes "setKey()"
          * generates a diffrent key. 
+         * 
+         * EDIT: it now deletes the "refreshToken" if the error persists. This helps with 'old' 
+         *          "refreshToken" generated on an old backend version.
          * 
          * Frederik Kluge
          */
@@ -71,16 +71,16 @@ public class SecurityCipher {
                 Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
                 cipher.init(Cipher.DECRYPT_MODE, secretKey);
 
-                int printCounter = counter + 1;
-                System.out.println(secretKey + " Try:" + printCounter);
-                String test = new String(cipher.doFinal(Base64.getDecoder().decode(strToDecrypt)));
-                return test;
+                //Debug:
+                //System.out.println("Debug: SecurityCiper -> SecretKey: " + secretKey + " / HashCode: " + secretKey.hashCode() + " / Try:" + counter);
+
+
+                return new String(cipher.doFinal(Base64.getDecoder().decode(strToDecrypt)));
             } catch (Exception e) {
                 System.out.println(LocalDateTime.now() + " Der Fehler im Backend");
                 counter ++;
             }
         }
-        
-        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "could not verify login");
+        throw new IncorrectKeyOnDecryptException("there seems to be a problem with your authentication Tokens, please try again");
     }
 }

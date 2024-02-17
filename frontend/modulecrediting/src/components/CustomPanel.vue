@@ -6,6 +6,7 @@ slots header, icons and default are passed on to PrimeVue Panel
 
 <script setup>
 import { ref, computed } from "vue";
+import ArrowIcon from "../assets/icons/ArrowIcon.vue";
 
 const props = defineProps({
   initialCollapsedState: {
@@ -15,7 +16,6 @@ const props = defineProps({
 })
 
 const d_collapsed = ref(props.initialCollapsedState)
-const arrowStyle = computed(() => d_collapsed.value ? 'arrow-icon' : 'arrow-icon arrow-up')
 
 const setCollapsed = (value) => {
   d_collapsed.value = value
@@ -27,32 +27,33 @@ defineExpose({
 </script>
 
 <template>
-  <Panel toggleable v-model:collapsed="d_collapsed">
-    <template #header>
-      <slot name="header"></slot>
-    </template>
-    <template #icons>
-      <slot name="icons"></slot>
-    </template>
-    <template #togglericon>
-      <img src="@/assets/icons/ArrowRed.svg" :class="arrowStyle">
-    </template>
-    <slot></slot>
-  </Panel>
+  <div class="custom-panel-container">
+    <Panel toggleable v-model:collapsed="d_collapsed">
+      <template #header>
+        <slot name="header"></slot>
+      </template>
+      <template #icons>
+        <slot name="icons"></slot>
+      </template>
+      <template #togglericon>
+        <ArrowIcon :direction="d_collapsed ? 'down' : 'up'" color="red"/>
+      </template>
+      <slot></slot>
+    </Panel>
+  </div>
 </template>
 
 <style scoped lang="scss">
-@import '@/assets/mixins.scss';
-@import '@/assets/variables.scss';
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
 
 :deep(.p-panel) {
   width: 100%;
-  background-color: $white;
 }
 
 :deep(.p-panel-header) {
   width: 100%;
-  padding: 1.25rem;
+  padding: spacing(l);
   background-color: $white;
 
   border: none;
@@ -60,7 +61,6 @@ defineExpose({
   border-bottom: 2px solid $dark-gray;
 
   display: flex;
-  padding: 1.25rem;
   justify-content: space-between;
   align-items: center;
 }
@@ -68,22 +68,22 @@ defineExpose({
 :deep(.p-panel-icons) {
   display: flex;
   align-items: center;
-  gap: 1.875rem;
-  margin-left: 0.625rem;
+  margin-left: spacing(s);
+  gap: spacing(s);
 }
 
 :deep(.p-panel-content) {
   border: none;
-  padding: 1.25rem 6.25rem;
+  padding: spacing(l) 9%;
   border-bottom: 2px solid $dark-gray;
 
-  @include verticalList(small);
-  
-  @media only screen and (max-width: 1000px) {
-    padding: 1.25rem 2rem;
+
+  @include breakpoint(xl) {
+    padding: spacing(m) 5%;
   }
-  @media only screen and (max-width: 700px) {
-    padding: 1.25rem 1.5rem;
+
+  @include breakpoint(s) {
+    padding: spacing(l);
   }
 }
 
@@ -95,13 +95,5 @@ defineExpose({
   &:hover {
     background-color: $white-hover;
   }
-}
-
-.arrow-icon {
-  transition: 0.3s ease-in-out;
-}
-
-.arrow-up {
-  transform: rotate(180deg);
 }
 </style>

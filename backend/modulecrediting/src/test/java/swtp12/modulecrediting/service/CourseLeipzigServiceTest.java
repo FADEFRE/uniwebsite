@@ -13,7 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
-import swtp12.modulecrediting.dto.CourseLeipzigEditDTO;
+import swtp12.modulecrediting.dto.CourseLeipzigDTO;
 import swtp12.modulecrediting.model.CourseLeipzig;
 import swtp12.modulecrediting.repository.CourseLeipzigRepository;
 
@@ -21,6 +21,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class CourseLeipzigServiceTest {
@@ -37,7 +38,7 @@ public class CourseLeipzigServiceTest {
         List<CourseLeipzig> coursesLeipzig = new ArrayList<>();
         coursesLeipzig.add(new CourseLeipzig());
 
-        Mockito.when(courseLeipzigRepository.findAll()).thenReturn(coursesLeipzig);
+        when(courseLeipzigRepository.findAll()).thenReturn(coursesLeipzig);
 
         List<CourseLeipzig> expectedCoursesLeipzig = courseLeipzigService.getAllCoursesLeipzig();
 
@@ -49,44 +50,58 @@ public class CourseLeipzigServiceTest {
         Optional<CourseLeipzig> coursesLeipzig = Optional.of(new CourseLeipzig("test course"));
 
 
-        Mockito.when(courseLeipzigRepository.findByName("test course")).thenReturn(coursesLeipzig);
+        when(courseLeipzigRepository.findByName("test course")).thenReturn(coursesLeipzig);
 
         CourseLeipzig expectedCoursesLeipzig = courseLeipzigService.getCourseLeipzigByName("test course");
 
         assertEquals(expectedCoursesLeipzig.getName(), coursesLeipzig.get().getName());
 
 
-        Mockito.when(courseLeipzigRepository.findByName("test course fails")).thenReturn(Optional.empty());
+        when(courseLeipzigRepository.findByName("test course fails")).thenReturn(Optional.empty());
 
         ResponseStatusException e = assertThrows(ResponseStatusException.class, () -> { courseLeipzigService.getCourseLeipzigByName("test course fails"); });
         assertTrue(e.getStatusCode().equals(HttpStatus.NOT_FOUND));
     }
 
     @Test
-    void shouldCreateCourseLeipzig() {
-        String testName = "test course";
-        CourseLeipzigEditDTO courseLeipzigDTO = new CourseLeipzigEditDTO();
+    public void shouldCreateCourseLeipzig() {
+        String courseName = "test course";
+        CourseLeipzigDTO courseLeipzigDTO = new CourseLeipzigDTO();
+        courseLeipzigDTO.setCourseName(courseName);
 
-        ResponseStatusException e1 = assertThrows(ResponseStatusException.class, () -> { courseLeipzigService.createCourseLeipzig(null); });
-        assertTrue(e1.getStatusCode().equals(HttpStatus.BAD_REQUEST));
+        // Mock the behavior when the course does not exist
+        when(courseLeipzigRepository.findByName(courseName)).thenReturn(Optional.empty());
 
-        ResponseStatusException e2 = assertThrows(ResponseStatusException.class, () -> { courseLeipzigService.createCourseLeipzig(courseLeipzigDTO); });
-        assertTrue(e2.getStatusCode().equals(HttpStatus.BAD_REQUEST));
+        // Mock the behavior when saving a new course
+        CourseLeipzig courseLeipzig = new CourseLeipzig(courseName);
+        when(courseLeipzigRepository.save(any(CourseLeipzig.class))).thenReturn(courseLeipzig);
 
+        // First attempt to create the course should succeed
+        String resultCreate = courseLeipzigService.createCourseLeipzig(courseLeipzigDTO);
+        assertEquals(courseName, resultCreate);
 
-        courseLeipzigDTO.setCourseName(testName);
+        // Mock the behavior when the course already exists and is active
+        courseLeipzig.setIsActive(true);
+        when(courseLeipzigRepository.findByName(courseName)).thenReturn(Optional.of(courseLeipzig));
 
-        CourseLeipzig courseLeipzig = new CourseLeipzig(testName);
-        Mockito.when(courseLeipzigRepository.save(any())).thenReturn(courseLeipzig);
-        String expectedCourseLeipzigName = courseLeipzigService.createCourseLeipzig(courseLeipzigDTO);
-        assertEquals(expectedCourseLeipzigName, testName);
-        
-        
-        Optional<CourseLeipzig> optionalCourseLeipzig = Optional.of(new CourseLeipzig(testName));
-        Mockito.when(courseLeipzigRepository.findByName(testName)).thenReturn(optionalCourseLeipzig);
-        ResponseStatusException e3 = assertThrows(ResponseStatusException.class, () -> { courseLeipzigService.createCourseLeipzig(courseLeipzigDTO); });
-        assertTrue(e3.getStatusCode().equals(HttpStatus.BAD_REQUEST));
+        // Attempt to create the course when it already exists should throw a conflict exception
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
+            courseLeipzigService.createCourseLeipzig(courseLeipzigDTO);
+        });
+
+        // Assert the details of the exception
+        assertEquals(HttpStatus.CONFLICT, exception.getStatusCode());
+        assertTrue(exception.getReason().contains("The Course already exists:" + courseName));
+
+        // Mock the behavior when the course exists but is inactive
+        courseLeipzig.setIsActive(false);
+        when(courseLeipzigRepository.findByName(courseName)).thenReturn(Optional.of(courseLeipzig));
+
+        // Attempt to create the course when it exists but is inactive should succeed (reactivate the course)
+        String resultReactivate = courseLeipzigService.createCourseLeipzig(courseLeipzigDTO);
+        assertEquals(courseName, resultReactivate);
     }
+
 
     @Test
     void shouldDeleteCourseLeipzig() {

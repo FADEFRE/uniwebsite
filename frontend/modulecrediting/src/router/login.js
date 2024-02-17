@@ -22,7 +22,7 @@ async function login (login_username, login_password) {
         const response = await httpResource.post("/api/auth/login", loginRequest);
         console.log(response)
         if (response.status === 200) {
-            const userResponse = await httpResource.get("/api/user/me");
+            const userResponse = await httpResource.get("/api/user/me/id"); //TODO cahnge to axios request call
             if (userResponse.data.userId !== null) {
                 authUserStore.setCurrentUser(true);
                 await refreshTokenInternal();
@@ -33,15 +33,15 @@ async function login (login_username, login_password) {
             const response = await httpResource.get(`/api/user/role`)
             switch (response.data) {
                 case "ROLE_STUDY":
-                    const routeData = router.resolve({name: 'studyOfficeSelection'})
+                    const routeData = router.resolve({ name: 'studyOfficeSelection' })
                     window.open(routeData.href, '_top')
                     break;
                 case "ROLE_CHAIR":
-                    const routeData1 = router.resolve({name: 'chairmanSelection'})
+                    const routeData1 = router.resolve({ name: 'chairmanSelection' })
                     window.open(routeData1.href, '_top')
                     break;
                 case "ROLE_ADMIN":
-                    const routeData2 = router.resolve({name: 'studyOfficeSelection'}) //TODO change to admin when implemented
+                    const routeData2 = router.resolve({ name: 'accountAdmin' })
                     window.open(routeData2.href, '_top')
                     break;
                 default:

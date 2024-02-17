@@ -46,11 +46,6 @@ public class ModuleLeipzig {
     @JsonView({Views.CoursesWithModules.class, Views.ModulesWithoutCourse.class})
     private Boolean isActive;
 
-    //Relation ModuleLeipzig <-> ModulesConnection
-    @ManyToMany(mappedBy = "modulesLeipzig")
-    @JsonBackReference
-    private List<ModulesConnection> modulesConnections = new ArrayList<>();
-
     //Relation ModuleLeipzig <-> CourseLeipzig
     @ManyToMany(mappedBy = "modulesLeipzigCourse", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JsonBackReference

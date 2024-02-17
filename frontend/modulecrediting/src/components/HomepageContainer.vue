@@ -14,45 +14,57 @@ const props = defineProps(['header', 'text'])
         <div v-else>
             <p>Platzhalter Text</p>
         </div>
-        <div class="input-button-container">
-            <slot></slot>    
+        <div class="input-button-with-invalid-container">
+            <slot></slot>
         </div>
-        
+
     </div>
 </template>
 
 
 <style lang="scss" scoped>
-@import '../assets/mixins.scss';
-@import '../assets/variables.scss';
+@use '@/assets/styles/global' as *;
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/components' as *;
+
 
 .homepage-container {
+    @include basicContainer();
     @include verticalListItem($white);
-    display: flex;
-    padding: 0.9375rem 1.25rem;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    gap: 1.25rem;
-    align-self: stretch;
+    @include verticalList(big);
 }
 
-.input-button-container{
+.input-button-with-invalid-container {
+    display: flex;
+    flex-direction: column;
+    gap: spacing(xs);
+
+    @include breakpoint(xs) {
+        width: 100%;
+    }
+}
+
+:slotted(.input-button-container) {
     width: 100%;
     display: flex;
-
-    
+    flex-direction: row;
+    @include breakpoint(xs) {
+        flex-direction: column;
+    }
 }
 
 :deep(.p-inputtext) {
-    background-color: $gray;
-    border: none;
-    
+    width: 100%;
+    max-width: 250px;
+
+    @include breakpoint(xs) {
+        max-width: 100%;
+    }
+
     text-align: center;
     font-family: 'Jost';
-    font-size: 1.25rem;
     font-weight: 500;
-    letter-spacing: 0.3125rem;
+    letter-spacing: 0.3rem;
 }
 </style>
 

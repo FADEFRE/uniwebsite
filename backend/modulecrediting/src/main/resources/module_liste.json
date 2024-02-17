@@ -99,7 +99,7 @@
         },
 
         {
-            "name": "test course",
+            "name": "Test Course",
             "modules" : [
                 {
                     "name": "Programmierparadigmen",

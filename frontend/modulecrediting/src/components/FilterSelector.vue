@@ -12,6 +12,9 @@ exposes:
 import { ref, computed, onBeforeMount } from "vue";
 import { getWeekAgo, getMonthAgo, getSixMonthAgo, getYearAgo } from "@/scripts/date-utils";
 import { getCoursesLeipzig } from "@/scripts/axios-requests";
+import ArrowIcon from "../assets/icons/ArrowIcon.vue";
+import DateIcon from '../assets/icons/DateIcon.vue';
+import TrashIcon from "../assets/icons/TrashIcon.vue";
 
 const searchString = ref()
 
@@ -135,114 +138,138 @@ defineExpose({
 
     <h3>Filteroptionen</h3>
 
-    <div class="search-container">
-      <h4>Suchen</h4>
-      <InputText v-model="searchString" placeholder="Antrag suchen">
-        <!-- search icon -->
-      </InputText>
+    <div class="screen-split-container">
 
-      <small>Suchen nach: Vorgangsnummer, Modulname, Universität</small>
-    </div>
-
-    <div class="general-container">
-      <h4>Allgemein</h4>
-      <div class="date-filter-container">
-        <div @click="setDateTypeCreation" class="date-block" :class="{ 'selected': dateType === 'creationDate' }">
-          <img src="../assets/icons/CreationDate.svg">
-            <p v-if="dateType === 'creationDate'">Erstellt</p>
-
+      <div class="left-side-container">
+        <div class="single-filter-container">
+          <h4>Studiengang</h4>
+          <Dropdown show-clear v-model="course" :options="courses" placeholder="Studiengang auswählen">
+            <template #clearicon>
+              <div class="trash-icon-container" @click="deleteCourse">
+                <TrashIcon color="white"/>
+              </div>
+              
+            </template>
+            <template #dropdownicon>
+              <ArrowIcon color="white" direction="down"/>
+            </template>
+          </Dropdown>
         </div>
-        <div @click="setDateTypeLastEdit" class="date-block" :class="{ 'selected': dateType === 'lastEditedDate' }">
-          <img src="../assets/icons/LastEditedDate.svg">
-            <p v-if="dateType === 'lastEditedDate'">Zuletzt bearbeitet</p>
 
+
+        <div class="single-filter-container">
+          <h4>Suchen</h4>
+          <div class="input-search-field-container">
+            <InputText v-model="searchString" placeholder="Antrag suchen" />
+            <img src="@/assets/icons/SearchIcon.svg" class="search-icon">
+          </div>
+
+          <small>Suchen nach: Vorgangsnummer, Modulname, Universität</small>
         </div>
-        <div @click="setDateTypeDecision" class="date-block" :class="{ 'selected': dateType === 'decisionDate' }">
-          <img src="../assets/icons/DecisionDate.svg">
-            <p v-if="dateType === 'decisionDate'">Beschlossen</p>
+
+        <div class="single-filter-container">
+          <h4>Zeit</h4>
+          <div class="date-filter-container">
+            <div @click="setDateTypeCreation" class="date-block" :class="{ 'selected': dateType === 'creationDate' }">
+              <DateIcon type="creation"/>
+              <p v-if="dateType === 'creationDate'">Erstellt</p>
+
+            </div>
+            <div @click="setDateTypeLastEdit" class="date-block" :class="{ 'selected': dateType === 'lastEditedDate' }">
+              <DateIcon type="lastEdited"/>
+              <p v-if="dateType === 'lastEditedDate'">Zuletzt bearbeitet</p>
+
+            </div>
+            <div @click="setDateTypeDecision" class="date-block" :class="{ 'selected': dateType === 'decisionDate' }">
+              <DateIcon type="decision"/>
+              <p v-if="dateType === 'decisionDate'">Beschlossen</p>
+            </div>
+          </div>
+          <div>
+            <Dropdown v-model="selectedDateOption" :options="dateOptions">
+              <template #dropdownicon>
+                <ArrowIcon color="white" direction="down"/>
+              </template>
+            </Dropdown>
+          </div>
         </div>
       </div>
-      <div>
-        <Dropdown v-model="selectedDateOption" :options="dateOptions">
-          <template #dropdownicon>
-            <img src="../assets/icons/ArrowWhite.svg">
-          </template>
-        </Dropdown>
-      </div>
-    </div>
 
-    <div class="status-list-container">
-      <h4>Status</h4>
-      <div :class="{ 'selected': statusNew }" class="statusNew status-container" @click="toggleStatusNew">
-        <p class="overview-text">NEU</p>
+      <div class="right-side-container">
+        <div class="single-filter-container">
+          <h4>Status</h4>
+          <div :class="{ 'selected': statusNew }" class="statusNew status-container" @click="toggleStatusNew">
+            <p class="overview-text">NEU</p>
+          </div>
+          <div :class="{ 'selected': statusFormalRejection }" class="statusFormalRejection status-container"
+            @click="toggleStatusFormalRejection">
+            <p class="overview-text">FORMFEHLER</p>
+          </div>
+          <div :class="{ 'selected': statusStudyOffice }" class="statusStudyOffice status-container"
+            @click="toggleStatusStudyOffice">
+            <p class="overview-text">STUDIENBÜRO</p>
+          </div>
+          <div :class="{ 'selected': statusChairman }" class="statusChairman status-container"
+            @click="toggleStatusChairman">
+            <p class="overview-text">PRÜFUNGSAUSSCHUSS</p>
+          </div>
+          <div :class="{ 'selected': statusClosed }" class="statusClosed status-container" @click="toggleStatusClosed">
+            <p class="overview-text">ABGESCHLOSSEN</p>
+          </div>
+        </div>
       </div>
-      <div :class="{ 'selected': statusFormalRejection }" class="statusFormalRejection status-container"
-        @click="toggleStatusFormalRejection">
-        <p class="overview-text">FORMFEHLER</p>
-      </div>
-      <div :class="{ 'selected': statusStudyOffice }" class="statusStudyOffice status-container"
-        @click="toggleStatusStudyOffice">
-        <p class="overview-text">STUDIENBÜRO</p>
-      </div>
-      <div :class="{ 'selected': statusChairman }" class="statusChairman status-container" @click="toggleStatusChairman">
-        <p class="overview-text">PRÜFUNGSAUSSCHUSS</p>
-      </div>
-      <div :class="{ 'selected': statusClosed }" class="statusClosed status-container" @click="toggleStatusClosed">
-        <p class="overview-text">ABGESCHLOSSEN</p>
-      </div>
-    </div>
 
-    <div class="course-container">
-      <h4>Studiengang</h4>
-      <Dropdown show-clear v-model="course" :options="courses" placeholder="Studiengang auswählen">
-        <template #clearicon>
-          <img src="@/assets/icons/TrashWhite.svg" class="clear-icon" @click="deleteCourse">
-        </template>
-        <template #dropdownicon>
-          <img src="../assets/icons/ArrowWhite.svg">
-        </template>
-      </Dropdown>
-    </div>
 
+    </div>
   </div>
 </template>
 
 <style scoped lang="scss">
-@import '../assets/mixins.scss';
-@import '../assets/variables.scss';
-
-.clear-icon {
-  opacity: 0.9;
-  transition: 0.2s ease-in-out;
-
-  &:hover {
-    opacity: 1;
-  }
-}
-
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
+@use '@/assets/styles/components' as *;
 
 
 .filter-container {
   @include basicContainer();
-  width: 30%;
-
-  @media only screen and (max-width: 1100px) {
-    width: 100%;
-  }
 }
 
-.p-inputtext {
+.screen-split-container {
   width: 100%;
-  transition: 0.1s ease-in-out;
-
-  &:hover{
-    background-color: $white-hover;
-  }
-}
-
-.general-container {
   @include verticalList(small);
+
+  @include breakpoint(l) {
+    @include breakpoint-up(s) {
+      @include screenSplit();
+    }
+  }
+}
+
+
+.left-side-container {
+  @include verticalList(small);
+  @include breakpoint(l) {
+    @include breakpoint-up(s) {
+    width: 50%;
+    }
+  }
+}
+.right-side-container {
   width: 100%;
+  @include breakpoint(l) {
+    @include breakpoint-up(s) {
+    width: 50%;
+    }
+  }
+}
+
+.single-filter-container {
+  @include verticalList(xs);
+}
+
+
+.input-search-field-container {
+  @include searchFieldContainer();
 }
 
 .date-filter-container {
@@ -250,8 +277,7 @@ defineExpose({
 
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  align-self: stretch;
+  align-items: center
 }
 
 .date-block {
@@ -261,7 +287,6 @@ defineExpose({
   justify-content: center;
   align-items: center;
   background-color: $white;
-  transition: 0.1s ease-in-out;
   cursor: pointer;
 
   &.selected {
@@ -278,15 +303,6 @@ defineExpose({
   }
 }
 
-.course-container {
-  width: 100%;
-}
-
-.status-list-container {
-  @include verticalList(small);
-  gap: 0.2rem;
-  width: 100%;
-}
 
 .status-container {
   @include smallHighlightBox();
@@ -299,6 +315,7 @@ defineExpose({
     background-color: $gray-hover;
   }
 }
+
 .selected {
   .overview-text {
     color: $white;
@@ -324,6 +341,7 @@ defineExpose({
   &.statusFormalRejection,
   &.statusClosed {
     background-color: $red;
+
     &:hover {
       background-color: $red-hover;
     }
@@ -334,4 +352,8 @@ defineExpose({
   color: $dark-gray;
 }
 
+.trash-icon-container {
+  display: flex;
+  align-items: center;
+}
 </style>

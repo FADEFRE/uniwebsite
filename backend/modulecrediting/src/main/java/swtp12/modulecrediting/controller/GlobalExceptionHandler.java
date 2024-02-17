@@ -1,11 +1,14 @@
 package swtp12.modulecrediting.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
+import swtp12.modulecrediting.service.AuthService;
+import swtp12.modulecrediting.util.IncorrectKeyOnDecryptException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -29,5 +32,14 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred");
     }
     */
+
+    private AuthService authService;
+
+    @ExceptionHandler(IncorrectKeyOnDecryptException.class)
+    public ResponseEntity<String> handleConstraintViolationException(IncorrectKeyOnDecryptException ex) {
+        authService.deleteRefreshCookie();
+        authService.logout();
+        return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).body(ex.getMessage());
+    }
 }
 

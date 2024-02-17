@@ -98,16 +98,7 @@ const externalModules = computed(() => {
 })
 
 const checkValidity = () => {
-  if (existingModulesRef.value) {
-    for (let module of existingModulesRef.value) {
-      module.checkValidity()
-    }
-  }
-  if (newModulesRef.value) {
-    for (let module of newModulesRef.value) {
-      module.checkValidity()
-    }
-  }
+  return externalModules.value.map(m => m.checkValidity()).every(Boolean)
 }
 
 defineExpose({
@@ -116,24 +107,24 @@ defineExpose({
 </script>
 
 <template>
-  <div class="panel-external-modules">
+  <div class="panel-container" id="exteral-modules-container">
 
     <h4>Anzurechnende Module</h4>
 
     <div v-if="existingModulesList" class="external-modules-list">
       <PanelExternalModulesItem
-          v-for="module in existingModulesList"
-          :key="module.id"
+          v-for="externalModule in existingModulesList"
+          :key="externalModule.id"
           :allow-text-edit="allowTextEdit"
           :allow-file-edit="allowFileEdit"
           :allow-delete="allowDelete && externalModules.length > 1"
-          :id="module.id"
-          :name="module.name"
-          :university="module.university"
-          :points="module.points"
-          :point-system="module.pointSystem"
-          :selected-file="module.pdfDocument"
-          @delete-self="deleteExistingModule(module.id)"
+          :id="externalModule.id"
+          :name="externalModule.name"
+          :university="externalModule.university"
+          :points="externalModule.points"
+          :point-system="externalModule.pointSystem"
+          :selected-file="externalModule.pdfDocument"
+          @delete-self="deleteExistingModule(externalModule.id)"
           @change="emit('change')"
           ref="existingModulesRef"
       />
@@ -158,12 +149,10 @@ defineExpose({
 </template>
 
 <style scoped lang="scss">
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
 
-@import '../assets/mixins.scss';
-@import '../assets/variables.scss';
-
-.panel-external-modules {
-  @include panelComponent();
+#exteral-modules-container {
   border-top: none;
 }
 

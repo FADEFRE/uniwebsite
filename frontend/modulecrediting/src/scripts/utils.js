@@ -1,15 +1,14 @@
 import httpResource from "./httpResource";
-import { useUserStore } from "@/store/userStore";
 import { performLogout } from '@/router/logout'
 
 export function parseApierror(error) {
-    console.debug("parseapierror", error);
+    //console.debug("parseapierror", error);
     try {
         if (error && error.hasOwnProperty("response") && error.response.hasOwnProperty("data")) {
             const apierror = error.response.data;
             return {
-                status: apierror.status,
-                statusCode: error.status,
+                status: error.code,
+                statusCode: apierror.status,
                 timestamp: apierror.timestamp,
                 message: apierror.message
             };
@@ -17,8 +16,8 @@ export function parseApierror(error) {
     } 
     catch (parseError) {
         return {
-            status: "INTERNAL_SERVER_ERROR",
-            statusCode: 500,
+            status: "SERVICE_UNAVAILABLE",
+            statusCode: 503,
             timestamp: new Date(),
             message: "Server is not responding.."
         };
@@ -40,4 +39,4 @@ export async function refreshToken() {
     return response.status;
 }
 
-export const intervalMilliSeconds = 1800000; // 30 minutes
+export const intervalMilliSeconds = 600000; // 10 minutes

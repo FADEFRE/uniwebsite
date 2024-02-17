@@ -8,6 +8,7 @@ import org.springframework.web.server.ResponseStatusException;
 import swtp12.modulecrediting.dto.ExternalModuleDTO;
 import swtp12.modulecrediting.dto.ModuleLeipzigDTO;
 import swtp12.modulecrediting.dto.ModulesConnectionDTO;
+import swtp12.modulecrediting.model.EnumApplicationStatus;
 import swtp12.modulecrediting.model.ExternalModule;
 import swtp12.modulecrediting.model.ModuleLeipzig;
 import swtp12.modulecrediting.model.ModulesConnection;
@@ -36,6 +37,7 @@ public class ModulesConnectionService {
         for(ModulesConnectionDTO modulesConnectionDTO : modulesConnectionsDTO) {
             ModulesConnection modulesConnection = createModulesConnection(modulesConnectionDTO);
             ModulesConnection modulesConnectionOriginal = createModulesConnection(modulesConnectionDTO);
+            modulesConnectionOriginal.setIsOriginalModulesConnection(true);
 
             modulesConnection.setModulesConnectionOriginal(modulesConnectionOriginal);
 
@@ -64,7 +66,7 @@ public class ModulesConnectionService {
     }
 
 
-    public void updateModulesConnection(List<ModulesConnectionDTO> modulesConnectionsDTO, String userRole) {
+    public void updateModulesConnection(List<ModulesConnectionDTO> modulesConnectionsDTO, String userRole) { // todo: change name for login specfiic update
         if(modulesConnectionsDTO == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Modules Connections must not be null");
 
         for(ModulesConnectionDTO mcuDTO : modulesConnectionsDTO) {
@@ -108,7 +110,7 @@ public class ModulesConnectionService {
             deleteIdList.removeAll(updatedIdList);
             removeAllDeletedExternalModules(deleteIdList);
             // update external modules data
-            externalModuleService.updateExternalModules(mcuDTO.getExternalModules(), userRole);
+            externalModuleService.updateExternalModules(mcuDTO.getExternalModules());
 
             // handle modules leipzig changes
             if(mcuDTO.getModulesLeipzig() == null) modulesConnection.removeAllModulesLeipzig(); // remove all module leipzig
@@ -174,6 +176,13 @@ public class ModulesConnectionService {
     }
 
 
+    public void deleteOriginalModulesConnections(List<ModulesConnection> modulesConnections) {
+        for(ModulesConnection modulesConnection : modulesConnections) {
+            modulesConnection.setModulesConnectionOriginal(null);
+            modulesConnectionRepository.save(modulesConnection);
+        }
+    }
+
     // helper methods to build correct modules connection for student get request (stauts view page)
     public List<ModulesConnection> getOriginalModulesConnections(List<ModulesConnection> modulesConnections) {
         ArrayList<ModulesConnection> modulesConnectionsOriginal = new ArrayList<>();
@@ -182,12 +191,6 @@ public class ModulesConnectionService {
             modulesConnectionsOriginal.add(modulesConnection.getModulesConnectionOriginal());
         }
         return modulesConnectionsOriginal;
-    }
-    public List<ModulesConnection> removeOriginalModulesConnections(List<ModulesConnection> modulesConnections) {
-        for(ModulesConnection modulesConnection : modulesConnections) {
-            modulesConnection.setModulesConnectionOriginal(null);
-        }
-        return modulesConnections;
     }
     public List<ModulesConnection> getOriginalModulesConnectionsWithFormalRejectionData(List<ModulesConnection> editModulesConnections) {
         ArrayList<ModulesConnection> modulesConnectionsOriginal = new ArrayList<>();
@@ -212,7 +215,14 @@ public class ModulesConnectionService {
         ArrayList<ModulesConnection> relatedModuleConnections = new ArrayList<>();
 
         for(ModulesConnection m : allModulesConnections) {
+            // skip if its the same modules connection
             if(m.getId() == baseModulesConnection.getId()) continue;
+
+            // skip original modules connections
+            if(m.getIsOriginalModulesConnection()) continue;
+
+            // only abgeschlossene applications
+            if(m.getApplication().getFullStatus() != EnumApplicationStatus.ABGESCHLOSSEN) continue;
 
             if(m.getDecisionFinal() == unedited || m.getDecisionFinal() == asExamCertificate) continue;
 

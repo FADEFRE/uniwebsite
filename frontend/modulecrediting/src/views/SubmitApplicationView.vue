@@ -21,6 +21,7 @@ import SideInfoContainer from "@/components/SideInfoContainer.vue";
 import ButtonAdd from "@/components/ButtonAdd.vue";
 import ButtonLink from "@/components/ButtonLink.vue";
 import ApplicationOverview from "@/components/ApplicationOverview.vue";
+import ArrowIcon from "../assets/icons/ArrowIcon.vue";
 
 const creationDate = new Date()
 
@@ -50,47 +51,51 @@ const deleteModuleConnection = (key) => {
   moduleConnections.value = moduleConnections.value.filter(el => el !== key)
 }
 
+const courseValid = ref(true)
+
 const checkValidity = () => {
-  console.log('checkValidity')
-  for (let connectionPanel of moduleConnectionsRef.value) {
-    connectionPanel.checkValidity()
-  }
+  courseValid.value = Boolean(selectedCourse.value)
+  const connectionValidity = moduleConnectionsRef.value.map(c => c.checkValidity()).every(Boolean)
+  return courseValid.value && connectionValidity
 }
 
 const triggerPostApplication = () => {
-  console.log(selectedCourse.value)
-  console.log(moduleConnectionsRef.value)
-  postApplication(selectedCourse.value, moduleConnectionsRef.value)
-    .then(id => {
-      router.push({ name: 'confirmation', params: { id: id } })
-    })
+  if (checkValidity()) {
+    postApplication(selectedCourse.value, moduleConnectionsRef.value)
+      .then(id => {
+        router.push({ name: 'confirmation', params: { id: id } })
+      })
+  }
 }
 </script>
 
 <template>
   <div class="main">
 
-    <div class="submit-application-container">
+    <div class="content-container split">
 
       <ApplicationOverview :creation-date="getFormattedDate(creationDate)" :last-edited-date="undefined"
         :decision-date="undefined" status="NEU">
         <Dropdown v-model="selectedCourse" :options="courses" placeholder="Studiengang wählen"
-          @change="setSelectableModules">
+          @change="setSelectableModules" :class="{ 'invalid': !courseValid }">
           <template #dropdownicon>
-            <img src="../assets/icons/ArrowWhite.svg">
+            <ArrowIcon direction="down"/>
           </template>
         </Dropdown>
+        <small v-if="!courseValid" class="invalid-text">Es muss ein Studiengang ausgewählt werden</small>
       </ApplicationOverview>
 
       <ApplicationPanel v-for="item in moduleConnections" :key="item" :selectable-modules="selectableModules"
         :allow-delete="moduleConnections.length > 1" ref="moduleConnectionsRef"
         @delete-self="deleteModuleConnection(item)" />
 
-      <ButtonAdd @click="addModuleConnection">Modulzuweisung hinzufügen</ButtonAdd>
-      <ButtonLink @click="triggerPostApplication" :fixed="true">Absenden</ButtonLink>
+      <div class="application-buttons-container">
+        <ButtonAdd @click="addModuleConnection">Modulzuweisung hinzufügen</ButtonAdd>
+        <ButtonLink @click="triggerPostApplication" :redButton="true">Absenden</ButtonLink>
+      </div>
     </div>
 
-    <div class="side-infos-container">
+    <div class="side-infos-list">
       <!--SideInfoContainerfür Antragprozess -->
       <SideInfoContainer :heading="'ANTRAGSPROZESS'">
         <ul>
@@ -123,9 +128,10 @@ const triggerPostApplication = () => {
             <h4>Sprechzeiten</h4>
             <p>Dienstag und Donnerstag: 9:00 - 11:30 Uhr und 12:30 - 16:00 Uhr</p>
           </div>
-          <a href="https://www.mathcs.uni-leipzig.de/studium/studienbuero" class="link-container">
-            Zum Studienbüro
-            <img src="../assets/icons/ArrowWhite.svg" class="arrow-icon" alt="Arrow Icon">
+          <a href="https://www.mathcs.uni-leipzig.de/studium/studienbuero">
+            <ButtonLink>
+              Zum Studienbüro
+            </ButtonLink>
           </a>
         </div>
 
@@ -137,34 +143,8 @@ const triggerPostApplication = () => {
 </template>
 
 <style scoped lang="scss">
-@import '../assets/variables.scss';
-@import '../assets/mixins.scss';
-
-.main {
-  @include main();
-}
-
-.submit-application-container {
-  @include verticalList(small);
-  width: 100%;
-  overflow: hidden;
-}
-
-.side-infos-container {
-  @include sideInfoContainer();
-}
-
-.link-container {
-  &:hover {
-    .arrow-icon {
-      transform: translate(0.15rem) rotate(-90deg);
-    }
-  }
-}
-
-.arrow-icon {
-  transform: rotate(-90deg);
-  transition: 0.1s ease-in-out;
-}
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
+@use '@/assets/styles/components' as *;
 </style>
 

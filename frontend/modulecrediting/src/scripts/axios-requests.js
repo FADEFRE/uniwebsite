@@ -1,11 +1,11 @@
 import { url } from "@/scripts/url-config.js";
 import httpResource from "@/scripts/httpResource";
 
-let axiosColor = "color:yellow";
+let axiosColor = "color:blue";
 /*
 GET-Request to '/courses-leipzig' endpoint
 return list of all course names
-
+removes non active courses
 parameters:
     none
  */
@@ -15,7 +15,7 @@ function getCoursesLeipzig() {
   return httpResource
     .get("/api/courses-leipzig")
     .then((response) => {
-      return response.data.map((obj) => obj.name);
+      return response.data.filter(course => course.isActive).map((obj) => obj.name);
     })
     .catch((_) => {});
 }
@@ -41,6 +41,96 @@ function getModulesByCourse(course) {
     })
     .catch((_) => {});
 }
+
+function putCourseLeipzigEdit(coursename, moduleList) {
+  console.debug("%c" + "putCourseLeipzigEdit", axiosColor);
+
+  const formData = new FormData();
+
+  moduleList.forEach((moduleLeipzig, moduleIndex) => {
+    formData.append(`modulesLeipzig[${moduleIndex}].name`, moduleLeipzig.name);
+    formData.append(`modulesLeipzig[${moduleIndex}].code`, moduleLeipzig.code);
+  });
+
+  return httpResource
+    .put(`/api/courses-leipzig/${coursename}/edit`, formData)
+    .then((response) => response.data)
+    .catch((_) => {});
+}
+
+function putUpdateCourseLeipzig(coursename, newCourseName) {
+  console.debug("%c" + "putUpdateCourseLeipzig", axiosColor);
+
+  const formData = new FormData();
+  formData.append("courseName", newCourseName);
+
+  return httpResource
+    .put(`/api/courses-leipzig/${coursename}`, formData)
+    .then((response) => response.data)
+    .catch((_) => {});
+}
+
+function deleteCourseLeipzig(coursename) {
+  console.debug("%c" + "deleteCourseLeipzig", axiosColor);
+
+  return httpResource
+    .delete(`/api/courses-leipzig/${coursename}`)
+    .then((response) => response.data)
+    .catch((_) => {});
+}
+
+
+/*
+GET-Request to '/courses-leipzig' endpoint
+returns a list containing all modules related to a specific course
+{name: module name, code: module code }
+
+parameters:
+    course - String, course name
+ */
+function getModulesNameCodeByCourse(course) {
+  console.debug("%c" + "getModulesByCourse (" + course + ")", axiosColor);
+
+  return httpResource
+    .get("/api/courses-leipzig")
+    .then((response) => {
+      const courseObject = response.data.find((obj) => obj.name === course);
+      return courseObject.modulesLeipzigCourse
+        .filter((m) => m.isActive)
+        .map((obj) => ({ name: obj.name, code: obj.code }))
+        .sort((a, b) => a.name.localeCompare(b.name));
+    })
+    .catch((_) => {});
+}
+
+function getModulesNameCode() {
+  console.debug("%c" + "getModulesNameCode", axiosColor);
+
+  return httpResource
+    .get("/api/modules-leipzig")
+    .then((response) => {
+      return response.data
+        .filter((singleModule) => singleModule.isActive)
+        .map((singleModule) => ({
+          name: singleModule.name,
+          code: singleModule.code,
+        }))
+        .sort((a, b) => a.name.localeCompare(b.name));
+    })
+    .catch((_) => {});
+}
+
+function deleteModuleLeipzig(modulename) {
+  console.debug("%c" + "deleteModuleLeipzig", axiosColor);
+
+  return httpResource
+    .delete(`/api/modules-leipzig/${modulename}`)
+    .then((response) => response.data)
+    .catch((_) => {});
+}
+
+
+
 
 /*
 GET-Request to '/applications' endpoint
@@ -202,7 +292,9 @@ function createBasicFormData(courseLeipzig, basicConnectionObjects) {
   const formData = new FormData();
   formData.append("courseLeipzig", courseLeipzig);
   basicConnectionObjects.forEach((connection, connectionIndex) => {
-    formData.append(`modulesConnections[${connectionIndex}].id`, connection.id);
+    if (connection.id) {
+      formData.append(`modulesConnections[${connectionIndex}].id`, connection.id);
+    }
     connection.externalModules.forEach(
       (externalModule, externalModuleIndex) => {
         if (externalModule.id) {
@@ -319,10 +411,12 @@ function putApplicationStudyOffice(
         ""
       );
       if (connection.studyOfficeDecisionData["decision"]) {
-        formData.append(
-          `modulesConnections[${connectionIndex}].decisionSuggestion`,
-          connection.studyOfficeDecisionData.decision
-        );
+          formData.append(
+              `modulesConnections[${connectionIndex}].decisionSuggestion`,
+              connection.studyOfficeDecisionData.decision
+          );
+      }
+      if (connection.studyOfficeDecisionData["comment"]) {
         formData.append(
           `modulesConnections[${connectionIndex}].commentStudyOffice`,
           connection.studyOfficeDecisionData.comment
@@ -362,6 +456,8 @@ function putApplicationChairman(
                 `modulesConnections[${connectionIndex}].decisionFinal`,
                 connection.chairmanDecisionData.decision
             );
+        }
+        if (connection.chairmanDecisionData["comment"]) {
             formData.append(
                 `modulesConnections[${connectionIndex}].commentDecision`,
                 connection.chairmanDecisionData.comment
@@ -435,10 +531,8 @@ function postCourseLeipzig(coursename) {
 
   return httpResource
     .post("/api/courses-leipzig", formData)
-    .then((response) => {
-      return response.data;
-    })
-    .catch((_) => {});
+    .then((response) => response.data)
+    .catch((error) => Promise.reject(error));
 }
 
 /*
@@ -461,26 +555,142 @@ function postModuleLeipzig(modulename, modulecode) {
 
   return httpResource
     .post("/api/modules-leipzig", formData)
-    .then((response) => {
-      return response.data;
-    })
-    .catch((_) => {});
+    .then((response) => response.data)
+    .catch((error) => Promise.reject(error));
+}
+
+function getUserMe () {
+    console.debug("%c" + "getUserMe ()", axiosColor)
+
+    return httpResource.get("/api/user/me")
+        .then(response => response.data)
+        .catch(() => {})
+}
+
+function getUserMeId () {
+  console.debug("%c" + "getUserMeId ()", axiosColor)
+
+  return httpResource.get("/api/user/me/id")
+      .then(response => response.data)
+      .catch(() => {})
+}
+
+function getUserMeName () {
+  console.debug("%c" + "getUserMeName ()", axiosColor)
+
+  return httpResource.get("/api/user/me/name")
+      .then(response => response.data)
+      .catch(() => {})
+}
+
+function getAllUsers () {
+    console.debug("%c" + "getAllUsers ()", axiosColor);
+
+    return httpResource.get("/api/user/all")
+        .then(response => response.data)
+        .catch(_ => {})
+}
+
+function putUserUsername (id, username) {
+    console.debug("%c" + "getUserUsername (id: " + id + ", username: " + username + ")", axiosColor)
+
+    const formData = new FormData()
+
+    formData.append('id', id)
+    formData.append('username', username)
+
+    return httpResource.put('/api/user/change/username', formData)
+        .then(response => response.data)
+        .catch(error => Promise.reject(error))
+}
+
+function putUserPassword (id, password, passwordConfirm) {
+    console.debug("%c" + "putUserPassword (id: " + id + ", password: [hidden]" + ", passwordConfirm: [hidden]" + ")", axiosColor)
+
+    const formData = new FormData()
+
+    formData.append('id', id)
+    formData.append('password', password)
+    formData.append('passwordConfirm', passwordConfirm)
+
+    return httpResource.put('/api/user/change/password', formData)
+        .then(response => response.data)
+        .catch(_ => {})
+}
+
+function putUserRole (id, role) {
+    console.debug("%c" + "getAllUsers (id: " + id + ", role: " + role + ")", axiosColor);
+
+    const formData = new FormData()
+
+    formData.append('id', id)
+    formData.append('role', role)
+
+    return httpResource.put('/api/user/change/role', formData)
+        .then(response => response.data)
+        .catch(_ => {})
+}
+
+function deleteUser (id) {
+    console.debug("%c" + "delteUser (id: " + id + ")", axiosColor)
+
+    const formData = new FormData()
+
+    formData.append('id', id)
+
+    return httpResource.post('api/auth/delete', formData)
+        .then(response => response.data)
+        .catch(_ => {})
+}
+
+function createUser (username, password, passwordConfirm, role) {
+    console.debug(
+        "%c" + "create user (username: " + username + ", role: " + role + ")",
+        axiosColor
+    );
+
+    const formData = new FormData()
+
+    formData.append('username', username)
+    formData.append('password', password)
+    formData.append('passwordConfirm', passwordConfirm)
+    formData.append('role', role)
+
+    return httpResource.post("/api/auth/register", formData)
+        .then(response => response.data)
+        .catch(error => Promise.reject(error))
+
 }
 
 export {
-  getCoursesLeipzig,
-  getModulesByCourse,
-  getApplications,
-  getApplicationById,
-  getApplicationByIdForStatus,
-  getApplicationExists,
-  getRelatedModuleConnections,
-  postApplication,
-  putApplicationStudent,
-  putApplicationStudyOffice,
-  putApplicationChairman,
-  getUpdateStatusAllowed,
-  updateStatus,
-  postCourseLeipzig,
-  postModuleLeipzig,
+    getCoursesLeipzig,
+    getModulesByCourse,
+    getModulesNameCodeByCourse,
+    getModulesNameCode,
+    deleteModuleLeipzig,
+    putCourseLeipzigEdit,
+    putUpdateCourseLeipzig,
+    deleteCourseLeipzig,
+    getApplications,
+    getApplicationById,
+    getApplicationByIdForStatus,
+    getApplicationExists,
+    getRelatedModuleConnections,
+    postApplication,
+    putApplicationStudent,
+    putApplicationStudyOffice,
+    putApplicationChairman,
+    getUpdateStatusAllowed,
+    updateStatus,
+    postCourseLeipzig,
+    postModuleLeipzig,
+    getUserMe,
+    getUserMeId,
+    getUserMeName,
+    getAllUsers,
+    putUserUsername,
+    putUserPassword,
+    putUserRole,
+    deleteUser,
+    createUser
 };

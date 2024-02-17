@@ -13,18 +13,16 @@ const goBack = () => {
 </script>
 
 <template>
-    <div class="main">
-        <ErrorContainer :customTitle="'Antragsnummer existiert nicht'"
-            :customMessage="'Antrag existiert nicht '" />
-        <ButtonLink @click="goBack">Zurück</ButtonLink>
+    <div class="main centered">
+        <ErrorContainer :customTitle="'Antragsnummer existiert nicht'" :customMessage="'Antrag existiert nicht '">
+            <template #default>
+                <ButtonLink @click="goBack">Zurück</ButtonLink>
+            </template>
+        </ErrorContainer>
     </div>
 </template>
 
 <style scoped lang="scss">
-@import '../assets/variables.scss';
-@import '../assets/mixins.scss';
-
-.main {
-    @include main();
-}
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
 </style>

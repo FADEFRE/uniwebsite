@@ -20,7 +20,7 @@ const route = useRoute()
 let allApplications = ref([])
 onBeforeMount(() => {
   getApplications()
-      .then(data => allApplications.value = data)
+    .then(data => allApplications.value = data)
 })
 
 const filter = ref()
@@ -36,21 +36,18 @@ const filteredApplications = computed(() => {
 
 <template>
   <div class="main">
-    <FilterSelector ref="filter" />
-    
-    <div class="overview-list">
+    <div class="side-infos-list wide">
+      <FilterSelector ref="filter" />
+    </div>
+
+    <div class="content-container split narrow">
 
       <div v-for="application in filteredApplications">
-        <ApplicationOverview
-            :id="application['id']"
-            :status="application['fullStatus']"
-            :course="application['courseLeipzig']['name']"
-            :creation-date="parseRequestDate(application['creationDate'])"
-            :last-edited-date="parseRequestDate(application['lastEditedDate'])"
-            :decision-date="parseRequestDate(application['decisionDate'])"
-            :forward="route.meta['forward']"
-            class="admin-selection-view"
-        />
+        <ApplicationOverview :id="application['id']" :status="application['fullStatus']"
+          :course="application['courseLeipzig']['name']" :creation-date="parseRequestDate(application['creationDate'])"
+          :last-edited-date="parseRequestDate(application['lastEditedDate'])"
+          :decision-date="parseRequestDate(application['decisionDate'])" :forward="route.meta['forward']"
+          :adminSelectionView="true" class="admin-selection-view" />
       </div>
 
     </div>
@@ -58,23 +55,6 @@ const filteredApplications = computed(() => {
 </template>
 
 <style scoped lang="scss">
-@import '../assets/variables.scss';
-@import '../assets/mixins.scss';
-
-.main {
-  @include main();
-}
-
-.overview-list {
-  @include verticalList(big);
-  width: 70%;
-
-  @media only screen and (max-width: 1100px) {
-    width: 100%;
-  }
-
-  @media only screen and (max-width: 700px) {
-    //padding: 2rem 1rem;
-  }
-}
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
 </style>

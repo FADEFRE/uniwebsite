@@ -1,12 +1,9 @@
 <!-- ApplicationOverview.vue -->
 
 <script setup>
-import CreationDate from '@/assets/icons/CreationDate.svg';
-import LastEditedDate from '@/assets/icons/LastEditedDate.svg';
-import DecisionDate from '@/assets/icons/DecisionDate.svg';
-
 import { computed } from 'vue';
 import router from "@/router";
+import DateIcon from '../assets/icons/DateIcon.vue';
 
 const props = defineProps({
     creationDate: {
@@ -32,13 +29,22 @@ const props = defineProps({
     },
     forward: {
         type: String,
+    },
+    adminSelectionView: {
+        type: Boolean,
+        default: false
     }
 });
 
 const statusStyle = computed(() => {
-    if (props.status === "NEU") return "status-container greenBackground";
-    if (props.status === "STUDIENBÜRO" || props.status === "PRÜFUNGSAUSSCHUSS" || props.status === "IN BEARBEITUNG") return "status-container orangeBackground";
-    if (props.status === "ABGESCHLOSSEN" || props.status === "FORMFEHLER") return "status-container redBackground";
+    let style = "";
+    if (props.status === "NEU") style += "greenBackground";
+    if (props.status === "STUDIENBÜRO" || props.status === "PRÜFUNGSAUSSCHUSS" || props.status === "IN BEARBEITUNG") style += "orangeBackground";
+    if (props.status === "ABGESCHLOSSEN" || props.status === "FORMFEHLER") style += "redBackground";
+
+    if (props.adminSelectionView) style += " admin-selection-view"
+
+    return style;
 })
 
 const triggerForward = () => {
@@ -47,51 +53,52 @@ const triggerForward = () => {
     }
 }
 
-const containerStyle = computed(() => {
-    if (props.forward) return "application-overview-container selection-view";
-    return "application-overview-container";
-});
 </script>
 
 <template>
-    <div :class="containerStyle" @click="triggerForward">
+    <div @click="triggerForward" class="application-overview-container"
+        :class="{ 'admin-selection-view': adminSelectionView }">
         <div class="dates">
             <!-- Div-Block Creation Date -->
             <div v-if="creationDate" class="date-block">
-                <img :src="CreationDate" alt="Creation Date Icon" />
+                <DateIcon type="creation"/>
                 <p>{{ creationDate }}</p>
             </div>
 
             <!-- Div-Block Last edited Date -->
             <div v-if="lastEditedDate" class="date-block">
-                <img :src="LastEditedDate" alt="LastEdited Date Icon" />
+                <DateIcon type="lastEdited"/>
                 <p>{{ lastEditedDate }}</p>
             </div>
 
             <!-- Div-Block Decision Date -->
             <div v-if="decisionDate" class="date-block">
-                <img :src="DecisionDate" alt="Decision Date Icon" />
+                <DateIcon type="decision"/>
                 <p>{{ decisionDate }}</p>
             </div>
         </div>
 
         <!-- remaining data -->
         <div class="application-info">
-            <div v-if="id" class="vorgangsnummer-container">
-                <div class="vorgangsnummer-text overview-text">Vorgangsnummer: {{ id || 'Placeholder for Vorgangsnummer' }}
+            <div v-if="id" class="vorgangsnummer-container info-container"
+                :class="{ 'admin-selection-view': adminSelectionView }">
+                <div class="vorgangsnummer-text overview-text">
+                    Vorgangsnummer: {{ id || 'Placeholder for Vorgangsnummer' }}
                 </div>
             </div>
 
             <!-- Slot study course -->
-            <div>
+            <div class="course-selection-container info-container">
                 <slot>
-                    <div class="course-container">
+                    <div class="course-container info-container" :class="{ 'admin-selection-view': adminSelectionView }">
                         <div class="overview-text">{{ course }}</div>
                     </div>
                 </slot>
             </div>
 
-            <div :class="statusStyle">
+
+
+            <div :class="statusStyle" class="info-container status-container">
                 <div class="status-text overview-text">Status: {{ status || 'Placeholder for Status' }}</div>
             </div>
         </div>
@@ -99,56 +106,109 @@ const containerStyle = computed(() => {
 </template>
 
 <style scoped lang="scss">
-@import '../assets/mixins.scss';
-@import '../assets/variables.scss';
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
 
 
 
 .application-overview-container {
     background-color: $white;
     display: flex;
-    padding: 0.625rem 0.625rem 0.625rem 1.25rem;
+    padding: spacing(s);
+    padding-left: spacing(m);
     justify-content: space-between;
-    row-gap: 0.625rem;
+    gap: spacing(s);
     align-self: stretch;
     flex-wrap: wrap;
-    
-}
-.admin-selection-view:hover {
     transition: 0.1s ease-in-out;
-    background-color: $white-hover;
-    cursor: pointer;
-}
 
-.selection-view {
-    flex-direction: column;
+    &.admin-selection-view {
+        flex-direction: column;
+
+        &:hover {
+            background-color: $white-hover;
+            cursor: pointer;
+        }
+    }
+
+    @include breakpoint(xs) {
+        flex-direction: column;
+        gap: spacing(s);
+    }
 }
 
 
 .application-info {
     display: flex;
-    align-items: center;
-    align-content: center;
-    gap: 0.9375rem;
-    max-width: max-content;
+    gap: spacing(s);
+    max-width: 100%;
     flex-wrap: wrap;
+
+    @include breakpoint(xs) {
+        flex-direction: column;
+        gap: spacing(s);
+    }
+}
+
+.info-container {
+
+    color: $white;
+
+    @include breakpoint(xs) {
+        width: 100%;
+    }
 }
 
 .course-container {
     @include smallHighlightBox();
     background-color: $dark-gray;
-    color: $white;
+
+    &.admin-selection-view {
+        min-width: max-content;
+        width: 12rem;
+    }
+
+    @include breakpoint(xs) {
+            width: 100%;
+        }
+}
+
+.course-selection-container {
+    width: min-content;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+
+    @include breakpoint(xs) {
+        width: 100%;
+    }
 }
 
 .vorgangsnummer-container {
     @include smallHighlightBox();
     background-color: $gray;
+    color: $dark-gray;
+
+    &.admin-selection-view {
+        width: 19rem;
+    }
+
+    @include breakpoint(xs) {
+        width: 100%;
+    }
 }
 
 .status-container {
     @include smallHighlightBox();
-    color: $white;
+
+    &.admin-selection-view {
+        width: 19rem;
+    }
+    @include breakpoint(xs) {
+            width: 100%;
+    }
 }
+
 
 .greenBackground {
     background-color: $green;
@@ -165,13 +225,13 @@ const containerStyle = computed(() => {
 .dates {
     display: flex;
     align-items: center;
-    gap: 0.9375rem;
+    gap: spacing(m);
     flex-wrap: wrap;
 }
 
 .date-block {
     display: flex;
     align-items: center;
-    gap: 0.625rem;
+    gap: spacing(s);
 }
 </style>

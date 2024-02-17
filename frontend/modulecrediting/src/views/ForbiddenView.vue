@@ -12,17 +12,13 @@ const props = defineProps(['customTitle', 'customMessage']);
 </script>
 
 <template>
-    <div class="main">
+    <div class="main centered">
         <ErrorContainer :customTitle="'403 - Forbidden'"
             :customMessage="'Du darfst nicht auf diese Adresse zugreifen'" />
     </div>
 </template>
 
 <style scoped lang="scss">
-@import '../assets/variables.scss';
-@import '../assets/mixins.scss';
-
-.main {
-    @include main();
-}
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
 </style>

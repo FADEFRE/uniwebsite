@@ -4,12 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -51,7 +46,7 @@ public class ExternalModule {
     private String university;
 
     //Relation ExternalModule <-> PdfDocument
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JsonManagedReference
     @JsonView({Views.ApplicationStudent.class,Views.ApplicationLogin.class})
     private PdfDocument pdfDocument;
@@ -71,7 +66,8 @@ public class ExternalModule {
      * @see PdfDocument 
      */
     public void setPdfDocument(PdfDocument pdfDocument) {
-        pdfDocument.setExternalModule(this);
+
         this.pdfDocument = pdfDocument;
+
     }
 }

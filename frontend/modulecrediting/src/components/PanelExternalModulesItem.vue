@@ -24,8 +24,9 @@ displays:
 -->
 
 <script setup>
-import { ref, computed, watch, onBeforeMount } from "vue";
+import { ref, computed, watch } from "vue";
 import FileInput from "@/components/FileInput.vue";
+import TrashIcon from "../assets/icons/TrashIcon.vue";
 
 const props = defineProps({
   allowTextEdit: {
@@ -69,6 +70,12 @@ const university = ref(props.university || "")
 const points = ref(props.points || "")
 const pointSystem = ref(props.pointSystem || "")
 
+const validatePointInput = () => {
+  console.log(points.value)
+  console.log(points.value.replace(/[^0-9]/g, ''))
+  points.value = points.value.replace(/[^0-9]/g, '')
+}
+
 const fileInput = ref()
 const selectedFile = computed(() => fileInput.value?.selectedFile)
 
@@ -90,7 +97,6 @@ const checkValidity = () => {
   // cascading calls
   const fileValid = fileInput.value.checkValidity()
   // return
-  console.log(nameValid.value && universityValid.value && pointsValid.value && pointSystemValid.value && fileValid.value)  // todo remove
   return nameValid.value && universityValid.value && pointsValid.value && pointSystemValid.value && fileValid.value
 }
 
@@ -103,19 +109,33 @@ defineExpose({
   <div class="external-modules-item">
     <div class="screen-split">
       <div class="left-side">
-        <InputText :readonly="!allowTextEdit" type="text" placeholder="Modulname" v-model="name" :class="{ 'invalid': !nameValid }" />
-        <small v-if="!nameValid" class="invalid-text">Modulname darf nicht leer sein</small>
-        <InputText :readonly="!allowTextEdit" type="text" placeholder="Universität" v-model="university" :class="{ 'invalid': !universityValid }" />
-        <small v-if="!universityValid" class="invalid-text">Universität darf nicht leer sein</small>
+        <div class="input-container">
+          <InputText :readonly="!allowTextEdit" type="text" placeholder="Modulname" v-model="name"
+            :class="{ 'invalid': !nameValid }" class="gray"/>
+          <small v-if="!nameValid" class="invalid-text">Modulname darf nicht leer sein</small>
+        </div>
+        <div class="input-container">
+          <InputText :readonly="!allowTextEdit" type="text" placeholder="Universität" v-model="university"
+            :class="{ 'invalid': !universityValid }" class="gray" />
+          <small v-if="!universityValid" class="invalid-text">Universität darf nicht leer sein</small>
+        </div>
       </div>
 
       <div class="right-side">
 
         <div class="point-container">
-          <InputText :readonly="!allowTextEdit" type="text" placeholder="Punkte" v-model="points" :class="{ 'invalid': !pointsValid }" />
-          <small v-if="!pointsValid" class="invalid-text">Punkte müssen als Zahl angegeben werden</small>
-          <InputText :readonly="!allowTextEdit" type="text" placeholder="Punktesystem" v-model="pointSystem" :class="{ 'invalid': !pointSystemValid }" />
-          <small v-if="!pointSystemValid" class="invalid-text">Punktsystem darf nicht leer sein</small>
+          <div class="input-container">
+            <InputText :readonly="!allowTextEdit" type="text" placeholder="Punkte" v-model="points"
+              @input.prevent="validatePointInput" :class="{ 'invalid': !pointsValid }" class="gray"/>
+            <small v-if="!pointsValid" class="invalid-text">Punkte müssen als Zahl angegeben werden</small>
+          </div>
+
+          <div class="input-container">
+            <InputText :readonly="!allowTextEdit" type="text" placeholder="Punktesystem" v-model="pointSystem"
+              :class="{ 'invalid': !pointSystemValid }" class="gray"/>
+            <small v-if="!pointSystemValid" class="invalid-text">Punktsystem darf nicht leer sein</small>
+          </div>
+
         </div>
 
         <FileInput :readonly="!allowFileEdit" :selected-file="props.selectedFile" ref="fileInput" />
@@ -123,36 +143,38 @@ defineExpose({
 
     </div>
 
-    <div v-if="allowDelete">
-      <img src="../assets/icons/Trash.svg" @click="emit('deleteSelf')" class="trash-icon">
+    <div class="trash-icon-container" v-if="allowDelete" @click="emit('deleteSelf')">
+      <TrashIcon/>
     </div>
 
   </div>
 </template>
 
 <style scoped lang="scss">
-@import '../assets/mixins.scss';
-@import '../assets/variables.scss';
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
+@use '@/assets/styles/components' as *;
 
 
 .external-modules-item {
   @include verticalListItem($gray);
 
   width: 100%;
-  padding: 0.625rem 0.5rem 0.625rem 1.25rem;
+  padding: spacing(s);
 
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  gap: 0.5rem;
+  gap: spacing(s);
 }
 
 .screen-split {
   @include screenSplit();
 
-  @media only screen and (max-width: 700px) {
+  @include breakpoint(s) {
     flex-wrap: wrap;
+    flex-direction: column;
   }
 }
 
@@ -161,14 +183,10 @@ defineExpose({
   justify-content: space-between;
   align-self: stretch;
   width: 50%;
-  
-  @media only screen and (max-width: 700px) {
+
+  @include breakpoint(s) {
     width: 100%;
   }
-}
-
-:deep(.p-inputtext:hover) {
-  background-color: $gray-hover;
 }
 
 .right-side {
@@ -177,33 +195,22 @@ defineExpose({
   align-self: stretch;
   width: 50%;
 
-  @media only screen and (max-width: 700px) {
+  @include breakpoint(s) {
     width: 100%;
   }
 }
 
 .point-container {
   display: flex;
-  gap: 0.625rem;
-  & .p-inputtext {
-    width: 100%;
-  }
+  gap: spacing(s);
 }
 
-.trash-icon {
-  @include trashIconAnimation();
-  padding:  0.5rem 0.5rem;
+.trash-icon-container {
+  transition: 0.1s ease-in-out;
+  padding: spacing(s);
+
   &:hover {
     background-color: $gray-hover;
   }
-}
-
-.invalid {
-  border: 2px solid $red !important;
-  box-shadow: 0px 0px 4px 0px $red !important;
-}
-
-.invalid-text {
-  color: $red;
 }
 </style>

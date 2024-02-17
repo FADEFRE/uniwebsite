@@ -28,8 +28,9 @@ defineExpose({
 </template>
 
 <style scoped lang="scss">
-@import '@/assets/mixins.scss';
-@import '@/assets/variables.scss';
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
+@use '@/assets/styles/components' as *;
 
 .panel-formal-rejection-block {
   display: flex;
@@ -56,17 +57,8 @@ defineExpose({
   width: max-content;
 
   color: $white;
-  font-size: 1.125rem;
+  font-size: 1.1rem;
   font-weight: 600;
-
-
-
-
 }
 
-textarea {
-  width: 100%;
-  resize: none;
-  border: none;
-}
 </style>

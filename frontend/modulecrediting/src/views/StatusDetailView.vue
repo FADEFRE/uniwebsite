@@ -4,15 +4,18 @@ shows status of an application
 
 <script setup>
 import { useRoute, useRouter } from 'vue-router';
-import { ref, onBeforeMount } from "vue";
+import { ref, onBeforeMount, computed } from "vue";
 import ApplicationOverview from "@/components/ApplicationOverview.vue";
-import StatusPanel from "@/components/StatusPanel.vue";
+import FormalRejectionInfoBox from "@/components/FormalRejectionInfoBox.vue";
 import SideInfoContainer from '../components/SideInfoContainer.vue';
+import StatusPanel from "@/components/StatusPanel.vue";
+import ApplicationPanel from "@/components/ApplicationPanel.vue";
+import ButtonLink from '@/components/ButtonLink.vue';
+import ButtonAdd from "../components/ButtonAdd.vue";
+import ButtonDownloadVue from '../components/ButtonDownload.vue';
 import { url } from "@/scripts/url-config"
 import { getApplicationByIdForStatus, getModulesByCourse, putApplicationStudent } from "@/scripts/axios-requests";
 import { parseRequestDate } from "@/scripts/date-utils";
-import ButtonLink from '@/components/ButtonLink.vue';
-import FormalRejectionInfoBox from "@/components/FormalRejectionInfoBox.vue";
 
 const id = useRoute().params.id
 const summaryDocumentLink = `${url}/file/pdf-documents/application/${id}`
@@ -25,8 +28,8 @@ const router = useRouter();
 onBeforeMount(() => {
   getApplicationByIdForStatus(id)
     .then(data => {
-     
       applicationData.value = data;
+      existingConnections.value = data['modulesConnections']
       return data;
     })
     .then(data => {
@@ -37,24 +40,63 @@ onBeforeMount(() => {
     })
 })
 
+// handling existing connections
+const existingConnections = ref()
 
-const moduleConnections = ref()
+const deleteExistingConnection = (id) => {
+  existingConnections.value = existingConnections.value.filter(c => id !== c.id)
+}
+
+const existingConnectionsRef = ref()
+
+// handling new connections
+const newConnections = ref([])
+
+const addNewConnection = () => {
+  if (newConnections.value.length > 0) {
+    const nextIndex = Math.max(...newConnections.value) + 1
+    newConnections.value.push(nextIndex)
+  } else {
+    newConnections.value.push(0)
+  }
+}
+
+const deleteNewConnection = (key) => {
+  newConnections.value = newConnections.value.filter(k => k !== key)
+}
+
+const newConnectionsRef = ref()
+
+// concatenating connections
+const moduleConnections = computed(() => {
+  let connectionsArray = []
+  if (existingConnectionsRef.value) connectionsArray = connectionsArray.concat(existingConnectionsRef.value)
+  if (newConnectionsRef.value) connectionsArray = connectionsArray.concat(newConnectionsRef.value)
+  return connectionsArray
+})
 
 const openSummaryDocument = () => {
   window.open(summaryDocumentLink, '_blank')
 }
+
+const checkValidity = () => {
+  return moduleConnections.value.map(c => c.checkValidity()).every(Boolean)
+}
+
 const triggerSubmit = () => {
-  putApplicationStudent(applicationData.value['id'], applicationData.value['courseLeipzig']['name'], moduleConnections.value)
-    .then(_ => location.reload())
+  if (checkValidity()) {
+    putApplicationStudent(applicationData.value['id'], applicationData.value['courseLeipzig']['name'], moduleConnections.value)
+      .then(_ => location.reload())
+  }
 }
 </script>
 
 <template>
   <div class="main">
-    
-    <div v-if="applicationData" class="status-detail-container">
-      
-      <div v-if="applicationData['fullStatus'] === 'FORMFEHLER'">
+
+    <div v-if="applicationData" class="content-container split">
+
+      <div v-if="applicationData['fullStatus'] === 'FORMFEHLER'" class="formal-rejection-info-container">
         <FormalRejectionInfoBox />
       </div>
 
@@ -63,104 +105,98 @@ const triggerSubmit = () => {
         :decision-date="parseRequestDate(applicationData['decisionDate'])" :id="applicationData['id']"
         :course="applicationData['courseLeipzig']['name']" :status="applicationData['fullStatus']" />
 
-
-
-      <div v-for="connection in applicationData['modulesConnections']">
-
-        <StatusPanel :connection="connection" :selectable-modules="moduleOptions"
-          :readonly="!(applicationData['fullStatus'] === 'FORMFEHLER')" ref="moduleConnections"
+      <div v-if="existingConnections" class="modules-connections-container">
+        <StatusPanel v-for="connection in existingConnections" :key="connection.id" :connection="connection"
+          :selectable-modules="moduleOptions" :readonly="!(applicationData['fullStatus'] === 'FORMFEHLER')"
+          :allow-delete="applicationData['fullStatus'] === 'FORMFEHLER' && moduleConnections.length > 1"
+          @delete-self="deleteExistingConnection(connection.id)" ref="existingConnectionsRef"
           :class="{ 'formal-rejection-highlight': connection['formalRejection'] }" />
-
       </div>
 
-      <Button @click="openSummaryDocument">
-        Antrag herunterladen
-        <img src="../assets/icons/Download.svg">
-      </Button>
+      <div v-if="applicationData['fullStatus'] === 'FORMFEHLER'" class="modules-connections-container">
+        <ApplicationPanel v-for="key in newConnections" :key="key" :selectable-modules="moduleOptions"
+          :allow-delete="moduleConnections.length > 1" @delete-self="deleteNewConnection(key)" ref="newConnectionsRef" />
+      </div>
 
-      <ButtonLink v-if="applicationData['fullStatus'] === 'FORMFEHLER'" :fixed="true" @click="triggerSubmit">
-        Neu einreichen
-      </ButtonLink>
-
+      
+      <div class="application-buttons-container">
+        <ButtonAdd v-if="applicationData['fullStatus'] === 'FORMFEHLER'" @click="addNewConnection">Modulzuweisung hinzufügen</ButtonAdd>
+        <ButtonLink v-if="applicationData['fullStatus'] === 'FORMFEHLER'" :redButton="true" @click="triggerSubmit">Neu einreichen</ButtonLink>
+      </div>
+      <ButtonDownloadVue @click="openSummaryDocument" :fixed="true"/>
     </div>
-    <div class="side-infos-container">
+
+    <div class="side-infos-list">
       <!--SideInfoContainerfür Antragprozess -->
-      <SideInfoContainer :heading="'ANTRAGSPROZESS'">
-        <ul class="list-container">
-          <li class="list-item">Antrag online stellen</li>
-          <li class="list-item">Über Vorgangsnummer online Status einsehen</li>
-          <li class="list-item">Auf Entscheidung des PAV warten</li>
-          <li class="list-item">Mit abgeschlossenem Antrag zum Studienbüro gehen</li>
-        </ul>
-      </SideInfoContainer>
+      <SideInfoContainer :heading="$t('homepage.sideInfo.applicationProcess')">
+                  <ul class="list-container">
+                      <li class="list-item"><p>{{ $t('homepage.sideInfo.submitApplication') }}</p></li>
+                      <li class="list-item"><p>{{ $t('homepage.sideInfo.viewStatus') }}</p></li>
+                      <li class="list-item"><p>{{ $t('homepage.sideInfo.wait') }}</p></li>
+                      <li class="list-item"><p>{{ $t('homepage.sideInfo.goToStudy') }}</p></li>
+                  </ul>
+              </SideInfoContainer>
       <SideInfoContainer :heading="'STUDIENBÜRO'">
-          <p>Fakultät für Mathematik und Informatik</p>
-          <div class="main-info-container">
-            <div class="info-group-container">
-              <h4>Anschrift</h4>
-              <ul>
-                <li>Neues Augusteum</li>
-                <li>Augustusplatz 10</li>
-                <li>04109 Leipzig</li>
-              </ul>
-            </div>
-            <div class="info-group-container">
-              <h4>Kontakt</h4>
-              <ul>
-                <li>Telefon: +49 341 97-32165</li>
-                <li>Telefax: +49 341 97-32193</li>
-                <li>E-Mail: studienbuero@math.uni-leipzig.de</li>
-              </ul>
-            </div>
-            <div class="info-group-container">
-              <h4>Sprechzeiten</h4>
-              <p>Dienstag und Donnerstag: 9:00 - 11:30 Uhr und 12:30 - 16:00 Uhr</p>
-            </div>
-            <a href="https://www.mathcs.uni-leipzig.de/studium/studienbuero" class="link-container">
-              Zum Studienbüro
-              <img src="../assets/icons/ArrowWhite.svg" class="arrow-icon" alt="Arrow Icon">
-            </a>
+        <p>Fakultät für Mathematik und Informatik</p>
+        <div class="main-info-container">
+          <div class="info-group-container">
+            <h4>Anschrift</h4>
+            <ul>
+              <li>
+                <p>Neues Augusteum</p>
+              </li>
+              <li>
+                <p>Augustusplatz 10</p>
+              </li>
+              <li>
+                <p>04109 Leipzig</p>
+              </li>
+            </ul>
           </div>
+          <div class="info-group-container">
+            <h4>Kontakt</h4>
+            <ul>
+              <li>
+                <p>Telefon: +49 341 97-32165</p>
+              </li>
+              <li>
+                <p>Telefax: +49 341 97-32193</p>
+              </li>
+              <li>
+                <p>E-Mail: studienbuero@math.uni-leipzig.de</p>
+              </li>
+            </ul>
+          </div>
+          <div class="info-group-container">
+            <h4>Sprechzeiten</h4>
+            <p>Dienstag und Donnerstag: 9:00 - 11:30 Uhr und 12:30 - 16:00 Uhr</p>
+          </div>
+          <a href="https://www.mathcs.uni-leipzig.de/studium/studienbuero">
+            <ButtonLink>Zum Studienbüro</ButtonLink>
+          </a>
+        </div>
 
-        </SideInfoContainer>
+      </SideInfoContainer>
     </div>
-
   </div>
 </template>
 
 <style scoped lang="scss">
-@import '../assets/variables.scss';
-@import '../assets/mixins.scss';
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
 
-.main {
-  @include main();
+.formal-rejection-info-container {
+  margin-bottom: spacing(m);
 }
 
-.status-detail-container {
-  @include verticalList(small);
+.modules-connections-container {
+  @include verticalList(mid);
   width: 100%;
   overflow: hidden;
 }
 
 
-.side-infos-container {
-  @include sideInfoContainer();
-}
-
 .formal-rejection-highlight {
-  border-left: 1rem solid $red;
-}
-
-.link-container {
-  &:hover {
-    .arrow-icon {
-      transform: translate(0.15rem) rotate(-90deg);
-    }
-  }
-}
-
-.arrow-icon {
-  transform: rotate(-90deg);
-  transition: 0.1s ease-in-out;
+  border-left: spacing(m) solid $red;
 }
 </style>

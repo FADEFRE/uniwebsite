@@ -16,12 +16,7 @@ slots:
 </template>
 
 <style scoped lang="scss">
-@import '../assets/variables.scss';
-.button-container{
-  display: flex;
-  gap: 0.625rem;
-
-}
-
-
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
+@use '@/assets/styles/components' as *;
 </style>

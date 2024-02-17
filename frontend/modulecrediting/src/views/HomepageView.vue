@@ -1,11 +1,10 @@
 <script setup>
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
-import { url } from "@/scripts/url-config";
 import { getApplicationExists } from "@/scripts/axios-requests";
-import HomepageContainer from '../components/HomepageContainer.vue';
-import SideInfoContainer from '../components/SideInfoContainer.vue';
-import ButtonLink from '../components/ButtonLink.vue';
+import HomepageContainer from '@/components/HomepageContainer.vue';
+import SideInfoContainer from '@/components/SideInfoContainer.vue';
+import ButtonLink from '@/components/ButtonLink.vue';
 
 const router = useRouter()
 
@@ -27,8 +26,6 @@ const openDetailView = () => {
             window.open(routeData.href, '_top');
         })
 }
-
-
 
 const goToSubmitApplication = () => {
     router.push({ name: 'submitApplication' })
@@ -54,30 +51,39 @@ const getFormattedId = () => {
 
 <template>
     <div class="main">
-        <div class="homepage-content">
+        <div class="content-container split">
             <!-- HomepageContainer Application -->
-            <HomepageContainer :header="$t('make application')"
-                :text="$t('create an application to have modules from other universities recognized at the University of Leipzig.')">
-                <ButtonLink @click="goToSubmitApplication">{{ $t('make application') }}</ButtonLink>
+            <HomepageContainer :header="$t('homepage.makeApplication')" :text="$t('homepage.makeApplicationExplanation')">
+                <ButtonLink @click="goToSubmitApplication">{{ $t('homepage.makeApplication') }}</ButtonLink>
             </HomepageContainer>
 
             <!-- HomepageContainer StatusView -->
-            <HomepageContainer :header="$t('view status')"
-                :text="$t('view the status of applications that have already been submitted using the 6-digit process number.')">
-                <InputText v-model="id" :class="{ 'p-invalid': isInvalid }" class="status-input"
-                    placeholder="0-0-0-0-0-0" @keydown.enter.prevent="openDetailView" @input="validateInput" />
-                <ButtonLink @click="openDetailView">{{ $t('view status') }}</ButtonLink>
+            <HomepageContainer :header="$t('homepage.viewStatus')" :text="$t('homepage.viewStatusExplanation')">
+                <div class="input-button-container">
+                    <InputText v-model="id" :class="{ 'invalid': isInvalid }" class="status-input gray"
+                        placeholder="0-0-0-0-0-0" @keydown.enter.prevent="openDetailView" @input.prevent="validateInput" />
+                    <ButtonLink @click="openDetailView">{{ $t('homepage.viewStatus') }}</ButtonLink>
+                </div>
+                <small v-if="isInvalid" class="invalid-text">Dieser Vorgang existiert nicht</small>
             </HomepageContainer>
         </div>
 
-        <div class="side-infos-container">
+        <div class="side-infos-list">
             <!--SideInfoContainerfür Antragprozess -->
-            <SideInfoContainer :heading="$t('application process')">
+            <SideInfoContainer :heading="$t('homepage.sideInfo.applicationProcess')">
                 <ul class="list-container">
-                    <li class="list-item">{{ $t('submit an application online') }}</li>
-                    <li class="list-item">{{ $t('view status online using process number') }}</li>
-                    <li class="list-item">{{ $t('wait for the PAV`s decision') }}</li>
-                    <li class="list-item">{{ $t('go to the study office with the completed application') }}</li>
+                    <li class="list-item">
+                        <p>{{ $t('homepage.sideInfo.submitApplication') }}</p>
+                    </li>
+                    <li class="list-item">
+                        <p>{{ $t('homepage.sideInfo.viewStatus') }}</p>
+                    </li>
+                    <li class="list-item">
+                        <p>{{ $t('homepage.sideInfo.wait') }}</p>
+                    </li>
+                    <li class="list-item">
+                        <p>{{ $t('homepage.sideInfo.goToStudy') }}</p>
+                    </li>
                 </ul>
             </SideInfoContainer>
         </div>
@@ -87,33 +93,20 @@ const getFormattedId = () => {
 
 
 <style scoped lang="scss">
-@import '../assets/variables.scss';
-@import '../assets/mixins.scss';
-
-.main {
-    @include main();
-}
-
-.homepage-content {
-    @include verticalList(big);
-    width: 100%;
-}
-
-.side-infos-container {
-    @include verticalList(big);
-    width: min-content;
-
-    @media only screen and (max-width: 1000px) {
-        width: 100%;
-    }
-}
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
+@use '@/assets/styles/components' as *;
 
 .status-input {
-    &:hover {
-        background-color: $gray-hover;
-    }
+    border: none;
+    background-color: $gray;
+
     &:focus::placeholder {
         color: transparent;
+    }
+
+    &.invalid {
+        border: 2px solid $red;
     }
 }
 </style>

@@ -4,6 +4,7 @@ import { ref, computed, onBeforeMount } from "vue";
 import ApplicationOverview from "@/components/ApplicationOverview.vue";
 import AdministrativePanel from "@/components/AdministrativePanel.vue";
 import ButtonLink from "@/components/ButtonLink.vue";
+import ArrowIcon from "../assets/icons/ArrowIcon.vue";
 import {
   getApplicationById, getModulesByCourse,
   getUpdateStatusAllowed, updateStatus, putApplicationStudyOffice, putApplicationChairman
@@ -77,6 +78,11 @@ const unCollapseAll = () => {
   }
 }
 
+const scrollTop = () => {
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
+}
+
 const unsaved = ref(false)
 
 const setUnsaved = () => {
@@ -87,13 +93,19 @@ const discardChanges = () => {
   location.reload()
 }
 
+const checkValidity = () => {
+  return moduleConnections.value.map(c => c.checkValidity()).every(Boolean)
+}
+
 const saveChanges = () => {
-  if (type === 'study-office') {
-    putApplicationStudyOffice(id, applicationData.value['courseLeipzig']['name'], moduleConnections.value)
+  if (checkValidity()) {
+    if (type === 'study-office') {
+      putApplicationStudyOffice(id, applicationData.value['courseLeipzig']['name'], moduleConnections.value)
         .then(_ => location.reload())
-  } else if (type === 'chairman') {
-    putApplicationChairman(id, applicationData.value['courseLeipzig']['name'], moduleConnections.value)
+    } else if (type === 'chairman') {
+      putApplicationChairman(id, applicationData.value['courseLeipzig']['name'], moduleConnections.value)
         .then(_ => location.reload())
+    }
   }
 }
 
@@ -104,16 +116,18 @@ const triggerPassOn = () => {
 </script>
 
 <template>
-
   <div v-if="applicationData" class="main">
+    <div class="side-infos-list">
+      <ApplicationConnectionLinks :connections-data="connectionsData" />
+    </div>
 
-    <ApplicationConnectionLinks :connections-data="connectionsData" />
-    <div class="administrative-detail-container">
 
-        <ApplicationOverview :creation-date="parseRequestDate(applicationData['creationDate'])"
-          :last-edited-date="parseRequestDate(applicationData['lastEditedDate'])"
-          :decision-date="parseRequestDate(applicationData['decisionDate'])" :id="applicationData['id']"
-          :course="applicationData['courseLeipzig']['name']" :status="applicationData['fullStatus']" />
+    <div class="content-container split">
+
+      <ApplicationOverview :creation-date="parseRequestDate(applicationData['creationDate'])"
+        :last-edited-date="parseRequestDate(applicationData['lastEditedDate'])"
+        :decision-date="parseRequestDate(applicationData['decisionDate'])" :id="applicationData['id']"
+        :course="applicationData['courseLeipzig']['name']" :status="applicationData['fullStatus']" />
 
       <div v-for="connection in applicationData['modulesConnections']">
 
@@ -124,9 +138,9 @@ const triggerPassOn = () => {
 
       </div>
 
-      <div v-if="!readonly" class="save-controlls-container">
-        <ButtonLink @click="saveChanges">Speichern</ButtonLink>
+      <div v-if="!readonly" class="application-buttons-container">
         <ButtonLink @click="discardChanges">Änderungen verwerfen</ButtonLink>
+        <ButtonLink @click="saveChanges">Speichern</ButtonLink>
       </div>
 
     </div>
@@ -142,67 +156,59 @@ const triggerPassOn = () => {
       <Button @click="unCollapseAll" class="collapse-expand-button">
         <img src="@/assets/icons/ExpandAll.svg">
       </Button>
+
+      <Button @click="scrollTop" class="move-top-button">
+        <ArrowIcon color="white" direction="up" size="big"/>
+      </Button>
     </div>
 
     <div v-if="!readonly">
-      <ButtonLink v-if="passOnStatus === 'NOT_ALLOWED'" :disabled="true" :fixed="true">Weitergeben</ButtonLink>
-      <ButtonLink v-else-if="passOnStatus === 'PASSON'" :fixed="true" @click="triggerPassOn">Weitergeben
+      <ButtonLink v-if="passOnStatus === 'NOT_ALLOWED'" :disabled="true" :fixed="true" :redButton="true">Weitergeben
       </ButtonLink>
-      <ButtonLink v-else-if="passOnStatus === 'REJECT'" :fixed="true" @click="triggerPassOn">Zurückweisen
+      <ButtonLink v-else-if="passOnStatus === 'PASSON'" :fixed="true" :redButton="true" @click="triggerPassOn">Weitergeben
+      </ButtonLink>
+      <ButtonLink v-else-if="passOnStatus === 'REJECT'" :fixed="true" :redButton="true" @click="triggerPassOn">
+        Zurückweisen
       </ButtonLink>
     </div>
   </div>
 </template>
 
 <style scoped lang="scss">
-@import '../assets/variables.scss';
-@import '../assets/mixins.scss';
-
-.main {
-  @include main();
-}
-
-.administrative-detail-container {
-  @include verticalList(small);
-  width: 100%;
-  overflow: hidden;
-}
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
 
 
-.save-controlls-container {
-  display: flex;
-  width: 100%;
-  justify-content: flex-start;
-  flex-wrap: wrap;
-  gap: 0.625rem 1rem;
 
-  @media only screen and (max-width: 700px) {
-    padding: 0 0.625rem;
+.side-infos-list {
+  position: sticky;
+  top: spacing(m);
+
+  @include breakpoint(l) {
+    display: none;
   }
 }
 
 
+
 .mid-right-fixed-container {
   @include verticalList(small);
+  width: fit-content;
 
   display: flex;
   flex-direction: column;
   align-items: flex-end;
 
   position: fixed;
-  top: 50vh;
-  right: 1rem;
-
-  transform: translateY(-50%);
-
-  @media only screen and (max-width: 1000px) {
-    display: none;
-  }
+  bottom: calc(spacing(l) + spacing(xxxl));
+  right: spacing(m);
 }
+
+
 .unsaved-notification {
   background-color: $red;
-  width: 3.125rem;
-  height: 3.125rem;
+  width: 3rem;
+  height: 3rem;
 
   display: flex;
   justify-content: center;
@@ -210,7 +216,16 @@ const triggerPassOn = () => {
 }
 
 .collapse-expand-button {
-  width: 3.125rem;
-  height: 3.7rem;
+  width: 3rem;
+  height: 4rem;
+
+  @include breakpoint(m) {
+    display: none;
+  }
+}
+
+.move-top-button {
+  width: 3rem;
+  height: 3rem;
 }
 </style>

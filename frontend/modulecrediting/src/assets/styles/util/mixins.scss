@@ -1,0 +1,98 @@
+@use "@/assets/styles/util/colors.scss" as *;
+@use "@/assets/styles/util/spacing.scss" as *;
+
+@mixin verticalList($gapSize) {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  @if $gapSize == small {
+    gap: spacing(s);
+  } @else if $gapSize == big {
+    gap: spacing(l);
+  } @else if $gapSize == mid {
+    gap: spacing(m);
+  } @else if $gapSize == xs {
+    gap: spacing(xs)
+  }
+}
+
+@mixin verticalListItem($background-color) {
+  background-color: $background-color;
+  display: flex;
+  justify-content: space-between;
+  border-left: 3px solid $red;
+  width: 100%;
+}
+
+@mixin singleContainer() {
+  width: fit-content;
+  max-width: 100%;
+  background-color: $white;
+  display: flex;
+  padding: spacing(xxxl);
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: spacing(xl);
+}
+
+@mixin basicContainer() {
+  width: auto;
+  background-color: $white;
+  padding: spacing(l);
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: spacing(s);
+}
+
+@mixin screenSplit() {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: row;
+  gap: spacing(m);
+}
+
+
+@mixin smallHighlightBox() {
+  width: max-content;
+  padding: spacing(s) spacing(m);
+  border: none;
+
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+  gap: spacing(s);
+}
+
+@mixin ellipsisTextOverflow() {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@mixin searchFieldContainer() {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
+  & .p-inputtext {
+    &:hover {
+      background-color: $white-hover;
+    }
+  }
+
+  & .search-icon {
+    width: spacing(m);
+    height: spacing(m);
+    position: absolute;
+    right: spacing(m);
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}

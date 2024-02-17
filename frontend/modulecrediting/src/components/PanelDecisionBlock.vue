@@ -1,5 +1,6 @@
 <script setup>
 import { ref, watch } from "vue";
+import ModuleStatusIcon from "../assets/icons/ModuleStatusIcon.vue";
 const props = defineProps({
   readonly: {
     required: true,
@@ -8,7 +9,7 @@ const props = defineProps({
   displayDecision: {
     type: String,
     validator(value) {
-      return ['accepted', 'asExamCertificate', 'denied'].includes(value)
+      return ['accepted', 'asExamCertificate', 'denied', 'unedited'].includes(value)
     }
   },
   comment: {
@@ -41,68 +42,40 @@ defineExpose({
 
 
     <div v-if="!readonly">
-      <SelectButton :allow-empty="false" :options="decisionOptions" optionLabel="label" optionValue="value"
-        v-model="decision">
-        <!--template #option="optionProps">
-          <div class="select-button" :class="optionProps.option.class">{{ optionProps.option.label }}</div>
-        </template-->
-      </SelectButton>
+      <SelectButton :allow-empty="false" :options="decisionOptions" optionLabel="label" optionValue="value" v-model="decision"/>
     </div>
 
     <div v-else class="readonly-decision-container">
 
       <div class="icon-container" :class="{ 'highlight': displayDecision === 'accepted' }">
-        <img v-if="displayDecision === 'accepted'" src="../assets/icons/ModuleAccepted.svg">
-        <img v-else src="../assets/icons/ModuleAcceptedGray.svg">
+        <ModuleStatusIcon statusDecision="accepted" :gray="displayDecision !== 'accepted'" size="small"/>
       </div>
 
       <div class="icon-container" :class="{ 'highlight': displayDecision === 'asExamCertificate' }">
-        <img v-if="displayDecision === 'asExamCertificate'" src="../assets/icons/ModuleAsExamCertificate.svg">
-        <img v-else src="../assets/icons/ModuleAsExamCertificateGray.svg">
+        <ModuleStatusIcon statusDecision="asExamCertificate" :gray="displayDecision !== 'asExamCertificate'" size="small"/>
       </div>
       <div class="icon-container" :class="{ 'highlight': displayDecision === 'denied' }">
-        <img v-if="displayDecision === 'denied'" src="../assets/icons/ModuleDenied.svg">
-        <img v-else src="../assets/icons/ModuleDeniedGray.svg">
+        <ModuleStatusIcon statusDecision="denied" :gray="displayDecision !== 'denied'" size="small"/>
       </div>
     </div>
 
-    <textarea :readonly="readonly" v-model="comment" @change="emit('change')"></textarea>
+    <textarea :readonly="readonly" v-model="comment" @change="emit('change')" :class="{ 'white': !readonly}"></textarea>
   </div>
 </template>
 
 <style scoped lang="scss">
-@import '@/assets/mixins.scss';
-@import '@/assets/variables.scss';
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
+@use '@/assets/styles/components' as *;
 
 
 .panel-decision-block {
   display: flex;
   width: 100%;
-  align-self: stretch;
 
   border: 2px solid $dark-gray;
 }
 
-.readonly-decision-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-}
-
-.icon-container {
-  padding: 0.49rem 1.25rem;
-  border-right: 2px solid $black;
-
-  &.highlight {
-    background-color: $gray;
-  }
-}
-
-textarea {
-  width: 100%;
-  resize: none;
-  border: none;
-}
 
 :deep(.p-button) {
   width: 100%;
@@ -126,4 +99,27 @@ textarea {
     background-color: $red-hover;
   }
 }
+
+
+.readonly-decision-container {
+  display: flex;
+
+  flex-direction: column;
+  justify-content: space-around;
+  border-right: 2px solid $black;
+  min-height: rem(125px);
+  width: spacing(xxxl);
+}
+
+.icon-container {
+  height: 33%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: stretch;
+  &.highlight {
+    background-color: $gray;
+  }
+}
+
 </style>

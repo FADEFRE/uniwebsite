@@ -1,26 +1,27 @@
 <script setup>
 import ManagementCreateContainer from '../components/ManagementCreateContainer.vue';
+import ManagementEditCourse from '../components/ManagementEditCourse.vue';
+import ManagementViewCourse from '../components/ManagementViewCourse.vue';
+import ManagementViewModule from '../components/ManagementViewModule.vue';
 </script>
 
 
 <template>
     <div class="main">
         <div class="create-container-list">
-            <ManagementCreateContainer :type="'course'" />
-            <ManagementCreateContainer :type="'module'" />
+            <ManagementCreateContainer :type="'course'"/>
+            <ManagementCreateContainer :type="'module'"/>
+            <ManagementEditCourse/>
+            <ManagementViewCourse/>
+            <ManagementViewModule/>
         </div>
     </div>
 </template>
 
 
 <style scoped lang="scss">
-@import '../assets/variables.scss';
-@import '../assets/mixins.scss';
-
-.main {
-    @include main();
-    max-width: 1200px
-}
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
 
 .create-container-list {
     @include verticalList(big);

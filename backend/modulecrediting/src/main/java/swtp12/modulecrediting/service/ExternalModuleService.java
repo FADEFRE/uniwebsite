@@ -9,7 +9,6 @@ import swtp12.modulecrediting.model.ExternalModule;
 import swtp12.modulecrediting.model.ModulesConnection;
 import swtp12.modulecrediting.model.PdfDocument;
 import swtp12.modulecrediting.repository.ExternalModuleRepository;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -27,15 +26,24 @@ public class ExternalModuleService {
 
         List<ExternalModule> externalModules = new ArrayList<>();
 
-        for(ExternalModuleDTO ma : externalModuleDTOS) {
+        for(ExternalModuleDTO externalModuleDTO : externalModuleDTOS) {
             ExternalModule externalModule = new ExternalModule();
 
-            externalModule.setName(ma.getName());
-            externalModule.setUniversity(ma.getUniversity());
-            externalModule.setPoints(ma.getPoints());
-            externalModule.setPointSystem(ma.getPointSystem());
+            if(externalModuleDTO.getName() == null)
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, " No External Module Module Name provided in the request");
+            if(externalModuleDTO.getUniversity() == null)
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, " No External Module University provided in the request");
+            if(externalModuleDTO.getPoints() == null)
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, " No External Module Point System provided in the request");
+            if(externalModuleDTO.getPointSystem() == null)
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, " No External Module Points provided in the request");
 
-            PdfDocument pdfDocument = pdfDocumentService.createPdfDocument(ma.getDescription());
+            externalModule.setName(externalModuleDTO.getName());
+            externalModule.setUniversity(externalModuleDTO.getUniversity());
+            externalModule.setPoints(externalModuleDTO.getPoints());
+            externalModule.setPointSystem(externalModuleDTO.getPointSystem());
+
+            PdfDocument pdfDocument = pdfDocumentService.createOrGetPdfDocument(externalModuleDTO.getDescription(), externalModuleDTO.getId());
             externalModule.setPdfDocument(pdfDocument);
 
             externalModules.add(externalModule);
@@ -45,8 +53,7 @@ public class ExternalModuleService {
     }
 
 
-    public List<Long> updateExternalModules(List<ExternalModuleDTO> externalModuleUpdateDTOs, String userRole) {
-        List<Long> listofIds = new ArrayList<>();
+    public void updateExternalModules(List<ExternalModuleDTO> externalModuleUpdateDTOs) {
         for(ExternalModuleDTO ma : externalModuleUpdateDTOs) {
             if(ma.getId() == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Module Application id must not be null");
             ExternalModule externalModule = getExternalModuleById(ma.getId());
@@ -63,9 +70,7 @@ public class ExternalModuleService {
             if(ma.getPointSystem() != null) {
                 externalModule.setPointSystem(ma.getPointSystem());
             }
-            listofIds.add(ma.getId());
         }
-        return listofIds;
     }
 
 

@@ -1,10 +1,10 @@
 <script setup>
 import TheNavigation from "@/components/TheNavigation.vue";
 import TheLanguageSelection from "@/components/TheLanguageSelection.vue";
-import { onMounted, ref } from "vue";
+import { onBeforeMount, ref } from "vue";
 import translate from '@/i18n/translate';
 
-onMounted(() => {
+onBeforeMount(() => {
     const locale = translate.guessDefaultLocale()
     translate.setCurrentLocale(locale)
 })
@@ -41,15 +41,24 @@ function closeMenu() {
         </div>
       </div>
     </header>
+
     <router-view class="main-content" />
+
+    <footer>
+      <ul class="footer-content">
+        <li><p>Impressum</p></li>
+        <li><p>Datenschutz</p></li>
+      </ul>
+    </footer>
   </div>
 </template>
 
 
 <style lang="scss">
-@import './assets/mixins.scss';
-@import './assets/variables.scss';
-@import './assets/main.scss';
+@use '@/assets/styles/global' as *;
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/components' as *;
+
 
 .header-background {
   background-color: $white;
@@ -66,7 +75,7 @@ function closeMenu() {
   background-size: contain;
   background-position: right;
 
-  @media screen and (max-width: 920px) {
+  @include breakpoint(m) {
     background-image: none;
   }
 }
@@ -82,15 +91,15 @@ function closeMenu() {
 }
 
 .logo {
-  width: 27.42188rem;
-  height: 11.25rem;
+  width: 27rem;
+  height: 11rem;
 
-  @media only screen and (max-width: 1170px) {
+  @include breakpoint(l) {
     width: 21rem;
     height: 9rem;
   }
 
-  @media only screen and (max-width: 920px) {
+  @include breakpoint(m) {
     width: 16rem;
     height: 7rem;
   }
@@ -99,14 +108,14 @@ function closeMenu() {
 .nav-menu-container {
   display: flex;
   flex-direction: column;
-  padding: 0rem 1.875rem;
-  gap: 0.6rem;
+  padding: spacing(xl);
+  gap: spacing(s);
 }
 
 .burger-menu {
   background-color: $white;
-  margin-right: 0.625rem;
-  padding: 0.8rem 1rem;
+  margin-right: spacing(m);
+  padding: spacing(m);
 
   &:hover {
     background-color: $gray;
@@ -117,16 +126,16 @@ function closeMenu() {
 
 .close-menu {
   position: fixed;
-  top: 1rem;
-  right: 1rem;
+  top: 1.8rem;
+  right: spacing(m);
   z-index: 5;
   border: 2px solid $white;
-  padding: 1.2rem 1.2rem;
+  padding: 1.2rem;
 
   display: none;
 }
 
-@media (max-width: 920px) {
+@include breakpoint(m) {
   .burger-menu {
     display: flex;
   }
@@ -147,11 +156,35 @@ function closeMenu() {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 2rem;
+    gap: spacing(xl);
 
     &.closed {
       display: none;
     }
+  }
+}
+
+
+footer {
+  background-image: url('@/assets/icons/footer.svg');
+  background-size: cover;
+  width: 100%;
+  min-height: 700px;
+
+  padding: spacing(m);
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.footer-content {
+  display: flex;
+  gap: spacing(m);
+
+  li p 
+  {
+    color: $white;
   }
 }
 </style>

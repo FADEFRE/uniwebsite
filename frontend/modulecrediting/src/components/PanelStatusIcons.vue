@@ -8,7 +8,8 @@ displays:
 -->
 
 <script setup>
-import { defineProps } from 'vue';
+import ArrowIcon from '@/assets/icons/ArrowIcon.vue';
+import ModuleStatusIcon from '../assets/icons/ModuleStatusIcon.vue';
 
 const props = defineProps({
     formalRejection: {
@@ -17,13 +18,13 @@ const props = defineProps({
     decisionSuggestion: {
       type: String,
       validator(value) {
-        return ['accepted', 'asExamCertificate', 'denied'].includes(value)
+        return ['accepted', 'asExamCertificate', 'denied', 'unedited'].includes(value)
       }
     },
     decisionFinal: {
       type: String,
       validator(value) {
-        return ['accepted', 'asExamCertificate', 'denied'].includes(value)
+        return ['accepted', 'asExamCertificate', 'denied', 'unedited'].includes(value)
       }
     }
 });
@@ -32,38 +33,25 @@ const props = defineProps({
 <template>
 
     <div v-if="formalRejection" class="panel-status-icons">
-      <img src="@/assets/icons/ModuleFormalRejection.svg">
+      <ModuleStatusIcon status-decision="formalRejection"/>
     </div>
 
     <div v-else  class="panel-status-icons">
-      <div>
-        <img v-if="decisionSuggestion === 'accepted'" src="@/assets/icons/ModuleAccepted.svg">
-        <img v-else-if="decisionSuggestion === 'asExamCertificate'" src="@/assets/icons/ModuleAsExamCertificate.svg">
-        <img v-else-if="decisionSuggestion === 'denied'" src="@/assets/icons/ModuleDenied.svg">
-        <img v-else src="@/assets/icons/ModuleUnedited.svg">
-      </div>
-
-      <img src="@/assets/icons/ArrowDark.svg" class="arrow-icon">
-
-      <div>
-        <img v-if="decisionFinal === 'accepted'" src="@/assets/icons/ModuleAccepted.svg">
-        <img v-else-if="decisionFinal === 'asExamCertificate'" src="@/assets/icons/ModuleAsExamCertificate.svg">
-        <img v-else-if="decisionFinal === 'denied'" src="@/assets/icons/ModuleDenied.svg">
-        <img v-else src="@/assets/icons/ModuleUnedited.svg">
-      </div>
+      <ModuleStatusIcon :status-decision="decisionSuggestion"/>
+      <ArrowIcon direction="right" color="dark-gray"></ArrowIcon>
+      <ModuleStatusIcon :status-decision="decisionFinal"/>
     </div>
 
 </template>
 
 <style scoped lang="scss">
-@import '../assets/mixins.scss';
-@import '../assets/variables.scss';
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
 .panel-status-icons {
     display: flex;
     justify-content: center;
-    gap: 0.9375rem;
-}
-.arrow-icon {
-    @include rightArrow();
+    align-items: center;
+    gap: spacing(m);
+    margin-right: spacing(s);
 }
 </style>

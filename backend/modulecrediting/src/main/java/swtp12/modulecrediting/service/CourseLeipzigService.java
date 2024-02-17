@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import swtp12.modulecrediting.dto.CourseLeipzigEditDTO;
+import swtp12.modulecrediting.dto.CourseLeipzigDTO;
 import swtp12.modulecrediting.dto.CourseLeipzigRelationEditDTO;
 import swtp12.modulecrediting.dto.ModuleLeipzigDTO;
 import swtp12.modulecrediting.model.Application;
@@ -39,7 +39,7 @@ public class CourseLeipzigService {
         return courseLeipzigRepository.findAll();
     }
 
-    public String createCourseLeipzig(CourseLeipzigEditDTO courseLeipzigDTO) {
+    public String createCourseLeipzig(CourseLeipzigDTO courseLeipzigDTO) {
         if (courseLeipzigDTO == null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No data given");
         if (courseLeipzigDTO.getCourseName() == null || courseLeipzigDTO.getCourseName().isBlank())
@@ -48,7 +48,7 @@ public class CourseLeipzigService {
         Optional<CourseLeipzig> courseLeipzigOptional = courseLeipzigRepository.findByName(courseLeipzigDTO.getCourseName());
         if (courseLeipzigOptional.isPresent()) {
             CourseLeipzig courseLeipzig = courseLeipzigOptional.get();
-            if(courseLeipzig.getIsActive()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Course Leipzig with this name already exists: " + courseLeipzig.getName());
+            if(courseLeipzig.getIsActive()) throw new ResponseStatusException(HttpStatus.CONFLICT, "The Course already exists:" + courseLeipzigDTO.getCourseName() );
             else {
                 courseLeipzig.setIsActive(true);
                 System.out.println("Reactivated Course Leipzig: " + courseLeipzig.getName());
@@ -64,7 +64,7 @@ public class CourseLeipzigService {
         return courseLeipzig.getName();
     }
 
-    public String updateCourseLeipzig(String courseName, CourseLeipzigEditDTO courseLeipzigDTO) {
+    public String updateCourseLeipzig(String courseName, CourseLeipzigDTO courseLeipzigDTO) {
         if (courseLeipzigDTO == null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No data given");
         if (courseLeipzigDTO.getCourseName() == null || courseLeipzigDTO.getCourseName().isBlank())
@@ -120,6 +120,8 @@ public class CourseLeipzigService {
         if(courseName == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No Course Name sent");
 
         CourseLeipzig courseLeipzig = getCourseLeipzigByName(courseName);
+        if(!courseLeipzig.getIsActive()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Course Leipzig with this name is deactivated: " + courseLeipzig.getName());
+
         List<ModuleLeipzig> modulesLeipzig = new ArrayList<>();
 
         // remove all modules from course leipzig
