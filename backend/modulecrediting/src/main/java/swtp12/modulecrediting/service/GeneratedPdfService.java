@@ -1,8 +1,8 @@
 package swtp12.modulecrediting.service;
 
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.time.format.DateTimeFormatter;
 
 import org.apache.commons.io.output.ByteArrayOutputStream;
@@ -12,8 +12,13 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.pdf.PdfCopy;
+import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.PdfWriter;
 
-import org.xhtmlrenderer.pdf.ITextRenderer;
+
+import com.itextpdf.tool.xml.XMLWorkerHelper;
 
 import org.thymeleaf.context.Context;
 import swtp12.modulecrediting.model.Application;
@@ -23,6 +28,7 @@ import swtp12.modulecrediting.model.Application;
 public class GeneratedPdfService {
     @Autowired
     private ApplicationService applicationService;
+
 
     public String GeneralDataTemplate(String id) {
         ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
@@ -47,64 +53,60 @@ public class GeneratedPdfService {
         return templateEngine.process("GeneralData", context);
     }
 
-    public byte[] generatePdfFromHtml(String id) throws IOException {
-        Application application = applicationService.getApplicationStudentById(id);
+    public String ModulesConnectionsTemplate(String id) {
+        ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
+        templateResolver.setSuffix(".html");
+        templateResolver.setTemplateMode(TemplateMode.HTML);
+        templateResolver.setPrefix("templates/");
+        TemplateEngine templateEngine = new TemplateEngine();
+        templateEngine.setTemplateResolver(templateResolver);
+
+        Context context = new Context();
+
+        return templateEngine.process("ModulesConnection", context);
+    }
+
+    public byte[] generatePdfFromHtml(String id) throws DocumentException, IOException {
         String html = GeneralDataTemplate(id);
+        String html2 = ModulesConnectionsTemplate(id);
 
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
-        OutputStream outputStream = new ByteArrayOutputStream();
+        try {
+            com.itextpdf.text.Document document = new com.itextpdf.text.Document();
 
-        ITextRenderer renderer = new ITextRenderer();
-        renderer.setDocumentFromString(html);
-        renderer.layout();
-        renderer.createPDF(outputStream);
+            PdfCopy copy = new PdfCopy(document, outputStream);
+            document.open();
 
-        outputStream.close();
+            byte[] pdf1 = parseHtml(html);
+            byte[] pdf2 = parseHtml(html2);
 
-        return ((ByteArrayOutputStream) outputStream).toByteArray();
+            addPdfToCopy(copy, pdf1);
+            addPdfToCopy(copy, pdf2);
+
+            document.close();
+        } finally {
+            outputStream.close();
+        }
+        return outputStream.toByteArray();
+    }
+
+    private byte[] parseHtml(String html) throws DocumentException, IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        com.itextpdf.text.Document document = new com.itextpdf.text.Document();
+        PdfWriter writer = PdfWriter.getInstance(document, baos);
+        document.open();
+        XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream((html).getBytes()));
+        document.close();
+        return baos.toByteArray();
+    }
+
+    private void addPdfToCopy(PdfCopy copy, byte[] pdfBytes) throws DocumentException, IOException {
+        PdfReader reader = new PdfReader(pdfBytes);
+        copy.addDocument(reader);
+        reader.close();
     }
 }
 
 
-    /* 
-
-    public byte[] generatePdfFromHtml(String id) throws IOException {
-        StudentApplicationDTO application = getDataForPDF(id);
-        String html1 = GeneralDataTemplate(id);
-        String html2 = ModuleConnectionTemplate(id);
-    
-        ByteArrayOutputStream outputStream1 = new ByteArrayOutputStream();
-        ByteArrayOutputStream outputStream2 = new ByteArrayOutputStream();
-    
-        ITextRenderer renderer = new ITextRenderer();
-    
-        renderer.setDocumentFromString(html1);
-        renderer.layout();
-        renderer.createPDF(outputStream1);
-    
-        renderer.setDocumentFromString(html2);
-        renderer.layout();
-        renderer.createPDF(outputStream2);
-    
-        byte[] mergedPdf = mergePdfs(outputStream1.toByteArray(), outputStream2.toByteArray());
-    
-        return mergedPdf;
-    }
-
-    private byte[] mergePdfs(byte[] pdf1, byte[] pdf2) throws IOException {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-    
-        PdfDocument pdfDocument1 = new PdfDocument(new PdfReader(new ByteArrayInputStream(pdf1)));
-        PdfDocument pdfDocument2 = new PdfDocument(new PdfReader(new ByteArrayInputStream(pdf2)));
-        PdfDocument mergedPdfDocument = new PdfDocument(new PdfWriter(outputStream));
-    
-        pdfDocument1.copyPagesTo(1, pdfDocument1.getNumberOfPages(), mergedPdfDocument);
-        pdfDocument2.copyPagesTo(1, pdfDocument2.getNumberOfPages(), mergedPdfDocument);
-    
-        pdfDocument1.close();
-        pdfDocument2.close();
-        mergedPdfDocument.close();
-    
-        return outputStream.toByteArray();
-    }*/
 
