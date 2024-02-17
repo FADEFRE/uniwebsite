@@ -5,10 +5,14 @@ import { ref } from "vue";
 const props = defineProps({
   name: {
     required: true,
-    type: String,
+    type: String
   },
   code: {
     type: String
+  },
+  editCallback: {
+    required: true,
+    type: Function
   },
   deleteCallback: {
     required: true,
@@ -39,7 +43,7 @@ const code = ref(props.code)
     <Dialog modal :dismissable-mask="true" :draggable="false" v-model:visible="dialogVisible" header="Bearbeiten">
       <InputText type="text" v-model="name" />
       <InputText v-if="props.code" type="text" v-model="code" />
-      <Button>Speichern</Button>
+      <Button @click="editCallback(props.name, name, code)">Speichern</Button>
     </Dialog>
 
   </div>
