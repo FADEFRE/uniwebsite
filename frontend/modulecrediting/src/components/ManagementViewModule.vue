@@ -1,8 +1,7 @@
 <script setup>
-import { getModulesNameCode, deleteModuleLeipzig } from "@/scripts/axios-requests";
-import { ref, onBeforeMount, computed } from "vue";
-import TrashIcon from "../assets/icons/TrashIcon.vue";
 import ManagementListElement from "./ManagementListElement.vue";
+import { ref, onBeforeMount, computed } from "vue";
+import { getModulesNameCode, deleteModuleLeipzig, putUpdateModuleLeipzig } from "@/scripts/axios-requests";
 
 const modules = ref();
 
@@ -20,6 +19,11 @@ const filteredModules = computed(() => {
         return singleModule.name.toLocaleLowerCase().includes(searchString.value.toLocaleLowerCase());
     })
 })
+
+const triggerEditModuleLeipzig = (oldName, newName, newCode) => {
+  putUpdateModuleLeipzig(oldName, newName, newCode)
+      .then(_ => location.reload())
+}
 
 const triggerDeleteModuleLeipzig = (module) => {
     deleteModuleLeipzig(module)
@@ -40,6 +44,7 @@ const triggerDeleteModuleLeipzig = (module) => {
           <ManagementListElement
               :name="singleModule['name']"
               :code="singleModule['code']"
+              :edit-callback="triggerEditModuleLeipzig"
               :delete-callback="triggerDeleteModuleLeipzig"
           />
         </div>
