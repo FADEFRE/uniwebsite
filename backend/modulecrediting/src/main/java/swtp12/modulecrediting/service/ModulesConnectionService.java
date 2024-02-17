@@ -80,7 +80,7 @@ public class ModulesConnectionService {
                 if (mcuDTO.getDecisionSuggestion() != null)
                     modulesConnection.setDecisionSuggestion(mcuDTO.getDecisionSuggestion());
 
-                // allow only study-office to reject as formal rejection TODO: if we want to change this
+                // allow only study-office to reject as formal rejection
                 if(mcuDTO.getFormalRejection() != null)
                     modulesConnection.setFormalRejection(mcuDTO.getFormalRejection());
 
@@ -97,37 +97,30 @@ public class ModulesConnectionService {
                     modulesConnection.setDecisionFinal(mcuDTO.getDecisionFinal());
             }
 
-            /* //TODO: add again outsource in function
-            if(userRole.equals("standard")) {
-                // when user corrects application, the status of connection goes back to non rejecting
-                modulesConnection.setFormalRejection(false);
-                modulesConnection.setFormalRejectionComment("");
-
-                if(mcuDTO.getCommentApplicant() != null)
-                    modulesConnection.setCommentApplicant(mcuDTO.getCommentApplicant());
-            }*/ // TODO: not relevant here maybe in student update
-
-
+            // TODO: create function
             // handle module applications changes
             if(mcuDTO.getExternalModules() == null)  throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You cant delete all External Modules of a Modules Connection " + mcuDTO.getId());
 
+            // check difference saved external modules <-> external modules sent in dto => remove deleted external modules
             List<Long> savedIdList = getIdListFromModuleConnection(modulesConnection);
             List<Long> updatedIdList = getIdListFromModuleConnectionUpdateDTO(mcuDTO);
             List<Long> deleteIdList = new ArrayList<>(savedIdList);
             deleteIdList.removeAll(updatedIdList);
-
             removeAllDeletedExternalModules(deleteIdList);
+            // update external modules data
             externalModuleService.updateExternalModules(mcuDTO.getExternalModules(), userRole);
 
             // handle modules leipzig changes
             if(mcuDTO.getModulesLeipzig() == null) modulesConnection.removeAllModulesLeipzig(); // remove all module leipzig
             else{
+                // check difference saved modules leipzig <-> modules leipzig sent in dto => remove relation deleted module leipzig
                 List<String> savedNameList = getModuleLeipzigNameFromModuleConnection(modulesConnection);
                 List<String> updatedNameList = getModuleLeipzigNameFromModuleConnectionUpdateDTO(mcuDTO);
                 List<String> deleteNameList = new ArrayList<>(savedNameList);
                 deleteNameList.removeAll(updatedNameList);
                 removeAllDeletedModulesLeipzig(modulesConnection, deleteNameList);
-                moduleLeipzigService.updateApplicationModulesLeipzig(modulesConnection, mcuDTO.getModulesLeipzig());
+                // update relation (create new, ignoring old)
+                moduleLeipzigService.updateRelationModulesConnectionToModulesLeipzig(modulesConnection, mcuDTO.getModulesLeipzig());
             }
 
             // modulesConnection will be saved in application service due to cascade all
@@ -135,7 +128,7 @@ public class ModulesConnectionService {
     }
 
 
-    // modules leipzig helper methods
+    // modules leipzig helper methods for update application
     private void removeAllDeletedModulesLeipzig(ModulesConnection modulesConnection, List<String> deleteIdList) {
         ArrayList<ModuleLeipzig> modulesLeipzig = new ArrayList<>();
         for(String name : deleteIdList) {
@@ -158,7 +151,8 @@ public class ModulesConnectionService {
         return nameList;
     }
 
-    // module applications helper methos (external modules)
+
+    // external modules helper methods for update application
     private void removeAllDeletedExternalModules(List<Long> deleteIdList) {
         for(Long id : deleteIdList) {
             externalModuleService.deleteExternalModuleById(id);
@@ -179,16 +173,8 @@ public class ModulesConnectionService {
         return idList;
     }
 
-    public void removeAllDecisions(List<ModulesConnection> modulesConnections) {
-        for(ModulesConnection mc : modulesConnections) {
-            mc.setDecisionSuggestion(unedited);
-            mc.setCommentStudyOffice("");
-            mc.setDecisionFinal(unedited);
-            mc.setCommentDecision("");
-        }
-    }
 
-
+    // helper methods to build correct modules connection for student get request (stauts view page)
     public List<ModulesConnection> getOriginalModulesConnections(List<ModulesConnection> modulesConnections) {
         ArrayList<ModulesConnection> modulesConnectionsOriginal = new ArrayList<>();
 
@@ -197,14 +183,12 @@ public class ModulesConnectionService {
         }
         return modulesConnectionsOriginal;
     }
-
     public List<ModulesConnection> removeOriginalModulesConnections(List<ModulesConnection> modulesConnections) {
         for(ModulesConnection modulesConnection : modulesConnections) {
             modulesConnection.setModulesConnectionOriginal(null);
         }
         return modulesConnections;
     }
-
     public List<ModulesConnection> getOriginalModulesConnectionsWithFormalRejectionData(List<ModulesConnection> editModulesConnections) {
         ArrayList<ModulesConnection> modulesConnectionsOriginal = new ArrayList<>();
 
@@ -222,8 +206,6 @@ public class ModulesConnectionService {
 
 
 
-    // METHODS FOR RELATED MODULES //
-
     public ArrayList<ModulesConnection> getRelatedModulesConnections(Long id) {
         ModulesConnection baseModulesConnection = getModulesConnectionById(id);
         List<ModulesConnection> allModulesConnections = modulesConnectionRepository.findAll();
@@ -239,6 +221,8 @@ public class ModulesConnectionService {
         return relatedModuleConnections;
     }
 
+
+    // helper methods for related modules
     // checks if a module connection is similar, based on if any of a modulename, university pair matches with another pair.
     private boolean checkSimilarityOfModulesConnection(ModulesConnection baseModulesConnection, ModulesConnection relatedModulesConnection) {
         for(ExternalModule emBase : baseModulesConnection.getExternalModules()) {
@@ -251,13 +235,13 @@ public class ModulesConnectionService {
         }
         return false;
     }
-
     private int checkSimilarityOfStrings(String name1, String name2) {
         LevenshteinDistance levenshteinDistance = new LevenshteinDistance();
         String name1Clean = name1.toLowerCase().replaceAll(" ", "");
         String name2Clean = name2.toLowerCase().replaceAll(" ", "");
         return levenshteinDistance.apply(name1Clean, name2Clean);
     }
+
 
     public ModulesConnection getModulesConnectionById(Long id) {
         Optional<ModulesConnection> modulesConnection = modulesConnectionRepository.findById(id);

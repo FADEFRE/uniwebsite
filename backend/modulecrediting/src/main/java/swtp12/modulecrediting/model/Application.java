@@ -54,7 +54,7 @@ public class Application {
     private CourseLeipzig courseLeipzig;
 
     //Relation Application <-> ModulesConnection
-    @OneToMany(mappedBy = "application", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "application", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JsonManagedReference
     @JsonView({Views.ApplicationStudent.class,Views.ApplicationLoginOverview.class})
     private List<ModulesConnection> modulesConnections = new ArrayList<>();
@@ -100,6 +100,19 @@ public class Application {
             mc.setApplication(this); 
         }
         this.modulesConnections.addAll(modulesConnections);
+    }
+
+    /**
+     * Remove all Related {@link ModulesConnection}.
+     * <p>Also deletes Modules Connections in DB due to Cascade Options</p>
+     * @see Application
+     * @see ModulesConnection
+     */
+    public void removeAllModulesConnections() {
+        for(ModulesConnection modulesConnection : modulesConnections) {
+            modulesConnection.setApplication(null);
+        }
+        modulesConnections.clear();
     }
 
     /**

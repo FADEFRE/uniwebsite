@@ -1,8 +1,9 @@
 import router from "@/router";
 import httpResource from "@/scripts/httpResource";
-import { parseApierror, performLogout, refreshTokenInternal, intervalMilliSeconds} from "@/scripts/utils";
+import { parseApierror, refreshTokenInternal, intervalMilliSeconds} from "@/scripts/utils";
+import { performLogout } from '@/router/logout'
 import { ref } from "vue";
-import { useUserStore } from "@/store/authStore";
+import { useUserStore } from "@/store/userStore";
 
 
 const displayErrorMessage = ref();
@@ -23,16 +24,13 @@ async function login (login_username, login_password) {
         if (response.status === 200) {
             const userResponse = await httpResource.get("/api/user/me");
             if (userResponse.data.userId !== null) {
-                const loginUser = userResponse.data;
-                authUserStore.setCurrentUser(loginUser);
+                authUserStore.setCurrentUser(true);
                 await refreshTokenInternal();
                 const intervalName = setInterval(async () => { await refreshTokenInternal(); } , intervalMilliSeconds);
                 authUserStore.setIntervalName(intervalName);
             }
-            const id = authUserStore.getCurrentUserId;
-            console.log("test 4 " + id)
             console.log("getRole");
-            const response = await httpResource.get(`/api/user/${id}/role`)
+            const response = await httpResource.get(`/api/user/role`)
             switch (response.data) {
                 case "ROLE_STUDY":
                     const routeData = router.resolve({name: 'studyOfficeSelection'})

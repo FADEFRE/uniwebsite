@@ -51,7 +51,7 @@ public class ExternalModule {
     private String university;
 
     //Relation ExternalModule <-> PdfDocument
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     @JsonView({Views.ApplicationStudent.class,Views.ApplicationLogin.class})
     private PdfDocument pdfDocument;

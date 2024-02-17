@@ -32,7 +32,7 @@ public class ModulesConnection {
     @JsonView(Views.ApplicationLogin.class)
     @NotNull(message = "decisionSuggestion must not be null")
     private EnumModuleConnectionDecision decisionSuggestion;
-    @JsonView(Views.ApplicationLogin.class)
+    @JsonView({Views.ApplicationLogin.class})
     @NotNull(message = "commentStudyOffice must not be null")
     private String commentStudyOffice;
     @JsonView({Views.ApplicationStudent.class, Views.ApplicationLogin.class})
@@ -66,11 +66,11 @@ public class ModulesConnection {
     //Relation ModulesConnection <-> Application (Setter in Application)
     @ManyToOne
     @EqualsAndHashCode.Exclude
-    @JsonBackReference
     @JsonView(Views.RelatedModulesConnection.class)
+    @JsonManagedReference
     private Application application;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonView(Views.ApplicationStudent.class)
     private ModulesConnection modulesConnectionOriginal;
 

@@ -63,6 +63,8 @@ defineExpose({
       <PanelExternalModules
           :allow-text-edit="!readonly"
           :allow-file-edit="!readonly"
+          :allow-delete="!readonly"
+          :allow-add="!readonly"
           :modules-data="connection['externalModules']"
           ref="panelExternalModules"
       />

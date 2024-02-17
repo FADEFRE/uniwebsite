@@ -72,8 +72,6 @@ const triggerPostApplication = () => {
 
     <div class="submit-application-container">
 
-      <Button @click="checkValidity">Check Validity</Button>
-
       <ApplicationOverview :creation-date="getFormattedDate(creationDate)" :last-edited-date="undefined"
         :decision-date="undefined" status="NEU">
         <Dropdown v-model="selectedCourse" :options="courses" placeholder="Studiengang wählen"

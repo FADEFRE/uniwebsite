@@ -43,44 +43,36 @@ public class ApplicationService {
         return application.getId();
     }
 
+    @Transactional
     public String updateApplicationAfterFormalRejection(String id, ApplicationDTO applicationDTO) {
-        Application application = new Application(id);
+        Application application = getApplicationById(id);
+
+        if(application.getFullStatus() != FORMFEHLER)
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only FORMFEHLER applications can be updated by student");
 
         application.setFullStatus(STUDIENBÜRO);
+        application.setLastEditedDate(LocalDateTime.now());
 
-        // TODO: delete all
+        // delete old modules connections
+        application.removeAllModulesConnections();
 
-        CourseLeipzig courseLeipzig = courseLeipzigService.getCourseLeipzigByName(applicationDTO.getCourseLeipzig());
-        application.setCourseLeipzig(courseLeipzig);
-
+        // create new modules connections
         List<ModulesConnection> modulesConnections = modulesConnectionService.createModulesConnectionsWithDuplicate(applicationDTO.getModulesConnections());
-        application.setModulesConnections(modulesConnections);
+        application.addModulesConnections(modulesConnections);
 
         application = applicationRepository.save(application);
         return application.getId();
     }
 
-    // TODO: update neu
     @Transactional
     public String updateApplication(String id, ApplicationDTO applicationDTO, String userRole) {
         Application application = getApplicationById(id);
 
-        System.out.println(userRole);
-
         modulesConnectionService.updateModulesConnection(applicationDTO.getModulesConnections(), userRole);
         application.setLastEditedDate(LocalDateTime.now());
 
-
-
-        // student request stuff
-        //if(containsFormalRejection(application)) TODO: check i really not needed
-            //modulesConnectionService.removeAllDecisions(application.getModulesConnections());
-
-        // corner cases, where Status is set differently
-
         // when study office saves decision suggestions -> status from NEU to STUDEINBUERO
         if(!allDecisionSuggestionUnedited(application) || containsFormalRejection(application)) application.setFullStatus(STUDIENBÜRO);
-        //if(userRole.equals("standard")) updateApplicationStatus(id);
 
         applicationRepository.save(application);
         return id;
@@ -94,11 +86,13 @@ public class ApplicationService {
         boolean containsFormalRejection = containsFormalRejection(application);
 
         if((application.getFullStatus() == STUDIENBÜRO || application.getFullStatus() == NEU) && containsFormalRejection) return REJECT;
+
         if(application.getFullStatus() == ABGESCHLOSSEN) return NOT_ALLOWED;
+
         if(allDecisionsFinalEdited && (application.getFullStatus() == PRÜFUNGSAUSSCHUSS || application.getFullStatus() == STUDIENBÜRO || application.getFullStatus() == NEU)) return PASSON;
+
         if(allDecisionSuggestionEdited && (application.getFullStatus() == STUDIENBÜRO || application.getFullStatus() == NEU)) return PASSON;
 
-        // base case
         return NOT_ALLOWED;
     }
 
@@ -110,12 +104,14 @@ public class ApplicationService {
         boolean allDecisionsFinalEdited = allDecisionsFinalEdited(application);
         boolean containsFormalRejection = containsFormalRejection(application);
 
-        if(containsFormalRejection) application.setFullStatus(FORMFEHLER);
-        else if(application.getFullStatus() == FORMFEHLER) application.setFullStatus(STUDIENBÜRO);
-        else if(allDecisionsFinalEdited) {
+        if(containsFormalRejection) {
+            application.setFullStatus(FORMFEHLER);
+        }else if(allDecisionsFinalEdited) {
             application.setFullStatus(ABGESCHLOSSEN);
             application.setDecisionDate(LocalDateTime.now());
-        } else if(allDecisionSuggestionEdited) application.setFullStatus(PRÜFUNGSAUSSCHUSS);
+        }else if(allDecisionSuggestionEdited) {
+            application.setFullStatus(PRÜFUNGSAUSSCHUSS);
+        }
 
         applicationRepository.save(application);
         return application.getFullStatus();

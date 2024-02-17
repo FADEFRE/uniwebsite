@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -18,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import swtp12.modulecrediting.dto.CourseLeipzigEditDTO;
+import swtp12.modulecrediting.dto.CourseLeipzigRelationEditDTO;
 import swtp12.modulecrediting.model.CourseLeipzig;
 import swtp12.modulecrediting.model.Views;
 import swtp12.modulecrediting.service.CourseLeipzigService;
@@ -49,11 +49,11 @@ public class CourseLeipzigController {
         return ResponseEntity.ok(courseLeipzigService.updateCourseLeipzig(name, courseLeipzigDTO));
     }
 
-    /*@PutMapping("/{name}/edit") // deleting and adding modules
-    //@PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR')")
-    public ResponseEntity<Boolean> updateCourseLeipzig(@PathVariable String name, @ModelAttribute CourseLeipzigRelationEditDTO editCourseDTO) {
-        return ResponseEntity.ok(courseLeipzigService.editCourse(name, editCourseDTO));
-    }*/
+    @PutMapping("/{name}/edit") // deleting and adding modules
+    @PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR')")
+    public ResponseEntity<String> updateCourseLeipzig(@PathVariable String name, @ModelAttribute CourseLeipzigRelationEditDTO editCourseDTO) {
+        return ResponseEntity.ok(courseLeipzigService.editCourseRelations(name, editCourseDTO));
+    }
 
     //DELETE-Requests
     @DeleteMapping("/{name}")

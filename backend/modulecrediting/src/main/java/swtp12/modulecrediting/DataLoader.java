@@ -149,10 +149,8 @@ public class DataLoader implements CommandLineRunner {
         JsonNode courseNodes = grabFirstNodeFromJson(fileName, "courses");
         for (JsonNode courseNode : courseNodes) {
             String courseName = courseNode.get("name").asText();
-            System.out.println("Processing course: " + courseName);
             CourseLeipzig courseLeipzig = courseLeipzigRepo.findByName(courseName)
                     .orElseGet(() -> {
-                        System.out.println("Creating new course: " + courseName);
                         return courseLeipzigRepo.save(new CourseLeipzig(courseName));
                     });
 
@@ -160,10 +158,8 @@ public class DataLoader implements CommandLineRunner {
             for (JsonNode module : modules) {
                 String moduleName = module.get("name").asText();
                 String moduleCode = module.get("number").asText();
-                System.out.println("Processing module: " + moduleName + " with code: " + moduleCode);
                 ModuleLeipzig moduleLeipzig = modulLeipzigRepo.findByName(moduleName)
                         .orElseGet(() -> {
-                            System.out.println("Creating new module: " + moduleName + " with code: " + moduleCode);
                             return modulLeipzigRepo.save(new ModuleLeipzig(moduleName, moduleCode));
                         });
 

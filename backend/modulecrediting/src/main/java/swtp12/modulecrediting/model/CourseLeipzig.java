@@ -108,7 +108,7 @@ public class CourseLeipzig {
      * @see CourseLeipzig
      * @see ModuleLeipzig
      */
-    public void removeModulesLeipzig(ModuleLeipzig moduleLeipzig) {
+    public void removeModuleLeipzig(ModuleLeipzig moduleLeipzig) {
         this.modulesLeipzigCourse.remove(moduleLeipzig);
         moduleLeipzig.getCoursesLeipzig().remove(this);
     }
@@ -125,5 +125,12 @@ public class CourseLeipzig {
         for (ModuleLeipzig moduleLeipzig : moduleLeipzigs) {
             moduleLeipzig.getCoursesLeipzig().remove(this);
         }
+    }
+
+    public void removeModulesLeipzig() {
+        for (ModuleLeipzig moduleLeipzig : modulesLeipzigCourse) {
+            moduleLeipzig.getCoursesLeipzig().remove(this);
+        }
+        modulesLeipzigCourse.clear();
     }
 }

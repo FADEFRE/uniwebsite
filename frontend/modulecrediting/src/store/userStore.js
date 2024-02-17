@@ -2,10 +2,10 @@ import { defineStore } from 'pinia';
 
 export const useUserStore = defineStore('user', {
     state: () => ({
-        currentUser: { userId: "-1" },
+        currentUser: { user: false },
         intervalName: "",
         nav: "user",
-        locale: 'DE'
+        locale: 'de'
     }),
     
     persist: {
@@ -13,17 +13,19 @@ export const useUserStore = defineStore('user', {
     },
 
     getters: {
-        getCurrentUserId() { return this.currentUser.userId },
+        getCurrentUser() { return this.currentUser.user },
         getCurrentRoleNav() { return this.nav },
+        getLocale() { return this.locale }
     },
 
     actions: {
         setIntervalName(intervalName) {this.intervalName = intervalName },
-        setCurrentUser(currentUser) { this.currentUser = currentUser },
+        setCurrentUser(loggedInUser) { this.currentUser.user = loggedInUser },
+        setLocale(newLocale) { this.locale = newLocale },
         setCurrentRoleNav(currentRole) { this.nav = currentRole },
         async logout() { 
-            this.nav = "user"
-            this.currentUser.userId = "-1" 
+            this.nav = "user";
+            this.currentUser.user = false;
         },
     },
 })

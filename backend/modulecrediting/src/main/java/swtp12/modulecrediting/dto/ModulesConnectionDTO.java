@@ -25,5 +25,5 @@ public class ModulesConnectionDTO {
     private String commentApplicant;
 
     private List<ExternalModuleDTO> externalModules;
-    private List<ModuleLeipzigDTO> modulesLeipzig; //TODO: CHANGED DTO HERE CHECK IN POST REQUEST
+    private List<ModuleLeipzigDTO> modulesLeipzig;
 }

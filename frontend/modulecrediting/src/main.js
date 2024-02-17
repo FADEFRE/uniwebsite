@@ -1,10 +1,8 @@
 import { createApp } from 'vue'
-import { createI18n } from 'vue-i18n'
 import { createPinia } from 'pinia'
 import piniaPluginPersistedState from 'pinia-plugin-persistedstate'
-import EN from './locale/en.json'
-import DE from './locale/de.json'
 import App from './App.vue'
+import i18n from './i18n'
 import router from './router'
 
 const pinia = createPinia();
@@ -13,7 +11,6 @@ pinia.use(piniaPluginPersistedState)
 const app = createApp(App)
     .use(pinia)
     .use(router)
-    
 // PrimeVue setup
 import PrimeVue from 'primevue/config'
 import Dropdown from 'primevue/dropdown'
@@ -24,15 +21,6 @@ import SelectButton from "primevue/selectbutton";
 
 import 'primevue/resources/themes/nova/theme.css'
 import 'primeicons/primeicons.css'
-
-const i18n = createI18n({
-    locale: document.cookie.split('=')[1],
-    messages: {
-        EN: EN,
-        DE: DE,
-    }
-
-    })
 
 app.use(i18n)
 app.use(PrimeVue)
