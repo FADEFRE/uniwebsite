@@ -2,12 +2,9 @@ package swtp12.modulecrediting.service;
 
 
 import java.io.ByteArrayInputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.List;
 
 import org.apache.commons.io.output.ByteArrayOutputStream;
@@ -23,11 +20,8 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.pdf.PdfCopy;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfWriter;
-import com.itextpdf.text.pdf.codec.Base64.InputStream;
 import com.itextpdf.tool.xml.XMLWorkerHelper;
-import com.itextpdf.tool.xml.pipeline.end.PdfWriterPipeline;
 
-import swtp12.modulecrediting.dto.ModulesConnectionDTO;
 import swtp12.modulecrediting.model.Application;
 import swtp12.modulecrediting.model.ExternalModule;
 import swtp12.modulecrediting.model.ModulesConnection;
@@ -63,7 +57,7 @@ public class GeneratedPdfService {
         return templateEngine.process("GeneralData", context);
     }
 
-    public String ModulesConnectionsTemplate(String id) {
+    public String ModulesConnectionsTemplate(String id, ModulesConnection connection) {
         ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
         templateResolver.setSuffix(".html");
         templateResolver.setPrefix("templates/");
@@ -73,7 +67,7 @@ public class GeneratedPdfService {
         templateEngine.setTemplateResolver(templateResolver);
 
         Context context = new Context();
-        context.setVariable("externalModulesMap", GetExternalModules(id));
+        context.setVariable("externalModulesMap", connection);
 
         return templateEngine.process("ModulesConnection", context);
     }
@@ -98,11 +92,9 @@ public class GeneratedPdfService {
         return modulesConnections;
     }
 
-    
-
     public byte[] generatePdfFromHtml(String id) throws DocumentException, IOException {
-        String html = GeneralDataTemplate(id);
-        String html2 = ModulesConnectionsTemplate(id);
+        String generalDataHtml = GeneralDataTemplate(id);
+        List<ModulesConnection> modulesConnections = getModulesConnections(id);
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
@@ -112,11 +104,14 @@ public class GeneratedPdfService {
             PdfCopy copy = new PdfCopy(document, outputStream);
             document.open();
 
-            byte[] pdf1 = parseHtml(html);
-            byte[] pdf2 = parseHtml(html2);
+            byte[] generalDataPdf = parseHtml(generalDataHtml);
+            addPdfToCopy(copy, generalDataPdf);
 
-            addPdfToCopy(copy, pdf1);
-            addPdfToCopy(copy, pdf2);
+            for (ModulesConnection connection : modulesConnections) {
+                String connectionHtml = ModulesConnectionsTemplate(id, connection);
+                byte[] connectionPdf = parseHtml(connectionHtml);
+                addPdfToCopy(copy, connectionPdf);
+            }
 
             document.close();
         } finally {
