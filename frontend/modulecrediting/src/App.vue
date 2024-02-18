@@ -95,11 +95,6 @@ function closeMenu() {
   height: 11rem;
 
   @include breakpoint(l) {
-    width: 21rem;
-    height: 9rem;
-  }
-
-  @include breakpoint(m) {
     width: 16rem;
     height: 7rem;
   }
