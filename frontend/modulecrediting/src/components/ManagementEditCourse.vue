@@ -163,20 +163,16 @@ const saveCourseLeipzig = () => {
 @use '@/assets/styles/components' as *;
 
 .list-left-enter-active,
-.list-left-leave-active,
-.list-right-enter-active,
-.list-right-leave-active {
+.list-right-enter-active {
   transition: all 0.5s ease !important;
 }
 
-.list-left-enter-from,
-.list-left-leave-to {
+.list-left-enter-from {
   opacity: 0 !important;
   transform: translateX(7px) !important;
 }
 
-.list-right-enter-from,
-.list-right-leave-to {
+.list-right-enter-from {
   opacity: 0 !important;
   transform: translateX(-7px) !important;
 }
