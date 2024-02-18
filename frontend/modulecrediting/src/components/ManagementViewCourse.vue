@@ -39,7 +39,7 @@ const filteredCourses = computed(() => {
             <InputText v-model="searchString" placeholder="Studiengang suchen"></InputText>
             <img src="@/assets/icons/SearchIcon.svg" class="search-icon">
         </div>
-        <div v-for="course in filteredCourses" class="course-item">
+        <div v-for="course in filteredCourses" class="course-list">
             <ManagementListElement
                 :name="course"
                 :edit-callback="triggerEditCourseLeipzig"
@@ -68,6 +68,9 @@ const filteredCourses = computed(() => {
     width: 100%;
 }
 
+.course-list {
+  width: 100%
+}
 
 .icons-container {
     display: flex;

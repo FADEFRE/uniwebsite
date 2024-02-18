@@ -38,7 +38,7 @@ const triggerDeleteModuleLeipzig = (module) => {
             <InputText v-model="searchString" placeholder="Modul suchen"></InputText>
             <img src="@/assets/icons/SearchIcon.svg" class="search-icon">
         </div>
-        <div v-for="singleModule in filteredModules" class="module-item">
+        <div v-for="singleModule in filteredModules" class="module-list">
           <ManagementListElement
               :name="singleModule['name']"
               :code="singleModule['code']"
@@ -62,9 +62,7 @@ const triggerDeleteModuleLeipzig = (module) => {
     @include searchFieldContainer();
 }
 
-.module-item {
-  @include smallHighlightBox();
-  @include verticalListItem($gray);
-  width: 100%;
+.module-list {
+  width: 100%
 }
 </style>

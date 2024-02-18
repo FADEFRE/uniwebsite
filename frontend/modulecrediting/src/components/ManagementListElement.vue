@@ -42,7 +42,7 @@ const triggerEdit = () => {
 </script>
 
 <template>
-  <div>
+  <div class="list-item">
 
     <div class="module-text-container">
       <p>{{ props.name }}</p>
@@ -76,6 +76,12 @@ const triggerEdit = () => {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+}
+
+.list-item {
+  @include smallHighlightBox();
+  @include verticalListItem($gray);
+  width: 100%;
 }
 
 .icons-container {
