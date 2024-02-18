@@ -21,6 +21,10 @@ function closeMenu() {
 
 <template>
   <div>
+
+    <div class="min-height">
+
+    
     <header class="header-background">
       <div class="header-container">
         <a href="/" class="logo-container">
@@ -43,6 +47,8 @@ function closeMenu() {
     </header>
 
     <router-view class="main-content" />
+
+  </div>
 
     <footer>
       <ul class="footer-content">
@@ -159,6 +165,9 @@ function closeMenu() {
   }
 }
 
+.min-height {
+  min-height: 100vh;
+}
 
 footer {
   width: 100%;
