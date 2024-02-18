@@ -76,9 +76,7 @@ defineExpose({
       <div class="module-list" :class="{ 'module-list-full': !allowSelect }">
         <div v-if="selectedModules.length > 0" v-for="(module, index) in selectedModules" class="module-list-item">
           <p>{{ module }}</p>
-          <div class="trash-icon-container" v-if="allowDelete" @click="removeSelectedModule(index)">
-            <TrashIcon />
-          </div>
+          <TrashIcon v-if="allowDelete" @click="removeSelectedModule(index)"/>
         </div>
         <div v-else-if="!allowSelect">
           <p>Es sind keine Module der Universität Leipzig ausgewählt.</p>
@@ -141,11 +139,4 @@ defineExpose({
   right: spacing(s);
 }
 
-.trash-icon-container {
-  @include smallHighlightBox();
-  transition: 0.1s ease-in-out;
-
-  &:hover {
-    background-color: $gray-hover;
-  }
-}</style>
+</style>

@@ -145,10 +145,7 @@ defineExpose({
           <h4>Studiengang</h4>
           <Dropdown show-clear v-model="course" :options="courses" placeholder="Studiengang auswählen">
             <template #clearicon>
-              <div class="trash-icon-container" @click="deleteCourse">
-                <TrashIcon color="white"/>
-              </div>
-              
+              <TrashIcon @click="deleteCourse" background-color="dark-gray"/>
             </template>
             <template #dropdownicon>
               <ArrowIcon color="white" direction="down"/>
@@ -350,10 +347,5 @@ defineExpose({
 
 .overview-text {
   color: $dark-gray;
-}
-
-.trash-icon-container {
-  display: flex;
-  align-items: center;
 }
 </style>

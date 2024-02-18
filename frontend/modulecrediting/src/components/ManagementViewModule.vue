@@ -63,6 +63,6 @@ const triggerDeleteModuleLeipzig = (module) => {
 }
 
 .module-list {
-  width: 100%
+  @include verticalList(small)
 }
 </style>

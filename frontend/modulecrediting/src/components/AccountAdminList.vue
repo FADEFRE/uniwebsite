@@ -48,9 +48,7 @@ const triggerDeleteUser = (id) => {
               :model-value="user.role"
               @update:model-value="(newRole) => triggerChangeRole(user.userId, newRole)"
           />
-          <div class="trash-icon-wrapper">
-            <TrashIcon @click="triggerDeleteUser(user.userId)" />
-          </div>
+          <TrashIcon @click="triggerDeleteUser(user.userId)" />
         </div>
 
       </div>
@@ -80,13 +78,5 @@ const triggerDeleteUser = (id) => {
 
 .user-self {
   border-color: $dark-gray !important;
-}
-
-.trash-icon-wrapper {
-  @include smallHighlightBox();
-  transition: 0.1s ease-in-out;
-  &:hover {
-    background-color: $gray-hover;
-  }
 }
 </style>

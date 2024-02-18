@@ -64,23 +64,18 @@ small {
   font-weight: 430;
 }
 
-.overview-text {
-  font-family: "Jost";
-  font-size: 1.1rem;
-  font-weight: 500;
-  text-transform: uppercase;
-}
 
 a,
 Button,
-.p-button {
+.p-button,
+.overview-text,
+.p-dropdown-label {
   font-family: "Jost";
   text-transform: uppercase;
   text-decoration: none;
-  width: max-content;
 
   color: $white;
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 500;
 
   &.white {

@@ -14,6 +14,7 @@ displays:
 import { ref } from "vue";
 import { url } from "@/scripts/url-config";
 import ButtonLink from "@/components/ButtonLink.vue";
+import FileIcon from "../assets/icons/FileIcon.vue";
 
 const props = defineProps({
   readonly: {
@@ -118,7 +119,7 @@ defineExpose({
 
       <div v-else class="file-drop-unselected">
         <p class="ellipsis-text-overflow">Modulbeschreibung hochladen</p>
-        <img src="../assets/icons/Upload.svg">
+        <FileIcon type="upload"/>
       </div>
       <input type="file" ref="fileInput" @change="handleFiles" />
 

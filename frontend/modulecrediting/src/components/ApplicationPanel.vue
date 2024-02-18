@@ -71,9 +71,7 @@ defineExpose({
 
       <!-- Icons Slot -->
       <template #icons>
-        <div v-if="allowDelete" class="trash-icon-wrapper" @click="emit('deleteSelf')">
-          <TrashIcon/>
-        </div>
+        <TrashIcon v-if="allowDelete" @click="emit('deleteSelf')" backgroundColor="white"/>
       </template>
 
       <!-- Panel Content -->
@@ -102,15 +100,6 @@ defineExpose({
 <style scoped lang="scss">
 @use '@/assets/styles/util' as *;
 @use '@/assets/styles/global' as *;
-
-.trash-icon-wrapper {
-  @include smallHighlightBox();
-  transition: 0.1s ease-in-out;
-  &:hover {
-    background-color: $white-hover;
-  }
-}
-
 </style>
 
 

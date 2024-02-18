@@ -37,7 +37,7 @@ defineExpose({
   <div class="panel-container">
     <h4>Kommentar</h4>
     <div class="textarea-container">
-      <textarea :readonly="readonly" rows="3" v-model="comment" class="white" />
+      <textarea :readonly="readonly" rows="3" v-model="comment" class="white" :class="{'no-effect': readonly}"/>
     </div>
 
   </div>
@@ -52,5 +52,14 @@ defineExpose({
 .textarea-container {
   border: 2px solid $dark-gray;
   width: 100%;
+}
+
+.readonly {
+  &:hover {
+    background-color: $white;
+  }
+  &:focus {
+    background-color: $white;
+  }
 }
 </style>

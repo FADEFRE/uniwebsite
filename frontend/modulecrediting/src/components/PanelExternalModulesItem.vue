@@ -142,11 +142,7 @@ defineExpose({
       </div>
 
     </div>
-
-    <div class="trash-icon-container" v-if="allowDelete" @click="emit('deleteSelf')">
-      <TrashIcon/>
-    </div>
-
+    <TrashIcon v-if="allowDelete" @click="emit('deleteSelf')" background-size="small"/>
   </div>
 </template>
 
@@ -205,12 +201,5 @@ defineExpose({
   gap: spacing(s);
 }
 
-.trash-icon-container {
-  transition: 0.1s ease-in-out;
-  padding: spacing(s);
 
-  &:hover {
-    background-color: $gray-hover;
-  }
-}
 </style>

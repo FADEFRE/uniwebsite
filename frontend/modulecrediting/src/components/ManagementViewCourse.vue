@@ -62,36 +62,7 @@ const filteredCourses = computed(() => {
     @include searchFieldContainer();
 }
 
-.course-item {
-    @include smallHighlightBox();
-    @include verticalListItem($gray);
-    width: 100%;
-}
-
 .course-list {
-  width: 100%
-}
-
-.icons-container {
-    display: flex;
-    align-items: center;
-    gap: spacing(xs);
-}
-
-.trash-icon-container {
-  @include smallHighlightBox();
-  transition: 0.1s ease-in-out;
-  &:hover {
-    background-color: $gray-hover;
-  }
-}
-
-.edit-icon {
-    @include smallHighlightBox();
-  transition: 0.1s ease-in-out;
-
-    &:hover {
-        background-color: $gray-hover;
-    }
+  @include verticalList(small);
 }
 </style>

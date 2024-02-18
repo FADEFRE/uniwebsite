@@ -11,6 +11,9 @@ import {
 } from "@/scripts/axios-requests";
 import { parseRequestDate } from "@/scripts/date-utils";
 import ApplicationConnectionLinks from "@/components/ApplicationConnectionLinks.vue";
+import ApplicationControl from "../assets/icons/ApplicationControl.vue";
+import MoveTop from "../assets/icons/MoveTop.vue";
+import NotSavedIcon from "../assets/icons/NotSavedIcon.vue";
 
 const route = useRoute()
 const router = useRouter();
@@ -146,20 +149,10 @@ const triggerPassOn = () => {
     </div>
 
     <div class="mid-right-fixed-container">
-      <div class="unsaved-notification" v-if="unsaved">
-        <img src="@/assets/icons/NotSaved.svg">
-      </div>
-
-      <Button @click="collapseAll" class="collapse-expand-button">
-        <img src="@/assets/icons/CollapseAll.svg">
-      </Button>
-      <Button @click="unCollapseAll" class="collapse-expand-button">
-        <img src="@/assets/icons/ExpandAll.svg">
-      </Button>
-
-      <Button @click="scrollTop" class="move-top-button">
-        <ArrowIcon color="white" direction="up" size="big"/>
-      </Button>
+      <NotSavedIcon :display="unsaved"/>
+      <ApplicationControl @click="collapseAll" type="collapse"/>
+      <ApplicationControl @click="unCollapseAll" type="expand"/>
+      <MoveTop @click="scrollTop"/>
     </div>
 
     <div v-if="!readonly">
@@ -178,8 +171,6 @@ const triggerPassOn = () => {
 @use '@/assets/styles/util' as *;
 @use '@/assets/styles/global' as *;
 
-
-
 .side-infos-list {
   position: sticky;
   top: spacing(m);
@@ -188,8 +179,6 @@ const triggerPassOn = () => {
     display: none;
   }
 }
-
-
 
 .mid-right-fixed-container {
   @include verticalList(small);
@@ -201,31 +190,6 @@ const triggerPassOn = () => {
 
   position: fixed;
   bottom: calc(spacing(l) + spacing(xxxl));
-  right: spacing(m);
-}
-
-
-.unsaved-notification {
-  background-color: $red;
-  width: 3rem;
-  height: 3rem;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.collapse-expand-button {
-  width: 3rem;
-  height: 4rem;
-
-  @include breakpoint(m) {
-    display: none;
-  }
-}
-
-.move-top-button {
-  width: 3rem;
-  height: 3rem;
+  right: spacing(s);
 }
 </style>

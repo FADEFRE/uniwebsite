@@ -69,13 +69,8 @@ defineExpose({
     </template>
 
     <template #icons>
-      <ModuleStatusIcon v-if="connection['decisionFinal'] !== 'unedited'"
-        :status-decision="connection['decisionFinal']" />
-
-      <div v-if="allowDelete" class="trash-icon-container" @click="emit('deleteSelf')">
-        <TrashIcon />
-      </div>
-      
+      <ModuleStatusIcon v-if="connection['decisionFinal'] !== 'unedited'" :status-decision="connection['decisionFinal']" />
+      <TrashIcon v-if="allowDelete" @click="emit('deleteSelf')" background-color="white"/>
     </template>
 
     <div>
@@ -104,13 +99,4 @@ defineExpose({
 <style scoped lang="scss">
 @use '@/assets/styles/util' as *;
 @use '@/assets/styles/global' as *;
-
-.trash-icon-container {
-  @include smallHighlightBox();
-  transition: 0.1s ease-in-out;
-
-  &:hover {
-    background-color: $white-hover;
-  }
-}
 </style>

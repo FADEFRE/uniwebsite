@@ -1,5 +1,7 @@
 
 <script setup>
+import FileIcon from '../assets/icons/FileIcon.vue';
+
 const props = defineProps({
     fixed: {
         type: Boolean,
@@ -12,7 +14,7 @@ const props = defineProps({
     <div class="button-container">
         <Button :class="{ ' fixed-button': fixed }">
             Antrag herunterladen
-            <img src="../assets/icons/Download.svg">
+            <FileIcon type="download"/>
         </Button>
     </div>
     

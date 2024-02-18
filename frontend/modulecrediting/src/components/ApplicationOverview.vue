@@ -61,19 +61,19 @@ const triggerForward = () => {
         <div class="dates">
             <!-- Div-Block Creation Date -->
             <div v-if="creationDate" class="date-block">
-                <DateIcon type="creation"/>
+                <DateIcon type="creation" />
                 <p>{{ creationDate }}</p>
             </div>
 
             <!-- Div-Block Last edited Date -->
             <div v-if="lastEditedDate" class="date-block">
-                <DateIcon type="lastEdited"/>
+                <DateIcon type="lastEdited" />
                 <p>{{ lastEditedDate }}</p>
             </div>
 
             <!-- Div-Block Decision Date -->
             <div v-if="decisionDate" class="date-block">
-                <DateIcon type="decision"/>
+                <DateIcon type="decision" />
                 <p>{{ decisionDate }}</p>
             </div>
         </div>
@@ -82,7 +82,7 @@ const triggerForward = () => {
         <div class="application-info">
             <div v-if="id" class="vorgangsnummer-container info-container"
                 :class="{ 'admin-selection-view': adminSelectionView }">
-                <div class="vorgangsnummer-text overview-text">
+                <div class="vorgangsnummer-text overview-text white">
                     Vorgangsnummer: {{ id || 'Placeholder for Vorgangsnummer' }}
                 </div>
             </div>
@@ -150,14 +150,6 @@ const triggerForward = () => {
     }
 }
 
-.info-container {
-
-    color: $white;
-
-    @include breakpoint(xs) {
-        width: 100%;
-    }
-}
 
 .course-container {
     @include smallHighlightBox();
@@ -169,8 +161,8 @@ const triggerForward = () => {
     }
 
     @include breakpoint(xs) {
-            width: 100%;
-        }
+        width: 100%;
+    }
 }
 
 .course-selection-container {
@@ -178,23 +170,14 @@ const triggerForward = () => {
     position: relative;
     display: flex;
     flex-direction: column;
-
-    @include breakpoint(xs) {
-        width: 100%;
-    }
 }
 
 .vorgangsnummer-container {
     @include smallHighlightBox();
     background-color: $gray;
-    color: $dark-gray;
 
     &.admin-selection-view {
-        width: 19rem;
-    }
-
-    @include breakpoint(xs) {
-        width: 100%;
+        width: 18rem;
     }
 }
 
@@ -202,13 +185,22 @@ const triggerForward = () => {
     @include smallHighlightBox();
 
     &.admin-selection-view {
-        width: 19rem;
-    }
-    @include breakpoint(xs) {
-            width: 100%;
+        width: 17rem;
     }
 }
 
+.info-container {
+
+    color: $white;
+
+    @include breakpoint(xs) {
+        width: 100%;
+
+        &.admin-selection-view {
+            width: 100%;
+        }
+    }
+}
 
 .greenBackground {
     background-color: $green;

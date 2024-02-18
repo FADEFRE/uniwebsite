@@ -27,6 +27,9 @@ textarea {
     &.white {
       background-color: $white-hover;
     }
+    &.no-effect {
+      background-color: transparent;
+    }
   }
   &:focus {
     &.gray {
@@ -34,6 +37,9 @@ textarea {
     }
     &.white {
       background-color: $white-hover;
+    }
+    &.no-effect {
+      background-color: transparent;
     }
   }
 }

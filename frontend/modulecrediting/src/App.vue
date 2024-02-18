@@ -166,10 +166,8 @@ function closeMenu() {
 
 
 footer {
-  background-image: url('@/assets/icons/footer.svg');
-  background-size: cover;
   width: 100%;
-  min-height: 700px;
+  background-color: $white;
 
   padding: spacing(m);
 
@@ -182,9 +180,5 @@ footer {
   display: flex;
   gap: spacing(m);
 
-  li p 
-  {
-    color: $white;
-  }
 }
 </style>

@@ -107,7 +107,7 @@ defineExpose({
   flex-direction: column;
   justify-content: space-around;
   border-right: 2px solid $black;
-  min-height: rem(125px);
+  min-height: rem(118px);
   width: spacing(xxxl);
 }
 
