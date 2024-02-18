@@ -2,26 +2,35 @@ package swtp12.modulecrediting.service;
 
 
 import java.io.ByteArrayInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.List;
 
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
+import org.thymeleaf.context.Context;
 
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.pdf.PdfCopy;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfWriter;
-
-
+import com.itextpdf.text.pdf.codec.Base64.InputStream;
 import com.itextpdf.tool.xml.XMLWorkerHelper;
+import com.itextpdf.tool.xml.pipeline.end.PdfWriterPipeline;
 
-import org.thymeleaf.context.Context;
+import swtp12.modulecrediting.dto.ModulesConnectionDTO;
 import swtp12.modulecrediting.model.Application;
+import swtp12.modulecrediting.model.ExternalModule;
+import swtp12.modulecrediting.model.ModulesConnection;
 
 
 @Service
@@ -33,8 +42,9 @@ public class GeneratedPdfService {
     public String GeneralDataTemplate(String id) {
         ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
         templateResolver.setSuffix(".html");
-        templateResolver.setTemplateMode(TemplateMode.HTML);
         templateResolver.setPrefix("templates/");
+        templateResolver.setTemplateMode(TemplateMode.HTML);
+    
         TemplateEngine templateEngine = new TemplateEngine();
         templateEngine.setTemplateResolver(templateResolver);
 
@@ -56,15 +66,39 @@ public class GeneratedPdfService {
     public String ModulesConnectionsTemplate(String id) {
         ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
         templateResolver.setSuffix(".html");
-        templateResolver.setTemplateMode(TemplateMode.HTML);
         templateResolver.setPrefix("templates/");
+        templateResolver.setTemplateMode(TemplateMode.HTML);
+        
         TemplateEngine templateEngine = new TemplateEngine();
         templateEngine.setTemplateResolver(templateResolver);
 
         Context context = new Context();
+        context.setVariable("externalModulesMap", GetExternalModules(id));
 
         return templateEngine.process("ModulesConnection", context);
     }
+
+    public List<List<ExternalModule>> GetExternalModules(String id){
+        Application application = applicationService.getApplicationStudentById(id);
+        List<ModulesConnection> modulesConnections = application.getModulesConnections();
+        List<List<ExternalModule>> externalModulesList = new ArrayList<>();
+
+        for (ModulesConnection connection : modulesConnections) {
+            List<ExternalModule> externalModuleList = connection.getExternalModules();
+            externalModulesList.add(externalModuleList);
+        }
+
+        return externalModulesList;
+    }
+
+    public List<ModulesConnection> getModulesConnections(String id){
+        Application application = applicationService.getApplicationById(id);
+        List<ModulesConnection> modulesConnections = application.getModulesConnections();
+
+        return modulesConnections;
+    }
+
+    
 
     public byte[] generatePdfFromHtml(String id) throws DocumentException, IOException {
         String html = GeneralDataTemplate(id);
