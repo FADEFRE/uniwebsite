@@ -1,8 +1,8 @@
 <script setup>
-import { ref, onBeforeMount } from "vue";
-import {deleteUser, getAllUsers, getUserMeId, putUserRole} from "../scripts/axios-requests";
 import RoleDropdown from "./RoleDropdown.vue";
 import TrashIcon from "../assets/icons/TrashIcon.vue";
+import { ref, onBeforeMount } from "vue";
+import { getAllUsers, getUserMeId, putUserRole, deleteUser } from "../scripts/axios-requests";
 
 let currentUserId = undefined
 const userList = ref([])
@@ -14,7 +14,7 @@ onBeforeMount(() => {
         return getAllUsers()
       })
       .then(data => {
-        userList.value = data.filter(user => user['userId'] !== currentUserId).toSorted((a, b) => a['userId'] - b['userId'])
+        userList.value = data.toSorted((a, b) => a['userId'] - b['userId'])
       })
 })
 
@@ -35,13 +35,24 @@ const triggerDeleteUser = (id) => {
     <h2>Alle Benutzer</h2>
 
     <div class="user-list">
-      <div v-for="user in userList" class="user-container">
-        <p>{{ user.username }}</p>
-        <RoleDropdown :model-value="user.role"
-          @update:model-value="(newRole) => triggerChangeRole(user.userId, newRole)" />
-          <div class="trash-icon-wrapper">
-          <TrashIcon @click="triggerDeleteUser(user.userId)" />
+      <div v-for="user in userList">
+
+        <div v-if="user['userId'] === currentUserId" class="user-container user-self">
+          <p>{{ user.username }}</p>
+          <p>ADMIN</p>
         </div>
+
+        <div v-else class="user-container">
+          <p>{{ user.username }}</p>
+          <RoleDropdown
+              :model-value="user.role"
+              @update:model-value="(newRole) => triggerChangeRole(user.userId, newRole)"
+          />
+          <div class="trash-icon-wrapper">
+            <TrashIcon @click="triggerDeleteUser(user.userId)" />
+          </div>
+        </div>
+
       </div>
     </div>
 
@@ -65,6 +76,10 @@ const triggerDeleteUser = (id) => {
   @include verticalListItem($gray);
   padding: 0 spacing(m);
   align-items: center;
+}
+
+.user-self {
+  border-color: $dark-gray !important;
 }
 
 .trash-icon-wrapper {
