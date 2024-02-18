@@ -14,15 +14,19 @@ const addedModules = ref([])
 const selectedModules = ref([])
 
 const selectableModules = computed(() => {
-    const selectedModuleNames = [...selectedModules.value, ...addedModules.value].map(singleModule => singleModule.name);
+    if (selectedModules.value.length > 0) {
+      const selectedModuleNames = [...selectedModules.value, ...addedModules.value].map(singleModule => singleModule.name);
 
-    const selectableModules = allModules.value.filter(singleModule => !selectedModuleNames.includes(singleModule.name));
+      const selectableModules = allModules.value.filter(singleModule => !selectedModuleNames.includes(singleModule.name));
 
-    if (searchString.value === '') return selectableModules;
+      if (searchString.value === '') return selectableModules;
 
-    return selectableModules.filter(singleModule => {
+      return selectableModules.filter(singleModule => {
         return singleModule.name.toLocaleLowerCase().includes(searchString.value.toLocaleLowerCase());
-    })
+      })
+    } else {
+      return []
+    }
 });
 
 // search in selectable modules
@@ -85,14 +89,20 @@ const saveCourseLeipzig = () => {
                     <img src="@/assets/icons/SearchIcon.svg" class="search-icon">
                 </div>
 
-                <div v-for="singleModule in selectableModules" :key="singleModule.name"
-                    @click="addModuleToCourse(singleModule)" class="single-selectable-module-item icon-hover-right">
-                    <div class="module-text-container">
-                        <p>{{ singleModule.name }}</p>
-                        <small>{{ singleModule.code }}</small>
+                <TransitionGroup name="list-left" tag="div" class="selectable-modules-container">
+                    <div
+                        v-for="singleModule in selectableModules"
+                        :key="singleModule.name"
+                        @click="addModuleToCourse(singleModule)"
+                        class="single-selectable-module-item icon-hover-right"
+                    >
+                        <div class="module-text-container">
+                            <p>{{ singleModule.name }}</p>
+                            <small>{{ singleModule.code }}</small>
+                        </div>
+                        <ArrowIcon color="red" direction="right"/>
                     </div>
-                    <ArrowIcon color="red" direction="right"/>
-                </div>
+                </TransitionGroup>
 
                 <div v-if="selectableModules.length === 0">
                     <p>Alle Module sind dem Studiengang hinzugefügt.</p>
@@ -103,28 +113,40 @@ const saveCourseLeipzig = () => {
             <div class="selected-modules-container">
                 <h3>Module in {{ selectedCourse }}</h3>
 
-                <div v-for="singleModule in addedModules" @click="removeModuleFromCourse(singleModule)"
-                    class="single-selected-module-item icon-hover-left">
-                    <ArrowIcon color="red" direction="left"/>
-                    <div class="module-text-container">
-                        <p>{{ singleModule.name }}</p>
-                        <small>{{ singleModule.code }}</small>
+                <TransitionGroup name="list-right" tag="div" class="selectable-modules-container">
+                    <div
+                        v-for="singleModule in addedModules"
+                        :key="singleModule.name"
+                        @click="removeModuleFromCourse(singleModule)"
+                        class="single-selected-module-item icon-hover-left"
+                    >
+                        <ArrowIcon color="red" direction="left"/>
+                        <div class="module-text-container">
+                            <p>{{ singleModule.name }}</p>
+                            <small>{{ singleModule.code }}</small>
+                        </div>
                     </div>
-                </div>
+                </TransitionGroup>
 
                 <div v-if="addedModules.length" class="break-container">
                     <div class="break-line"></div>
                     <h4 class="break-text">NEU</h4>
                 </div>
 
-                <div v-for="singleModule in selectedModules" @click="removeModuleFromCourse(singleModule)"
-                    class="single-selected-module-item icon-hover-left">
-                    <ArrowIcon color="red" direction="left"/>
-                    <div class="module-text-container">
-                        <p>{{ singleModule.name }}</p>
-                        <small>{{ singleModule.code }}</small>
+                <TransitionGroup name="list-right" tag="div" class="selectable-modules-container">
+                    <div
+                        v-for="singleModule in selectedModules"
+                        :key="singleModule.name"
+                        @click="removeModuleFromCourse(singleModule)"
+                        class="single-selected-module-item icon-hover-left"
+                    >
+                        <ArrowIcon color="red" direction="left"/>
+                        <div class="module-text-container">
+                            <p>{{ singleModule.name }}</p>
+                            <small>{{ singleModule.code }}</small>
+                        </div>
                     </div>
-                </div>
+                </TransitionGroup>
 
                 <div v-if="addedModules.length === 0 && selectedModules.length === 0">
                     <p>Es sind keine Module zum Studiengang hinzugefügt.</p>
@@ -139,6 +161,25 @@ const saveCourseLeipzig = () => {
 @use '@/assets/styles/util' as *;
 @use '@/assets/styles/global' as *;
 @use '@/assets/styles/components' as *;
+
+.list-left-enter-active,
+.list-left-leave-active,
+.list-right-enter-active,
+.list-right-leave-active {
+  transition: all 0.5s ease !important;
+}
+
+.list-left-enter-from,
+.list-left-leave-to {
+  opacity: 0 !important;
+  transform: translateX(7px) !important;
+}
+
+.list-right-enter-from,
+.list-right-leave-to {
+  opacity: 0 !important;
+  transform: translateX(-7px) !important;
+}
 
 .management-edit-course-container {
     @include basicContainer();
@@ -173,7 +214,6 @@ const saveCourseLeipzig = () => {
     @include verticalList(small);
     width: 100%;
 }
-
 
 .single-selectable-module-item {
     @include smallHighlightBox();
