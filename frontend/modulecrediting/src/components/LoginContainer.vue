@@ -59,6 +59,11 @@ const attemptLogin = () => {
     align-items: center;
     width: 27rem;
     height: 11rem;
+
+    @include breakpoint(l) {
+    width: 21rem;
+    height: 5rem;
+  }
 }
 
 .login-content {
