@@ -24,6 +24,7 @@ import com.itextpdf.tool.xml.XMLWorkerHelper;
 
 import swtp12.modulecrediting.model.Application;
 import swtp12.modulecrediting.model.ExternalModule;
+import swtp12.modulecrediting.model.ModuleLeipzig;
 import swtp12.modulecrediting.model.ModulesConnection;
 
 
@@ -33,7 +34,7 @@ public class GeneratedPdfService {
     private ApplicationService applicationService;
 
 
-    public String GeneralDataTemplate(String id) {
+    public String generalDataTemplate(String id) {
         ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
         templateResolver.setSuffix(".html");
         templateResolver.setPrefix("templates/");
@@ -57,7 +58,7 @@ public class GeneratedPdfService {
         return templateEngine.process("GeneralData", context);
     }
 
-    public String ModulesConnectionsTemplate(String id, ModulesConnection connection) {
+    public String modulesConnectionsTemplate(String id, ModulesConnection connection) {
         ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
         templateResolver.setSuffix(".html");
         templateResolver.setPrefix("templates/");
@@ -66,13 +67,31 @@ public class GeneratedPdfService {
         TemplateEngine templateEngine = new TemplateEngine();
         templateEngine.setTemplateResolver(templateResolver);
 
-        Context context = new Context();
+        Context context = fillModuleConnectionTemplate(id);
         context.setVariable("externalModulesMap", connection);
 
         return templateEngine.process("ModulesConnection", context);
     }
 
-    public List<List<ExternalModule>> GetExternalModules(String id){
+    public Context fillModuleConnectionTemplate(String id ){
+        Context context = new Context();
+        List<ModulesConnection> modulesConnections = getModulesConnections(id);
+
+        for(ModulesConnection connection : modulesConnections){
+            List<ExternalModule> externalModules = connection.getExternalModules();
+            List<ModuleLeipzig> moduleLeipzigs = connection.getModulesLeipzig();
+            
+            context.setVariable("externalModules" + connection.getId(), externalModules);
+            context.setVariable("moduleLeipzigs" + connection.getId() , moduleLeipzigs);
+        }
+
+
+        
+        return context;
+
+    }
+
+    public List<List<ExternalModule>> getExternalModules(String id){
         Application application = applicationService.getApplicationStudentById(id);
         List<ModulesConnection> modulesConnections = application.getModulesConnections();
         List<List<ExternalModule>> externalModulesList = new ArrayList<>();
@@ -93,7 +112,7 @@ public class GeneratedPdfService {
     }
 
     public byte[] generatePdfFromHtml(String id) throws DocumentException, IOException {
-        String generalDataHtml = GeneralDataTemplate(id);
+        String generalDataHtml = generalDataTemplate(id);
         List<ModulesConnection> modulesConnections = getModulesConnections(id);
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -108,7 +127,7 @@ public class GeneratedPdfService {
             addPdfToCopy(copy, generalDataPdf);
 
             for (ModulesConnection connection : modulesConnections) {
-                String connectionHtml = ModulesConnectionsTemplate(id, connection);
+                String connectionHtml = modulesConnectionsTemplate(id, connection);
                 byte[] connectionPdf = parseHtml(connectionHtml);
                 addPdfToCopy(copy, connectionPdf);
             }
