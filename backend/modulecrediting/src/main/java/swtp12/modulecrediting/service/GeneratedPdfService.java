@@ -4,7 +4,6 @@ package swtp12.modulecrediting.service;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.output.ByteArrayOutputStream;
@@ -50,6 +49,8 @@ public class GeneratedPdfService {
         context.setVariable("id", id);
         context.setVariable("Erstelldatum", application.getCreationDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
         context.setVariable("Status", application.getFullStatus());
+        context.setVariable("Studiengang", application.getCourseLeipzig().getName());
+
 
         // TODO: null check can be null on not decided applicaitons -> what is displayed in this scenario?
         if(application.getDecisionDate() != null)
