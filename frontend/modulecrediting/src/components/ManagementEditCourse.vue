@@ -128,10 +128,12 @@ const saveCourseLeipzig = () => {
                     </div>
                 </TransitionGroup>
 
-                <div v-if="addedModules.length" class="break-container">
-                    <div class="break-line"></div>
-                    <h4 class="break-text">NEU</h4>
-                </div>
+                <Transition name="separator">
+                    <div v-if="addedModules.length" class="break-container">
+                        <div class="break-line"></div>
+                        <h4 class="break-text">NEU</h4>
+                    </div>
+                </Transition>
 
                 <TransitionGroup name="list-right" tag="div" class="selectable-modules-container">
                     <div
@@ -180,6 +182,10 @@ const saveCourseLeipzig = () => {
 .list-right-leave-to {
   opacity: 0 !important;
   transform: translateX(-7px) !important;
+}
+
+.separator-leave-active {
+  transition-delay: 0.25s;
 }
 
 .management-edit-course-container {
