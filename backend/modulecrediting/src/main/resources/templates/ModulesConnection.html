@@ -13,11 +13,14 @@
             
       </header>
     <div>
-       <div>
+        <div>
             <h2>Externe Module:</h2>
             <ul>
                 <li th:each="externalModule : ${externalModulesArray}">
-                    <span th:text="${externalModule.name}"></span>
+                    <span th:text="${externalModule.name}"></span>,
+                    <span th:text="${externalModule.points}"></span>,
+                    <span th:text="${externalModule.pointSystem}"></span>,
+                    <span th:text="${externalModule.university}"></span>
                 </li>
             </ul>
         </div>
@@ -26,7 +29,8 @@
             <h2>Module Leipzig:</h2>
             <ul>
                 <li th:each="moduleLeipzig : ${modulesLeipzigArray}">
-                    <span th:text="${moduleLeipzig.name}"></span>
+                    <span th:text="${moduleLeipzig.name}"></span>,
+                    <span th:text="${moduleLeipzig.code}"></span>
                 </li>
             </ul>
         </div>
