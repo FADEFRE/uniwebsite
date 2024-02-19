@@ -84,20 +84,6 @@ public class GeneratedPdfService {
 
         return context;
     }
-    
-
-    public List<List<ExternalModule>> getExternalModules(String id){
-        Application application = applicationService.getApplicationStudentById(id);
-        List<ModulesConnection> modulesConnections = application.getModulesConnections();
-        List<List<ExternalModule>> externalModulesList = new ArrayList<>();
-
-        for (ModulesConnection connection : modulesConnections) {
-            List<ExternalModule> externalModuleList = connection.getExternalModules();
-            externalModulesList.add(externalModuleList);
-        }
-
-        return externalModulesList;
-    }
 
     public List<ModulesConnection> getModulesConnections(String id){
         Application application = applicationService.getApplicationById(id);
