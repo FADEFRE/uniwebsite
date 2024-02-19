@@ -226,7 +226,6 @@ const saveCourseLeipzig = () => {
     @include smallHighlightBox();
     @include verticalListItem($gray);
     width: 100%;
-    transition: 0.1s ease-in-out;
 
     display: flex;
     justify-content: space-between;
@@ -280,7 +279,6 @@ const saveCourseLeipzig = () => {
     width: 100%;
     background-color: $gray;
     border-right: 3px solid $red;
-    transition: 0.1s ease-in-out;
 
     display: flex;
     justify-content: space-between;
