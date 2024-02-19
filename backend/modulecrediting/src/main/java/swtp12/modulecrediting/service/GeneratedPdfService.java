@@ -58,7 +58,7 @@ public class GeneratedPdfService {
         return templateEngine.process("GeneralData", context);
     }
 
-    public String modulesConnectionsTemplate(String id, ModulesConnection connection) {
+    public String modulesConnectionsTemplate(String id, Context context) {
         ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
         templateResolver.setSuffix(".html");
         templateResolver.setPrefix("templates/");
@@ -67,29 +67,24 @@ public class GeneratedPdfService {
         TemplateEngine templateEngine = new TemplateEngine();
         templateEngine.setTemplateResolver(templateResolver);
 
-        Context context = fillModuleConnectionTemplate(id);
-        context.setVariable("externalModulesMap", connection);
-
         return templateEngine.process("ModulesConnection", context);
     }
 
-    public Context fillModuleConnectionTemplate(String id ){
+    public Context fillModuleConnectionTemplate(String id, ModulesConnection connection) {
         Context context = new Context();
-        List<ModulesConnection> modulesConnections = getModulesConnections(id);
 
-        for(ModulesConnection connection : modulesConnections){
-            List<ExternalModule> externalModules = connection.getExternalModules();
-            List<ModuleLeipzig> moduleLeipzigs = connection.getModulesLeipzig();
-            
-            context.setVariable("externalModules" + connection.getId(), externalModules);
-            context.setVariable("moduleLeipzigs" + connection.getId() , moduleLeipzigs);
-        }
+        List<ExternalModule> externalModules = connection.getExternalModules();
+        List<ModuleLeipzig> modulesLeipzig = connection.getModulesLeipzig();
 
+        ExternalModule[] externalModulesArray = externalModules.toArray(new ExternalModule[externalModules.size()]);
+        ModuleLeipzig[] modulesLeipzigArray = modulesLeipzig.toArray(new ModuleLeipzig[modulesLeipzig.size()]);
 
-        
+        context.setVariable("externalModulesArray", externalModulesArray);
+        context.setVariable("modulesLeipzigArray", modulesLeipzigArray);
+
         return context;
-
     }
+    
 
     public List<List<ExternalModule>> getExternalModules(String id){
         Application application = applicationService.getApplicationStudentById(id);
@@ -127,7 +122,8 @@ public class GeneratedPdfService {
             addPdfToCopy(copy, generalDataPdf);
 
             for (ModulesConnection connection : modulesConnections) {
-                String connectionHtml = modulesConnectionsTemplate(id, connection);
+                Context context = fillModuleConnectionTemplate(id, connection);
+                String connectionHtml = modulesConnectionsTemplate(id, context);
                 byte[] connectionPdf = parseHtml(connectionHtml);
                 addPdfToCopy(copy, connectionPdf);
             }

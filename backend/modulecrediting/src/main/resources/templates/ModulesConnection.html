@@ -12,23 +12,20 @@
             <img class="logo" th:src="@{classpath:/static/images/Universität_leipzig_Logo.png}" alt="Bildbeschreibung"> </img>
             
       </header>
-      <div th:each="connection : ${modulesConnections}">
-        <h1>Connection ID: <span th:text="${connection.id}"></span></h1>
-       
-        <div>
+    <div>
+       <div>
             <h2>Externe Module:</h2>
             <ul>
-                
-                <li th:each="externalModule : ${'externalModules' + connection.id}">
+                <li th:each="externalModule : ${externalModulesArray}">
                     <span th:text="${externalModule.name}"></span>
                 </li>
             </ul>
         </div>
-
+    
         <div>
             <h2>Module Leipzig:</h2>
             <ul>
-                <li th:each="moduleLeipzig : ${'moduleLeipzigs' + connection.id}">
+                <li th:each="moduleLeipzig : ${modulesLeipzigArray}">
                     <span th:text="${moduleLeipzig.name}"></span>
                 </li>
             </ul>
