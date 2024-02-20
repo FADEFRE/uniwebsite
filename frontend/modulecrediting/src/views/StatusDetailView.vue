@@ -123,7 +123,9 @@ const triggerSubmit = () => {
         <ButtonAdd v-if="applicationData['fullStatus'] === 'FORMFEHLER'" @click="addNewConnection">Modulzuweisung hinzufügen</ButtonAdd>
         <ButtonLink v-if="applicationData['fullStatus'] === 'FORMFEHLER'" :redButton="true" @click="triggerSubmit">Neu einreichen</ButtonLink>
       </div>
-      <ButtonDownloadVue @click="openSummaryDocument" :fixed="true"/>
+      <ButtonDownloadVue @click="openSummaryDocument" :fixed="true">
+        Antrag herunterladen
+      </ButtonDownloadVue>
     </div>
 
     <div class="side-infos-list">

@@ -13,7 +13,7 @@ const props = defineProps({
 <template>
     <div class="button-container">
         <Button :class="{ ' fixed-button': fixed }">
-            Antrag herunterladen
+            <slot />
             <FileIcon type="download"/>
         </Button>
     </div>
