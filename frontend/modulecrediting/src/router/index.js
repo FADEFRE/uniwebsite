@@ -77,6 +77,14 @@ const router = createRouter({
       name: "management",
       component: () => import("../views/ManagementView.vue"),
       meta: { authType: "internal" },
+      children: [
+        {
+          path: "admin",
+          name: "managementAdmin",
+          component: () => import("../views/ManagementViewAdminChild.vue"),
+          meta: { authType: "admin"}
+        }
+      ]
     },
     {
       path: "/account",
