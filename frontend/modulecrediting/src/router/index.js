@@ -19,7 +19,7 @@ const router = createRouter({
       meta: { authType: "standard" },
     },
     {
-      path: "/confirmation/:id",
+      path: "/antrag/:id",
       name: "confirmation",
       component: () => import("../views/ApplicationConfirmationView.vue"),
       meta: { authType: "standard" },
