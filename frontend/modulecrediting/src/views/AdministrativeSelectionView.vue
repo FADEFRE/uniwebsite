@@ -14,10 +14,11 @@ import ApplicationOverview from "@/components/ApplicationOverview.vue";
 import { getApplications } from "@/scripts/axios-requests";
 import { parseRequestDate } from "@/scripts/date-utils";
 import { filterApplications } from "@/scripts/applications-filter";
+import LoadingContainer from "@/components/LoadingContainer.vue";
 
 const route = useRoute()
 
-let allApplications = ref([])
+let allApplications = ref()
 onBeforeMount(() => {
   getApplications()
     .then(data => allApplications.value = data)
@@ -35,26 +36,36 @@ const filteredApplications = computed(() => {
 </script>
 
 <template>
-  <div class="main">
+  <div v-if="allApplications" class="main">
     <div class="side-infos-list wide">
       <FilterSelector ref="filter" />
     </div>
 
     <div class="content-container split narrow">
 
-      <div v-for="application in filteredApplications">
+      <div v-if="allApplications.length > 0" v-for="application in filteredApplications">
         <ApplicationOverview :id="application['id']" :status="application['fullStatus']"
           :course="application['courseLeipzig']['name']" :creation-date="parseRequestDate(application['creationDate'])"
           :last-edited-date="parseRequestDate(application['lastEditedDate'])"
           :decision-date="parseRequestDate(application['decisionDate'])" :forward="route.meta['forward']"
           :adminSelectionView="true" class="admin-selection-view" />
       </div>
+      <div v-else class="applications-empty">
+        <p>Es gibt keine Anträge.</p>
+      </div>
 
     </div>
+  </div>
+  <div v-else class="main centered">
+    <LoadingContainer />
   </div>
 </template>
 
 <style scoped lang="scss">
 @use '@/assets/styles/util' as *;
 @use '@/assets/styles/global' as *;
+
+.applications-empty {
+  align-self: center;
+}
 </style>
