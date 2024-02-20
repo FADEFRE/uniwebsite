@@ -41,7 +41,7 @@ async function login (login_username, login_password) {
                     window.open(routeData1.href, '_top')
                     break;
                 case "ROLE_ADMIN":
-                    const routeData2 = router.resolve({ name: 'accountAdmin' })
+                    const routeData2 = router.resolve({ name: 'managementAdmin' })
                     window.open(routeData2.href, '_top')
                     break;
                 default:
