@@ -46,6 +46,7 @@ const discardEditCourseChanges = () => {
 }
 
 const setSelectedModules = () => {
+  selectedModules.value = undefined
   getModulesNameCodeByCourse(selectedCourse.value)
       .then(data => selectedModules.value = data)
 }
@@ -83,7 +84,7 @@ const saveCourseLeipzig = () => {
 
     <div v-if="selectedCourse" class="edit-container">
 
-      <div v-if="courses && allModules && selectedModules && selectedModules" class="screen-split">
+      <div v-if="courses && allModules && selectedModules && selectableModules" class="screen-split">
         <div class="selectable-modules-container">
           <h3>Wählbare Module</h3>
           <div class="input-search-field-container">
@@ -159,7 +160,7 @@ const saveCourseLeipzig = () => {
         </div>
       </div>
       <div v-else>
-        <p>Loading ...</p>
+        <p>Loading ...</p>  <!-- todo change to LoadingContainer -->
       </div>
 
     </div>
