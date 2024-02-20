@@ -118,7 +118,9 @@ defineExpose({
       <p v-else-if="props.selectedFile?.name" class="ellipsis-text-overflow">{{ props.selectedFile?.name }}</p>
 
       <div v-else class="file-drop-unselected">
-        <p class="ellipsis-text-overflow">Modulbeschreibung hochladen</p>
+        <p class="ellipsis-text-overflow">
+          <slot />
+        </p>
         <FileIcon type="upload"/>
       </div>
       <input type="file" ref="fileInput" @change="handleFiles" />

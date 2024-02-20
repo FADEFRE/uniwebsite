@@ -138,7 +138,9 @@ defineExpose({
 
         </div>
 
-        <FileInput :readonly="!allowFileEdit" :selected-file="props.selectedFile" ref="fileInput" />
+        <FileInput :readonly="!allowFileEdit" :selected-file="props.selectedFile" ref="fileInput">
+          Modulbeschreibung auswählen
+        </FileInput>
       </div>
 
     </div>
