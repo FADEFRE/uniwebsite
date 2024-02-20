@@ -51,7 +51,14 @@ const specificRole = computed(() => navStore.getCurrentRoleNav)
       </router-link>
     </div>
 
-    <div v-if="specificRole !== 'admin'" :class="{ 'user-specific-container': isMenuOpen }">
+    <div v-if="specificRole === 'admin'" :class="{ 'user-specific-container': isMenuOpen }">
+      <router-link :to="{ name: 'managementAdmin' }" class="router-link icon-hover-right" @click="$emit('linkClicked')"
+                   :class="{ 'white': isMenuOpen }">
+        Verwaltung
+        <ArrowIcon direction="right" :color="isMenuOpen ? 'dark-gray' : 'white'"/>
+      </router-link>
+    </div>
+    <div v-else :class="{ 'user-specific-container': isMenuOpen }">
       <router-link :to="{ name: 'management' }" class="router-link icon-hover-right" @click="$emit('linkClicked')"
                    :class="{ 'white': isMenuOpen }">
         Verwaltung
