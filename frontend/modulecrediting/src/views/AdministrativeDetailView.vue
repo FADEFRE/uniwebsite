@@ -3,17 +3,16 @@ import { useRoute, useRouter } from "vue-router";
 import { ref, computed, onBeforeMount } from "vue";
 import ApplicationOverview from "@/components/ApplicationOverview.vue";
 import AdministrativePanel from "@/components/AdministrativePanel.vue";
+import ApplicationConnectionLinks from "@/components/ApplicationConnectionLinks.vue";
 import ButtonLink from "@/components/ButtonLink.vue";
-import ArrowIcon from "../assets/icons/ArrowIcon.vue";
+import ApplicationControl from "../assets/icons/ApplicationControl.vue";
+import MoveTop from "../assets/icons/MoveTop.vue";
+import NotSavedIcon from "../assets/icons/NotSavedIcon.vue";
 import {
   getApplicationById, getModulesByCourse,
   getUpdateStatusAllowed, updateStatus, putApplicationStudyOffice, putApplicationChairman
 } from "@/scripts/axios-requests";
 import { parseRequestDate } from "@/scripts/date-utils";
-import ApplicationConnectionLinks from "@/components/ApplicationConnectionLinks.vue";
-import ApplicationControl from "../assets/icons/ApplicationControl.vue";
-import MoveTop from "../assets/icons/MoveTop.vue";
-import NotSavedIcon from "../assets/icons/NotSavedIcon.vue";
 
 const route = useRoute()
 const router = useRouter();
