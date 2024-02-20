@@ -107,9 +107,11 @@ const saveCourseLeipzig = () => {
             </div>
           </TransitionGroup>
 
-          <div v-if="selectableModules.length === 0">
-            <p>Alle Module sind dem Studiengang hinzugefügt.</p>
-          </div>
+          <Transition name="empty-text">
+            <div v-if="selectableModules.length === 0">
+              <p>Alle Module sind dem Studiengang hinzugefügt.</p>
+            </div>
+          </Transition>
 
         </div>
 
@@ -153,9 +155,11 @@ const saveCourseLeipzig = () => {
             </div>
           </TransitionGroup>
 
-          <div v-if="addedModules.length === 0 && selectedModules.length === 0">
-            <p>Es sind keine Module zum Studiengang hinzugefügt.</p>
-          </div>
+          <Transition name="empty-text">
+            <div v-if="addedModules.length === 0 && selectedModules.length === 0">
+              <p>Es sind keine Module zum Studiengang hinzugefügt.</p>
+            </div>
+          </Transition>
 
         </div>
       </div>
@@ -194,6 +198,18 @@ const saveCourseLeipzig = () => {
 
 .separator-leave-active {
   transition-delay: 0.25s;
+}
+
+.empty-text-enter-from {
+  opacity: 0;
+}
+
+.empty-text-enter-to {
+  opacity: 1;
+}
+
+.empty-text-enter-active {
+  transition-delay: 0.25s
 }
 
 .management-edit-course-container {
