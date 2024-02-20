@@ -128,8 +128,8 @@ const triggerPostApplication = () => {
             <h4>Sprechzeiten</h4>
             <p>Dienstag und Donnerstag: 9:00 - 11:30 Uhr und 12:30 - 16:00 Uhr</p>
           </div>
-          <a href="https://www.mathcs.uni-leipzig.de/studium/studienbuero">
-            <ButtonLink>
+          <a href="https://www.mathcs.uni-leipzig.de/studium/studienbuero" target="_blank" >
+            <ButtonLink :external="true">
               Zum Studienbüro
             </ButtonLink>
           </a>

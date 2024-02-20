@@ -13,6 +13,10 @@ const props = defineProps({
   redButton: {
     type: Boolean,
     default: false
+  },
+  external: {
+    type: Boolean,
+    default: false
   }
 })
 </script>
@@ -20,9 +24,15 @@ const props = defineProps({
 
 <template>
   <div class="button-container">
-    <Button :disabled="disabled" :class="{ ' fixed-button': fixed, 'disabled': disabled, 'red-button': redButton }" class="icon-hover-right">
+    <Button
+        role="link"
+        :disabled="disabled"
+        :class="{ ' fixed-button': fixed, 'disabled': disabled, 'red-button': redButton }"
+        class="icon-hover-right"
+    >
       <slot />
       <ArrowIcon direction="right" :hover="true"/>
+      <small v-if="external">(externer Link)</small>
     </Button>
   </div>
 </template>
