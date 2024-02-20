@@ -13,6 +13,7 @@ import {
   getUpdateStatusAllowed, updateStatus, putApplicationStudyOffice, putApplicationChairman
 } from "@/scripts/axios-requests";
 import { parseRequestDate } from "@/scripts/date-utils";
+import LoadingContainer from "@/components/LoadingContainer.vue";
 
 const route = useRoute()
 const router = useRouter();
@@ -163,6 +164,9 @@ const triggerPassOn = () => {
         Zurückweisen
       </ButtonLink>
     </div>
+  </div>
+  <div v-else class="main centered">
+    <LoadingContainer />
   </div>
 </template>
 
