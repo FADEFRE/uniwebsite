@@ -16,6 +16,7 @@ import ButtonDownloadVue from '../components/ButtonDownload.vue';
 import { url } from "@/scripts/url-config"
 import { getApplicationByIdForStatus, getModulesByCourse, putApplicationStudent } from "@/scripts/axios-requests";
 import { parseRequestDate } from "@/scripts/date-utils";
+import LoadingContainer from "../components/LoadingContainer.vue";
 
 const id = useRoute().params.id
 const summaryDocumentLink = `${url}/file/pdf-documents/application/${id}`
@@ -92,9 +93,9 @@ const triggerSubmit = () => {
 </script>
 
 <template>
-  <div class="main">
+  <div v-if="applicationData" class="main">
 
-    <div v-if="applicationData" class="content-container split">
+    <div class="content-container split">
 
       <div v-if="applicationData['fullStatus'] === 'FORMFEHLER'" class="formal-rejection-info-container">
         <FormalRejectionInfoBox />
@@ -180,6 +181,10 @@ const triggerSubmit = () => {
 
       </SideInfoContainer>
     </div>
+
+  </div>
+  <div v-else class="main centered">
+    <LoadingContainer />
   </div>
 </template>
 
