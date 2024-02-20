@@ -11,7 +11,7 @@ slots:
 <template>
     <Button class="button-container">
       <slot></slot>
-      <img src="../assets/icons/PlusIcon.svg">
+      <img src="../assets/icons/PlusIcon.svg" alt="">
     </Button>
 </template>
 
