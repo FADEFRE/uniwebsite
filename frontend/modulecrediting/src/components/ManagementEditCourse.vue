@@ -11,10 +11,10 @@ const allModules = ref([])
 
 // allModules of selected course
 const addedModules = ref([])
-const selectedModules = ref([])
+const selectedModules = ref()
 
 const selectableModules = computed(() => {
-  if (selectedModules.value.length > 0) {
+  if (selectedModules) {
     const selectedModuleNames = [...selectedModules.value, ...addedModules.value].map(singleModule => singleModule.name);
 
     const selectableModules = allModules.value.filter(singleModule => !selectedModuleNames.includes(singleModule.name));
@@ -25,7 +25,7 @@ const selectableModules = computed(() => {
       return singleModule.name.toLocaleLowerCase().includes(searchString.value.toLocaleLowerCase());
     })
   } else {
-    return []
+    return undefined
   }
 });
 
@@ -81,80 +81,87 @@ const saveCourseLeipzig = () => {
       </div>
     </div>
 
-    <div v-if="selectedCourse" class="screen-split">
-      <div class="selectable-modules-container">
-        <h3>Wählbare Module</h3>
-        <div class="input-search-field-container">
-          <InputText v-model="searchString" placeholder="Modul suchen" />
-          <img src="@/assets/icons/SearchIcon.svg" class="search-icon">
-        </div>
+    <div v-if="selectedCourse" class="edit-container">
 
-        <TransitionGroup name="list-left" tag="div" class="selectable-modules-container">
-          <div
-              v-for="singleModule in selectableModules"
-              :key="singleModule.name"
-              @click="addModuleToCourse(singleModule)"
-              class="single-selectable-module-item icon-hover-right"
-          >
-            <div class="module-text-container">
-              <p>{{ singleModule.name }}</p>
-              <small>{{ singleModule.code }}</small>
-            </div>
-            <ArrowIcon color="red" direction="right"/>
+      <div v-if="courses && allModules && selectedModules && selectedModules" class="screen-split">
+        <div class="selectable-modules-container">
+          <h3>Wählbare Module</h3>
+          <div class="input-search-field-container">
+            <InputText v-model="searchString" placeholder="Modul suchen" />
+            <img src="@/assets/icons/SearchIcon.svg" class="search-icon">
           </div>
-        </TransitionGroup>
 
-        <div v-if="selectableModules.length === 0">
-          <p>Alle Module sind dem Studiengang hinzugefügt.</p>
+          <TransitionGroup name="list-left" tag="div" class="selectable-modules-container">
+            <div
+                v-for="singleModule in selectableModules"
+                :key="singleModule.name"
+                @click="addModuleToCourse(singleModule)"
+                class="single-selectable-module-item icon-hover-right"
+            >
+              <div class="module-text-container">
+                <p>{{ singleModule.name }}</p>
+                <small>{{ singleModule.code }}</small>
+              </div>
+              <ArrowIcon color="red" direction="right"/>
+            </div>
+          </TransitionGroup>
+
+          <div v-if="selectableModules.length === 0">
+            <p>Alle Module sind dem Studiengang hinzugefügt.</p>
+          </div>
+
         </div>
 
+        <div class="selected-modules-container">
+          <h3>Module in {{ selectedCourse }}</h3>
+
+          <TransitionGroup name="list-right" tag="div" class="selectable-modules-container">
+            <div
+                v-for="singleModule in addedModules"
+                :key="singleModule.name"
+                @click="removeModuleFromCourse(singleModule)"
+                class="single-selected-module-item icon-hover-left"
+            >
+              <ArrowIcon color="red" direction="left"/>
+              <div class="module-text-container">
+                <p>{{ singleModule.name }}</p>
+                <small>{{ singleModule.code }}</small>
+              </div>
+            </div>
+          </TransitionGroup>
+
+          <Transition name="separator">
+            <div v-if="addedModules.length" class="break-container">
+              <div class="break-line"></div>
+              <h4 class="break-text">NEU</h4>
+            </div>
+          </Transition>
+
+          <TransitionGroup name="list-right" tag="div" class="selectable-modules-container">
+            <div
+                v-for="singleModule in selectedModules"
+                :key="singleModule.name"
+                @click="removeModuleFromCourse(singleModule)"
+                class="single-selected-module-item icon-hover-left"
+            >
+              <ArrowIcon color="red" direction="left"/>
+              <div class="module-text-container">
+                <p>{{ singleModule.name }}</p>
+                <small>{{ singleModule.code }}</small>
+              </div>
+            </div>
+          </TransitionGroup>
+
+          <div v-if="addedModules.length === 0 && selectedModules.length === 0">
+            <p>Es sind keine Module zum Studiengang hinzugefügt.</p>
+          </div>
+
+        </div>
+      </div>
+      <div v-else>
+        <p>Loading ...</p>
       </div>
 
-      <div class="selected-modules-container">
-        <h3>Module in {{ selectedCourse }}</h3>
-
-        <TransitionGroup name="list-right" tag="div" class="selectable-modules-container">
-          <div
-              v-for="singleModule in addedModules"
-              :key="singleModule.name"
-              @click="removeModuleFromCourse(singleModule)"
-              class="single-selected-module-item icon-hover-left"
-          >
-            <ArrowIcon color="red" direction="left"/>
-            <div class="module-text-container">
-              <p>{{ singleModule.name }}</p>
-              <small>{{ singleModule.code }}</small>
-            </div>
-          </div>
-        </TransitionGroup>
-
-        <Transition name="separator">
-          <div v-if="addedModules.length" class="break-container">
-            <div class="break-line"></div>
-            <h4 class="break-text">NEU</h4>
-          </div>
-        </Transition>
-
-        <TransitionGroup name="list-right" tag="div" class="selectable-modules-container">
-          <div
-              v-for="singleModule in selectedModules"
-              :key="singleModule.name"
-              @click="removeModuleFromCourse(singleModule)"
-              class="single-selected-module-item icon-hover-left"
-          >
-            <ArrowIcon color="red" direction="left"/>
-            <div class="module-text-container">
-              <p>{{ singleModule.name }}</p>
-              <small>{{ singleModule.code }}</small>
-            </div>
-          </div>
-        </TransitionGroup>
-
-        <div v-if="addedModules.length === 0 && selectedModules.length === 0">
-          <p>Es sind keine Module zum Studiengang hinzugefügt.</p>
-        </div>
-
-      </div>
     </div>
   </div>
 </template>
@@ -212,6 +219,9 @@ const saveCourseLeipzig = () => {
   gap: spacing(m);
 }
 
+.edit-container {
+  width: 100%;
+}
 
 .screen-split {
   @include screenSplit();
