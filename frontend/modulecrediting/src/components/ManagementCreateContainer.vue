@@ -1,7 +1,8 @@
 <script setup>
-import ButtonAdd from "@/components/ButtonAdd.vue";
 import { ref } from 'vue';
+import ButtonLink from "@/components/ButtonLink.vue";
 import { postCourseLeipzig, postModuleLeipzig } from "@/scripts/axios-requests";
+
 const props = defineProps({
     type: {
         required: true,
@@ -49,7 +50,7 @@ const createModuleLeipzig = () => {
                 :class="{ 'invalid': courseExists }" />
             <small v-if="courseExists" class="invalid-text">Studiengang existiert bereits</small>
         </div>
-        <ButtonAdd @click="createCourseLeipzig">Studiengang hinzufügen</ButtonAdd>
+        <ButtonLink @click="createCourseLeipzig">Studiengang hinzufügen</ButtonLink>
     </div>
 
 
@@ -62,7 +63,7 @@ const createModuleLeipzig = () => {
             </div>
             <small v-if="moduleExists" class="invalid-text">Studiengang existiert bereits</small>
         </div>
-        <ButtonAdd @click="createModuleLeipzig">Modul hinzufügen</ButtonAdd>
+        <ButtonLink @click="createModuleLeipzig">Modul hinzufügen</ButtonLink>
     </div>
 </template>
 
