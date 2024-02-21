@@ -21,6 +21,7 @@ public class JsonLeipzigDataService {
     @Autowired
     private ModuleLeipzigRepository moduleLeipzigRepository;
 
+
     public void uploadData(MultipartFile multipartFile) {
 
         JsonNode coursesNode = jsonUtil.grabJsonNodeFromMultipartFile(multipartFile, "courses");
@@ -30,6 +31,7 @@ public class JsonLeipzigDataService {
                     .orElseGet(() -> {
                         return courseLeipzigRepository.save(new CourseLeipzig(courseName));
                     });
+            courseLeipzig.removeModulesLeipzig();
 
             JsonNode modulesNode = jsonUtil.grabJsonNodeFromJsonNode(course, "modules");
             for (JsonNode module : modulesNode) {
