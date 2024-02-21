@@ -77,7 +77,7 @@ public class SecurityCipher {
 
                 return new String(cipher.doFinal(Base64.getDecoder().decode(strToDecrypt)));
             } catch (Exception e) {
-                System.out.println(LocalDateTime.now() + " Der Fehler im Backend");
+                System.out.println(LocalDateTime.now() + " Der Fehler im Backend: " + counter);
                 counter ++;
             }
         }
