@@ -569,6 +569,17 @@ function postModuleLeipzig(modulename, modulecode) {
     .catch((error) => Promise.reject(error));
 }
 
+function postJsonConfig (configFile) {
+    console.debug("%c" + "postJsonConfig (configFile: " + configFile + ")", axiosColor)
+
+    const formData = new FormData()
+    formData.append("jsonFile", configFile)
+
+    return httpResource.post("/file/json/courses/upload", formData)
+        .then(response => response.data)
+        .catch(_ => {})
+}
+
 function getUserMe () {
     console.debug("%c" + "getUserMe ()", axiosColor)
 
@@ -695,6 +706,7 @@ export {
     updateStatus,
     postCourseLeipzig,
     postModuleLeipzig,
+    postJsonConfig,
     getUserMe,
     getUserMeId,
     getUserMeName,

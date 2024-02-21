@@ -1,10 +1,21 @@
 <script setup>
+import { ref } from "vue";
 import ButtonDownload from "../components/ButtonDownload.vue";
 import FileInput from "../components/FileInput.vue";
 import ButtonLink from "../components/ButtonLink.vue";
 import { url } from "@/scripts/url-config";
+import {postJsonConfig} from "@/scripts/axios-requests";
 
 const jsonLink = `${url}/file/json/courses`
+
+const fileInput = ref()
+
+const uploadJson = () => {
+  if (fileInput.value.checkValidity().value) {
+    postJsonConfig(fileInput.value.selectedFile)
+        .then(_ => location.reload())
+  }
+}
 </script>
 
 <template>
@@ -41,8 +52,8 @@ const jsonLink = `${url}/file/json/courses`
         <div class="split-content">
           <h3>Upload</h3>
           <div>
-            <FileInput :readonly="false">JSON auswählen</FileInput>
-            <ButtonLink :red-button="true">JSON hochladen</ButtonLink>
+            <FileInput :readonly="false" type="json" ref="fileInput">JSON auswählen</FileInput>
+            <ButtonLink :red-button="true" @click="uploadJson">JSON hochladen</ButtonLink>
           </div>
           <small>Ändert die Konfiguration gemäß der ausgewählten Datei. Bitte obigen Hinweis beachten.</small>
         </div>
