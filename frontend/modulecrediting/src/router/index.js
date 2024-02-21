@@ -115,7 +115,7 @@ const router = createRouter({
     {
       path: "/:pathMatch(.*)*",
       name: "IdError",
-      component: () => import("../views/IdErrorView.vue"),
+      component: () => import("../views/ErrorIDView.vue"),
       meta: { authType: "standard" },
     },
     {
