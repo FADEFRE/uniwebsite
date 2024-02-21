@@ -74,8 +74,7 @@ public class TestDataLoader {
     }
 
     /**
-     * The run function hooks into the run function of the main. 
-     * Reads Uni Leipzig Data from a JSON and writes it into the database
+     * The run function reads Uni Leipzig Data from a JSON and writes it into the database
      * Reads test data from a Json and writes it into the databse
      */
     @Transactional
@@ -200,7 +199,7 @@ public class TestDataLoader {
 
             applicationDTO.setCourseLeipzig(cL.getName());
 
-            int rIdx = rand.nextInt(3) + 2;
+            int rIdx = rand.nextInt(20) + 2;
             for (int i = 0; i < rIdx; i++) {
                 ModulesConnectionDTO modulesConnection = createModulesConnectionDTO(cL, moduleSettingsNode);
                 listModuleCreateDTO.add(modulesConnection);
