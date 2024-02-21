@@ -73,7 +73,7 @@ public class JsonLeipzigDataService {
             JsonNode modulesNode = jsonUtil.grabJsonNodeFromJsonNode(course, "modules");
             for (JsonNode module : modulesNode) {
                 String moduleName = module.get("name").asText();
-                String moduleCode = module.get("number").asText();
+                String moduleCode = module.get("code").asText();
                 ModuleLeipzig moduleLeipzig = moduleLeipzigRepository.findByName(moduleName)
                         .orElseGet(() -> {
                             return moduleLeipzigRepository.save(new ModuleLeipzig(moduleName, moduleCode));
