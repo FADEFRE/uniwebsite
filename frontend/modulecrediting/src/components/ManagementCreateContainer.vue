@@ -1,8 +1,8 @@
 <script setup>
-import ButtonAdd from "@/components/ButtonAdd.vue";
 import { ref } from 'vue';
-import { postCourseLeipzig, postModuleLeipzig } from "@/scripts/axios-requests";
 import ButtonLink from "@/components/ButtonLink.vue";
+import { postCourseLeipzig, postModuleLeipzig } from "@/scripts/axios-requests";
+
 const props = defineProps({
     type: {
         required: true,
