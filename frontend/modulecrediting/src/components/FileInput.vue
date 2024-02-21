@@ -12,14 +12,18 @@ displays:
 
 <script setup>
 import { ref } from "vue";
-import { url } from "@/scripts/url-config";
 import ButtonLink from "@/components/ButtonLink.vue";
 import FileIcon from "../assets/icons/FileIcon.vue";
+import { url } from "@/scripts/url-config";
 
 const props = defineProps({
   readonly: {
     required: true,
-    type: Boolean,
+    type: Boolean
+  },
+  type: {
+    required: true,
+    type: String
   },
   selectedFile: {
     type: Object
@@ -39,15 +43,33 @@ const fileInput = ref()
 const selectedFile = ref()
 
 const checkFile = (file) => {
-  if (file.type !== 'application/pdf') {
-    alert('Die Modulbeschreibung muss eine PDF sein.')
+  if (props.type === 'pdf') {
+
+    if (file.type !== 'application/pdf') {
+      alert('Die Modulbeschreibung muss eine PDF sein.')
+      return false
+    }
+    if (file.size > 10000000) {
+      alert('Die Modulbeschreibung darf nicht größer als 10 MB sein.')
+      return false
+    }
+    return true
+
+  } else if (props.type === 'json') {
+
+    if (file.type !== 'application/json') {
+      alert('Es muss eine JSON Datei ausgewählt werden.')
+      return false
+    }
+    return true
+
+  } else {
+
+    console.warn('FileInput: prop type does not match any of the predefined values (defined in checkFile function)')
+    alert('Es ist etwas schief gelaufen.')
     return false
+
   }
-  if (file.size > 10000000) {
-    alert('Die Modulbeschreibung darf nicht größer als 10 MB sein.')
-    return false
-  }
-  return true
 }
 
 const openFileDialog = () => {
