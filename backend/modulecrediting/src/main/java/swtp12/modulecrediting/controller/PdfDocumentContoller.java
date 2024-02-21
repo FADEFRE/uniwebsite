@@ -27,7 +27,12 @@ public class PdfDocumentContoller {
 
     @GetMapping("/{id}")
     public ResponseEntity<byte[]> getPdfDocumentById(@PathVariable Long id) {
-        return ResponseEntity.ok().contentType(MediaType.APPLICATION_PDF).body(pdfDocumentService.getPdfDocumentDataById(id));
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDispositionFormData("attachment", pdfDocumentService.getPdfDocumentNameById(id));
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(pdfDocumentService.getPdfDocumentDataById(id));
     }
     
     @GetMapping("/application/{id}")

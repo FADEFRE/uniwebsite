@@ -52,6 +52,11 @@ public class PdfDocumentService {
         return pdfDocument.getPdfData();
     }
 
+    public String getPdfDocumentNameById(Long id) {
+        PdfDocument pdfDocument = getPdfDocumentById(id);
+        return pdfDocument.getName();
+    }
+
     public PdfDocument getPdfDocumentById(Long id) {
         Optional<PdfDocument> pdfDocumentOptional = pdfDocumentRepository.findById(id);
         if (pdfDocumentOptional.isPresent()) return pdfDocumentOptional.get();
