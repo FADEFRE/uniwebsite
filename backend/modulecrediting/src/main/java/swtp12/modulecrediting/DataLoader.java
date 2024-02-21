@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -16,7 +17,7 @@ import swtp12.modulecrediting.repository.RoleRepository;
 import swtp12.modulecrediting.repository.UserRepository;
 
 @Component
-public class RoleLoader implements CommandLineRunner {
+public class DataLoader implements CommandLineRunner {
 
     @Autowired
     private RoleRepository roleRepository;
@@ -26,11 +27,12 @@ public class RoleLoader implements CommandLineRunner {
     private PasswordEncoder encoder;
     @Autowired
     private TestDataLoader testDataLoader;
-
-    private static String adminUsername = "admin";
-    private static String adminPassword = "admin";
-
-    private static Boolean loadTestData = true;
+    @Value("${app.config.data.adminUsername}")
+    private String adminUsername;
+    @Value("${app.config.data.adminPassword}")
+    private String adminPassword;
+    @Value("${app.config.data.loadTestData}")
+    private String loadTestData;
 
 
     @Override
@@ -42,7 +44,7 @@ public class RoleLoader implements CommandLineRunner {
 
         adminCreation();
 
-        if (loadTestData) {
+        if (loadTestData.equals("true")) {
             System.out.println();
             System.out.println("--- Dataloader: Starting to load testdata ---");
             testDataLoader.run();
