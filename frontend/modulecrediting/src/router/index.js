@@ -109,7 +109,7 @@ const router = createRouter({
     {
       path: "/:pathMatch(.*)*",
       name: "Forbidden",
-      component: () => import("../views/ForbiddenView.vue"),
+      component: () => import("../views/ErrorForbiddenView.vue"),
       meta: { authType: "standard" },
     },
     {
