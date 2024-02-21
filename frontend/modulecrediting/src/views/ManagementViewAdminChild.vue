@@ -2,6 +2,9 @@
 import ButtonDownload from "../components/ButtonDownload.vue";
 import FileInput from "../components/FileInput.vue";
 import ButtonLink from "../components/ButtonLink.vue";
+import { url } from "@/scripts/url-config";
+
+const jsonLink = `${url}/file/json/courses`
 </script>
 
 <template>
@@ -27,9 +30,11 @@ import ButtonLink from "../components/ButtonLink.vue";
 
         <div class="split-content">
           <h3>Download</h3>
-          <ButtonDownload>
-            JSON herunterladen
-          </ButtonDownload>
+          <a :href="jsonLink" target="_blank" download>
+            <ButtonDownload>
+              JSON herunterladen
+            </ButtonDownload>
+          </a>
           <small>Der aktuelle Stand als JSON-Konfigurationsdatei</small>
         </div>
 
