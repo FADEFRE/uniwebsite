@@ -2,16 +2,14 @@
 import { useUserStore } from "@/store/userStore";
 import translate from '@/i18n/translate';
 import { useRoute } from "vue-router";
-import { computed } from "vue";
+import { ref, watch } from "vue";
 
 const store = useUserStore()
-const route = useRoute()
-const type = route.meta['authType']
-const showLanguage = computed(() => {
-    if (type !== "standard") { return false }
-    return true
-});
+const showLanguage = ref()
 
+watch(useRoute(), newRoute => {
+  showLanguage.value = newRoute.meta['authType'] === 'standard'
+})
 </script>
 
 <template>
