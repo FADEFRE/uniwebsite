@@ -31,6 +31,6 @@ watch(role, (newRole) => emit('update:modelValue', newRole))
 @use '@/assets/styles/components' as *;
 
 .role-dropdown-container {
-  width: 16rem;
+  width: 17rem;
 }
 </style>

@@ -37,26 +37,27 @@ const triggerDeleteUser = (id) => {
     <div class="user-list">
       <div v-for="user in userList">
 
-        <div v-if="user['userId'] === currentUserId" class="user-container user-self-item">
-          <p class="username-text">{{ user.username }}</p>
-          <div class="right-side">
-            <div class="user-self-container">
-              <p class="overview-text">ADMIN</p>
-            </div>
+        <div v-if="user['userId'] === currentUserId" class="user-container">
+          <div class="user-list-item user-self-list-item">
+            <p class="username-text">{{ user.username }}</p>
           </div>
           
+          <div class="user-self-role">
+              <p class="overview-text">ADMIN</p>
+          </div>
+
         </div>
 
         <div v-else class="user-container">
-          <p class="username-text">{{ user.username }}</p>
-          <div class="right-side">
-            <RoleDropdown
-              :model-value="user.role"
-              @update:model-value="(newRole) => triggerChangeRole(user.userId, newRole)"
-          />
+          <div class="user-list-item">
+            <p class="username-text">{{ user.username }}</p>
           <TrashIcon @click="triggerDeleteUser(user.userId)" />
           </div>
           
+          <RoleDropdown
+              :model-value="user.role"
+              @update:model-value="(newRole) => triggerChangeRole(user.userId, newRole)"
+          />
         </div>
 
       </div>
@@ -74,32 +75,30 @@ const triggerDeleteUser = (id) => {
 .admin-list-container {
   @include basicContainer();
 }
-
 .user-list {
   @include verticalList(s);
 }
 
-.username-text {
-  width: 50%
-}
-
-.user-container {  
+.user-list-item {
   @include verticalListItem($gray);
+  width: calc(100% - 17rem);
   padding: 0 spacing(m);
   align-items: center;
 }
-.right-side {
+.user-container {
   display: flex;
-  width: 50%;
-  justify-content: space-between;
 }
 
-.user-self-item {
-  @include verticalListItem($gray);
+
+.user-self-list-item {
   border-color: $dark-gray;
 }
-.user-self-container {
+
+.user-self-role {
   @include smallHighlightBox();
   background-color: $dark-gray;
+  width: 17rem;
+
+  justify-content: flex-start;
 }
 </style>
