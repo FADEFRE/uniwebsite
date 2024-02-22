@@ -126,7 +126,6 @@ defineExpose({
 </script>
 
 <template>
-  <div>
     <div v-if="readonly" class="read-only-container" :class="{ 'invalid': !isValid }">
       <p class="ellipsis-text-overflow">{{ props.selectedFile?.name }}</p>
       <ButtonLink @click="openFile">PDF öffnen</ButtonLink>
@@ -149,7 +148,6 @@ defineExpose({
 
     </div>
     <small v-if="!isValid" class="invalid-text">Es muss eine Datei ausgewählt sein</small>
-  </div>
 </template>
 
 <style scoped lang="scss">
