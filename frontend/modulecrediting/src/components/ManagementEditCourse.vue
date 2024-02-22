@@ -19,24 +19,48 @@ const selectableModules = computed(() => {
 
     const selectableModules = allModules.value.filter(singleModule => !selectedModuleNames.includes(singleModule.name));
 
-    if (searchString.value === '') return selectableModules;
-
-    return selectableModules.filter(singleModule => {
-      return singleModule.name.toLocaleLowerCase().includes(searchString.value.toLocaleLowerCase());
-    })
+    return selectableModules;
   } else {
     return undefined
   }
 });
 
+
 // search in selectable modules
-const searchString = ref('');
+const searchStringSelected = ref('');
+const searchStringSelectable = ref('');
+
+const addedModulesDisplay = computed(() => {
+  if (searchStringSelected.value === '') return addedModules.value;
+
+  return addedModules.value.filter(singleModule => {
+    return singleModule.name.toLocaleLowerCase().includes(searchStringSelected.value.toLocaleLowerCase());
+  })
+})
+
+const selectedModulesDisplay = computed(() => {
+  if (searchStringSelected.value === '') return selectedModules.value;
+
+  return selectedModules.value.filter(singleModule => {
+    return singleModule.name.toLocaleLowerCase().includes(searchStringSelected.value.toLocaleLowerCase());
+  })
+})
+
+const selectableModulesDisplay = computed(() => {
+  if (searchStringSelectable.value === '') return selectableModules.value;
+
+  return selectableModules.value.filter(singleModule => {
+    return singleModule.name.toLocaleLowerCase().includes(searchStringSelectable.value.toLocaleLowerCase());
+  })
+})
+
+
 
 onBeforeMount(() => {
   getCoursesLeipzigName()
-      .then(data => courses.value = data)
+    .then(data => courses.value = data)
   getModulesNameCode()
-      .then(data => allModules.value = data)
+    .then(data => allModules.value = data)
 })
 
 const discardEditCourseChanges = () => {
@@ -48,7 +72,7 @@ const discardEditCourseChanges = () => {
 const setSelectedModules = () => {
   selectedModules.value = undefined
   getModulesNameCodeByCourse(selectedCourse.value)
-      .then(data => selectedModules.value = data)
+    .then(data => selectedModules.value = data)
 }
 
 const addModuleToCourse = (clickedModule) => {
@@ -62,7 +86,7 @@ const removeModuleFromCourse = (clickedModule) => {
 
 const saveCourseLeipzig = () => {
   putCourseLeipzigEdit(selectedCourse.value, [...selectedModules.value, ...addedModules.value])
-      .then(_ => location.reload())
+    .then(_ => location.reload())
 }
 </script>
 
@@ -70,10 +94,10 @@ const saveCourseLeipzig = () => {
   <div class="management-edit-course-container">
     <div class="select-header-container">
       <h2>STUDIENGANG BEARBEITEN</h2>
-      <Dropdown v-model="selectedCourse" :options="courses" placeholder="Studiengang wählen"
-                @change="setSelectedModules" class="dropdown" v-if="!selectedCourse">
+      <Dropdown v-model="selectedCourse" :options="courses" placeholder="Studiengang wählen" @change="setSelectedModules"
+        class="dropdown" v-if="!selectedCourse">
         <template #dropdownicon>
-          <ArrowIcon color="white" direction="down"/>
+          <ArrowIcon color="white" direction="down" />
         </template>
       </Dropdown>
       <div v-else class="saving-buttons-container">
@@ -88,23 +112,20 @@ const saveCourseLeipzig = () => {
         <div class="selectable-modules-container">
           <h3>Wählbare Module</h3>
           <div class="input-search-field-container">
-            <InputText v-model="searchString" placeholder="Modul suchen" />
+            <InputText v-model="searchStringSelectable" placeholder="Wählbare Module suchen" />
             <img src="@/assets/icons/SearchIcon.svg" class="search-icon">
           </div>
-
           <TransitionGroup name="list-left" tag="div" class="selectable-modules-container">
-            <div
-                v-for="singleModule in selectableModules"
-                :key="singleModule.name"
-                @click="addModuleToCourse(singleModule)"
-                class="single-selectable-module-item icon-hover-right"
-            >
+            
+            <div v-for="singleModule in selectableModulesDisplay" :key="singleModule.name"
+              @click="addModuleToCourse(singleModule)" class="single-selectable-module-item icon-hover-right">
               <div class="module-text-container">
                 <p>{{ singleModule.name }}</p>
                 <small>{{ singleModule.code }}</small>
               </div>
-              <ArrowIcon color="red" direction="right"/>
+              <ArrowIcon color="red" direction="right" />
             </div>
+
           </TransitionGroup>
 
           <Transition name="empty-text">
@@ -117,15 +138,14 @@ const saveCourseLeipzig = () => {
 
         <div class="selected-modules-container">
           <h3>Module in {{ selectedCourse }}</h3>
-
+          <div class="input-search-field-container">
+            <InputText v-model="searchStringSelected" placeholder="Ausgewählte Module suchen" />
+            <img src="@/assets/icons/SearchIcon.svg" class="search-icon">
+          </div>
           <TransitionGroup name="list-right" tag="div" class="selectable-modules-container">
-            <div
-                v-for="singleModule in addedModules"
-                :key="singleModule.name"
-                @click="removeModuleFromCourse(singleModule)"
-                class="single-selected-module-item icon-hover-left"
-            >
-              <ArrowIcon color="red" direction="left"/>
+            <div v-for="singleModule in addedModulesDisplay" :key="singleModule.name"
+              @click="removeModuleFromCourse(singleModule)" class="single-selected-module-item icon-hover-left">
+              <ArrowIcon color="red" direction="left" />
               <div class="module-text-container">
                 <p>{{ singleModule.name }}</p>
                 <small>{{ singleModule.code }}</small>
@@ -141,13 +161,9 @@ const saveCourseLeipzig = () => {
           </Transition>
 
           <TransitionGroup name="list-right" tag="div" class="selectable-modules-container">
-            <div
-                v-for="singleModule in selectedModules"
-                :key="singleModule.name"
-                @click="removeModuleFromCourse(singleModule)"
-                class="single-selected-module-item icon-hover-left"
-            >
-              <ArrowIcon color="red" direction="left"/>
+            <div v-for="singleModule in selectedModulesDisplay" :key="singleModule.name"
+              @click="removeModuleFromCourse(singleModule)" class="single-selected-module-item icon-hover-left">
+              <ArrowIcon color="red" direction="left" />
               <div class="module-text-container">
                 <p>{{ singleModule.name }}</p>
                 <small>{{ singleModule.code }}</small>
@@ -164,7 +180,7 @@ const saveCourseLeipzig = () => {
         </div>
       </div>
       <div v-else>
-        <p>Loading ...</p>  <!-- todo change to LoadingContainer -->
+        <p>Loading ...</p> <!-- todo change to LoadingContainer -->
       </div>
 
     </div>
@@ -330,5 +346,4 @@ const saveCourseLeipzig = () => {
 .input-search-field-container {
   @include searchFieldContainer();
 }
-
 </style>
