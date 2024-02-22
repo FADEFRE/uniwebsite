@@ -44,7 +44,7 @@ const props = defineProps({
 }
 
 .connection-link-container {
-  padding: spacing(s);
+  padding: spacing(xs);
   width: 100%;
   background-color: transparent;
 
