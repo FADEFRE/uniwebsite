@@ -32,13 +32,18 @@ const props = defineProps({
     >
       <slot />
       <ArrowIcon direction="right" :hover="true"/>
-      <small v-if="external">(externer Link)</small>
     </Button>
-  </div>
+  </div>  
+  <small class="helper-text">externer Link</small>
 </template>
 
 <style scoped lang="scss">
 @use '@/assets/styles/util' as *;
 @use '@/assets/styles/global' as *;
 @use '@/assets/styles/components' as *;
+
+small {
+  text-transform: none;
+  font-size: 0.85rem;
+}
 </style>
