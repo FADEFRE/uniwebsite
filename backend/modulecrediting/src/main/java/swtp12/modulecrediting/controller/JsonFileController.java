@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,6 +27,7 @@ public class JsonFileController {
     private JsonLeipzigDataService jsonLeipzigDataService;
     
     @GetMapping("/courses")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<LeipzigDataDTO> getAllLeipzigData() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
         String fileName = "modulecrediting_config_" + LocalDateTime.now().format(formatter) + ".json";
@@ -39,6 +41,7 @@ public class JsonFileController {
     }
 
     @PostMapping("/courses/upload")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String postMethodName(@RequestParam("jsonFile")MultipartFile multipartFile) {
         jsonLeipzigDataService.uploadData(multipartFile);
         return String.format("File %s uploaded successfully", multipartFile.getOriginalFilename());
