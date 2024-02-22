@@ -62,6 +62,7 @@ const props = defineProps({
 
   &:hover {
     background-color: $dark-gray-hover;
+    cursor: pointer;
   }
 
   display: flex;
