@@ -183,6 +183,7 @@ const triggerForward = () => {
 
 .status-container {
     @include smallHighlightBox();
+    height: min-content;
 
     &.admin-selection-view {
         width: 17rem;
