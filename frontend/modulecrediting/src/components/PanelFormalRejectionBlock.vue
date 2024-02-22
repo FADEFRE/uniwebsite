@@ -21,7 +21,7 @@ defineExpose({
 <template>
   <div class="panel-formal-rejection-block">
     <div class="formal-rejection-container">
-      <p class="formal-rejection-text">Formfehler</p>
+      <p class="overview-text">Formfehler</p>
     </div>
     <textarea :readonly="readonly" v-model="comment"></textarea>
   </div>
@@ -36,6 +36,7 @@ defineExpose({
   display: flex;
   width: 100%;
   align-self: stretch;
+  height: rem(121px);
 
   border: 2px solid $dark-gray;
 }
@@ -48,17 +49,6 @@ defineExpose({
   background-color: $red;
 
   border-right: 2px solid $dark-gray;
-}
-
-.formal-rejection-text {
-  font-family: "Jost";
-  text-transform: uppercase;
-  text-decoration: none;
-  width: max-content;
-
-  color: $white;
-  font-size: 1.1rem;
-  font-weight: 600;
 }
 
 </style>
