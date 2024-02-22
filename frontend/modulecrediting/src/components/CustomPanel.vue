@@ -46,6 +46,7 @@ defineExpose({
 <style scoped lang="scss">
 @use '@/assets/styles/util' as *;
 @use '@/assets/styles/global' as *;
+@use '@/assets/styles/components' as *;
 
 :deep(.p-panel) {
   width: 100%;

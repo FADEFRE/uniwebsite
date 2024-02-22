@@ -64,6 +64,7 @@ const filteredApplications = computed(() => {
 <style scoped lang="scss">
 @use '@/assets/styles/util' as *;
 @use '@/assets/styles/global' as *;
+@use '@/assets/styles/components' as *;
 
 .applications-empty {
   align-self: center;

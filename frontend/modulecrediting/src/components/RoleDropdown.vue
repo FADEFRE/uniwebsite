@@ -26,6 +26,10 @@ watch(role, (newRole) => emit('update:modelValue', newRole))
 </template>
 
 <style scoped lang="scss">
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
+@use '@/assets/styles/components' as *;
+
 .role-dropdown-container {
   width: 16rem;
 }

@@ -20,6 +20,7 @@ const props = defineProps(['customTitle', 'customMessage']);
 <style lang="scss" scoped>
 @use '@/assets/styles/util' as *;
 @use '@/assets/styles/global' as *;
+@use '@/assets/styles/components' as *;
 
 .error-container {
     @include singleContainer();

@@ -22,6 +22,7 @@ watch(useRoute(), newRoute => {
 <style scoped lang="scss">
 @use '@/assets/styles/util' as *;
 @use '@/assets/styles/global' as *;
+@use '@/assets/styles/components' as *;
 
 .language-selection-container {
   width: fit-content;

@@ -54,6 +54,7 @@ const props = defineProps({
 <style scoped lang="scss">
 @use '@/assets/styles/util' as *;
 @use '@/assets/styles/global' as *;
+@use '@/assets/styles/components' as *;
 
 .panel-heading-container {
   display: flex;

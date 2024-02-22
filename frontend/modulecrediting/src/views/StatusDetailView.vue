@@ -191,6 +191,7 @@ const triggerSubmit = () => {
 <style scoped lang="scss">
 @use '@/assets/styles/util' as *;
 @use '@/assets/styles/global' as *;
+@use '@/assets/styles/components' as *;
 
 .formal-rejection-info-container {
   margin-bottom: spacing(m);

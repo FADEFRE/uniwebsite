@@ -96,6 +96,7 @@ const openRelatedModule = (singleModule) => {
 <style scoped lang="scss">
 @use '@/assets/styles/util' as *;
 @use '@/assets/styles/global' as *;
+@use '@/assets/styles/components' as *;
 
 .related-modules-list {
   @include verticalList(small);

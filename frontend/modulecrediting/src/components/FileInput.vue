@@ -155,6 +155,7 @@ defineExpose({
 <style scoped lang="scss">
 @use '@/assets/styles/util' as *;
 @use '@/assets/styles/global' as *;
+@use '@/assets/styles/components' as *;
 
 .read-only-container {
   width: 100%;
