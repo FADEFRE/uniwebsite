@@ -6,6 +6,7 @@ import HomepageView from "@/views/HomepageView.vue";
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+      // standard route
     {
       path: "/",
       name: "home",
@@ -100,29 +101,51 @@ const router = createRouter({
         }
       ]
     },
+    // error routes
+    {
+      path: "/error/:pathMatch(.*)*",
+      name: "internalError",
+      component: () => import("../views/ErrorView.vue"),
+      meta: { authType: "standard", error: {
+          heading: "Etwas ist schiefgelaufen", content: `
+          Es gab einen Fehler, der nicht abgefangen werden konnte. 
+          Bitte versuchen sie es erneut. 
+          Sollte weiterhin ein Fehler auftreten, wende sie sich bitte an die Administratoren.
+          `
+        }}
+    },
+    {
+      path: "/forbidden/:pathMath(.*)*",
+      name: "forbidden",
+      component: () => import("../views/ErrorView.vue"),
+      meta: { authType: "standard", error: {
+          heading: "Kein Zugang", content: "Es fehlt die Berechtigung, um diese Seite anzeigen zu können."
+        }},
+    },
+    {
+      path: "/not-found/:pathMatch(.*)*",
+      name: "notFoundResponse",
+      component: () => import("../views/ErrorView.vue"),
+      meta: { authType: "standard", error: {
+          heading: "Seite nicht gefunden", content: "Die gewünschte Seite existiert leider nicht."
+        }},
+    },
+    {
+      path: "/server-unavailable/:pathMatch(.*)*",
+      name: "serverUnavailable",
+      component: () => import ("../views/ErrorView.vue"),
+      meta: { authType: "standard", error: {
+        heading: "Server nicht erreichbar", content: "Der Server ist momentan nicht erreichbar. Versuchen sie es später erneut"
+        }}
+    },
+      // not found route
     {
       path: "/:pathMatch(.*)*",
       name: "notFound",
-      component: () => import("../views/NotFoundView.vue"),
-      meta: { authType: "standard" },
-    },
-    {
-      path: "/:pathMatch(.*)*",
-      name: "Forbidden",
-      component: () => import("../views/ErrorForbiddenView.vue"),
-      meta: { authType: "standard" },
-    },
-    {
-      path: "/:pathMatch(.*)*",
-      name: "IdError",
-      component: () => import("../views/ErrorIDView.vue"),
-      meta: { authType: "standard" },
-    },
-    {
-      path: "/:pathMatch(.*)*",
-      name: "Permission",
-      component: () => import("../views/NoPermissionView.vue"),
-      meta: { authType: "standard" },
+      component: () => import("../views/ErrorView.vue"),
+      meta: { authType: "standard", error: {
+          heading: "Seite nicht gefunden", content: "Die gewünschte Seite existiert leider nicht."
+        }},
     }
   ],
 });
@@ -145,6 +168,9 @@ router.beforeEach(async (to, from) => {
   const userStore = useUserStore();
   const user = userStore.getCurrentUser;
   if (from.name === "notFound" && to.name === "notFound") {
+    return false;
+  }
+  if (from.name === "serverUnavailable" && to.name === "serverUnavailable") {
     return false;
   }
   if (to.meta.authType === "standard" && user === false) {

@@ -46,59 +46,52 @@ const requestHandler = (request) => {
 };
 
 const errorHandler = (error) => {  
-  // TODO 400 bad request? -> wohin? -> to calling function to correctly display?
-  // TODO 401 route to login
-  // TODO 403 route to forbidden error page
-  // TODO 404 route to id does not exist error page
-  // TODO 503 
-  // TODO else route to server error page
+
   if (isHandlerEnabled(error.config)) {
     console.log("%c" + "Error Interceptor", errorColor); //TODO remove debug log
 
     const apiError = parseApierror(error)
     console.error(apiError)
 
-    if (apiError.statusCode === 503) {
-      console.error(apiError)
-      //TODO: ROUTE TO "SERVER NOT RESPONDING" ERROR VIEW tbd
-      //router.push({ name: "" }) 
-    }
+    const currentRouteFullPath = router.currentRoute.value.fullPath
 
-    if (apiError.statusCode === 400) {
-      console.error(apiError)
-      //TODO: ROUTE TO "BAD_REQUEST" ERROR VIEW tbd
-      //router.push({ name: "" }) 
-    }
+    switch (apiError.statusCode) {
 
-    if (apiError.statusCode === 401) {
-      console.error(apiError)
-      performLogout();
-      router.push({ name: "login" });
-    }
+      case 401:
+        performLogout();
+        router.push({ name: "login" });
+        break;
 
-    if (apiError.statusCode === 403) {
-      console.error(apiError)
-      router.push({ name: "Forbidden" });
-    }
+      case 402:
+        console.debug("%c" + "Debug 402 catch", errorColor);
+        router.replace("/error" + currentRouteFullPath);
+        break;
 
-    if (apiError.statusCode === 404) {
-      console.error(apiError)
-      router.push({ name: "IdError" }); //TODO catch multiple 404?
-    }
+      case 403:
+        router.replace("/forbidden" + currentRouteFullPath);
+        break;
 
-    if (apiError.statusCode === 409) {
-      console.error(apiError)
-    }
+      case 404:
+        router.replace("/not-found" + currentRouteFullPath);
+        break;
 
+      case 409:
+        // no routing, this error should be handled in components / views
+        break;
 
-    //debug
-    if (error.response.status === 402) {
-      console.debug("%c" + "Debug 402 catch", errorColor);
-      console.error(apiError)
+      case 503:
+        router.replace("/server-unavailable" + currentRouteFullPath);
+        break;
+
+      default:
+        router.replace("/error" + currentRouteFullPath)
+
     }
 
   }
+
   return Promise.reject({ ...error });
+
 };
 
 const successHandler = (response) => {
