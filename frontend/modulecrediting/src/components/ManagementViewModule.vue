@@ -40,6 +40,7 @@ const triggerDeleteModuleLeipzig = (module) => {
         </div>
         <div v-for="singleModule in filteredModules" class="module-list">
           <ManagementListElement
+              :key="singleModule['name']"
               :name="singleModule['name']"
               :code="singleModule['code']"
               :edit-callback="triggerEditModuleLeipzig"

@@ -41,6 +41,7 @@ const filteredCourses = computed(() => {
         </div>
         <div v-for="course in filteredCourses" class="course-list">
             <ManagementListElement
+                :key="course"
                 :name="course"
                 :edit-callback="triggerEditCourseLeipzig"
                 :delete-callback="triggerDeleteCourseLeipzig"
