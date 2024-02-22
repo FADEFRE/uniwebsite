@@ -193,41 +193,36 @@ router.beforeEach(async (to, from) => {
         userStore.setCurrentRoleNav("study");
         return true;
       }
-      return { name: "Permission" }; //TODO route to correct error page "permission not allowed"
-      //return { name: "login" };
+      return { path: "/forbidden" + to.fullPath };
 
     case "chairman":
       if (responseRole.data === "ROLE_CHAIR") {
         userStore.setCurrentRoleNav("chair");
         return true;
       }
-      return { name: "Permission" }; //TODO route to correct error page "permission not allowed"
-      //return { name: "login" };
+      return { path: "/forbidden" + to.fullPath };
 
     case "admin":
       if (responseRole.data === "ROLE_ADMIN") {
         userStore.setCurrentRoleNav("admin");
         return true;
       }
-      return { name: "Permission" }; //TODO route to correct error page "permission not allowed"
-      //return { name: "login" };
+      return { path: "/forbidden" + to.fullPath };
 
     case "internal":
       if (responseRole.data === "ROLE_CHAIR" || responseRole.data === "ROLE_STUDY") {
         changeRole(responseRole.data);
         return true;
       }
-      return { name: "Permission" }; //TODO route to correct error page "permission not allowed"
-      //return { name: "login" };
+      return { path: "/forbidden" + to.fullPath };
 
     case "internal-with-admin":
       if (responseRole.data === "ROLE_ADMIN" || responseRole.data === "ROLE_CHAIR" || responseRole.data === "ROLE_STUDY") {
         changeRole(responseRole.data);
         return true;
       }
-      return { name: "Permission" }; //TODO route to correct error page "permission not allowed"
-      //return { name: "login" };
-      
+      return { path: "/forbidden" + to.fullPath };
+
     default:
       break;
   }

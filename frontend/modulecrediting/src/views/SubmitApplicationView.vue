@@ -74,6 +74,19 @@ const triggerPostApplication = () => {
 
     <div class="content-container split">
 
+      <div class="explanation-container">
+        <h2>Informationen zum Antrag</h2>
+        <p>
+          Zuerst muss der Studiengang ausgewählt werden, für den Module angerechnet werden sollen.
+          Danach können beliebig viele Modulzuweisungen hinzugefügt werden (eine Modulzuweisung ist eine Zuweisung
+          von Fremdmodulen, die für Module der Universität Leipzig angerechnet werden sollen). In jeder Modulzuweisung
+          muss mindestens ein Fremdmodul (an einer anderen Universität absolviertes Modul) angegeben werden, füllen sie
+          für dieses alle Felder aus, die Modulbeschreibung muss eine PDF-Datei sein, die nur das relevante Modul
+          umfasst. Wählen sie Module der Universität Leipzig aus, für die die angegebenen Fremdmodule angerechnet
+          werden sollen. Optionale kann noch ein Kommentar mit weiteren Informationen angegeben werden.
+        </p>
+      </div>
+
       <ApplicationOverview :creation-date="getFormattedDate(creationDate)" :last-edited-date="undefined"
         :decision-date="undefined" status="NEU">
         <Dropdown v-model="selectedCourse" :options="courses" placeholder="Studiengang wählen"
@@ -146,5 +159,10 @@ const triggerPostApplication = () => {
 @use '@/assets/styles/util' as *;
 @use '@/assets/styles/global' as *;
 @use '@/assets/styles/components' as *;
+
+.explanation-container {
+  @include verticalListItem($white);
+  @include basicContainer();
+}
 </style>
 

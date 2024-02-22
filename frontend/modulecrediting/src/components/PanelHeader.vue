@@ -10,7 +10,6 @@ displays:
 -->
 
 <script setup>
-import { computed } from "vue";
 import ArrowIcon from "../assets/icons/ArrowIcon.vue";
 
 const props = defineProps({
@@ -34,7 +33,7 @@ const props = defineProps({
         class="single-module">
         {{ externalModules.join(', ') }}
       </h3>
-      <h3 v-else>...</h3>
+      <h3 v-else>[ Anzurechnende Module ]</h3>
     </div>
 
     <div class="arrow-icon">
@@ -46,7 +45,7 @@ const props = defineProps({
         class="single-module">
         {{ internalModules.join(', ') }}
       </h3>
-      <h3 v-else>...</h3>
+      <h3 v-else>[ Module der Universität Leipzig ]</h3>
     </div>
   </div>
 </template>
