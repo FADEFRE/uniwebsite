@@ -38,21 +38,21 @@ public class ModuleLeipzigController {
     
     //POST-Requests
     @PostMapping
-    @PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR')")
+    @PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR') or hasRole('ROLE_ADMIN')")
     public ResponseEntity<String> createModuleLeipzig(@ModelAttribute ModuleLeipzigDTO moduleLeipzigDTO) {
         return ResponseEntity.ok(moduleLeipzigService.createModuleLeipzig(moduleLeipzigDTO));
     }
 
     //PUT-Requests
     @PutMapping("/{name}")
-    @PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR')")
+    @PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR') or hasRole('ROLE_ADMIN')")
     public ResponseEntity<String> updateCourseLeipzig(@PathVariable String name, @ModelAttribute ModuleLeipzigDTO moduleLeipzigDTO) {
         return ResponseEntity.ok(moduleLeipzigService.updateModuleLeipzig(name, moduleLeipzigDTO));
     }
 
     //DELETE-Requests
     @DeleteMapping("/{name}")
-    @PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR')")
+    @PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR') or hasRole('ROLE_ADMIN')")
     public ResponseEntity<String> deleteModulesLeipzig(@PathVariable String name) {
         return ResponseEntity.ok(moduleLeipzigService.deleteModuleLeipzig(name));
     }
