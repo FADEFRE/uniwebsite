@@ -37,18 +37,26 @@ const triggerDeleteUser = (id) => {
     <div class="user-list">
       <div v-for="user in userList">
 
-        <div v-if="user['userId'] === currentUserId" class="user-container user-self">
-          <p>{{ user.username }}</p>
-          <p>ADMIN</p>
+        <div v-if="user['userId'] === currentUserId" class="user-container user-self-item">
+          <p class="username-text">{{ user.username }}</p>
+          <div class="right-side">
+            <div class="user-self-container">
+              <p class="overview-text">ADMIN</p>
+            </div>
+          </div>
+          
         </div>
 
         <div v-else class="user-container">
-          <p>{{ user.username }}</p>
-          <RoleDropdown
+          <p class="username-text">{{ user.username }}</p>
+          <div class="right-side">
+            <RoleDropdown
               :model-value="user.role"
               @update:model-value="(newRole) => triggerChangeRole(user.userId, newRole)"
           />
           <TrashIcon @click="triggerDeleteUser(user.userId)" />
+          </div>
+          
         </div>
 
       </div>
@@ -71,13 +79,27 @@ const triggerDeleteUser = (id) => {
   @include verticalList(s);
 }
 
-.user-container {
+.username-text {
+  width: 50%
+}
+
+.user-container {  
   @include verticalListItem($gray);
   padding: 0 spacing(m);
   align-items: center;
 }
+.right-side {
+  display: flex;
+  width: 50%;
+  justify-content: space-between;
+}
 
-.user-self {
-  border-color: $dark-gray !important;
+.user-self-item {
+  @include verticalListItem($gray);
+  border-color: $dark-gray;
+}
+.user-self-container {
+  @include smallHighlightBox();
+  background-color: $dark-gray;
 }
 </style>
