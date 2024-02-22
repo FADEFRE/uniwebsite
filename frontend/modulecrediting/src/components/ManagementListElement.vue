@@ -1,6 +1,7 @@
 <script setup>
 import EditIcon from "../assets/icons/EditIcon.vue";
 import TrashIcon from "../assets/icons/TrashIcon.vue";
+import ButtonLink from "@/components/ButtonLink.vue";
 import { ref } from "vue";
 
 const props = defineProps({
@@ -60,7 +61,7 @@ const triggerEdit = () => {
       <small v-if="nameEmpty" class="invalid-text">Name darf nicht leer sein</small>
       <InputText v-if="props.code" type="text" v-model="code" :class="{ 'invalid': codeEmpty }" />
       <small v-if="props.code && codeEmpty" class="invalid-text">Code darf nicht leer sein</small>
-      <Button @click="triggerEdit">Speichern</Button>
+      <ButtonLink @click="triggerEdit">Speichern</ButtonLink>
     </Dialog>
 
   </div>
