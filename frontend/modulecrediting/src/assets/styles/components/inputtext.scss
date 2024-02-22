@@ -16,8 +16,6 @@ textarea {
   background-color: transparent;
   width: 100%;
 
-  
-
   min-width: 0;
 
   &:hover {
@@ -41,6 +39,10 @@ textarea {
     &.no-effect {
       background-color: transparent;
     }
+  }
+
+  &.button-height {
+      max-height: 2.47rem;
   }
 }
 

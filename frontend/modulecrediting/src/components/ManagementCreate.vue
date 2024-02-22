@@ -46,7 +46,7 @@ const createModuleLeipzig = () => {
     <div v-if="type === 'course'" class="management-create-container">
         <h2>Studiengang erstellen</h2>
         <div class="input-container">
-            <InputText type="text" placeholder="Name des Studiengangs" v-model="coursename"
+            <InputText type="text" class="white" placeholder="Name des Studiengangs" v-model="coursename"
                 :class="{ 'invalid': courseExists }" />
             <small v-if="courseExists" class="invalid-text">Studiengang existiert bereits</small>
         </div>
@@ -58,8 +58,8 @@ const createModuleLeipzig = () => {
         <h2>Modul erstellen</h2>
         <div class="input-container">
             <div class="module-input-container">
-                <InputText type="text" placeholder="Modulname" v-model="modulename" :class="{ 'invalid': moduleExists }" />
-                <InputText type="text" placeholder="Modulcode" v-model="modulecode" :class="{ 'invalid': moduleExists }" />
+                <InputText type="text" class="white" placeholder="Modulname" v-model="modulename" :class="{ 'invalid': moduleExists }" />
+                <InputText type="text" class="white" placeholder="Modulcode" v-model="modulecode" :class="{ 'invalid': moduleExists }" />
             </div>
             <small v-if="moduleExists" class="invalid-text">Studiengang existiert bereits</small>
         </div>

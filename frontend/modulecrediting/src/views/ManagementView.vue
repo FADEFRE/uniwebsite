@@ -1,5 +1,5 @@
 <script setup>
-import ManagementCreateContainer from '../components/ManagementCreateContainer.vue';
+import ManagementCreateContainer from '../components/ManagementCreate.vue';
 import ManagementEditCourse from '../components/ManagementEditCourse.vue';
 import ManagementViewCourse from '../components/ManagementViewCourse.vue';
 import ManagementViewModule from '../components/ManagementViewModule.vue';

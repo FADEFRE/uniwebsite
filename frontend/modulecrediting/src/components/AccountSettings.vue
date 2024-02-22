@@ -63,7 +63,7 @@ const savePassword = () => {
     <div class="settings-container">
       <div class="input-container">
         <label for="username">Benutzername ändern</label>
-        <InputText type="text" v-model="username" id="username" :class="{ 'invalid': usernameEmpty || usernameExists }" />
+        <InputText type="text" class="white" v-model="username" id="username" :class="{ 'invalid': usernameEmpty || usernameExists }" />
         <small v-if="usernameEmpty" class="invalid-text">Benutzername darf nicht leer sein</small>
         <small v-if="usernameExists" class="invalid-text">Benutzername existiert bereits</small>
       </div>
@@ -74,13 +74,13 @@ const savePassword = () => {
       <div class="password-container">
       <div class="input-container">
         <label for="password">Passwort ändern</label>
-        <InputText type="text" v-model="password" id="password"
+        <InputText type="text" class="white" v-model="password" id="password"
           :class="{ 'invalid': passwordNotMatching || passwordEmpty }" />
         <small v-if="passwordEmpty" class="invalid-text">Das Passwort darf nicht leer sein</small>
       </div>
       <div class="input-container">
         <label for="password-confirm">Passwort bestätigen</label>
-        <InputText type="text" v-model="passwordConfirm" id="password-confirm"
+        <InputText type="text" class="white" v-model="passwordConfirm" id="password-confirm"
           :class="{ 'invalid': passwordNotMatching || passwordEmpty }" />
         <small v-if="passwordNotMatching" class="invalid-text">Die Passwörter müssen übereinstimmen</small>
       </div>

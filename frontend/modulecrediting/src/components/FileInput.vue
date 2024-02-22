@@ -173,6 +173,7 @@ defineExpose({
   width: 100%;
   border: 2px dashed $black;
   padding: spacing(s) 0;
+  transition: 0.05s ease-in-out;
   cursor: pointer;
 
   &:hover {

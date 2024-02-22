@@ -28,14 +28,19 @@ const triggerCreateUser = () => {
   <div class="admin-create-container">
 
     <h2>Benutzer erstellen</h2>
-    <div>
-      <InputText type="text" placeholder="Benutzername" v-model="username" :class="{ 'invalid': createFailed }" />
-      <small v-if="createFailed" class="invalid-text">Es existiert bereits ein Benutzer mit diesem Namen</small>
+    <div class="first-row">
+      <div class="input-container">
+        <InputText type="text" class="button-height white" placeholder="Benutzername" v-model="username"
+          :class="{ 'invalid': createFailed }" />
+        <small v-if="createFailed" class="invalid-text">Es existiert bereits ein Benutzer mit diesem Namen</small>
+      </div>
       <RoleDropdown v-model="role" />
     </div>
+    <div class="second-row">
+      <InputText type="text" class="white" placeholder="Passwort" v-model="password" />
+      <InputText type="text" class="white" placeholder="Passwort bestätigen" v-model="passwordConfirm" />
+    </div>
 
-    <InputText type="text" placeholder="Passwort" v-model="password" />
-    <InputText type="text" placeholder="Passwort bestätigen" v-model="passwordConfirm" />
 
     <ButtonLink :redButton="true" @click="triggerCreateUser">Benutzer erstellen</ButtonLink>
 
@@ -50,4 +55,13 @@ const triggerCreateUser = () => {
 .admin-create-container {
   @include basicContainer();
 }
-</style>
+
+.first-row {
+  display: flex;
+  width: 100%;
+  gap: spacing(m);
+}
+
+.second-row {
+  @include screenSplit();
+}</style>
