@@ -11,11 +11,11 @@
 .p-inputtext,
 input,
 textarea {
-  @include smallHighlightBox();
+  
   border: 2px solid $dark-gray;
   background-color: transparent;
   width: 100%;
-
+  padding: spacing(s);
   min-width: 0;
 
   &:hover {
