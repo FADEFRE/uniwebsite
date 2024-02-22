@@ -28,6 +28,7 @@ public class JsonFileController {
     public ResponseEntity<LeipzigDataDTO> getAllLeipzigData() {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setContentDispositionFormData("attachment", "courses.json");
         return ResponseEntity.ok()
                 .headers(headers)
                 .body(jsonLeipzigDataService.getAllLeipzigData());
