@@ -3,6 +3,12 @@ import ManagementCreateContainer from '@/components/ManagementCreate.vue';
 import ManagementEditCourse from '@/components/ManagementEditCourse.vue';
 import ManagementViewCourse from '@/components/ManagementViewCourse.vue';
 import ManagementViewModule from '@/components/ManagementViewModule.vue';
+import MoveTop from '@/assets/icons/MoveTop.vue';
+
+const scrollTop = () => {
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
+}
 </script>
 
 
@@ -21,6 +27,8 @@ import ManagementViewModule from '@/components/ManagementViewModule.vue';
       <ManagementViewCourse />
       <ManagementViewModule />
     </div>
+
+    <MoveTop class="move-top-button" @click="scrollTop"/>
   </div>
 </template>
 
@@ -56,5 +64,11 @@ import ManagementViewModule from '@/components/ManagementViewModule.vue';
   left: 50%;
   top: -0.65rem;
   transform: translateX(-50%);
+}
+
+.move-top-button {
+  position: fixed;
+  bottom: spacing(m);
+  right: spacing(s);
 }
 </style>
