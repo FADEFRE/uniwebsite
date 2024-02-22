@@ -25,7 +25,11 @@ public class JsonLeipzigDataService {
     @Autowired
     private CourseLeipzigRepository courseLeipzigRepository;
     @Autowired
+    private CourseLeipzigService courseLeipzigService;
+    @Autowired
     private ModuleLeipzigRepository moduleLeipzigRepository;
+    @Autowired
+    private ModuleLeipzigService moduleLeipzigService;
 
 
     public LeipzigDataDTO getAllLeipzigData() {
@@ -56,18 +60,17 @@ public class JsonLeipzigDataService {
     }
 
 
-
-
-
     public void uploadData(MultipartFile multipartFile) {
-
         JsonNode coursesNode = jsonUtil.grabJsonNodeFromMultipartFile(multipartFile, "courses");
+        List<Long> courseIds = getAllCourseIds();
+        List<Long> moduelIds = getAllModuleIds();
         for (JsonNode course : coursesNode) {
             String courseName = course.get("name").asText();
             CourseLeipzig courseLeipzig = courseLeipzigRepository.findByName(courseName)
                     .orElseGet(() -> {
                         return courseLeipzigRepository.save(new CourseLeipzig(courseName));
                     });
+            courseIds.remove(courseLeipzig.getId());
             courseLeipzig.removeModulesLeipzig();
 
             JsonNode modulesNode = jsonUtil.grabJsonNodeFromJsonNode(course, "modules");
@@ -78,11 +81,45 @@ public class JsonLeipzigDataService {
                         .orElseGet(() -> {
                             return moduleLeipzigRepository.save(new ModuleLeipzig(moduleName, moduleCode));
                         });
-
+                moduelIds.remove(moduleLeipzig.getId());
                 courseLeipzig.addModulesLeipzig(moduleLeipzig);
                 courseLeipzigRepository.save(courseLeipzig);
             }
         }
+
+        removeAllNonUploaded(courseIds, moduelIds);
     }
     
+
+    private List<Long> getAllCourseIds() {
+        List<Long> courseIds = new ArrayList<>();
+        List<CourseLeipzig> courses = courseLeipzigRepository.findAll();
+        for (CourseLeipzig courseLeipzig : courses) {
+            courseIds.add(courseLeipzig.getId());
+        }
+        return courseIds;
+    }
+
+    private List<Long> getAllModuleIds() {
+        List<Long> moduelIds = new ArrayList<>();
+        List<ModuleLeipzig> modules = moduleLeipzigRepository.findAll();
+        for (ModuleLeipzig moduleLeipzig : modules) {
+            moduelIds.add(moduleLeipzig.getId());
+        }
+        return moduelIds;
+    }
+
+    private void removeAllNonUploaded(List<Long> courseIds, List<Long> moduleIds) {
+        for (Long courseId : courseIds) {
+            String courseName = courseLeipzigRepository.findById(courseId).get().getName();
+            courseLeipzigService.deleteCourseLeipzig(courseName);
+        }
+
+        for (Long moduleId : moduleIds) {
+            String moduleName = moduleLeipzigRepository.findById(moduleId).get().getName();
+            moduleLeipzigService.deleteModuleLeipzig(moduleName);
+        }
+
+    }
+
 }
