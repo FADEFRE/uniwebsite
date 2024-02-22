@@ -163,6 +163,11 @@ defineExpose({
   justify-content: space-between;
   align-items: center;
 
+  transition: 0.1s ease-in-out;
+  &:hover {
+    background-color: $gray-hover;
+  }
+
   overflow: hidden;
 }
 
@@ -171,7 +176,7 @@ defineExpose({
   width: 100%;
   border: 2px dashed $black;
   padding: spacing(s) 0;
-  transition: 0.05s ease-in-out;
+  transition: 0.1s ease-in-out;
   cursor: pointer;
 
   &:hover {
