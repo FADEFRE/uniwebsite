@@ -18,6 +18,7 @@
 
   &:hover {
     background-color: $gray-hover;
+    cursor: pointer;
   }
 }
 </style>

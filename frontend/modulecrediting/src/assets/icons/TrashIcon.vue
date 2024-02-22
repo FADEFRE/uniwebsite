@@ -27,6 +27,10 @@ const props = defineProps({
 .trash-container {
   transition: 0.1s ease-in-out;
   display: flex;
+
+  &:hover {
+    cursor: pointer;
+  }
 }
 .gray:hover {
     background-color: $gray-hover;
