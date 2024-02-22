@@ -24,11 +24,9 @@ const props = defineProps({
 
     <h2>Übersicht</h2>
 
-    <a v-for="connection in connectionsData" :href="'#' + connection.id" class="connection-link-container">
+    <a v-for="connection in connectionsData" :href="'#' + connection.id" class="connection-link-container icon-hover-right">
       <p class="connection-text"> {{ connection.externalModules.join(', ') || '...' }}</p>
-      <div>
-        <ArrowIcon direction="right" color="red"/>
-      </div>
+        <ArrowIcon direction="right" color="red" :hover="true"/>
     </a>
 
   </div>
@@ -44,14 +42,16 @@ const props = defineProps({
 }
 
 .connection-link-container {
-  padding: spacing(xs);
+  padding: spacing(s);
   width: 100%;
   background-color: transparent;
 
   border-top: 2px solid $dark-gray;
   border-bottom: 2px solid $dark-gray;
+
   display: flex;
   gap: spacing(xs);
+  align-items: center;
 
   &:hover {
     background-color: $white-hover;
