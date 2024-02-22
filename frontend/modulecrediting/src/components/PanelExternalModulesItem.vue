@@ -177,7 +177,7 @@ defineExpose({
 }
 
 .left-side {
-  @include verticalList(small);
+  @include verticalList(s);
   justify-content: space-between;
   align-self: stretch;
   width: 50%;
@@ -188,7 +188,7 @@ defineExpose({
 }
 
 .right-side {
-  @include verticalList(small);
+  @include verticalList(s);
   justify-content: space-between;
   align-self: stretch;
   width: 50%;

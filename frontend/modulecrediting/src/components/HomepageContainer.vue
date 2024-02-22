@@ -31,7 +31,7 @@ const props = defineProps(['header', 'text'])
 .homepage-container {
     @include basicContainer();
     @include verticalListItem($white);
-    @include verticalList(big);
+    @include verticalList(l);
 }
 
 .input-button-with-invalid-container {

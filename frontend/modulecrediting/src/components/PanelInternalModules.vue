@@ -112,7 +112,7 @@ defineExpose({
 }
 
 .module-list {
-  @include verticalList(small);
+  @include verticalList(s);
   justify-content: space-between;
   align-self: stretch;
   width: 50%;

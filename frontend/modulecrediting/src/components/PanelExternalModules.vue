@@ -158,7 +158,7 @@ defineExpose({
 }
 
 .external-modules-list {
-  @include verticalList(small);
+  @include verticalList(s);
   width: 100%;
 }
 </style>

@@ -99,7 +99,7 @@ const openRelatedModule = (singleModule) => {
 @use '@/assets/styles/components' as *;
 
 .related-modules-list {
-  @include verticalList(small);
+  @include verticalList(s);
 }
 
 .related-module-container {

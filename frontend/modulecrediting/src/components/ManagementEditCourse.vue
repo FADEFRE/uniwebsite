@@ -245,7 +245,7 @@ const saveCourseLeipzig = () => {
 }
 
 .selectable-modules-container {
-  @include verticalList(small);
+  @include verticalList(s);
   width: 100%;
 }
 
@@ -272,7 +272,7 @@ const saveCourseLeipzig = () => {
 
 
 .selected-modules-container {
-  @include verticalList(small);
+  @include verticalList(s);
   width: 100%;
 }
 

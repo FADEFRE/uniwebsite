@@ -68,7 +68,7 @@ const triggerDeleteUser = (id) => {
 }
 
 .user-list {
-  @include verticalList(small);
+  @include verticalList(s);
 }
 
 .user-container {

@@ -3,21 +3,21 @@
 
 .input-container {
   display: flex;
-  gap: spacing(s);
+  gap: spacing(xs);
   flex-direction: column;
   width: 100%;
 }
 
-
-
 .p-inputtext,
 input,
 textarea {
+  @include smallHighlightBox();
   border: 2px solid $dark-gray;
   background-color: transparent;
   width: 100%;
 
-  padding: spacing(s);
+  
+
   min-width: 0;
 
   &:hover {

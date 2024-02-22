@@ -233,7 +233,7 @@ defineExpose({
 
 .screen-split-container {
   width: 100%;
-  @include verticalList(small);
+  @include verticalList(s);
 
   @include breakpoint(l) {
     @include breakpoint-up(s) {
@@ -244,7 +244,7 @@ defineExpose({
 
 
 .left-side-container {
-  @include verticalList(small);
+  @include verticalList(s);
   @include breakpoint(l) {
     @include breakpoint-up(s) {
     width: 50%;

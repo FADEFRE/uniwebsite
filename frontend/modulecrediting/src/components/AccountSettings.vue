@@ -1,7 +1,8 @@
 <script setup>
-import {onBeforeMount, ref} from "vue";
-import {getUserMe, putUserPassword, putUserUsername} from "../scripts/axios-requests";
+import { onBeforeMount, ref } from "vue";
+import { getUserMe, putUserPassword, putUserUsername } from "../scripts/axios-requests";
 import { logout } from "../router/logout"
+import ButtonLink from "@/components/ButtonLink.vue";
 
 const userId = ref()
 
@@ -11,10 +12,10 @@ const passwordConfirm = ref()
 
 onBeforeMount(() => {
   getUserMe()
-      .then(data => {
-        userId.value = data['userId']
-        username.value = data['username']
-      })
+    .then(data => {
+      userId.value = data['userId']
+      username.value = data['username']
+    })
 })
 
 const usernameEmpty = ref(false)
@@ -29,12 +30,12 @@ const saveUsername = () => {
     return
   }
   putUserUsername(userId.value, username.value)
-      .then(_ => logout())
-      .catch(error => {
-        if (error.response.status === 409) {
-          usernameExists.value = true
-        }
-      })
+    .then(_ => logout())
+    .catch(error => {
+      if (error.response.status === 409) {
+        usernameExists.value = true
+      }
+    })
 }
 
 const savePassword = () => {
@@ -51,7 +52,7 @@ const savePassword = () => {
     return
   }
   putUserPassword(userId.value, password.value, passwordConfirm.value)
-      .then(_ => logout())
+    .then(_ => logout())
 }
 </script>
 
@@ -59,23 +60,32 @@ const savePassword = () => {
   <div class="account-settings-container">
 
     <h2>Benutzereinstellungen</h2>
-
-    <div>
-      <label for="username">Benutzername</label>
-      <InputText type="text" v-model="username" id="username" :class="{ 'invalid': usernameEmpty || usernameExists }"/>
-      <small v-if="usernameEmpty" class="invalid-text">Benutzername darf nicht leer sein</small>
-      <small v-if="usernameExists" class="invalid-text">Benutzername existiert bereits</small>
-      <Button @click="saveUsername">Speichern</Button>
+    <div class="settings-container">
+      <div class="input-container">
+        <label for="username">Benutzername ändern</label>
+        <InputText type="text" v-model="username" id="username" :class="{ 'invalid': usernameEmpty || usernameExists }" />
+        <small v-if="usernameEmpty" class="invalid-text">Benutzername darf nicht leer sein</small>
+        <small v-if="usernameExists" class="invalid-text">Benutzername existiert bereits</small>
+      </div>
+      <ButtonLink class="save-button" @click="saveUsername">Speichern</ButtonLink>
     </div>
 
-    <div>
-      <label for="password">Passwort</label>
-      <InputText type="text" v-model="password" id="password" :class="{ 'invalid': passwordNotMatching || passwordEmpty }"/>
-      <label for="password-confirm">Passwort bestätigen</label>
-      <InputText type="text" v-model="passwordConfirm" id="password-confirm" :class="{ 'invalid': passwordNotMatching || passwordEmpty }" />
-      <small v-if="passwordNotMatching" class="invalid-text">Die Passwörter müssen übereinstimmen</small>
-      <small v-if="passwordEmpty" class="invalid-text">Das Passwort darf nicht leer sein</small>
-      <Button @click="savePassword">Speichern</Button>
+    <div class="settings-container">
+      <div class="password-container">
+      <div class="input-container">
+        <label for="password">Passwort ändern</label>
+        <InputText type="text" v-model="password" id="password"
+          :class="{ 'invalid': passwordNotMatching || passwordEmpty }" />
+        <small v-if="passwordEmpty" class="invalid-text">Das Passwort darf nicht leer sein</small>
+      </div>
+      <div class="input-container">
+        <label for="password-confirm">Passwort bestätigen</label>
+        <InputText type="text" v-model="passwordConfirm" id="password-confirm"
+          :class="{ 'invalid': passwordNotMatching || passwordEmpty }" />
+        <small v-if="passwordNotMatching" class="invalid-text">Die Passwörter müssen übereinstimmen</small>
+      </div>
+    </div>
+      <ButtonLink @click="savePassword">Speichern</ButtonLink>
     </div>
 
   </div>
@@ -88,5 +98,14 @@ const savePassword = () => {
 
 .account-settings-container {
   @include basicContainer();
+  @include verticalListItem($white);
+}
+
+.settings-container {
+  @include verticalList(s);
+}
+
+.password-container {
+  @include screenSplit();
 }
 </style>

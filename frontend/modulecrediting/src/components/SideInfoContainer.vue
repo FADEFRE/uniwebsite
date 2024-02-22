@@ -20,7 +20,7 @@ const props = defineProps(['heading'])
 }
 
 :slotted(.main-info-container) {
-    @include verticalList(big);
+    @include verticalList(l);
 }
 
 :slotted(.info-group-container){

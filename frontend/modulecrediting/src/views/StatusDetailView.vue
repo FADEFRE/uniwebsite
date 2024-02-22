@@ -198,7 +198,7 @@ const triggerSubmit = () => {
 }
 
 .modules-connections-container {
-  @include verticalList(mid);
+  @include verticalList(m);
   width: 100%;
   overflow: hidden;
 }

@@ -6,11 +6,11 @@
   flex-direction: column;
   width: 100%;
 
-  @if $gapSize == small {
+  @if $gapSize == s {
     gap: spacing(s);
-  } @else if $gapSize == big {
+  } @else if $gapSize == l {
     gap: spacing(l);
-  } @else if $gapSize == mid {
+  } @else if $gapSize == m {
     gap: spacing(m);
   } @else if $gapSize == xs {
     gap: spacing(xs)

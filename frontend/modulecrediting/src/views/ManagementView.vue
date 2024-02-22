@@ -32,7 +32,7 @@ import ManagementViewAdminChild from "./ManagementViewAdminChild.vue";
 @use '@/assets/styles/components' as *;
 
 .create-container-list {
-  @include verticalList(big);
+  @include verticalList(l);
   width: 100%;
 }
 </style>

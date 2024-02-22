@@ -76,7 +76,7 @@ const createModuleLeipzig = () => {
 .management-create-container {
     @include basicContainer();
     @include verticalListItem($white);
-    @include verticalList(big);
+    @include verticalList(l);
     width: 100%;
 }
 

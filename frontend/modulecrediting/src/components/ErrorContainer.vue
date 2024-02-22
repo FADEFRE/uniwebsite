@@ -24,7 +24,7 @@ const props = defineProps(['customTitle', 'customMessage']);
 
 .error-container {
     @include singleContainer();
-    @include verticalList(big);
+    @include verticalList(l);
     width: min-content;
     display: flex;
     align-items: center;

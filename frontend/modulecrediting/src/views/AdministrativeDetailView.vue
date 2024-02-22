@@ -185,7 +185,7 @@ const triggerPassOn = () => {
 }
 
 .mid-right-fixed-container {
-  @include verticalList(small);
+  @include verticalList(s);
   width: fit-content;
 
   display: flex;

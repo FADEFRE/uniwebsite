@@ -63,6 +63,6 @@ const filteredCourses = computed(() => {
 }
 
 .course-list {
-  @include verticalList(small);
+  @include verticalList(s);
 }
 </style>

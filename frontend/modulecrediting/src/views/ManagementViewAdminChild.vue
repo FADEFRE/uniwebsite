@@ -70,7 +70,7 @@ const uploadJson = () => {
 @use '@/assets/styles/components' as *;
 
 .admin-container-list {
-  @include verticalList(big);
+  @include verticalList(l);
   width: 100%;
 }
 
@@ -81,7 +81,7 @@ const uploadJson = () => {
 
 .json-container {
   @include basicContainer();
-  @include verticalList(big);
+  @include verticalList(l);
   width: 100%;
 }
 
