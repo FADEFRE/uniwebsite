@@ -185,7 +185,9 @@ defineExpose({
 
   display: flex;
   justify-content: center;
-
+}
+.invalid {
+  border: 2px dashed $red;
 }
 
 .edit-container-highlight {
@@ -207,4 +209,6 @@ input {
   width: 100%;
   padding: 0 spacing(s);
 }
+
+
 </style>
