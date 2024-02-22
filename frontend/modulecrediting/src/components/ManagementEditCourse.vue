@@ -137,7 +137,7 @@ const saveCourseLeipzig = () => {
         </div>
 
         <div class="selected-modules-container">
-          <h3>Module in {{ selectedCourse }}</h3>
+          <h3>Module in {{ selectedCourse }} ({{ selectedModules.length + addedModules.length }})</h3>
           <div class="input-search-field-container">
             <InputText v-model="searchStringSelected" placeholder="Ausgewählte Module suchen" />
             <img src="@/assets/icons/SearchIcon.svg" class="search-icon">
