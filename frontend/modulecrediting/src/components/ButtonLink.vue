@@ -26,8 +26,8 @@ const props = defineProps({
     <Button
         role="link"
         :disabled="disabled"
-        :class="{ ' fixed-button': fixed, 'disabled': disabled, 'red-button': redButton }"
-        class="icon-hover-right external"
+        :class="{ ' fixed-button': fixed, 'disabled': disabled, 'red-button': redButton, 'external' : external }"
+        class="icon-hover-right"
     >
       <slot />
       <ArrowIcon direction="right" :hover="true"/>
