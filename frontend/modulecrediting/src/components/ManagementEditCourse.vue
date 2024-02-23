@@ -67,6 +67,8 @@ const discardEditCourseChanges = () => {
   selectedCourse.value = null;
   selectedModules.value = [];
   addedModules.value = [];
+  searchStringSelected.value = '';
+  searchStringSelectable.value = '';
 }
 
 const setSelectedModules = () => {
@@ -77,11 +79,15 @@ const setSelectedModules = () => {
 
 const addModuleToCourse = (clickedModule) => {
   addedModules.value.unshift(clickedModule);
+  searchStringSelected.value = '';
+  searchStringSelectable.value = '';
 }
 
 const removeModuleFromCourse = (clickedModule) => {
   selectedModules.value = selectedModules.value.filter(singleModule => singleModule.name !== clickedModule.name);
   addedModules.value = addedModules.value.filter(singleModule => singleModule.name !== clickedModule.name);
+  searchStringSelected.value = '';
+  searchStringSelectable.value = '';
 }
 
 const saveCourseLeipzig = () => {

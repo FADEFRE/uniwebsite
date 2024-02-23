@@ -57,7 +57,7 @@ const triggerEdit = () => {
     </div>
 
     <Dialog modal :dismissable-mask="true" :draggable="false" v-model:visible="dialogVisible" header="Bearbeiten">
-      <InputText type="text" v-model="name" :class="{ 'invalid': nameEmpty }" />
+      <InputText type="text" v-model="name" :class="{ 'invalid': nameEmpty }" class="white" />
       <small v-if="nameEmpty" class="invalid-text">Name darf nicht leer sein</small>
       <InputText v-if="props.code" type="text" v-model="code" :class="{ 'invalid': codeEmpty }" />
       <small v-if="props.code && codeEmpty" class="invalid-text">Code darf nicht leer sein</small>
