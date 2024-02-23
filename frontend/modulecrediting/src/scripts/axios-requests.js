@@ -1,7 +1,7 @@
 import { url } from "@/scripts/url-config.js";
 import httpResource from "@/scripts/httpResource";
 
-let axiosColor = "color:blue";
+let axiosColor = "color:deepskyblue";
 
 /*
 GET-Request to '/courses-leipzig' endpoint
