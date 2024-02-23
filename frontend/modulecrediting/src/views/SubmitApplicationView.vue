@@ -22,6 +22,7 @@ import ButtonAdd from "@/components/ButtonAdd.vue";
 import ButtonLink from "@/components/ButtonLink.vue";
 import ApplicationOverview from "@/components/ApplicationOverview.vue";
 import ArrowIcon from "../assets/icons/ArrowIcon.vue";
+import ApplicationProcessSideInfo from "@/components/ApplicationProcessSideInfo.vue";
 
 const showInformation = ref(false)
 
@@ -137,14 +138,7 @@ const triggerPostApplication = () => {
 
     <div class="side-infos-list">
       <!--SideInfoContainerfür Antragprozess -->
-      <SideInfoContainer :heading="'ANTRAGSPROZESS'">
-        <ul>
-          <li>Antrag online stellen</li>
-          <li>Über Vorgangsnummer online Status einsehen</li>
-          <li>Auf Entscheidung des PAV warten</li>
-          <li>Mit abgeschlossenem Antrag zum Studienbüro gehen</li>
-        </ul>
-      </SideInfoContainer>
+      <ApplicationProcessSideInfo />
       <SideInfoContainer :heading="'STUDIENBÜRO'">
         <p>Fakultät für Mathematik und Informatik</p>
         <div class="main-info-container">

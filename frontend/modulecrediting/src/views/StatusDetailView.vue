@@ -18,6 +18,7 @@ import LoadingContainer from "../components/LoadingContainer.vue";
 import { url } from "@/scripts/url-config"
 import { getApplicationByIdForStatus, getModulesByCourse, putApplicationStudent } from "@/scripts/axios-requests";
 import { parseRequestDate } from "@/scripts/date-utils";
+import ApplicationProcessSideInfo from "@/components/ApplicationProcessSideInfo.vue";
 
 const id = useRoute().params.id
 const summaryDocumentLink = `${url}/file/pdf-documents/application/${id}`
@@ -135,15 +136,7 @@ const triggerSubmit = () => {
     </div>
 
     <div class="side-infos-list">
-      <!--SideInfoContainerfür Antragprozess -->
-      <SideInfoContainer :heading="$t('homepage.sideInfo.applicationProcess')">
-        <ul class="list-container">
-          <li class="list-item"><p>{{ $t('homepage.sideInfo.submitApplication') }}</p></li>
-          <li class="list-item"><p>{{ $t('homepage.sideInfo.viewStatus') }}</p></li>
-          <li class="list-item"><p>{{ $t('homepage.sideInfo.wait') }}</p></li>
-          <li class="list-item"><p>{{ $t('homepage.sideInfo.goToStudy') }}</p></li>
-        </ul>
-      </SideInfoContainer>
+      <ApplicationProcessSideInfo />
       <SideInfoContainer :heading="'STUDIENBÜRO'">
         <p>Fakultät für Mathematik und Informatik</p>
         <div class="main-info-container">

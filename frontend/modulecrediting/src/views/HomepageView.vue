@@ -1,10 +1,11 @@
 <script setup>
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
-import { getApplicationExists } from "@/scripts/axios-requests";
 import HomepageContainer from '@/components/HomepageContainer.vue';
 import SideInfoContainer from '@/components/SideInfoContainer.vue';
 import ButtonLink from '@/components/ButtonLink.vue';
+import { getApplicationExists } from "@/scripts/axios-requests";
+import ApplicationProcessSideInfo from "@/components/ApplicationProcessSideInfo.vue";
 
 const router = useRouter()
 
@@ -69,20 +70,7 @@ const getFormattedId = () => {
         </div>
 
         <div class="side-infos-list">
-            <!--SideInfoContainerfür Antragprozess -->
-            <SideInfoContainer :heading="$t('homepage.sideInfo.applicationProcess')">
-                <ul class="list-container">
-                    <li class="list-item">
-                        <p>{{ $t('homepage.sideInfo.submitApplication') }}</p>
-                    </li>
-                    <li class="list-item">
-                        <p>{{ $t('homepage.sideInfo.viewStatus') }}</p>
-                    </li>
-                    <li class="list-item">
-                        <p>{{ $t('homepage.sideInfo.goToStudy') }}</p>
-                    </li>
-                </ul>
-            </SideInfoContainer>
+           <ApplicationProcessSideInfo />
         </div>
 
     </div>
