@@ -28,9 +28,10 @@ const uploadJson = () => {
       <div class="info-container">
         <h3>Hinweis zum Datei-Upload</h3>
         <p>
-          Durch das Hochladen einer JSON-Konfigurationsdatei werden alle Daten verändert, sodass diese der hochgeladenen
-          Konfigurationsdatei entsprechen. Das umfasst also explizit:
-          Liste aller Studiengänge, Liste aller Module, Zuordnung der Module zu Studiengängen
+          Durch das Hochladen einer JSON-Konfigurationsdatei werden alle Daten verändert,
+          sodass diese der hochgeladenen Konfigurationsdatei entsprechen.
+          Das bedeutet explizit: nicht angegebene Module / Kurse werden gelöscht,
+          neu hinzugefügte Module / Kurse werden erstellt, die Zuordnung der Module zu Studiengängen wird verändert.
           Diese Änderungen können nicht automatisch rückgängig gemacht werden.
         </p>
         <p>
