@@ -7,16 +7,17 @@ import { useRoute, useRouter } from 'vue-router';
 import { ref, onBeforeMount, computed } from "vue";
 import ApplicationOverview from "@/components/ApplicationOverview.vue";
 import FormalRejectionInfoBox from "@/components/FormalRejectionInfoBox.vue";
+import CompletedInfoBox from "@/components/CompletedInfoBox.vue";
 import SideInfoContainer from '../components/SideInfoContainer.vue';
 import StatusPanel from "@/components/StatusPanel.vue";
 import ApplicationPanel from "@/components/ApplicationPanel.vue";
 import ButtonLink from '@/components/ButtonLink.vue';
 import ButtonAdd from "../components/ButtonAdd.vue";
 import ButtonDownloadVue from '../components/ButtonDownload.vue';
+import LoadingContainer from "../components/LoadingContainer.vue";
 import { url } from "@/scripts/url-config"
 import { getApplicationByIdForStatus, getModulesByCourse, putApplicationStudent } from "@/scripts/axios-requests";
 import { parseRequestDate } from "@/scripts/date-utils";
-import LoadingContainer from "../components/LoadingContainer.vue";
 
 const id = useRoute().params.id
 const summaryDocumentLink = `${url}/file/pdf-documents/application/${id}`
@@ -97,8 +98,12 @@ const triggerSubmit = () => {
 
     <div class="content-container split">
 
-      <div v-if="applicationData['fullStatus'] === 'FORMFEHLER'" class="formal-rejection-info-container">
+      <div v-if="applicationData['fullStatus'] === 'FORMFEHLER'">
         <FormalRejectionInfoBox />
+      </div>
+
+      <div v-if="applicationData['fullStatus'] === 'ABGESCHLOSSEN'">
+        <CompletedInfoBox />
       </div>
 
       <ApplicationOverview :creation-date="parseRequestDate(applicationData['creationDate'])"
