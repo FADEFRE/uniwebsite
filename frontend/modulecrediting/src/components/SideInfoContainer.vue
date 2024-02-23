@@ -33,31 +33,4 @@ const props = defineProps(['heading'])
     width: max-content;
     text-transform: uppercase;
 }
-
-:slotted(ul) {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: spacing(s);
-}
-
-:slotted(li) {
-    position: relative;
-    padding-left: spacing(m);
-    list-style: none;
-    width: 100%;
-
-    &::before {
-        content: '';
-        position: absolute;
-        top: 0.55rem;
-        left: 0;
-        width: 5px;
-        height: 5px;
-        border-radius: 50%;
-        background-color: $red;
-    }
-}
-
-
 </style>
