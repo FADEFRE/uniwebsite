@@ -6,9 +6,11 @@
   <div class="formal-rejection-info-container">
     <h2>Formfehler</h2>
     <p>
-      Aufgrund von Formfehlern wurde ihr Antrag abgelehnt.
-      Bitte korrigieren sie rot markierte Modulverknüpfungen.
-      Anschließend drücken sie auf "neu einreichen", um den Antrag neu einzureichen.
+      Ihr Antrag wurde aufgrund von Formfehlern zurückgewiesen.
+      Es sind die Modulzuweisungen rot markiert, die Formfehler enthalten.
+      In der Modulzuweisung finden sie unten eine Erklärung des konkreten Fehlers.
+      Bitte korrigieren sie alle angegebenen Fehler.
+      Anschließend können sie ihren Antrag neu einreichen.
     </p>
   </div>
 </template>
