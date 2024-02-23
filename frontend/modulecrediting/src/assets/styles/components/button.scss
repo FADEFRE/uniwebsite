@@ -3,7 +3,7 @@
 
 Button,.p-button, .router-link {
   @include smallHighlightBox();
-  width: max-content;
+  flex-shrink: 0;
 
   background-color: $dark-gray;
   &.white {
@@ -16,6 +16,12 @@ Button,.p-button, .router-link {
     &.white {
       background-color: $white-hover;
     }
+  }
+}
+
+.router-link {
+  @include breakpoint(m) {
+    width: 100%;
   }
 }
 

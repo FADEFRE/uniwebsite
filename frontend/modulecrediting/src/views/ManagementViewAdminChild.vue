@@ -40,23 +40,27 @@ const uploadJson = () => {
       </div>
 
       <div class="buttons-container">
-        <h3>Konfigurationstools</h3>
-        <div class="download-container">
-          <h4>Download</h4>
-          <small>Der aktuelle Stand als JSON-Konfigurationsdatei</small>
+          <div class="download-container">
+          <h3>Download</h3>
+          
           <a :href="jsonLink" target="_blank" download>
             <ButtonDownload>
               JSON herunterladen
             </ButtonDownload>
           </a>
+          <small>Der aktuelle Stand als JSON-Konfigurationsdatei</small>
         </div>
 
         <div class="upload-container">
-          <h4>Upload</h4>
+          <h3>Upload</h3>
+          <div class="file-button-container">
+            <FileInput :readonly="false" type="json" ref="fileInput">JSON auswählen</FileInput>
+            <ButtonLink :red-button="true" @click="uploadJson">JSON hochladen</ButtonLink>
+          </div>
+          
           <small>Ändert die Konfiguration gemäß der ausgewählten Datei. Bitte Hinweis beachten.</small>
-          <FileInput :readonly="false" type="json" ref="fileInput">JSON auswählen</FileInput>
-          <ButtonLink class="upload-button" :red-button="true" @click="uploadJson">JSON hochladen</ButtonLink>
         </div>
+        
 
       </div>
     </div>
@@ -74,15 +78,29 @@ const uploadJson = () => {
 
 .screen-split-container {
   @include screenSplit();
-  gap: spacing(xl);
+  @include breakpoint(m) {
+    flex-direction: column;
+  }
 }
 
 .info-container, .buttons-container {
-  @include verticalList(m);
+  @include verticalList(s);
   width: 50%;
+
+  @include breakpoint(m) {
+    width: 100%;
+  }
 }
 
 .upload-container, .download-container {
-  @include verticalList(xs);
+  @include verticalList(s);
+  width: 100%;
+}
+
+
+.file-button-container {
+  display: flex;
+  align-items: center;
+  gap: spacing(m);
 }
 </style>
