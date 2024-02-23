@@ -23,6 +23,8 @@ import ButtonLink from "@/components/ButtonLink.vue";
 import ApplicationOverview from "@/components/ApplicationOverview.vue";
 import ArrowIcon from "../assets/icons/ArrowIcon.vue";
 
+const showInformation = ref(false)
+
 const creationDate = new Date()
 
 const courses = ref()
@@ -77,14 +79,39 @@ const triggerPostApplication = () => {
       <div class="explanation-container">
         <h2>Informationen</h2>
         <p>
-          Zuerst muss der Studiengang ausgewählt werden, für den Module angerechnet werden sollen.
-          Danach können beliebig viele Modulzuweisungen hinzugefügt werden (eine Modulzuweisung ist eine Zuweisung
-          von Fremdmodulen, die für Module der Universität Leipzig angerechnet werden sollen). In jeder Modulzuweisung
-          muss mindestens ein Fremdmodul (an einer anderen Universität absolviertes Modul) angegeben werden, füllen sie
-          für dieses alle Felder aus, die Modulbeschreibung muss eine PDF-Datei sein, die nur das relevante Modul
-          umfasst. Wählen sie Module der Universität Leipzig aus, für die die angegebenen Fremdmodule angerechnet
-          werden sollen. Optionale kann noch ein Kommentar mit weiteren Informationen angegeben werden.
+          Wählen Sie den Studiengang aus, für den Sie sich Leistungen anrechnen lassen wollen.
+          Tragen sie dann die Details der Leistungen ein. Hierfür können sie beliebig viele Modulzuweisungen hinzufügen.
         </p>
+        <Button @click="showInformation = !showInformation">
+          Mehr anzeigen
+          <ArrowIcon :direction="showInformation ? 'up' : 'down'" color="red" />
+        </Button>
+        <div v-if="showInformation">
+          <h3>Modulzuweisung</h3>
+          <ul>
+            <li>Ein oder mehrere Fremdmodule die als Modul(e) der Universität Leipzig angerechnet werden sollen.</li>
+            <li>Es sollen nur konkret zusammengehörige Module in eine Modulzuweisung geschrieben werden.</li>
+            <li>Für den gesamten Antrag können sie mehrere Modulzuweisungen hinzufügen.</li>
+            <!-- todo add example -->
+            <li>!!! Beispiel hinzufügen !!!</li>
+          </ul>
+          <h3>Fremdmodul</h3>
+          <ul>
+            <li>Ein konkretes Modul, das an einer anderen Universität belegt wurde.</li>
+            <li>Hierfür müssen die gegebenen Felder ausgefüllt werden.</li>
+            <li>Geben Sie das Punktesystem an (LP, ECTS oder ähnliches).</li>
+            <li>Als Modulbeschreibung muss eine PDF-Datei mit der offiziellen Beschreibung des einzelnen Moduls hochgeladen werden.</li>
+          </ul>
+          <h3>Module der Universität Leipzig</h3>
+          <ul>
+            <li>Wählen sie ein oder mehrere Modul(e) aus, für die Sie ihre Leistungen anrechnen lassen wollen.</li>
+            <li>Sollten sie kein passendes Modul finden, besteht auch die Möglichkeit, keines auszuwählen.</li>
+          </ul>
+          <h3>Kommentar</h3>
+          <ul>
+            <li>Hier können weitere Informationen zu dieser Modulzuweisung mitgeteilt werden, dies ist optional.</li>
+          </ul>
+        </div>
       </div>
 
       <ApplicationOverview :creation-date="getFormattedDate(creationDate)" :last-edited-date="undefined"
