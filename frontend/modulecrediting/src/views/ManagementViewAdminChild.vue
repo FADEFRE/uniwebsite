@@ -43,21 +43,19 @@ const uploadJson = () => {
         <h3>Konfigurationstools</h3>
         <div class="download-container">
           <h4>Download</h4>
+          <small>Der aktuelle Stand als JSON-Konfigurationsdatei</small>
           <a :href="jsonLink" target="_blank" download>
             <ButtonDownload>
               JSON herunterladen
             </ButtonDownload>
           </a>
-          <small>Der aktuelle Stand als JSON-Konfigurationsdatei</small>
         </div>
 
         <div class="upload-container">
           <h4>Upload</h4>
-          <div class="button-file-input-container">
-            <FileInput :readonly="false" type="json" ref="fileInput">JSON auswählen</FileInput>
-            <ButtonLink class="upload-button" :red-button="true" @click="uploadJson">JSON hochladen</ButtonLink>
-          </div>
-          <small>Ändert die Konfiguration gemäß der ausgewählten Datei. Bitte obigen Hinweis beachten.</small>
+          <small>Ändert die Konfiguration gemäß der ausgewählten Datei. Bitte Hinweis beachten.</small>
+          <FileInput :readonly="false" type="json" ref="fileInput">JSON auswählen</FileInput>
+          <ButtonLink class="upload-button" :red-button="true" @click="uploadJson">JSON hochladen</ButtonLink>
         </div>
 
       </div>
@@ -79,20 +77,12 @@ const uploadJson = () => {
   gap: spacing(xl);
 }
 
-.info-container {
-  @include verticalList(s);
+.info-container, .buttons-container {
+  @include verticalList(m);
   width: 50%;
 }
 
-.buttons-container {
-  @include verticalList(s);
-  width: 50%;
-}
-
-.button-file-input-container {
-  display: flex;
-  width: 100%;
-  gap: spacing(s);
-  align-items: center;
+.upload-container, .download-container {
+  @include verticalList(xs);
 }
 </style>

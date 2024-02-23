@@ -34,7 +34,7 @@ const props = defineProps({
       <ArrowIcon direction="right" :hover="true"/>
     </Button>
   </div>  
-  <small class="helper-text">externer Link</small>
+  <small v-if="external" class="helper-text">externer Link</small>
 </template>
 
 <style scoped lang="scss">
