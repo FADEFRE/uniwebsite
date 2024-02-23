@@ -127,7 +127,7 @@ defineExpose({
 
 <template>
     <div v-if="readonly" class="read-only-container" :class="{ 'invalid': !isValid }">
-      <p class="ellipsis-text-overflow">{{ props.selectedFile?.name }}</p>
+      <p class="ellipsis-text-overflow read-only-file-name">{{ props.selectedFile?.name }}</p>
       <ButtonLink @click="openFile">PDF öffnen</ButtonLink>
     </div>
 
@@ -208,6 +208,10 @@ input {
   @include ellipsisTextOverflow();
   width: 100%;
   padding: 0 spacing(s);
+}
+
+.read-only-file-name {
+  width: calc(100% - 10rem);
 }
 
 
