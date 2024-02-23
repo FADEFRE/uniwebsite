@@ -79,9 +79,6 @@ const getFormattedId = () => {
                         <p>{{ $t('homepage.sideInfo.viewStatus') }}</p>
                     </li>
                     <li class="list-item">
-                        <p>{{ $t('homepage.sideInfo.wait') }}</p>
-                    </li>
-                    <li class="list-item">
                         <p>{{ $t('homepage.sideInfo.goToStudy') }}</p>
                     </li>
                 </ul>
