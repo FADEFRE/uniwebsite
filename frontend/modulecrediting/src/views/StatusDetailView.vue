@@ -19,6 +19,7 @@ import { url } from "@/scripts/url-config"
 import { getApplicationByIdForStatus, getModulesByCourse, putApplicationStudent } from "@/scripts/axios-requests";
 import { parseRequestDate } from "@/scripts/date-utils";
 import ApplicationProcessSideInfo from "@/components/ApplicationProcessSideInfo.vue";
+import StudyOfficeSideInfo from "@/components/StudyOfficeSideInfo.vue";
 
 const id = useRoute().params.id
 const summaryDocumentLink = `${url}/file/pdf-documents/application/${id}`
@@ -137,47 +138,7 @@ const triggerSubmit = () => {
 
     <div class="side-infos-list">
       <ApplicationProcessSideInfo />
-      <SideInfoContainer :heading="'STUDIENBÜRO'">
-        <p>Fakultät für Mathematik und Informatik</p>
-        <div class="main-info-container">
-          <div class="info-group-container">
-            <h4>Anschrift</h4>
-            <ul>
-              <li>
-                <p>Neues Augusteum</p>
-              </li>
-              <li>
-                <p>Augustusplatz 10</p>
-              </li>
-              <li>
-                <p>04109 Leipzig</p>
-              </li>
-            </ul>
-          </div>
-          <div class="info-group-container">
-            <h4>Kontakt</h4>
-            <ul>
-              <li>
-                <p>Telefon: +49 341 97-32165</p>
-              </li>
-              <li>
-                <p>Telefax: +49 341 97-32193</p>
-              </li>
-              <li>
-                <p>E-Mail: studienbuero@math.uni-leipzig.de</p>
-              </li>
-            </ul>
-          </div>
-          <div class="info-group-container">
-            <h4>Sprechzeiten</h4>
-            <p>Dienstag und Donnerstag: 9:00 - 11:30 Uhr und 12:30 - 16:00 Uhr</p>
-          </div>
-          <a href="https://www.mathcs.uni-leipzig.de/studium/studienbuero">
-            <ButtonLink>Zum Studienbüro</ButtonLink>
-          </a>
-        </div>
-
-      </SideInfoContainer>
+      <StudyOfficeSideInfo />
     </div>
 
   </div>

@@ -23,6 +23,7 @@ import ButtonLink from "@/components/ButtonLink.vue";
 import ApplicationOverview from "@/components/ApplicationOverview.vue";
 import ArrowIcon from "../assets/icons/ArrowIcon.vue";
 import ApplicationProcessSideInfo from "@/components/ApplicationProcessSideInfo.vue";
+import StudyOfficeSideInfo from "@/components/StudyOfficeSideInfo.vue";
 
 const showInformation = ref(false)
 
@@ -137,39 +138,8 @@ const triggerPostApplication = () => {
     </div>
 
     <div class="side-infos-list">
-      <!--SideInfoContainerfür Antragprozess -->
       <ApplicationProcessSideInfo />
-      <SideInfoContainer :heading="'STUDIENBÜRO'">
-        <p>Fakultät für Mathematik und Informatik</p>
-        <div class="main-info-container">
-          <div class="info-group-container">
-            <h4>Anschrift</h4>
-            <ul>
-              <li>Neues Augusteum</li>
-              <li>Augustusplatz 10</li>
-              <li>04109 Leipzig</li>
-            </ul>
-          </div>
-          <div class="info-group-container">
-            <h4>Kontakt</h4>
-            <ul>
-              <li>Telefon: +49 341 97-32165</li>
-              <li>Telefax: +49 341 97-32193</li>
-              <li>E-Mail: studienbuero@math.uni-leipzig.de</li>
-            </ul>
-          </div>
-          <div class="info-group-container">
-            <h4>Sprechzeiten</h4>
-            <p>Dienstag und Donnerstag: 9:00 - 11:30 Uhr und 12:30 - 16:00 Uhr</p>
-          </div>
-          <a href="https://www.mathcs.uni-leipzig.de/studium/studienbuero" target="_blank" >
-            <ButtonLink>
-              Zum Studienbüro
-            </ButtonLink>
-          </a>
-        </div>
-
-      </SideInfoContainer>
+      <StudyOfficeSideInfo />
     </div>
 
 
