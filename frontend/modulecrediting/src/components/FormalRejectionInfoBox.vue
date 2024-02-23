@@ -22,5 +22,6 @@
   @include verticalListItem($white);
   @include basicContainer();
 
+  margin-bottom: spacing(m);
 }
 </style>

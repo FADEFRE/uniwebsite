@@ -29,7 +29,7 @@
 }
 
 .content-container {
-  @include verticalList(m);
+  @include verticalList(s);
   width: 100%;
 
   &.split {
@@ -45,6 +45,8 @@
       width: 100%;
     }
   }
+
+  
 }
 
 .side-infos-list {

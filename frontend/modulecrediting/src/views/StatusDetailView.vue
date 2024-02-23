@@ -193,12 +193,9 @@ const triggerSubmit = () => {
 @use '@/assets/styles/global' as *;
 @use '@/assets/styles/components' as *;
 
-.formal-rejection-info-container {
-  margin-bottom: spacing(m);
-}
 
 .modules-connections-container {
-  @include verticalList(m);
+  @include verticalList(s);
   width: 100%;
   overflow: hidden;
 }
