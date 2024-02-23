@@ -83,7 +83,7 @@ const triggerPostApplication = () => {
           Tragen sie dann die Details der Leistungen ein. Hierfür können sie beliebig viele Modulzuweisungen hinzufügen.
         </p>
         <Button @click="showInformation = !showInformation">
-          Mehr anzeigen
+          Erklärung anzeigen
           <ArrowIcon :direction="showInformation ? 'up' : 'down'" color="red" />
         </Button>
         <div v-if="showInformation">
