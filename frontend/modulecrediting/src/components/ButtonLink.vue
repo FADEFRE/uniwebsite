@@ -23,18 +23,16 @@ const props = defineProps({
 
 
 <template>
-  <div class="button-container">
     <Button
         role="link"
         :disabled="disabled"
         :class="{ ' fixed-button': fixed, 'disabled': disabled, 'red-button': redButton }"
-        class="icon-hover-right"
+        class="icon-hover-right external"
     >
       <slot />
       <ArrowIcon direction="right" :hover="true"/>
+      <small v-if="external" class="helper-text">(externer Link)</small>
     </Button>
-  </div>  
-  <small v-if="external" class="helper-text">externer Link</small>
 </template>
 
 <style scoped lang="scss">
@@ -42,8 +40,20 @@ const props = defineProps({
 @use '@/assets/styles/global' as *;
 @use '@/assets/styles/components' as *;
 
+.p-button.external {
+  position: relative;
+  padding-bottom: spacing(m);
+}
+
 small {
+  position: absolute;
+  bottom: spacing(xs);
+  left: spacing(s);
   text-transform: none;
-  font-size: 0.85rem;
+  font-size: 0.75rem;
+  font-weight: 430;
+  color: $white;
+  
+
 }
 </style>
