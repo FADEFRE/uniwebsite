@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import com.itextpdf.tool.xml.XMLWorkerFontProvider;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -52,7 +53,6 @@ public class GeneratedPdfService {
         context.setVariable("Studiengang", application.getCourseLeipzig().getName());
 
 
-        // TODO: null check can be null on not decided applicaitons -> what is displayed in this scenario?
         if(application.getDecisionDate() != null)
             context.setVariable("Entscheidungsdatum", application.getDecisionDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
 
@@ -127,10 +127,18 @@ public class GeneratedPdfService {
         com.itextpdf.text.Document document = new com.itextpdf.text.Document();
         PdfWriter writer = PdfWriter.getInstance(document, baos);
         document.open();
-        XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream((html).getBytes()));
+
+        // Create a FontProvider and register your custom font
+        XMLWorkerFontProvider fontProvider = new XMLWorkerFontProvider(XMLWorkerFontProvider.DONTLOOKFORFONTS);
+        fontProvider.register("classpath:/static/fonts/Jost-VariableFont_wght.ttf", "Jost");
+
+        // Parse the HTML into the document using the custom FontProvider
+        XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(html.getBytes()), null, null, fontProvider);
+
         document.close();
         return baos.toByteArray();
     }
+
 
     private void addPdfToCopy(PdfCopy copy, byte[] pdfBytes) throws DocumentException, IOException {
         PdfReader reader = new PdfReader(pdfBytes);

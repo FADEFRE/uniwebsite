@@ -2,8 +2,33 @@
     <head>
         <meta charset="UTF-8"></meta>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
-        <link rel="stylesheet" th:href="@{classpath:static/main.css}"></link>
         <title>Application</title>
+
+        <style th:inline="text">
+            @font-face {
+                font-family: 'Jost';
+                src: url('Jost-VariableFont_wght.ttf') format('truetype');
+            }
+
+            :root {
+                --dark-gray: #333; /* Replace with the actual color value */
+                --black: #000; /* Replace with the actual color value */
+            }
+
+            .logo {
+                width: 27rem;
+                height: 11rem;
+            }
+
+            h1 {
+                font-family: 'Jost', sans-serif;
+color: var(--dark-gray);
+  text-transform: uppercase;
+  font-size: 1.7rem;
+  font-weight: 800;
+  letter-spacing: -0.05rem;
+            }
+        </style>
     </head>
   <body>
     <div class="layout">
