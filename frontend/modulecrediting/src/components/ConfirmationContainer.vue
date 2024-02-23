@@ -32,7 +32,9 @@ function formatId(id) {
                     <CopyIcon v-if="isSupported" :disabled="copied"/>
                 </div>
             </div>
-            <p class="description-text">Mit der Vorgangsnummer kannst du immer den Status deines Antrags überprüfen</p>
+            <p class="description-text">
+              Notieren Sie sich die Vorgangsnummer. Diese ist notwendig, um später den Status Ihres Antrags einsehen zu können.
+            </p>
         </div>
         <div class="button-container">
             <slot></slot>
