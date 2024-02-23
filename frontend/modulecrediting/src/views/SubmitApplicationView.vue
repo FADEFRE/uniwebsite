@@ -75,7 +75,7 @@ const triggerPostApplication = () => {
     <div class="content-container split">
 
       <div class="explanation-container">
-        <h2>Informationen zum Antrag</h2>
+        <h2>Informationen</h2>
         <p>
           Zuerst muss der Studiengang ausgewählt werden, für den Module angerechnet werden sollen.
           Danach können beliebig viele Modulzuweisungen hinzugefügt werden (eine Modulzuweisung ist eine Zuweisung

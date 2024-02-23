@@ -6,17 +6,16 @@
 
     "homepage": {
         "makeApplication": "Antrag stellen",
-        "makeApplicationExplanation": "Erstellen Sie einen Antrag, um Module anderer Universitäten an der Universität Leipzig anzurechnen lassen.",
+        "makeApplicationExplanation": "Lassen sie sich an anderen Universitäten erworbene Leistungspunkte für Module an der Universität Leipzig anrechnen. Dies ist beispielsweise sinnvoll, wenn Sie von einer anderen Universität zur Universität Leipzig wechseln, nach einem Auslandssemester zurückkehren oder Kurse parallel an einer anderen Universität absolviert haben.",
 
         "viewStatus": "Status einsehen",
-        "viewStatusExplanation": "Sehen Sie den Status von bereits gestellten Anträgen über die 6-stellige Vorgangsnummer ein.",
+        "viewStatusExplanation": "Hier können sie den Status von ihrem bereits gestellten Antrag einsehen. Geben sie dafür die 6-stellige Vorgangsnummer ein, die ihnen bei der Antragsstellung mitgeteilt wurde. Alternativ finden sie diese Vorgangsnummer auch in der Übersicht ihres Antrags als PDF.",
 
         "sideInfo": {
             "applicationProcess": "Antragsprozess",
-            "submitApplication": "Antrag online stellen",
-            "viewStatus": "Über Vorgangsnummer online Status einsehen",
-            "wait": "Auf Entscheidung des PAV warten",
-            "goToStudy": "Mit abgeschlossenem Antrag zum Studienbüro gehen"
+            "submitApplication": "Antrag auf dieser Website stellen",
+            "viewStatus": "Status mit Hilfe der Vorgangsnummer verfolgen",
+            "goToStudy": "Sobald der Antrag abgeschlossen ist, gehen Sie mit allen relevanten Dokumenten zum Studienbüro"
         }
         
     }
