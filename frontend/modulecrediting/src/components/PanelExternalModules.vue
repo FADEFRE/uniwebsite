@@ -141,8 +141,7 @@ defineExpose({
           @change="emit('change')"
           ref="newModulesRef"
       />
-      <ButtonAdd @click="addNewModule">Fremdmodul hinzufuegen</ButtonAdd>
-      <small>Anrechnung mehrerer externer Module auf Module der Universität Leipzig</small>
+      <ButtonAdd @click="addNewModule">Fremdmodul hinzufügen</ButtonAdd>
     </div>
 
   </div>
