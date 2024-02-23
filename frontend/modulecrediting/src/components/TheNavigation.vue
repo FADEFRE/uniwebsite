@@ -113,8 +113,4 @@ const specificRole = computed(() => navStore.getCurrentRoleNav)
 .user-specific-container {
   width: 100%;
 }
-
-.white {
-  width: 100%;
-}
 </style>
