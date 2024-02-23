@@ -3,6 +3,7 @@
 
 Button,.p-button, .router-link {
   @include smallHighlightBox();
+  width: max-content;
 
   background-color: $dark-gray;
   &.white {

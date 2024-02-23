@@ -13,25 +13,19 @@ const props = defineProps({
   redButton: {
     type: Boolean,
     default: false
-  },
-  external: {
-    type: Boolean,
-    default: false
   }
 })
 </script>
-
 
 <template>
     <Button
         role="link"
         :disabled="disabled"
-        :class="{ ' fixed-button': fixed, 'disabled': disabled, 'red-button': redButton, 'external' : external }"
+        :class="{ 'fixed-button': fixed, 'disabled': disabled, 'red-button': redButton }"
         class="icon-hover-right"
     >
       <slot />
       <ArrowIcon direction="right" :hover="true"/>
-      <small v-if="external" class="helper-text">(externer Link)</small>
     </Button>
 </template>
 
@@ -39,21 +33,4 @@ const props = defineProps({
 @use '@/assets/styles/util' as *;
 @use '@/assets/styles/global' as *;
 @use '@/assets/styles/components' as *;
-
-.p-button.external {
-  position: relative;
-  padding-bottom: spacing(m);
-}
-
-small {
-  position: absolute;
-  bottom: spacing(xs);
-  left: spacing(s);
-  text-transform: none;
-  font-size: 0.75rem;
-  font-weight: 430;
-  color: $white;
-  
-
-}
 </style>

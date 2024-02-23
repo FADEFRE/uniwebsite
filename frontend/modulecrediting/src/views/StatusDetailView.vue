@@ -132,13 +132,13 @@ const triggerSubmit = () => {
     <div class="side-infos-list">
       <!--SideInfoContainerfür Antragprozess -->
       <SideInfoContainer :heading="$t('homepage.sideInfo.applicationProcess')">
-                  <ul class="list-container">
-                      <li class="list-item"><p>{{ $t('homepage.sideInfo.submitApplication') }}</p></li>
-                      <li class="list-item"><p>{{ $t('homepage.sideInfo.viewStatus') }}</p></li>
-                      <li class="list-item"><p>{{ $t('homepage.sideInfo.wait') }}</p></li>
-                      <li class="list-item"><p>{{ $t('homepage.sideInfo.goToStudy') }}</p></li>
-                  </ul>
-              </SideInfoContainer>
+        <ul class="list-container">
+          <li class="list-item"><p>{{ $t('homepage.sideInfo.submitApplication') }}</p></li>
+          <li class="list-item"><p>{{ $t('homepage.sideInfo.viewStatus') }}</p></li>
+          <li class="list-item"><p>{{ $t('homepage.sideInfo.wait') }}</p></li>
+          <li class="list-item"><p>{{ $t('homepage.sideInfo.goToStudy') }}</p></li>
+        </ul>
+      </SideInfoContainer>
       <SideInfoContainer :heading="'STUDIENBÜRO'">
         <p>Fakultät für Mathematik und Informatik</p>
         <div class="main-info-container">
@@ -202,7 +202,6 @@ const triggerSubmit = () => {
   width: 100%;
   overflow: hidden;
 }
-
 
 .formal-rejection-highlight {
   border-left: spacing(m) solid $red;
