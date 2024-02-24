@@ -51,6 +51,7 @@ const filteredCourses = computed(() => {
             :delete-callback="triggerDeleteCourseLeipzig"
         />
       </div>
+      <small class="helper-text">Es gibt insgesamt {{ courses.length }} Studiengänge.</small>
 
     </div>
     <div v-else class="view-course-loading-container">

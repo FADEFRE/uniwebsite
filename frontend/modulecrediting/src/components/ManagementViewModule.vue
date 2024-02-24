@@ -51,6 +51,7 @@ const triggerDeleteModuleLeipzig = (module) => {
             :delete-callback="triggerDeleteModuleLeipzig"
         />
       </div>
+      <small class="helper-text">Es gibt insgesamt {{ modules.length }} Module.</small>
 
     </div>
     <div v-else class="view-module-loading-container">
