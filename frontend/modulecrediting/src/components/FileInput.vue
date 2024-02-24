@@ -131,8 +131,16 @@ defineExpose({
       <ButtonLink @click="openFile">PDF öffnen</ButtonLink>
     </div>
 
-    <div v-else class="edit-container" @click="openFileDialog" @dragover.prevent="dragOverHandler"
-         @dragleave.prevent="dragLeaveHandler" @drop.prevent="dropHandler" :class="{ 'invalid': !isValid }">
+    <div v-else
+         tabindex="0"
+         @click="openFileDialog"
+         @keydown.enter="openFileDialog"
+         @dragover.prevent="dragOverHandler"
+         @dragleave.prevent="dragLeaveHandler"
+         @drop.prevent="dropHandler"
+         :class="{ 'invalid': !isValid }"
+         class="edit-container"
+    >
 
       <p v-if="selectedFile?.name" class="ellipsis-text-overflow">{{ selectedFile?.name }}</p>
 
