@@ -81,10 +81,6 @@ const unCollapseAll = () => {
   }
 }
 
-const scrollTop = () => {
-  document.getElementById('app').scrollIntoView({ behavior: 'smooth' })
-}
-
 const unsaved = ref(false)
 
 const setUnsaved = () => {
@@ -151,7 +147,7 @@ const triggerPassOn = () => {
       <NotSavedIcon :display="unsaved"/>
       <ApplicationControl @click="collapseAll" type="collapse"/>
       <ApplicationControl @click="unCollapseAll" type="expand"/>
-      <MoveTop @click="scrollTop"/>
+      <MoveTop />
     </div>
 
     <div v-if="!readonly">
