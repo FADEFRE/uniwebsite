@@ -14,6 +14,7 @@ const scrollTop = () => {
 
 <template>
   <div class="main">
+    <h1 class="screen-reader-only">Verwaltung von Studiengängen und Modulen</h1>
     <div class="create-container-list">
       <router-view />
 

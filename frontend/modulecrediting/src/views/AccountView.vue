@@ -4,6 +4,7 @@ import AccountSettings from "../components/AccountSettings.vue";
 
 <template>
   <div class="main">
+    <h1 class="screen-reader-only">Accountverwaltung</h1>
     <div class="content-container">
       <AccountSettings />
       <router-view />

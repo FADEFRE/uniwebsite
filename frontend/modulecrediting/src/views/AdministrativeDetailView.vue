@@ -119,6 +119,7 @@ const triggerPassOn = () => {
 
 <template>
   <div v-if="applicationData" class="main">
+    <h1 class="screen-reader-only">Detailansicht eines Antrags</h1>
     <div class="side-infos-list">
       <ApplicationConnectionLinks :connections-data="connectionsData" />
     </div>
@@ -165,6 +166,7 @@ const triggerPassOn = () => {
 
   </div>
   <div v-else class="main centered">
+    <h1 class="screen-reader-only">Detailansicht eines Antrags</h1>
     <LoadingContainer />
   </div>
 
