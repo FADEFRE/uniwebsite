@@ -6,7 +6,7 @@
   font-weight: 1 999;
 }
 
-h2 {
+h1, .h1 {
   color: $dark-gray;
   font-family: "Jost";
   text-transform: uppercase;
@@ -15,7 +15,16 @@ h2 {
   letter-spacing: -0.05rem;
 }
 
-h3 {
+h2, .h2 {
+  color: $dark-gray;
+  font-family: "Jost";
+  text-transform: uppercase;
+  font-size: 1.7rem;
+  font-weight: 800;
+  letter-spacing: -0.05rem;
+}
+
+h3, .h3 {
   color: $dark-gray;
   font-family: "Jost";
   font-size: 1.2rem;
@@ -23,14 +32,14 @@ h3 {
   line-height: normal;
 }
 
-h4 {
+h4, .h4 {
   color: $dark-gray;
   font-family: "Jost";
   font-size: 1rem;
   font-weight: 700;
 }
 
-p {
+p, .p {
   color: $black;
   font-family: "Jost";
   font-size: 1rem;
@@ -92,4 +101,15 @@ Button,
 
 .invalid-text {
   color: $red;
+}
+
+.screen-reader-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
 }

@@ -1,11 +1,11 @@
 @use "@/assets/styles/util" as *;
 @use "@/assets/styles/global" as *;
 
-:slotted(ul) {
+ul {
   @include verticalList(s);
 }
 
-:slotted(li) {
+li {
   position: relative;
   padding-left: spacing(m);
   list-style: none;

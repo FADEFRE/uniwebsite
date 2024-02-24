@@ -52,6 +52,8 @@ const getFormattedId = () => {
 
 <template>
     <div class="main">
+        <h1 class="screen-reader-only">Startseite</h1>
+
         <div class="content-container split">
             <!-- HomepageContainer Application -->
             <HomepageContainer :header="$t('homepage.makeApplication')" :text="$t('homepage.makeApplicationExplanation')">
