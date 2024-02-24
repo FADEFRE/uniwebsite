@@ -37,6 +37,7 @@ const filteredApplications = computed(() => {
 
 <template>
   <div v-if="allApplications" class="main">
+    <h1 class="screen-reader-only">Übersichtsseite aller Anträge</h1>
     <div class="side-infos-list wide">
       <FilterSelector ref="filter" />
     </div>

@@ -29,6 +29,7 @@ const openPdf = () => {
 
 <template>
   <div class="main centered">
+    <h1 class="screen-reader-only">Bestätigung des Antrags</h1>
     <ConfirmationContainer :id="id">
       <ButtonDownload @click="openPdf">
         Antrag herunterladen

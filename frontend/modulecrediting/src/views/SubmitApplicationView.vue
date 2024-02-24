@@ -75,6 +75,7 @@ const triggerPostApplication = () => {
 
 <template>
   <div class="main">
+    <h1 class="screen-reader-only">Antrag stellen</h1>
 
     <div class="content-container split">
 

@@ -26,7 +26,7 @@ const attemptLogin = () => {
             <img src="@/assets/Universität_Leipzig_logo.svg" alt="Logo" />
         </div>
         <div class="login-content">
-            <h2 class="login-heading">ANMELDUNG</h2>
+            <h1 class="login-heading">ANMELDUNG</h1>
 
             <div class="input-container">
                 <InputText type="text" placeholder="Benutzername" v-model="login_username" class="white"

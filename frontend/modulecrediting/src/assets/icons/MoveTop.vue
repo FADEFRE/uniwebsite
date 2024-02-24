@@ -1,10 +1,14 @@
 <script setup>
 import ArrowIcon from './ArrowIcon.vue';
+
+const scrollTop = () => {
+  document.getElementById('app').scrollIntoView({ behavior: 'smooth' })
+}
 </script>
 
 <template>
-    <div class="move-top-button">
-        <ArrowIcon color="white" direction="up" size="big"/>
+    <div class="move-top-button" @click="scrollTop">
+        <ArrowIcon color="white" direction="up" size="big" />
     </div>
 </template>
 

@@ -94,6 +94,7 @@ const triggerSubmit = () => {
 
 <template>
   <div v-if="applicationData" class="main">
+    <h1 class="screen-reader-only">Status des Antrags</h1>
 
     <div class="content-container split">
 

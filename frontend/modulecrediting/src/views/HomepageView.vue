@@ -2,10 +2,9 @@
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
 import HomepageContainer from '@/components/HomepageContainer.vue';
-import SideInfoContainer from '@/components/SideInfoContainer.vue';
 import ButtonLink from '@/components/ButtonLink.vue';
-import { getApplicationExists } from "@/scripts/axios-requests";
 import ApplicationProcessSideInfo from "@/components/ApplicationProcessSideInfo.vue";
+import { getApplicationExists } from "@/scripts/axios-requests";
 
 const router = useRouter()
 
@@ -30,12 +29,6 @@ const openDetailView = () => {
 
 const goToSubmitApplication = () => {
     router.push({ name: 'submitApplication' })
-}
-
-const handleEnterKey = (event) => {
-    if (event.key === 'Enter') {
-        openDetailView();
-    }
 }
 
 const validateInput = () => {

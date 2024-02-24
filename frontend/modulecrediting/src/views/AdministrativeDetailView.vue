@@ -81,10 +81,6 @@ const unCollapseAll = () => {
   }
 }
 
-const scrollTop = () => {
-  document.getElementById('app').scrollIntoView({ behavior: 'smooth' })
-}
-
 const unsaved = ref(false)
 
 const setUnsaved = () => {
@@ -119,6 +115,7 @@ const triggerPassOn = () => {
 
 <template>
   <div v-if="applicationData" class="main">
+    <h1 class="screen-reader-only">Detailansicht eines Antrags</h1>
     <div class="side-infos-list">
       <ApplicationConnectionLinks :connections-data="connectionsData" />
     </div>
@@ -150,7 +147,7 @@ const triggerPassOn = () => {
       <NotSavedIcon :display="unsaved"/>
       <ApplicationControl @click="collapseAll" type="collapse"/>
       <ApplicationControl @click="unCollapseAll" type="expand"/>
-      <MoveTop @click="scrollTop"/>
+      <MoveTop />
     </div>
 
     <div v-if="!readonly">
@@ -165,6 +162,7 @@ const triggerPassOn = () => {
 
   </div>
   <div v-else class="main centered">
+    <h1 class="screen-reader-only">Detailansicht eines Antrags</h1>
     <LoadingContainer />
   </div>
 
