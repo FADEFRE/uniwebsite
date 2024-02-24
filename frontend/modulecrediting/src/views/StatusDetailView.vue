@@ -6,9 +6,6 @@ shows status of an application
 import { useRoute, useRouter } from 'vue-router';
 import { ref, onBeforeMount, computed } from "vue";
 import ApplicationOverview from "@/components/ApplicationOverview.vue";
-import FormalRejectionInfoBox from "@/components/FormalRejectionInfoBox.vue";
-import CompletedInfoBox from "@/components/CompletedInfoBox.vue";
-import SideInfoContainer from '../components/SideInfoContainer.vue';
 import StatusPanel from "@/components/StatusPanel.vue";
 import ApplicationPanel from "@/components/ApplicationPanel.vue";
 import ButtonLink from '@/components/ButtonLink.vue';
@@ -101,12 +98,42 @@ const triggerSubmit = () => {
 
     <div class="content-container split">
 
-      <div v-if="applicationData['fullStatus'] === 'FORMFEHLER'">
-        <FormalRejectionInfoBox />
+      <div v-if="applicationData['fullStatus'] === 'FORMFEHLER'" class="application-info-container">
+        <h2>Formfehler</h2>
+        <p>
+          Ihr Antrag wurde aufgrund von Formfehlern zurückgewiesen.
+          Es sind die Modulzuweisungen rot markiert, die Formfehler enthalten.
+          In der Modulzuweisung finden sie unten eine Erklärung des konkreten Fehlers.
+          Bitte korrigieren sie alle angegebenen Fehler.
+          Anschließend können sie ihren Antrag neu einreichen.
+        </p>
       </div>
 
-      <div v-if="applicationData['fullStatus'] === 'ABGESCHLOSSEN'">
-        <CompletedInfoBox />
+      <div v-if="applicationData['fullStatus'] === 'ABGESCHLOSSEN'" class="application-info-container">
+        <h2>Wie geht es weiter?</h2>
+        <p>
+          Es wurde eine finale Entscheidung zu ihrem Antrag getroffen.
+          Dies ist nur eine Informationen über die Möglichkeit der Anrechnung.
+          Um sich ihre Leistungen offiziell anrechnen zu lassen, müssen sie zum Studienbüro gehen.
+          Bringen sie hierfür bitte alle relevanten Dokumente mit, die den Abschluss der anzurechnenden Leistungen
+          belegen.
+          Falls sie weitere Fragen zu ihrem Antrag haben, kontaktieren sie bitte das Studienbüro.
+        </p>
+        <h3>Legende</h3>
+        <ul>
+          <li>
+            <ModuleStatusIcon status-decision="accepted" />
+            <p>Anrechnung angenommen</p>
+          </li>
+          <li>
+            <ModuleStatusIcon status-decision="asExamCertificate" />
+            <p>Anrechnung als Übungsschein</p>
+          </li>
+          <li>
+            <ModuleStatusIcon status-decision="denied" />
+            <p>Anrechnung abgelehnt</p>
+          </li>
+        </ul>
       </div>
 
       <ApplicationOverview :creation-date="parseRequestDate(applicationData['creationDate'])"
@@ -127,10 +154,12 @@ const triggerSubmit = () => {
           :allow-delete="moduleConnections.length > 1" @delete-self="deleteNewConnection(key)" ref="newConnectionsRef" />
       </div>
 
-      
+
       <div class="application-buttons-container">
-        <ButtonAdd v-if="applicationData['fullStatus'] === 'FORMFEHLER'" @click="addNewConnection">Modulzuweisung hinzufügen</ButtonAdd>
-        <ButtonLink v-if="applicationData['fullStatus'] === 'FORMFEHLER'" :redButton="true" @click="triggerSubmit">Neu einreichen</ButtonLink>
+        <ButtonAdd v-if="applicationData['fullStatus'] === 'FORMFEHLER'" @click="addNewConnection">Modulzuweisung
+          hinzufügen</ButtonAdd>
+        <ButtonLink v-if="applicationData['fullStatus'] === 'FORMFEHLER'" :redButton="true" @click="triggerSubmit">Neu
+          einreichen</ButtonLink>
       </div>
       <ButtonDownloadVue @click="openSummaryDocument">
         Antrag herunterladen

@@ -44,10 +44,9 @@
     &.split {
       width: 100%;
     }
-  }
-
-  
+  }  
 }
+
 
 .side-infos-list {
   @include verticalList(l);
@@ -63,6 +62,13 @@
       width: 100%;
     }
   }
+}
+
+.application-info-container {
+  @include verticalListItem($white);
+  @include basicContainer();
+
+  margin-bottom: spacing(m);
 }
 
 .application-buttons-container {
@@ -83,3 +89,6 @@
   align-items: flex-start;
   gap: spacing(s);
 }
+
+
+

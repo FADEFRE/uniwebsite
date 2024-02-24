@@ -114,7 +114,7 @@ const saveCourseLeipzig = () => {
 
       <div v-if="courses && allModules.length > 0 && selectedModules && selectableModules" class="screen-split">
         <div class="selectable-modules-container">
-          <h3>Wählbare Module</h3>
+          <h3 class="h4">Wählbare Module</h3>
           <div class="input-search-field-container">
             <InputText v-model="searchStringSelectable" placeholder="Wählbare Module suchen" />
             <img src="@/assets/icons/SearchIcon.svg" class="search-icon">
@@ -141,7 +141,7 @@ const saveCourseLeipzig = () => {
         </div>
 
         <div class="selected-modules-container">
-          <h3>Module in {{ selectedCourse }} ({{ selectedModules.length + addedModules.length }})</h3>
+          <h3 class="h4">Module in {{ selectedCourse }} ({{ selectedModules.length + addedModules.length }})</h3>
           <div class="input-search-field-container">
             <InputText v-model="searchStringSelected" placeholder="Ausgewählte Module suchen" />
             <img src="@/assets/icons/SearchIcon.svg" class="search-icon">

@@ -51,10 +51,10 @@ function closeMenu() {
   </div>
 
     <footer>
-      <ul class="footer-content">
-        <li><p>Impressum</p></li>
-        <li><p>Datenschutz</p></li>
-      </ul>
+      <div class="footer-content">
+        <p>Impressum</p>
+        <p>Datenschutz</p>
+      </div>
     </footer>
   </div>
 </template>
