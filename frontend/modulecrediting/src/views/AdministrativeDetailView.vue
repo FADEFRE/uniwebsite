@@ -18,7 +18,7 @@ import LoadingContainer from "@/components/LoadingContainer.vue";
 const route = useRoute()
 const router = useRouter();
 const id = route.params.id
-const connectionHighlightId = route.params.connection
+const connectionHighlightId = route.query['highlight']
 const type = route.meta['authType']
 const readonly = ref(true)
 
@@ -123,7 +123,6 @@ const triggerPassOn = () => {
       <ApplicationConnectionLinks :connections-data="connectionsData" />
     </div>
 
-
     <div class="content-container split">
 
       <ApplicationOverview :creation-date="parseRequestDate(applicationData['creationDate'])"
@@ -163,10 +162,12 @@ const triggerPassOn = () => {
         Zurückweisen
       </ButtonLink>
     </div>
+
   </div>
   <div v-else class="main centered">
     <LoadingContainer />
   </div>
+
 </template>
 
 <style scoped lang="scss">

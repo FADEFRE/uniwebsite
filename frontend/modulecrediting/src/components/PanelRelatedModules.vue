@@ -8,15 +8,14 @@ displays:
 -->
 
 <script setup>
-import PanelHeader from "@/components/PanelHeader.vue";
+import router from "@/router";
 import { useRoute } from "vue-router";
 import { ref, onBeforeMount } from "vue";
 import { getRelatedModuleConnections } from "@/scripts/axios-requests";
 import { parseRequestDate } from "@/scripts/date-utils";
-import router from "@/router";
-import ModuleStatusIcon from "../assets/icons/ModuleStatusIcon.vue";
 import DateIcon from "../assets/icons/DateIcon.vue";
-
+import PanelHeader from "@/components/PanelHeader.vue";
+import ModuleStatusIcon from "../assets/icons/ModuleStatusIcon.vue";
 
 //TODO: FIX Related Modules!!!!!! 
 const props = defineProps({
@@ -38,16 +37,20 @@ const type = route.meta['authType']
 
 let redirectRouteName = undefined
 if (type === 'study-office') {
-  redirectRouteName = 'studyOfficeDetailHighlight'
+  redirectRouteName = 'studyOfficeDetail'
 } else if (type === 'chairman') {
-  redirectRouteName = 'chairmanDetailHighlight'
+  redirectRouteName = 'chairmanDetail'
 } else {
   console.warn("PanelRelatedModules: component should only be used with route types 'study-office' or 'chairman'")
 }
 
 const openRelatedModule = (singleModule) => {
   const connectionId = singleModule['id']
-  const routeData = router.resolve({ name: redirectRouteName, params: { id: singleModule['application']['id'], connection: connectionId } })
+  const routeData = router.resolve({
+    name: redirectRouteName,
+    params: { id: singleModule['application']['id'] },
+    query: { highlight: connectionId }
+  })
   window.open(routeData.href, '_blank')
 }
 
