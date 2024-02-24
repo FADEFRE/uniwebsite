@@ -17,7 +17,6 @@ import DateIcon from "../assets/icons/DateIcon.vue";
 import PanelHeader from "@/components/PanelHeader.vue";
 import ModuleStatusIcon from "../assets/icons/ModuleStatusIcon.vue";
 
-//TODO: FIX Related Modules!!!!!! 
 const props = defineProps({
   connectionId: {
     required: true,
