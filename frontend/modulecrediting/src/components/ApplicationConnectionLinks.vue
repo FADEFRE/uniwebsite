@@ -17,6 +17,10 @@ const props = defineProps({
     }
   }
 })
+
+const scrollTo = (id) => {
+  document.getElementById(id).scrollIntoView({ behavior: 'smooth' })
+}
 </script>
 
 <template>
@@ -25,10 +29,10 @@ const props = defineProps({
     <h2>Übersicht</h2>
 
     <div class="connection-link-container">
-      <a v-for="connection in connectionsData" :href="'#' + connection.id" class="connection-link-item icon-hover-right">
-      <p class="connection-text"> {{ connection.externalModules.join(', ') || '...' }}</p>
+      <div v-for="connection in connectionsData" @click="scrollTo(connection.id)" class="connection-link-item icon-hover-right">
+        <p class="connection-text"> {{ connection.externalModules.join(', ') || '...' }}</p>
         <ArrowIcon direction="right" color="red" :hover="true"/>
-      </a>
+      </div>
     </div>
     
 
