@@ -1,8 +1,8 @@
 <script setup>
+import { ref, computed, onBeforeMount } from "vue";
 import ManagementListElement from "./ManagementListElement.vue";
-import { ref, onBeforeMount, computed } from "vue";
-import { getCoursesLeipzigName, deleteCourseLeipzig } from "@/scripts/axios-requests";
-import {putUpdateCourseLeipzig} from "../scripts/axios-requests";
+import LoadingContainer from "@/components/LoadingContainer.vue";
+import { getCoursesLeipzigName, putUpdateCourseLeipzig, deleteCourseLeipzig } from "@/scripts/axios-requests";
 
 const courses = ref();
 const searchString = ref('');
@@ -33,22 +33,31 @@ const filteredCourses = computed(() => {
 </script>
 
 <template>
-    <div class="view-course-container">
-        <h2>ALLE STUDIENGÄNGE</h2>
-        <div class="search-container">
-            <InputText v-model="searchString" placeholder="Studiengang suchen"></InputText>
-            <img src="@/assets/icons/SearchIcon.svg" class="search-icon">
-        </div>
-        <div v-for="course in filteredCourses" class="course-list">
-            <ManagementListElement
-                :key="course"
-                :name="course"
-                :show-code="false"
-                :edit-callback="triggerEditCourseLeipzig"
-                :delete-callback="triggerDeleteCourseLeipzig"
-            />
-        </div>
+  <div class="view-course-container">
+    <h2>ALLE STUDIENGÄNGE</h2>
+
+    <div v-if="courses">
+
+      <div class="search-container">
+        <InputText v-model="searchString" placeholder="Studiengang suchen"></InputText>
+        <img src="@/assets/icons/SearchIcon.svg" class="search-icon">
+      </div>
+      <div v-for="course in filteredCourses" class="course-list">
+        <ManagementListElement
+            :key="course"
+            :name="course"
+            :show-code="false"
+            :edit-callback="triggerEditCourseLeipzig"
+            :delete-callback="triggerDeleteCourseLeipzig"
+        />
+      </div>
+
     </div>
+    <div v-else>
+      <LoadingContainer />
+    </div>
+
+  </div>
 </template>
 
 <style scoped lang="scss">

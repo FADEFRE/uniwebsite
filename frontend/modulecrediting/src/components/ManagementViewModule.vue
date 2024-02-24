@@ -1,6 +1,7 @@
 <script setup>
+import { ref, computed, onBeforeMount } from "vue";
 import ManagementListElement from "./ManagementListElement.vue";
-import { ref, onBeforeMount, computed } from "vue";
+import LoadingContainer from "@/components/LoadingContainer.vue";
 import { getModulesNameCode, deleteModuleLeipzig, putUpdateModuleLeipzig } from "@/scripts/axios-requests";
 
 const modules = ref();
@@ -32,22 +33,31 @@ const triggerDeleteModuleLeipzig = (module) => {
 </script>
 
 <template>
-    <div class="view-module-container">
-        <h2>ALLE MODULE</h2>
-        <div class="search-container">
-            <InputText v-model="searchString" placeholder="Modul suchen"></InputText>
-            <img src="@/assets/icons/SearchIcon.svg" class="search-icon">
-        </div>
-        <div v-for="singleModule in filteredModules" class="module-list">
-          <ManagementListElement
-              :key="singleModule['name']"
-              :name="singleModule['name']"
-              :code="singleModule['code']"
-              :edit-callback="triggerEditModuleLeipzig"
-              :delete-callback="triggerDeleteModuleLeipzig"
-          />
-        </div>
+  <div class="view-module-container">
+    <h2>ALLE MODULE</h2>
+
+    <div v-if="modules">
+
+      <div class="search-container">
+        <InputText v-model="searchString" placeholder="Modul suchen"></InputText>
+        <img src="@/assets/icons/SearchIcon.svg" class="search-icon">
+      </div>
+      <div v-for="singleModule in filteredModules" class="module-list">
+        <ManagementListElement
+            :key="singleModule['name']"
+            :name="singleModule['name']"
+            :code="singleModule['code']"
+            :edit-callback="triggerEditModuleLeipzig"
+            :delete-callback="triggerDeleteModuleLeipzig"
+        />
+      </div>
+
     </div>
+    <div v-else>
+      <LoadingContainer />
+    </div>
+
+  </div>
 </template>
 
 <style scoped lang="scss">
