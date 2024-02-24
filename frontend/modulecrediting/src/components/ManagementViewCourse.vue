@@ -43,6 +43,7 @@ const filteredCourses = computed(() => {
             <ManagementListElement
                 :key="course"
                 :name="course"
+                :show-code="false"
                 :edit-callback="triggerEditCourseLeipzig"
                 :delete-callback="triggerDeleteCourseLeipzig"
             />

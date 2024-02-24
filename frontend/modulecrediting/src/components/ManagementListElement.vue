@@ -12,6 +12,10 @@ const props = defineProps({
   code: {
     type: String
   },
+  showCode: {
+    type: Boolean,
+    default: true
+  },
   editCallback: {
     required: true,
     type: Function
@@ -24,7 +28,7 @@ const props = defineProps({
 
 const dialogVisible = ref(false)
 const name = ref(props.name)
-const code = ref(props.code)
+const code = ref(props.code || '')
 
 const nameEmpty = ref(false)
 const codeEmpty = ref(false)
@@ -57,9 +61,9 @@ const triggerEdit = () => {
     </div>
 
     <Dialog modal :dismissable-mask="true" :draggable="false" v-model:visible="dialogVisible" header="Bearbeiten">
-      <InputText type="text" v-model="name" :class="{ 'invalid': nameEmpty }" class="white" />
+      <InputText type="text" placeholder="Name" v-model="name" :class="{ 'invalid': nameEmpty }" class="white" />
       <small v-if="nameEmpty" class="invalid-text">Name darf nicht leer sein</small>
-      <InputText v-if="props.code" type="text" v-model="code" :class="{ 'invalid': codeEmpty }" />
+      <InputText v-if="showCode" type="text" placeholder="Code" v-model="code" :class="{ 'invalid': codeEmpty }" />
       <small v-if="props.code && codeEmpty" class="invalid-text">Code darf nicht leer sein</small>
       <ButtonLink @click="triggerEdit">Speichern</ButtonLink>
     </Dialog>
