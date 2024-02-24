@@ -2,6 +2,7 @@
 import { ref, computed, onBeforeMount } from "vue";
 import ButtonLink from "@/components/ButtonLink.vue"
 import ArrowIcon from "../assets/icons/ArrowIcon.vue";
+import LoadingContainer from "@/components/LoadingContainer.vue";
 import { getCoursesLeipzigName, getModulesNameCodeByCourse, getModulesNameCode, putCourseLeipzigEdit } from "@/scripts/axios-requests";
 
 const courses = ref()
@@ -24,7 +25,6 @@ const selectableModules = computed(() => {
     return undefined
   }
 });
-
 
 // search in selectable modules
 const searchStringSelected = ref('');
@@ -53,8 +53,6 @@ const selectableModulesDisplay = computed(() => {
     return singleModule.name.toLocaleLowerCase().includes(searchStringSelectable.value.toLocaleLowerCase());
   })
 })
-
-
 
 onBeforeMount(() => {
   getCoursesLeipzigName()
@@ -114,7 +112,7 @@ const saveCourseLeipzig = () => {
 
     <div v-if="selectedCourse" class="edit-container">
 
-      <div v-if="courses && allModules && selectedModules && selectableModules" class="screen-split">
+      <div v-if="courses && allModules.length > 0 && selectedModules && selectableModules" class="screen-split">
         <div class="selectable-modules-container">
           <h3>Wählbare Module</h3>
           <div class="input-search-field-container">
@@ -186,7 +184,7 @@ const saveCourseLeipzig = () => {
         </div>
       </div>
       <div v-else>
-        <p>Loading ...</p> <!-- todo change to LoadingContainer -->
+        <LoadingContainer />
       </div>
 
     </div>
