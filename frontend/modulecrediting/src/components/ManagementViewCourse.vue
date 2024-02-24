@@ -36,7 +36,7 @@ const filteredCourses = computed(() => {
   <div class="view-course-container">
     <h2>ALLE STUDIENGÄNGE</h2>
 
-    <div v-if="courses">
+    <div v-if="courses" class="view-course-list">
 
       <div class="search-container">
         <InputText v-model="searchString" placeholder="Studiengang suchen"></InputText>
@@ -53,7 +53,7 @@ const filteredCourses = computed(() => {
       </div>
 
     </div>
-    <div v-else>
+    <div v-else class="view-course-loading-container">
       <LoadingContainer />
     </div>
 
@@ -67,6 +67,11 @@ const filteredCourses = computed(() => {
 
 .view-course-container {
     @include basicContainer();
+}
+
+.view-course-list,
+.view-course-loading-container {
+    @include verticalList(s);
 }
 
 .search-container {

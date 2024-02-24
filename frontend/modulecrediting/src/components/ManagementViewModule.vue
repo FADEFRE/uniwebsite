@@ -36,7 +36,7 @@ const triggerDeleteModuleLeipzig = (module) => {
   <div class="view-module-container">
     <h2>ALLE MODULE</h2>
 
-    <div v-if="modules">
+    <div v-if="modules" class="view-module-list">
 
       <div class="search-container">
         <InputText v-model="searchString" placeholder="Modul suchen"></InputText>
@@ -53,7 +53,7 @@ const triggerDeleteModuleLeipzig = (module) => {
       </div>
 
     </div>
-    <div v-else>
+    <div v-else class="view-module-loading-container">
       <LoadingContainer />
     </div>
 
@@ -67,6 +67,11 @@ const triggerDeleteModuleLeipzig = (module) => {
 
 .view-module-container {
     @include basicContainer();
+}
+
+.view-module-list,
+.view-module-loading-container {
+    @include verticalList(s);
 }
 
 .search-container {

@@ -13,11 +13,8 @@
 @use '@/assets/styles/components' as *;
 
 .loading-container {
-    //position: absolute;
-    //top: 50%;
-    //left: 50%;
-    margin: spacing(xxl);
-    transform: translate(-50%);
+    margin: spacing(xxl) auto;
+    width: fit-content;
 }
 
 .loader {

@@ -40,14 +40,9 @@
 }
 
 @mixin basicContainer() {
-  width: auto;
+  @include verticalList(s);
   background-color: $white;
   padding: spacing(l);
-
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: spacing(s);
 }
 
 @mixin screenSplit() {
