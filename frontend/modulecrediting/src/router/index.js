@@ -202,6 +202,12 @@ router.beforeEach(async (to, from) => {
         changeRole(responseRole.data);
         return true;
       }
+      if (to.name === "management") {
+        return { name: "managementAdmin" }
+      }
+      if (to.name === "account") {
+        return { name: "accountAdmin" }
+      }
       return { path: "/forbidden" + to.fullPath };
 
     case "internal-with-admin":
