@@ -82,8 +82,7 @@ const unCollapseAll = () => {
 }
 
 const scrollTop = () => {
-  document.body.scrollTop = 0;
-  document.documentElement.scrollTop = 0;
+  document.getElementById('app').scrollIntoView({ behavior: 'smooth' })
 }
 
 const unsaved = ref(false)
