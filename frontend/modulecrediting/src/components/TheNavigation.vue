@@ -20,13 +20,13 @@ const specificRole = computed(() => navStore.getCurrentRoleNav)
 
 <template>
   <div v-if="isNavType === 'standard'" class="links-container" :class="{ 'small-screen-links-container': isMenuOpen }">
-    <router-link :to="{ name: 'home' }" class="router-link icon-hover-right" :class="{ 'white': isMenuOpen }"
-      @click="$emit('linkClicked')">
+    <router-link :to="{ name: 'home' }" @click="$emit('linkClicked')"
+                 class="router-link icon-hover-right" :class="{ 'white': isMenuOpen }">
       {{ $t('navigation.homepage') }}
       <ArrowIcon direction="right" :color="isMenuOpen ? 'dark-gray' : 'white'"/>
     </router-link>
-    <router-link :to="{ name: 'login' }" @click="$emit('linkClicked')" class="router-link icon-hover-right"
-      :class="{ 'white': isMenuOpen }">
+    <router-link :to="{ name: 'login' }" @click="$emit('linkClicked')"
+                 class="router-link icon-hover-right" :class="{ 'white': isMenuOpen }">
       {{ $t('navigation.login') }}
 
       <AuthIcon type="login" :color="isMenuOpen ? 'dark-gray' : 'white'"/>
@@ -44,23 +44,23 @@ const specificRole = computed(() => navStore.getCurrentRoleNav)
       </router-link>
     </div>
     <div v-else-if="specificRole === 'chair'" :class="{ 'user-specific-container': isMenuOpen }">
-      <router-link :to="{ name: 'chairmanSelection' }" @click="$emit('linkClicked')" class="router-link icon-hover-right"
-                   :class="{ 'white': isMenuOpen }">
+      <router-link :to="{ name: 'chairmanSelection' }" @click="$emit('linkClicked')"
+                   class="router-link icon-hover-right" :class="{ 'white': isMenuOpen }">
         Übersicht
         <ArrowIcon direction="right" :color="isMenuOpen ? 'dark-gray' : 'white'"/>
       </router-link>
     </div>
 
     <div v-if="specificRole === 'admin'" :class="{ 'user-specific-container': isMenuOpen }">
-      <router-link :to="{ name: 'managementAdmin' }" class="router-link icon-hover-right" @click="$emit('linkClicked')"
-                   :class="{ 'white': isMenuOpen }">
+      <router-link :to="{ name: 'managementAdmin' }" @click="$emit('linkClicked')"
+                   class="router-link icon-hover-right" :class="{ 'white': isMenuOpen }">
         Verwaltung
         <ArrowIcon direction="right" :color="isMenuOpen ? 'dark-gray' : 'white'"/>
       </router-link>
     </div>
     <div v-else :class="{ 'user-specific-container': isMenuOpen }">
-      <router-link :to="{ name: 'management' }" class="router-link icon-hover-right" @click="$emit('linkClicked')"
-                   :class="{ 'white': isMenuOpen }">
+      <router-link :to="{ name: 'management' }" @click="$emit('linkClicked')"
+                   class="router-link icon-hover-right" :class="{ 'white': isMenuOpen }">
         Verwaltung
         <ArrowIcon direction="right" :color="isMenuOpen ? 'dark-gray' : 'white'"/>
       </router-link>
@@ -81,7 +81,7 @@ const specificRole = computed(() => navStore.getCurrentRoleNav)
       </router-link>
     </div>
 
-    <Button @click="logout" class="router-link icon-hover-right" :class="{ 'white': isMenuOpen }">
+    <Button role="link" @click="logout" class="router-link icon-hover-right" :class="{ 'white': isMenuOpen }">
       Logout
       <AuthIcon type="logout" :color="isMenuOpen ? 'dark-gray' : 'white'"/>
     </Button>
