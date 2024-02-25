@@ -101,7 +101,7 @@ const triggerSubmit = () => {
 
       <div v-if="applicationData['fullStatus'] === 'FORMFEHLER'" class="application-info-container">
         <h2>Formfehler</h2>
-        <p>
+        <p class="text-justify">
           Ihr Antrag wurde aufgrund von Formfehlern zurückgewiesen.
           Es sind die Modulzuweisungen rot markiert, die Formfehler enthalten.
           In der Modulzuweisung finden sie unten eine Erklärung des konkreten Fehlers.
@@ -112,7 +112,7 @@ const triggerSubmit = () => {
 
       <div v-if="applicationData['fullStatus'] === 'ABGESCHLOSSEN'" class="application-info-container">
         <h2>Wie geht es weiter?</h2>
-        <p>
+        <p class="text-justify">
           Es wurde eine finale Entscheidung zu ihrem Antrag getroffen.
           Dies ist nur eine Informationen über die Möglichkeit der Anrechnung.
           Um sich ihre Leistungen offiziell anrechnen zu lassen, müssen sie zum Studienbüro gehen.

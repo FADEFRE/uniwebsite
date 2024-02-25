@@ -9,7 +9,7 @@ const props = defineProps(['header', 'text'])
             <h2 v-else>Platzhalter heading</h2>
         </div>
         <div v-if="text">
-            <p>{{ text }}</p>
+            <p class="text-justify">{{ text }}</p>
         </div>
         <div v-else>
             <p>Platzhalter Text</p>

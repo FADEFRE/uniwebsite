@@ -44,7 +44,10 @@ p, .p {
   font-family: "Jost";
   font-size: 1rem;
   font-weight: 400;
-  //text-align: justify;
+}
+
+.text-justify {
+  text-align: justify;
 }
 
 .p-inputtext,

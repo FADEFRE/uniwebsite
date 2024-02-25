@@ -81,7 +81,7 @@ const triggerPostApplication = () => {
       <div class="application-info-container">
         <h2>Informationen</h2>
         <div class="explanation-collapsed-container">
-        <p>
+        <p class="text-justify">
           Wählen Sie den Studiengang aus, für den Sie sich Leistungen anrechnen lassen wollen.
           Tragen sie dann die Details der Leistungen ein. Hierfür können sie beliebig viele Modulzuweisungen hinzufügen.
         </p>
