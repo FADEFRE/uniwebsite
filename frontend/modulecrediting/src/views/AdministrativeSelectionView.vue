@@ -45,11 +45,17 @@ const filteredApplications = computed(() => {
     <div class="content-container split narrow">
 
       <div v-if="allApplications.length > 0" v-for="application in filteredApplications">
-        <ApplicationOverview :id="application['id']" :status="application['fullStatus']"
-          :course="application['courseLeipzig']['name']" :creation-date="parseRequestDate(application['creationDate'])"
-          :last-edited-date="parseRequestDate(application['lastEditedDate'])"
-          :decision-date="parseRequestDate(application['decisionDate'])" :forward="route.meta['forward']"
-          :adminSelectionView="true" class="admin-selection-view" />
+        <ApplicationOverview
+            :id="application['id']"
+            :status="application['fullStatus']"
+            :course="application['courseLeipzig']['name']"
+            :creation-date="parseRequestDate(application['creationDate'])"
+            :last-edited-date="parseRequestDate(application['lastEditedDate'])"
+            :decision-date="parseRequestDate(application['decisionDate'])"
+            :forward="route.meta['forward']"
+            :adminSelectionView="true"
+            class="admin-selection-view"
+        />
       </div>
       <div v-else class="applications-empty">
         <p>Es gibt keine Anträge.</p>
