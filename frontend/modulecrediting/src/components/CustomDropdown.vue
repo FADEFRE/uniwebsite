@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from "vue";
 import ArrowIcon from "@/assets/icons/ArrowIcon.vue";
+import TrashIcon from "@/assets/icons/TrashIcon.vue";
 
 const emit = defineEmits(['clear'])
 
