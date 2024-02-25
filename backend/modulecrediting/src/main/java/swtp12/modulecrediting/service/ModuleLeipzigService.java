@@ -63,31 +63,35 @@ public class ModuleLeipzigService {
     public String createModuleLeipzig(ModuleLeipzigDTO moduleLeipzigDTO) {
         if (moduleLeipzigDTO == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No data given");
         if (moduleLeipzigDTO.getName().isBlank()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No module name given");
-        if (moduleLeipzigDTO.getCode().isBlank()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No moduel code given");
+
+        String moduleCode = "";
+        if (!moduleLeipzigDTO.getCode().isBlank()) {
+            moduleCode = moduleLeipzigDTO.getCode();
+
+            Optional<ModuleLeipzig> moduleLeipzigCodeOptional = moduleLeipzigRepository.findByCode(moduleCode);
+            if (moduleLeipzigCodeOptional.isPresent()) {
+                if (moduleLeipzigCodeOptional.get().getIsActive())
+                    throw new ResponseStatusException(HttpStatus.CONFLICT, "Module with this code already exists");
+            }
+        }
 
         String moduleName = moduleLeipzigDTO.getName();
-        String moduleCode = moduleLeipzigDTO.getCode();
+        Optional<ModuleLeipzig> moduleLeipzigNameOptional = moduleLeipzigRepository.findByName(moduleName);
+        if (moduleLeipzigNameOptional.isPresent()) {
+            ModuleLeipzig moduleLeipzig = moduleLeipzigNameOptional.get();
+            if (moduleLeipzig.getIsActive())
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "Module with this name already exists");
 
-        Optional<ModuleLeipzig> moduleLeipzigOptional = moduleLeipzigRepository.findByName(moduleName);
-
-        if (moduleLeipzigOptional.isPresent()) {
-            ModuleLeipzig moduleLeipzig = moduleLeipzigOptional.get();
-            if (moduleLeipzig.getIsActive()) throw new ResponseStatusException(HttpStatus.CONFLICT, "The Module already exists:" + moduleLeipzigDTO.getName() );
-            else {
-                // reactivate with new module code
-                moduleLeipzig.setIsActive(true);
-                moduleLeipzig.setCode(moduleCode);
-
-                System.out.println("Reactivated Module Leipzig: " + moduleLeipzig.getName() + ", " + moduleLeipzig.getCode());
-            }
-
+            // reactivate
+            moduleLeipzig.setIsActive(true);
+            moduleLeipzig.setCode(moduleCode);
+            
             moduleLeipzigRepository.save(moduleLeipzig);
             return moduleLeipzig.getName();
         }
 
         // create new module
         ModuleLeipzig moduleLeipzig = new ModuleLeipzig(moduleName, moduleCode);
-        System.out.println("Created new Module Leipzig: " + moduleLeipzig.getName() + ", " + moduleLeipzig.getCode());
         moduleLeipzigRepository.save(moduleLeipzig);
         return moduleLeipzig.getName();
     }
@@ -100,11 +104,18 @@ public class ModuleLeipzigService {
 
         ModuleLeipzig moduleLeipzig = getModuleLeipzigByName(name);
 
-        System.out.print("Update Module Leipzig: " + moduleLeipzig.getName() + ", " + moduleLeipzig.getCode());
+        if (!moduleLeipzig.getIsActive()) 
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Module is inactive");
+
+        Optional<ModuleLeipzig> possibleConflictModuleName = moduleLeipzigRepository.findByName(moduleLeipzigDTO.getName());
+        if (possibleConflictModuleName.isPresent())
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Module with this name already exists");
+        Optional<ModuleLeipzig> possibleConflictModuleCode = moduleLeipzigRepository.findByName(moduleLeipzigDTO.getCode());
+        if (possibleConflictModuleCode.isPresent())
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Module with this code already exists");
+
         moduleLeipzig.setName(moduleLeipzigDTO.getName());
         moduleLeipzig.setCode(moduleLeipzigDTO.getCode());
-        System.out.println(" => " + moduleLeipzig.getName() + ", " + moduleLeipzig.getCode());
-
         moduleLeipzigRepository.save(moduleLeipzig);
         return moduleLeipzig.getName();
     }
