@@ -127,10 +127,10 @@ defineExpose({
 
 <template>
     <div v-if="readonly" class="read-only-container" :class="{ 'invalid': !isValid }">
-      <p class="ellipsis-text-overflow read-only-file-name">{{ props.selectedFile?.name }}</p>
+      <p class="read-only-file-name">{{ props.selectedFile?.name }}</p>
       <ButtonLink @click="openFile">PDF öffnen</ButtonLink>
     </div>
-
+    
     <div v-else
          tabindex="0"
          @click="openFileDialog"
@@ -165,19 +165,28 @@ defineExpose({
 
 .read-only-container {
   width: 100%;
-  border: 2px solid $black;
 
   display: flex;
   justify-content: space-between;
-  align-items: center;
 
   transition: 0.1s ease-in-out;
-  &:hover {
+   &:hover {
     background-color: $gray-hover;
   }
-
 }
 
+.read-only-file-name {
+  @include ellipsisTextOverflow();
+  padding: spacing(s) spacing(s);
+
+  border: 2px solid $dark-gray;
+  border-right: none;
+  display: flex;
+  flex-grow: 1;
+  align-self: stretch;
+  align-items: center;
+  overflow: hidden;
+}
 
 .edit-container {
   width: 100%;
@@ -193,6 +202,7 @@ defineExpose({
   display: flex;
   justify-content: center;
 }
+
 .invalid {
   border: 2px dashed $red;
 }
@@ -216,10 +226,4 @@ input {
   width: 100%;
   padding: 0 spacing(s);
 }
-
-.read-only-file-name {
-  width: calc(100% - 10rem);
-}
-
-
 </style>
