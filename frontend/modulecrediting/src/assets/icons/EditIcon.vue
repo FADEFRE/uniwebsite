@@ -20,5 +20,10 @@
     background-color: $gray-hover;
     cursor: pointer;
   }
+
+  &:focus-visible {
+    outline: 2px solid $dark-gray-hover;
+    outline-offset: 2px;
+  }
 }
 </style>
