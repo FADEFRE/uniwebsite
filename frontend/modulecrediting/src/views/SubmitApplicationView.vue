@@ -172,8 +172,5 @@ const triggerPostApplication = () => {
   margin-top: spacing(s);
   padding-top: spacing(s);
 }
-
-.explanation-item {
-}
 </style>
 

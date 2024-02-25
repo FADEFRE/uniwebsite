@@ -14,8 +14,10 @@ watch(useRoute(), newRoute => {
 
 <template>
   <div v-if="showLanguage" class="language-selection-container">
-    <Button @click="translate.switchLanguage('de')" class="language-button" :class="{ 'active': store.locale == 'de' }">DE</Button>
-    <Button @click="translate.switchLanguage('en')" class="language-button" :class="{ 'active': store.locale == 'en' }">EN</Button>
+    <Button @click="translate.switchLanguage('de')" class="language-button"
+      :class="{ 'active': store.locale == 'de' }">DE</Button>
+    <Button @click="translate.switchLanguage('en')" class="language-button"
+      :class="{ 'active': store.locale == 'en' }">EN</Button>
   </div>
 </template>
 
@@ -28,6 +30,7 @@ watch(useRoute(), newRoute => {
   width: fit-content;
   display: flex;
 }
+
 .language-button {
   background-color: transparent;
   padding: 0 spacing(s);
@@ -42,7 +45,8 @@ watch(useRoute(), newRoute => {
     border-right: 1px solid $white;
   }
 
-  &:hover {
+  &:hover,
+  &:focus {
     background-color: transparent;
     text-decoration: underline;
   }
@@ -51,8 +55,4 @@ watch(useRoute(), newRoute => {
 
 .active {
   font-weight: 550;
-  &:hover {
-    text-decoration: none;
-  }
-}
-</style>
+}</style>

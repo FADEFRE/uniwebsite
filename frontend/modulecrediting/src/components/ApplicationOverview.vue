@@ -125,7 +125,7 @@ const triggerForward = () => {
     &.admin-selection-view {
         flex-direction: column;
 
-        &:hover {
+        &:hover, &:focus {
             background-color: $white-hover;
             cursor: pointer;
         }

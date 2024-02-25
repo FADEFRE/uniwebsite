@@ -70,7 +70,7 @@ defineExpose({
   display: flex;
   align-items: center;
   margin-left: spacing(s);
-  gap: spacing(s);
+  gap: spacing(m);
 }
 
 :deep(.p-panel-content) {
@@ -93,7 +93,7 @@ defineExpose({
   @include smallHighlightBox();
   background-color: $white;
 
-  &:hover {
+  &:hover, &:focus {
     background-color: $white-hover;
   }
 }

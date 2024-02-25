@@ -78,12 +78,6 @@
   flex-direction: column;
   position: relative;
 
-  & .p-inputtext {
-    &:hover {
-      background-color: $white-hover;
-    }
-  }
-
   & .search-icon {
     width: spacing(m);
     height: spacing(m);

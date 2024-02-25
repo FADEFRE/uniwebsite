@@ -16,7 +16,7 @@
   @include smallHighlightBox();
   transition: 0.1s ease-in-out;
 
-  &:hover {
+  &:hover, &:focus {
     background-color: $gray-hover;
     cursor: pointer;
   }

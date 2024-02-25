@@ -83,19 +83,20 @@ defineExpose({
 
 :deep(.p-button:first-child.p-highlight) {
   background-color: $green;
-  &:hover {
+  &:hover, &:focus {
     background-color: $green-hover;
   }
 }
 :deep(.p-button:nth-child(2).p-highlight) {
   background-color: $orange;
-  &:hover {
+  &:hover, &:focus {
     background-color: $orange-hover;
   }
+  
 }
 :deep(.p-button:last-child.p-highlight) {
   background-color: $red;
-  &:hover {
+  &:hover, &:focus {
     background-color: $red-hover;
   }
 }

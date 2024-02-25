@@ -28,14 +28,14 @@ const props = defineProps({
   transition: 0.1s ease-in-out;
   display: flex;
 
-  &:hover {
+  &:hover, &:hover {
     cursor: pointer;
   }
 }
-.gray:hover {
+.gray:hover, .gray:focus {
     background-color: $gray-hover;
 }
-.white:hover {
+.white:hover, .white:focus {
     background-color: $white-hover;
 }
 .mid {

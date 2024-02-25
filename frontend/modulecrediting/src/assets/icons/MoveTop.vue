@@ -24,7 +24,7 @@ const scrollTop = () => {
 
     transition: 0.1s ease-in-out;
 
-    &:hover {
+    &:hover, &:focus {
         background-color: $dark-gray-hover;
         cursor: pointer;
     }

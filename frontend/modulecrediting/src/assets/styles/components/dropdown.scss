@@ -8,12 +8,15 @@
   width: 100%;
   border: none;
 
-  &:hover {
+  &:hover, &:focus {
     background-color: $dark-gray-hover;
   }
 
   &.invalid {
     background-color: $red;
+    &:hover {
+      background-color: $red-hover;
+    }
   }
 
   &.p-overlay-open .p-dropdown-trigger img {
@@ -22,7 +25,12 @@
 }
 .p-focus {
   box-shadow: none;
+  background-color: $dark-gray-hover;
+  &.invalid {
+    background-color: $red-hover;
+  }
 }
+
 
 .p-dropdown-label {
   @include smallHighlightBox();
@@ -42,7 +50,6 @@
 
 .p-dropdown-panel {
   background-color: $gray;
-
   width: 1px; // todo: better solution it auto fits to p-dropdown width like that
 }
 
@@ -62,8 +69,7 @@
 }
 
 .p-dropdown-items {
-  display: flex;
-  flex-direction: column;
+  @include verticalList(none);
 }
 
 .p-dropdown-item {
@@ -79,18 +85,14 @@
   text-wrap: wrap;
 
   // reset focus stylings
-  &:focus {
-    background-color: $gray;
-  }
-  &.p-focus {
-    background-color: $gray;
-  }
-
   &.p-highlight {
     background-color: $gray;
     border-left: 3px solid $red;
   }
   &:hover {
+    background-color: $gray-hover;
+  }
+  &.p-focus {
     background-color: $gray-hover;
   }
 }

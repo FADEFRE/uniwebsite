@@ -17,6 +17,7 @@ import { getApplicationByIdForStatus, getModulesByCourse, putApplicationStudent 
 import { parseRequestDate } from "@/scripts/date-utils";
 import ApplicationProcessSideInfo from "@/components/ApplicationProcessSideInfo.vue";
 import StudyOfficeSideInfo from "@/components/StudyOfficeSideInfo.vue";
+import ModuleStatusIcon from "@/assets/icons/ModuleStatusIcon.vue";
 
 const id = useRoute().params.id
 const summaryDocumentLink = `${url}/file/pdf-documents/application/${id}`
@@ -119,21 +120,23 @@ const triggerSubmit = () => {
           belegen.
           Falls sie weitere Fragen zu ihrem Antrag haben, kontaktieren sie bitte das Studienbüro.
         </p>
-        <h3>Legende</h3>
-        <ul>
-          <li>
-            <ModuleStatusIcon status-decision="accepted" />
-            <p>Anrechnung angenommen</p>
-          </li>
-          <li>
-            <ModuleStatusIcon status-decision="asExamCertificate" />
-            <p>Anrechnung als Übungsschein</p>
-          </li>
-          <li>
-            <ModuleStatusIcon status-decision="denied" />
-            <p>Anrechnung abgelehnt</p>
-          </li>
-        </ul>
+        <div class="legend-container">
+          <h3 class="h4">Legende</h3>
+          <ul>
+            <li class="explanation-list-item">
+              <ModuleStatusIcon status-decision="accepted" size="small"/>
+              <p>Anrechnung angenommen</p>
+            </li>
+            <li class="explanation-list-item">
+              <ModuleStatusIcon status-decision="asExamCertificate" size="small"/>
+              <p>Anrechnung als Übungsschein</p>
+            </li>
+            <li class="explanation-list-item">
+              <ModuleStatusIcon status-decision="denied" size="small"/>
+              <p>Anrechnung abgelehnt</p>
+            </li>
+          </ul>
+        </div>
       </div>
 
       <ApplicationOverview :creation-date="parseRequestDate(applicationData['creationDate'])"
@@ -191,5 +194,15 @@ const triggerSubmit = () => {
 
 .formal-rejection-highlight {
   border-left: spacing(m) solid $red;
+}
+
+.legend-container {
+  @include verticalList(s);
+}
+
+.explanation-list-item {
+  @include smallHighlightBox();
+  @include verticalListItem($gray);
+  justify-content: flex-start;
 }
 </style>

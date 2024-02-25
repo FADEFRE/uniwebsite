@@ -157,7 +157,7 @@ defineExpose({
         <div class="single-filter-container">
           <h4>Suchen</h4>
           <div class="input-search-field-container">
-            <InputText v-model="searchString" placeholder="Antrag suchen" />
+            <InputText v-model="searchString" placeholder="Antrag suchen" class="white"/>
             <img src="@/assets/icons/SearchIcon.svg" class="search-icon">
           </div>
 
@@ -290,12 +290,12 @@ defineExpose({
     background-color: $gray;
     width: 60%;
 
-    &:hover {
+    &:hover, &:focus {
       background-color: $gray-hover;
     }
   }
 
-  &:hover {
+  &:hover, &:focus {
     background-color: $white-hover;
   }
 }
@@ -308,7 +308,7 @@ defineExpose({
   transition: 0.1s ease-in-out;
   cursor: pointer;
 
-  &:hover {
+  &:hover, &:focus {
     background-color: $gray-hover;
   }
 }
@@ -321,7 +321,7 @@ defineExpose({
   &.statusNew {
     background-color: $green;
 
-    &:hover {
+    &:hover, &:focus {
       background-color: $green-hover;
     }
   }
@@ -330,7 +330,7 @@ defineExpose({
   &.statusChairman {
     background-color: $orange;
 
-    &:hover {
+    &:hover, &:focus {
       background-color: $orange-hover;
     }
   }
@@ -339,7 +339,7 @@ defineExpose({
   &.statusClosed {
     background-color: $red;
 
-    &:hover {
+    &:hover, &:focus {
       background-color: $red-hover;
     }
   }

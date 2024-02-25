@@ -91,7 +91,7 @@ function closeMenu() {
   padding: 0;
   margin: 0;
 
-  &:hover {
+  &:hover, &:focus {
     background-color: $white;
   }
 }
@@ -118,7 +118,7 @@ function closeMenu() {
   margin-right: spacing(m);
   padding: spacing(m);
 
-  &:hover {
+  &:hover, &:focus {
     background-color: $gray;
   }
 

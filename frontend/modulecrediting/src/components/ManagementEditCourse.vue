@@ -113,16 +113,16 @@ const saveCourseLeipzig = () => {
     <div v-if="selectedCourse" class="edit-container">
 
       <div v-if="courses && allModules.length > 0 && selectedModules && selectableModules" class="screen-split">
-        <div class="selectable-modules-container">
+        <div class="modules-container">
           <h3 class="h4">Wählbare Module</h3>
           <div class="input-search-field-container">
-            <InputText v-model="searchStringSelectable" placeholder="Wählbare Module suchen" />
+            <InputText v-model="searchStringSelectable" placeholder="Wählbare Module suchen" class="white" />
             <img src="@/assets/icons/SearchIcon.svg" class="search-icon">
           </div>
-          <TransitionGroup name="list-left" tag="div" class="selectable-modules-container">
-            
+          <TransitionGroup name="list-left" tag="div" class="modules-container">
+
             <div v-for="singleModule in selectableModulesDisplay" :key="singleModule.name"
-              @click="addModuleToCourse(singleModule)" class="single-selectable-module-item icon-hover-right">
+              @click="addModuleToCourse(singleModule)" class="selectable module-item icon-hover-right">
               <div class="module-text-container">
                 <p>{{ singleModule.name }}</p>
                 <small>{{ singleModule.code }}</small>
@@ -140,15 +140,15 @@ const saveCourseLeipzig = () => {
 
         </div>
 
-        <div class="selected-modules-container">
+        <div class="modules-container">
           <h3 class="h4">Module in {{ selectedCourse }} ({{ selectedModules.length + addedModules.length }})</h3>
           <div class="input-search-field-container">
-            <InputText v-model="searchStringSelected" placeholder="Ausgewählte Module suchen" />
+            <InputText v-model="searchStringSelected" placeholder="Ausgewählte Module suchen" class="white" />
             <img src="@/assets/icons/SearchIcon.svg" class="search-icon">
           </div>
-          <TransitionGroup name="list-right" tag="div" class="selectable-modules-container">
+          <TransitionGroup name="list-right" tag="div" class="modules-container">
             <div v-for="singleModule in addedModulesDisplay" :key="singleModule.name"
-              @click="removeModuleFromCourse(singleModule)" class="single-selected-module-item icon-hover-left">
+              @click="removeModuleFromCourse(singleModule)" class="selected module-item icon-hover-left">
               <ArrowIcon color="red" direction="left" />
               <div class="module-text-container">
                 <p>{{ singleModule.name }}</p>
@@ -164,9 +164,9 @@ const saveCourseLeipzig = () => {
             </div>
           </Transition>
 
-          <TransitionGroup name="list-right" tag="div" class="selectable-modules-container">
+          <TransitionGroup name="list-right" tag="div" class="modules-container">
             <div v-for="singleModule in selectedModulesDisplay" :key="singleModule.name"
-              @click="removeModuleFromCourse(singleModule)" class="single-selected-module-item icon-hover-left">
+              @click="removeModuleFromCourse(singleModule)" class="module-item selected icon-hover-left">
               <ArrowIcon color="red" direction="left" />
               <div class="module-text-container">
                 <p>{{ singleModule.name }}</p>
@@ -264,15 +264,17 @@ const saveCourseLeipzig = () => {
   @include screenSplit();
 }
 
-.selectable-modules-container {
+.modules-container {
   @include verticalList(s);
   width: 100%;
 }
 
-.single-selectable-module-item {
+.module-item {
   @include smallHighlightBox();
   @include verticalListItem($gray);
+
   width: 100%;
+  transition: 0.1s ease-in-out;
 
   display: flex;
   justify-content: space-between;
@@ -284,17 +286,23 @@ const saveCourseLeipzig = () => {
     align-items: flex-start;
   }
 
-  &:hover {
+  &:hover, &:focus {
     background-color: $gray-hover;
+  }
+
+  &.selected {
+    border-left: none;
+    border-right: 3px solid $red;
+
+    & .module-text-container {
+      align-items: flex-end;
+      & p, small {
+        text-align: right;
+      }
+    }
   }
 }
 
-
-
-.selected-modules-container {
-  @include verticalList(s);
-  width: 100%;
-}
 
 .break-container {
   width: 100%;
@@ -320,32 +328,6 @@ const saveCourseLeipzig = () => {
 }
 
 
-.single-selected-module-item {
-  @include smallHighlightBox();
-
-  width: 100%;
-  background-color: $gray;
-  border-right: 3px solid $red;
-
-  display: flex;
-  justify-content: space-between;
-  gap: 0.8rem;
-
-  & .module-text-container {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-
-    & p,
-    small {
-      text-align: right;
-    }
-  }
-
-  &:hover {
-    background-color: $gray-hover;
-  }
-}
 
 .input-search-field-container {
   @include searchFieldContainer();

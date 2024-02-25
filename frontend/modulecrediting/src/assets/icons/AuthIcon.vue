@@ -49,7 +49,8 @@ const props = defineProps({
     stroke: $dark-gray;
 }
 
-.icon-hover-right:hover .auth-icon{
+.icon-hover-right:hover .auth-icon,
+.icon-hover-right:focus .auth-icon{
     transform: translateX(spacing(xs));
 }
 </style>

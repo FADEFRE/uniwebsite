@@ -66,7 +66,7 @@ const scrollTo = (id) => {
   gap: spacing(xs);
   align-items: center;
 
-  &:hover {
+  &:hover, &:focus {
     background-color: $white-hover;
   }
 }
