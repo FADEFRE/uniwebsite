@@ -73,7 +73,7 @@ const props = defineProps({
   }
 
   &:focus {
-    outline: 2.5px solid $dark-gray;
+    outline: 2.5px solid $dark-gray-hover;
     outline-offset: 2px;
   }
 

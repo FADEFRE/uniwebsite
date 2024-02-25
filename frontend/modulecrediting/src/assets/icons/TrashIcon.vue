@@ -43,7 +43,7 @@ const emit = defineEmits(['click'])
 }
 .gray:focus-visible,
 .white:focus-visible {
-    outline: 3px solid $dark-gray;
+    outline: 2px solid $dark-gray-hover;
     outline-offset: 2px;
 }
 

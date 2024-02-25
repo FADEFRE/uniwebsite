@@ -1,7 +1,7 @@
 $black: #000;
 
 $dark-gray: #262A31;
-$dark-gray-hover: $black;
+$dark-gray-hover: darken($dark-gray, 20%);
 
 $gray: #F0F0F0;
 $gray-hover: darken($gray, 6%);

@@ -14,6 +14,7 @@ textarea {
   
   border: 2px solid $dark-gray;
   background-color: transparent;
+  transition: 0.1s ease-in-out;
   width: 100%;
   padding: spacing(s);
   min-width: 0;
@@ -43,8 +44,6 @@ textarea {
     border: none;
   }
 }
-
-
 
 .invalid {
   border: 2px solid $red;
