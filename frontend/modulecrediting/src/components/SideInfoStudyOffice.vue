@@ -10,7 +10,7 @@ import ButtonLink from "@/components/ButtonLink.vue";
     <div class="main-info-container">
       <div class="info-group-container">
         <h4>Anschrift</h4>
-        <ul>
+        <ul class="points">
           <li>Neues Augusteum</li>
           <li>Augustusplatz 10</li>
           <li>04109 Leipzig</li>
@@ -18,7 +18,7 @@ import ButtonLink from "@/components/ButtonLink.vue";
       </div>
       <div class="info-group-container">
         <h4>Kontakt</h4>
-        <ul>
+        <ul class="points">
           <li>Telefon: +49 341 97-32165</li>
           <li>Telefax: +49 341 97-32193</li>
           <li>E-Mail: studienbuero@math.uni-leipzig.de</li>
@@ -47,18 +47,15 @@ import ButtonLink from "@/components/ButtonLink.vue";
   width: 100%;
 }
 
-:slotted(.main-info-container) {
-  @include verticalList(l);
+.main-info-container {
+  @include verticalList(m);
 }
 
-:slotted(.info-group-container){
-  display: flex;
-  flex-direction: column;
-  gap: spacing(xs);
+.info-group-container {
+  @include verticalList(xs);
 }
 
 .heading {
   width: max-content;
-  text-transform: uppercase;
 }
 </style>

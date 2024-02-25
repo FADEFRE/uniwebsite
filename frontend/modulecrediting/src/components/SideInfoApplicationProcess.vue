@@ -5,14 +5,14 @@
 <template>
   <div class="sideinfo-container">
     <h3 class="heading">{{ $t('homepage.sideInfo.applicationProcess') }}</h3>
-    <ul class="list-container">
-      <li class="list-item">
+    <ul class="points">
+      <li>
         <p>{{ $t('homepage.sideInfo.submitApplication') }}</p>
       </li>
-      <li class="list-item">
+      <li>
         <p>{{ $t('homepage.sideInfo.viewStatus') }}</p>
       </li>
-      <li class="list-item">
+      <li>
         <p>{{ $t('homepage.sideInfo.goToStudy') }}</p>
       </li>
     </ul>
@@ -29,18 +29,7 @@
   width: 100%;
 }
 
-:slotted(.main-info-container) {
-  @include verticalList(l);
-}
-
-:slotted(.info-group-container){
-  display: flex;
-  flex-direction: column;
-  gap: spacing(xs);
-}
-
 .heading {
   width: max-content;
-  text-transform: uppercase;
 }
 </style>

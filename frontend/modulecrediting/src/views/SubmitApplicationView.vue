@@ -17,13 +17,12 @@ import { ref, onBeforeMount } from "vue";
 import { getFormattedDate } from "@/scripts/date-utils";
 import { getCoursesLeipzigName, getModulesByCourse, postApplication } from "@/scripts/axios-requests";
 import ApplicationPanel from "@/components/ApplicationPanel.vue";
-import SideInfoContainer from "@/components/SideInfoContainer.vue";
 import ButtonAdd from "@/components/ButtonAdd.vue";
 import ButtonLink from "@/components/ButtonLink.vue";
 import ApplicationOverview from "@/components/ApplicationOverview.vue";
 import ArrowIcon from "../assets/icons/ArrowIcon.vue";
-import ApplicationProcessSideInfo from "@/components/ApplicationProcessSideInfo.vue";
-import StudyOfficeSideInfo from "@/components/StudyOfficeSideInfo.vue";
+import SideInfoApplicationProcess from "@/components/SideInfoApplicationProcess.vue";
+import SideInfoStudyOffice from "@/components/SideInfoStudyOffice.vue";
 
 const showInformation = ref(false)
 
@@ -150,8 +149,8 @@ const triggerPostApplication = () => {
     </div>
 
     <div class="side-infos-list">
-      <ApplicationProcessSideInfo />
-      <StudyOfficeSideInfo />
+      <SideInfoApplicationProcess />
+      <SideInfoStudyOffice />
     </div>
 
 
@@ -165,6 +164,7 @@ const triggerPostApplication = () => {
 
 .explanation-collapsed-container {
   @include verticalList(s);
+
 }
 .explanation-expanded-container {
   @include verticalList(s);

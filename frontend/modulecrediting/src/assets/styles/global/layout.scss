@@ -33,7 +33,7 @@
   width: 100%;
 
   &.split {
-    width: calc(78% - spacing(xl));
+    width: calc(76% - spacing(xl));
     &.narow {
       width: calc(70% - spacing(xl));
     }
@@ -50,7 +50,7 @@
 
 .side-infos-list {
   @include verticalList(l);
-  width: calc(22% - spacing(xl));
+  width: calc(24% - spacing(xl));
 
   &.wide {
     width: calc(30% - spacing(xl));

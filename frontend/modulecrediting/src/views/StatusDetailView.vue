@@ -15,8 +15,8 @@ import LoadingContainer from "../components/LoadingContainer.vue";
 import { url } from "@/scripts/url-config"
 import { getApplicationByIdForStatus, getModulesByCourse, putApplicationStudent } from "@/scripts/axios-requests";
 import { parseRequestDate } from "@/scripts/date-utils";
-import ApplicationProcessSideInfo from "@/components/ApplicationProcessSideInfo.vue";
-import StudyOfficeSideInfo from "@/components/StudyOfficeSideInfo.vue";
+import SideInfoApplicationProcess from '@/components/SideInfoApplicationProcess.vue';
+import SideInfoStudyOffice from '@/components/SideInfoStudyOffice.vue';
 import ModuleStatusIcon from "@/assets/icons/ModuleStatusIcon.vue";
 
 const id = useRoute().params.id
@@ -170,8 +170,8 @@ const triggerSubmit = () => {
     </div>
 
     <div class="side-infos-list">
-      <ApplicationProcessSideInfo />
-      <StudyOfficeSideInfo />
+      <SideInfoApplicationProcess />
+      <SideInfoStudyOffice />
     </div>
 
   </div>

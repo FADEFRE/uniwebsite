@@ -2,8 +2,8 @@
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
 import HomepageContainer from '@/components/HomepageContainer.vue';
+import SideInfoApplicationProcess from '@/components/SideInfoApplicationProcess.vue';
 import ButtonLink from '@/components/ButtonLink.vue';
-import ApplicationProcessSideInfo from "@/components/ApplicationProcessSideInfo.vue";
 import { getApplicationExists } from "@/scripts/axios-requests";
 
 const router = useRouter()
@@ -65,7 +65,7 @@ const getFormattedId = () => {
         </div>
 
         <div class="side-infos-list">
-           <ApplicationProcessSideInfo />
+           <SideInfoApplicationProcess/>
         </div>
 
     </div>
