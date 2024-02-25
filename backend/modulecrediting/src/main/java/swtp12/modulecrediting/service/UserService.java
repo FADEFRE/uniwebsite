@@ -112,6 +112,15 @@ public class UserService {
         Optional<Role> roleCandidate = roleRepository.findByRoleName(registerRequest.getRole());
         if (!roleCandidate.isPresent()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Role does not exist!"); 
 
+        if (registerRequest.getUsername().contains(" ") || registerRequest.getPassword().contains(" ") || registerRequest.getPasswordConfirm().contains(" ") )
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username and password cannot include whitespaces"); 
+
+        if (registerRequest.getUsername().isBlank() || registerRequest.getPassword().isBlank() || registerRequest.getPasswordConfirm().isBlank() )
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username and password cannot be empty"); 
+
+        if (!registerRequest.getPassword().equals(registerRequest.getPasswordConfirm()))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Passwords are not equal"); 
+
         User user = new User(
             registerRequest.getUsername(),
             encoder.encode(registerRequest.getPassword()),
@@ -145,6 +154,8 @@ public class UserService {
 
     public String changeUsername(EditUserDTO changeRequest) throws IncorrectKeyOnDecryptException {
         if(changeRequest.getUsername() == null || changeRequest.getUsername().isBlank()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username cannot be empty");
+        if (changeRequest.getUsername().contains(" ")) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username cannot contain whitespaces"); 
+
         User user = identifyUser();
 
         Optional<User> userCandidate = userRepository.findByUsername(changeRequest.getUsername());
@@ -159,7 +170,10 @@ public class UserService {
 
     public String changePassword(EditUserDTO changeRequest) {
         if(changeRequest.getPassword() == null || changeRequest.getPassword().isBlank()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Password cannot be empty");
+        if (changeRequest.getPassword().contains(" ") || changeRequest.getPasswordConfirm().contains(" ")) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Password cannot contain whitespaces");
+
         User user = identifyUser();
+        
         if (user.getUserId() != changeRequest.getId()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User id is not matching");
         User userDb = getUser(changeRequest.getId());
 
