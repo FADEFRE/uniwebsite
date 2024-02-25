@@ -17,6 +17,10 @@ const dropdown = ref()
 </template>
 
 <style scoped lang="scss">
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
+@use '@/assets/styles/components' as *;
+
 .search-icon {
   position: absolute;
   top: 50%;
