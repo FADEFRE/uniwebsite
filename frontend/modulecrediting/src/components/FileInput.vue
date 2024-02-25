@@ -176,7 +176,6 @@ defineExpose({
     background-color: $gray-hover;
   }
 
-  overflow: hidden;
 }
 
 

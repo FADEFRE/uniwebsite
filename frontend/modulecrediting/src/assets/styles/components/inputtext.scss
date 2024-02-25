@@ -18,18 +18,7 @@ textarea {
   padding: spacing(s);
   min-width: 0;
 
-  &:hover {
-    &.gray {
-      background-color: $gray-hover;
-    }
-    &.white {
-      background-color: $white-hover;
-    }
-    &.no-effect {
-      background-color: transparent;
-    }
-  }
-  &:focus {
+  &:hover, &:focus {
     &.gray {
       background-color: $gray-hover;
     }

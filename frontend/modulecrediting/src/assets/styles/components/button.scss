@@ -1,7 +1,9 @@
-@use '@/assets/styles/util' as *;
-@use '@/assets/styles/global' as *;
+@use "@/assets/styles/util" as *;
+@use "@/assets/styles/global" as *;
 
-Button,.p-button, .router-link {
+Button,
+.p-button,
+.router-link {
   @include smallHighlightBox();
   flex-shrink: 0;
 
@@ -13,7 +15,8 @@ Button,.p-button, .router-link {
     background-color: $red;
   }
 
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     background-color: $dark-gray-hover;
 
     &.white {
@@ -21,6 +24,20 @@ Button,.p-button, .router-link {
     }
     &.red-button {
       background-color: $red-hover;
+    }
+  }
+
+  &:focus-visible {
+    outline: 2.5px solid $dark-gray;
+    outline-offset: 2px;
+
+    &.white {
+      outline: 2.5px solid $white;
+      outline-offset: 2px;
+    }
+    &.red-button {
+      outline: 2.5px solid $red;
+      outline-offset: 2px;
     }
   }
 }
@@ -41,4 +58,3 @@ Button,.p-button, .router-link {
   bottom: spacing(xl);
   right: spacing(s);
 }
-

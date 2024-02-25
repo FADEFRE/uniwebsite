@@ -35,9 +35,18 @@ const props = defineProps({
 .gray:hover, .gray:focus {
     background-color: $gray-hover;
 }
+ 
 .white:hover, .white:focus {
     background-color: $white-hover;
 }
+.gray:focus-visible,
+.white:focus-visible {
+    outline: 3px solid $dark-gray;
+    outline-offset: 2px;
+}
+
+
+
 .mid {
     @include smallHighlightBox();
 }

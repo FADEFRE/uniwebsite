@@ -8,7 +8,8 @@
   width: 100%;
   border: none;
 
-  &:hover, &:focus {
+  &:hover, &.p-focus {
+    box-shadow: none;
     background-color: $dark-gray-hover;
   }
 
@@ -21,15 +22,11 @@
 
   &.p-overlay-open .p-dropdown-trigger img {
     transform: rotate(180deg);
-  }
+  }  
 }
-.p-focus {
-  box-shadow: none;
-  background-color: $dark-gray-hover;
-  &.invalid {
-    background-color: $red-hover;
-  }
-}
+
+
+  
 
 
 .p-dropdown-label {

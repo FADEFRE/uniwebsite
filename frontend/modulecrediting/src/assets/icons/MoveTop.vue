@@ -2,7 +2,7 @@
 import ArrowIcon from './ArrowIcon.vue';
 
 const scrollTop = () => {
-  document.getElementById('app').scrollIntoView({ behavior: 'smooth' })
+    document.getElementById('app').scrollIntoView({ behavior: 'smooth' })
 }
 </script>
 
@@ -24,9 +24,15 @@ const scrollTop = () => {
 
     transition: 0.1s ease-in-out;
 
-    &:hover, &:focus {
+    &:hover,
+    &:focus {
         background-color: $dark-gray-hover;
         cursor: pointer;
+    }
+
+    &:focus {
+        outline: 2.5px solid $dark-gray;
+        outline-offset: 2px;
     }
 
     display: flex;
