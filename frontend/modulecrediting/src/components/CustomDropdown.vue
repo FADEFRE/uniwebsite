@@ -2,11 +2,16 @@
 import { ref } from "vue";
 import ArrowIcon from "@/assets/icons/ArrowIcon.vue";
 
+const emit = defineEmits(['clear'])
+
 const dropdown = ref()
 </script>
 
 <template>
   <Dropdown ref="dropdown" @focus="dropdown.show()">
+    <template #clearicon>
+      <TrashIcon @click="emit('clear')" background-color="dark-gray"/>
+    </template>
     <template #filtericon>
       <img class="search-icon" src="@/assets/icons/SearchIcon.svg">
     </template>
