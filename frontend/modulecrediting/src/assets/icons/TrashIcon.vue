@@ -10,7 +10,7 @@ const props = defineProps({
     }
 });
 
-const emit = defineEmits([''])
+const emit = defineEmits(['click'])
 </script>
 
 <template>
