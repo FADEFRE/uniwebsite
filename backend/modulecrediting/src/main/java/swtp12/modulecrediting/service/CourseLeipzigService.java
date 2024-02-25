@@ -48,18 +48,16 @@ public class CourseLeipzigService {
         Optional<CourseLeipzig> courseLeipzigOptional = courseLeipzigRepository.findByName(courseLeipzigDTO.getCourseName());
         if (courseLeipzigOptional.isPresent()) {
             CourseLeipzig courseLeipzig = courseLeipzigOptional.get();
-            if(courseLeipzig.getIsActive()) throw new ResponseStatusException(HttpStatus.CONFLICT, "The Course already exists:" + courseLeipzigDTO.getCourseName() );
-            else {
-                courseLeipzig.setIsActive(true);
-                System.out.println("Reactivated Course Leipzig: " + courseLeipzig.getName());
-            }
+            if(courseLeipzig.getIsActive()) 
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "The Course already exists:" + courseLeipzigDTO.getCourseName() );
+
+            courseLeipzig.setIsActive(true);
             courseLeipzigRepository.save(courseLeipzig);
             return courseLeipzig.getName();
         }
 
         // create new course leipzig
         CourseLeipzig courseLeipzig = new CourseLeipzig(courseLeipzigDTO.getCourseName());
-        System.out.println("Created Course Leipzig: " + courseLeipzig.getName());
         courseLeipzigRepository.save(courseLeipzig);
         return courseLeipzig.getName();
     }
@@ -73,13 +71,13 @@ public class CourseLeipzigService {
         CourseLeipzig courseLeipzig = getCourseLeipzigByName(courseName);
 
         if(!courseLeipzig.getIsActive())
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Course is inactive");
 
-        System.out.println(""); // idk why this is needed
-        System.out.print("Update Course Leipzig: " + courseLeipzig.getName());
+        Optional<CourseLeipzig> possibleConflictCourse = courseLeipzigRepository.findByName(courseLeipzigDTO.getCourseName());
+        if (possibleConflictCourse.isPresent())
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Course with this name already exists");
+
         courseLeipzig.setName(courseLeipzigDTO.getCourseName());
-        System.out.print(" => " + courseLeipzig.getName());
-        System.out.println("");
-
         courseLeipzigRepository.save(courseLeipzig);
         return courseLeipzig.getName();
     }
