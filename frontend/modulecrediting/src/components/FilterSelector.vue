@@ -167,17 +167,18 @@ defineExpose({
         <div class="single-filter-container">
           <h4>Zeit</h4>
           <div class="date-filter-container">
-            <div @click="setDateTypeCreation" class="date-block" :class="{ 'selected': dateType === 'creationDate' }">
+            <div tabindex="0" @keydown.enter="setDateTypeCreation" @click="setDateTypeCreation"
+                 class="date-block" :class="{ 'selected': dateType === 'creationDate' }">
               <DateIcon type="creation"/>
               <p v-if="dateType === 'creationDate'">Erstellt</p>
-
             </div>
-            <div @click="setDateTypeLastEdit" class="date-block" :class="{ 'selected': dateType === 'lastEditedDate' }">
+            <div tabindex="0" @keydown.enter="setDateTypeLastEdit" @click="setDateTypeLastEdit"
+                 class="date-block" :class="{ 'selected': dateType === 'lastEditedDate' }">
               <DateIcon type="lastEdited"/>
               <p v-if="dateType === 'lastEditedDate'">Zuletzt bearbeitet</p>
-
             </div>
-            <div @click="setDateTypeDecision" class="date-block" :class="{ 'selected': dateType === 'decisionDate' }">
+            <div tabindex="0" @keydown.enter="setDateTypeDecision" @click="setDateTypeDecision"
+                 class="date-block" :class="{ 'selected': dateType === 'decisionDate' }">
               <DateIcon type="decision"/>
               <p v-if="dateType === 'decisionDate'">Beschlossen</p>
             </div>
@@ -195,22 +196,24 @@ defineExpose({
       <div class="right-side-container">
         <div class="single-filter-container">
           <h4>Status</h4>
-          <div :class="{ 'selected': statusNew }" class="statusNew status-container" @click="toggleStatusNew">
+          <div tabindex="0" @keydown.enter="toggleStatusNew" @click="toggleStatusNew"
+               :class="{ 'selected': statusNew }" class="statusNew status-container" >
             <p class="overview-text">NEU</p>
           </div>
-          <div :class="{ 'selected': statusFormalRejection }" class="statusFormalRejection status-container"
-            @click="toggleStatusFormalRejection">
+          <div tabindex="0" @keydown.enter="toggleStatusFormalRejection" @click="toggleStatusFormalRejection"
+              :class="{ 'selected': statusFormalRejection }" class="statusFormalRejection status-container">
             <p class="overview-text">FORMFEHLER</p>
           </div>
-          <div :class="{ 'selected': statusStudyOffice }" class="statusStudyOffice status-container"
-            @click="toggleStatusStudyOffice">
+          <div tabindex="0" @keydown.enter="toggleStatusStudyOffice" @click="toggleStatusStudyOffice"
+              :class="{ 'selected': statusStudyOffice }" class="statusStudyOffice status-container">
             <p class="overview-text">STUDIENBÜRO</p>
           </div>
-          <div :class="{ 'selected': statusChairman }" class="statusChairman status-container"
-            @click="toggleStatusChairman">
+          <div tabindex="0" @keydown.enter="toggleStatusChairman" @click="toggleStatusChairman"
+               :class="{ 'selected': statusChairman }" class="statusChairman status-container">
             <p class="overview-text">PRÜFUNGSAUSSCHUSS</p>
           </div>
-          <div :class="{ 'selected': statusClosed }" class="statusClosed status-container" @click="toggleStatusClosed">
+          <div tabindex="0" @keydown.enter="toggleStatusClosed" @click="toggleStatusClosed"
+               :class="{ 'selected': statusClosed }" class="statusClosed status-container">
             <p class="overview-text">ABGESCHLOSSEN</p>
           </div>
         </div>

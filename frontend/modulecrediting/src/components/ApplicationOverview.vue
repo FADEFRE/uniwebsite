@@ -56,8 +56,8 @@ const triggerForward = () => {
 </script>
 
 <template>
-    <div @click="triggerForward" class="application-overview-container"
-        :class="{ 'admin-selection-view': adminSelectionView }">
+    <div :tabindex="adminSelectionView ? 0 : -1" @keydown.enter="triggerForward" @click="triggerForward"
+         class="application-overview-container" :class="{ 'admin-selection-view': adminSelectionView }">
         <div class="dates">
             <!-- Div-Block Creation Date -->
             <div v-if="creationDate" class="date-block">
@@ -95,8 +95,6 @@ const triggerForward = () => {
                     </div>
                 </slot>
             </div>
-
-
 
             <div :class="statusStyle" class="info-container status-container">
                 <div class="status-text overview-text">Status: {{ status || 'Placeholder for Status' }}</div>
