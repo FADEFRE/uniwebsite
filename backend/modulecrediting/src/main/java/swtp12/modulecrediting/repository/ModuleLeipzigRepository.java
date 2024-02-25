@@ -27,4 +27,13 @@ public interface ModuleLeipzigRepository extends JpaRepository<ModuleLeipzig, Lo
      * @see ModuleLeipzig
      */
     Optional<ModuleLeipzig> findByName(String name);
+
+    /**
+     * Tries to get {@link ModuleLeipzig} with given code and returns {@link Optional}
+     * 
+     * @return {@link Optional} that contains a {@link ModuleLeipzig} or null.
+     * @see Optional
+     * @see ModuleLeipzig
+     */
+    Optional<ModuleLeipzig> findByCode(String code);
 }
