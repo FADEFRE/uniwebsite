@@ -7,6 +7,8 @@ import { getCoursesLeipzigName, putUpdateCourseLeipzig, deleteCourseLeipzig } fr
 const courses = ref();
 const searchString = ref('');
 
+const exists = ref(false)
+
 onBeforeMount(() => {
     getCoursesLeipzigName()
         .then(data => courses.value = data)
@@ -15,6 +17,11 @@ onBeforeMount(() => {
 const triggerEditCourseLeipzig = (oldName, newName) => {
   putUpdateCourseLeipzig(oldName, newName)
       .then(_ => location.reload())
+      .catch(error => {
+        if (error.response.status === 409) {
+          exists.value = true
+        }
+      })
 }
 
 const triggerDeleteCourseLeipzig = (course) => {
@@ -49,6 +56,8 @@ const filteredCourses = computed(() => {
             :show-code="false"
             :edit-callback="triggerEditCourseLeipzig"
             :delete-callback="triggerDeleteCourseLeipzig"
+            :exists="exists"
+            exists-text="Name des Studiengangs existiert bereits"
         />
       </div>
       <small class="helper-text">Es gibt insgesamt {{ courses.length }} Studiengänge.</small>

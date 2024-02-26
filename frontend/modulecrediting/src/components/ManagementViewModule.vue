@@ -5,8 +5,9 @@ import LoadingContainer from "@/components/LoadingContainer.vue";
 import { getModulesNameCode, deleteModuleLeipzig, putUpdateModuleLeipzig } from "@/scripts/axios-requests";
 
 const modules = ref();
-
 const searchString = ref('');
+
+const exists = ref(false)
 
 onBeforeMount(() => {
     getModulesNameCode()
@@ -24,6 +25,11 @@ const filteredModules = computed(() => {
 const triggerEditModuleLeipzig = (oldName, newName, newCode) => {
   putUpdateModuleLeipzig(oldName, newName, newCode)
       .then(_ => location.reload())
+      .catch(error => {
+        if (error.response.status === 409) {
+          exists.value = true
+        }
+      })
 }
 
 const triggerDeleteModuleLeipzig = (module) => {
@@ -49,6 +55,8 @@ const triggerDeleteModuleLeipzig = (module) => {
             :code="singleModule['code']"
             :edit-callback="triggerEditModuleLeipzig"
             :delete-callback="triggerDeleteModuleLeipzig"
+            :exists="exists"
+            exists-text="Modulname oder Modulcode existiert bereits"
         />
       </div>
       <small class="helper-text">Es gibt insgesamt {{ modules.length }} Module.</small>

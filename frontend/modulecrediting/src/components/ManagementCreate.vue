@@ -29,7 +29,7 @@ const createCourseLeipzig = () => {
   postCourseLeipzig(coursename.value)
       .then(_ => location.reload())
       .catch(error => {
-        if (error.response.status === 409) {  // todo check for specific error
+        if (error.response.status === 409) {
           courseExists.value = true
         } else {
           location.reload()
@@ -47,7 +47,7 @@ const createModuleLeipzig = () => {
   postModuleLeipzig(modulename.value, modulecode.value)
       .then(_ => location.reload())
       .catch(error => {
-        if (error.response.status === 409) {  // todo check for specific error
+        if (error.response.status === 409) {
           moduleExists.value = true
         } else {
           location.reload()

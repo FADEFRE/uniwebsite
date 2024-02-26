@@ -23,6 +23,14 @@ const props = defineProps({
   deleteCallback: {
     required: true,
     type: Function
+  },
+  exists: {
+    type: Boolean,
+    default: false
+  },
+  existsText : {
+    type: String,
+    default: ""
   }
 })
 
@@ -61,10 +69,13 @@ const triggerEdit = () => {
     </div>
 
     <Dialog modal :dismissable-mask="true" :draggable="false" v-model:visible="dialogVisible" header="Bearbeiten">
-      <InputText type="text" placeholder="Name" v-model="name" :class="{ 'invalid': nameEmpty }" class="white" />
+      <InputText type="text" placeholder="Name" v-model="name"
+                 :class="{ 'invalid': nameEmpty || props.exists }" class="white" />
       <small v-if="nameEmpty" class="invalid-text">Name darf nicht leer sein</small>
-      <InputText v-if="showCode" type="text" placeholder="Code" v-model="code" :class="{ 'invalid': codeEmpty }" />
+      <InputText v-if="showCode" type="text" placeholder="Code" v-model="code"
+                 :class="{ 'invalid': codeEmpty || props.exists }" />
       <small v-if="props.code && codeEmpty" class="invalid-text">Code darf nicht leer sein</small>
+      <small v-if="props.exists" class="invalid-text">{{ props.existsText }}</small>
       <ButtonLink @click="triggerEdit">Speichern</ButtonLink>
     </Dialog>
 

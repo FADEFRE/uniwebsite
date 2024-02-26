@@ -68,7 +68,6 @@ function putUpdateCourseLeipzig(courseName, newCourseName) {
   return httpResource
     .put(`/api/courses-leipzig/${courseName}`, formData)
     .then((response) => response.data)
-    .catch((_) => {});
 }
 
 function deleteCourseLeipzig(coursename) {
@@ -130,7 +129,6 @@ function putUpdateModuleLeipzig(moduleName, newModuleName, newModuleCode) {
 
     return httpResource.put(`/api/modules-leipzig/${moduleName}`, formData)
         .then(response => response.data)
-        .catch(_ => {})
 }
 
 function deleteModuleLeipzig(modulename) {
