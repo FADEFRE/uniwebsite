@@ -112,7 +112,7 @@ public class ModuleLeipzigService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Module is inactive");
 
         Optional<ModuleLeipzig> possibleConflictModuleName = moduleLeipzigRepository.findByName(moduleLeipzigDTO.getName());
-        if (possibleConflictModuleName.isPresent())
+        if (possibleConflictModuleName.isPresent() && !name.equals(moduleLeipzigDTO.getName()))
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Module with this name already exists");
 
         String moduleCode = "";
