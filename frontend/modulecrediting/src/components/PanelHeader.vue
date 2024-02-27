@@ -64,10 +64,10 @@ const props = defineProps({
 
 .modules-container {
   overflow: hidden;
-
 }
 
 .single-module {
   @include ellipsisTextOverflow();
+  display: block;
 }
 </style>
