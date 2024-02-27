@@ -136,13 +136,13 @@ defineExpose({
 <template>
   <div class="filter-container">
 
-    <h3>Filteroptionen</h3>
+    <h2 class="h3">Filteroptionen</h2>
 
     <div class="screen-split-container">
 
       <div class="left-side-container">
         <div class="single-filter-container">
-          <h4>Studiengang</h4>
+          <h3 class="h4">Studiengang</h3>
           <Dropdown show-clear v-model="course" :options="courses" placeholder="Studiengang auswählen">
             <template #clearicon>
               <TrashIcon @click="deleteCourse" background-color="dark-gray"/>
@@ -155,7 +155,7 @@ defineExpose({
 
 
         <div class="single-filter-container">
-          <h4>Suchen</h4>
+          <h3 class="h4">Suchen</h3>
           <div class="input-search-field-container">
             <InputText v-model="searchString" placeholder="Antrag suchen" class="white"/>
             <img src="@/assets/icons/SearchIcon.svg" class="search-icon">
@@ -165,7 +165,7 @@ defineExpose({
         </div>
 
         <div class="single-filter-container">
-          <h4>Zeit</h4>
+          <h3 class="h4">Zeit</h3>
           <div class="date-filter-container">
             <div tabindex="0" @keydown.enter="setDateTypeCreation" @click="setDateTypeCreation"
                  class="date-block" :class="{ 'selected': dateType === 'creationDate' }">
@@ -195,7 +195,7 @@ defineExpose({
 
       <div class="right-side-container">
         <div class="single-filter-container">
-          <h4>Status</h4>
+          <h3 class="h4">Status</h3>
           <div tabindex="0" @keydown.enter="toggleStatusNew" @click="toggleStatusNew"
                :class="{ 'selected': statusNew }" class="statusNew status-container" >
             <p class="overview-text">NEU</p>
