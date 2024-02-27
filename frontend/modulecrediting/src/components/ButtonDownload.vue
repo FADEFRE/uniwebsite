@@ -1,4 +1,3 @@
-
 <script setup>
 import FileIcon from '../assets/icons/FileIcon.vue';
 
@@ -28,5 +27,6 @@ const props = defineProps({
 .button-container {
     display: flex;
     gap: spacing(s);
+    width: max-content;
 }
 </style>

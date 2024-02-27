@@ -106,6 +106,10 @@ public class UserService {
 
 
     public String register(EditUserDTO registerRequest) {
+
+        if (registerRequest.getUsername() == null || registerRequest.getPassword() == null || registerRequest.getPasswordConfirm() == null || registerRequest.getRole() == null)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username, password or role is null");
+
         Optional<User> userCandidate = userRepository.findByUsername(registerRequest.getUsername());
         if(userCandidate.isPresent()) throw new ResponseStatusException(HttpStatus.CONFLICT, "Username already exists!");
 
@@ -120,6 +124,7 @@ public class UserService {
 
         if (!registerRequest.getPassword().equals(registerRequest.getPasswordConfirm()))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Passwords are not equal"); 
+
 
         User user = new User(
             registerRequest.getUsername(),

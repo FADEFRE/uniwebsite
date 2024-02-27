@@ -74,7 +74,7 @@ public class CourseLeipzigService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Course is inactive");
 
         Optional<CourseLeipzig> possibleConflictCourse = courseLeipzigRepository.findByName(courseLeipzigDTO.getCourseName());
-        if (possibleConflictCourse.isPresent())
+        if (possibleConflictCourse.isPresent() && !courseName.equals(courseLeipzigDTO.getCourseName()))
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Course with this name already exists");
 
         courseLeipzig.setName(courseLeipzigDTO.getCourseName());

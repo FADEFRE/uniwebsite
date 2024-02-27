@@ -39,17 +39,12 @@ const name = ref(props.name)
 const code = ref(props.code || '')
 
 const nameEmpty = ref(false)
-const codeEmpty = ref(false)
 
 const triggerEdit = () => {
   // checking name
   nameEmpty.value = !name.value
-  // optionally checking code
-  if (props.code) {
-    codeEmpty.value = !code.value
-  }
   // making request if nothing empty
-  if (!nameEmpty.value && (!props.code || !codeEmpty.value)) {
+  if (!nameEmpty.value) {
     props.editCallback(props.name, name.value, code.value)
   }
 }
@@ -73,8 +68,7 @@ const triggerEdit = () => {
                  :class="{ 'invalid': nameEmpty || props.exists }" class="white" />
       <small v-if="nameEmpty" class="invalid-text">Name darf nicht leer sein</small>
       <InputText v-if="showCode" type="text" placeholder="Code" v-model="code"
-                 :class="{ 'invalid': codeEmpty || props.exists }" />
-      <small v-if="props.code && codeEmpty" class="invalid-text">Code darf nicht leer sein</small>
+                 :class="{ 'invalid': props.exists }" />
       <small v-if="props.exists" class="invalid-text">{{ props.existsText }}</small>
       <ButtonLink @click="triggerEdit">Speichern</ButtonLink>
     </Dialog>

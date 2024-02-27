@@ -151,9 +151,11 @@ const triggerPassOn = () => {
     </div>
 
     <div v-if="!readonly">
-      <ButtonLink v-if="passOnStatus === 'NOT_ALLOWED'" :disabled="true" :fixed="true" :redButton="true">Weitergeben
+      <ButtonLink v-if="passOnStatus === 'NOT_ALLOWED' || unsaved" :disabled="true" :fixed="true" :redButton="true">
+        Weitergeben
       </ButtonLink>
-      <ButtonLink v-else-if="passOnStatus === 'PASSON'" :fixed="true" :redButton="true" @click="triggerPassOn">Weitergeben
+      <ButtonLink v-else-if="passOnStatus === 'PASS_ON'" :fixed="true" :redButton="true" @click="triggerPassOn">
+        Weitergeben
       </ButtonLink>
       <ButtonLink v-else-if="passOnStatus === 'REJECT'" :fixed="true" :redButton="true" @click="triggerPassOn">
         Zurückweisen
