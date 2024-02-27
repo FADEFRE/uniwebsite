@@ -39,10 +39,4 @@ export async function refreshTokenInternal() {
     catch (error) { performLogout(); }
 }
 
-export async function refreshToken() {
-    console.debug("refreshToken()");
-    const response = await httpResource.post("/api/auth/refresh");
-    return response.status;
-}
-
 export const intervalMilliSeconds = 600000; // 10 minutes
