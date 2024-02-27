@@ -27,27 +27,27 @@ const props = defineProps({
 </script>
 
 <template>
-  <div class="panel-heading-container">
-    <div class="modules-container">
-      <h3 v-if="externalModules && externalModules.length" :class="{ 'related-modules-text': relatedModules }"
+  <h3 class="panel-heading-container">
+    <span class="modules-container">
+      <span v-if="externalModules && externalModules.length" :class="{ 'related-modules-text': relatedModules }"
         class="single-module">
         {{ externalModules.join(', ') }}
-      </h3>
-      <h3 v-else>(Anzurechnende Module)</h3>
-    </div>
+      </span>
+      <span v-else>(Anzurechnende Module)</span>
+    </span>
 
-    <div class="arrow-icon">
-      <ArrowIcon color="red" direction="right"/>
-    </div>
+    <span class="arrow-icon">
+      <ArrowIcon color="red" direction="right" aria-label="wird angerechnet für" />
+    </span>
 
-    <div class="modules-container">
-      <h3 v-if="internalModules && internalModules.length" :class="{ 'related-modules-text': relatedModules }"
+    <span class="modules-container">
+      <span v-if="internalModules && internalModules.length" :class="{ 'related-modules-text': relatedModules }"
         class="single-module">
         {{ internalModules.join(', ') }}
-      </h3>
-      <h3 v-else>(Module der Universität Leipzig)</h3>
-    </div>
-  </div>
+      </span>
+      <span v-else>(Module der Universität Leipzig)</span>
+    </span>
+  </h3>
 </template>
 
 <style scoped lang="scss">
