@@ -30,9 +30,13 @@ public class PdfDocumentContoller {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
         headers.setContentDispositionFormData("attachment", pdfDocumentService.getPdfDocumentNameById(id));
+        
+        byte[] pdfBytes = pdfDocumentService.getPdfDocumentDataById(id);
+
         return ResponseEntity.ok()
                 .headers(headers)
-                .body(pdfDocumentService.getPdfDocumentDataById(id));
+                .contentLength(pdfBytes.length)
+                .body(pdfBytes);
     }
     
     @GetMapping("/application/{id}")

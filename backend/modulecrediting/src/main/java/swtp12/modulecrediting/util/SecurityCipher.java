@@ -64,7 +64,7 @@ public class SecurityCipher {
          * Frederik Kluge
          */
         int counter = 0;
-        int finished = 2;
+        int finished = 3;
         while (counter < finished) {
             try {
                 setKey();

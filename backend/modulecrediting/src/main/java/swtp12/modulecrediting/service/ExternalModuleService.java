@@ -43,7 +43,15 @@ public class ExternalModuleService {
             externalModule.setPoints(externalModuleDTO.getPoints());
             externalModule.setPointSystem(externalModuleDTO.getPointSystem());
 
-            PdfDocument pdfDocument = pdfDocumentService.createOrGetPdfDocument(externalModuleDTO.getDescription(), externalModuleDTO.getId());
+            Long pdfId = null;
+            if (externalModuleDTO.getId() != null) {
+                pdfId = externalModuleRepository
+                    .findById(externalModuleDTO.getId())
+                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "External Module with given id not found"))
+                    .getPdfDocument()
+                    .getId();
+            }
+            PdfDocument pdfDocument = pdfDocumentService.createOrGetPdfDocument(externalModuleDTO.getDescription(), pdfId);
             externalModule.setPdfDocument(pdfDocument);
 
             externalModules.add(externalModule);
