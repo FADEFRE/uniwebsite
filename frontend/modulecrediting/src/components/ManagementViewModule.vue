@@ -22,12 +22,12 @@ const filteredModules = computed(() => {
     })
 })
 
-const triggerEditModuleLeipzig = (oldName, newName, newCode) => {
+const triggerEditModuleLeipzig = (existsVar, oldName, newName, newCode) => {
   putUpdateModuleLeipzig(oldName, newName, newCode)
       .then(_ => location.reload())
       .catch(error => {
         if (error.response.status === 409) {
-          exists.value = true
+          existsVar.value = true
         }
       })
 }
@@ -55,7 +55,6 @@ const triggerDeleteModuleLeipzig = (module) => {
             :code="singleModule['code']"
             :edit-callback="triggerEditModuleLeipzig"
             :delete-callback="triggerDeleteModuleLeipzig"
-            :exists="exists"
             exists-text="Modulname oder Modulcode existiert bereits"
         />
       </div>

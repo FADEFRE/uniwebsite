@@ -14,12 +14,12 @@ onBeforeMount(() => {
         .then(data => courses.value = data)
 })
 
-const triggerEditCourseLeipzig = (oldName, newName) => {
+const triggerEditCourseLeipzig = (existsVar, oldName, newName) => {
   putUpdateCourseLeipzig(oldName, newName)
       .then(_ => location.reload())
       .catch(error => {
         if (error.response.status === 409) {
-          exists.value = true
+          existsVar.value = true
         }
       })
 }
