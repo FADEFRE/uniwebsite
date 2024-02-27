@@ -3,14 +3,12 @@ package swtp12.modulecrediting.service;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.net.URL;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import com.itextpdf.tool.xml.XMLWorkerFontProvider;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
 import org.thymeleaf.TemplateEngine;
@@ -28,8 +26,6 @@ import swtp12.modulecrediting.model.Application;
 import swtp12.modulecrediting.model.ExternalModule;
 import swtp12.modulecrediting.model.ModuleLeipzig;
 import swtp12.modulecrediting.model.ModulesConnection;
-
-import javax.annotation.Resource;
 
 
 @Service
@@ -134,7 +130,11 @@ public class GeneratedPdfService {
 
          //Create a FontProvider and register your custom font
         XMLWorkerFontProvider fontProvider = new XMLWorkerFontProvider(XMLWorkerFontProvider.DONTLOOKFORFONTS);
-        fontProvider.register("/static/fonts/Jost-VariableFont_wght.ttf", "Jost");
+        fontProvider.register("/static/fonts/Crimson-Roman.ttf", "Roman");
+        fontProvider.register("/static/fonts/Jost-Medium.ttf", "Jost-Medium");
+        fontProvider.register("/static/fonts/Jost-SemiBold.ttf", "Jost-SemiBold");
+        fontProvider.register("/static/fonts/Jost-Bold.ttf", "Jost-Bold");
+
 
          //Parse the HTML into the document using the custom FontProvider
         XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(html.getBytes()), null, null, fontProvider);

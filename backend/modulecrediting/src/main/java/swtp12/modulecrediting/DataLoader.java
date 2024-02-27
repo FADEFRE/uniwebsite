@@ -46,8 +46,6 @@ public class DataLoader implements CommandLineRunner {
 
         adminCreation();
 
-        registerFont();
-
         if (loadTestData.equals("true")) {
             System.out.println();
             System.out.println("--- Dataloader: Starting to load testdata ---");
@@ -139,17 +137,5 @@ public class DataLoader implements CommandLineRunner {
         else {
             System.out.println("Admin user already exists");
         }
-    }
-
-    private void registerFont() {
-        // Path to the font file within the resources directory
-        String fontPath = "/static/fonts/Jost-VariableFont_wght.ttf";
-
-        // Register the font with iText's FontFactory
-        InputStream fontStream = getClass().getResourceAsStream(fontPath);
-        if (fontStream == null) {
-            throw new RuntimeException("Font file not found at path: " + fontPath);
-        }
-        FontFactory.register(fontPath, "Jost");
     }
 }
