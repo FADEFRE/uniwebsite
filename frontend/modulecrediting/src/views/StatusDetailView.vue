@@ -87,8 +87,10 @@ const checkValidity = () => {
 
 const triggerSubmit = () => {
   if (checkValidity()) {
-    putApplicationStudent(applicationData.value['id'], applicationData.value['courseLeipzig']['name'], moduleConnections.value)
-      .then(_ => location.reload())
+    if (confirm('Haben Sie alle Formfehler korrigiert?\n\nNach dem erneuten Einreichen können Sie den Antrag nicht weiter bearbeiten.')) {
+      putApplicationStudent(applicationData.value['id'], applicationData.value['courseLeipzig']['name'], moduleConnections.value)
+          .then(_ => location.reload())
+    }
   }
 }
 </script>
@@ -159,10 +161,12 @@ const triggerSubmit = () => {
 
 
       <div class="application-buttons-container">
-        <ButtonAdd v-if="applicationData['fullStatus'] === 'FORMFEHLER'" @click="addNewConnection">Modulzuweisung
-          hinzufügen</ButtonAdd>
-        <ButtonLink v-if="applicationData['fullStatus'] === 'FORMFEHLER'" :redButton="true" @click="triggerSubmit">Neu
-          einreichen</ButtonLink>
+        <ButtonAdd v-if="applicationData['fullStatus'] === 'FORMFEHLER'" @click="addNewConnection">
+          Modulzuweisung hinzufügen
+        </ButtonAdd>
+        <ButtonLink v-if="applicationData['fullStatus'] === 'FORMFEHLER'" :redButton="true" @click="triggerSubmit">
+          Neu einreichen
+        </ButtonLink>
       </div>
       <ButtonDownloadVue @click="openSummaryDocument">
         Antrag herunterladen
