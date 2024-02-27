@@ -173,10 +173,10 @@ const triggerSubmit = () => {
       </ButtonDownloadVue>
     </div>
 
-    <div class="side-infos-list">
+    <aside class="side-infos-list">
       <SideInfoApplicationProcess />
       <SideInfoStudyOffice />
-    </div>
+    </aside>
 
   </div>
   <div v-else class="main centered">

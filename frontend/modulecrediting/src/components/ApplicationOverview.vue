@@ -58,6 +58,7 @@ const triggerForward = () => {
 <template>
     <div :tabindex="adminSelectionView ? 0 : -1" @keydown.enter="triggerForward" @click="triggerForward"
          class="application-overview-container" :class="{ 'admin-selection-view': adminSelectionView }">
+        <h2 class="screen-reader-only">Antrag</h2>
         <div class="dates">
             <!-- Div-Block Creation Date -->
             <div v-if="creationDate" class="date-block">

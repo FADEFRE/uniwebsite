@@ -24,10 +24,6 @@ const props = defineProps({
     required: true,
     type: Function
   },
-  exists: {
-    type: Boolean,
-    default: false
-  },
   existsText : {
     type: String,
     default: ""
@@ -39,13 +35,22 @@ const name = ref(props.name)
 const code = ref(props.code || '')
 
 const nameEmpty = ref(false)
+const exists = ref(false)
+
+const clearDialogData = () => {
+  name.value = props.name
+  code.value = props.code || ''
+  nameEmpty.value = false
+}
 
 const triggerEdit = () => {
+  // resetting exists
+  exists.value = false
   // checking name
   nameEmpty.value = !name.value
   // making request if nothing empty
   if (!nameEmpty.value) {
-    props.editCallback(props.name, name.value, code.value)
+    props.editCallback(exists, props.name, name.value, code.value)
   }
 }
 </script>
@@ -63,13 +68,13 @@ const triggerEdit = () => {
       <TrashIcon @click="deleteCallback(props.name)"/>
     </div>
 
-    <Dialog modal :dismissable-mask="true" :draggable="false" v-model:visible="dialogVisible" header="Bearbeiten">
+    <Dialog modal :dismissable-mask="true" :draggable="false" v-model:visible="dialogVisible" header="Bearbeiten" @hide="clearDialogData">
       <InputText type="text" placeholder="Name" v-model="name"
-                 :class="{ 'invalid': nameEmpty || props.exists }" class="white" />
+                 :class="{ 'invalid': nameEmpty || exists }" class="white" />
       <small v-if="nameEmpty" class="invalid-text">Name darf nicht leer sein</small>
       <InputText v-if="showCode" type="text" placeholder="Code" v-model="code"
-                 :class="{ 'invalid': props.exists }" />
-      <small v-if="props.exists" class="invalid-text">{{ props.existsText }}</small>
+                 :class="{ 'invalid': exists }" />
+      <small v-if="exists" class="invalid-text">{{ existsText }}</small>
       <ButtonLink @click="triggerEdit">Speichern</ButtonLink>
     </Dialog>
 

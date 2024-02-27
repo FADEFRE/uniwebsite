@@ -5,11 +5,11 @@ import ButtonLink from "@/components/ButtonLink.vue";
 
 <template>
   <div class="sideinfo-container">
-    <h3 class="heading">Studienbüro</h3>
+    <h2 class="heading h3">Studienbüro</h2>
     <p>Fakultät für Mathematik und Informatik</p>
     <div class="main-info-container">
       <div class="info-group-container">
-        <h4>Anschrift</h4>
+        <h3 class="h4">Anschrift</h3>
         <ul class="points">
           <li>Neues Augusteum</li>
           <li>Augustusplatz 10</li>
@@ -17,7 +17,7 @@ import ButtonLink from "@/components/ButtonLink.vue";
         </ul>
       </div>
       <div class="info-group-container">
-        <h4>Kontakt</h4>
+        <h3 class="h4">Kontakt</h3>
         <ul class="points">
           <li>Telefon: +49 341 97-32165</li>
           <li>Telefax: +49 341 97-32193</li>
@@ -25,7 +25,7 @@ import ButtonLink from "@/components/ButtonLink.vue";
         </ul>
       </div>
       <div class="info-group-container">
-        <h4>Sprechzeiten</h4>
+        <h3 class="h4">Sprechzeiten</h3>
         <p>Dienstag und Donnerstag: 9:00 - 11:30 Uhr und 12:30 - 16:00 Uhr</p>
       </div>
       <a href="https://www.mathcs.uni-leipzig.de/studium/studienbuero" target="_blank" >
