@@ -125,7 +125,7 @@ defineExpose({
     <PanelInternalModules :allow-select="!readonly" :allow-delete="!readonly"
       :selected-modules="connectionData['modulesLeipzig'].map(m => m['name'])" :options="selectableModules"
       ref="panelInternalModules" @change="emit('change')" />
-    <PanelComment :readonly="true" :comment="connectionData['commentApplicant']" />
+    <PanelComment v-if="connectionData['commentApplicant']" :readonly="true" :comment="connectionData['commentApplicant']" />
     <PanelRelatedModules :connection-id="connectionData['id']" />
 
     <div v-if="formalRejection">
