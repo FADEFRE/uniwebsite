@@ -43,6 +43,7 @@ const filteredApplications = computed(() => {
     </div>
 
     <div class="content-container split narrow">
+      <h2 class="screen-reader-only">Liste aller Anträge</h2>
 
       <div v-if="allApplications.length > 0" v-for="application in filteredApplications">
         <ApplicationOverview
