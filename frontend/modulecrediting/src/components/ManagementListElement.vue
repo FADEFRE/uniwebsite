@@ -40,6 +40,12 @@ const code = ref(props.code || '')
 
 const nameEmpty = ref(false)
 
+const clearDialogData = () => {
+  name.value = props.name
+  code.value = props.code || ''
+  nameEmpty.value = false
+}
+
 const triggerEdit = () => {
   // checking name
   nameEmpty.value = !name.value
@@ -63,7 +69,7 @@ const triggerEdit = () => {
       <TrashIcon @click="deleteCallback(props.name)"/>
     </div>
 
-    <Dialog modal :dismissable-mask="true" :draggable="false" v-model:visible="dialogVisible" header="Bearbeiten">
+    <Dialog modal :dismissable-mask="true" :draggable="false" v-model:visible="dialogVisible" header="Bearbeiten" @hide="clearDialogData">
       <InputText type="text" placeholder="Name" v-model="name"
                  :class="{ 'invalid': nameEmpty || props.exists }" class="white" />
       <small v-if="nameEmpty" class="invalid-text">Name darf nicht leer sein</small>
