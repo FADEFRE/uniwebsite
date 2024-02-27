@@ -1,4 +1,4 @@
-import httpResource from "./httpResource";
+import httpResource from "@/scripts/httpResource";
 import { performLogout } from '@/router/logout'
 
 function create503() {

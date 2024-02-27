@@ -28,7 +28,7 @@ function closeMenu() {
     <header class="header-background">
       <div class="header-container">
         <a tabindex="-1" href="/" class="logo-container">
-          <img tabindex="-1" class="logo" src="./assets/Universität_Leipzig_logo.svg" alt="" />
+          <img tabindex="-1" class="logo" src="@/assets/Universität_Leipzig_logo.svg" alt="" />
         </a>
         
         <Button class="burger-menu" @click="openMenu">
