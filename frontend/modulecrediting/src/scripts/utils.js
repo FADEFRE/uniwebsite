@@ -38,5 +38,3 @@ export async function refreshTokenInternal() {
     } 
     catch (error) { performLogout(); }
 }
-
-export const intervalMilliSeconds = 600000; // 10 minutes

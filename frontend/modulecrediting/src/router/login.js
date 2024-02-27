@@ -1,11 +1,11 @@
 import router from "@/router";
 import httpResource from "@/scripts/httpResource";
-import { parseApierror, refreshTokenInternal, intervalMilliSeconds} from "@/scripts/utils";
+import { parseApierror, refreshTokenInternal } from "@/scripts/utils";
 import { performLogout } from '@/router/logout'
 import { ref } from "vue";
 import { useUserStore } from "@/store/userStore";
 
-
+const intervalMilliSeconds = 600000; // 10 minutes
 const displayErrorMessage = ref();
 const errorMessage = ref();
 const loginInProcess = ref();
