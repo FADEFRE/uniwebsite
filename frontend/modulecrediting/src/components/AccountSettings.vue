@@ -1,7 +1,7 @@
 <script setup>
 import { onBeforeMount, ref } from "vue";
-import { getUserMe, putUserPassword, putUserUsername } from "../scripts/axios-requests";
-import { logout } from "../router/logout"
+import { getUserMe, putUserPassword, putUserUsername } from "@/scripts/axios-requests";
+import { logout } from "@/router/logout"
 import ButtonLink from "@/components/ButtonLink.vue";
 
 const userId = ref()
@@ -74,13 +74,13 @@ const savePassword = () => {
       <div class="password-container">
       <div class="input-container">
         <label for="password">Passwort ändern</label>
-        <InputText type="text" class="white" v-model="password" id="password"
+        <InputText type="password" class="white" v-model="password" id="password"
           :class="{ 'invalid': passwordNotMatching || passwordEmpty }" />
         <small v-if="passwordEmpty" class="invalid-text">Das Passwort darf nicht leer sein</small>
       </div>
       <div class="input-container">
         <label for="password-confirm">Passwort bestätigen</label>
-        <InputText type="text" class="white" v-model="passwordConfirm" id="password-confirm"
+        <InputText type="password" class="white" v-model="passwordConfirm" id="password-confirm"
           :class="{ 'invalid': passwordNotMatching || passwordEmpty }" />
         <small v-if="passwordNotMatching" class="invalid-text">Die Passwörter müssen übereinstimmen</small>
       </div>
