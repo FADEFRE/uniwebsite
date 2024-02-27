@@ -4,7 +4,7 @@
 
 <template>
   <div class="sideinfo-container">
-    <h3 class="heading">{{ $t('homepage.sideInfo.applicationProcess') }}</h3>
+    <h2 class="heading h3">{{ $t('homepage.sideInfo.applicationProcess') }}</h2>
     <ul class="points">
       <li>
         <p>{{ $t('homepage.sideInfo.submitApplication') }}</p>
