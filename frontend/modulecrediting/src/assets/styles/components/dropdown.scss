@@ -15,7 +15,7 @@
 
   &.invalid {
     background-color: $red;
-    &:hover {
+    &:hover, &.p-focus {
       background-color: $red-hover;
     }
   }

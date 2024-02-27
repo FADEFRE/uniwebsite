@@ -48,14 +48,18 @@ const triggerCreateUser = () => {
         <small v-if="usernameEmpty" class="invalid-text">Der Benutzername darf nicht leer sein</small>
         <small v-if="createFailed" class="invalid-text">Es existiert bereits ein Benutzer mit diesem Namen</small>
       </div>
-      <RoleDropdown v-model="role" :class="{ 'invalid': roleEmpty }" />
-      <small v-if="roleEmpty" class="invalid-text">Es muss eine Rolle ausgewählt sein</small>
+      <RoleDropdown v-model="role" :invalid="roleEmpty" />
     </div>
     <div class="second-row">
-      <InputText type="text" placeholder="Passwort" v-model="password" class="white" :class="{ 'invalid': passwordEmpty }" />
-      <small v-if="passwordEmpty" class="invalid-text">Passwort darf nicht leer sein</small>
-      <InputText type="text" placeholder="Passwort bestätigen" v-model="passwordConfirm" class="white" :class="{ 'invalid': passwordConfirmEmpty }" />
-      <small v-if="passwordConfirmEmpty" class="invalid-text">Passwort bestätigen darf nicht leer sein</small>
+      <div class="input-container">
+        <InputText type="text" placeholder="Passwort" v-model="password" class="white" :class="{ 'invalid': passwordEmpty }" />
+        <small v-if="passwordEmpty" class="invalid-text">Passwort darf nicht leer sein</small>
+      </div>
+      <div class="input-container">
+        <InputText type="text" placeholder="Passwort bestätigen" v-model="passwordConfirm" class="white" :class="{ 'invalid': passwordConfirmEmpty }" />
+        <small v-if="passwordConfirmEmpty" class="invalid-text">Passwort bestätigen darf nicht leer sein</small>
+      </div>
+      
     </div>
 
 
