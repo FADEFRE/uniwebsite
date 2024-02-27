@@ -1,6 +1,6 @@
 <script setup>
 import { ref, watch } from "vue";
-import ModuleStatusIcon from "../assets/icons/ModuleStatusIcon.vue";
+import ModuleStatusIcon from "@/assets/icons/ModuleStatusIcon.vue";
 const props = defineProps({
   readonly: {
     required: true,

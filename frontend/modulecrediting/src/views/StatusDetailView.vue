@@ -9,9 +9,9 @@ import ApplicationOverview from "@/components/ApplicationOverview.vue";
 import StatusPanel from "@/components/StatusPanel.vue";
 import ApplicationPanel from "@/components/ApplicationPanel.vue";
 import ButtonLink from '@/components/ButtonLink.vue';
-import ButtonAdd from "../components/ButtonAdd.vue";
-import ButtonDownloadVue from '../components/ButtonDownload.vue';
-import LoadingContainer from "../components/LoadingContainer.vue";
+import ButtonAdd from "@/components/ButtonAdd.vue";
+import ButtonDownloadVue from '@/components/ButtonDownload.vue';
+import LoadingContainer from "@/components/LoadingContainer.vue";
 import { url } from "@/scripts/url-config"
 import { getApplicationByIdForStatus, getModulesByCourse, putApplicationStudent } from "@/scripts/axios-requests";
 import { parseRequestDate } from "@/scripts/date-utils";

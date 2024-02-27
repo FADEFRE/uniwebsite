@@ -14,8 +14,8 @@ displays:
 -->
 
 <script setup>
-import ArrowIcon from "../assets/icons/ArrowIcon.vue";
-import TrashIcon from "../assets/icons/TrashIcon.vue";
+import ArrowIcon from "@/assets/icons/ArrowIcon.vue";
+import TrashIcon from "@/assets/icons/TrashIcon.vue";
 import { ref } from "vue";
 
 const props = defineProps({

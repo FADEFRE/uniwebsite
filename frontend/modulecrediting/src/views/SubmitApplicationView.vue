@@ -20,7 +20,7 @@ import ApplicationPanel from "@/components/ApplicationPanel.vue";
 import ButtonAdd from "@/components/ButtonAdd.vue";
 import ButtonLink from "@/components/ButtonLink.vue";
 import ApplicationOverview from "@/components/ApplicationOverview.vue";
-import ArrowIcon from "../assets/icons/ArrowIcon.vue";
+import ArrowIcon from "@/assets/icons/ArrowIcon.vue";
 import SideInfoApplicationProcess from "@/components/SideInfoApplicationProcess.vue";
 import SideInfoStudyOffice from "@/components/SideInfoStudyOffice.vue";
 import ApplicationInfoBox from "@/components/ApplicationInfoBox.vue";

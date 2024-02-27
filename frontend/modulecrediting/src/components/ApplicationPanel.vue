@@ -21,7 +21,7 @@ import PanelComment from "@/components/PanelComment.vue";
 import PanelExternalModules from "@/components/PanelExternalModules.vue";
 import PanelInternalModules from "@/components/PanelInternalModules.vue";
 import { ref, computed } from "vue";
-import TrashIcon from "../assets/icons/TrashIcon.vue";
+import TrashIcon from "@/assets/icons/TrashIcon.vue";
 
 const props = defineProps({
   selectableModules: {

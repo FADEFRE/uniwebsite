@@ -8,8 +8,8 @@ import PanelExternalModules from "@/components/PanelExternalModules.vue";
 import PanelFormalRejectionBlock from "@/components/PanelFormalRejectionBlock.vue";
 import PanelDecision from "@/components/PanelDecision.vue";
 import { ref, computed } from "vue";
-import ModuleStatusIcon from "../assets/icons/ModuleStatusIcon.vue";
-import TrashIcon from "../assets/icons/TrashIcon.vue";
+import ModuleStatusIcon from "@/assets/icons/ModuleStatusIcon.vue";
+import TrashIcon from "@/assets/icons/TrashIcon.vue";
 
 const props = defineProps({
   readonly: {

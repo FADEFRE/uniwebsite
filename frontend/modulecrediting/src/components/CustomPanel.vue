@@ -6,7 +6,7 @@ slots header, icons and default are passed on to PrimeVue Panel
 
 <script setup>
 import { ref, computed } from "vue";
-import ArrowIcon from "../assets/icons/ArrowIcon.vue";
+import ArrowIcon from "@/assets/icons/ArrowIcon.vue";
 
 const props = defineProps({
   initialCollapsedState: {

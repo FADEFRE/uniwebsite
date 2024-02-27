@@ -3,7 +3,7 @@
 <script setup>
 import { computed } from 'vue';
 import router from "@/router";
-import DateIcon from '../assets/icons/DateIcon.vue';
+import DateIcon from '@/assets/icons/DateIcon.vue';
 
 const props = defineProps({
     creationDate: {

@@ -13,7 +13,7 @@ displays:
 <script setup>
 import { ref } from "vue";
 import ButtonLink from "@/components/ButtonLink.vue";
-import FileIcon from "../assets/icons/FileIcon.vue";
+import FileIcon from "@/assets/icons/FileIcon.vue";
 import { url } from "@/scripts/url-config";
 
 const props = defineProps({

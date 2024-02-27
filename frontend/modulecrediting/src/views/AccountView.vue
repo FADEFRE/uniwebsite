@@ -1,5 +1,5 @@
 <script setup>
-import AccountSettings from "../components/AccountSettings.vue";
+import AccountSettings from "@/components/AccountSettings.vue";
 </script>
 
 <template>

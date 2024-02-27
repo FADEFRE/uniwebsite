@@ -26,7 +26,7 @@ displays:
 <script setup>
 import { ref, computed, watch } from "vue";
 import FileInput from "@/components/FileInput.vue";
-import TrashIcon from "../assets/icons/TrashIcon.vue";
+import TrashIcon from "@/assets/icons/TrashIcon.vue";
 
 const props = defineProps({
   allowTextEdit: {

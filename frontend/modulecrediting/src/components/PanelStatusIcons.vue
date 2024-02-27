@@ -9,7 +9,7 @@ displays:
 
 <script setup>
 import ArrowIcon from '@/assets/icons/ArrowIcon.vue';
-import ModuleStatusIcon from '../assets/icons/ModuleStatusIcon.vue';
+import ModuleStatusIcon from '@/assets/icons/ModuleStatusIcon.vue';
 
 const props = defineProps({
     formalRejection: {
