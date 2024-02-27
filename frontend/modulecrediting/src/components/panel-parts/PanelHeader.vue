@@ -33,7 +33,7 @@ const props = defineProps({
         class="single-module">
         {{ externalModules.join(', ') }}
       </span>
-      <span v-else>(Anzurechnende Module)</span>
+      <span v-else class="single-module">(Anzurechnende Module)</span>
     </span>
 
     <span class="arrow-icon">
@@ -45,7 +45,7 @@ const props = defineProps({
         class="single-module">
         {{ internalModules.join(', ') }}
       </span>
-      <span v-else>(Module der Universität Leipzig)</span>
+      <span v-else class="single-module">(Module der Universität Leipzig)</span>
     </span>
   </h3>
 </template>

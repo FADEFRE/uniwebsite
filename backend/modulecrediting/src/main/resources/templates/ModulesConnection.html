@@ -1,33 +1,186 @@
-<html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8"/>
-    <title>Application</title>
+    <style>
+
+
+* {
+  box-sizing: border-box;
+  border: none;
+  margin: 0;
+  padding: 0;
+  border-radius: 0;
+}
+
+*:focus {
+  outline: none;
+  box-shadow: none;
+  border: none;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: $gray;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+
+
+            .logo {
+                width: 320px;
+                margin-bottom: 50px;
+            }
+
+            h1, .h1 {
+                font-family: 'Jost';
+                font-weight: bold;
+                color: #262A31;
+                text-transform: uppercase;
+                font-size: 20px;
+            }
+
+            h2, .h2 {
+                font-family: 'Jost';
+                font-weight: bold;
+                color: #262A31;
+                font-size: 14px;
+            }
+
+            h3, .h3 {
+                font-family: 'Jost';
+                font-weight: bold;
+                color: #262A31;
+                font-size: 13px;
+            }
+
+            h4, .h4 {
+                font-family: 'Jost';
+                font-weight: bold;
+                color: #262A31;
+                font-size: 11px;
+            }
+
+            p, .p {
+                color: #000;
+                font-size: 13px;
+            }
+
+            .bold {
+                font-weight: bold;
+            }
+
+            .info {
+                color: #000;
+                font-size: 11px;
+            }
+
+            .layout {
+                margin: 20px 20px;
+            }
+
+            .header {
+                margin-bottom: 10px;
+            }
+
+
+            .table {
+                margin-top: 7px;
+                page-break-inside: avoid;
+            }
+
+            .content-table {
+                border-top: 1px solid #262A31;
+                margin-top: 5px;
+            }
+
+            .table-row {
+                border-bottom: 1px solid #262A31;
+                padding: 3px 6px;
+                display: flex;
+
+            }
+
+            .table-row p {
+                flex: 1;
+            }
+
+            .module-leipzig-container {
+                margin-top: 10px;
+            }
+
+            .panel-heading-container {
+
+            }
+
+            .single-module {
+                margin-right: 2px;
+            }
+
+            .arrow-icon {
+                height: 12px;
+            }
+
+
+        </style>
 </head>
 <body>
 <div class="layout">
-    <header>
-    </header>
-    <div>
-        <div>
-            <h2>Externe Module:</h2>
-            <ul>
-                <li th:each="externalModule : ${externalModulesArray}">
-                    <span th:text="${externalModule.name}"></span>,
-                    <span th:text="${externalModule.points}"></span>,
-                    <span th:text="${externalModule.pointSystem}"></span>,
-                    <span th:text="${externalModule.university}"></span>
-                </li>
-            </ul>
-        </div>
+    <div class="header">
+        <h2 class="panel-heading-container">
+            <span class="modules-container">
+           <span class="single-module" th:text="${externalModulesHeading}"></span>
+            </span>
+            <img class="arrow-icon" src="src/main/resources/static/images/Arrow.png">
+            <span class="modules-container">
+                <span class="single-module" th:text="${modulesLeipzigHeading}"></span>
+            </span>
 
-        <div>
-            <h2>Module Leipzig:</h2>
-            <ul>
-                <li th:each="moduleLeipzig : ${modulesLeipzigArray}">
-                    <span th:text="${moduleLeipzig.name}"></span>,
-                    <span th:text="${moduleLeipzig.code}"></span>
-                </li>
-            </ul>
+        </h2>
+    </div>
+
+    <div>
+        <h3>Anzurechnende Module</h3>
+
+    <div class="table" th:each="externalModule : ${externalModulesArray}">
+        <h4 th:text="${externalModule.name}"/>
+        <div class="content-table">
+            <div class="table-row">
+                <p>Modulname</p>
+                <p class="bold" th:text="${externalModule.name}">nicht verfügbar</p>
+            </div>
+            <div class="table-row">
+                <p>Punkte</p>
+                <p class="bold" th:text="${externalModule.points} + ' ' + ${externalModule.pointSystem}">nicht verfügbar</p>
+            </div>
+            <div class="table-row">
+                <p>Modulname</p>
+                <p class="bold" th:text="${externalModule.university}">nicht verfügbar</p>
+            </div>
+        </div>
+    </div>
+    </div>
+
+
+    <div class="module-leipzig-container">
+        <h3>Module der Universität Leipzig</h3>
+        <div class="table" th:each="moduleLeipzig : ${modulesLeipzigArray}">
+            <h4 th:text="${moduleLeipzig.name}"></h4>
+                <div class="table-content">
+                    <div class="table-row">
+                        <p>Modulname</p>
+                        <p class="bold" th:text="${moduleLeipzig.name}">nicht verfügbar</p>
+                    </div>
+                    <div class="table-row">
+                        <p>Modulcode</p>
+                        <p class="bold" th:text="${moduleLeipzig.code}">nicht verfügbar</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

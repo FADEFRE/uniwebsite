@@ -95,6 +95,21 @@ public class GeneratedPdfService {
         ExternalModule[] externalModulesArray = externalModules.toArray(new ExternalModule[externalModules.size()]);
         ModuleLeipzig[] modulesLeipzigArray = modulesLeipzig.toArray(new ModuleLeipzig[modulesLeipzig.size()]);
 
+        StringBuilder externalModulesHeading = new StringBuilder();
+        StringBuilder modulesLeipzigHeading = new StringBuilder();
+
+        for(int i = 0; i < externalModulesArray.length; i++) {
+            if(i!= 0) externalModulesHeading.append(", ");
+            externalModulesHeading.append(externalModulesArray[i].getName());
+        }
+        for(int i = 0; i < modulesLeipzigArray.length; i++) {
+            if(i!= 0) modulesLeipzigHeading.append(", ");
+            modulesLeipzigHeading.append(modulesLeipzigArray[i].getName());
+        }
+
+        context.setVariable("externalModulesHeading", externalModulesHeading);
+        context.setVariable("modulesLeipzigHeading", modulesLeipzigHeading);
+
         context.setVariable("externalModulesArray", externalModulesArray);
         context.setVariable("modulesLeipzigArray", modulesLeipzigArray);
 
