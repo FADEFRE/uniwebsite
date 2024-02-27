@@ -105,7 +105,6 @@ const triggerPostApplication = () => {
       <SideInfoStudyOffice />
     </aside>
 
-
   </div>
 </template>
 
@@ -113,16 +112,5 @@ const triggerPostApplication = () => {
 @use '@/assets/styles/util' as *;
 @use '@/assets/styles/global' as *;
 @use '@/assets/styles/components' as *;
-
-.explanation-collapsed-container {
-  @include verticalList(s);
-
-}
-.explanation-expanded-container {
-  @include verticalList(s);
-  border-top: 2px solid $dark-gray;
-  margin-top: spacing(s);
-  padding-top: spacing(s);
-}
 </style>
 

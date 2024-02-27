@@ -3,6 +3,7 @@ import ArrowIcon from "@/assets/icons/ArrowIcon.vue";
 import { ref } from "vue";
 
 const showInformation = ref(false)
+const showExample = ref(false)
 </script>
 
 <template>
@@ -13,11 +14,11 @@ const showInformation = ref(false)
         Wählen Sie den Studiengang aus, für den Sie sich Leistungen anrechnen lassen wollen.
         Tragen sie dann die Details der Leistungen ein. Hierfür können sie beliebig viele Modulzuweisungen hinzufügen.
       </p>
-      <Button @click="showInformation = !showInformation">
-        Erklärung anzeigen
-        <ArrowIcon :direction="showInformation ? 'up' : 'down'" color="red" />
-      </Button>
     </div>
+    <Button @click="showInformation = !showInformation">
+      Erklärung anzeigen
+      <ArrowIcon :direction="showInformation ? 'up' : 'down'" color="red" />
+    </Button>
     <div v-if="showInformation" class="explanation-expanded-container">
       <div class="explanation-item">
         <h3 class="h4">Modulzuweisung</h3>
@@ -25,8 +26,6 @@ const showInformation = ref(false)
           <li>Ein oder mehrere Fremdmodule die als Modul(e) der Universität Leipzig angerechnet werden sollen.</li>
           <li>Es sollen nur konkret zusammengehörige Module in eine Modulzuweisung geschrieben werden.</li>
           <li>Für den gesamten Antrag können sie mehrere Modulzuweisungen hinzufügen.</li>
-          <!-- todo add example -->
-          <li>!!! Beispiel hinzufügen !!!</li>
         </ul>
       </div>
       <div class="explanation-item">
@@ -53,9 +52,51 @@ const showInformation = ref(false)
         </ul>
       </div>
     </div>
+    <Button @click="showExample = !showExample">
+      Beispiel anzeigen
+      <ArrowIcon :direction="showExample ? 'up' : 'down'" color="red" />
+    </Button>
+    <div v-if="showExample" class="explanation-expanded-container">
+      <div class="explanation-item">
+        <h3 class="h4">
+          Modulzuweisung: "Automaten und Berechenbarkeit
+          <ArrowIcon direction="right" color="red" aria-label="wird angerechnet für" />
+          Automaten und Sprachen, Berechenbarkeit"
+        </h3>
+      </div>
+      <div class="explanation-item">
+        <h4>Fremdmodul</h4>
+        <ul class="points">
+          <li>Modulname "Automaten und Berechenbarkeit"</li>
+          <li>Universität "Halle"</li>
+          <li>Punkte "10"</li>
+          <li>Punktsystem "LP"</li>
+        </ul>
+      </div>
+      <div class="explanation-item">
+        <h4>Module der Universität Leipzig</h4>
+        <ul class="points">
+          <li>"Automaten und Sprachen"</li>
+          <li>"Berechenbarkeit"</li>
+        </ul>
+      </div>
+    </div>
   </div>
 </template>
 
 <style scoped lang="scss">
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
+@use '@/assets/styles/components' as *;
 
+.explanation-collapsed-container {
+  @include verticalList(s);
+
+}
+.explanation-expanded-container {
+  @include verticalList(s);
+  border-bottom: 2px solid $dark-gray;
+  margin-bottom: spacing(s);
+  padding-bottom: spacing(s);
+}
 </style>
