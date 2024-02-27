@@ -2,7 +2,7 @@
 import ArrowIcon from "@/assets/icons/ArrowIcon.vue";
 import { ref, watch } from "vue";
 
-const props = defineProps(['modelValue'])
+const props = defineProps(['modelValue','invalid'])
 const emit = defineEmits(['update:modelValue'])
 
 const roleOptions = [
@@ -17,7 +17,7 @@ watch(role, (newRole) => emit('update:modelValue', newRole))
 
 <template>
   <div class="role-dropdown-container">
-    <Dropdown placeholder="Rolle" v-model="role" :options="roleOptions" option-value="value" option-label="label">
+    <Dropdown placeholder="Rolle" v-model="role" :options="roleOptions" option-value="value" option-label="label" :class="{'invalid': invalid}">
       <template #dropdownicon>
         <ArrowIcon color="white" direction="down"/>
       </template>
