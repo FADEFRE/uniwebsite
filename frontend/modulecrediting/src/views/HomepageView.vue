@@ -12,19 +12,21 @@ const isInvalid = ref(false)
 const id = ref('')
 
 const openDetailView = () => {
-    const formattedId = getFormattedId();
-    console.log(id.value);
-    console.log(formattedId);
-    getApplicationExists(formattedId)
-        .then(data => {
-            if (data === false) {
+    isInvalid.value = !id.value
+    if (!isInvalid.value) {
+        const formattedId = getFormattedId();
+        getApplicationExists(formattedId)
+            .then(data => {
+              if (data === false) {
                 isInvalid.value = true;
                 return;
-            }
+              }
 
-            const routeData = router.resolve({ name: 'statusDetail', params: { id: formattedId } });
-            window.open(routeData.href, '_top');
-        })
+              const routeData = router.resolve({ name: 'statusDetail', params: { id: formattedId } });
+              window.open(routeData.href, '_top');
+            })
+    }
+
 }
 
 const goToSubmitApplication = () => {
