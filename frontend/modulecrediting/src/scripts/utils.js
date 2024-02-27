@@ -29,12 +29,3 @@ export function parseApierror(error) {
         return create503();
     }
 }
-
-export async function refreshTokenInternal() {
-    console.debug("refreshTokenInternal()");
-    try {
-        const response = await httpResource.post("/api/auth/refresh");
-        if (response.status !== 200) performLogout();
-    } 
-    catch (error) { performLogout(); }
-}

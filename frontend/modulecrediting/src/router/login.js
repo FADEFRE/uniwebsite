@@ -10,6 +10,17 @@ const displayErrorMessage = ref();
 const errorMessage = ref();
 const loginInProcess = ref();
 
+
+async function refreshTokenInternal() {
+    console.debug("refreshTokenInternal()");
+    try {
+        const response = await httpResource.post("/api/auth/refresh");
+        if (response.status !== 200) performLogout();
+    } 
+    catch (error) { performLogout(); }
+}
+
+
 async function login (login_username, login_password) {
     loginInProcess.value = true;
     const loginRequest = {
