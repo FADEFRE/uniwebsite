@@ -58,8 +58,9 @@ const getFormattedId = () => {
             <!-- HomepageContainer StatusView -->
             <HomepageContainer :header="$t('homepage.viewStatus')" :text="$t('homepage.viewStatusExplanation')">
                 <div class="input-button-container">
-                    <InputText v-model="id" :class="{ 'invalid': isInvalid }" class="status-input gray"
-                        placeholder="0-0-0-0-0-0" @keydown.enter.prevent="openDetailView" @input.prevent="validateInput" />
+                    <InputText v-model="id" placeholder="0-0-0-0-0-0" aria-label="Vorgangsnummer des aufzurufenden Antrags"
+                               :class="{ 'invalid': isInvalid }" class="status-input gray"
+                               @keydown.enter.prevent="openDetailView" @input.prevent="validateInput" />
                     <ButtonLink @click="openDetailView">{{ $t('homepage.viewStatus') }}</ButtonLink>
                 </div>
                 <small v-if="isInvalid" class="invalid-text">Dieser Vorgang existiert nicht</small>
