@@ -149,8 +149,10 @@ const triggerPostApplication = () => {
     </div>
 
     <div class="side-infos-list">
-      <SideInfoApplicationProcess />
-      <SideInfoStudyOffice />
+      <aside>
+        <SideInfoApplicationProcess />
+        <SideInfoStudyOffice />
+      </aside>
     </div>
 
 
