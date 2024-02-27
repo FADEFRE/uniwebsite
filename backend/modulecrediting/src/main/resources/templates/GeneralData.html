@@ -1,9 +1,10 @@
-<html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8"/>
     <title>Application</title>
 
-    <style>
+</head>
+<style>
 
 /*black: #000;
 dark-gray: #262A31;
@@ -11,8 +12,39 @@ gray: #F0F0F0;
 white: #fff;
 red: #D83D3B;*/
 
+            *,
+*::before,
+*::after {
+  box-sizing: border-box;
+  border: none;
+  margin: 0;
+  padding: 0;
+  border-radius: 0;
+}
+
+*:focus {
+  outline: none;
+  box-shadow: none;
+  border: none;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: $gray;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+
+
             .logo {
-                width: 100px;
+                width: 320px;
+                margin-bottom: 50px;
             }
 
             h1, .h1 {
@@ -32,37 +64,53 @@ red: #D83D3B;*/
 
             h3, .h3 {
                 font-family: 'Jost';
-                font-weight: medium;
+                font-weight: bold;
                 color: #262A31;
                 font-size: 13px;
+            }
+
+            h4, .h4 {
+                font-family: 'Jost';
+                font-weight: bold;
+                color: #262A31;
+                font-size: 11px;
             }
 
             p, .p {
                 color: #000;
                 font-size: 13px;
+            }
+
+            .bold {
                 font-weight: bold;
             }
 
             .info {
-
                 color: #000;
-                font-size: 8px;
+                font-size: 11px;
             }
 
             .layout {
+                margin: 0px 15px;
+            }
+
+            header {
+                margin-bottom: 30px;
             }
 
 
             .table {
+
             }
 
             .content-table {
-                border-top: 1px solid #333;
+                border-top: 1px solid #262A31;
+                margin-top: 5px;
             }
 
             .table-row {
-                padding: 10px 3px;
-                border-bottom: 1px solid #333; /* Adjusted to 1px for visibility */
+                border-bottom: 1px solid #262A31;
+                padding: 3px 6px;
                 display: flex;
             }
 
@@ -72,30 +120,35 @@ red: #D83D3B;*/
 
 
             aside {
+                margin-top: 450px;
+            }
+
+            aside .heading {
+                margin-top: 5px;
             }
 
             ul {
+                margin-top: 4px;
             }
 
             li {
                 position: relative;
-                padding-left: 16px;
+                padding-left: 13px;
                 list-style: none;
+
             }
 
-           li::before {
-                content: "";
+           .list-point {
                 position: absolute;
-                top: 6.5rem;
-                left: 4px;
-                width: 5px;
-                height: 5px;
+                top: 5px;
+                left: 3px;
+                width: 4px;
+                height: 4px;
                 border-radius: 50%;
                 background-color: #D83D3B;
             }
 
         </style>
-</head>
 <body>
 <div class="layout">
     <header>
@@ -108,43 +161,51 @@ red: #D83D3B;*/
         <div class="content-table">
             <div class="table-row">
                 <p>Voragangsnummer</p>
-                <p th:text="${id}">nicht verfügbar</p>
+                <p class="bold" th:text="${id}">nicht verfügbar</p>
             </div>
             <div class="table-row">
                 <p>Erstelldatum</p>
-                <p th:text="${Erstelldatum}">nicht verfügbar</p>
+                <p class="bold" th:text="${Erstelldatum}">nicht entschieden</p>
             </div>
             <div class="table-row">
                 <p>Status</p>
-                <p th:text="${Status}">nicht verfügbar</p>
+                <p class="bold" th:text="${Status}">nicht verfügbar</p>
             </div>
             <div class="table-row">
                 <p>Entscheidungsdatum</p>
-                <p th:text="${Entscheidungsdatum}">nicht verfügbar</p>
+                <p class="bold" th:text="${Entscheidungsdatum}">nicht verfügbar</p>
             </div>
             <div class="table-row">
                 <p>Studiengang</p>
-                <p th:text="${Studiengang}">nicht verfügbar</p>
+                <p class="bold" th:text="${Studiengang}">nicht verfügbar</p>
             </div>
         </div>
     </div>
 
     <aside>
-        <h3>Kontakt</h3>
-        <p>Studienbüro Fakultät für Mathematik und Informatik </p>
+        <div class="heading">
+            <h3>Studienbüro</h3>
+            <p class="info">Studienbüro Fakultät für Mathematik und Informatik </p>
+        </div>
         <ul>
-            <li><p>Neues Augusteum</p></li>
-            <li><p>Augustusplatz 10</p></li>
-            <li><p>04109 Leipzig</p></li>
+            <h4>Anschrift</h4>
+            <li>
+                <div class="list-point"/>
+                <p class="info">Neues Augusteum</p>
+            </li>
+            <li><div class="list-point"/><p class="info">Augustusplatz 10</p></li>
+            <li><div class="list-point"/><p class="info">04109 Leipzig</p></li>
         </ul>
         <ul>
-            <li><p>Leitung: Marco Neumann </p></li>
-            <li><p>Telefon: +49 341 97-32165 </p></li>
-            <li><p>Telefax: +49 341 97-32193 </p></li>
-            <li><p>Email: studienbuero@math.uni-leipzig.de</p></li>
+            <h4>Kontakt</h4>
+            <li><div class="list-point"/><p class="info">Leitung: Marco Neumann </p></li>
+            <li><div class="list-point"/><p class="info">Telefon: +49 341 97-32165 </p></li>
+            <li><div class="list-point"/><p class="info">Telefax: +49 341 97-32193 </p></li>
+            <li><div class="list-point"/><p class="info">Email: studienbuero@math.uni-leipzig.de</p></li>
         </ul>
         <ul>
-            <li><p>Die aktuellen Sprechzeiten entnehmen Sie bitte der Homepage: www.mathcs.uni-leipzig.de/studium/studienbuero</p></li>
+            <h4>Sprechzeiten</h4>
+            <li><div class="list-point"/><p class="info">Die aktuellen Sprechzeiten entnehmen Sie bitte der Homepage: www.mathcs.uni-leipzig.de/studium/studienbuero</p></li>
         </ul>
     </aside>
 </div>

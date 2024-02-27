@@ -68,6 +68,7 @@ public class GeneratedPdfService {
         if (application.getDecisionDate() != null)
             context.setVariable("Entscheidungsdatum", application.getDecisionDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
 
+
         return templateEngine.process("GeneralData", context);
     }
 
