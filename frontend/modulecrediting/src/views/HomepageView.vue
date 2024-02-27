@@ -67,11 +67,9 @@ const getFormattedId = () => {
       </HomepageContainer>
     </div>
 
-    <div class="side-infos-list">
-      <aside>
-        <SideInfoApplicationProcess/>
-      </aside>
-    </div>
+    <aside class="side-infos-list">
+      <SideInfoApplicationProcess/>
+    </aside>
 
   </div>
 </template>
