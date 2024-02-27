@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, onBeforeMount } from "vue";
 import ButtonLink from "@/components/ButtonLink.vue"
-import ArrowIcon from "../assets/icons/ArrowIcon.vue";
+import ArrowIcon from "@/assets/icons/ArrowIcon.vue";
 import LoadingContainer from "@/components/LoadingContainer.vue";
 import { getCoursesLeipzigName, getModulesNameCodeByCourse, getModulesNameCode, putCourseLeipzigEdit } from "@/scripts/axios-requests";
 

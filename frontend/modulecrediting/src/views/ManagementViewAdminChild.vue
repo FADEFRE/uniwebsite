@@ -1,8 +1,8 @@
 <script setup>
 import { ref } from "vue";
-import ButtonDownload from "../components/ButtonDownload.vue";
-import FileInput from "../components/FileInput.vue";
-import ButtonLink from "../components/ButtonLink.vue";
+import ButtonDownload from "@/components/ButtonDownload.vue";
+import FileInput from "@/components/FileInput.vue";
+import ButtonLink from "@/components/ButtonLink.vue";
 import { url } from "@/scripts/url-config";
 import { postJsonConfig } from "@/scripts/axios-requests";
 

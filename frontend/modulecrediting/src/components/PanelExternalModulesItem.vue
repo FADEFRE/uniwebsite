@@ -26,7 +26,7 @@ displays:
 <script setup>
 import { ref, computed, watch } from "vue";
 import FileInput from "@/components/FileInput.vue";
-import TrashIcon from "../assets/icons/TrashIcon.vue";
+import TrashIcon from "@/assets/icons/TrashIcon.vue";
 
 const props = defineProps({
   allowTextEdit: {
@@ -144,7 +144,8 @@ defineExpose({
       </div>
 
     </div>
-    <TrashIcon v-if="allowDelete" @click="emit('deleteSelf')" background-size="small"/>
+    <TrashIcon v-if="allowDelete" @click="emit('deleteSelf')" background-size="small"
+               :aria-label="`Externes Modul ${name || 'ohne Namen'} löschen`"/>
   </div>
 </template>
 

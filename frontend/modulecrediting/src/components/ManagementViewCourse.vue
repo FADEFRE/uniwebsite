@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed, onBeforeMount } from "vue";
-import ManagementListElement from "./ManagementListElement.vue";
+import ManagementListElement from "@/components/ManagementListElement.vue";
 import LoadingContainer from "@/components/LoadingContainer.vue";
 import { getCoursesLeipzigName, putUpdateCourseLeipzig, deleteCourseLeipzig } from "@/scripts/axios-requests";
 

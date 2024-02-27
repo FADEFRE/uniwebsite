@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from "vue";
-import ButtonLink from "./ButtonLink.vue";
-import RoleDropdown from "./RoleDropdown.vue";
+import ButtonLink from "@/components/ButtonLink.vue";
+import RoleDropdown from "@/components/RoleDropdown.vue";
 import { createUser } from "@/scripts/axios-requests";
 
 const username = ref('')

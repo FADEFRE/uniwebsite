@@ -1,7 +1,7 @@
 <script setup>
 import { computed, ref } from 'vue';
 import { useClipboard } from '@vueuse/core'
-import CopyIcon from '../assets/icons/CopyIcon.vue';
+import CopyIcon from '@/assets/icons/CopyIcon.vue';
 
 const props = defineProps({
     id: {

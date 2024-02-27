@@ -1,5 +1,5 @@
 <script setup>
-import FileIcon from '../assets/icons/FileIcon.vue';
+import FileIcon from '@/assets/icons/FileIcon.vue';
 
 const props = defineProps({
     fixed: {

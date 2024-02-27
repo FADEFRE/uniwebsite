@@ -1,5 +1,5 @@
 <script setup>
-import ArrowIcon from './ArrowIcon.vue';
+import ArrowIcon from '@/assets/icons/ArrowIcon.vue';
 
 const scrollTop = () => {
     document.getElementById('app').scrollIntoView({ behavior: 'smooth' })

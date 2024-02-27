@@ -1,6 +1,6 @@
 <script setup>
-import AccountAdminCreate from "../components/AccountAdminCreate.vue";
-import AccountAdminList from "../components/AccountAdminList.vue";
+import AccountAdminCreate from "@/components/AccountAdminCreate.vue";
+import AccountAdminList from "@/components/AccountAdminList.vue";
 </script>
 
 <template>

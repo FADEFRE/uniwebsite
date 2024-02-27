@@ -5,9 +5,9 @@ import ApplicationOverview from "@/components/ApplicationOverview.vue";
 import AdministrativePanel from "@/components/AdministrativePanel.vue";
 import ApplicationConnectionLinks from "@/components/ApplicationConnectionLinks.vue";
 import ButtonLink from "@/components/ButtonLink.vue";
-import ApplicationControl from "../assets/icons/ApplicationControl.vue";
-import MoveTop from "../assets/icons/MoveTop.vue";
-import NotSavedIcon from "../assets/icons/NotSavedIcon.vue";
+import ApplicationControl from "@/assets/icons/ApplicationControl.vue";
+import MoveTop from "@/assets/icons/MoveTop.vue";
+import NotSavedIcon from "@/assets/icons/NotSavedIcon.vue";
 import {
   getApplicationById, getModulesByCourse,
   getUpdateStatusAllowed, updateStatus, putApplicationStudyOffice, putApplicationChairman

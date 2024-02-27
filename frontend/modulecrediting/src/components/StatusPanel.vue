@@ -8,8 +8,8 @@ import PanelExternalModules from "@/components/PanelExternalModules.vue";
 import PanelFormalRejectionBlock from "@/components/PanelFormalRejectionBlock.vue";
 import PanelDecision from "@/components/PanelDecision.vue";
 import { ref, computed } from "vue";
-import ModuleStatusIcon from "../assets/icons/ModuleStatusIcon.vue";
-import TrashIcon from "../assets/icons/TrashIcon.vue";
+import ModuleStatusIcon from "@/assets/icons/ModuleStatusIcon.vue";
+import TrashIcon from "@/assets/icons/TrashIcon.vue";
 
 const props = defineProps({
   readonly: {
@@ -70,7 +70,8 @@ defineExpose({
 
     <template #icons>
       <ModuleStatusIcon v-if="connection['decisionFinal'] !== 'unedited'" :status-decision="connection['decisionFinal']" />
-      <TrashIcon v-if="allowDelete" @click="emit('deleteSelf')" background-color="white"/>
+      <TrashIcon v-if="allowDelete" @click="emit('deleteSelf')" background-color="white"
+                 aria-label="Modulzuweisung löschen" />
     </template>
 
     <div>

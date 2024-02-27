@@ -1,6 +1,6 @@
 <script setup>
-import EditIcon from "../assets/icons/EditIcon.vue";
-import TrashIcon from "../assets/icons/TrashIcon.vue";
+import EditIcon from "@/assets/icons/EditIcon.vue";
+import TrashIcon from "@/assets/icons/TrashIcon.vue";
 import ButtonLink from "@/components/ButtonLink.vue";
 import { ref } from "vue";
 
