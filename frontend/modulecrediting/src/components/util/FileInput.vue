@@ -12,7 +12,7 @@ displays:
 
 <script setup>
 import { ref } from "vue";
-import ButtonLink from "@/components/ButtonLink.vue";
+import ButtonLink from "@/components/button/ButtonLink.vue";
 import FileIcon from "@/assets/icons/FileIcon.vue";
 import { url } from "@/scripts/url-config";
 

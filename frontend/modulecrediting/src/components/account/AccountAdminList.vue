@@ -1,5 +1,5 @@
 <script setup>
-import RoleDropdown from "@/components/RoleDropdown.vue";
+import RoleDropdown from "@/components/util/RoleDropdown.vue";
 import TrashIcon from "@/assets/icons/TrashIcon.vue";
 import { ref, onBeforeMount } from "vue";
 import { getAllUsers, getUserMeId, putUserRole, deleteUser } from "@/scripts/axios-requests";

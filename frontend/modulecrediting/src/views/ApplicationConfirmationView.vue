@@ -1,9 +1,9 @@
 <script setup>
 import { useRoute, useRouter } from 'vue-router';
 import { onBeforeMount } from 'vue';
-import ConfirmationContainer from '@/components/ConfirmationContainer.vue';
-import ButtonLink from "@/components/ButtonLink.vue";
-import ButtonDownload from '@/components/ButtonDownload.vue';
+import ConfirmationContainer from '@/components/container/ConfirmationContainer.vue';
+import ButtonLink from "@/components/button/ButtonLink.vue";
+import ButtonDownload from '@/components/button/ButtonDownload.vue';
 import { url } from '@/scripts/url-config';
 
 const route = useRoute()

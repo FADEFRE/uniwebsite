@@ -1,10 +1,10 @@
 <script setup>
 import { useRoute, useRouter } from "vue-router";
 import { ref, computed, onBeforeMount } from "vue";
-import ApplicationOverview from "@/components/ApplicationOverview.vue";
-import AdministrativePanel from "@/components/AdministrativePanel.vue";
-import ApplicationConnectionLinks from "@/components/ApplicationConnectionLinks.vue";
-import ButtonLink from "@/components/ButtonLink.vue";
+import ApplicationOverview from "@/components/abstract/ApplicationOverview.vue";
+import AdministrativePanel from "@/components/panel/AdministrativePanel.vue";
+import ApplicationConnectionLinks from "@/components/abstract/ApplicationConnectionLinks.vue";
+import ButtonLink from "@/components/button/ButtonLink.vue";
 import ApplicationControl from "@/assets/icons/ApplicationControl.vue";
 import MoveTop from "@/assets/icons/MoveTop.vue";
 import NotSavedIcon from "@/assets/icons/NotSavedIcon.vue";
@@ -13,7 +13,7 @@ import {
   getUpdateStatusAllowed, updateStatus, putApplicationStudyOffice, putApplicationChairman
 } from "@/scripts/axios-requests";
 import { parseRequestDate } from "@/scripts/date-utils";
-import LoadingContainer from "@/components/LoadingContainer.vue";
+import LoadingContainer from "@/components/util/LoadingContainer.vue";
 
 const route = useRoute()
 const router = useRouter();

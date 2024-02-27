@@ -1,12 +1,12 @@
 <script setup>
-import PanelComment from "@/components/PanelComment.vue";
-import PanelHeader from "@/components/PanelHeader.vue";
-import CustomPanel from "@/components/CustomPanel.vue";
-import PanelInternalModules from "@/components/PanelInternalModules.vue";
-import PanelDecisionBlock from "@/components/PanelDecisionBlock.vue";
-import PanelExternalModules from "@/components/PanelExternalModules.vue";
-import PanelFormalRejectionBlock from "@/components/PanelFormalRejectionBlock.vue";
-import PanelDecision from "@/components/PanelDecision.vue";
+import PanelComment from "@/components/panel-parts/PanelComment.vue";
+import PanelHeader from "@/components/panel-parts/PanelHeader.vue";
+import CustomPanel from "@/components/panel/CustomPanel.vue";
+import PanelInternalModules from "@/components/panel-parts/PanelInternalModules.vue";
+import PanelDecisionBlock from "@/components/panel-parts/PanelDecisionBlock.vue";
+import PanelExternalModules from "@/components/panel-parts/PanelExternalModules.vue";
+import PanelFormalRejectionBlock from "@/components/panel-parts/PanelFormalRejectionBlock.vue";
+import PanelDecision from "@/components/panel-parts/PanelDecision.vue";
 import { ref, computed } from "vue";
 import ModuleStatusIcon from "@/assets/icons/ModuleStatusIcon.vue";
 import TrashIcon from "@/assets/icons/TrashIcon.vue";

@@ -1,8 +1,8 @@
 <script setup>
-import ManagementCreateContainer from '@/components/ManagementCreate.vue';
-import ManagementEditCourse from '@/components/ManagementEditCourse.vue';
-import ManagementViewCourse from '@/components/ManagementViewCourse.vue';
-import ManagementViewModule from '@/components/ManagementViewModule.vue';
+import ManagementCreateContainer from '@/components/management/ManagementCreate.vue';
+import ManagementEditCourse from '@/components/management/ManagementEditCourse.vue';
+import ManagementViewCourse from '@/components/management/ManagementViewCourse.vue';
+import ManagementViewModule from '@/components/management/ManagementViewModule.vue';
 import MoveTop from '@/assets/icons/MoveTop.vue';
 </script>
 

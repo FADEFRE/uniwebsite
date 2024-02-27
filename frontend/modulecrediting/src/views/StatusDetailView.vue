@@ -5,18 +5,18 @@ shows status of an application
 <script setup>
 import { useRoute, useRouter } from 'vue-router';
 import { ref, onBeforeMount, computed } from "vue";
-import ApplicationOverview from "@/components/ApplicationOverview.vue";
-import StatusPanel from "@/components/StatusPanel.vue";
-import ApplicationPanel from "@/components/ApplicationPanel.vue";
-import ButtonLink from '@/components/ButtonLink.vue';
-import ButtonAdd from "@/components/ButtonAdd.vue";
-import ButtonDownloadVue from '@/components/ButtonDownload.vue';
-import LoadingContainer from "@/components/LoadingContainer.vue";
+import ApplicationOverview from "@/components/abstract/ApplicationOverview.vue";
+import StatusPanel from "@/components/panel/StatusPanel.vue";
+import ApplicationPanel from "@/components/panel/ApplicationPanel.vue";
+import ButtonLink from '@/components/button/ButtonLink.vue';
+import ButtonAdd from "@/components/button/ButtonAdd.vue";
+import ButtonDownloadVue from '@/components/button/ButtonDownload.vue';
+import LoadingContainer from "@/components/util/LoadingContainer.vue";
 import { url } from "@/scripts/url-config"
 import { getApplicationByIdForStatus, getModulesByCourse, putApplicationStudent } from "@/scripts/axios-requests";
 import { parseRequestDate } from "@/scripts/date-utils";
-import SideInfoApplicationProcess from '@/components/SideInfoApplicationProcess.vue';
-import SideInfoStudyOffice from '@/components/SideInfoStudyOffice.vue';
+import SideInfoApplicationProcess from '@/components/side-info/SideInfoApplicationProcess.vue';
+import SideInfoStudyOffice from '@/components/side-info/SideInfoStudyOffice.vue';
 import ModuleStatusIcon from "@/assets/icons/ModuleStatusIcon.vue";
 
 const id = useRoute().params.id

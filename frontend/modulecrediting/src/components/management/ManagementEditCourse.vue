@@ -1,8 +1,8 @@
 <script setup>
 import { ref, computed, onBeforeMount } from "vue";
-import ButtonLink from "@/components/ButtonLink.vue"
+import ButtonLink from "@/components/button/ButtonLink.vue"
 import ArrowIcon from "@/assets/icons/ArrowIcon.vue";
-import LoadingContainer from "@/components/LoadingContainer.vue";
+import LoadingContainer from "@/components/util/LoadingContainer.vue";
 import { getCoursesLeipzigName, getModulesNameCodeByCourse, getModulesNameCode, putCourseLeipzigEdit } from "@/scripts/axios-requests";
 
 const courses = ref()
@@ -117,7 +117,7 @@ const saveCourseLeipzig = () => {
           <h3 class="h4">Wählbare Module</h3>
           <div class="input-search-field-container">
             <InputText v-model="searchStringSelectable" placeholder="Wählbare Module suchen" class="white" />
-            <img src="@/assets/icons/SearchIcon.svg" class="search-icon">
+            <img src="../../assets/icons/SearchIcon.svg" class="search-icon">
           </div>
           <TransitionGroup name="list-left" tag="div" class="modules-container">
 
@@ -144,7 +144,7 @@ const saveCourseLeipzig = () => {
           <h3 class="h4">Module in {{ selectedCourse }} ({{ selectedModules.length + addedModules.length }})</h3>
           <div class="input-search-field-container">
             <InputText v-model="searchStringSelected" placeholder="Ausgewählte Module suchen" class="white" />
-            <img src="@/assets/icons/SearchIcon.svg" class="search-icon">
+            <img src="../../assets/icons/SearchIcon.svg" class="search-icon">
           </div>
           <TransitionGroup name="list-right" tag="div" class="modules-container">
             <div v-for="singleModule in addedModulesDisplay" :key="singleModule.name"

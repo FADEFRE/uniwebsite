@@ -14,7 +14,7 @@ const dropdown = ref()
       <TrashIcon @click="emit('clear')" background-color="dark-gray"/>
     </template>
     <template #filtericon>
-      <img class="search-icon" src="@/assets/icons/SearchIcon.svg">
+      <img class="search-icon" src="../../assets/icons/SearchIcon.svg">
     </template>
     <template #dropdownicon>
       <ArrowIcon color="white" direction="down" />

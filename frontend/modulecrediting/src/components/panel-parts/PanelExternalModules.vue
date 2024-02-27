@@ -16,8 +16,8 @@ displays:
 -->
 
 <script setup>
-import PanelExternalModulesItem from "@/components/PanelExternalModulesItem.vue";
-import ButtonAdd from "@/components/ButtonAdd.vue";
+import PanelExternalModulesItem from "@/components/panel-parts/PanelExternalModulesItem.vue";
+import ButtonAdd from "@/components/button/ButtonAdd.vue";
 import { ref, computed } from "vue";
 
 const props = defineProps({

@@ -14,16 +14,16 @@ displays:
 
 <script setup>
 import { ref, computed } from "vue";
-import PanelHeader from "@/components/PanelHeader.vue";
-import PanelComment from "@/components/PanelComment.vue";
-import PanelExternalModules from "@/components/PanelExternalModules.vue";
-import PanelInternalModules from "@/components/PanelInternalModules.vue";
-import PanelStatusIcons from "@/components/PanelStatusIcons.vue";
-import PanelDecision from "@/components/PanelDecision.vue";
-import PanelDecisionBlock from "@/components/PanelDecisionBlock.vue";
-import CustomPanel from "@/components/CustomPanel.vue";
-import PanelRelatedModules from "@/components/PanelRelatedModules.vue";
-import PanelFormalRejectionBlock from "@/components/PanelFormalRejectionBlock.vue";
+import PanelHeader from "@/components/panel-parts/PanelHeader.vue";
+import PanelComment from "@/components/panel-parts/PanelComment.vue";
+import PanelExternalModules from "@/components/panel-parts/PanelExternalModules.vue";
+import PanelInternalModules from "@/components/panel-parts/PanelInternalModules.vue";
+import PanelStatusIcons from "@/components/panel-parts/PanelStatusIcons.vue";
+import PanelDecision from "@/components/panel-parts/PanelDecision.vue";
+import PanelDecisionBlock from "@/components/panel-parts/PanelDecisionBlock.vue";
+import CustomPanel from "@/components/panel/CustomPanel.vue";
+import PanelRelatedModules from "@/components/panel-parts/PanelRelatedModules.vue";
+import PanelFormalRejectionBlock from "@/components/panel-parts/PanelFormalRejectionBlock.vue";
 
 const props = defineProps({
   type: {

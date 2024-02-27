@@ -14,7 +14,7 @@ import { ref, onBeforeMount } from "vue";
 import { getRelatedModuleConnections } from "@/scripts/axios-requests";
 import { parseRequestDate } from "@/scripts/date-utils";
 import DateIcon from "@/assets/icons/DateIcon.vue";
-import PanelHeader from "@/components/PanelHeader.vue";
+import PanelHeader from "@/components/panel-parts/PanelHeader.vue";
 import ModuleStatusIcon from "@/assets/icons/ModuleStatusIcon.vue";
 
 const props = defineProps({

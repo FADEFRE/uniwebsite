@@ -158,7 +158,7 @@ defineExpose({
           <h3 class="h4">Suchen</h3>
           <div class="input-search-field-container">
             <InputText v-model="searchString" placeholder="Antrag suchen" class="white"/>
-            <img src="@/assets/icons/SearchIcon.svg" class="search-icon">
+            <img src="../../assets/icons/SearchIcon.svg" class="search-icon">
           </div>
 
           <small>Suchen nach: Vorgangsnummer, Modulname, Universität</small>

@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, onBeforeMount } from "vue";
-import ManagementListElement from "@/components/ManagementListElement.vue";
-import LoadingContainer from "@/components/LoadingContainer.vue";
+import ManagementListElement from "@/components/management/ManagementListElement.vue";
+import LoadingContainer from "@/components/util/LoadingContainer.vue";
 import { getModulesNameCode, deleteModuleLeipzig, putUpdateModuleLeipzig } from "@/scripts/axios-requests";
 
 const modules = ref();
@@ -46,7 +46,7 @@ const triggerDeleteModuleLeipzig = (module) => {
 
       <div class="search-container">
         <InputText v-model="searchString" placeholder="Modul suchen"></InputText>
-        <img src="@/assets/icons/SearchIcon.svg" class="search-icon">
+        <img src="../../assets/icons/SearchIcon.svg" class="search-icon">
       </div>
       <div v-for="singleModule in filteredModules" class="module-list">
         <ManagementListElement

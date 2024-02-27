@@ -1,5 +1,5 @@
 <script setup>
-import ButtonLink from "@/components/ButtonLink.vue";
+import ButtonLink from "@/components/button/ButtonLink.vue";
 import { login } from "@/router/login";
 import { ref } from "vue";
 

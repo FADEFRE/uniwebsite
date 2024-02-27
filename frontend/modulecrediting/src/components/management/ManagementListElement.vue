@@ -1,7 +1,7 @@
 <script setup>
 import EditIcon from "@/assets/icons/EditIcon.vue";
 import TrashIcon from "@/assets/icons/TrashIcon.vue";
-import ButtonLink from "@/components/ButtonLink.vue";
+import ButtonLink from "@/components/button/ButtonLink.vue";
 import { ref } from "vue";
 
 const props = defineProps({

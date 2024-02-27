@@ -1,9 +1,9 @@
 <script setup>
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
-import HomepageContainer from '@/components/HomepageContainer.vue';
-import SideInfoApplicationProcess from '@/components/SideInfoApplicationProcess.vue';
-import ButtonLink from '@/components/ButtonLink.vue';
+import HomepageContainer from '@/components/container/HomepageContainer.vue';
+import SideInfoApplicationProcess from '@/components/side-info/SideInfoApplicationProcess.vue';
+import ButtonLink from '@/components/button/ButtonLink.vue';
 import { getApplicationExists } from "@/scripts/axios-requests";
 
 const router = useRouter()

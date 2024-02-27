@@ -15,11 +15,11 @@ displays:
 -->
 
 <script setup>
-import CustomPanel from "@/components/CustomPanel.vue";
-import PanelHeader from "@/components/PanelHeader.vue";
-import PanelComment from "@/components/PanelComment.vue";
-import PanelExternalModules from "@/components/PanelExternalModules.vue";
-import PanelInternalModules from "@/components/PanelInternalModules.vue";
+import CustomPanel from "@/components/panel/CustomPanel.vue";
+import PanelHeader from "@/components/panel-parts/PanelHeader.vue";
+import PanelComment from "@/components/panel-parts/PanelComment.vue";
+import PanelExternalModules from "@/components/panel-parts/PanelExternalModules.vue";
+import PanelInternalModules from "@/components/panel-parts/PanelInternalModules.vue";
 import { ref, computed } from "vue";
 import TrashIcon from "@/assets/icons/TrashIcon.vue";
 

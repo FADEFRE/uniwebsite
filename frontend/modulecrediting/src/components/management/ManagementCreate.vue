@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue';
-import ButtonLink from "@/components/ButtonLink.vue";
+import ButtonLink from "@/components/button/ButtonLink.vue";
 import { postCourseLeipzig, postModuleLeipzig } from "@/scripts/axios-requests";
 
 const props = defineProps({

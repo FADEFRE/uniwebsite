@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, onBeforeMount } from "vue";
-import ManagementListElement from "@/components/ManagementListElement.vue";
-import LoadingContainer from "@/components/LoadingContainer.vue";
+import ManagementListElement from "@/components/management/ManagementListElement.vue";
+import LoadingContainer from "@/components/util/LoadingContainer.vue";
 import { getCoursesLeipzigName, putUpdateCourseLeipzig, deleteCourseLeipzig } from "@/scripts/axios-requests";
 
 const courses = ref();
@@ -47,7 +47,7 @@ const filteredCourses = computed(() => {
 
       <div class="search-container">
         <InputText v-model="searchString" placeholder="Studiengang suchen"></InputText>
-        <img src="@/assets/icons/SearchIcon.svg" class="search-icon">
+        <img src="../../assets/icons/SearchIcon.svg" class="search-icon">
       </div>
       <div v-for="course in filteredCourses" class="course-list">
         <ManagementListElement

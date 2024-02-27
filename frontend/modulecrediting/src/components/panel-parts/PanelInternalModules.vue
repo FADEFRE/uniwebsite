@@ -71,7 +71,7 @@ defineExpose({
             @change="e => addSelectedModule(e.value)"
         >
           <template #filtericon>
-            <img class="search-icon" src="@/assets/icons/SearchIcon.svg">
+            <img class="search-icon" src="../../assets/icons/SearchIcon.svg">
           </template>
           <template #dropdownicon>
             <ArrowIcon color="white" direction="down" />
