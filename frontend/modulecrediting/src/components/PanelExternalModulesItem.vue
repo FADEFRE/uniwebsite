@@ -144,7 +144,8 @@ defineExpose({
       </div>
 
     </div>
-    <TrashIcon v-if="allowDelete" @click="emit('deleteSelf')" background-size="small"/>
+    <TrashIcon v-if="allowDelete" @click="emit('deleteSelf')" background-size="small"
+               :aria-label="`Externes Modul ${name || 'ohne Namen'} löschen`"/>
   </div>
 </template>
 

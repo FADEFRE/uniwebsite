@@ -70,7 +70,8 @@ defineExpose({
 
     <template #icons>
       <ModuleStatusIcon v-if="connection['decisionFinal'] !== 'unedited'" :status-decision="connection['decisionFinal']" />
-      <TrashIcon v-if="allowDelete" @click="emit('deleteSelf')" background-color="white"/>
+      <TrashIcon v-if="allowDelete" @click="emit('deleteSelf')" background-color="white"
+                 aria-label="Modulzuweisung löschen" />
     </template>
 
     <div>

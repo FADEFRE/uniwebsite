@@ -71,7 +71,8 @@ defineExpose({
 
       <!-- Icons Slot -->
       <template #icons>
-        <TrashIcon v-if="allowDelete" @click="emit('deleteSelf')" backgroundColor="white"/>
+        <TrashIcon v-if="allowDelete" @click="emit('deleteSelf')" backgroundColor="white"
+                   aria-label="Modulzuweisung löschen" />
       </template>
 
       <!-- Panel Content -->
