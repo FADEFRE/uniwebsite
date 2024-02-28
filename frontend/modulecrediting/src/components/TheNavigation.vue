@@ -39,14 +39,14 @@ const specificRole = computed(() => navStore.getCurrentRoleNav)
     <div v-if="specificRole === 'study'" :class="{ 'user-specific-container': isMenuOpen }">
       <router-link :to="{ name: 'studyOfficeSelection' }" @click="$emit('linkClicked')"
                    class="router-link icon-hover-right" :class="{ 'white': isMenuOpen }">
-        Übersicht
+        {{ $t('navigation.Overview') }}
         <ArrowIcon direction="right" :color="isMenuOpen ? 'dark-gray' : 'white'"/>
       </router-link>
     </div>
     <div v-else-if="specificRole === 'chair'" :class="{ 'user-specific-container': isMenuOpen }">
       <router-link :to="{ name: 'chairmanSelection' }" @click="$emit('linkClicked')"
                    class="router-link icon-hover-right" :class="{ 'white': isMenuOpen }">
-        Übersicht
+        {{ $t('navigation.Overview') }}
         <ArrowIcon direction="right" :color="isMenuOpen ? 'dark-gray' : 'white'"/>
       </router-link>
     </div>
@@ -54,14 +54,14 @@ const specificRole = computed(() => navStore.getCurrentRoleNav)
     <div v-if="specificRole === 'admin'" :class="{ 'user-specific-container': isMenuOpen }">
       <router-link :to="{ name: 'managementAdmin' }" @click="$emit('linkClicked')"
                    class="router-link icon-hover-right" :class="{ 'white': isMenuOpen }">
-        Verwaltung
+        {{ $t('navigation.Control') }}
         <ArrowIcon direction="right" :color="isMenuOpen ? 'dark-gray' : 'white'"/>
       </router-link>
     </div>
     <div v-else :class="{ 'user-specific-container': isMenuOpen }">
       <router-link :to="{ name: 'management' }" @click="$emit('linkClicked')"
                    class="router-link icon-hover-right" :class="{ 'white': isMenuOpen }">
-        Verwaltung
+        {{ $t('navigation.Control') }}
         <ArrowIcon direction="right" :color="isMenuOpen ? 'dark-gray' : 'white'"/>
       </router-link>
     </div>
@@ -69,20 +69,20 @@ const specificRole = computed(() => navStore.getCurrentRoleNav)
     <div v-if="specificRole === 'admin'" :class="{ 'user-specific-container': isMenuOpen }">
       <router-link :to="{ name: 'accountAdmin' }" @click="$emit('linkClicked')"
                    class="router-link icon-hover-right" :class="{ 'white': isMenuOpen }">
-        Account
+        {{ $t('navigation.Account') }}
         <ArrowIcon direction="right" :color="isMenuOpen ? 'dark-gray' : 'white'"/>
       </router-link>
     </div>
     <div v-else :class="{ 'user-specific-container': isMenuOpen }">
       <router-link :to="{ name: 'account' }" @click="$emit('linkClicked')"
                    class="router-link icon-hover-right" :class="{ 'white': isMenuOpen }">
-        Account
+        {{ $t('navigation.Account') }}
         <ArrowIcon direction="right" :color="isMenuOpen ? 'dark-gray' : 'white'"/>
       </router-link>
     </div>
 
     <Button role="link" @click="logout" class="router-link icon-hover-right" :class="{ 'white': isMenuOpen }">
-      Logout
+      {{ $t('navigation.Logout') }}
       <AuthIcon type="logout" :color="isMenuOpen ? 'dark-gray' : 'white'"/>
     </Button>
   </div>
