@@ -27,20 +27,70 @@ public class ModuleLeipzigServiceTest {
     @InjectMocks
     private ModuleLeipzigService moduleLeipzigService;
 
+
+    // CreateModules - Test
     @Test
-void testUpdateModuleLeipzig_Success() {
-    ModuleLeipzig existingModule = new ModuleLeipzig("Test Module", "TEST");
+    void testCreateModuleLeipzig_NoDataGiven() {
+        ModuleLeipzigDTO moduleLeipzigDTO = new ModuleLeipzigDTO();
 
-    when(moduleLeipzigRepository.findByName("Test Module")).thenReturn(Optional.of(existingModule));    when(moduleLeipzigRepository.save(any(ModuleLeipzig.class))).thenReturn(new ModuleLeipzig("Updated Test Module", "UPDATED"));
+        assertThrows(java.lang.NullPointerException.class, () -> {
+            moduleLeipzigService.createModuleLeipzig(moduleLeipzigDTO);
+        }, "No data given");
+    }
 
-    ModuleLeipzigDTO moduleLeipzigDTO = new ModuleLeipzigDTO();
-    moduleLeipzigDTO.setName("Updated Test Module");
-    moduleLeipzigDTO.setCode("UPDATED");
+    @Test
+    void testCreateModuleLeipzig_NoModuleNameGiven() {
+        ModuleLeipzigDTO moduleLeipzigDTO = new ModuleLeipzigDTO();
+        moduleLeipzigDTO.setName("");
+        moduleLeipzigDTO.setCode("TEST");
 
-    String result = moduleLeipzigService.updateModuleLeipzig("Test Module", moduleLeipzigDTO);
+        assertThrows(ResponseStatusException.class, () -> {
+            moduleLeipzigService.createModuleLeipzig(moduleLeipzigDTO);
+        }, "No module name given");
+    }
 
-    assertEquals("Updated Test Module", result);
-}
+    @Test
+    void testCreateModuleLeipzig_ModuleWithSameNameExists() {
+        ModuleLeipzigDTO moduleLeipzigDTO = new ModuleLeipzigDTO();
+        moduleLeipzigDTO.setName("Test Module");
+        moduleLeipzigDTO.setCode("");
+
+        ModuleLeipzig existingModule = new ModuleLeipzig("Test Module", "TEST");
+
+        when(moduleLeipzigRepository.findByName("Test Module")).thenReturn(Optional.of(existingModule));
+
+        assertThrows(ResponseStatusException.class, () -> {
+            moduleLeipzigService.createModuleLeipzig(moduleLeipzigDTO);
+        }, "Module with this name already exists");
+    }
+
+    @Test
+    void testCreateModuleLeipzig_NewModuleCreated() {
+        ModuleLeipzigDTO moduleLeipzigDTO = new ModuleLeipzigDTO();
+        moduleLeipzigDTO.setName("Test Module 2");
+        moduleLeipzigDTO.setCode("TEST2");
+
+        when(moduleLeipzigRepository.findByName("Test Module 2")).thenReturn(Optional.empty());
+
+        String result = moduleLeipzigService.createModuleLeipzig(moduleLeipzigDTO);
+        assertEquals("Test Module 2", result);
+    }
+
+
+    @Test
+    void testUpdateModuleLeipzig_Success() {
+        ModuleLeipzig existingModule = new ModuleLeipzig("Test Module", "TEST");
+
+        when(moduleLeipzigRepository.findByName("Test Module")).thenReturn(Optional.of(existingModule));    when(moduleLeipzigRepository.save(any(ModuleLeipzig.class))).thenReturn(new ModuleLeipzig("Updated Test Module", "UPDATED"));
+
+        ModuleLeipzigDTO moduleLeipzigDTO = new ModuleLeipzigDTO();
+        moduleLeipzigDTO.setName("Updated Test Module");
+        moduleLeipzigDTO.setCode("UPDATED");
+
+        String result = moduleLeipzigService.updateModuleLeipzig("Test Module", moduleLeipzigDTO);
+
+        assertEquals("Updated Test Module", result);
+    }
 
     @Test
     void testUpdateModuleLeipzig_NoDataGiven() {
