@@ -1,11 +1,11 @@
-import httpResource from "@/scripts/httpResource";
+import httpClient from "@/requests/httpClient";
 
 let axiosColor = "color:deepskyblue";
 
 function getAllUsers() {
     console.debug("%c" + "getAllUsers ()", axiosColor);
 
-    return httpResource.get("/api/user/all")
+    return httpClient.get("/api/user/all")
         .then(response => response.data)
         .catch(_ => {
         })
@@ -14,7 +14,7 @@ function getAllUsers() {
 function getUserMe() {
     console.debug("%c" + "getUserMe ()", axiosColor)
 
-    return httpResource.get("/api/user/me")
+    return httpClient.get("/api/user/me")
         .then(response => response.data)
         .catch(() => {
         })
@@ -23,7 +23,7 @@ function getUserMe() {
 function getUserMeId() {
     console.debug("%c" + "getUserMeId ()", axiosColor)
 
-    return httpResource.get("/api/user/me/id")
+    return httpClient.get("/api/user/me/id")
         .then(response => response.data)
         .catch(() => {
         })
@@ -32,7 +32,7 @@ function getUserMeId() {
 function getUserMeName() {
     console.debug("%c" + "getUserMeName ()", axiosColor)
 
-    return httpResource.get("/api/user/me/name")
+    return httpClient.get("/api/user/me/name")
         .then(response => response.data)
         .catch(() => {
         })
@@ -51,7 +51,7 @@ function postNewUser(username, password, passwordConfirm, role) {
     formData.append('passwordConfirm', passwordConfirm)
     formData.append('role', role)
 
-    return httpResource.post("/api/auth/register", formData)
+    return httpClient.post("/api/auth/register", formData)
         .then(response => response.data)
         .catch(error => Promise.reject(error))
 }
@@ -64,7 +64,7 @@ function putUserUsername(id, username) {
     formData.append('id', id)
     formData.append('username', username)
 
-    return httpResource.put('/api/user/change/username', formData)
+    return httpClient.put('/api/user/change/username', formData)
         .then(response => response.data)
         .catch(error => Promise.reject(error))
 }
@@ -78,7 +78,7 @@ function putUserPassword(id, password, passwordConfirm) {
     formData.append('password', password)
     formData.append('passwordConfirm', passwordConfirm)
 
-    return httpResource.put('/api/user/change/password', formData)
+    return httpClient.put('/api/user/change/password', formData)
         .then(response => response.data)
         .catch(_ => {
         })
@@ -92,7 +92,7 @@ function putUserRole(id, role) {
     formData.append('id', id)
     formData.append('role', role)
 
-    return httpResource.put('/api/user/change/role', formData)
+    return httpClient.put('/api/user/change/role', formData)
         .then(response => response.data)
         .catch(_ => {
         })
@@ -105,7 +105,7 @@ function deleteUser(id) {
 
     formData.append('id', id)
 
-    return httpResource.post('api/auth/delete', formData)
+    return httpClient.post('api/auth/delete', formData)
         .then(response => response.data)
         .catch(_ => {
         })

@@ -1,4 +1,4 @@
-import httpResource from "@/scripts/httpResource";
+import httpClient from "@/requests/httpClient";
 
 let axiosColor = "color:deepskyblue";
 
@@ -12,7 +12,7 @@ parameters:
 function getCoursesLeipzigName() {
     console.debug("%c" + "getCoursesLeipzigName ()", axiosColor);
 
-    return httpResource
+    return httpClient
         .get("/api/courses-leipzig")
         .then((response) => {
             return response.data.filter(course => course.isActive).map((obj) => obj.name);
@@ -31,7 +31,7 @@ parameters:
 function getModulesByCourse(course) {
     console.debug("%c" + "getModulesByCourse (" + course + ")", axiosColor);
 
-    return httpResource
+    return httpClient
         .get("/api/courses-leipzig")
         .then((response) => {
             const courseObject = response.data.find((obj) => obj.name === course);
@@ -47,7 +47,7 @@ function getModulesByCourse(course) {
 function getModulesNameCode() {
     console.debug("%c" + "getModulesNameCode", axiosColor);
 
-    return httpResource
+    return httpClient
         .get("/api/modules-leipzig")
         .then((response) => {
             return response.data
@@ -73,7 +73,7 @@ parameters:
 function getModulesNameCodeByCourse(course) {
     console.debug("%c" + "getModulesByCourse (" + course + ")", axiosColor);
 
-    return httpResource
+    return httpClient
         .get("/api/courses-leipzig")
         .then((response) => {
             const courseObject = response.data.find((obj) => obj.name === course);
@@ -102,7 +102,7 @@ function postCourseLeipzig(courseName) {
     const formData = new FormData();
     formData.append(`courseName`, courseName);
 
-    return httpResource
+    return httpClient
         .post("/api/courses-leipzig", formData)
         .then((response) => response.data)
         .catch((error) => Promise.reject(error));
@@ -126,7 +126,7 @@ function postModuleLeipzig(moduleName, moduleCode) {
     formData.append(`name`, moduleName);
     formData.append(`code`, moduleCode);
 
-    return httpResource
+    return httpClient
         .post("/api/modules-leipzig", formData)
         .then((response) => response.data)
         .catch((error) => Promise.reject(error));
@@ -138,7 +138,7 @@ function postJsonConfig(configFile) {
     const formData = new FormData()
     formData.append("jsonFile", configFile)
 
-    return httpResource.post("/file/json/courses/upload", formData)
+    return httpClient.post("/file/json/courses/upload", formData)
         .then(response => response.data)
         .catch(_ => {
         })
@@ -154,7 +154,7 @@ function putCourseLeipzigEdit(coursename, moduleList) {
         formData.append(`modulesLeipzig[${moduleIndex}].code`, moduleLeipzig.code);
     });
 
-    return httpResource
+    return httpClient
         .put(`/api/courses-leipzig/${coursename}/edit`, formData)
         .then((response) => response.data)
         .catch((_) => {
@@ -167,7 +167,7 @@ function putUpdateCourseLeipzig(courseName, newCourseName) {
     const formData = new FormData();
     formData.append("courseName", newCourseName);
 
-    return httpResource
+    return httpClient
         .put(`/api/courses-leipzig/${courseName}`, formData)
         .then((response) => response.data)
 }
@@ -180,14 +180,14 @@ function putUpdateModuleLeipzig(moduleName, newModuleName, newModuleCode) {
     formData.append('name', newModuleName)
     formData.append('code', newModuleCode)
 
-    return httpResource.put(`/api/modules-leipzig/${moduleName}`, formData)
+    return httpClient.put(`/api/modules-leipzig/${moduleName}`, formData)
         .then(response => response.data)
 }
 
 function deleteCourseLeipzig(coursename) {
     console.debug("%c" + "deleteCourseLeipzig", axiosColor);
 
-    return httpResource
+    return httpClient
         .delete(`/api/courses-leipzig/${coursename}`)
         .then((response) => response.data)
         .catch((_) => {
@@ -197,7 +197,7 @@ function deleteCourseLeipzig(coursename) {
 function deleteModuleLeipzig(modulename) {
     console.debug("%c" + "deleteModuleLeipzig", axiosColor);
 
-    return httpResource
+    return httpClient
         .delete(`/api/modules-leipzig/${modulename}`)
         .then((response) => response.data)
         .catch((_) => {

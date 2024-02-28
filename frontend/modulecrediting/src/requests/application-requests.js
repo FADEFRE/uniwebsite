@@ -1,4 +1,4 @@
-import httpResource from "@/scripts/httpResource";
+import httpClient from "@/requests/httpClient";
 
 let axiosColor = "color:deepskyblue";
 
@@ -57,7 +57,7 @@ parameters:
 function getApplications() {
     console.debug("%c" + "getApplications ()", axiosColor);
 
-    return httpResource
+    return httpClient
         .get("/api/applications")
         .then((response) => response.data)
         .catch((_) => {
@@ -74,7 +74,7 @@ parameters:
 function getApplicationById(id) {
     console.debug("%c" + "getApplicationById (" + id + ")", axiosColor);
 
-    return httpResource
+    return httpClient
         .get("/api/applications/" + id)
         .then((response) => {
             response.data["modulesConnections"].sort((a, b) => a.id - b.id);
@@ -97,7 +97,7 @@ parameters:
 function getApplicationByIdForStatus(id) {
     console.debug("%c" + "getApplicationByIdForStatus (" + id + ")", axiosColor);
 
-    return httpResource
+    return httpClient
         .get("/api/applications/student/" + id)
         .then((response) => {
             response.data["modulesConnections"].sort((a, b) => a.id - b.id);
@@ -120,7 +120,7 @@ parameters:
 function getApplicationExists(id) {
     console.debug("%c" + "getApplicationExists ()", axiosColor);
 
-    return httpResource
+    return httpClient
         .get(url + `/api/applications/${id}/exists`)
         .then((response) => response.data)
         .catch((_) => {
@@ -137,7 +137,7 @@ parameters:
 function getRelatedModuleConnections(moduleConnectionId) {
     console.debug("%c" + "getRelatedModuleConnections (moduleConnectionId: " + moduleConnectionId + ")", axiosColor);
 
-    return httpResource
+    return httpClient
         .get("/api/modules-connection/" + moduleConnectionId + "/related")
         .then((response) => {
             return response.data;
@@ -159,7 +159,7 @@ function getUpdateStatusAllowed(id) {
         axiosColor
     );
 
-    return httpResource
+    return httpClient
         .get("/api/applications/" + id + "/update-status-allowed")
         .then((response) => response.data)
         .catch((_) => {
@@ -218,7 +218,7 @@ function postApplication(course, applicationObjects) {
         );
     });
 
-    return httpResource
+    return httpClient
         .post("/api/applications", formData)
         .then((response) => {
             return response.data;
@@ -262,7 +262,7 @@ function putApplicationStudent(
         );
     });
 
-    return httpResource
+    return httpClient
         .put(url + "/api/applications/student/" + applicationId, formData)
         .then((response) => response.data)
         .catch((_) => {
@@ -322,7 +322,7 @@ function putApplicationStudyOffice(
         }
     });
 
-    return httpResource
+    return httpClient
         .put("/api/applications/study-office/" + applicationId, formData)
         .then((response) => response.data)
         .catch((_) => {
@@ -363,7 +363,7 @@ function putApplicationChairman(
         }
     });
 
-    return httpResource
+    return httpClient
         .put("/api/applications/chairman/" + applicationId, formData)
         .then((response) => response.data)
         .catch((_) => {
@@ -380,7 +380,7 @@ parameters:
 function putUpdateStatus(id) {
     console.debug("%c" + "updateStatus (id: " + id + ")", axiosColor);
 
-    return httpResource
+    return httpClient
         .put("/api/applications/" + id + "/update-status")
         .then((response) => {
             if (response.data) {

@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { useUserStore } from "@/store/userStore";
-import httpResource from "@/scripts/httpResource";
+import httpClient from "@/requests/httpClient";
 import HomepageView from "@/views/HomepageView.vue";
 
 const router = createRouter({
@@ -170,7 +170,7 @@ router.beforeEach(async (to, from) => {
     return { name: "login" };
   }
   console.log("getRole Router");
-  const responseRole = await httpResource.get(`/api/user/role`);
+  const responseRole = await httpClient.get(`/api/user/role`);
   switch (to.meta.authType) {
     case "standard":
       changeRole(responseRole.data);
