@@ -10,7 +10,7 @@ exposes:
 
 <script setup>
 import { ref, computed, onBeforeMount } from "vue";
-import { getWeekAgo, getMonthAgo, getSixMonthAgo, getYearAgo } from "@/scripts/date-utils";
+import { getWeekAgo, getMonthAgo, getSixMonthAgo, getYearAgo } from "@/utils/date-utils";
 import ArrowIcon from "@/assets/icons/ArrowIcon.vue";
 import DateIcon from '@/assets/icons/DateIcon.vue';
 import TrashIcon from "@/assets/icons/TrashIcon.vue";

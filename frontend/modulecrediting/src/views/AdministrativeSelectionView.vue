@@ -11,8 +11,8 @@ import { useRoute } from "vue-router";
 import { ref, computed, onBeforeMount } from "vue"
 import FilterSelector from "@/components/filter/FilterSelector.vue";
 import ApplicationOverview from "@/components/abstract/ApplicationOverview.vue";
-import { parseRequestDate } from "@/scripts/date-utils";
-import { filterApplications } from "@/scripts/applications-filter";
+import { parseRequestDate } from "@/utils/date-utils";
+import { filterApplications } from "@/utils/applications-filter";
 import LoadingContainer from "@/components/util/LoadingContainer.vue";
 import {getApplications} from "@/requests/application-requests";
 

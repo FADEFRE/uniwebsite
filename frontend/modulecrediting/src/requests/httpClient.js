@@ -1,5 +1,5 @@
 import axios from "axios";
-import { url } from "@/scripts/url-config";
+import { url } from "@/utils/url-config";
 import { performLogout } from "@/router/logout";
 import router from "@/router";
 

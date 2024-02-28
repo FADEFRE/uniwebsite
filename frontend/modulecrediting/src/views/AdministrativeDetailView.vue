@@ -8,7 +8,7 @@ import ButtonLink from "@/components/button/ButtonLink.vue";
 import ApplicationControl from "@/assets/icons/ApplicationControl.vue";
 import MoveTop from "@/assets/icons/MoveTop.vue";
 import NotSavedIcon from "@/assets/icons/NotSavedIcon.vue";
-import { parseRequestDate } from "@/scripts/date-utils";
+import { parseRequestDate } from "@/utils/date-utils";
 import LoadingContainer from "@/components/util/LoadingContainer.vue";
 import {getModulesByCourse} from "@/requests/module-course-requests";
 import {

@@ -11,7 +11,7 @@ displays:
 import router from "@/router";
 import { useRoute } from "vue-router";
 import { ref, onBeforeMount } from "vue";
-import { parseRequestDate } from "@/scripts/date-utils";
+import { parseRequestDate } from "@/utils/date-utils";
 import DateIcon from "@/assets/icons/DateIcon.vue";
 import PanelHeader from "@/components/panel-parts/PanelHeader.vue";
 import ModuleStatusIcon from "@/assets/icons/ModuleStatusIcon.vue";

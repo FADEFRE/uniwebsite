@@ -14,7 +14,7 @@ functionality:
 <script setup>
 import router from "@/router";
 import { ref, onBeforeMount } from "vue";
-import { getFormattedDate } from "@/scripts/date-utils";
+import { getFormattedDate } from "@/utils/date-utils";
 import ApplicationPanel from "@/components/panel/ApplicationPanel.vue";
 import ButtonAdd from "@/components/button/ButtonAdd.vue";
 import ButtonLink from "@/components/button/ButtonLink.vue";
