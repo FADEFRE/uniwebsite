@@ -178,7 +178,7 @@ defineExpose({
 
   border: 2px solid $dark-gray;
   border-right: none;
-  display: flex;
+  display: block;
   flex-grow: 1;
   align-self: stretch;
   align-items: center;
