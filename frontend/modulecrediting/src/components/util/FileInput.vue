@@ -170,9 +170,6 @@ defineExpose({
   justify-content: space-between;
 
   transition: 0.1s ease-in-out;
-   &:hover {
-    background-color: $gray-hover;
-  }
 }
 
 .read-only-file-name {

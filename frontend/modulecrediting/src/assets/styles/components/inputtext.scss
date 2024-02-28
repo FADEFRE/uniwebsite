@@ -19,20 +19,22 @@ textarea {
   padding: spacing(s);
   min-width: 0;
 
-  &:hover, &:focus {
-    &.gray {
-      background-color: $gray-hover;
-    }
-    &.white {
-      background-color: $white-hover;
-    }
-    &.no-effect {
-      background-color: transparent;
+  &:not([readonly]) {
+    &:hover, &:focus {
+      &.gray {
+        background-color: $gray-hover;
+      }
+      &.white {
+        background-color: $white-hover;
+      }
+      &.no-effect {
+        background-color: transparent;
+      }
     }
   }
 
   &.button-height {
-      max-height: 2.47rem;
+    max-height: 2.47rem;
   }
 }
 
