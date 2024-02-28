@@ -1,14 +1,10 @@
 import router from "@/router";
 import httpResource from "@/scripts/httpResource";
-import { parseApierror } from "@/scripts/utils";
-import { performLogout } from '@/router/logout'
-import { ref } from "vue";
+import { performLogout } from "@/router/logout";
 import { useUserStore } from "@/store/userStore";
 
+
 const intervalMilliSeconds = 600000; // 10 minutes
-const displayErrorMessage = ref();
-const errorMessage = ref();
-const loginInProcess = ref();
 
 
 async function refreshTokenInternal() {
@@ -21,17 +17,15 @@ async function refreshTokenInternal() {
 }
 
 
-async function login (login_username, login_password) {
-    loginInProcess.value = true;
+export async function login (login_username, login_password) {
     const loginRequest = {
         username: login_username,
         password: login_password
     };
     const authUserStore = useUserStore();
+
     try {
-        console.log(loginRequest)
         const response = await httpResource.post("/api/auth/login", loginRequest);
-        console.log(response)
         if (response.status === 200) {
             const userResponse = await httpResource.get("/api/user/me/id"); //TODO cahnge to axios request call
             if (userResponse.data.userId !== null) {
@@ -40,7 +34,6 @@ async function login (login_username, login_password) {
                 const intervalName = setInterval(async () => { await refreshTokenInternal(); } , intervalMilliSeconds);
                 authUserStore.setIntervalName(intervalName);
             }
-            console.log("getRole");
             const response = await httpResource.get(`/api/user/role`)
             switch (response.data) {
                 case "ROLE_STUDY":
@@ -62,15 +55,7 @@ async function login (login_username, login_password) {
     }
     catch (error) {
         if (response.status !== 200) {
-            const apierror = parseApierror(error);
-            displayErrorMessage.value = true;
-            errorMessage.value = apierror.message;
             performLogout();
         }
     }
-
-    loginInProcess.value = false;
-
 }
-
-export { login } 
