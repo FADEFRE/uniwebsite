@@ -1,8 +1,7 @@
 import axios from "axios";
-import { url } from "./url-config";
+import { url } from "@/scripts/url-config";
 import { performLogout } from "@/router/logout";
 import router from "@/router";
-import { parseApierror } from "@/scripts/utils";
 
 const isHandlerEnabled = (config = {}) => {
   return config.hasOwnProperty("handlerEnabled") && !config.handlerEnabled
@@ -20,11 +19,43 @@ let requestColor = "color:orange";
 let responseColor = "color:lightgreen";
 let errorColor = "color:red";
 
+
+function create503() {
+  return {
+      status: "SERVICE_UNAVAILABLE",
+      statusCode: 503,
+      timestamp: new Date(),
+      message: "Server is not responding.."
+  };
+}
+
+function parseApierror(error) {
+  console.debug("parseapierror", error);
+  try {
+      if (error && error.hasOwnProperty("response") && error.response.hasOwnProperty("data")) {
+          const apierror = error.response.data;
+          return {
+              status: error.code,
+              statusCode: apierror.status,
+              timestamp: apierror.timestamp,
+              message: apierror.message
+          };
+      } else {
+          return create503();
+      }
+  }
+  catch (parseError) {
+      return create503();
+  }
+}
+
+
+
 const requestHandler = (request) => {
   if (isHandlerEnabled(request)) {
     //TODO remove debug logs
     if (request.data instanceof FormData) {
-      console.log(
+      console.debug(
         "%c" + request.method.toUpperCase() + "-Request: " + request.url,
         requestColor,
         "  Start of Data: "
@@ -32,11 +63,11 @@ const requestHandler = (request) => {
       let formData = new FormData();
       formData = request.data;
       for (const pair of formData.entries()) {
-        console.log(pair[0], pair[1]);
+        console.debug(pair[0], pair[1]);
       }
-      console.log("%c" + "End of Data", requestColor);
+      console.debug("%c" + "End of Data", requestColor);
     } else
-      console.log(
+      console.debug(
         "%c" + request.method.toUpperCase() + "-Request: " + request.url,
         requestColor,
         "  Data: " + request.data
@@ -46,64 +77,57 @@ const requestHandler = (request) => {
 };
 
 const errorHandler = (error) => {  
-  // TODO 400 bad request? -> wohin? -> to calling function to correctly display?
-  // TODO 401 route to login
-  // TODO 403 route to forbidden error page
-  // TODO 404 route to id does not exist error page
-  // TODO 503 
-  // TODO else route to server error page
+
   if (isHandlerEnabled(error.config)) {
-    console.log("%c" + "Error Interceptor", errorColor); //TODO remove debug log
+    console.debug("%c" + "Error Interceptor", errorColor); //TODO remove debug log
 
     const apiError = parseApierror(error)
     console.error(apiError)
 
-    if (apiError.statusCode === 503) {
-      console.error(apiError)
-      //TODO: ROUTE TO "SERVER NOT RESPONDING" ERROR VIEW tbd
-      //router.push({ name: "" }) 
-    }
+    const currentRouteFullPath = router.currentRoute.value.fullPath
 
-    if (apiError.statusCode === 400) {
-      console.error(apiError)
-      //TODO: ROUTE TO "BAD_REQUEST" ERROR VIEW tbd
-      //router.push({ name: "" }) 
-    }
+    switch (apiError.statusCode) {
 
-    if (apiError.statusCode === 401) {
-      console.error(apiError)
-      performLogout();
-      router.push({ name: "login" });
-    }
+      case 401:
+        performLogout();
+        router.push({ name: "login" });
+        break;
 
-    if (apiError.statusCode === 403) {
-      console.error(apiError)
-      router.push({ name: "Forbidden" });
-    }
+      case 402:
+        console.debug("%c" + "Debug 402 catch", errorColor);
+        router.replace("/error" + currentRouteFullPath);
+        break;
 
-    if (apiError.statusCode === 404) {
-      console.error(apiError)
-      router.push({ name: "IdError" }); //TODO catch multiple 404?
-    }
+      case 403:
+        router.replace("/forbidden" + currentRouteFullPath);
+        break;
 
-    if (apiError.statusCode === 409) {
-      console.error(apiError)
-    }
+      case 404:
+        router.replace("/not-found" + currentRouteFullPath);
+        break;
 
+      case 409:
+        // no routing, this error should be handled in components / views
+        break;
 
-    //debug
-    if (error.response.status === 402) {
-      console.debug("%c" + "Debug 402 catch", errorColor);
-      console.error(apiError)
+      case 503:
+        router.replace("/server-unavailable" + currentRouteFullPath);
+        break;
+
+      default:
+        router.replace("/error" + currentRouteFullPath)
+
     }
 
   }
+
   return Promise.reject({ ...error });
+
 };
 
 const successHandler = (response) => {
   if (isHandlerEnabled(response.config)) {
-    console.log(
+    console.debug(
       "%c" + "Response: " + response.status + " ",
       responseColor,
       response.request.responseURL,

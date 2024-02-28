@@ -62,10 +62,12 @@ const props = defineProps({
     fill: $red;
 }
 
-.icon-hover-right:hover .arrow-icon{
+.icon-hover-right:hover .arrow-icon,
+.icon-hover-right:focus .arrow-icon {
     transform: translateX(spacing(xs)) rotate(-90deg);
 }
-.icon-hover-left:hover .arrow-icon{
+.icon-hover-left:hover .arrow-icon,
+.icon-hover-left:focus .arrow-icon {
     transform: translateX(-#{spacing('xs')}) rotate(90deg);
 }
 </style>

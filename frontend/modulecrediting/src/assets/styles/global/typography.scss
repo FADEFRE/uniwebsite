@@ -6,7 +6,7 @@
   font-weight: 1 999;
 }
 
-h2 {
+h1, .h1 {
   color: $dark-gray;
   font-family: "Jost";
   text-transform: uppercase;
@@ -15,26 +15,40 @@ h2 {
   letter-spacing: -0.05rem;
 }
 
-h3 {
+h2, .h2 {
   color: $dark-gray;
+  font-family: "Jost";
+  text-transform: uppercase;
+  font-size: 1.7rem;
+  font-weight: 800;
+  letter-spacing: -0.05rem;
+}
+
+h3, .h3 {
+  color: $dark-gray;
+  text-transform: none;
   font-family: "Jost";
   font-size: 1.2rem;
   font-weight: 700;
-  line-height: normal;
 }
 
-h4 {
+h4, .h4 {
   color: $dark-gray;
+  text-transform: none;
   font-family: "Jost";
   font-size: 1rem;
   font-weight: 700;
 }
 
-p {
+p, .p {
   color: $black;
   font-family: "Jost";
   font-size: 1rem;
   font-weight: 400;
+}
+
+.text-justify {
+  text-align: justify;
 }
 
 .p-inputtext,
@@ -60,27 +74,23 @@ textarea {
 
 small {
   font-family: "Jost";
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   font-weight: 430;
+  color: $black;
 }
 
-.overview-text {
-  font-family: "Jost";
-  font-size: 1.1rem;
-  font-weight: 500;
-  text-transform: uppercase;
-}
 
 a,
 Button,
-.p-button {
+.p-button,
+.overview-text,
+.p-dropdown-label {
   font-family: "Jost";
   text-transform: uppercase;
   text-decoration: none;
-  width: max-content;
 
   color: $white;
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 500;
 
   &.white {
@@ -96,4 +106,15 @@ Button,
 
 .invalid-text {
   color: $red;
+}
+
+.screen-reader-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
 }

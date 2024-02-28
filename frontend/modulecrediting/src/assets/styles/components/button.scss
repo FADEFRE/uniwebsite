@@ -1,42 +1,60 @@
-@use '@/assets/styles/util' as *;
-@use '@/assets/styles/global' as *;
+@use "@/assets/styles/util" as *;
+@use "@/assets/styles/global" as *;
 
-Button,.p-button, .router-link {
+Button,
+.p-button,
+.router-link {
   @include smallHighlightBox();
-  width: max-content;
+  flex-shrink: 0;
 
   background-color: $dark-gray;
   &.white {
     background-color: $white;
   }
+  &.red-button {
+    background-color: $red;
+  }
 
-  &:hover {
+  &:hover,
+  &:focus {
     background-color: $dark-gray-hover;
 
     &.white {
       background-color: $white-hover;
     }
+    &.red-button {
+      background-color: $red-hover;
+    }
   }
 
+  &:focus-visible {
+    outline: 2.5px solid $dark-gray-hover;
+    outline-offset: 2px;
 
+    &.white {
+      outline: 2.5px solid $white-hover;
+      outline-offset: 2px;
+    }
+    &.red-button {
+      outline: 2.5px solid $red-hover;
+      outline-offset: 2px;
+    }
+  }
+}
+
+.router-link {
+  @include breakpoint(m) {
+    width: 100%;
+  }
 }
 
 .disabled {
   opacity: 0.5;
 }
 
-.red-button {
-  background-color: $red;
-
-  &:hover {
-    background-color: $red-hover;
-  }
-}
-
 .fixed-button {
   position: fixed;
   z-index: 3;
   bottom: spacing(xl);
-  right: spacing(m);
+  right: spacing(s);
 }
-

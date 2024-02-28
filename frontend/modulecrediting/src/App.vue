@@ -21,10 +21,14 @@ function closeMenu() {
 
 <template>
   <div>
+
+    <div class="min-height">
+
+    
     <header class="header-background">
       <div class="header-container">
-        <a href="/" class="logo-container">
-          <img class="logo" src="./assets/Universität_Leipzig_logo.svg" alt="Logo der Universität Leipzig" />
+        <a tabindex="-1" href="/" class="logo-container">
+          <img tabindex="-1" class="logo" src="@/assets/Universität_Leipzig_logo.svg" alt="" />
         </a>
         
         <Button class="burger-menu" @click="openMenu">
@@ -44,11 +48,13 @@ function closeMenu() {
 
     <router-view class="main-content" />
 
+  </div>
+
     <footer>
-      <ul>
-        <li><p>Impressum</p></li>
-        <li><p>Datenschutz</p></li>
-      </ul>
+      <div class="footer-content">
+        <p>Impressum</p>
+        <p>Datenschutz</p>
+      </div>
     </footer>
   </div>
 </template>
@@ -85,7 +91,7 @@ function closeMenu() {
   padding: 0;
   margin: 0;
 
-  &:hover {
+  &:hover, &:focus {
     background-color: $white;
   }
 }
@@ -95,11 +101,6 @@ function closeMenu() {
   height: 11rem;
 
   @include breakpoint(l) {
-    width: 21rem;
-    height: 9rem;
-  }
-
-  @include breakpoint(m) {
     width: 16rem;
     height: 7rem;
   }
@@ -117,7 +118,7 @@ function closeMenu() {
   margin-right: spacing(m);
   padding: spacing(m);
 
-  &:hover {
+  &:hover, &:focus {
     background-color: $gray;
   }
 
@@ -164,12 +165,13 @@ function closeMenu() {
   }
 }
 
+.min-height {
+  min-height: 100vh;
+}
 
 footer {
-  background-image: url('@/assets/icons/footer.svg');
-  background-size: cover;
   width: 100%;
-  min-height: 700px;
+  background-color: $white;
 
   padding: spacing(m);
 
@@ -178,13 +180,9 @@ footer {
   align-items: flex-end;
 }
 
-ul {
+.footer-content {
   display: flex;
   gap: spacing(m);
 
-  li p 
-  {
-    color: $white;
-  }
 }
 </style>

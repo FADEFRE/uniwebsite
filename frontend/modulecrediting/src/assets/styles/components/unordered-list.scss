@@ -1,0 +1,26 @@
+@use "@/assets/styles/util" as *;
+@use "@/assets/styles/global" as *;
+
+ul {
+  @include verticalList(s);
+
+  &.points {
+    li {
+      position: relative;
+      padding-left: spacing(m);
+      list-style: none;
+      width: 100%;
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0.55rem;
+        left: spacing(xs);
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background-color: $red;
+      }
+    }
+  }
+}

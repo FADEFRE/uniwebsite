@@ -71,13 +71,11 @@ public class ApplicationService {
         modulesConnectionService.updateModulesConnection(applicationDTO.getModulesConnections(), userRole);
         application.setLastEditedDate(LocalDateTime.now());
 
-        // when study office saves decision suggestions -> status from NEU to STUDEINBUERO
-        if((!allDecisionSuggestionUnedited(application) && application.getFullStatus() == NEU)
-                || (containsFormalRejection(application) && application.getFullStatus() == FORMFEHLER))
-        {
-            application.setFullStatus(STUDIENBÜRO);
-        }
-
+        // updating status when saving NEU application
+        if(application.getFullStatus() == NEU && userRole.equals("study-office")) application.setFullStatus(STUDIENBÜRO);
+        if(application.getFullStatus() == NEU && userRole.equals("chairman")) application.setFullStatus(PRÜFUNGSAUSSCHUSS);
+        // updating status after NEU EINREICHEN to study office
+        if(containsFormalRejection(application) && application.getFullStatus() == FORMFEHLER) application.setFullStatus(STUDIENBÜRO);
 
         applicationRepository.save(application);
         return id;
@@ -94,9 +92,9 @@ public class ApplicationService {
 
         if(application.getFullStatus() == ABGESCHLOSSEN) return NOT_ALLOWED;
 
-        if(allDecisionsFinalEdited && (application.getFullStatus() == PRÜFUNGSAUSSCHUSS || application.getFullStatus() == STUDIENBÜRO || application.getFullStatus() == NEU)) return PASSON;
+        if(allDecisionsFinalEdited && (application.getFullStatus() == PRÜFUNGSAUSSCHUSS || application.getFullStatus() == STUDIENBÜRO || application.getFullStatus() == NEU)) return PASS_ON;
 
-        if(allDecisionSuggestionEdited && (application.getFullStatus() == STUDIENBÜRO || application.getFullStatus() == NEU)) return PASSON;
+        if(allDecisionSuggestionEdited && (application.getFullStatus() == STUDIENBÜRO || application.getFullStatus() == NEU)) return PASS_ON;
 
         return NOT_ALLOWED;
     }

@@ -15,13 +15,15 @@ functionality:
 import router from "@/router";
 import { ref, onBeforeMount } from "vue";
 import { getFormattedDate } from "@/scripts/date-utils";
-import { getCoursesLeipzig, getModulesByCourse, postApplication } from "@/scripts/axios-requests";
-import ApplicationPanel from "@/components/ApplicationPanel.vue";
-import SideInfoContainer from "@/components/SideInfoContainer.vue";
-import ButtonAdd from "@/components/ButtonAdd.vue";
-import ButtonLink from "@/components/ButtonLink.vue";
-import ApplicationOverview from "@/components/ApplicationOverview.vue";
-import ArrowIcon from "../assets/icons/ArrowIcon.vue";
+import { getCoursesLeipzigName, getModulesByCourse, postApplication } from "@/scripts/axios-requests";
+import ApplicationPanel from "@/components/panel/ApplicationPanel.vue";
+import ButtonAdd from "@/components/button/ButtonAdd.vue";
+import ButtonLink from "@/components/button/ButtonLink.vue";
+import ApplicationOverview from "@/components/abstract/ApplicationOverview.vue";
+import ArrowIcon from "@/assets/icons/ArrowIcon.vue";
+import SideInfoApplicationProcess from "@/components/side-info/SideInfoApplicationProcess.vue";
+import SideInfoStudyOffice from "@/components/side-info/SideInfoStudyOffice.vue";
+import ApplicationInfoBox from "@/components/info-box/ApplicationInfoBox.vue";
 
 const creationDate = new Date()
 
@@ -29,14 +31,14 @@ const courses = ref()
 const selectedCourse = ref()
 
 onBeforeMount(() => {
-  getCoursesLeipzig()
-    .then(data => courses.value = data)
+  getCoursesLeipzigName()
+      .then(data => courses.value = data)
 })
 
 const selectableModules = ref([])
 const setSelectableModules = () => {
   getModulesByCourse(selectedCourse.value)
-    .then(data => selectableModules.value = data)
+      .then(data => selectableModules.value = data)
 }
 
 const moduleConnections = ref([1])
@@ -62,32 +64,35 @@ const checkValidity = () => {
 const triggerPostApplication = () => {
   if (checkValidity()) {
     postApplication(selectedCourse.value, moduleConnectionsRef.value)
-      .then(id => {
-        router.push({ name: 'confirmation', params: { id: id } })
-      })
+        .then(id => {
+          router.push({ name: 'confirmation', params: { id: id } })
+        })
   }
 }
 </script>
 
 <template>
   <div class="main">
+    <h1 class="screen-reader-only">Antrag stellen</h1>
 
     <div class="content-container split">
 
+      <ApplicationInfoBox />
+
       <ApplicationOverview :creation-date="getFormattedDate(creationDate)" :last-edited-date="undefined"
-        :decision-date="undefined" status="NEU">
+                           :decision-date="undefined" status="NEU">
         <Dropdown v-model="selectedCourse" :options="courses" placeholder="Studiengang wählen"
-          @change="setSelectableModules" :class="{ 'invalid': !courseValid }">
+                  @change="setSelectableModules" :class="{ 'invalid': !courseValid }">
           <template #dropdownicon>
-            <ArrowIcon direction="down"/>
+            <ArrowIcon direction="down" />
           </template>
         </Dropdown>
         <small v-if="!courseValid" class="invalid-text">Es muss ein Studiengang ausgewählt werden</small>
       </ApplicationOverview>
 
       <ApplicationPanel v-for="item in moduleConnections" :key="item" :selectable-modules="selectableModules"
-        :allow-delete="moduleConnections.length > 1" ref="moduleConnectionsRef"
-        @delete-self="deleteModuleConnection(item)" />
+                        :allow-delete="moduleConnections.length > 1" ref="moduleConnectionsRef"
+                        @delete-self="deleteModuleConnection(item)" />
 
       <div class="application-buttons-container">
         <ButtonAdd @click="addModuleConnection">Modulzuweisung hinzufügen</ButtonAdd>
@@ -95,49 +100,10 @@ const triggerPostApplication = () => {
       </div>
     </div>
 
-    <div class="side-infos-list">
-      <!--SideInfoContainerfür Antragprozess -->
-      <SideInfoContainer :heading="'ANTRAGSPROZESS'">
-        <ul>
-          <li>Antrag online stellen</li>
-          <li>Über Vorgangsnummer online Status einsehen</li>
-          <li>Auf Entscheidung des PAV warten</li>
-          <li>Mit abgeschlossenem Antrag zum Studienbüro gehen</li>
-        </ul>
-      </SideInfoContainer>
-      <SideInfoContainer :heading="'STUDIENBÜRO'">
-        <p>Fakultät für Mathematik und Informatik</p>
-        <div class="main-info-container">
-          <div class="info-group-container">
-            <h4>Anschrift</h4>
-            <ul>
-              <li>Neues Augusteum</li>
-              <li>Augustusplatz 10</li>
-              <li>04109 Leipzig</li>
-            </ul>
-          </div>
-          <div class="info-group-container">
-            <h4>Kontakt</h4>
-            <ul>
-              <li>Telefon: +49 341 97-32165</li>
-              <li>Telefax: +49 341 97-32193</li>
-              <li>E-Mail: studienbuero@math.uni-leipzig.de</li>
-            </ul>
-          </div>
-          <div class="info-group-container">
-            <h4>Sprechzeiten</h4>
-            <p>Dienstag und Donnerstag: 9:00 - 11:30 Uhr und 12:30 - 16:00 Uhr</p>
-          </div>
-          <a href="https://www.mathcs.uni-leipzig.de/studium/studienbuero">
-            <ButtonLink>
-              Zum Studienbüro
-            </ButtonLink>
-          </a>
-        </div>
-
-      </SideInfoContainer>
-    </div>
-
+    <aside class="side-infos-list">
+      <SideInfoApplicationProcess />
+      <SideInfoStudyOffice />
+    </aside>
 
   </div>
 </template>

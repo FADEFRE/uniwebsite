@@ -6,6 +6,7 @@ import HomepageView from "@/views/HomepageView.vue";
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+      // standard route
     {
       path: "/",
       name: "home",
@@ -15,106 +16,124 @@ const router = createRouter({
     {
       path: "/antrag",
       name: "submitApplication",
-      component: () => import("../views/SubmitApplicationView.vue"),
+      component: () => import("@/views/SubmitApplicationView.vue"),
       meta: { authType: "standard" },
     },
     {
-      path: "/confirmation/:id",
+      path: "/antrag/:id",
       name: "confirmation",
-      component: () => import("../views/ApplicationConfirmationView.vue"),
+      component: () => import("@/views/ApplicationConfirmationView.vue"),
       meta: { authType: "standard" },
     },
     {
       path: "/status/:id",
       name: "statusDetail",
-      component: () => import("../views/StatusDetailView.vue"),
+      component: () => import("@/views/StatusDetailView.vue"),
       meta: { authType: "standard" },
     },
     {
       path: "/login",
       name: "login",
-      component: () => import("../views/LoginView.vue"),
+      component: () => import("@/views/LoginView.vue"),
       meta: { authType: "standard" },
     },
     {
       path: "/studienbuero",
       name: "studyOfficeSelection",
-      component: () => import("../views/AdministrativeSelectionView.vue"),
+      component: () => import("@/views/AdministrativeSelectionView.vue"),
       meta: { authType: "study-office", forward: "studyOfficeDetail" },
     },
     {
       path: "/studienbuero/:id",
       name: "studyOfficeDetail",
-      component: () => import("../views/AdministrativeDetailView.vue"),
-      meta: { authType: "study-office" },
-    },
-    {
-      path: "/studienbuero/:id/:connection",
-      name: "studyOfficeDetailHighlight",
-      component: () => import("../views/AdministrativeDetailView.vue"),
+      component: () => import("@/views/AdministrativeDetailView.vue"),
       meta: { authType: "study-office" },
     },
     {
       path: "/pruefungsausschuss",
       name: "chairmanSelection",
-      component: () => import("../views/AdministrativeSelectionView.vue"),
+      component: () => import("@/views/AdministrativeSelectionView.vue"),
       meta: { authType: "chairman", forward: "chairmanDetail" },
     },
     {
       path: "/pruefungsausschuss/:id",
       name: "chairmanDetail",
-      component: () => import("../views/AdministrativeDetailView.vue"),
+      component: () => import("@/views/AdministrativeDetailView.vue"),
       meta: { authType: "chairman" },
     },
     {
-      path: "/pruefungsausschuss/:id/:connection",
-      name: "chairmanDetailHighlight",
-      component: () => import("../views/AdministrativeDetailView.vue"),
-      meta: { authType: "chairman" },
-    },
-    {
-      path: "/verwaltungsbereich",
+      path: "/verwaltung",
       name: "management",
-      component: () => import("../views/ManagementView.vue"),
+      component: () => import("@/views/ManagementView.vue"),
       meta: { authType: "internal" },
+      children: [
+        {
+          path: "admin",
+          name: "managementAdmin",
+          component: () => import("@/views/ManagementViewAdminChild.vue"),
+          meta: { authType: "admin"}
+        }
+      ]
     },
     {
       path: "/account",
       name: "account",
-      component: () => import("../views/AccountView.vue"),
+      component: () => import("@/views/AccountView.vue"),
       meta: { authType: "internal" },
       children: [
         {
           path: "admin",
           name: "accountAdmin",
-          component: () => import("../views/AccountViewAdminChild.vue"),
+          component: () => import("@/views/AccountViewAdminChild.vue"),
           meta: { authType: "admin" }
         }
       ]
     },
+    // error routes
+    {
+      path: "/error/:pathMatch(.*)*",
+      name: "internalError",
+      component: () => import("@/views/ErrorView.vue"),
+      meta: { authType: "standard", error: {
+          heading: "Etwas ist schiefgelaufen", content: `
+          Es gab einen Fehler, der nicht abgefangen werden konnte. 
+          Bitte versuchen sie es erneut. 
+          Sollte weiterhin ein Fehler auftreten, wende sie sich bitte an die Administratoren.
+          `
+        }}
+    },
+    {
+      path: "/forbidden/:pathMath(.*)*",
+      name: "forbidden",
+      component: () => import("@/views/ErrorView.vue"),
+      meta: { authType: "standard", error: {
+          heading: "Kein Zugang", content: "Es fehlt die Berechtigung, um diese Seite anzeigen zu können."
+        }},
+    },
+    {
+      path: "/not-found/:pathMatch(.*)*",
+      name: "notFoundResponse",
+      component: () => import("@/views/ErrorView.vue"),
+      meta: { authType: "standard", error: {
+          heading: "Seite nicht gefunden", content: "Die gewünschte Seite existiert leider nicht."
+        }},
+    },
+    {
+      path: "/server-unavailable/:pathMatch(.*)*",
+      name: "serverUnavailable",
+      component: () => import ("@/views/ErrorView.vue"),
+      meta: { authType: "standard", error: {
+        heading: "Server nicht erreichbar", content: "Der Server ist momentan nicht erreichbar. Versuchen sie es später erneut"
+        }}
+    },
+      // not found route
     {
       path: "/:pathMatch(.*)*",
       name: "notFound",
-      component: () => import("../views/NotFoundView.vue"),
-      meta: { authType: "standard" },
-    },
-    {
-      path: "/:pathMatch(.*)*",
-      name: "Forbidden",
-      component: () => import("../views/ForbiddenView.vue"),
-      meta: { authType: "standard" },
-    },
-    {
-      path: "/:pathMatch(.*)*",
-      name: "IdError",
-      component: () => import("../views/IdErrorView.vue"),
-      meta: { authType: "standard" },
-    },
-    {
-      path: "/:pathMatch(.*)*",
-      name: "Permission",
-      component: () => import("../views/NoPermissionView.vue"),
-      meta: { authType: "standard" },
+      component: () => import("@/views/ErrorView.vue"),
+      meta: { authType: "standard", error: {
+          heading: "Seite nicht gefunden", content: "Die gewünschte Seite existiert leider nicht."
+        }},
     }
   ],
 });
@@ -139,6 +158,9 @@ router.beforeEach(async (to, from) => {
   if (from.name === "notFound" && to.name === "notFound") {
     return false;
   }
+  if (from.name === "serverUnavailable" && to.name === "serverUnavailable") {
+    return false;
+  }
   if (to.meta.authType === "standard" && user === false) {
     userStore.setCurrentRoleNav("user");
     return true;
@@ -159,41 +181,42 @@ router.beforeEach(async (to, from) => {
         userStore.setCurrentRoleNav("study");
         return true;
       }
-      return { name: "Permission" }; //TODO route to correct error page "permission not allowed"
-      //return { name: "login" };
+      return { path: "/forbidden" + to.fullPath };
 
     case "chairman":
       if (responseRole.data === "ROLE_CHAIR") {
         userStore.setCurrentRoleNav("chair");
         return true;
       }
-      return { name: "Permission" }; //TODO route to correct error page "permission not allowed"
-      //return { name: "login" };
+      return { path: "/forbidden" + to.fullPath };
 
     case "admin":
       if (responseRole.data === "ROLE_ADMIN") {
         userStore.setCurrentRoleNav("admin");
         return true;
       }
-      return { name: "Permission" }; //TODO route to correct error page "permission not allowed"
-      //return { name: "login" };
+      return { path: "/forbidden" + to.fullPath };
 
     case "internal":
       if (responseRole.data === "ROLE_CHAIR" || responseRole.data === "ROLE_STUDY") {
         changeRole(responseRole.data);
         return true;
       }
-      return { name: "Permission" }; //TODO route to correct error page "permission not allowed"
-      //return { name: "login" };
+      if (to.name === "management") {
+        return { name: "managementAdmin" }
+      }
+      if (to.name === "account") {
+        return { name: "accountAdmin" }
+      }
+      return { path: "/forbidden" + to.fullPath };
 
     case "internal-with-admin":
       if (responseRole.data === "ROLE_ADMIN" || responseRole.data === "ROLE_CHAIR" || responseRole.data === "ROLE_STUDY") {
         changeRole(responseRole.data);
         return true;
       }
-      return { name: "Permission" }; //TODO route to correct error page "permission not allowed"
-      //return { name: "login" };
-      
+      return { path: "/forbidden" + to.fullPath };
+
     default:
       break;
   }

@@ -19,19 +19,14 @@ public class PdfDocumentService {
     private PdfDocumentRepository pdfDocumentRepository;
 
 
-    public PdfDocument createOrGetPdfDocument(MultipartFile pdfData, Long externalModuleId) {
+    public PdfDocument createOrGetPdfDocument(MultipartFile pdfData, Long pdfId) {
 
-        // overwrite old pdf document
-        if(pdfData != null && externalModuleId != null) { // todo: is it smart using external modules id?
-            return createPdfDocument(pdfData);
+        if (pdfData == null) {
+            if (pdfId == null) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No external module id given");
+            }
+            else return getPdfDocumentById(pdfId);
         }
-
-        // use already saved pdf of created external module( application put request)
-        if(externalModuleId != null) {
-            return getPdfDocumentById(externalModuleId);
-        }
-
-        // create completly new pdf document (for new external module)
         return createPdfDocument(pdfData);
     }
 
@@ -50,6 +45,11 @@ public class PdfDocumentService {
     public byte[] getPdfDocumentDataById(Long id) {
         PdfDocument pdfDocument = getPdfDocumentById(id);
         return pdfDocument.getPdfData();
+    }
+
+    public String getPdfDocumentNameById(Long id) {
+        PdfDocument pdfDocument = getPdfDocumentById(id);
+        return pdfDocument.getName();
     }
 
     public PdfDocument getPdfDocumentById(Long id) {

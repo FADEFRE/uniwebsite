@@ -11,7 +11,7 @@
   gap: spacing(xl);
 
   @include breakpoint(l) {
-    @include verticalList(big);
+    @include verticalList(l);
     flex-direction: column;
 
     &.centered {
@@ -29,13 +29,13 @@
 }
 
 .content-container {
-  @include verticalList(mid);
+  @include verticalList(m);
   width: 100%;
 
   &.split {
-    width: 78%;
+    width: calc(76% - spacing(xl));
     &.narow {
-      width: 70%;
+      width: calc(70% - spacing(xl));
     }
   }
 
@@ -44,15 +44,16 @@
     &.split {
       width: 100%;
     }
-  }
+  }  
 }
 
+
 .side-infos-list {
-  @include verticalList(big);
-  width: 22%;
+  @include verticalList(l);
+  width: calc(24% - spacing(xl));
 
   &.wide {
-    width: 30%;
+    width: calc(30% - spacing(xl));
   }
 
   @include breakpoint(l) {
@@ -61,6 +62,13 @@
       width: 100%;
     }
   }
+}
+
+.application-info-container {
+  @include verticalListItem($white);
+  @include basicContainer();
+
+  margin-bottom: spacing(m);
 }
 
 .application-buttons-container {
@@ -81,3 +89,6 @@
   align-items: flex-start;
   gap: spacing(s);
 }
+
+
+

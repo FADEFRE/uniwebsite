@@ -1,21 +1,24 @@
 <script setup>
 import { useRoute, useRouter } from "vue-router";
 import { ref, computed, onBeforeMount } from "vue";
-import ApplicationOverview from "@/components/ApplicationOverview.vue";
-import AdministrativePanel from "@/components/AdministrativePanel.vue";
-import ButtonLink from "@/components/ButtonLink.vue";
-import ArrowIcon from "../assets/icons/ArrowIcon.vue";
+import ApplicationOverview from "@/components/abstract/ApplicationOverview.vue";
+import AdministrativePanel from "@/components/panel/AdministrativePanel.vue";
+import ApplicationConnectionLinks from "@/components/abstract/ApplicationConnectionLinks.vue";
+import ButtonLink from "@/components/button/ButtonLink.vue";
+import ApplicationControl from "@/assets/icons/ApplicationControl.vue";
+import MoveTop from "@/assets/icons/MoveTop.vue";
+import NotSavedIcon from "@/assets/icons/NotSavedIcon.vue";
 import {
   getApplicationById, getModulesByCourse,
   getUpdateStatusAllowed, updateStatus, putApplicationStudyOffice, putApplicationChairman
 } from "@/scripts/axios-requests";
 import { parseRequestDate } from "@/scripts/date-utils";
-import ApplicationConnectionLinks from "@/components/ApplicationConnectionLinks.vue";
+import LoadingContainer from "@/components/util/LoadingContainer.vue";
 
 const route = useRoute()
 const router = useRouter();
 const id = route.params.id
-const connectionHighlightId = route.params.connection
+const connectionHighlightId = route.query['highlight']
 const type = route.meta['authType']
 const readonly = ref(true)
 
@@ -78,11 +81,6 @@ const unCollapseAll = () => {
   }
 }
 
-const scrollTop = () => {
-  document.body.scrollTop = 0;
-  document.documentElement.scrollTop = 0;
-}
-
 const unsaved = ref(false)
 
 const setUnsaved = () => {
@@ -117,10 +115,10 @@ const triggerPassOn = () => {
 
 <template>
   <div v-if="applicationData" class="main">
+    <h1 class="screen-reader-only">Detailansicht eines Antrags</h1>
     <div class="side-infos-list">
       <ApplicationConnectionLinks :connections-data="connectionsData" />
     </div>
-
 
     <div class="content-container split">
 
@@ -146,39 +144,36 @@ const triggerPassOn = () => {
     </div>
 
     <div class="mid-right-fixed-container">
-      <div class="unsaved-notification" v-if="unsaved">
-        <img src="@/assets/icons/NotSaved.svg">
-      </div>
-
-      <Button @click="collapseAll" class="collapse-expand-button">
-        <img src="@/assets/icons/CollapseAll.svg">
-      </Button>
-      <Button @click="unCollapseAll" class="collapse-expand-button">
-        <img src="@/assets/icons/ExpandAll.svg">
-      </Button>
-
-      <Button @click="scrollTop" class="move-top-button">
-        <ArrowIcon color="white" direction="up" size="big"/>
-      </Button>
+      <NotSavedIcon :display="unsaved"/>
+      <ApplicationControl @click="collapseAll" type="collapse"/>
+      <ApplicationControl @click="unCollapseAll" type="expand"/>
+      <MoveTop />
     </div>
 
     <div v-if="!readonly">
-      <ButtonLink v-if="passOnStatus === 'NOT_ALLOWED'" :disabled="true" :fixed="true" :redButton="true">Weitergeben
+      <ButtonLink v-if="passOnStatus === 'NOT_ALLOWED' || unsaved" :disabled="true" :fixed="true" :redButton="true">
+        Weitergeben
       </ButtonLink>
-      <ButtonLink v-else-if="passOnStatus === 'PASSON'" :fixed="true" :redButton="true" @click="triggerPassOn">Weitergeben
+      <ButtonLink v-else-if="passOnStatus === 'PASS_ON'" :fixed="true" :redButton="true" @click="triggerPassOn">
+        Weitergeben
       </ButtonLink>
       <ButtonLink v-else-if="passOnStatus === 'REJECT'" :fixed="true" :redButton="true" @click="triggerPassOn">
         Zurückweisen
       </ButtonLink>
     </div>
+
   </div>
+  <div v-else class="main centered">
+    <h1 class="screen-reader-only">Detailansicht eines Antrags</h1>
+    <LoadingContainer />
+  </div>
+
 </template>
 
 <style scoped lang="scss">
 @use '@/assets/styles/util' as *;
 @use '@/assets/styles/global' as *;
-
-
+@use '@/assets/styles/components' as *;
 
 .side-infos-list {
   position: sticky;
@@ -189,10 +184,8 @@ const triggerPassOn = () => {
   }
 }
 
-
-
 .mid-right-fixed-container {
-  @include verticalList(small);
+  @include verticalList(s);
   width: fit-content;
 
   display: flex;
@@ -201,31 +194,6 @@ const triggerPassOn = () => {
 
   position: fixed;
   bottom: calc(spacing(l) + spacing(xxxl));
-  right: spacing(m);
-}
-
-
-.unsaved-notification {
-  background-color: $red;
-  width: 3rem;
-  height: 3rem;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.collapse-expand-button {
-  width: 3rem;
-  height: 4rem;
-
-  @include breakpoint(m) {
-    display: none;
-  }
-}
-
-.move-top-button {
-  width: 3rem;
-  height: 3rem;
+  right: spacing(s);
 }
 </style>

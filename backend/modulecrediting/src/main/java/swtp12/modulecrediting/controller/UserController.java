@@ -17,6 +17,7 @@ import swtp12.modulecrediting.model.Role;
 import swtp12.modulecrediting.model.User;
 import swtp12.modulecrediting.repository.UserRepository;
 import swtp12.modulecrediting.service.UserService;
+import swtp12.modulecrediting.util.IncorrectKeyOnDecryptException;
 
 
 @RestController
@@ -39,8 +40,36 @@ public class UserController {
      * @see UserSummary
      */
     @GetMapping("/me")
-    public ResponseEntity<UserSummary> getMeUserId() {
+    public ResponseEntity<UserSummary> getMeUser() {
         return ResponseEntity.ok(userService.getUserProfile());
+    }
+
+    /**
+     * Get {@link GetMapping /api/user/me/id} 
+     * <p> Returns {@link UserSummary} of the currently logged in {@link User}
+     * 
+     * @return {@link UserSummary}
+     * @see GetMapping
+     * @see User
+     * @see UserSummary
+     */
+    @GetMapping("/me/id")
+    public ResponseEntity<UserSummary> getMeUserId() {
+        return ResponseEntity.ok(userService.getUserProfileId());
+    }
+
+        /**
+     * Get {@link GetMapping /api/user/me/name} 
+     * <p> Returns {@link UserSummary} of the currently logged in {@link User}
+     * 
+     * @return {@link UserSummary}
+     * @see GetMapping
+     * @see User
+     * @see UserSummary
+     */
+    @GetMapping("/me/name")
+    public ResponseEntity<UserSummary> getMeUserName() {
+        return ResponseEntity.ok(userService.getUserProfileName());
     }
 
 
@@ -81,7 +110,7 @@ public class UserController {
 
     @PutMapping("/change/username")
     @PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR') or hasRole('ROLE_ADMIN')")
-    public ResponseEntity<String> changeUsername(@ModelAttribute EditUserDTO changeRequest) {
+    public ResponseEntity<String> changeUsername(@ModelAttribute EditUserDTO changeRequest) throws IncorrectKeyOnDecryptException {
         return ResponseEntity.ok(userService.changeUsername(changeRequest));
     }
 

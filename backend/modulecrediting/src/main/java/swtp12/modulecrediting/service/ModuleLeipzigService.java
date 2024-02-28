@@ -42,6 +42,7 @@ public class ModuleLeipzigService {
     public List<ModuleLeipzig> getModulesLeipzig() {
         return moduleLeipzigRepository.findAll();
     }
+
     public ArrayList<ModuleLeipzig> getModulesLeipzigByNames(List<ModuleLeipzigDTO> moduleNamesLeipzig) {
         if(moduleNamesLeipzig == null || moduleNamesLeipzig.size() == 0)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No Module Leipzig Names provided");
@@ -52,6 +53,7 @@ public class ModuleLeipzigService {
         }
         return modulesLeipzig;
     }
+
     public ModuleLeipzig getModuleLeipzigByName(String name) {
         Optional<ModuleLeipzig> moduleLeipzig = moduleLeipzigRepository.findByName(name);
         if(moduleLeipzig.isPresent())
@@ -63,48 +65,67 @@ public class ModuleLeipzigService {
     public String createModuleLeipzig(ModuleLeipzigDTO moduleLeipzigDTO) {
         if (moduleLeipzigDTO == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No data given");
         if (moduleLeipzigDTO.getName().isBlank()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No module name given");
-        if (moduleLeipzigDTO.getCode().isBlank()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No moduel code given");
+
+        String moduleCode = "";
+        if (!moduleLeipzigDTO.getCode().isBlank()) {
+            moduleCode = moduleLeipzigDTO.getCode();
+
+            Optional<ModuleLeipzig> moduleLeipzigCodeOptional = moduleLeipzigRepository.findByCode(moduleCode);
+            if (moduleLeipzigCodeOptional.isPresent()) {
+                if (moduleLeipzigCodeOptional.get().getIsActive())
+                    throw new ResponseStatusException(HttpStatus.CONFLICT, "Module with this code already exists");
+            }
+        }
 
         String moduleName = moduleLeipzigDTO.getName();
-        String moduleCode = moduleLeipzigDTO.getCode();
+        Optional<ModuleLeipzig> moduleLeipzigNameOptional = moduleLeipzigRepository.findByName(moduleName);
+        if (moduleLeipzigNameOptional.isPresent()) {
+            ModuleLeipzig moduleLeipzig = moduleLeipzigNameOptional.get();
+            if (moduleLeipzig.getIsActive())
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "Module with this name already exists");
 
-        Optional<ModuleLeipzig> moduleLeipzigOptional = moduleLeipzigRepository.findByName(moduleName);
-
-        if (moduleLeipzigOptional.isPresent()) {
-            ModuleLeipzig moduleLeipzig = moduleLeipzigOptional.get();
-            if (moduleLeipzig.getIsActive()) throw new ResponseStatusException(HttpStatus.CONFLICT, "The Module already exists:" + moduleLeipzigDTO.getName() );
-            else {
-                // reactivate with new module code
-                moduleLeipzig.setIsActive(true);
-                moduleLeipzig.setCode(moduleCode);
-
-                System.out.println("Reactivated Module Leipzig: " + moduleLeipzig.getName() + ", " + moduleLeipzig.getCode());
-            }
-
+            // reactivate
+            moduleLeipzig.setIsActive(true);
+            moduleLeipzig.setCode(moduleCode);
+            
             moduleLeipzigRepository.save(moduleLeipzig);
             return moduleLeipzig.getName();
         }
 
         // create new module
         ModuleLeipzig moduleLeipzig = new ModuleLeipzig(moduleName, moduleCode);
-        System.out.println("Created new Module Leipzig: " + moduleLeipzig.getName() + ", " + moduleLeipzig.getCode());
         moduleLeipzigRepository.save(moduleLeipzig);
         return moduleLeipzig.getName();
     }
 
     public String updateModuleLeipzig(String name, ModuleLeipzigDTO moduleLeipzigDTO) {
         if (moduleLeipzigDTO == null)
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No data given");
-        if (moduleLeipzigDTO.getName() == null || moduleLeipzigDTO.getName().isBlank() || moduleLeipzigDTO.getCode() == null || moduleLeipzigDTO.getCode().isBlank())
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No course name given");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No data given");
+        if (moduleLeipzigDTO.getName() == null || moduleLeipzigDTO.getCode() == null)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Module name or code is null");
+        if (moduleLeipzigDTO.getName().isBlank())
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No module name given");
 
         ModuleLeipzig moduleLeipzig = getModuleLeipzigByName(name);
 
-        System.out.print("Update Module Leipzig: " + moduleLeipzig.getName() + ", " + moduleLeipzig.getCode());
-        moduleLeipzig.setName(moduleLeipzigDTO.getName());
-        moduleLeipzig.setCode(moduleLeipzigDTO.getCode());
-        System.out.println(" => " + moduleLeipzig.getName() + ", " + moduleLeipzig.getCode());
+        if (!moduleLeipzig.getIsActive()) 
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Module is inactive");
 
+        Optional<ModuleLeipzig> possibleConflictModuleName = moduleLeipzigRepository.findByName(moduleLeipzigDTO.getName());
+        if (possibleConflictModuleName.isPresent() && !name.equals(moduleLeipzigDTO.getName()))
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Module with this name already exists");
+
+        String moduleCode = "";
+        if (!moduleLeipzigDTO.getCode().isBlank()) {
+            Optional<ModuleLeipzig> possibleConflictModuleCode = moduleLeipzigRepository.findByName(moduleLeipzigDTO.getCode());
+            if (possibleConflictModuleCode.isPresent())
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "Module with this code already exists");
+            
+            moduleCode = moduleLeipzigDTO.getCode();
+        }
+
+        moduleLeipzig.setName(moduleLeipzigDTO.getName());
+        moduleLeipzig.setCode(moduleCode);
         moduleLeipzigRepository.save(moduleLeipzig);
         return moduleLeipzig.getName();
     }
@@ -112,7 +133,7 @@ public class ModuleLeipzigService {
     public String deleteModuleLeipzig(String name) {
         ModuleLeipzig moduleLeipzig = getModuleLeipzigByName(name);
         if (!moduleLeipzig.getIsActive())
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Course Leipzig is already deactivated with name: " + name);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Module Leipzig is already deactivated with name: " + name);
 
         moduleLeipzig.setIsActive(false);
 

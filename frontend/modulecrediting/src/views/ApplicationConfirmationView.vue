@@ -1,60 +1,116 @@
 <script setup>
+import { useClipboard } from '@vueuse/core'
 import { useRoute, useRouter } from 'vue-router';
-import { ref, onBeforeMount } from 'vue';
-import { getApplicationByIdForStatus } from '@/scripts/axios-requests';
+import { computed, onBeforeMount } from 'vue';
+import CopyIcon from "@/assets/icons/CopyIcon.vue";
+import ButtonLink from "@/components/button/ButtonLink.vue";
+import ButtonDownload from '@/components/button/ButtonDownload.vue';
 import { url } from '@/scripts/url-config';
-import httpResource from "@/scripts/httpResource";
-import ConfirmationContainer from '../components/ConfirmationContainer.vue';
-import ButtonLink from "@/components/ButtonLink.vue";
-import ButtonDownload from '../components/ButtonDownload.vue';
 
-const route = useRoute();
-const router = useRouter();
-const isInvalid = ref(false);
-const applicationData = ref(undefined);
-let id = undefined;
-let pdfDataLink = undefined;
+const route = useRoute()
+const router = useRouter()
+let id = undefined
+let pdfDataLink = undefined
 
 onBeforeMount(() => {
-    id = route.params.id;
-    pdfDataLink = `${url}/file/pdf-documents/application/${id}`;
-    getApplicationByIdForStatus(id)
-        .then(data => applicationData.value = data)
-        .catch(error => {
-            console.log(error);
-            applicationData.value = 'error';
-        });
-});
+  id = route.params.id;
+  pdfDataLink = `${url}/file/pdf-documents/application/${id}`
+})
 
+// copy
+const { copy, copied, isSupported } = useClipboard()
+
+const copyId = () => {
+  copy(id);
+}
+
+// formattedId
+function formatId(id) {
+  return id.replace(/(\d)(?=(\d{1,5})+$)/g, '$1-');
+}
+
+const formattedId = computed(() => formatId(id))
+
+// open functions
 const openDetailView = () => {
-    httpResource.get(`${url}/api/applications/${id}/exists`)
-        .then(response => {
-            if (response.data) {
-                const routeData = router.resolve({ name: 'statusDetail', params: { id: id } });
-                window.open(routeData.href, '_top');
-            } else {
-                isInvalid.value = true;
-            }
-        });
-};
+  router.push({ name: 'statusDetail', params: { id: id } })
+}
 
 const openPdf = () => {
-    window.open(pdfDataLink, '_blank');
-};
-
-
+  window.open(pdfDataLink, '_blank');
+}
 </script>
 
 <template>
-    <div class="main centered" v-if="applicationData">
-        <ConfirmationContainer :id="id">
-            <ButtonDownload @click="openPdf" />
-            <ButtonLink @click="openDetailView" class="status-button">Status einsehen</ButtonLink>
-        </ConfirmationContainer>
+  <div class="main centered">
+    <h1 class="screen-reader-only">Bestätigung des Antrags</h1>
+    <div class="confirmation-container">
+      <div class="id-section">
+        <div class="id-container">
+          <h2 class="id">{{ formattedId }}</h2>
+          <div class="copy-icon-container" @click=copyId>
+            <CopyIcon v-if="isSupported" :disabled="copied"/>
+          </div>
+        </div>
+        <p class="description-text">
+          Notieren Sie sich die Vorgangsnummer. Diese ist notwendig, um später den Status Ihres Antrags einsehen zu können.
+        </p>
+      </div>
+      <div class="button-container">
+        <ButtonDownload @click="openPdf">
+          Antrag herunterladen
+        </ButtonDownload>
+        <ButtonLink @click="openDetailView" class="status-button">Status einsehen</ButtonLink>
+      </div>
     </div>
+  </div>
 </template>
 
 <style scoped lang="scss">
 @use '@/assets/styles/util' as *;
 @use '@/assets/styles/global' as *;
+@use '@/assets/styles/components' as *;
+
+.confirmation-container {
+  @include singleContainer();
+}
+
+.button-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: spacing(m);
+}
+
+.id-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: spacing(m);
+  width: min-content;
+}
+
+.id-container {
+  position: relative;
+  width: max-content;
+  padding: spacing(m) spacing(xl);
+  background-color: $gray;
+  border: solid 1px $dark-gray;
+}
+.id {
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: 0.5rem;
+}
+.copy-icon-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: spacing(s);
+}
+
+.description-text {
+  text-align: center;
+}
 </style>

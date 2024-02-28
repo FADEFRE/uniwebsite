@@ -64,19 +64,20 @@ public class SecurityCipher {
          * Frederik Kluge
          */
         int counter = 0;
-        int finished = 2;
+        int finished = 3;
         while (counter < finished) {
             try {
                 setKey();
                 Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
                 cipher.init(Cipher.DECRYPT_MODE, secretKey);
 
-                int printCounter = counter + 1;
-                System.out.println(secretKey + " Try:" + printCounter);
-                String test = new String(cipher.doFinal(Base64.getDecoder().decode(strToDecrypt)));
-                return test;
+                //Debug:
+                //System.out.println("Debug: SecurityCiper -> SecretKey: " + secretKey + " / HashCode: " + secretKey.hashCode() + " / Try:" + counter);
+
+
+                return new String(cipher.doFinal(Base64.getDecoder().decode(strToDecrypt)));
             } catch (Exception e) {
-                System.out.println(LocalDateTime.now() + " Der Fehler im Backend");
+                System.out.println(LocalDateTime.now() + " Der Fehler im Backend: " + counter);
                 counter ++;
             }
         }

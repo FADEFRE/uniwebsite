@@ -5,17 +5,19 @@ shows status of an application
 <script setup>
 import { useRoute, useRouter } from 'vue-router';
 import { ref, onBeforeMount, computed } from "vue";
-import ApplicationOverview from "@/components/ApplicationOverview.vue";
-import FormalRejectionInfoBox from "@/components/FormalRejectionInfoBox.vue";
-import SideInfoContainer from '../components/SideInfoContainer.vue';
-import StatusPanel from "@/components/StatusPanel.vue";
-import ApplicationPanel from "@/components/ApplicationPanel.vue";
-import ButtonLink from '@/components/ButtonLink.vue';
-import ButtonAdd from "../components/ButtonAdd.vue";
-import ButtonDownloadVue from '../components/ButtonDownload.vue';
+import ApplicationOverview from "@/components/abstract/ApplicationOverview.vue";
+import StatusPanel from "@/components/panel/StatusPanel.vue";
+import ApplicationPanel from "@/components/panel/ApplicationPanel.vue";
+import ButtonLink from '@/components/button/ButtonLink.vue';
+import ButtonAdd from "@/components/button/ButtonAdd.vue";
+import ButtonDownloadVue from '@/components/button/ButtonDownload.vue';
+import LoadingContainer from "@/components/util/LoadingContainer.vue";
 import { url } from "@/scripts/url-config"
 import { getApplicationByIdForStatus, getModulesByCourse, putApplicationStudent } from "@/scripts/axios-requests";
 import { parseRequestDate } from "@/scripts/date-utils";
+import SideInfoApplicationProcess from '@/components/side-info/SideInfoApplicationProcess.vue';
+import SideInfoStudyOffice from '@/components/side-info/SideInfoStudyOffice.vue';
+import ModuleStatusIcon from "@/assets/icons/ModuleStatusIcon.vue";
 
 const id = useRoute().params.id
 const summaryDocumentLink = `${url}/file/pdf-documents/application/${id}`
@@ -85,19 +87,58 @@ const checkValidity = () => {
 
 const triggerSubmit = () => {
   if (checkValidity()) {
-    putApplicationStudent(applicationData.value['id'], applicationData.value['courseLeipzig']['name'], moduleConnections.value)
-      .then(_ => location.reload())
+    if (confirm('Haben Sie alle Formfehler korrigiert?\n\nNach dem erneuten Einreichen können Sie den Antrag nicht weiter bearbeiten.')) {
+      putApplicationStudent(applicationData.value['id'], applicationData.value['courseLeipzig']['name'], moduleConnections.value)
+          .then(_ => location.reload())
+    }
   }
 }
 </script>
 
 <template>
-  <div class="main">
+  <div v-if="applicationData" class="main">
+    <h1 class="screen-reader-only">Status des Antrags</h1>
 
-    <div v-if="applicationData" class="content-container split">
+    <div class="content-container split">
 
-      <div v-if="applicationData['fullStatus'] === 'FORMFEHLER'" class="formal-rejection-info-container">
-        <FormalRejectionInfoBox />
+      <div v-if="applicationData['fullStatus'] === 'FORMFEHLER'" class="application-info-container">
+        <h2>Formfehler</h2>
+        <p class="text-justify">
+          Ihr Antrag wurde aufgrund von Formfehlern zurückgewiesen.
+          Es sind die Modulzuweisungen rot markiert, die Formfehler enthalten.
+          In der Modulzuweisung finden sie unten eine Erklärung des konkreten Fehlers.
+          Bitte korrigieren sie alle angegebenen Fehler.
+          Anschließend können sie ihren Antrag neu einreichen.
+        </p>
+      </div>
+
+      <div v-if="applicationData['fullStatus'] === 'ABGESCHLOSSEN'" class="application-info-container">
+        <h2>Wie geht es weiter?</h2>
+        <p class="text-justify">
+          Es wurde eine finale Entscheidung zu ihrem Antrag getroffen.
+          Dies ist nur eine Informationen über die Möglichkeit der Anrechnung.
+          Um sich ihre Leistungen offiziell anrechnen zu lassen, müssen sie zum Studienbüro gehen.
+          Bringen sie hierfür bitte alle relevanten Dokumente mit, die den Abschluss der anzurechnenden Leistungen
+          belegen.
+          Falls sie weitere Fragen zu ihrem Antrag haben, kontaktieren sie bitte das Studienbüro.
+        </p>
+        <div class="legend-container">
+          <h3 class="h4">Legende</h3>
+          <ul>
+            <li class="explanation-list-item">
+              <ModuleStatusIcon status-decision="accepted" size="small"/>
+              <p>Anrechnung angenommen</p>
+            </li>
+            <li class="explanation-list-item">
+              <ModuleStatusIcon status-decision="asExamCertificate" size="small"/>
+              <p>Anrechnung als Übungsschein</p>
+            </li>
+            <li class="explanation-list-item">
+              <ModuleStatusIcon status-decision="denied" size="small"/>
+              <p>Anrechnung abgelehnt</p>
+            </li>
+          </ul>
+        </div>
       </div>
 
       <ApplicationOverview :creation-date="parseRequestDate(applicationData['creationDate'])"
@@ -118,85 +159,54 @@ const triggerSubmit = () => {
           :allow-delete="moduleConnections.length > 1" @delete-self="deleteNewConnection(key)" ref="newConnectionsRef" />
       </div>
 
-      
+
       <div class="application-buttons-container">
-        <ButtonAdd v-if="applicationData['fullStatus'] === 'FORMFEHLER'" @click="addNewConnection">Modulzuweisung hinzufügen</ButtonAdd>
-        <ButtonLink v-if="applicationData['fullStatus'] === 'FORMFEHLER'" :redButton="true" @click="triggerSubmit">Neu einreichen</ButtonLink>
+        <ButtonAdd v-if="applicationData['fullStatus'] === 'FORMFEHLER'" @click="addNewConnection">
+          Modulzuweisung hinzufügen
+        </ButtonAdd>
+        <ButtonLink v-if="applicationData['fullStatus'] === 'FORMFEHLER'" :redButton="true" @click="triggerSubmit">
+          Neu einreichen
+        </ButtonLink>
       </div>
-      <ButtonDownloadVue @click="openSummaryDocument" :fixed="true"/>
+      <ButtonDownloadVue @click="openSummaryDocument">
+        Antrag herunterladen
+      </ButtonDownloadVue>
     </div>
 
-    <div class="side-infos-list">
-      <!--SideInfoContainerfür Antragprozess -->
-      <SideInfoContainer :heading="$t('homepage.sideInfo.applicationProcess')">
-                  <ul class="list-container">
-                      <li class="list-item"><p>{{ $t('homepage.sideInfo.submitApplication') }}</p></li>
-                      <li class="list-item"><p>{{ $t('homepage.sideInfo.viewStatus') }}</p></li>
-                      <li class="list-item"><p>{{ $t('homepage.sideInfo.wait') }}</p></li>
-                      <li class="list-item"><p>{{ $t('homepage.sideInfo.goToStudy') }}</p></li>
-                  </ul>
-              </SideInfoContainer>
-      <SideInfoContainer :heading="'STUDIENBÜRO'">
-        <p>Fakultät für Mathematik und Informatik</p>
-        <div class="main-info-container">
-          <div class="info-group-container">
-            <h4>Anschrift</h4>
-            <ul>
-              <li>
-                <p>Neues Augusteum</p>
-              </li>
-              <li>
-                <p>Augustusplatz 10</p>
-              </li>
-              <li>
-                <p>04109 Leipzig</p>
-              </li>
-            </ul>
-          </div>
-          <div class="info-group-container">
-            <h4>Kontakt</h4>
-            <ul>
-              <li>
-                <p>Telefon: +49 341 97-32165</p>
-              </li>
-              <li>
-                <p>Telefax: +49 341 97-32193</p>
-              </li>
-              <li>
-                <p>E-Mail: studienbuero@math.uni-leipzig.de</p>
-              </li>
-            </ul>
-          </div>
-          <div class="info-group-container">
-            <h4>Sprechzeiten</h4>
-            <p>Dienstag und Donnerstag: 9:00 - 11:30 Uhr und 12:30 - 16:00 Uhr</p>
-          </div>
-          <a href="https://www.mathcs.uni-leipzig.de/studium/studienbuero">
-            <ButtonLink>Zum Studienbüro</ButtonLink>
-          </a>
-        </div>
+    <aside class="side-infos-list">
+      <SideInfoApplicationProcess />
+      <SideInfoStudyOffice />
+    </aside>
 
-      </SideInfoContainer>
-    </div>
+  </div>
+  <div v-else class="main centered">
+    <LoadingContainer />
   </div>
 </template>
 
 <style scoped lang="scss">
 @use '@/assets/styles/util' as *;
 @use '@/assets/styles/global' as *;
+@use '@/assets/styles/components' as *;
 
-.formal-rejection-info-container {
-  margin-bottom: spacing(m);
-}
 
 .modules-connections-container {
-  @include verticalList(mid);
+  @include verticalList(s);
   width: 100%;
   overflow: hidden;
 }
 
-
 .formal-rejection-highlight {
   border-left: spacing(m) solid $red;
+}
+
+.legend-container {
+  @include verticalList(s);
+}
+
+.explanation-list-item {
+  @include smallHighlightBox();
+  @include verticalListItem($gray);
+  justify-content: flex-start;
 }
 </style>

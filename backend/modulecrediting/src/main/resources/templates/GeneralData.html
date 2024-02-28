@@ -1,0 +1,209 @@
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+</head>
+<style>
+
+/*black: #000;
+dark-gray: #262A31;
+gray: #F0F0F0;
+white: #fff;
+red: #D83D3B;*/
+
+            *,
+*::before,
+*::after {
+  box-sizing: border-box;
+  border: none;
+  margin: 0;
+  padding: 0;
+  border-radius: 0;
+}
+
+*:focus {
+  outline: none;
+  box-shadow: none;
+  border: none;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+
+
+            .logo {
+                width: 320px;
+                margin-bottom: 50px;
+            }
+
+            h1, .h1 {
+                font-family: 'Jost';
+                font-weight: bold;
+                color: #262A31;
+                text-transform: uppercase;
+                font-size: 20px;
+            }
+
+            h2, .h2 {
+                font-family: 'Jost';
+                font-weight: bold;
+                color: #262A31;
+                font-size: 14px;
+            }
+
+            h3, .h3 {
+                font-family: 'Jost';
+                font-weight: bold;
+                color: #262A31;
+                font-size: 13px;
+            }
+
+            h4, .h4 {
+                font-family: 'Jost';
+                font-weight: bold;
+                color: #262A31;
+                font-size: 11px;
+            }
+
+            p, .p {
+                color: #000;
+                font-size: 13px;
+            }
+
+            .bold {
+                font-weight: bold;
+            }
+
+            .info {
+                color: #000;
+                font-size: 11px;
+            }
+
+            .layout {
+                margin: 0px 15px;
+            }
+
+            .header {
+                margin-bottom: 30px;
+            }
+
+
+            .table {
+
+            }
+
+            .content-table {
+                border-top: 1px solid #262A31;
+                margin-top: 5px;
+            }
+
+            .table-row {
+                border-bottom: 1px solid #262A31;
+                padding: 3px 6px;
+                display: flex;
+            }
+
+            .table-row p {
+                flex: 1;
+            }
+
+
+            aside {
+                margin-top: 440px;
+            }
+
+            aside .heading {
+                margin-top: 5px;
+            }
+
+            ul {
+                margin-top: 4px;
+            }
+
+            li {
+                position: relative;
+                padding-left: 13px;
+                list-style: none;
+
+            }
+
+           .list-point {
+                position: absolute;
+                top: 5px;
+                left: 3px;
+                width: 4px;
+                height: 4px;
+                border-radius: 50%;
+                background-color: #D83D3B;
+            }
+
+        </style>
+<body>
+<div class="layout">
+    <div class="header">
+        <img class="logo" src="src/main/resources/static/images/Universität_Leipzig_Logo.png">
+        <h1 id="HeadingPDF">ANTRAG ZUR MODULANRECHNUNG</h1>
+    </div>
+
+    <div class="table">
+        <h2 id="SubHeadingPDF">Allgemeine Informationen</h2>
+        <div class="content-table">
+            <div class="table-row">
+                <p>Voragangsnummer</p>
+                <p class="bold" th:text="${id}">nicht verfügbar</p>
+            </div>
+            <div class="table-row">
+                <p>Erstelldatum</p>
+                <p class="bold" th:text="${Erstelldatum}">nicht entschieden</p>
+            </div>
+            <div class="table-row">
+                <p>Status</p>
+                <p class="bold" th:text="${Status}">nicht verfügbar</p>
+            </div>
+            <div class="table-row">
+                <p>Entscheidungsdatum</p>
+                <p class="bold" th:text="${Entscheidungsdatum}">nicht verfügbar</p>
+            </div>
+            <div class="table-row">
+                <p>Studiengang</p>
+                <p class="bold" th:text="${Studiengang}">nicht verfügbar</p>
+            </div>
+        </div>
+    </div>
+
+    <aside>
+        <div class="heading">
+            <h3>Studienbüro</h3>
+            <p class="info">Studienbüro Fakultät für Mathematik und Informatik </p>
+        </div>
+        <ul>
+            <h4>Anschrift</h4>
+            <li>
+                <div class="list-point"/>
+                <p class="info">Neues Augusteum</p>
+            </li>
+            <li><div class="list-point"/><p class="info">Augustusplatz 10</p></li>
+            <li><div class="list-point"/><p class="info">04109 Leipzig</p></li>
+        </ul>
+        <ul>
+            <h4>Kontakt</h4>
+            <li><div class="list-point"/><p class="info">Leitung: Marco Neumann </p></li>
+            <li><div class="list-point"/><p class="info">Telefon: +49 341 97-32165 </p></li>
+            <li><div class="list-point"/><p class="info">Telefax: +49 341 97-32193 </p></li>
+            <li><div class="list-point"/><p class="info">Email: studienbuero@math.uni-leipzig.de</p></li>
+        </ul>
+        <ul>
+            <h4>Sprechzeiten</h4>
+            <li><div class="list-point"/><p class="info">Die aktuellen Sprechzeiten entnehmen Sie bitte der Homepage: www.mathcs.uni-leipzig.de/studium/studienbuero</p></li>
+        </ul>
+    </aside>
+</div>
+</body>
+</html>

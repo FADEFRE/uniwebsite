@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.itextpdf.text.DocumentException;
-
 import swtp12.modulecrediting.service.GeneratedPdfService;
 import swtp12.modulecrediting.service.PdfDocumentService;
 
@@ -27,11 +25,20 @@ public class PdfDocumentContoller {
 
     @GetMapping("/{id}")
     public ResponseEntity<byte[]> getPdfDocumentById(@PathVariable Long id) {
-        return ResponseEntity.ok().contentType(MediaType.APPLICATION_PDF).body(pdfDocumentService.getPdfDocumentDataById(id));
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDispositionFormData("attachment", pdfDocumentService.getPdfDocumentNameById(id));
+        
+        byte[] pdfBytes = pdfDocumentService.getPdfDocumentDataById(id);
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentLength(pdfBytes.length)
+                .body(pdfBytes);
     }
     
     @GetMapping("/application/{id}")
-    public ResponseEntity<byte[]> generatePdf(@PathVariable String id) throws DocumentException, IOException {
+    public ResponseEntity<byte[]> generatePdf(@PathVariable String id) throws IOException {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
         headers.setContentDispositionFormData("attachment", "Antrag.pdf");

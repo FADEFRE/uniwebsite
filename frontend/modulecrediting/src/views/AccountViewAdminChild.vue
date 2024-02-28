@@ -1,6 +1,6 @@
 <script setup>
-import AccountAdminCreate from "../components/AccountAdminCreate.vue";
-import AccountAdminList from "../components/AccountAdminList.vue";
+import AccountAdminCreate from "@/components/account/AccountAdminCreate.vue";
+import AccountAdminList from "@/components/account/AccountAdminList.vue";
 </script>
 
 <template>
@@ -8,4 +8,8 @@ import AccountAdminList from "../components/AccountAdminList.vue";
   <AccountAdminCreate />
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
+@use '@/assets/styles/components' as *;
+</style>

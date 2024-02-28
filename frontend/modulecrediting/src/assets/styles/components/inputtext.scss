@@ -3,38 +3,36 @@
 
 .input-container {
   display: flex;
-  gap: spacing(s);
+  gap: spacing(xs);
   flex-direction: column;
   width: 100%;
 }
 
-
-
 .p-inputtext,
 input,
 textarea {
+  
   border: 2px solid $dark-gray;
   background-color: transparent;
+  transition: 0.1s ease-in-out;
   width: 100%;
-
   padding: spacing(s);
   min-width: 0;
 
-  &:hover {
+  &:hover, &:focus {
     &.gray {
       background-color: $gray-hover;
     }
     &.white {
       background-color: $white-hover;
+    }
+    &.no-effect {
+      background-color: transparent;
     }
   }
-  &:focus {
-    &.gray {
-      background-color: $gray-hover;
-    }
-    &.white {
-      background-color: $white-hover;
-    }
+
+  &.button-height {
+      max-height: 2.47rem;
   }
 }
 
@@ -46,8 +44,6 @@ textarea {
     border: none;
   }
 }
-
-
 
 .invalid {
   border: 2px solid $red;

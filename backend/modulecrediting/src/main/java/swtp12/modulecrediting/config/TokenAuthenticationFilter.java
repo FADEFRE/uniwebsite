@@ -7,10 +7,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
-
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -46,6 +46,9 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter{
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         } 
+        catch (UsernameNotFoundException uEx) {
+            System.out.println("doFilterInternal UsernameNotFoundException: This might be thrown due to a change of username by the user and SpringSecurities automatic doFilterInternal on the logout request");
+        }
         catch (Exception ex) {
             System.out.println("----------doFilterInternal error stacktrace start:-------------");
             ex.printStackTrace();

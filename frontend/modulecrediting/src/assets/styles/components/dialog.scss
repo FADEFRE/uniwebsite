@@ -1,0 +1,20 @@
+@use '@/assets/styles/util' as *;
+@use '@/assets/styles/global' as *;
+
+.p-dialog {
+    @include verticalList(l);
+    @include basicContainer();
+    width: 100%;
+    max-width: 28rem;
+    
+    margin: spacing(l);
+}
+
+.p-dialog-header {
+    background-color: transparent;
+    width: 100%;
+}
+
+.p-dialog-content {
+    @include verticalList(s);
+}

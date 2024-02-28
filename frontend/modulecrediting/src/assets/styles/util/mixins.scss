@@ -6,14 +6,16 @@
   flex-direction: column;
   width: 100%;
 
-  @if $gapSize == small {
+  @if $gapSize == s {
     gap: spacing(s);
-  } @else if $gapSize == big {
+  } @else if $gapSize == l {
     gap: spacing(l);
-  } @else if $gapSize == mid {
+  } @else if $gapSize == m {
     gap: spacing(m);
   } @else if $gapSize == xs {
     gap: spacing(xs)
+  } @else if $gapSize == none {
+    gap: 0;
   }
 }
 
@@ -38,14 +40,9 @@
 }
 
 @mixin basicContainer() {
-  width: auto;
+  @include verticalList(s);
   background-color: $white;
   padding: spacing(l);
-
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: spacing(s);
 }
 
 @mixin screenSplit() {
@@ -80,12 +77,6 @@
   display: flex;
   flex-direction: column;
   position: relative;
-
-  & .p-inputtext {
-    &:hover {
-      background-color: $white-hover;
-    }
-  }
 
   & .search-icon {
     width: spacing(m);

@@ -1,7 +1,8 @@
 import { url } from "@/scripts/url-config.js";
 import httpResource from "@/scripts/httpResource";
 
-let axiosColor = "color:yellow";
+let axiosColor = "color:deepskyblue";
+
 /*
 GET-Request to '/courses-leipzig' endpoint
 return list of all course names
@@ -9,8 +10,8 @@ removes non active courses
 parameters:
     none
  */
-function getCoursesLeipzig() {
-  console.debug("%c" + "getCoursesLeipzig ()", axiosColor);
+function getCoursesLeipzigName() {
+  console.debug("%c" + "getCoursesLeipzigName ()", axiosColor);
 
   return httpResource
     .get("/api/courses-leipzig")
@@ -58,16 +59,15 @@ function putCourseLeipzigEdit(coursename, moduleList) {
     .catch((_) => {});
 }
 
-function putUpdateCourseLeipzig(coursename, newCourseName) {
+function putUpdateCourseLeipzig(courseName, newCourseName) {
   console.debug("%c" + "putUpdateCourseLeipzig", axiosColor);
 
   const formData = new FormData();
   formData.append("courseName", newCourseName);
 
   return httpResource
-    .put(`/api/courses-leipzig/${coursename}`, formData)
+    .put(`/api/courses-leipzig/${courseName}`, formData)
     .then((response) => response.data)
-    .catch((_) => {});
 }
 
 function deleteCourseLeipzig(coursename) {
@@ -78,7 +78,6 @@ function deleteCourseLeipzig(coursename) {
     .then((response) => response.data)
     .catch((_) => {});
 }
-
 
 /*
 GET-Request to '/courses-leipzig' endpoint
@@ -120,6 +119,18 @@ function getModulesNameCode() {
     .catch((_) => {});
 }
 
+function putUpdateModuleLeipzig(moduleName, newModuleName, newModuleCode) {
+    console.debug("%c" + "putUpdateModuleLeipzig (moduleName: " + moduleName + ", newModuleName: " + newModuleName + ", newModuleCode: " + newModuleCode + ")", axiosColor)
+
+    const formData = new FormData()
+
+    formData.append('name', newModuleName)
+    formData.append('code', newModuleCode)
+
+    return httpResource.put(`/api/modules-leipzig/${moduleName}`, formData)
+        .then(response => response.data)
+}
+
 function deleteModuleLeipzig(modulename) {
   console.debug("%c" + "deleteModuleLeipzig", axiosColor);
 
@@ -128,9 +139,6 @@ function deleteModuleLeipzig(modulename) {
     .then((response) => response.data)
     .catch((_) => {});
 }
-
-
-
 
 /*
 GET-Request to '/applications' endpoint
@@ -559,6 +567,41 @@ function postModuleLeipzig(modulename, modulecode) {
     .catch((error) => Promise.reject(error));
 }
 
+function postJsonConfig (configFile) {
+    console.debug("%c" + "postJsonConfig (configFile: " + configFile + ")", axiosColor)
+
+    const formData = new FormData()
+    formData.append("jsonFile", configFile)
+
+    return httpResource.post("/file/json/courses/upload", formData)
+        .then(response => response.data)
+        .catch(_ => {})
+}
+
+function getUserMe () {
+    console.debug("%c" + "getUserMe ()", axiosColor)
+
+    return httpResource.get("/api/user/me")
+        .then(response => response.data)
+        .catch(() => {})
+}
+
+function getUserMeId () {
+  console.debug("%c" + "getUserMeId ()", axiosColor)
+
+  return httpResource.get("/api/user/me/id")
+      .then(response => response.data)
+      .catch(() => {})
+}
+
+function getUserMeName () {
+  console.debug("%c" + "getUserMeName ()", axiosColor)
+
+  return httpResource.get("/api/user/me/name")
+      .then(response => response.data)
+      .catch(() => {})
+}
+
 function getAllUsers () {
     console.debug("%c" + "getAllUsers ()", axiosColor);
 
@@ -567,8 +610,35 @@ function getAllUsers () {
         .catch(_ => {})
 }
 
+function putUserUsername (id, username) {
+    console.debug("%c" + "getUserUsername (id: " + id + ", username: " + username + ")", axiosColor)
+
+    const formData = new FormData()
+
+    formData.append('id', id)
+    formData.append('username', username)
+
+    return httpResource.put('/api/user/change/username', formData)
+        .then(response => response.data)
+        .catch(error => Promise.reject(error))
+}
+
+function putUserPassword (id, password, passwordConfirm) {
+    console.debug("%c" + "putUserPassword (id: " + id + ", password: [hidden]" + ", passwordConfirm: [hidden]" + ")", axiosColor)
+
+    const formData = new FormData()
+
+    formData.append('id', id)
+    formData.append('password', password)
+    formData.append('passwordConfirm', passwordConfirm)
+
+    return httpResource.put('/api/user/change/password', formData)
+        .then(response => response.data)
+        .catch(_ => {})
+}
+
 function putUserRole (id, role) {
-    console.debug("%c" + "getAllUsers (id: " + id + "role: " + role + ")", axiosColor);
+    console.debug("%c" + "getAllUsers (id: " + id + ", role: " + role + ")", axiosColor);
 
     const formData = new FormData()
 
@@ -576,6 +646,18 @@ function putUserRole (id, role) {
     formData.append('role', role)
 
     return httpResource.put('/api/user/change/role', formData)
+        .then(response => response.data)
+        .catch(_ => {})
+}
+
+function deleteUser (id) {
+    console.debug("%c" + "delteUser (id: " + id + ")", axiosColor)
+
+    const formData = new FormData()
+
+    formData.append('id', id)
+
+    return httpResource.post('api/auth/delete', formData)
         .then(response => response.data)
         .catch(_ => {})
 }
@@ -600,28 +682,36 @@ function createUser (username, password, passwordConfirm, role) {
 }
 
 export {
-  getCoursesLeipzig,
-  getModulesByCourse,
-  getModulesNameCodeByCourse,
-  getModulesNameCode,
-  deleteModuleLeipzig,
-  putCourseLeipzigEdit,
-  putUpdateCourseLeipzig,
-  deleteCourseLeipzig,
-  getApplications,
-  getApplicationById,
-  getApplicationByIdForStatus,
-  getApplicationExists,
-  getRelatedModuleConnections,
-  postApplication,
-  putApplicationStudent,
-  putApplicationStudyOffice,
-  putApplicationChairman,
-  getUpdateStatusAllowed,
-  updateStatus,
-  postCourseLeipzig,
-  postModuleLeipzig,
-  getAllUsers,
-  putUserRole,
-  createUser
+    getCoursesLeipzigName,
+    getModulesByCourse,
+    getModulesNameCodeByCourse,
+    getModulesNameCode,
+    putUpdateModuleLeipzig,
+    deleteModuleLeipzig,
+    putCourseLeipzigEdit,
+    putUpdateCourseLeipzig,
+    deleteCourseLeipzig,
+    getApplications,
+    getApplicationById,
+    getApplicationByIdForStatus,
+    getApplicationExists,
+    getRelatedModuleConnections,
+    postApplication,
+    putApplicationStudent,
+    putApplicationStudyOffice,
+    putApplicationChairman,
+    getUpdateStatusAllowed,
+    updateStatus,
+    postCourseLeipzig,
+    postModuleLeipzig,
+    postJsonConfig,
+    getUserMe,
+    getUserMeId,
+    getUserMeName,
+    getAllUsers,
+    putUserUsername,
+    putUserPassword,
+    putUserRole,
+    deleteUser,
+    createUser
 };
