@@ -2,7 +2,7 @@
 import RoleDropdown from "@/components/util/RoleDropdown.vue";
 import TrashIcon from "@/assets/icons/TrashIcon.vue";
 import { ref, onBeforeMount } from "vue";
-import { getAllUsers, getUserMeId, putUserRole, deleteUser } from "@/scripts/axios-requests";
+import {deleteUser, getAllUsers, getUserMeId, putUserRole} from "@/requests/user-requests";
 
 let currentUserId = undefined
 const userList = ref([])

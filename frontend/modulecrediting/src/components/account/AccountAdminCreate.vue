@@ -2,7 +2,8 @@
 import { ref } from "vue";
 import ButtonLink from "@/components/button/ButtonLink.vue";
 import RoleDropdown from "@/components/util/RoleDropdown.vue";
-import { createUser } from "@/scripts/axios-requests";
+
+import {postNewUser} from "@/requests/user-requests";
 
 const username = ref('')
 const password = ref('')
@@ -24,7 +25,7 @@ const triggerCreateUser = () => {
   roleEmpty.value = !role.value
   // request
   if (!usernameEmpty.value && !passwordEmpty.value && !passwordConfirmEmpty.value && !roleEmpty.value) {
-    createUser(username.value, password.value, passwordConfirm.value, role.value)
+    postNewUser(username.value, password.value, passwordConfirm.value, role.value)
         .then(_ => location.reload())
         .catch(error => {
           if (error.response.status) {

@@ -11,10 +11,10 @@ exposes:
 <script setup>
 import { ref, computed, onBeforeMount } from "vue";
 import { getWeekAgo, getMonthAgo, getSixMonthAgo, getYearAgo } from "@/scripts/date-utils";
-import { getCoursesLeipzigName } from "@/scripts/axios-requests";
 import ArrowIcon from "@/assets/icons/ArrowIcon.vue";
 import DateIcon from '@/assets/icons/DateIcon.vue';
 import TrashIcon from "@/assets/icons/TrashIcon.vue";
+import {getCoursesLeipzigName} from "@/requests/module-course-requests";
 
 const searchString = ref()
 

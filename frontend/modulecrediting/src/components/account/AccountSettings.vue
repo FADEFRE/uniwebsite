@@ -1,8 +1,8 @@
 <script setup>
 import { onBeforeMount, ref } from "vue";
-import { getUserMe, putUserPassword, putUserUsername } from "@/scripts/axios-requests";
 import { logout } from "@/router/logout"
 import ButtonLink from "@/components/button/ButtonLink.vue";
+import {getUserMe, putUserPassword, putUserUsername} from "@/requests/user-requests";
 
 const userId = ref()
 

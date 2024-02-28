@@ -15,7 +15,6 @@ functionality:
 import router from "@/router";
 import { ref, onBeforeMount } from "vue";
 import { getFormattedDate } from "@/scripts/date-utils";
-import { getCoursesLeipzigName, getModulesByCourse, postApplication } from "@/scripts/axios-requests";
 import ApplicationPanel from "@/components/panel/ApplicationPanel.vue";
 import ButtonAdd from "@/components/button/ButtonAdd.vue";
 import ButtonLink from "@/components/button/ButtonLink.vue";
@@ -24,6 +23,8 @@ import ArrowIcon from "@/assets/icons/ArrowIcon.vue";
 import SideInfoApplicationProcess from "@/components/side-info/SideInfoApplicationProcess.vue";
 import SideInfoStudyOffice from "@/components/side-info/SideInfoStudyOffice.vue";
 import ApplicationInfoBox from "@/components/info-box/ApplicationInfoBox.vue";
+import {getCoursesLeipzigName, getModulesByCourse} from "@/requests/module-course-requests";
+import {postApplication} from "@/requests/application-requests";
 
 const creationDate = new Date()
 

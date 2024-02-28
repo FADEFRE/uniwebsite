@@ -3,7 +3,12 @@ import { ref, computed, onBeforeMount } from "vue";
 import ButtonLink from "@/components/button/ButtonLink.vue"
 import ArrowIcon from "@/assets/icons/ArrowIcon.vue";
 import LoadingContainer from "@/components/util/LoadingContainer.vue";
-import { getCoursesLeipzigName, getModulesNameCodeByCourse, getModulesNameCode, putCourseLeipzigEdit } from "@/scripts/axios-requests";
+import {
+  getCoursesLeipzigName,
+  getModulesNameCode,
+  getModulesNameCodeByCourse,
+  putCourseLeipzigEdit
+} from "@/requests/module-course-requests";
 
 const courses = ref()
 const selectedCourse = ref()

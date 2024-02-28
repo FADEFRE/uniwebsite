@@ -4,7 +4,8 @@ import { ref } from 'vue'
 import HomepageContainer from '@/components/container/HomepageContainer.vue';
 import SideInfoApplicationProcess from '@/components/side-info/SideInfoApplicationProcess.vue';
 import ButtonLink from '@/components/button/ButtonLink.vue';
-import { getApplicationExists } from "@/scripts/axios-requests";
+
+import {getApplicationExists} from "@/requests/application-requests";
 
 const router = useRouter()
 
