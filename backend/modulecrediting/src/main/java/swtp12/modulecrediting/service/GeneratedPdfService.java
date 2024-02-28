@@ -48,7 +48,9 @@ public class GeneratedPdfService {
         Context context = new Context();
         context.setVariable("id", id);
         context.setVariable("Erstelldatum", application.getCreationDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
-        context.setVariable("Status", application.getFullStatus());
+        String status = application.getFullStatus().toString();
+        if (status.equals("IN_BEARBEITUNG")) { status = "IN BEARBEITUNG"; }
+        context.setVariable("Status", status);
         context.setVariable("Studiengang", application.getCourseLeipzig().getName());
 
 
