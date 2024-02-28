@@ -2,29 +2,29 @@
 import { ref } from "vue";
 import ButtonLink from "@/components/button/ButtonLink.vue";
 import RoleDropdown from "@/components/util/RoleDropdown.vue";
-
-import {postNewUser} from "@/requests/user-requests";
+import { postNewUser } from "@/requests/user-requests";
+import { usernameRegex, passwordRegex } from "@/config/regex";
 
 const username = ref('')
 const password = ref('')
 const passwordConfirm = ref('')
 const role = ref('')
 
-const usernameEmpty = ref(false)
-const passwordEmpty = ref(false)
-const passwordConfirmEmpty = ref(false)
+const usernameInvalid = ref(false)
+const passwordInvalid = ref(false)
+const passwordConfirmInvalid = ref(false)
 const roleEmpty = ref(false)
 
 const createFailed = ref(false)
 
 const triggerCreateUser = () => {
   // checking empty
-  usernameEmpty.value = !username.value
-  passwordEmpty.value = !password.value
-  passwordConfirmEmpty.value = !passwordConfirm.value
+  usernameInvalid.value = !usernameRegex.test(username.value)
+  passwordInvalid.value = !passwordRegex.test(password.value)
+  passwordConfirmInvalid.value = password.value !== passwordConfirm.value
   roleEmpty.value = !role.value
   // request
-  if (!usernameEmpty.value && !passwordEmpty.value && !passwordConfirmEmpty.value && !roleEmpty.value) {
+  if (!usernameInvalid.value && !passwordInvalid.value && !passwordConfirmInvalid.value && !roleEmpty.value) {
     postNewUser(username.value, password.value, passwordConfirm.value, role.value)
         .then(_ => location.reload())
         .catch(error => {
@@ -45,20 +45,20 @@ const triggerCreateUser = () => {
     <div class="first-row">
       <div class="input-container">
         <InputText type="text" placeholder="Benutzername" v-model="username"
-                   class="button-height white" :class="{ 'invalid': usernameEmpty || createFailed }" />
-        <small v-if="usernameEmpty" class="invalid-text">Der Benutzername darf nicht leer sein</small>
+                   class="button-height white" :class="{ 'invalid': usernameInvalid || createFailed }" />
+        <small v-if="usernameInvalid" class="invalid-text">Benutzername ist nicht erlaubt</small>
         <small v-if="createFailed" class="invalid-text">Es existiert bereits ein Benutzer mit diesem Namen</small>
       </div>
       <RoleDropdown v-model="role" :invalid="roleEmpty" />
     </div>
     <div class="second-row">
       <div class="input-container">
-        <InputText type="text" placeholder="Passwort" v-model="password" class="white" :class="{ 'invalid': passwordEmpty }" />
-        <small v-if="passwordEmpty" class="invalid-text">Passwort darf nicht leer sein</small>
+        <InputText type="text" placeholder="Passwort" v-model="password" class="white" :class="{ 'invalid': passwordInvalid }" />
+        <small v-if="passwordInvalid" class="invalid-text">Passwort ist nicht erlaubt</small>
       </div>
       <div class="input-container">
-        <InputText type="text" placeholder="Passwort bestätigen" v-model="passwordConfirm" class="white" :class="{ 'invalid': passwordConfirmEmpty }" />
-        <small v-if="passwordConfirmEmpty" class="invalid-text">Passwort bestätigen darf nicht leer sein</small>
+        <InputText type="text" placeholder="Passwort bestätigen" v-model="passwordConfirm" class="white" :class="{ 'invalid': passwordConfirmInvalid }" />
+        <small v-if="passwordConfirmInvalid" class="invalid-text">Passwort bestätigen stimmt nicht mit Passwort überein</small>
       </div>
       
     </div>
