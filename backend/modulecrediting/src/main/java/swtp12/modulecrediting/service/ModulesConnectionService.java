@@ -1,10 +1,17 @@
 package swtp12.modulecrediting.service;
 
+import static swtp12.modulecrediting.model.EnumModuleConnectionDecision.unedited;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import org.apache.commons.text.similarity.LevenshteinDistance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
 import swtp12.modulecrediting.dto.ExternalModuleDTO;
 import swtp12.modulecrediting.dto.ModuleLeipzigDTO;
 import swtp12.modulecrediting.dto.ModulesConnectionDTO;
@@ -13,11 +20,6 @@ import swtp12.modulecrediting.model.ExternalModule;
 import swtp12.modulecrediting.model.ModuleLeipzig;
 import swtp12.modulecrediting.model.ModulesConnection;
 import swtp12.modulecrediting.repository.ModulesConnectionRepository;
-
-import java.util.*;
-
-import static swtp12.modulecrediting.model.EnumModuleConnectionDecision.asExamCertificate;
-import static swtp12.modulecrediting.model.EnumModuleConnectionDecision.unedited;
 
 @Service
 public class ModulesConnectionService {
@@ -163,7 +165,7 @@ public class ModulesConnectionService {
             // only abgeschlossene applications
             if(m.getApplication().getFullStatus() != EnumApplicationStatus.ABGESCHLOSSEN) continue;
 
-            if(m.getDecisionFinal() == unedited || m.getDecisionFinal() == asExamCertificate) continue;
+            if(m.getDecisionFinal() == unedited) continue;
 
             if(checkSimilarityOfModulesConnection(baseModulesConnection,m)) relatedModuleConnections.add(m);
         }
