@@ -1,14 +1,25 @@
 import router from "@/router";
 import httpResource from "@/scripts/httpResource";
-import { parseApierror, refreshTokenInternal, intervalMilliSeconds} from "@/scripts/utils";
+import { parseApierror, refreshTokenInternal } from "@/scripts/utils";
 import { performLogout } from '@/router/logout'
 import { ref } from "vue";
 import { useUserStore } from "@/store/userStore";
 
-
+const intervalMilliSeconds = 600000; // 10 minutes
 const displayErrorMessage = ref();
 const errorMessage = ref();
 const loginInProcess = ref();
+
+
+async function refreshTokenInternal() {
+    console.debug("refreshTokenInternal()");
+    try {
+        const response = await httpResource.post("/api/auth/refresh");
+        if (response.status !== 200) performLogout();
+    } 
+    catch (error) { performLogout(); }
+}
+
 
 async function login (login_username, login_password) {
     loginInProcess.value = true;

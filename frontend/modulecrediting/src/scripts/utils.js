@@ -29,20 +29,3 @@ export function parseApierror(error) {
         return create503();
     }
 }
-
-export async function refreshTokenInternal() {
-    console.debug("refreshTokenInternal()");
-    try {
-        const response = await httpResource.post("/api/auth/refresh");
-        if (response.status !== 200) performLogout();
-    } 
-    catch (error) { performLogout(); }
-}
-
-export async function refreshToken() {
-    console.debug("refreshToken()");
-    const response = await httpResource.post("/api/auth/refresh");
-    return response.status;
-}
-
-export const intervalMilliSeconds = 600000; // 10 minutes
