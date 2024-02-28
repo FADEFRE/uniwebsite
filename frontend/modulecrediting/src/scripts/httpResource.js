@@ -2,7 +2,6 @@ import axios from "axios";
 import { url } from "@/scripts/url-config";
 import { performLogout } from "@/router/logout";
 import router from "@/router";
-import { parseApierror } from "@/scripts/utils";
 
 const isHandlerEnabled = (config = {}) => {
   return config.hasOwnProperty("handlerEnabled") && !config.handlerEnabled
@@ -20,11 +19,43 @@ let requestColor = "color:orange";
 let responseColor = "color:lightgreen";
 let errorColor = "color:red";
 
+
+function create503() {
+  return {
+      status: "SERVICE_UNAVAILABLE",
+      statusCode: 503,
+      timestamp: new Date(),
+      message: "Server is not responding.."
+  };
+}
+
+function parseApierror(error) {
+  console.debug("parseapierror", error);
+  try {
+      if (error && error.hasOwnProperty("response") && error.response.hasOwnProperty("data")) {
+          const apierror = error.response.data;
+          return {
+              status: error.code,
+              statusCode: apierror.status,
+              timestamp: apierror.timestamp,
+              message: apierror.message
+          };
+      } else {
+          return create503();
+      }
+  }
+  catch (parseError) {
+      return create503();
+  }
+}
+
+
+
 const requestHandler = (request) => {
   if (isHandlerEnabled(request)) {
     //TODO remove debug logs
     if (request.data instanceof FormData) {
-      console.log(
+      console.debug(
         "%c" + request.method.toUpperCase() + "-Request: " + request.url,
         requestColor,
         "  Start of Data: "
@@ -32,11 +63,11 @@ const requestHandler = (request) => {
       let formData = new FormData();
       formData = request.data;
       for (const pair of formData.entries()) {
-        console.log(pair[0], pair[1]);
+        console.debug(pair[0], pair[1]);
       }
-      console.log("%c" + "End of Data", requestColor);
+      console.debug("%c" + "End of Data", requestColor);
     } else
-      console.log(
+      console.debug(
         "%c" + request.method.toUpperCase() + "-Request: " + request.url,
         requestColor,
         "  Data: " + request.data
@@ -48,7 +79,7 @@ const requestHandler = (request) => {
 const errorHandler = (error) => {  
 
   if (isHandlerEnabled(error.config)) {
-    console.log("%c" + "Error Interceptor", errorColor); //TODO remove debug log
+    console.debug("%c" + "Error Interceptor", errorColor); //TODO remove debug log
 
     const apiError = parseApierror(error)
     console.error(apiError)
@@ -96,7 +127,7 @@ const errorHandler = (error) => {
 
 const successHandler = (response) => {
   if (isHandlerEnabled(response.config)) {
-    console.log(
+    console.debug(
       "%c" + "Response: " + response.status + " ",
       responseColor,
       response.request.responseURL,
