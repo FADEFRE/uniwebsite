@@ -1,6 +1,3 @@
-import httpResource from "@/scripts/httpResource";
-import { performLogout } from '@/router/logout'
-
 function create503() {
     return {
         status: "SERVICE_UNAVAILABLE",
