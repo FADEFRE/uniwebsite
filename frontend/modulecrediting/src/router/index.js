@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { useUserStore } from "@/store/userStore";
-import httpResource from "@/scripts/httpResource";
+import httpClient from "@/requests/httpClient";
 import HomepageView from "@/views/HomepageView.vue";
 
 const router = createRouter({
@@ -16,61 +16,61 @@ const router = createRouter({
     {
       path: "/antrag",
       name: "submitApplication",
-      component: () => import("../views/SubmitApplicationView.vue"),
+      component: () => import("@/views/SubmitApplicationView.vue"),
       meta: { authType: "standard" },
     },
     {
       path: "/antrag/:id",
       name: "confirmation",
-      component: () => import("../views/ApplicationConfirmationView.vue"),
+      component: () => import("@/views/ApplicationConfirmationView.vue"),
       meta: { authType: "standard" },
     },
     {
       path: "/status/:id",
       name: "statusDetail",
-      component: () => import("../views/StatusDetailView.vue"),
+      component: () => import("@/views/StatusDetailView.vue"),
       meta: { authType: "standard" },
     },
     {
       path: "/login",
       name: "login",
-      component: () => import("../views/LoginView.vue"),
+      component: () => import("@/views/LoginView.vue"),
       meta: { authType: "standard" },
     },
     {
       path: "/studienbuero",
       name: "studyOfficeSelection",
-      component: () => import("../views/AdministrativeSelectionView.vue"),
+      component: () => import("@/views/AdministrativeSelectionView.vue"),
       meta: { authType: "study-office", forward: "studyOfficeDetail" },
     },
     {
       path: "/studienbuero/:id",
       name: "studyOfficeDetail",
-      component: () => import("../views/AdministrativeDetailView.vue"),
+      component: () => import("@/views/AdministrativeDetailView.vue"),
       meta: { authType: "study-office" },
     },
     {
       path: "/pruefungsausschuss",
       name: "chairmanSelection",
-      component: () => import("../views/AdministrativeSelectionView.vue"),
+      component: () => import("@/views/AdministrativeSelectionView.vue"),
       meta: { authType: "chairman", forward: "chairmanDetail" },
     },
     {
       path: "/pruefungsausschuss/:id",
       name: "chairmanDetail",
-      component: () => import("../views/AdministrativeDetailView.vue"),
+      component: () => import("@/views/AdministrativeDetailView.vue"),
       meta: { authType: "chairman" },
     },
     {
       path: "/verwaltung",
       name: "management",
-      component: () => import("../views/ManagementView.vue"),
+      component: () => import("@/views/ManagementView.vue"),
       meta: { authType: "internal" },
       children: [
         {
           path: "admin",
           name: "managementAdmin",
-          component: () => import("../views/ManagementViewAdminChild.vue"),
+          component: () => import("@/views/ManagementViewAdminChild.vue"),
           meta: { authType: "admin"}
         }
       ]
@@ -78,13 +78,13 @@ const router = createRouter({
     {
       path: "/account",
       name: "account",
-      component: () => import("../views/AccountView.vue"),
+      component: () => import("@/views/AccountView.vue"),
       meta: { authType: "internal" },
       children: [
         {
           path: "admin",
           name: "accountAdmin",
-          component: () => import("../views/AccountViewAdminChild.vue"),
+          component: () => import("@/views/AccountViewAdminChild.vue"),
           meta: { authType: "admin" }
         }
       ]
@@ -93,7 +93,7 @@ const router = createRouter({
     {
       path: "/error/:pathMatch(.*)*",
       name: "internalError",
-      component: () => import("../views/ErrorView.vue"),
+      component: () => import("@/views/ErrorView.vue"),
       meta: { authType: "standard", error: {
           heading: "Etwas ist schiefgelaufen", content: `
           Es gab einen Fehler, der nicht abgefangen werden konnte. 
@@ -105,7 +105,7 @@ const router = createRouter({
     {
       path: "/forbidden/:pathMath(.*)*",
       name: "forbidden",
-      component: () => import("../views/ErrorView.vue"),
+      component: () => import("@/views/ErrorView.vue"),
       meta: { authType: "standard", error: {
           heading: "Kein Zugang", content: "Es fehlt die Berechtigung, um diese Seite anzeigen zu können."
         }},
@@ -113,7 +113,7 @@ const router = createRouter({
     {
       path: "/not-found/:pathMatch(.*)*",
       name: "notFoundResponse",
-      component: () => import("../views/ErrorView.vue"),
+      component: () => import("@/views/ErrorView.vue"),
       meta: { authType: "standard", error: {
           heading: "Seite nicht gefunden", content: "Die gewünschte Seite existiert leider nicht."
         }},
@@ -121,7 +121,7 @@ const router = createRouter({
     {
       path: "/server-unavailable/:pathMatch(.*)*",
       name: "serverUnavailable",
-      component: () => import ("../views/ErrorView.vue"),
+      component: () => import ("@/views/ErrorView.vue"),
       meta: { authType: "standard", error: {
         heading: "Server nicht erreichbar", content: "Der Server ist momentan nicht erreichbar. Versuchen sie es später erneut"
         }}
@@ -130,7 +130,7 @@ const router = createRouter({
     {
       path: "/:pathMatch(.*)*",
       name: "notFound",
-      component: () => import("../views/ErrorView.vue"),
+      component: () => import("@/views/ErrorView.vue"),
       meta: { authType: "standard", error: {
           heading: "Seite nicht gefunden", content: "Die gewünschte Seite existiert leider nicht."
         }},
@@ -170,7 +170,7 @@ router.beforeEach(async (to, from) => {
     return { name: "login" };
   }
   console.log("getRole Router");
-  const responseRole = await httpResource.get(`/api/user/role`);
+  const responseRole = await httpClient.get(`/api/user/role`);
   switch (to.meta.authType) {
     case "standard":
       changeRole(responseRole.data);

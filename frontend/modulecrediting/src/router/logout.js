@@ -1,5 +1,5 @@
 import router from "@/router";
-import httpResource from "@/scripts/httpResource";
+import httpClient from "@/requests/httpClient";
 import { useUserStore } from "@/store/userStore";
 
 async function logout() {
@@ -10,7 +10,7 @@ async function logout() {
 
 async function performLogout() {
   console.debug("performLogout()");
-  const response = await httpResource.post("/api/auth/logout");
+  const response = await httpClient.post("/api/auth/logout");
   console.log(response)
   const authUserStore = useUserStore();
   authUserStore.logout();

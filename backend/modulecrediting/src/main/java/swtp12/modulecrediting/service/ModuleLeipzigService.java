@@ -42,6 +42,7 @@ public class ModuleLeipzigService {
     public List<ModuleLeipzig> getModulesLeipzig() {
         return moduleLeipzigRepository.findAll();
     }
+
     public ArrayList<ModuleLeipzig> getModulesLeipzigByNames(List<ModuleLeipzigDTO> moduleNamesLeipzig) {
         if(moduleNamesLeipzig == null || moduleNamesLeipzig.size() == 0)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No Module Leipzig Names provided");
@@ -52,6 +53,7 @@ public class ModuleLeipzigService {
         }
         return modulesLeipzig;
     }
+
     public ModuleLeipzig getModuleLeipzigByName(String name) {
         Optional<ModuleLeipzig> moduleLeipzig = moduleLeipzigRepository.findByName(name);
         if(moduleLeipzig.isPresent())
@@ -98,9 +100,11 @@ public class ModuleLeipzigService {
 
     public String updateModuleLeipzig(String name, ModuleLeipzigDTO moduleLeipzigDTO) {
         if (moduleLeipzigDTO == null)
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No data given");
-        if (moduleLeipzigDTO.getName() == null || moduleLeipzigDTO.getName().isBlank() || moduleLeipzigDTO.getCode() == null || moduleLeipzigDTO.getCode().isBlank())
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No module name or module code given || is blank");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No data given");
+        if (moduleLeipzigDTO.getName() == null || moduleLeipzigDTO.getCode() == null)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Module name or code is null");
+        if (moduleLeipzigDTO.getName().isBlank())
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No module name given");
 
         ModuleLeipzig moduleLeipzig = getModuleLeipzigByName(name);
 
@@ -108,14 +112,20 @@ public class ModuleLeipzigService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Module is inactive");
 
         Optional<ModuleLeipzig> possibleConflictModuleName = moduleLeipzigRepository.findByName(moduleLeipzigDTO.getName());
-        if (possibleConflictModuleName.isPresent())
+        if (possibleConflictModuleName.isPresent() && !name.equals(moduleLeipzigDTO.getName()))
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Module with this name already exists");
-        Optional<ModuleLeipzig> possibleConflictModuleCode = moduleLeipzigRepository.findByName(moduleLeipzigDTO.getCode());
-        if (possibleConflictModuleCode.isPresent())
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Module with this code already exists");
+
+        String moduleCode = "";
+        if (!moduleLeipzigDTO.getCode().isBlank()) {
+            Optional<ModuleLeipzig> possibleConflictModuleCode = moduleLeipzigRepository.findByName(moduleLeipzigDTO.getCode());
+            if (possibleConflictModuleCode.isPresent())
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "Module with this code already exists");
+            
+            moduleCode = moduleLeipzigDTO.getCode();
+        }
 
         moduleLeipzig.setName(moduleLeipzigDTO.getName());
-        moduleLeipzig.setCode(moduleLeipzigDTO.getCode());
+        moduleLeipzig.setCode(moduleCode);
         moduleLeipzigRepository.save(moduleLeipzig);
         return moduleLeipzig.getName();
     }

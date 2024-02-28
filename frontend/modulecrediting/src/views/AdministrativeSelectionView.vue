@@ -9,12 +9,12 @@ functionality:
 <script setup>
 import { useRoute } from "vue-router";
 import { ref, computed, onBeforeMount } from "vue"
-import FilterSelector from "@/components/FilterSelector.vue";
-import ApplicationOverview from "@/components/ApplicationOverview.vue";
-import { getApplications } from "@/scripts/axios-requests";
-import { parseRequestDate } from "@/scripts/date-utils";
-import { filterApplications } from "@/scripts/applications-filter";
-import LoadingContainer from "@/components/LoadingContainer.vue";
+import FilterSelector from "@/components/filter/FilterSelector.vue";
+import ApplicationOverview from "@/components/abstract/ApplicationOverview.vue";
+import { parseRequestDate } from "@/utils/date-utils";
+import { filterApplications } from "@/utils/applications-filter";
+import LoadingContainer from "@/components/util/LoadingContainer.vue";
+import {getApplications} from "@/requests/application-requests";
 
 const route = useRoute()
 
@@ -43,6 +43,7 @@ const filteredApplications = computed(() => {
     </div>
 
     <div class="content-container split narrow">
+      <h2 class="screen-reader-only">Liste aller Anträge</h2>
 
       <div v-if="allApplications.length > 0" v-for="application in filteredApplications">
         <ApplicationOverview

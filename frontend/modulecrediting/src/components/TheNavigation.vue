@@ -2,8 +2,8 @@
 import { logout } from "@/router/logout";
 import { useUserStore } from "@/store/userStore"
 import { computed } from "vue";
-import ArrowIcon from "../assets/icons/ArrowIcon.vue";
-import AuthIcon from "../assets/icons/AuthIcon.vue";
+import ArrowIcon from "@/assets/icons/ArrowIcon.vue";
+import AuthIcon from "@/assets/icons/AuthIcon.vue";
 
 const props = defineProps(['isMenuOpen'])
 

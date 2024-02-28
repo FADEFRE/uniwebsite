@@ -1,10 +1,17 @@
 package swtp12.modulecrediting.service;
 
+import static swtp12.modulecrediting.model.EnumModuleConnectionDecision.unedited;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import org.apache.commons.text.similarity.LevenshteinDistance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
 import swtp12.modulecrediting.dto.ExternalModuleDTO;
 import swtp12.modulecrediting.dto.ModuleLeipzigDTO;
 import swtp12.modulecrediting.dto.ModulesConnectionDTO;
@@ -14,11 +21,6 @@ import swtp12.modulecrediting.model.ModuleLeipzig;
 import swtp12.modulecrediting.model.ModulesConnection;
 import swtp12.modulecrediting.repository.ModulesConnectionRepository;
 
-import java.util.*;
-
-import static swtp12.modulecrediting.model.EnumModuleConnectionDecision.asExamCertificate;
-import static swtp12.modulecrediting.model.EnumModuleConnectionDecision.unedited;
-
 @Service
 public class ModulesConnectionService {
     @Autowired
@@ -27,6 +29,14 @@ public class ModulesConnectionService {
     ExternalModuleService externalModuleService;
     @Autowired
     ModuleLeipzigService moduleLeipzigService;
+
+
+    public ModulesConnection getModulesConnectionById(Long id) {
+        Optional<ModulesConnection> modulesConnection = modulesConnectionRepository.findById(id);
+        if(modulesConnection.isPresent()) return modulesConnection.get();
+
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "ModulesConnection with id " + id + " not found");
+    }
 
     public List<ModulesConnection> createModulesConnectionsWithDuplicate(List<ModulesConnectionDTO> modulesConnectionsDTO) {
         if(modulesConnectionsDTO == null || modulesConnectionsDTO.size() == 0)
@@ -45,26 +55,6 @@ public class ModulesConnectionService {
         }
         return modulesConnections;
     }
-
-    private ModulesConnection createModulesConnection(ModulesConnectionDTO modulesConnectionDTO) {
-        ModulesConnection modulesConnection = new ModulesConnection();
-
-        // create external modules
-        List<ExternalModule> externalModules = externalModuleService.createExternalModules(modulesConnectionDTO.getExternalModules());
-        modulesConnection.setExternalModules(externalModules);
-
-        // create modules lepizig relation
-        if(modulesConnectionDTO.getModulesLeipzig() != null) { // no modules leipzig sent in dto
-            List<ModuleLeipzig> modulesLeipzig = moduleLeipzigService.getModulesLeipzigByNames(modulesConnectionDTO.getModulesLeipzig());
-            modulesConnection.setModulesLeipzig(modulesLeipzig);
-        }
-
-        // create set comment applicant
-        modulesConnection.setCommentApplicant(modulesConnectionDTO.getCommentApplicant());
-
-        return modulesConnection;
-    }
-
 
     public void updateModulesConnection(List<ModulesConnectionDTO> modulesConnectionsDTO, String userRole) { // todo: change name for login specfiic update
         if(modulesConnectionsDTO == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Modules Connections must not be null");
@@ -129,6 +119,78 @@ public class ModulesConnectionService {
         }
     }
 
+    public void deleteOriginalModulesConnections(List<ModulesConnection> modulesConnections) {
+        for(ModulesConnection modulesConnection : modulesConnections) {
+            modulesConnection.setModulesConnectionOriginal(null);
+            modulesConnectionRepository.save(modulesConnection);
+        }
+    }
+
+    public List<ModulesConnection> getOriginalModulesConnections(List<ModulesConnection> modulesConnections) {
+        ArrayList<ModulesConnection> modulesConnectionsOriginal = new ArrayList<>();
+
+        for(ModulesConnection modulesConnection : modulesConnections) {
+            modulesConnectionsOriginal.add(modulesConnection.getModulesConnectionOriginal());
+        }
+        return modulesConnectionsOriginal;
+    }
+
+    public List<ModulesConnection> getOriginalModulesConnectionsWithFormalRejectionData(List<ModulesConnection> editModulesConnections) {
+        ArrayList<ModulesConnection> modulesConnectionsOriginal = new ArrayList<>();
+
+        for(ModulesConnection editModulesConnection : editModulesConnections) {
+
+            ModulesConnection modulesConnectionOriginal = editModulesConnection.getModulesConnectionOriginal();
+            // adding formal rejection data
+            modulesConnectionOriginal.setFormalRejection(editModulesConnection.getFormalRejection());
+            modulesConnectionOriginal.setFormalRejectionComment(editModulesConnection.getFormalRejectionComment());
+
+            modulesConnectionsOriginal.add(modulesConnectionOriginal);
+        }
+        return modulesConnectionsOriginal;
+    }
+
+    public List<ModulesConnection> getRelatedModulesConnections(Long id) {
+        ModulesConnection baseModulesConnection = getModulesConnectionById(id);
+        List<ModulesConnection> allModulesConnections = modulesConnectionRepository.findAll();
+        List<ModulesConnection> relatedModuleConnections = new ArrayList<>();
+
+        for(ModulesConnection m : allModulesConnections) {
+            // skip if its the same modules connection
+            if(m.getId() == baseModulesConnection.getId()) continue;
+
+            // skip original modules connections
+            if(m.getIsOriginalModulesConnection()) continue;
+
+            // only abgeschlossene applications
+            if(m.getApplication().getFullStatus() != EnumApplicationStatus.ABGESCHLOSSEN) continue;
+
+            if(m.getDecisionFinal() == unedited) continue;
+
+            if(checkSimilarityOfModulesConnection(baseModulesConnection,m)) relatedModuleConnections.add(m);
+        }
+        return filterRelevantRelatedModulesConnections(relatedModuleConnections, id);
+    }
+
+
+    private ModulesConnection createModulesConnection(ModulesConnectionDTO modulesConnectionDTO) {
+        ModulesConnection modulesConnection = new ModulesConnection();
+
+        // create external modules
+        List<ExternalModule> externalModules = externalModuleService.createExternalModules(modulesConnectionDTO.getExternalModules());
+        modulesConnection.setExternalModules(externalModules);
+
+        // create modules lepizig relation
+        if(modulesConnectionDTO.getModulesLeipzig() != null) { // no modules leipzig sent in dto
+            List<ModuleLeipzig> modulesLeipzig = moduleLeipzigService.getModulesLeipzigByNames(modulesConnectionDTO.getModulesLeipzig());
+            modulesConnection.setModulesLeipzig(modulesLeipzig);
+        }
+
+        // create set comment applicant
+        modulesConnection.setCommentApplicant(modulesConnectionDTO.getCommentApplicant());
+
+        return modulesConnection;
+    }
 
     // modules leipzig helper methods for update application
     private void removeAllDeletedModulesLeipzig(ModulesConnection modulesConnection, List<String> deleteIdList) {
@@ -153,7 +215,6 @@ public class ModulesConnectionService {
         return nameList;
     }
 
-
     // external modules helper methods for update application
     private void removeAllDeletedExternalModules(List<Long> deleteIdList) {
         for(Long id : deleteIdList) {
@@ -175,63 +236,6 @@ public class ModulesConnectionService {
         return idList;
     }
 
-
-    public void deleteOriginalModulesConnections(List<ModulesConnection> modulesConnections) {
-        for(ModulesConnection modulesConnection : modulesConnections) {
-            modulesConnection.setModulesConnectionOriginal(null);
-            modulesConnectionRepository.save(modulesConnection);
-        }
-    }
-
-    // helper methods to build correct modules connection for student get request (stauts view page)
-    public List<ModulesConnection> getOriginalModulesConnections(List<ModulesConnection> modulesConnections) {
-        ArrayList<ModulesConnection> modulesConnectionsOriginal = new ArrayList<>();
-
-        for(ModulesConnection modulesConnection : modulesConnections) {
-            modulesConnectionsOriginal.add(modulesConnection.getModulesConnectionOriginal());
-        }
-        return modulesConnectionsOriginal;
-    }
-    public List<ModulesConnection> getOriginalModulesConnectionsWithFormalRejectionData(List<ModulesConnection> editModulesConnections) {
-        ArrayList<ModulesConnection> modulesConnectionsOriginal = new ArrayList<>();
-
-        for(ModulesConnection editModulesConnection : editModulesConnections) {
-
-            ModulesConnection modulesConnectionOriginal = editModulesConnection.getModulesConnectionOriginal();
-            // adding formal rejection data
-            modulesConnectionOriginal.setFormalRejection(editModulesConnection.getFormalRejection());
-            modulesConnectionOriginal.setFormalRejectionComment(editModulesConnection.getFormalRejectionComment());
-
-            modulesConnectionsOriginal.add(modulesConnectionOriginal);
-        }
-        return modulesConnectionsOriginal;
-    }
-
-
-
-    public ArrayList<ModulesConnection> getRelatedModulesConnections(Long id) {
-        ModulesConnection baseModulesConnection = getModulesConnectionById(id);
-        List<ModulesConnection> allModulesConnections = modulesConnectionRepository.findAll();
-        ArrayList<ModulesConnection> relatedModuleConnections = new ArrayList<>();
-
-        for(ModulesConnection m : allModulesConnections) {
-            // skip if its the same modules connection
-            if(m.getId() == baseModulesConnection.getId()) continue;
-
-            // skip original modules connections
-            if(m.getIsOriginalModulesConnection()) continue;
-
-            // only abgeschlossene applications
-            if(m.getApplication().getFullStatus() != EnumApplicationStatus.ABGESCHLOSSEN) continue;
-
-            if(m.getDecisionFinal() == unedited || m.getDecisionFinal() == asExamCertificate) continue;
-
-            if(checkSimilarityOfModulesConnection(baseModulesConnection,m)) relatedModuleConnections.add(m);
-        }
-        return relatedModuleConnections;
-    }
-
-
     // helper methods for related modules
     // checks if a module connection is similar, based on if any of a modulename, university pair matches with another pair.
     private boolean checkSimilarityOfModulesConnection(ModulesConnection baseModulesConnection, ModulesConnection relatedModulesConnection) {
@@ -251,12 +255,26 @@ public class ModulesConnectionService {
         String name2Clean = name2.toLowerCase().replaceAll(" ", "");
         return levenshteinDistance.apply(name1Clean, name2Clean);
     }
-
-
-    public ModulesConnection getModulesConnectionById(Long id) {
-        Optional<ModulesConnection> modulesConnection = modulesConnectionRepository.findById(id);
-        if(modulesConnection.isPresent()) return modulesConnection.get();
-
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "ModulesConnection with id " + id + " not found");
+    private List<ModulesConnection> filterRelevantRelatedModulesConnections(List<ModulesConnection> allRelatedModulesConnections, Long id) {
+        List<ModulesConnection> filteredRelatedModCons = new ArrayList<>();
+        for (ModulesConnection modulesConnection : allRelatedModulesConnections) {
+            if (filteredRelatedModCons.size() >= 5) {
+                ModulesConnection oldestConnection = modulesConnection;
+                for (ModulesConnection filteredConnection : filteredRelatedModCons) {
+                    if (filteredConnection.getApplication().getDecisionDate().isBefore(oldestConnection.getApplication().getDecisionDate())) {
+                        oldestConnection = filteredConnection;
+                    }
+                }
+                if (!oldestConnection.equals(modulesConnection)) {
+                    filteredRelatedModCons.remove(oldestConnection);
+                    filteredRelatedModCons.add(modulesConnection);
+                }
+            }
+            else {
+                filteredRelatedModCons.add(modulesConnection);
+            }
+        }
+        return filteredRelatedModCons;
     }
+
 }

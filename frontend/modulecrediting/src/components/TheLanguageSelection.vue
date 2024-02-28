@@ -14,10 +14,22 @@ watch(useRoute(), newRoute => {
 
 <template>
   <div v-if="showLanguage" class="language-selection-container">
-    <Button @click="translate.switchLanguage('de')" class="language-button"
-      :class="{ 'active': store.locale == 'de' }">DE</Button>
-    <Button @click="translate.switchLanguage('en')" class="language-button"
-      :class="{ 'active': store.locale == 'en' }">EN</Button>
+    <Button
+        aria-label="Sprachauswahl Deutsch"
+        @click="translate.switchLanguage('de')"
+        class="language-button"
+        :class="{ 'active': store.locale == 'de' }"
+    >
+      DE
+    </Button>
+    <Button
+        aria-label="Sprachauswahl Englisch"
+        @click="translate.switchLanguage('en')"
+        class="language-button"
+        :class="{ 'active': store.locale == 'en' }"
+    >
+      EN
+    </Button>
   </div>
 </template>
 

@@ -1,19 +1,23 @@
 <script setup>
 import { useRoute, useRouter } from "vue-router";
 import { ref, computed, onBeforeMount } from "vue";
-import ApplicationOverview from "@/components/ApplicationOverview.vue";
-import AdministrativePanel from "@/components/AdministrativePanel.vue";
-import ApplicationConnectionLinks from "@/components/ApplicationConnectionLinks.vue";
-import ButtonLink from "@/components/ButtonLink.vue";
-import ApplicationControl from "../assets/icons/ApplicationControl.vue";
-import MoveTop from "../assets/icons/MoveTop.vue";
-import NotSavedIcon from "../assets/icons/NotSavedIcon.vue";
+import ApplicationOverview from "@/components/abstract/ApplicationOverview.vue";
+import AdministrativePanel from "@/components/panel/AdministrativePanel.vue";
+import ApplicationConnectionLinks from "@/components/abstract/ApplicationConnectionLinks.vue";
+import ButtonLink from "@/components/button/ButtonLink.vue";
+import ApplicationControl from "@/assets/icons/ApplicationControl.vue";
+import MoveTop from "@/assets/icons/MoveTop.vue";
+import NotSavedIcon from "@/assets/icons/NotSavedIcon.vue";
+import { parseRequestDate } from "@/utils/date-utils";
+import LoadingContainer from "@/components/util/LoadingContainer.vue";
+import {getModulesByCourse} from "@/requests/module-course-requests";
 import {
-  getApplicationById, getModulesByCourse,
-  getUpdateStatusAllowed, updateStatus, putApplicationStudyOffice, putApplicationChairman
-} from "@/scripts/axios-requests";
-import { parseRequestDate } from "@/scripts/date-utils";
-import LoadingContainer from "@/components/LoadingContainer.vue";
+  getApplicationById,
+  getUpdateStatusAllowed,
+  putApplicationChairman,
+  putApplicationStudyOffice,
+  putUpdateStatus
+} from "@/requests/application-requests";
 
 const route = useRoute()
 const router = useRouter();
@@ -108,7 +112,7 @@ const saveChanges = () => {
 }
 
 const triggerPassOn = () => {
-  if (passOnStatus) updateStatus(id).then(_ => location.reload())
+  if (passOnStatus) putUpdateStatus(id).then(_ => location.reload())
 }
 
 </script>
@@ -129,10 +133,17 @@ const triggerPassOn = () => {
 
       <div v-for="connection in applicationData['modulesConnections']">
 
-        <AdministrativePanel :type="type" :readonly="readonly" :selectable-modules="moduleOptions"
-          :connection-data="connection" ref="moduleConnections"
-          :class="{ 'connection-highlight': connection.id == connectionHighlightId }" :id="connection.id"
-          @change="setUnsaved" />
+        <AdministrativePanel
+            :type="type"
+            :readonly="readonly"
+            :show-related-connections="applicationData['fullStatus'] !== 'ABGESCHLOSSEN'"
+            :selectable-modules="moduleOptions"
+            :connection-data="connection"
+            :id="connection.id"
+            @change="setUnsaved"
+            :class="{ 'connection-highlight': connection.id == connectionHighlightId }"
+            ref="moduleConnections"
+        />
 
       </div>
 
@@ -151,9 +162,11 @@ const triggerPassOn = () => {
     </div>
 
     <div v-if="!readonly">
-      <ButtonLink v-if="passOnStatus === 'NOT_ALLOWED'" :disabled="true" :fixed="true" :redButton="true">Weitergeben
+      <ButtonLink v-if="passOnStatus === 'NOT_ALLOWED' || unsaved" :disabled="true" :fixed="true" :redButton="true">
+        Weitergeben
       </ButtonLink>
-      <ButtonLink v-else-if="passOnStatus === 'PASSON'" :fixed="true" :redButton="true" @click="triggerPassOn">Weitergeben
+      <ButtonLink v-else-if="passOnStatus === 'PASS_ON'" :fixed="true" :redButton="true" @click="triggerPassOn">
+        Weitergeben
       </ButtonLink>
       <ButtonLink v-else-if="passOnStatus === 'REJECT'" :fixed="true" :redButton="true" @click="triggerPassOn">
         Zurückweisen

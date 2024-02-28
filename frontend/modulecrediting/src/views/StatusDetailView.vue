@@ -5,19 +5,20 @@ shows status of an application
 <script setup>
 import { useRoute, useRouter } from 'vue-router';
 import { ref, onBeforeMount, computed } from "vue";
-import ApplicationOverview from "@/components/ApplicationOverview.vue";
-import StatusPanel from "@/components/StatusPanel.vue";
-import ApplicationPanel from "@/components/ApplicationPanel.vue";
-import ButtonLink from '@/components/ButtonLink.vue';
-import ButtonAdd from "../components/ButtonAdd.vue";
-import ButtonDownloadVue from '../components/ButtonDownload.vue';
-import LoadingContainer from "../components/LoadingContainer.vue";
-import { url } from "@/scripts/url-config"
-import { getApplicationByIdForStatus, getModulesByCourse, putApplicationStudent } from "@/scripts/axios-requests";
-import { parseRequestDate } from "@/scripts/date-utils";
-import SideInfoApplicationProcess from '@/components/SideInfoApplicationProcess.vue';
-import SideInfoStudyOffice from '@/components/SideInfoStudyOffice.vue';
+import ApplicationOverview from "@/components/abstract/ApplicationOverview.vue";
+import StatusPanel from "@/components/panel/StatusPanel.vue";
+import ApplicationPanel from "@/components/panel/ApplicationPanel.vue";
+import ButtonLink from '@/components/button/ButtonLink.vue';
+import ButtonAdd from "@/components/button/ButtonAdd.vue";
+import ButtonDownloadVue from '@/components/button/ButtonDownload.vue';
+import LoadingContainer from "@/components/util/LoadingContainer.vue";
+import { url } from "@/url-config"
+import { parseRequestDate } from "@/utils/date-utils";
+import SideInfoApplicationProcess from '@/components/side-info/SideInfoApplicationProcess.vue';
+import SideInfoStudyOffice from '@/components/side-info/SideInfoStudyOffice.vue';
 import ModuleStatusIcon from "@/assets/icons/ModuleStatusIcon.vue";
+import {getModulesByCourse} from "@/requests/module-course-requests";
+import {getApplicationByIdForStatus, putApplicationStudent} from "@/requests/application-requests";
 
 const id = useRoute().params.id
 const summaryDocumentLink = `${url}/file/pdf-documents/application/${id}`
@@ -87,8 +88,10 @@ const checkValidity = () => {
 
 const triggerSubmit = () => {
   if (checkValidity()) {
-    putApplicationStudent(applicationData.value['id'], applicationData.value['courseLeipzig']['name'], moduleConnections.value)
-      .then(_ => location.reload())
+    if (confirm('Haben Sie alle Formfehler korrigiert?\n\nNach dem erneuten Einreichen können Sie den Antrag nicht weiter bearbeiten.')) {
+      putApplicationStudent(applicationData.value['id'], applicationData.value['courseLeipzig']['name'], moduleConnections.value)
+          .then(_ => location.reload())
+    }
   }
 }
 </script>
@@ -159,20 +162,22 @@ const triggerSubmit = () => {
 
 
       <div class="application-buttons-container">
-        <ButtonAdd v-if="applicationData['fullStatus'] === 'FORMFEHLER'" @click="addNewConnection">Modulzuweisung
-          hinzufügen</ButtonAdd>
-        <ButtonLink v-if="applicationData['fullStatus'] === 'FORMFEHLER'" :redButton="true" @click="triggerSubmit">Neu
-          einreichen</ButtonLink>
+        <ButtonAdd v-if="applicationData['fullStatus'] === 'FORMFEHLER'" @click="addNewConnection">
+          Modulzuweisung hinzufügen
+        </ButtonAdd>
+        <ButtonLink v-if="applicationData['fullStatus'] === 'FORMFEHLER'" :redButton="true" @click="triggerSubmit">
+          Neu einreichen
+        </ButtonLink>
       </div>
       <ButtonDownloadVue @click="openSummaryDocument">
         Antrag herunterladen
       </ButtonDownloadVue>
     </div>
 
-    <div class="side-infos-list">
+    <aside class="side-infos-list">
       <SideInfoApplicationProcess />
       <SideInfoStudyOffice />
-    </div>
+    </aside>
 
   </div>
   <div v-else class="main centered">

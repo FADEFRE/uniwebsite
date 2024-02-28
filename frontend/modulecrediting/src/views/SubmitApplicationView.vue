@@ -14,17 +14,17 @@ functionality:
 <script setup>
 import router from "@/router";
 import { ref, onBeforeMount } from "vue";
-import { getFormattedDate } from "@/scripts/date-utils";
-import { getCoursesLeipzigName, getModulesByCourse, postApplication } from "@/scripts/axios-requests";
-import ApplicationPanel from "@/components/ApplicationPanel.vue";
-import ButtonAdd from "@/components/ButtonAdd.vue";
-import ButtonLink from "@/components/ButtonLink.vue";
-import ApplicationOverview from "@/components/ApplicationOverview.vue";
-import ArrowIcon from "../assets/icons/ArrowIcon.vue";
-import SideInfoApplicationProcess from "@/components/SideInfoApplicationProcess.vue";
-import SideInfoStudyOffice from "@/components/SideInfoStudyOffice.vue";
-
-const showInformation = ref(false)
+import { getFormattedDate } from "@/utils/date-utils";
+import ApplicationPanel from "@/components/panel/ApplicationPanel.vue";
+import ButtonAdd from "@/components/button/ButtonAdd.vue";
+import ButtonLink from "@/components/button/ButtonLink.vue";
+import ApplicationOverview from "@/components/abstract/ApplicationOverview.vue";
+import ArrowIcon from "@/assets/icons/ArrowIcon.vue";
+import SideInfoApplicationProcess from "@/components/side-info/SideInfoApplicationProcess.vue";
+import SideInfoStudyOffice from "@/components/side-info/SideInfoStudyOffice.vue";
+import ApplicationInfoBox from "@/components/info-box/ApplicationInfoBox.vue";
+import {getCoursesLeipzigName, getModulesByCourse} from "@/requests/module-course-requests";
+import {postApplication} from "@/requests/application-requests";
 
 const creationDate = new Date()
 
@@ -33,13 +33,13 @@ const selectedCourse = ref()
 
 onBeforeMount(() => {
   getCoursesLeipzigName()
-    .then(data => courses.value = data)
+      .then(data => courses.value = data)
 })
 
 const selectableModules = ref([])
 const setSelectableModules = () => {
   getModulesByCourse(selectedCourse.value)
-    .then(data => selectableModules.value = data)
+      .then(data => selectableModules.value = data)
 }
 
 const moduleConnections = ref([1])
@@ -65,9 +65,9 @@ const checkValidity = () => {
 const triggerPostApplication = () => {
   if (checkValidity()) {
     postApplication(selectedCourse.value, moduleConnectionsRef.value)
-      .then(id => {
-        router.push({ name: 'confirmation', params: { id: id } })
-      })
+        .then(id => {
+          router.push({ name: 'confirmation', params: { id: id } })
+        })
   }
 }
 </script>
@@ -78,59 +78,12 @@ const triggerPostApplication = () => {
 
     <div class="content-container split">
 
-      <div class="application-info-container">
-        <h2>Informationen</h2>
-        <div class="explanation-collapsed-container">
-        <p class="text-justify">
-          Wählen Sie den Studiengang aus, für den Sie sich Leistungen anrechnen lassen wollen.
-          Tragen sie dann die Details der Leistungen ein. Hierfür können sie beliebig viele Modulzuweisungen hinzufügen.
-        </p>
-        <Button @click="showInformation = !showInformation">
-          Erklärung anzeigen
-          <ArrowIcon :direction="showInformation ? 'up' : 'down'" color="red" />
-        </Button>
-      </div>
-        <div v-if="showInformation" class="explanation-expanded-container">
-          <div class="explanation-item">
-            <h3 class="h4">Modulzuweisung</h3>
-            <ul class="points">
-              <li>Ein oder mehrere Fremdmodule die als Modul(e) der Universität Leipzig angerechnet werden sollen.</li>
-              <li>Es sollen nur konkret zusammengehörige Module in eine Modulzuweisung geschrieben werden.</li>
-              <li>Für den gesamten Antrag können sie mehrere Modulzuweisungen hinzufügen.</li>
-              <!-- todo add example -->
-              <li>!!! Beispiel hinzufügen !!!</li>
-            </ul>
-          </div>
-          <div class="explanation-item">
-            <h3 class="h4">Fremdmodul</h3>
-            <ul class="points">
-              <li>Ein konkretes Modul, das an einer anderen Universität belegt wurde.</li>
-              <li>Hierfür müssen die gegebenen Felder ausgefüllt werden.</li>
-              <li>Geben Sie das Punktesystem an (LP, ECTS oder ähnliches).</li>
-              <li>Als Modulbeschreibung muss eine PDF-Datei mit der offiziellen Beschreibung des einzelnen Modul
-                hochgeladen werden.</li>
-            </ul>
-          </div>
-          <div class="explanation-item">
-            <h3 class="h4">Module der Universität Leipzig</h3>
-            <ul class="points">
-              <li>Wählen sie ein oder mehrere Modul(e) aus, für die Sie ihre Leistungen anrechnen lassen wollen.</li>
-              <li>Sollten sie kein passendes Modul finden, besteht auch die Möglichkeit, keines auszuwählen.</li>
-            </ul>
-          </div>
-          <div class="explanation-item">
-            <h3 class="h4">Kommentar</h3>
-            <ul class="points">
-              <li>Hier können weitere Informationen zu dieser Modulzuweisung mitgeteilt werden, dies ist optional.</li>
-            </ul>
-          </div>
-        </div>
-      </div>
+      <ApplicationInfoBox />
 
       <ApplicationOverview :creation-date="getFormattedDate(creationDate)" :last-edited-date="undefined"
-        :decision-date="undefined" status="NEU">
+                           :decision-date="undefined" status="NEU">
         <Dropdown v-model="selectedCourse" :options="courses" placeholder="Studiengang wählen"
-          @change="setSelectableModules" :class="{ 'invalid': !courseValid }">
+                  @change="setSelectableModules" :class="{ 'invalid': !courseValid }">
           <template #dropdownicon>
             <ArrowIcon direction="down" />
           </template>
@@ -139,8 +92,8 @@ const triggerPostApplication = () => {
       </ApplicationOverview>
 
       <ApplicationPanel v-for="item in moduleConnections" :key="item" :selectable-modules="selectableModules"
-        :allow-delete="moduleConnections.length > 1" ref="moduleConnectionsRef"
-        @delete-self="deleteModuleConnection(item)" />
+                        :allow-delete="moduleConnections.length > 1" ref="moduleConnectionsRef"
+                        @delete-self="deleteModuleConnection(item)" />
 
       <div class="application-buttons-container">
         <ButtonAdd @click="addModuleConnection">Modulzuweisung hinzufügen</ButtonAdd>
@@ -148,11 +101,10 @@ const triggerPostApplication = () => {
       </div>
     </div>
 
-    <div class="side-infos-list">
+    <aside class="side-infos-list">
       <SideInfoApplicationProcess />
       <SideInfoStudyOffice />
-    </div>
-
+    </aside>
 
   </div>
 </template>
@@ -161,16 +113,5 @@ const triggerPostApplication = () => {
 @use '@/assets/styles/util' as *;
 @use '@/assets/styles/global' as *;
 @use '@/assets/styles/components' as *;
-
-.explanation-collapsed-container {
-  @include verticalList(s);
-
-}
-.explanation-expanded-container {
-  @include verticalList(s);
-  border-top: 2px solid $dark-gray;
-  margin-top: spacing(s);
-  padding-top: spacing(s);
-}
 </style>
 
