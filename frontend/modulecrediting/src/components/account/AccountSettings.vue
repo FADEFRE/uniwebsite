@@ -2,7 +2,8 @@
 import { onBeforeMount, ref } from "vue";
 import { logout } from "@/router/logout"
 import ButtonLink from "@/components/button/ButtonLink.vue";
-import {getUserMe, putUserPassword, putUserUsername} from "@/requests/user-requests";
+import { getUserMe, putUserUsername, putUserPassword } from "@/requests/user-requests";
+import {passwordRegex, usernameRegex} from "@/config/regex";
 
 const userId = ref()
 
@@ -18,41 +19,36 @@ onBeforeMount(() => {
     })
 })
 
-const usernameEmpty = ref(false)
+const usernameInvalid = ref(false)
 const usernameExists = ref(false)
 
+const passwordInvalid = ref(false)
 const passwordNotMatching = ref(false)
-const passwordEmpty = ref(false)
 
 const saveUsername = () => {
-  if (!username.value) {
-    usernameEmpty.value = true
-    return
+  // checking
+  usernameInvalid.value = !usernameRegex.test(username.value)
+  // request
+  if (!usernameInvalid.value) {
+    putUserUsername(userId.value, username.value)
+        .then(_ => logout())
+        .catch(error => {
+          if (error.response.status === 409) {
+            usernameExists.value = true
+          }
+        })
   }
-  putUserUsername(userId.value, username.value)
-    .then(_ => logout())
-    .catch(error => {
-      if (error.response.status === 409) {
-        usernameExists.value = true
-      }
-    })
 }
 
 const savePassword = () => {
-  console.log(password.value)
-  console.log(passwordConfirm.value)
-  if (password.value !== passwordConfirm.value) {
-    passwordNotMatching.value = true
-    passwordEmpty.value = false
-    return
+  // checking
+  passwordInvalid.value = !passwordRegex.test(password.value)
+  passwordNotMatching.value = password.value !== passwordConfirm.value
+  // request
+  if (!passwordInvalid.value && !passwordNotMatching.value) {
+    putUserPassword(userId.value, password.value, passwordConfirm.value)
+        .then(_ => logout())
   }
-  if (!password.value) {
-    passwordNotMatching.value = false
-    passwordEmpty.value = true
-    return
-  }
-  putUserPassword(userId.value, password.value, passwordConfirm.value)
-    .then(_ => logout())
 }
 </script>
 
@@ -63,8 +59,8 @@ const savePassword = () => {
     <div class="settings-container">
       <div class="input-container">
         <label for="username">Benutzername ändern</label>
-        <InputText type="text" class="white" v-model="username" id="username" :class="{ 'invalid': usernameEmpty || usernameExists }" />
-        <small v-if="usernameEmpty" class="invalid-text">Benutzername darf nicht leer sein</small>
+        <InputText type="text" class="white" v-model="username" id="username" :class="{ 'invalid': usernameInvalid || usernameExists }" />
+        <small v-if="usernameInvalid" class="invalid-text">Benutzername ist nicht erlaubt</small>
         <small v-if="usernameExists" class="invalid-text">Benutzername existiert bereits</small>
       </div>
       <ButtonLink class="save-button" @click="saveUsername">Speichern</ButtonLink>
@@ -75,13 +71,13 @@ const savePassword = () => {
       <div class="input-container">
         <label for="password">Passwort ändern</label>
         <InputText type="password" class="white" v-model="password" id="password"
-          :class="{ 'invalid': passwordNotMatching || passwordEmpty }" />
-        <small v-if="passwordEmpty" class="invalid-text">Das Passwort darf nicht leer sein</small>
+          :class="{ 'invalid': passwordNotMatching || passwordInvalid }" />
+        <small v-if="passwordInvalid" class="invalid-text">Passwort ist nicht erlaubt</small>
       </div>
       <div class="input-container">
         <label for="password-confirm">Passwort bestätigen</label>
         <InputText type="password" class="white" v-model="passwordConfirm" id="password-confirm"
-          :class="{ 'invalid': passwordNotMatching || passwordEmpty }" />
+          :class="{ 'invalid': passwordNotMatching || passwordInvalid }" />
         <small v-if="passwordNotMatching" class="invalid-text">Die Passwörter müssen übereinstimmen</small>
       </div>
     </div>

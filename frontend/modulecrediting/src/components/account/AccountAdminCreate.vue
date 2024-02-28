@@ -58,7 +58,7 @@ const triggerCreateUser = () => {
       </div>
       <div class="input-container">
         <InputText type="text" placeholder="Passwort bestätigen" v-model="passwordConfirm" class="white" :class="{ 'invalid': passwordConfirmInvalid }" />
-        <small v-if="passwordConfirmInvalid" class="invalid-text">Passwort bestätigen stimmt nicht mit Passwort überein</small>
+        <small v-if="passwordConfirmInvalid" class="invalid-text">Die Passwörter müssen übereinstimmen</small>
       </div>
       
     </div>
