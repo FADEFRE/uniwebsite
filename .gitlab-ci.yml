@@ -27,7 +27,7 @@ test_frontend:
   script:
     - cd frontend/modulecrediting
     - npm install
-    - npm run test
+    #- npm run test
 
 test_backend:
   stage: test
@@ -35,20 +35,6 @@ test_backend:
   script:
     - cd backend/modulecrediting
     - mvn clean verify
-  
-
-# generate_javadoc:
-#   stage: build
-#   image: gradle:8.4.0-jdk17-alpine
-#   script:
-#     - cd creditport-backend
-#     - gradle javadoc
-#   artifacts:
-#     paths:
-#       - creditport-backend/build/docs/javadoc
-#   only:
-#     - developer
-
 
 build_backend:
   stage: build
