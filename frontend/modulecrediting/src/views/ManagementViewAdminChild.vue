@@ -3,7 +3,7 @@ import { ref } from "vue";
 import ButtonDownload from "@/components/button/ButtonDownload.vue";
 import FileInput from "@/components/util/FileInput.vue";
 import ButtonLink from "@/components/button/ButtonLink.vue";
-import { url } from "@/utils/url-config";
+import { url } from "@/url-config";
 
 import {postJsonConfig} from "@/requests/module-course-requests";
 

@@ -12,7 +12,7 @@ import ButtonLink from '@/components/button/ButtonLink.vue';
 import ButtonAdd from "@/components/button/ButtonAdd.vue";
 import ButtonDownloadVue from '@/components/button/ButtonDownload.vue';
 import LoadingContainer from "@/components/util/LoadingContainer.vue";
-import { url } from "@/utils/url-config"
+import { url } from "@/url-config"
 import { parseRequestDate } from "@/utils/date-utils";
 import SideInfoApplicationProcess from '@/components/side-info/SideInfoApplicationProcess.vue';
 import SideInfoStudyOffice from '@/components/side-info/SideInfoStudyOffice.vue';

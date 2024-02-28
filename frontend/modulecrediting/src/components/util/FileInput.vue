@@ -14,7 +14,7 @@ displays:
 import { ref } from "vue";
 import ButtonLink from "@/components/button/ButtonLink.vue";
 import FileIcon from "@/assets/icons/FileIcon.vue";
-import { url } from "@/utils/url-config";
+import { url } from "@/url-config";
 
 const props = defineProps({
   readonly: {
