@@ -121,7 +121,7 @@ function getApplicationExists(id) {
     console.debug("%c" + "getApplicationExists ()", axiosColor);
 
     return httpClient
-        .get(url + `/api/applications/${id}/exists`)
+        .get(`/api/applications/${id}/exists`)
         .then((response) => response.data)
         .catch((_) => {
         });
