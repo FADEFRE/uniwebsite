@@ -263,7 +263,7 @@ function putApplicationStudent(
     });
 
     return httpClient
-        .put(url + "/api/applications/student/" + applicationId, formData)
+        .put("/api/applications/student/" + applicationId, formData)
         .then((response) => response.data)
         .catch((_) => {
         });
