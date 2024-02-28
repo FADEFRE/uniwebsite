@@ -9,8 +9,8 @@ const content = route.meta['error']['content']
 <template>
   <div class="main centered">
     <div class="error-container">
-      <h1>{{ heading }}</h1>
-      <p>{{ content }}</p>
+      <h1>{{ $t(heading) }}</h1>
+      <p>{{ $t(content) }}</p>
     </div>
   </div>
 </template>
