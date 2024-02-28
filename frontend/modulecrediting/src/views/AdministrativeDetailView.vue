@@ -133,10 +133,17 @@ const triggerPassOn = () => {
 
       <div v-for="connection in applicationData['modulesConnections']">
 
-        <AdministrativePanel :type="type" :readonly="readonly" :selectable-modules="moduleOptions"
-          :connection-data="connection" ref="moduleConnections"
-          :class="{ 'connection-highlight': connection.id == connectionHighlightId }" :id="connection.id"
-          @change="setUnsaved" />
+        <AdministrativePanel
+            :type="type"
+            :readonly="readonly"
+            :show-related-connections="applicationData['fullStatus'] !== 'ABGESCHLOSSEN'"
+            :selectable-modules="moduleOptions"
+            :connection-data="connection"
+            :id="connection.id"
+            @change="setUnsaved"
+            :class="{ 'connection-highlight': connection.id == connectionHighlightId }"
+            ref="moduleConnections"
+        />
 
       </div>
 
