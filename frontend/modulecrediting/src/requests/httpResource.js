@@ -53,13 +53,10 @@ function parseApierror(error) {
 
 const requestHandler = (request) => {
   if (isHandlerEnabled(request)) {
-    //TODO remove debug logs
+
+    //TODO remove debug logs start
     if (request.data instanceof FormData) {
-      console.debug(
-        "%c" + request.method.toUpperCase() + "-Request: " + request.url,
-        requestColor,
-        "  Start of Data: "
-      );
+      console.debug("%c" + request.method.toUpperCase() + "-Request: " + request.url, requestColor, "  Start of Data: " ); 
       let formData = new FormData();
       formData = request.data;
       for (const pair of formData.entries()) {
@@ -67,11 +64,9 @@ const requestHandler = (request) => {
       }
       console.debug("%c" + "End of Data", requestColor);
     } else
-      console.debug(
-        "%c" + request.method.toUpperCase() + "-Request: " + request.url,
-        requestColor,
-        "  Data: " + request.data
-      );
+      console.debug("%c" + request.method.toUpperCase() + "-Request: " + request.url, requestColor, "  Data: " + request.data );
+    //TODO remove debug logs end
+    
   }
   return request;
 };
@@ -127,13 +122,7 @@ const errorHandler = (error) => {
 
 const successHandler = (response) => {
   if (isHandlerEnabled(response.config)) {
-    console.debug(
-      "%c" + "Response: " + response.status + " ",
-      responseColor,
-      response.request.responseURL,
-      "  Data:",
-      response.data
-    ); //TODO remove debug log
+    console.debug("%c" + "Response: " + response.status + " ", responseColor, response.request.responseURL, "  Data:", response.data); //TODO remove debug log
   }
   return response;
 };
