@@ -1,6 +1,7 @@
 <script setup>
 import TheNavigation from "@/components/TheNavigation.vue";
-import TheLanguageSelection from "@/components/TheLanguageSelection.vue"; onBeforeMount, ref } from "vue";
+import TheLanguageSelection from "@/components/TheLanguageSelection.vue";
+import { onBeforeMount, ref } from "vue";
 import translate from '@/i18n/translate';
 
 onBeforeMount(() => {
