@@ -95,8 +95,8 @@ const showExample = ref(false)
 }
 .explanation-expanded-container {
   @include verticalList(s);
-  border-bottom: 2px solid $dark-gray;
+  // border-bottom: 2px solid $dark-gray;
   margin-bottom: spacing(s);
-  padding-bottom: spacing(s);
+  padding: spacing(xs);
 }
 </style>
