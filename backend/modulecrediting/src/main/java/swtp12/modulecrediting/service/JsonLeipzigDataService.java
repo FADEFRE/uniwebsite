@@ -14,8 +14,6 @@ import swtp12.modulecrediting.dto.LeipzigDataDTO;
 import swtp12.modulecrediting.dto.ModuleLeipzigDTO;
 import swtp12.modulecrediting.model.CourseLeipzig;
 import swtp12.modulecrediting.model.ModuleLeipzig;
-import swtp12.modulecrediting.repository.CourseLeipzigRepository;
-import swtp12.modulecrediting.repository.ModuleLeipzigRepository;
 import swtp12.modulecrediting.util.JsonUtil;
 
 @Service
@@ -23,11 +21,7 @@ public class JsonLeipzigDataService {
     @Autowired
     private JsonUtil jsonUtil;
     @Autowired
-    private CourseLeipzigRepository courseLeipzigRepository;
-    @Autowired
     private CourseLeipzigService courseLeipzigService;
-    @Autowired
-    private ModuleLeipzigRepository moduleLeipzigRepository;
     @Autowired
     private ModuleLeipzigService moduleLeipzigService;
 
@@ -35,7 +29,7 @@ public class JsonLeipzigDataService {
     public LeipzigDataDTO getAllLeipzigData() {
         LeipzigDataDTO leipzigDataDTO = new LeipzigDataDTO();
 
-        List<CourseLeipzig> cLeipzig = courseLeipzigRepository.findAll();
+        List<CourseLeipzig> cLeipzig = courseLeipzigService.getAllCoursesLeipzig();
         List<LeipzigDataCourseDTO> courseList = new ArrayList<>();
 
         for (CourseLeipzig courseLeipzig : cLeipzig) {
@@ -66,10 +60,7 @@ public class JsonLeipzigDataService {
         List<Long> moduelIds = getAllModuleIds();
         for (JsonNode course : coursesNode) {
             String courseName = course.get("name").asText();
-            CourseLeipzig courseLeipzig = courseLeipzigRepository.findByName(courseName)
-                    .orElseGet(() -> {
-                        return courseLeipzigRepository.save(new CourseLeipzig(courseName));
-                    });
+            CourseLeipzig courseLeipzig = courseLeipzigService.findOrCreateNewCourseLeipzig(courseName);
             courseIds.remove(courseLeipzig.getId());
             courseLeipzig.removeModulesLeipzig();
 
@@ -77,13 +68,10 @@ public class JsonLeipzigDataService {
             for (JsonNode module : modulesNode) {
                 String moduleName = module.get("name").asText();
                 String moduleCode = module.get("code").asText();
-                ModuleLeipzig moduleLeipzig = moduleLeipzigRepository.findByName(moduleName)
-                        .orElseGet(() -> {
-                            return moduleLeipzigRepository.save(new ModuleLeipzig(moduleName, moduleCode));
-                        });
+                ModuleLeipzig moduleLeipzig = moduleLeipzigService.findOrCreateNewModuleLeipzig(moduleName, moduleCode);
                 moduelIds.remove(moduleLeipzig.getId());
                 courseLeipzig.addModulesLeipzig(moduleLeipzig);
-                courseLeipzigRepository.save(courseLeipzig);
+                courseLeipzigService.saveCourseLeipzigToDatabase(courseLeipzig);
             }
         }
 
@@ -93,7 +81,7 @@ public class JsonLeipzigDataService {
 
     private List<Long> getAllCourseIds() {
         List<Long> courseIds = new ArrayList<>();
-        List<CourseLeipzig> courses = courseLeipzigRepository.findAll();
+        List<CourseLeipzig> courses = courseLeipzigService.getAllCoursesLeipzig();
         for (CourseLeipzig courseLeipzig : courses) {
             courseIds.add(courseLeipzig.getId());
         }
@@ -102,7 +90,7 @@ public class JsonLeipzigDataService {
 
     private List<Long> getAllModuleIds() {
         List<Long> moduelIds = new ArrayList<>();
-        List<ModuleLeipzig> modules = moduleLeipzigRepository.findAll();
+        List<ModuleLeipzig> modules = moduleLeipzigService.getAllModulesLeipzig();
         for (ModuleLeipzig moduleLeipzig : modules) {
             moduelIds.add(moduleLeipzig.getId());
         }
@@ -111,12 +99,12 @@ public class JsonLeipzigDataService {
 
     private void removeAllNonUploaded(List<Long> courseIds, List<Long> moduleIds) {
         for (Long courseId : courseIds) {
-            String courseName = courseLeipzigRepository.findById(courseId).get().getName();
+            String courseName = courseLeipzigService.getCourseLeipzigNameById(courseId);
             courseLeipzigService.deleteCourseLeipzig(courseName);
         }
 
         for (Long moduleId : moduleIds) {
-            String moduleName = moduleLeipzigRepository.findById(moduleId).get().getName();
+            String moduleName = moduleLeipzigService.getModuleLeipzigNameById(moduleId);
             moduleLeipzigService.deleteModuleLeipzig(moduleName);
         }
 
