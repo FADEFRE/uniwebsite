@@ -2,7 +2,6 @@ package swtp12.modulecrediting.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -86,11 +85,8 @@ public class ExternalModuleService {
 
 
     public ExternalModule getExternalModuleById(Long id) {
-        Optional<ExternalModule> optionalExternalModule = externalModuleRepository.findById(id);
-        if(optionalExternalModule.isPresent())
-            return optionalExternalModule.get();
-
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Module Application with id: " + id + " not Found");
+        ExternalModule externalModule = externalModuleRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Module Application with id: " + id + " not Found"));
+        return externalModule;
     }
 
     public void deleteExternalModuleById(Long id) {

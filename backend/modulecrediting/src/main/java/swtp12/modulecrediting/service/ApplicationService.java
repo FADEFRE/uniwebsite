@@ -6,7 +6,6 @@ import static swtp12.modulecrediting.model.EnumModuleConnectionDecision.unedited
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,7 +27,7 @@ public class ApplicationService {
     @Autowired
     private ApplicationRepository applicationRepository;
     @Autowired
-    ModulesConnectionService modulesConnectionService;
+    private ModulesConnectionService modulesConnectionService;
     @Autowired
     private CourseLeipzigService courseLeipzigService;
 
@@ -166,12 +165,8 @@ public class ApplicationService {
 
     // is used internally
     public Application getApplicationById(String id) {
-        Optional<Application> applicationOptional = applicationRepository.findById(id);
-        if(applicationOptional.isPresent()) {
-            return applicationOptional.get();
-        }else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Application with id: " + id + " not Found");
-        }
+        Application application = applicationRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Application with id: " + id + " not Found"));
+        return application;
     }
     // is used only for student request
     public Application getApplicationStudentById(String id) {

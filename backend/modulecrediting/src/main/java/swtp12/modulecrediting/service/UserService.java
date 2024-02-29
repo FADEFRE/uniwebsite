@@ -27,8 +27,6 @@ import swtp12.modulecrediting.util.IncorrectKeyOnDecryptException;
  * 
  * @see #getUserProfile()
  * @see <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/stereotype/Service.html"> Springboot @Service </a>
- * 
- * @author Frederik Kluge 
  */
 @Service
 public class UserService {
