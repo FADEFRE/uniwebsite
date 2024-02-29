@@ -1,8 +1,8 @@
 package swtp12.modulecrediting.service;
 
-import static swtp12.modulecrediting.model.EnumApplicationStatus.*;
-import static swtp12.modulecrediting.model.EnumModuleConnectionDecision.*;
 import static swtp12.modulecrediting.dto.EnumStatusChangeAllowed.*;
+import static swtp12.modulecrediting.model.EnumApplicationStatus.*;
+import static swtp12.modulecrediting.model.EnumModuleConnectionDecision.unedited;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -14,9 +14,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import jakarta.transaction.Transactional;
-
-import swtp12.modulecrediting.dto.*;
-import swtp12.modulecrediting.model.*;
+import swtp12.modulecrediting.dto.ApplicationDTO;
+import swtp12.modulecrediting.dto.EnumStatusChangeAllowed;
+import swtp12.modulecrediting.model.Application;
+import swtp12.modulecrediting.model.CourseLeipzig;
+import swtp12.modulecrediting.model.EnumApplicationStatus;
+import swtp12.modulecrediting.model.ModulesConnection;
 import swtp12.modulecrediting.repository.ApplicationRepository;
 
 
@@ -121,29 +124,21 @@ public class ApplicationService {
         return application.getFullStatus();
     }
 
-    // helper methos to update applicaiton status
-    boolean allDecisionSuggestionUnedited(Application application) {
-        boolean allDecisionSuggestionUnedited = true;
-        for(ModulesConnection m : application.getModulesConnections()) {
-            if(m.getDecisionSuggestion() != unedited)  allDecisionSuggestionUnedited = false;
-        }
-        return allDecisionSuggestionUnedited;
-    }
-    boolean allDecisionSuggestionEdited(Application application) {
+    private boolean allDecisionSuggestionEdited(Application application) {
         boolean allDecisionSuggestionEdited = true;
         for(ModulesConnection m : application.getModulesConnections()) {
             if(m.getDecisionSuggestion() == unedited)  allDecisionSuggestionEdited = false;
         }
         return allDecisionSuggestionEdited;
     }
-    boolean allDecisionsFinalEdited(Application application) {
+    private boolean allDecisionsFinalEdited(Application application) {
         boolean allDecisionsFinalEdited = true;
         for(ModulesConnection m : application.getModulesConnections()) {
             if(m.getDecisionFinal() == unedited) allDecisionsFinalEdited = false;
         }
         return allDecisionsFinalEdited;
     }
-    boolean containsFormalRejection(Application application) {
+    private boolean containsFormalRejection(Application application) {
         boolean containsFormalRejection = false;
         for(ModulesConnection m : application.getModulesConnections()) {
             if(m.getFormalRejection()) containsFormalRejection = true;
@@ -164,12 +159,12 @@ public class ApplicationService {
     }
 
     // Simple Getters for Application
-    // is used internally and for login requests
+    // is used internally
     public List<Application> getAllApplciations(){
         return applicationRepository.findAll();
     }
 
-    // is used internally and for login requests
+    // is used internally
     public Application getApplicationById(String id) {
         Optional<Application> applicationOptional = applicationRepository.findById(id);
         if(applicationOptional.isPresent()) {
