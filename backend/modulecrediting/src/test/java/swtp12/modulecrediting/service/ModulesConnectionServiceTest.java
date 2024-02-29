@@ -69,7 +69,7 @@ public class ModulesConnectionServiceTest {
         modulesConnectionService.updateModulesConnection(dtos, "study-office");
     });
 
-    assertEquals(HttpStatus.FORBIDDEN.value(), exception.getStatusCode().value());
+    assertEquals(HttpStatus.CONFLICT.value(), exception.getStatusCode().value());
     assertEquals("You cant delete all External Modules of a Modules Connection 1", exception.getReason());
     verify(modulesConnectionRepository, never()).save(any());
     verify(externalModuleService, never()).updateExternalModules(any());
