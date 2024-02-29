@@ -68,9 +68,9 @@ const showExample = ref(false)
         <h4>Fremdmodul</h4>
         <ul class="points">
           <li>Modulname "Automaten und Berechenbarkeit"</li>
-          <li>Universität "Halle"</li>
-          <li>Punkte "10"</li>
-          <li>Punktsystem "LP"</li>
+          <li>Universität "Martin-Luther-Universität Halle-Wittenberg"</li>
+          <li>Punkte "10", Punktesystem "LP"</li>
+          <li>Modulbeschreibung: PDF-Datei mit der Beschreibung des Moduls Automaten und Berechenbarkeit</li>
         </ul>
       </div>
       <div class="explanation-item">
