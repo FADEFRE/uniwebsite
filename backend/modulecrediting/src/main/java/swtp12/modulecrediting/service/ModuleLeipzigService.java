@@ -13,7 +13,6 @@ import swtp12.modulecrediting.dto.ModuleLeipzigDTO;
 import swtp12.modulecrediting.model.ModuleLeipzig;
 import swtp12.modulecrediting.model.ModulesConnection;
 import swtp12.modulecrediting.repository.ModuleLeipzigRepository;
-import swtp12.modulecrediting.repository.ModulesConnectionRepository;
 
 
 
@@ -23,7 +22,7 @@ public class ModuleLeipzigService {
     private ModuleLeipzigRepository moduleLeipzigRepository;
 
     @Autowired
-    private ModulesConnectionRepository modulesConnectionRepository;
+    private ModulesConnectionService modulesConnectionService;
 
     // used for application update
     public void updateRelationModulesConnectionToModulesLeipzig(ModulesConnection modulesConnection, List<ModuleLeipzigDTO> modulesLeipzigDTO) {
@@ -158,7 +157,7 @@ public class ModuleLeipzigService {
     }
 
     public Boolean checkIfModuleIsUsedInApplications(ModuleLeipzig moduleLeipzig) {
-        List<ModulesConnection> modulesConnections = modulesConnectionRepository.findAll();
+        List<ModulesConnection> modulesConnections = modulesConnectionService.getAllModulesConnections();
 
         if (modulesConnections.isEmpty()) return false;
 
