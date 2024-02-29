@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
@@ -21,6 +20,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -101,7 +101,78 @@ public class CourseLeipzigServiceTest {
         String resultReactivate = courseLeipzigService.createCourseLeipzig(courseLeipzigDTO);
         assertEquals(courseName, resultReactivate);
     }
+    
+    
+    @Test
+    void shouldUpdateCourseLeipzig_Successfully() {
+        CourseLeipzigRepository courseLeipzigRepository = mock(CourseLeipzigRepository.class);
 
+        CourseLeipzig existingCourse = new CourseLeipzig();
+        existingCourse.setIsActive(true);
+
+        when(courseLeipzigRepository.findByName("OldCourseName")).thenReturn(Optional.of(existingCourse));
+
+        CourseLeipzigService courseLeipzigService = new CourseLeipzigService();
+        courseLeipzigService.courseLeipzigRepository = courseLeipzigRepository;
+
+        CourseLeipzigDTO courseLeipzigDTO = new CourseLeipzigDTO();
+        courseLeipzigDTO.setCourseName("NewCourseName");
+
+        String result = courseLeipzigService.updateCourseLeipzig("OldCourseName", courseLeipzigDTO);
+
+        assertEquals("NewCourseName", result);
+    }
+
+    @Test
+    void shouldUpdateCourseLeipzig_WithExistingName_ThrowsConflictException() {
+        CourseLeipzigService courseLeipzigService = new CourseLeipzigService();
+        CourseLeipzigDTO courseLeipzigDTO = new CourseLeipzigDTO();
+        CourseLeipzig existingCourse = new CourseLeipzig();
+        existingCourse.setIsActive(true);
+        courseLeipzigService.courseLeipzigRepository = mock(CourseLeipzigRepository.class);
+        ResponseStatusException e = assertThrows(ResponseStatusException.class, () -> {
+            courseLeipzigService.updateCourseLeipzig("OldCourseName", courseLeipzigDTO);
+        });
+        assertEquals(HttpStatus.BAD_REQUEST, e.getStatusCode());
+    }
+
+    @Test
+    void shouldUpdateCourseLeipzig_WithInactiveCourse_ThrowsBadRequestException() {
+        CourseLeipzigService courseLeipzigService = new CourseLeipzigService();
+        CourseLeipzigDTO courseLeipzigDTO = new CourseLeipzigDTO();
+        CourseLeipzig inactiveCourse = new CourseLeipzig();
+        inactiveCourse.setIsActive(false);
+        courseLeipzigService.courseLeipzigRepository = mock(CourseLeipzigRepository.class);
+
+        ResponseStatusException e = assertThrows(ResponseStatusException.class, () -> {
+            courseLeipzigService.updateCourseLeipzig("OldCourseName", courseLeipzigDTO);
+        });
+        assertEquals(HttpStatus.BAD_REQUEST, e.getStatusCode());
+    }
+
+    @Test
+    void shouldUpdateCourseLeipzig_WithBlankCourseName_ThrowsBadRequestException() {
+        CourseLeipzigService courseLeipzigService = new CourseLeipzigService();
+        CourseLeipzigDTO courseLeipzigDTO = new CourseLeipzigDTO();
+        courseLeipzigService.courseLeipzigRepository = mock(CourseLeipzigRepository.class);
+
+        ResponseStatusException e = assertThrows(ResponseStatusException.class, () -> {
+            courseLeipzigService.updateCourseLeipzig("OldCourseName", courseLeipzigDTO);
+        });
+        assertEquals(HttpStatus.BAD_REQUEST, e.getStatusCode());
+    }
+
+    @Test
+    void shouldUpdateCourseLeipzig_WithNullDTO_ThrowsBadRequestException() {
+        
+        CourseLeipzigService courseLeipzigService = new CourseLeipzigService();
+        courseLeipzigService.courseLeipzigRepository = mock(CourseLeipzigRepository.class);
+
+        ResponseStatusException e = assertThrows(ResponseStatusException.class, () -> {
+            courseLeipzigService.updateCourseLeipzig("OldCourseName", null);
+        });
+        assertEquals(HttpStatus.BAD_REQUEST, e.getStatusCode());
+    }
 
     @Test
     void shouldDeleteCourseLeipzig() {
