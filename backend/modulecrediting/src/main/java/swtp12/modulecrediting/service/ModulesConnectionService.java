@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.apache.commons.text.similarity.LevenshteinDistance;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -24,12 +23,12 @@ import swtp12.modulecrediting.repository.ModulesConnectionRepository;
 
 @Service
 public class ModulesConnectionService {
-    @Autowired
     ModulesConnectionRepository modulesConnectionRepository;
     ExternalModuleService externalModuleService;
     ModuleLeipzigService moduleLeipzigService;
     
-    public ModulesConnectionService(@Lazy ExternalModuleService externalModuleService, @Lazy ModuleLeipzigService moduleLeipzigService) {
+    public ModulesConnectionService(ModulesConnectionRepository modulesConnectionRepository, @Lazy ExternalModuleService externalModuleService, @Lazy ModuleLeipzigService moduleLeipzigService) {
+        this.modulesConnectionRepository = modulesConnectionRepository;
         this.externalModuleService = externalModuleService;
         this.moduleLeipzigService = moduleLeipzigService;
     }

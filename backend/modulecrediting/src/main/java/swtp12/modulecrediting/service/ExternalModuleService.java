@@ -3,7 +3,6 @@ package swtp12.modulecrediting.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -17,11 +16,11 @@ import swtp12.modulecrediting.repository.ExternalModuleRepository;
 
 @Service
 public class ExternalModuleService {
-    @Autowired
     ExternalModuleRepository externalModuleRepository;
     PdfDocumentService pdfDocumentService;
     
-    public ExternalModuleService(@Lazy PdfDocumentService pdfDocumentService) {
+    public ExternalModuleService(ExternalModuleRepository externalModuleRepository, @Lazy PdfDocumentService pdfDocumentService) {
+        this.externalModuleRepository = externalModuleRepository;
         this.pdfDocumentService = pdfDocumentService;
     }
 
