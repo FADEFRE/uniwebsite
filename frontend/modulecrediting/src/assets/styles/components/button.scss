@@ -4,7 +4,6 @@
 Button,
 .p-button,
 .router-link {
-
   @include smallHighlightBox();
   flex-shrink: 0;
 
@@ -16,45 +15,43 @@ Button,
     background-color: $red;
   }
 
-  &:not(.info-box-button) {
+  &:hover,
+  &:focus {
+    background-color: $dark-gray-hover;
 
-    &:hover,
-    &:focus {
-      background-color: $dark-gray-hover;
-
-      &.white {
-        background-color: $white-hover;
-      }
-      &.red-button {
-        background-color: $red-hover;
-      }
+    &.white {
+      background-color: $white-hover;
     }
-    &:focus-visible {
-      outline: 2.5px solid $dark-gray-hover;
-      outline-offset: 2px;
-
-      &.white {
-        outline: 2.5px solid $white-hover;
-        outline-offset: 2px;
-      }
-      &.red-button {
-        outline: 2.5px solid $red-hover;
-        outline-offset: 2px;
-      }
+    &.red-button {
+      background-color: $red-hover;
     }
   }
+  &:focus-visible {
+    outline: 2.5px solid $dark-gray-hover;
+    outline-offset: 2px;
 
-  &.info-box-button {
-    padding: 0;
-    background-color: transparent;
-    color: $dark-gray;
-    font-weight: normal;
-    text-transform: none;
-
-    &:hover,
-    &:focus {
-      text-decoration: underline
+    &.white {
+      outline: 2.5px solid $white-hover;
+      outline-offset: 2px;
     }
+    &.red-button {
+      outline: 2.5px solid $red-hover;
+      outline-offset: 2px;
+    }
+  }
+}
+
+.info-box-button {
+  padding: 0;
+  background-color: transparent;
+  color: $dark-gray;
+  font-weight: 650;
+
+
+  &:hover,
+  &:focus {
+    text-decoration: underline;
+    background-color: transparent;
   }
 }
 

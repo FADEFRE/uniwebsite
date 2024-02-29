@@ -99,8 +99,4 @@ const showExample = ref(false)
   margin-bottom: spacing(s);
   padding: spacing(xs);
 }
-
-.points {
-  margin: spacing(xs)
-}
 </style>
