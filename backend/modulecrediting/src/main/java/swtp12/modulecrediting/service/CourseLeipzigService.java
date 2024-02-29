@@ -15,7 +15,6 @@ import swtp12.modulecrediting.dto.ModuleLeipzigDTO;
 import swtp12.modulecrediting.model.Application;
 import swtp12.modulecrediting.model.CourseLeipzig;
 import swtp12.modulecrediting.model.ModuleLeipzig;
-import swtp12.modulecrediting.repository.ApplicationRepository;
 import swtp12.modulecrediting.repository.CourseLeipzigRepository;
 
 
@@ -26,17 +25,31 @@ public class CourseLeipzigService {
     @Autowired
     ModuleLeipzigService moduleLeipzigService;
     @Autowired
-    ApplicationRepository applicationRepository;
+    ApplicationService applicationService;
 
     public CourseLeipzig getCourseLeipzigByName(String name) {
-        Optional<CourseLeipzig> courseLeipzig = courseLeipzigRepository.findByName(name);
-        if(!courseLeipzig.isPresent()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Course Leipzig not found with moduleName: " + name);
+        CourseLeipzig courseLeipzig = courseLeipzigRepository.findByName(name).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Course Leipzig not found with given name: " + name));
+        return courseLeipzig;
+    }
 
-        return courseLeipzig.get();
+    public String getCourseLeipzigNameById(Long id) {
+        CourseLeipzig courseLeipzig = courseLeipzigRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Course Leipzig not found with given id: " + id));
+        return courseLeipzig.getName();
     }
 
     public List<CourseLeipzig> getAllCoursesLeipzig() {
         return courseLeipzigRepository.findAll();
+    }
+
+    public CourseLeipzig findOrCreateNewCourseLeipzig(String name) {
+        CourseLeipzig courseLeipzig = courseLeipzigRepository.findByName(name).orElseGet(() -> {
+            return courseLeipzigRepository.save(new CourseLeipzig(name));
+        });
+        return courseLeipzig;
+    }
+
+    public CourseLeipzig saveCourseLeipzigToDatabase(CourseLeipzig courseLeipzig) {
+        return courseLeipzigRepository.save(courseLeipzig);
     }
 
     public String createCourseLeipzig(CourseLeipzigDTO courseLeipzigDTO) {
@@ -56,7 +69,6 @@ public class CourseLeipzigService {
             return courseLeipzig.getName();
         }
 
-        // create new course leipzig
         CourseLeipzig courseLeipzig = new CourseLeipzig(courseLeipzigDTO.getCourseName());
         courseLeipzigRepository.save(courseLeipzig);
         return courseLeipzig.getName();
@@ -102,7 +114,7 @@ public class CourseLeipzigService {
     }
 
     private Boolean checkIfCourseIsUsedInApplications(CourseLeipzig courseLeipzig) {
-        List<Application> applications = applicationRepository.findAll();
+        List<Application> applications = applicationService.getAllApplciations();
 
         if(applications.isEmpty()) return false;
 
@@ -145,9 +157,7 @@ public class CourseLeipzigService {
             }
         }
 
-
         courseLeipzig.setModulesLeipzigCourse(modulesLeipzig);
-
         courseLeipzigRepository.save(courseLeipzig);
         return courseLeipzig.getName();
     }
