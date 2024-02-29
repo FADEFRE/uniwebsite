@@ -15,7 +15,7 @@ const showExample = ref(false)
         Tragen sie dann die Details der Leistungen ein. Hierfür können sie beliebig viele Modulzuweisungen hinzufügen.
       </p>
     </div>
-    <Button @click="showInformation = !showInformation">
+    <Button @click="showInformation = !showInformation" class="info-box-button">
       Erklärung anzeigen
       <ArrowIcon :direction="showInformation ? 'up' : 'down'" color="red" />
     </Button>
@@ -52,7 +52,7 @@ const showExample = ref(false)
         </ul>
       </div>
     </div>
-    <Button @click="showExample = !showExample">
+    <Button @click="showExample = !showExample" class="info-box-button">
       Beispiel anzeigen
       <ArrowIcon :direction="showExample ? 'up' : 'down'" color="red" />
     </Button>
