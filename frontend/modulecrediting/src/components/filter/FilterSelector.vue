@@ -14,7 +14,7 @@ import { getWeekAgo, getMonthAgo, getSixMonthAgo, getYearAgo } from "@/utils/dat
 import ArrowIcon from "@/assets/icons/ArrowIcon.vue";
 import DateIcon from '@/assets/icons/DateIcon.vue';
 import TrashIcon from "@/assets/icons/TrashIcon.vue";
-import {getCoursesLeipzigName} from "@/requests/module-course-requests";
+import { getCoursesLeipzigName } from "@/requests/module-course-requests";
 
 const searchString = ref()
 

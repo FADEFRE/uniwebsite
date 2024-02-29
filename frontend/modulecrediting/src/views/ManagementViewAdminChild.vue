@@ -4,8 +4,7 @@ import ButtonDownload from "@/components/button/ButtonDownload.vue";
 import FileInput from "@/components/util/FileInput.vue";
 import ButtonLink from "@/components/button/ButtonLink.vue";
 import { url } from "@/url-config";
-
-import {postJsonConfig} from "@/requests/module-course-requests";
+import { postJsonConfig } from "@/requests/module-course-requests";
 
 const jsonLink = `${url}/file/json/courses`
 

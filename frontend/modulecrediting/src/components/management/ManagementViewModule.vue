@@ -2,7 +2,7 @@
 import { ref, computed, onBeforeMount } from "vue";
 import ManagementListElement from "@/components/management/ManagementListElement.vue";
 import LoadingContainer from "@/components/util/LoadingContainer.vue";
-import {deleteModuleLeipzig, getModulesNameCode, putUpdateModuleLeipzig} from "@/requests/module-course-requests";
+import { deleteModuleLeipzig, getModulesNameCode, putUpdateModuleLeipzig } from "@/requests/module-course-requests";
 
 const modules = ref();
 const searchString = ref('');

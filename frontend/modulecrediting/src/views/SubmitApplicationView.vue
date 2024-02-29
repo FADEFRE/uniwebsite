@@ -23,8 +23,8 @@ import ArrowIcon from "@/assets/icons/ArrowIcon.vue";
 import SideInfoApplicationProcess from "@/components/side-info/SideInfoApplicationProcess.vue";
 import SideInfoStudyOffice from "@/components/side-info/SideInfoStudyOffice.vue";
 import ApplicationInfoBox from "@/components/info-box/ApplicationInfoBox.vue";
-import {getCoursesLeipzigName, getModulesByCourse} from "@/requests/module-course-requests";
-import {postApplication} from "@/requests/application-requests";
+import { getCoursesLeipzigName, getModulesByCourse } from "@/requests/module-course-requests";
+import { postApplication } from "@/requests/application-requests";
 
 const creationDate = new Date()
 

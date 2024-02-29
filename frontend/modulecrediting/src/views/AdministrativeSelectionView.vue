@@ -14,7 +14,7 @@ import ApplicationOverview from "@/components/abstract/ApplicationOverview.vue";
 import { parseRequestDate } from "@/utils/date-utils";
 import { filterApplications } from "@/utils/applications-filter";
 import LoadingContainer from "@/components/util/LoadingContainer.vue";
-import {getApplications} from "@/requests/application-requests";
+import { getApplications } from "@/requests/application-requests";
 
 const route = useRoute()
 

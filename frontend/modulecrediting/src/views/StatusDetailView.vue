@@ -17,8 +17,8 @@ import { parseRequestDate } from "@/utils/date-utils";
 import SideInfoApplicationProcess from '@/components/side-info/SideInfoApplicationProcess.vue';
 import SideInfoStudyOffice from '@/components/side-info/SideInfoStudyOffice.vue';
 import ModuleStatusIcon from "@/assets/icons/ModuleStatusIcon.vue";
-import {getModulesByCourse} from "@/requests/module-course-requests";
-import {getApplicationByIdForStatus, putApplicationStudent} from "@/requests/application-requests";
+import { getModulesByCourse } from "@/requests/module-course-requests";
+import { getApplicationByIdForStatus, putApplicationStudent } from "@/requests/application-requests";
 
 const id = useRoute().params.id
 const summaryDocumentLink = `${url}/file/pdf-documents/application/${id}`
