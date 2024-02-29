@@ -8,6 +8,7 @@ import java.util.Optional;
 
 import org.apache.commons.text.similarity.LevenshteinDistance;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -25,11 +26,13 @@ import swtp12.modulecrediting.repository.ModulesConnectionRepository;
 public class ModulesConnectionService {
     @Autowired
     ModulesConnectionRepository modulesConnectionRepository;
-    @Autowired
     ExternalModuleService externalModuleService;
-    @Autowired
     ModuleLeipzigService moduleLeipzigService;
-
+    
+    public ModulesConnectionService(@Lazy ExternalModuleService externalModuleService, @Lazy ModuleLeipzigService moduleLeipzigService) {
+        this.externalModuleService = externalModuleService;
+        this.moduleLeipzigService = moduleLeipzigService;
+    }
 
     public List<ModulesConnection> getAllModulesConnections() {
         return modulesConnectionRepository.findAll();

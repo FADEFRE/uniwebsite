@@ -5,10 +5,12 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import lombok.NoArgsConstructor;
 import swtp12.modulecrediting.dto.CourseLeipzigDTO;
 import swtp12.modulecrediting.dto.CourseLeipzigRelationEditDTO;
 import swtp12.modulecrediting.dto.ModuleLeipzigDTO;
@@ -18,14 +20,18 @@ import swtp12.modulecrediting.model.ModuleLeipzig;
 import swtp12.modulecrediting.repository.CourseLeipzigRepository;
 
 
-@Service
+@Service @NoArgsConstructor
 public class CourseLeipzigService {
     @Autowired
     CourseLeipzigRepository courseLeipzigRepository;
-    @Autowired
     ModuleLeipzigService moduleLeipzigService;
-    @Autowired
     ApplicationService applicationService;
+
+    public CourseLeipzigService(@Lazy ModuleLeipzigService moduleLeipzigService, @Lazy ApplicationService applicationService) {
+        this.moduleLeipzigService = moduleLeipzigService;
+        this.applicationService = applicationService;
+    }
+
 
     public CourseLeipzig getCourseLeipzigByName(String name) {
         CourseLeipzig courseLeipzig = courseLeipzigRepository.findByName(name).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Course Leipzig not found with given name: " + name));

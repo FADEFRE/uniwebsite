@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -20,9 +21,11 @@ import swtp12.modulecrediting.repository.ModuleLeipzigRepository;
 public class ModuleLeipzigService {
     @Autowired
     private ModuleLeipzigRepository moduleLeipzigRepository;
-
-    @Autowired
     private ModulesConnectionService modulesConnectionService;
+
+    public ModuleLeipzigService(@Lazy ModulesConnectionService modulesConnectionService) {
+        this.modulesConnectionService = modulesConnectionService;
+    }
 
     // used for application update
     public void updateRelationModulesConnectionToModulesLeipzig(ModulesConnection modulesConnection, List<ModuleLeipzigDTO> modulesLeipzigDTO) {

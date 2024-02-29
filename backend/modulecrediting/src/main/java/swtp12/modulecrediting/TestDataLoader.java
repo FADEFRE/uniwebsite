@@ -303,8 +303,8 @@ public class TestDataLoader {
      */
     private JsonNode grabModulesFromJsonNode(JsonNode courseNode) {
         return Optional.ofNullable(courseNode)
-        .map(c -> c.get("modules"))
-        .orElseThrow(() -> new IllegalArgumentException("Invalid JSON Object"));
+                .map(c -> c.get("modules"))
+                .orElseThrow(() -> new IllegalArgumentException("Invalid JSON Object"));
     }
 
 

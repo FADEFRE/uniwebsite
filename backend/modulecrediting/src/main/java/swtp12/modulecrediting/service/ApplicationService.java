@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -26,10 +27,13 @@ import swtp12.modulecrediting.repository.ApplicationRepository;
 public class ApplicationService {
     @Autowired
     private ApplicationRepository applicationRepository;
-    @Autowired
     private ModulesConnectionService modulesConnectionService;
-    @Autowired
     private CourseLeipzigService courseLeipzigService;
+
+    public ApplicationService(@Lazy ModulesConnectionService modulesConnectionService, @Lazy CourseLeipzigService courseLeipzigService) {
+        this.modulesConnectionService = modulesConnectionService;
+        this.courseLeipzigService = courseLeipzigService;
+    }
 
     public String createApplication(ApplicationDTO applicationDTO) {
         String id = generateValidApplicationId();

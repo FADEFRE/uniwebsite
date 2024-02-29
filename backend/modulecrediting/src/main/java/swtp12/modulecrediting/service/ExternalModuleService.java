@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -17,9 +18,13 @@ import swtp12.modulecrediting.repository.ExternalModuleRepository;
 @Service
 public class ExternalModuleService {
     @Autowired
-    PdfDocumentService pdfDocumentService;
-    @Autowired
     ExternalModuleRepository externalModuleRepository;
+    PdfDocumentService pdfDocumentService;
+    
+    public ExternalModuleService(@Lazy PdfDocumentService pdfDocumentService) {
+        this.pdfDocumentService = pdfDocumentService;
+    }
+
 
     public List<ExternalModule> createExternalModules(List<ExternalModuleDTO> externalModuleDTOS) {
         if(externalModuleDTOS == null || externalModuleDTOS.size() == 0)
