@@ -56,7 +56,7 @@ public class ModulesConnectionService {
         return modulesConnections;
     }
 
-    public void updateModulesConnection(List<ModulesConnectionDTO> modulesConnectionsDTO, String userRole) { // todo: change name for login specfiic update
+    public void updateModulesConnection(List<ModulesConnectionDTO> modulesConnectionsDTO, String userRole) {
         if(modulesConnectionsDTO == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Modules Connections must not be null");
 
         for(ModulesConnectionDTO mcuDTO : modulesConnectionsDTO) {
@@ -89,9 +89,8 @@ public class ModulesConnectionService {
                     modulesConnection.setDecisionFinal(mcuDTO.getDecisionFinal());
             }
 
-            // TODO: create function
             // handle module applications changes
-            if(mcuDTO.getExternalModules() == null)  throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You cant delete all External Modules of a Modules Connection " + mcuDTO.getId());
+            if(mcuDTO.getExternalModules() == null)  throw new ResponseStatusException(HttpStatus.CONFLICT, "You cant delete all External Modules of a Modules Connection " + mcuDTO.getId());
 
             // check difference saved external modules <-> external modules sent in dto => remove deleted external modules
             List<Long> savedIdList = getIdListFromModuleConnection(modulesConnection);

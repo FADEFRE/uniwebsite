@@ -48,7 +48,7 @@ public class ApplicationService {
         Application application = getApplicationById(id);
 
         if(application.getFullStatus() != FORMFEHLER)
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only FORMFEHLER applications can be updated by student");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Only FORMFEHLER applications can be updated by student");
 
         application.setFullStatus(STUDIENBÜRO);
         application.setLastEditedDate(LocalDateTime.now());
