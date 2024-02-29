@@ -39,7 +39,7 @@ public class ModuleLeipzigService {
         }
     }
 
-    public List<ModuleLeipzig> getModulesLeipzig() {
+    public List<ModuleLeipzig> getAllModulesLeipzig() {
         return moduleLeipzigRepository.findAll();
     }
 
