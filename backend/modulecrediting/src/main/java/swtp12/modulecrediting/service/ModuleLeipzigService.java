@@ -148,7 +148,7 @@ public class ModuleLeipzigService {
         return "DEACTIVATED";
     }
 
-    private Boolean checkIfModuleIsUsedInApplications(ModuleLeipzig moduleLeipzig) {
+    public Boolean checkIfModuleIsUsedInApplications(ModuleLeipzig moduleLeipzig) {
         List<ModulesConnection> modulesConnections = modulesConnectionRepository.findAll();
 
         if (modulesConnections.isEmpty()) return false;
