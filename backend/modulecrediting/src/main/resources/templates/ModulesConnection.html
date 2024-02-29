@@ -1,6 +1,6 @@
 <html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
 
@@ -22,7 +22,6 @@
 body {
   margin: 0;
   padding: 0;
-  background-color: $gray;
 }
 
 ul {
@@ -135,7 +134,7 @@ ul {
     <div class="header">
         <h2 class="panel-heading-container">
             <span class="modules-container">
-           <span class="single-module" th:text="${externalModulesHeading}"></span>
+                <span class="single-module" th:text="${externalModulesHeading}"></span>
             </span>
             <img class="arrow-icon" src="src/main/resources/static/images/Arrow.png">
             <span class="modules-container">
@@ -153,15 +152,15 @@ ul {
         <div class="content-table">
             <div class="table-row">
                 <p>Modulname</p>
-                <p class="bold" th:text="${externalModule.name}">nicht verfügbar</p>
+                <p class="bold" th:text="${externalModule.name}">nicht verf&#252gbar</p>
             </div>
             <div class="table-row">
                 <p>Punkte</p>
-                <p class="bold" th:text="${externalModule.points} + ' ' + ${externalModule.pointSystem}">nicht verfügbar</p>
+                <p class="bold" th:text="${externalModule.points} + ' ' + ${externalModule.pointSystem}">nicht verf&#252gbar</p>
             </div>
             <div class="table-row">
                 <p>Modulname</p>
-                <p class="bold" th:text="${externalModule.university}">nicht verfügbar</p>
+                <p class="bold" th:text="${externalModule.university}">nicht verf&#252gbar</p>
             </div>
         </div>
     </div>
@@ -169,17 +168,17 @@ ul {
 
 
     <div class="module-leipzig-container">
-        <h3>Module der Universität Leipzig</h3>
+        <h3>Module der Universit&#228t Leipzig</h3>
         <div class="table" th:each="moduleLeipzig : ${modulesLeipzigArray}">
             <h4 th:text="${moduleLeipzig.name}"></h4>
                 <div class="table-content">
                     <div class="table-row">
                         <p>Modulname</p>
-                        <p class="bold" th:text="${moduleLeipzig.name}">nicht verfügbar</p>
+                        <p class="bold" th:text="${moduleLeipzig.name}">nicht verf&#252gbar</p>
                     </div>
                     <div class="table-row">
                         <p>Modulcode</p>
-                        <p class="bold" th:text="${moduleLeipzig.code}">nicht verfügbar</p>
+                        <p class="bold" th:text="${moduleLeipzig.code}">nicht verf&#252gbar</p>
                     </div>
                 </div>
             </div>
