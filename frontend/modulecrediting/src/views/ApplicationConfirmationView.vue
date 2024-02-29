@@ -5,7 +5,7 @@ import { computed, onBeforeMount } from 'vue';
 import CopyIcon from "@/assets/icons/CopyIcon.vue";
 import ButtonLink from "@/components/button/ButtonLink.vue";
 import ButtonDownload from '@/components/button/ButtonDownload.vue';
-import { url } from '@/url-config';
+import { url } from '@/config/url-config';
 
 const route = useRoute()
 const router = useRouter()
