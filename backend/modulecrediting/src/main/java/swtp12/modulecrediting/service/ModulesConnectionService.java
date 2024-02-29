@@ -31,6 +31,10 @@ public class ModulesConnectionService {
     ModuleLeipzigService moduleLeipzigService;
 
 
+    public List<ModulesConnection> getAllModulesConnections() {
+        return modulesConnectionRepository.findAll();
+    }
+
     public ModulesConnection getModulesConnectionById(Long id) {
         Optional<ModulesConnection> modulesConnection = modulesConnectionRepository.findById(id);
         if(modulesConnection.isPresent()) return modulesConnection.get();
