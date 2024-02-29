@@ -43,11 +43,11 @@ public class ModuleLeipzigService {
         return moduleLeipzigRepository.findAll();
     }
 
-    public ArrayList<ModuleLeipzig> getModulesLeipzigByNames(List<ModuleLeipzigDTO> moduleNamesLeipzig) {
+    public List<ModuleLeipzig> getModulesLeipzigByNames(List<ModuleLeipzigDTO> moduleNamesLeipzig) {
         if(moduleNamesLeipzig == null || moduleNamesLeipzig.size() == 0)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No Module Leipzig Names provided");
 
-        ArrayList<ModuleLeipzig> modulesLeipzig = new ArrayList<>();
+        List<ModuleLeipzig> modulesLeipzig = new ArrayList<>();
         for(ModuleLeipzigDTO ml : moduleNamesLeipzig) {
             modulesLeipzig.add(getModuleLeipzigByName(ml.getName()));
         }
@@ -55,11 +55,20 @@ public class ModuleLeipzigService {
     }
 
     public ModuleLeipzig getModuleLeipzigByName(String name) {
-        Optional<ModuleLeipzig> moduleLeipzig = moduleLeipzigRepository.findByName(name);
-        if(moduleLeipzig.isPresent())
-            return moduleLeipzig.get();
+        ModuleLeipzig moduleLeipzig = moduleLeipzigRepository.findByName(name).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Module Leipzig not found with moduleName: " + name));
+        return moduleLeipzig;
+    }
 
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Module Leipzig not found with moduleName: " + name);
+    public String getModuleLeipzigNameById(Long id) {
+        ModuleLeipzig moduleLeipzig = moduleLeipzigRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Course Leipzig not found with given id: " + id));
+        return moduleLeipzig.getName();
+    }
+
+    public ModuleLeipzig findOrCreateNewModuleLeipzig(String name, String code) {
+        ModuleLeipzig moduleLeipzig = moduleLeipzigRepository.findByName(name).orElseGet(() -> {
+                return moduleLeipzigRepository.save(new ModuleLeipzig(name, code));
+            });
+        return moduleLeipzig;
     }
 
     public String createModuleLeipzig(ModuleLeipzigDTO moduleLeipzigDTO) {
