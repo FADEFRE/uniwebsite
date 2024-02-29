@@ -47,12 +47,20 @@ Button,
   color: $dark-gray;
   font-weight: 650;
 
-
-  &:hover,
   &:focus {
-    text-decoration: underline;
+    text-decoration: none;
     background-color: transparent;
   }
+
+  &:hover,
+  &:focus-visible {
+    text-decoration: underline;
+    background-color: transparent;
+    outline: none;
+  }
+
+ 
+
 }
 
 .router-link {
