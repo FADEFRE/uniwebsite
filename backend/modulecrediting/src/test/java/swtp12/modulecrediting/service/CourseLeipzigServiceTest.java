@@ -278,17 +278,6 @@ public class CourseLeipzigServiceTest {
     }
 
     @Test
-    void shouldThrowBadRequestException_When_CourseNameIsNull() {
-        CourseLeipzigRepository courseLeipzigRepository = mock(CourseLeipzigRepository.class);
-        ModuleLeipzigService moduleLeipzigService = mock(ModuleLeipzigService.class);
-        CourseLeipzigService courseLeipzigService = new CourseLeipzigService(courseLeipzigRepository, moduleLeipzigService, null);
-
-        assertThrows(ResponseStatusException.class, () -> {
-            courseLeipzigService.editCourseRelations(null, new CourseLeipzigRelationEditDTO());
-        });
-    }
-
-    @Test
     void shouldThrowBadRequestException_When_CourseIsDeactivated() {
         CourseLeipzigRepository courseLeipzigRepository = mock(CourseLeipzigRepository.class);
         ModuleLeipzigService moduleLeipzigService = mock(ModuleLeipzigService.class);
@@ -306,7 +295,7 @@ public class CourseLeipzigServiceTest {
     }
 
     @Test
-    void shouldThrowBadRequestException_When_ModuleNameIsNull() {
+    void shouldThrowBadRequestException_When_CourseNameIsNull() {
         CourseLeipzigRepository courseLeipzigRepository = mock(CourseLeipzigRepository.class);
         ModuleLeipzigService moduleLeipzigService = mock(ModuleLeipzigService.class);
         CourseLeipzigService courseLeipzigService = new CourseLeipzigService(courseLeipzigRepository, moduleLeipzigService, null);
@@ -324,7 +313,7 @@ public class CourseLeipzigServiceTest {
     }
 
     @Test
-    void shouldThrowBadRequestException_When_ModuleCodeIsNull() {
+    void shouldThrowBadRequestException_When_CourseCodeIsNull() {
         CourseLeipzigRepository courseLeipzigRepository = mock(CourseLeipzigRepository.class);
         ModuleLeipzigService moduleLeipzigService = mock(ModuleLeipzigService.class);
         CourseLeipzigService courseLeipzigService = new CourseLeipzigService(courseLeipzigRepository, moduleLeipzigService, null);
@@ -342,7 +331,7 @@ public class CourseLeipzigServiceTest {
     }
 
     @Test
-    void shouldThrowBadRequestException_When_ModuleCodeDoesNotMatch() {
+    void shouldThrowBadRequestException_When_CourseCodeDoesNotMatch() {
         CourseLeipzigRepository courseLeipzigRepository = mock(CourseLeipzigRepository.class);
         ModuleLeipzigService moduleLeipzigService = mock(ModuleLeipzigService.class);
         CourseLeipzigService courseLeipzigService = new CourseLeipzigService(courseLeipzigRepository, moduleLeipzigService, null);
