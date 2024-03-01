@@ -150,18 +150,18 @@ public class CourseLeipzigService {
 
         // add new modules
         if(editCourseRelationsDTO.getModulesLeipzig() != null) {
-            for(ModuleLeipzigDTO ml : editCourseRelationsDTO.getModulesLeipzig()) {
-                if(ml.getName() == null)
+            for(ModuleLeipzigDTO mLDTO : editCourseRelationsDTO.getModulesLeipzig()) {
+                if(mLDTO.getName() == null)
                     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No Module Name sent");
-                if(ml.getCode() == null)
+                if(mLDTO.getCode() == null)
                     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No Module Code sent");
 
-                ModuleLeipzig moduleLeipzig = moduleLeipzigService.getModuleLeipzigByName(ml.getName());
+                ModuleLeipzig moduleLeipzig = moduleLeipzigService.getModuleLeipzigByName(mLDTO.getName());
 
-                if(!moduleLeipzig.getCode().equals(ml.getCode()))
-                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Module Code doesn't match: " + ml.getName() + " <-> " + ml.getCode());
+                if(!moduleLeipzig.getCode().equals(mLDTO.getCode()))
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Module Code doesn't match: " + mLDTO.getName() + " <-> " + mLDTO.getCode());
 
-                modulesLeipzigToDelete.remove(moduleLeipzig);
+                modulesLeipzigToDelete = removeModulesFromList(modulesLeipzigToDelete, moduleLeipzig);
                 modulesLeipzigToAdd.add(moduleLeipzig);
             }
         }
@@ -172,15 +172,25 @@ public class CourseLeipzigService {
         }
         
         for (ModuleLeipzig moduleLeipzig : courseLeipzig.getModulesLeipzigCourse()) {
-            modulesLeipzigToAdd.remove(moduleLeipzig);
+            modulesLeipzigToAdd = removeModulesFromList(modulesLeipzigToAdd, moduleLeipzig);
         }
-        
+
         for (ModuleLeipzig moduleLeipzig : modulesLeipzigToAdd) {
             LogUtil.printCourseLog(LogUtil.CourseType.ADDED, courseLeipzig.getName(), moduleLeipzig.getName());
-            courseLeipzig.setModulesLeipzigCourse(modulesLeipzigToAdd);
+            courseLeipzig.addModulesLeipzig(moduleLeipzig);
         }
 
         courseLeipzigRepository.save(courseLeipzig);
         return courseLeipzig.getName();
+    }
+
+    private List<ModuleLeipzig> removeModulesFromList(List<ModuleLeipzig> moduleList, ModuleLeipzig moduleLeipzig) {
+        for (int i = 0; i < moduleList.size(); i++) {
+            ModuleLeipzig mL = moduleList.get(i);
+            if (moduleLeipzig.getName().equals(mL.getName())) {
+                moduleList.remove(i);
+            }
+        }
+        return moduleList;
     }
 }
