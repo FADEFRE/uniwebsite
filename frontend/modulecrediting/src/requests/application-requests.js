@@ -25,6 +25,10 @@ function createBasicFormData(courseLeipzig, basicConnectionObjects) {
                 );
                 formData.append(
                     `modulesConnections[${connectionIndex}].externalModules[${externalModuleIndex}].university`,
+                    externalModule.externalCourse
+                );
+                formData.append(
+                    `modulesConnections[${connectionIndex}].externalModules[${externalModuleIndex}].university`,
                     externalModule.university
                 );
                 formData.append(
@@ -187,6 +191,10 @@ function postApplication(course, applicationObjects) {
                 formData.append(
                     `modulesConnections[${connectionIndex}].externalModules[${externalModuleIndex}].name`,
                     externalModule.name
+                );
+                formData.append(
+                    `modulesConnections[${connectionIndex}].externalModules[${externalModuleIndex}].university`,
+                    externalModule.externalCourse
                 );
                 formData.append(
                     `modulesConnections[${connectionIndex}].externalModules[${externalModuleIndex}].university`,
