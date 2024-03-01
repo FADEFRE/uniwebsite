@@ -53,6 +53,11 @@ const selectableModules = computed(() => {
   return props.options.filter(m => !selectedModules.value.includes(m))
 })
 
+const emptyMessage = computed(() => {
+  if (props.options.length > 0) return "Alle Module sind ausgewählt"
+  else return "Studiengang auswählen"
+})
+
 defineExpose({
   selectedModules
 })
@@ -69,7 +74,7 @@ defineExpose({
         <CustomDropdown
             filter
             placeholder="Modul auswählen"
-            emptyMessage="Studiengang auswählen"
+            :emptyMessage="emptyMessage"
             emptyFilterMessage="Modul nicht gefunden"
             :options="selectableModules"
             @change="e => addSelectedModule(e.value)"
