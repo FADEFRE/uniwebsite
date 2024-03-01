@@ -25,6 +25,7 @@ import SideInfoStudyOffice from "@/components/side-info/SideInfoStudyOffice.vue"
 import ApplicationInfoBox from "@/components/info-box/ApplicationInfoBox.vue";
 import { getCoursesLeipzigName, getModulesByCourse } from "@/requests/module-course-requests";
 import { postApplication } from "@/requests/application-requests";
+import CustomDropdown from "@/components/util/CustomDropdown.vue";
 
 const creationDate = new Date()
 
@@ -82,12 +83,13 @@ const triggerPostApplication = () => {
 
       <ApplicationOverview :creation-date="getFormattedDate(creationDate)" :last-edited-date="undefined"
                            :decision-date="undefined" status="NEU">
-        <Dropdown v-model="selectedCourse" :options="courses" placeholder="Studiengang wählen"
-                  @change="setSelectableModules" :class="{ 'invalid': !courseValid }">
-          <template #dropdownicon>
-            <ArrowIcon direction="down" />
-          </template>
-        </Dropdown>
+        <CustomDropdown
+            placeholder="Studiengang wählen"
+            :options="courses"
+            v-model="selectedCourse"
+            @change="setSelectableModules"
+            :class="{ 'invalid': !courseValid }"
+        />
         <small v-if="!courseValid" class="invalid-text">Es muss ein Studiengang ausgewählt werden</small>
       </ApplicationOverview>
 

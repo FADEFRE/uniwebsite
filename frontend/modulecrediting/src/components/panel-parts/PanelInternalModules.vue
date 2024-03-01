@@ -17,6 +17,7 @@ displays:
 import ArrowIcon from "@/assets/icons/ArrowIcon.vue";
 import TrashIcon from "@/assets/icons/TrashIcon.vue";
 import { ref } from "vue";
+import CustomDropdown from "@/components/util/CustomDropdown.vue";
 
 const props = defineProps({
   allowSelect: {
@@ -62,21 +63,14 @@ defineExpose({
     <div class="screen-split">
 
       <div class="module-dropdown" v-if="allowSelect">
-        <Dropdown
+        <CustomDropdown
             filter
             placeholder="Modul auswählen"
             emptyMessage="Studiengang auswählen"
             emptyFilterMessage="Modul nicht gefunden"
             :options="options"
             @change="e => addSelectedModule(e.value)"
-        >
-          <template #filtericon>
-            <img class="search-icon" src="../../assets/icons/SearchIcon.svg">
-          </template>
-          <template #dropdownicon>
-            <ArrowIcon color="white" direction="down" />
-          </template>
-        </Dropdown>
+        />
       </div>
 
       <div class="module-list" :class="{ 'module-list-full': !allowSelect }">
