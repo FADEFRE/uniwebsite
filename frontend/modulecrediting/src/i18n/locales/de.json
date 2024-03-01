@@ -221,9 +221,10 @@
 
     "PanelExternalModulesItem": {
         "NameEmpty": "Modulname darf nicht leer sein",
-        "UniEmpty": "Universität darf nicht leer sein",
         "PointsNum": "Punkte müssen als Zahl angegeben werden",
         "CredSysEmpty": "Punktsystem darf nicht leer sein",
+        "UniEmpty": "Universität darf nicht leer sein",
+        "ExtCourseEmpty": "Studiengang darf nicht leer sein",
         "ChooseModuleDescription": "Modulbeschreibung auswählen",
         "ExtModule": "Externes Modul",
         "delete": "löschen"

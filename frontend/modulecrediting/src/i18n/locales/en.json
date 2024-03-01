@@ -212,9 +212,10 @@
 
     "PanelExternalModulesItem": {
         "NameEmpty": "Module name cannot be empty",
-        "UniEmpty": "University cannot be empty",
         "PointsNum": "Points must be specified as a number",
         "CredSysEmpty": "Credit system cannot be empty",
+        "UniEmpty": "University cannot be empty",
+        "ExtCourseEmpty": "Course cannot be empty",
         "ChooseModuleDescription": "Choose Module Description",
         "ExtModule": "External Module",
         "delete": "Delete"

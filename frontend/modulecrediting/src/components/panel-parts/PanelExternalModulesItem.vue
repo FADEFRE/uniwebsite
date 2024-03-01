@@ -47,13 +47,16 @@ const props = defineProps({
   name: {
     type: String
   },
-  university: {
-    type: String
-  },
   points: {
     type: Number
   },
   pointSystem: {
+    type: String
+  },
+  university: {
+    type: String
+  },
+  externalCourse: {
     type: String
   },
   selectedFile: {
@@ -66,9 +69,10 @@ const emit = defineEmits(['deleteSelf', 'change'])
 const id = props.id ? props.id : undefined
 
 const name = ref(props.name || "")
-const university = ref(props.university || "")
 const points = ref(props.points || "")
 const pointSystem = ref(props.pointSystem || "")
+const university = ref(props.university || "")
+const externalCourse = ref(props.externalCourse || "")
 
 const validatePointInput = () => {
   points.value = points.value.replace(/[^0-9]/g, '')
@@ -80,70 +84,72 @@ const selectedFile = computed(() => fileInput.value?.selectedFile)
 watch([name, university, points, pointSystem, selectedFile], () => emit('change'))
 
 const nameValid = ref(true)
-const universityValid = ref(true)
 const pointsValid = ref(true)
 const pointSystemValid = ref(true)
+const universityValid = ref(true)
+const externalCourseValid = ref(true)
 
 const numberRegExp = new RegExp('\\d+')
 
 const checkValidity = () => {
   // setting validity
   nameValid.value = Boolean(name.value)
-  universityValid.value = Boolean(university.value)
   pointsValid.value = numberRegExp.test(points.value)
   pointSystemValid.value = Boolean(pointSystem.value)
+  universityValid.value = Boolean(university.value)
+  externalCourseValid.value = Boolean(externalCourse.value)
   // cascading calls
   const fileValid = fileInput.value.checkValidity()
   // return
-  return nameValid.value && universityValid.value && pointsValid.value && pointSystemValid.value && fileValid.value
+  return nameValid.value && pointsValid.value && pointSystemValid.value && universityValid.value && externalCourseValid.value && fileValid.value
 }
 
 defineExpose({
-  id, name, university, points, pointSystem, selectedFile, checkValidity
+  id, name, points, pointSystem, university, externalCourse, selectedFile, checkValidity
 })
 </script>
 
 <template>
   <div class="external-modules-item">
-    <div class="screen-split">
-      <div class="left-side">
-        <div class="input-container">
-          <InputText :readonly="!allowTextEdit" type="text" placeholder="Modulname" v-model="name"
-            :class="{ 'invalid': !nameValid }" class="gray"/>
-          <small v-if="!nameValid" class="invalid-text">{{ $t('PanelExternalModulesItem.NameEmpty') }}</small>
-        </div>
-        <div class="input-container">
-          <InputText :readonly="!allowTextEdit" type="text" placeholder="Universität" v-model="university"
-            :class="{ 'invalid': !universityValid }" class="gray" />
-          <small v-if="!universityValid" class="invalid-text">{{ $t('PanelExternalModulesItem.UniEmpty') }}</small>
-        </div>
-      </div>
 
-      <div class="right-side">
-
-        <div class="point-container">
-          <div class="input-container">
-            <InputText :readonly="!allowTextEdit" type="text" placeholder="Punkte" v-model="points"
-              @input.prevent="validatePointInput" :class="{ 'invalid': !pointsValid }" class="gray"/>
-            <small v-if="!pointsValid" class="invalid-text">{{ $t('PanelExternalModulesItem.PointsNum') }}</small>
-          </div>
-
-          <div class="input-container">
-            <InputText :readonly="!allowTextEdit" type="text" placeholder="Punktesystem" v-model="pointSystem"
-              :class="{ 'invalid': !pointSystemValid }" class="gray"/>
-            <small v-if="!pointSystemValid" class="invalid-text">{{ $t('PanelExternalModulesItem.CredSysEmpty') }}</small>
-          </div>
-
-        </div>
-
-        <FileInput :readonly="!allowFileEdit" type="pdf" :selected-file="props.selectedFile" ref="fileInput">
-          {{ $t('PanelExternalModulesItem.ChooseModuleDescription') }}
-        </FileInput>
-      </div>
-
+    <div class="input-container">
+      <InputText :readonly="!allowTextEdit" type="text" placeholder="Modulname" v-model="name"
+        :class="{ 'invalid': !nameValid }" class="gray"/>
+      <small v-if="!nameValid" class="invalid-text">{{ $t('PanelExternalModulesItem.NameEmpty') }}</small>
     </div>
+
+    <div class="point-container">
+      <div class="input-container">
+        <InputText :readonly="!allowTextEdit" type="text" placeholder="Punkte" v-model="points"
+          @input.prevent="validatePointInput" :class="{ 'invalid': !pointsValid }" class="gray"/>
+        <small v-if="!pointsValid" class="invalid-text">{{ $t('PanelExternalModulesItem.PointsNum') }}</small>
+      </div>
+
+      <div class="input-container">
+        <InputText :readonly="!allowTextEdit" type="text" placeholder="Punktesystem" v-model="pointSystem"
+          :class="{ 'invalid': !pointSystemValid }" class="gray"/>
+        <small v-if="!pointSystemValid" class="invalid-text">{{ $t('PanelExternalModulesItem.CredSysEmpty') }}</small>
+      </div>
+    </div>
+
+    <div class="input-container">
+      <InputText :readonly="!allowTextEdit" type="text" placeholder="Universität" v-model="university"
+        :class="{ 'invalid': !universityValid }" class="gray" />
+      <small v-if="!universityValid" class="invalid-text">{{ $t('PanelExternalModulesItem.UniEmpty') }}</small>
+    </div>
+
+    <div class="input-container">
+      <InputText :readonly="!allowTextEdit" type="text" placeholder="Studiengang" v-model="externalCourse"
+        :class="{ 'invalid': !externalCourseValid }" class="gray"/>
+      <small v-if="!externalCourseValid" class="invalid-text">{{ $t('PanelExternalModulesItem.ExtCourseEmpty') }}</small>
+    </div>
+
+    <FileInput :readonly="!allowFileEdit" type="pdf" :selected-file="props.selectedFile" ref="fileInput">
+      {{ $t('PanelExternalModulesItem.ChooseModuleDescription') }}
+    </FileInput>
+
     <TrashIcon v-if="allowDelete" @click="emit('deleteSelf')" background-size="small"
-               :aria-label="`{{ $t('PanelExternalModulesItem.ExtModule') }} ${name || 'ohne Namen'} {{ $t('PanelExternalModulesItem.delete') }}`"/>
+               :aria-label="`${$t('PanelExternalModulesItem.ExtModule')} ${name || 'ohne Namen'} ${$t('PanelExternalModulesItem.delete')}`"/>
   </div>
 </template>
 
