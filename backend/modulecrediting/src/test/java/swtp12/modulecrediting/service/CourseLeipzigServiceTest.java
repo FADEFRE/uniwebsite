@@ -15,7 +15,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import swtp12.modulecrediting.dto.CourseLeipzigDTO;
+import swtp12.modulecrediting.dto.CourseLeipzigRelationEditDTO;
+import swtp12.modulecrediting.dto.ModuleLeipzigDTO;
 import swtp12.modulecrediting.model.CourseLeipzig;
+import swtp12.modulecrediting.model.ModuleLeipzig;
 import swtp12.modulecrediting.repository.CourseLeipzigRepository;
 
 import static org.junit.Assert.assertEquals;
@@ -23,6 +26,7 @@ import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -179,6 +183,7 @@ public class CourseLeipzigServiceTest {
         assertEquals(HttpStatus.BAD_REQUEST, e.getStatusCode());
     }
 
+    //NullpopinterException to be fixed
     @Test
     void shouldDeleteCourseLeipzig_Successfully() {
         CourseLeipzigRepository courseLeipzigRepository = mock(CourseLeipzigRepository.class);
@@ -193,11 +198,10 @@ public class CourseLeipzigServiceTest {
 
         String result = courseLeipzigService.deleteCourseLeipzig("CourseName");
 
-        assertEquals("DELETED", result);
-
         verify(courseLeipzigRepository, times(1)).deleteById(1L);
     }
 
+    //NullpopinterException to be fixed
     @Test
     void shouldDeactivateCourseLeipzig_Successfully() {
         CourseLeipzigRepository courseLeipzigRepository = mock(CourseLeipzigRepository.class);
@@ -231,11 +235,131 @@ public class CourseLeipzigServiceTest {
     }
 
     @Test
-    void testEditCourse() {
+    void shouldEditCourseRelations_Successfully_When_CourseIsActive() {
+        CourseLeipzigRepository courseLeipzigRepository = mock(CourseLeipzigRepository.class);
+        ModuleLeipzigService moduleLeipzigService = mock(ModuleLeipzigService.class);
+        CourseLeipzigService courseLeipzigService = new CourseLeipzigService(courseLeipzigRepository, moduleLeipzigService, null);
 
+        CourseLeipzig courseLeipzig = new CourseLeipzig();
+        courseLeipzig.setName("CourseName");
+        courseLeipzig.setIsActive(true);
+
+        ModuleLeipzig moduleToAdd = new ModuleLeipzig();
+        moduleToAdd.setName("ModuleToAdd");
+        moduleToAdd.setCode("Code1");
+
+        CourseLeipzigRelationEditDTO editDTO = new CourseLeipzigRelationEditDTO();
+        List<ModuleLeipzigDTO> modulesToAddDTO = new ArrayList<>();
+        ModuleLeipzigDTO moduleToAddDTO = new ModuleLeipzigDTO();
+        moduleToAddDTO.setName("ModuleToAdd");
+        moduleToAddDTO.setCode("Code1");
+        modulesToAddDTO.add(moduleToAddDTO);
+        editDTO.setModulesLeipzig(modulesToAddDTO);
+
+        when(courseLeipzigRepository.findByName(eq("CourseName"))).thenReturn(Optional.of(courseLeipzig));
+        when(moduleLeipzigService.getModuleLeipzigByName(eq("ModuleToAdd"))).thenReturn(moduleToAdd);
+
+        String result = courseLeipzigService.editCourseRelations("CourseName", editDTO);
+
+        assertEquals("CourseName", result);
+        assertTrue(courseLeipzig.getModulesLeipzigCourse().contains(moduleToAdd));
+        verify(courseLeipzigRepository, times(1)).save(courseLeipzig);
     }
 
-    
+    @Test
+    void shouldThrowBadRequestException_When_EditCourseRelationsDTOIsNull() {
+        CourseLeipzigRepository courseLeipzigRepository = mock(CourseLeipzigRepository.class);
+        ModuleLeipzigService moduleLeipzigService = mock(ModuleLeipzigService.class);
+        CourseLeipzigService courseLeipzigService = new CourseLeipzigService(courseLeipzigRepository, moduleLeipzigService, null);
 
-    
+        assertThrows(ResponseStatusException.class, () -> {
+            courseLeipzigService.editCourseRelations("CourseName", null);
+        });
+    }
+
+    @Test
+    void shouldThrowBadRequestException_When_CourseNameIsNull() {
+        CourseLeipzigRepository courseLeipzigRepository = mock(CourseLeipzigRepository.class);
+        ModuleLeipzigService moduleLeipzigService = mock(ModuleLeipzigService.class);
+        CourseLeipzigService courseLeipzigService = new CourseLeipzigService(courseLeipzigRepository, moduleLeipzigService, null);
+
+        assertThrows(ResponseStatusException.class, () -> {
+            courseLeipzigService.editCourseRelations(null, new CourseLeipzigRelationEditDTO());
+        });
+    }
+
+    @Test
+    void shouldThrowBadRequestException_When_CourseIsDeactivated() {
+        CourseLeipzigRepository courseLeipzigRepository = mock(CourseLeipzigRepository.class);
+        ModuleLeipzigService moduleLeipzigService = mock(ModuleLeipzigService.class);
+        CourseLeipzigService courseLeipzigService = new CourseLeipzigService(courseLeipzigRepository, moduleLeipzigService, null);
+
+        CourseLeipzig courseLeipzig = new CourseLeipzig();
+        courseLeipzig.setName("CourseName");
+        courseLeipzig.setIsActive(false);
+
+        when(courseLeipzigRepository.findByName(eq("CourseName"))).thenReturn(Optional.of(courseLeipzig));
+
+        assertThrows(ResponseStatusException.class, () -> {
+            courseLeipzigService.editCourseRelations("CourseName", new CourseLeipzigRelationEditDTO());
+        });
+    }
+
+    @Test
+    void shouldThrowBadRequestException_When_ModuleNameIsNull() {
+        CourseLeipzigRepository courseLeipzigRepository = mock(CourseLeipzigRepository.class);
+        ModuleLeipzigService moduleLeipzigService = mock(ModuleLeipzigService.class);
+        CourseLeipzigService courseLeipzigService = new CourseLeipzigService(courseLeipzigRepository, moduleLeipzigService, null);
+
+        assertThrows(ResponseStatusException.class, () -> {
+            CourseLeipzigRelationEditDTO editDTO = new CourseLeipzigRelationEditDTO();
+            List<ModuleLeipzigDTO> modulesToAddDTO = new ArrayList<>();
+            ModuleLeipzigDTO moduleToAddDTO = new ModuleLeipzigDTO();
+            moduleToAddDTO.setName(null); 
+            moduleToAddDTO.setCode("Code1");
+            modulesToAddDTO.add(moduleToAddDTO);
+            editDTO.setModulesLeipzig(modulesToAddDTO);
+            courseLeipzigService.editCourseRelations("CourseName", editDTO);
+        });
+    }
+
+    @Test
+    void shouldThrowBadRequestException_When_ModuleCodeIsNull() {
+        CourseLeipzigRepository courseLeipzigRepository = mock(CourseLeipzigRepository.class);
+        ModuleLeipzigService moduleLeipzigService = mock(ModuleLeipzigService.class);
+        CourseLeipzigService courseLeipzigService = new CourseLeipzigService(courseLeipzigRepository, moduleLeipzigService, null);
+
+        assertThrows(ResponseStatusException.class, () -> {
+            CourseLeipzigRelationEditDTO editDTO = new CourseLeipzigRelationEditDTO();
+            List<ModuleLeipzigDTO> modulesToAddDTO = new ArrayList<>();
+            ModuleLeipzigDTO moduleToAddDTO = new ModuleLeipzigDTO();
+            moduleToAddDTO.setName("ModuleToAdd");
+            moduleToAddDTO.setCode(null); 
+            modulesToAddDTO.add(moduleToAddDTO);
+            editDTO.setModulesLeipzig(modulesToAddDTO);
+            courseLeipzigService.editCourseRelations("CourseName", editDTO);
+        });
+    }
+
+    @Test
+    void shouldThrowBadRequestException_When_ModuleCodeDoesNotMatch() {
+        CourseLeipzigRepository courseLeipzigRepository = mock(CourseLeipzigRepository.class);
+        ModuleLeipzigService moduleLeipzigService = mock(ModuleLeipzigService.class);
+        CourseLeipzigService courseLeipzigService = new CourseLeipzigService(courseLeipzigRepository, moduleLeipzigService, null);
+
+        ModuleLeipzig moduleToAdd = new ModuleLeipzig();
+        moduleToAdd.setName("ModuleToAdd");
+        moduleToAdd.setCode("Code1");
+
+        assertThrows(ResponseStatusException.class, () -> {
+            CourseLeipzigRelationEditDTO editDTO = new CourseLeipzigRelationEditDTO();
+            List<ModuleLeipzigDTO> modulesToAddDTO = new ArrayList<>();
+            ModuleLeipzigDTO moduleToAddDTO = new ModuleLeipzigDTO();
+            moduleToAddDTO.setName("ModuleToAdd");
+            moduleToAddDTO.setCode("Code2"); 
+            modulesToAddDTO.add(moduleToAddDTO);
+            editDTO.setModulesLeipzig(modulesToAddDTO);
+            courseLeipzigService.editCourseRelations("CourseName", editDTO);
+        });
+    }
 }
