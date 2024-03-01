@@ -13,6 +13,7 @@ import swtp12.modulecrediting.dto.ModuleLeipzigDTO;
 import swtp12.modulecrediting.model.ModuleLeipzig;
 import swtp12.modulecrediting.model.ModulesConnection;
 import swtp12.modulecrediting.repository.ModuleLeipzigRepository;
+import swtp12.modulecrediting.util.LogUtil;
 
 
 
@@ -66,10 +67,42 @@ ModuleLeipzigRepository moduleLeipzigRepository;
     }
 
     public ModuleLeipzig findOrCreateNewModuleLeipzig(String name, String code) {
-        ModuleLeipzig moduleLeipzig = moduleLeipzigRepository.findByName(name).orElseGet(() -> {
-                return moduleLeipzigRepository.save(new ModuleLeipzig(name, code));
-            });
-        return moduleLeipzig;
+        Optional<ModuleLeipzig> moduleOptional = moduleLeipzigRepository.findByName(name);
+        if (!moduleOptional.isPresent()) {
+            if (code != null && !code.isBlank()) {
+                moduleLeipzigRepository.findByCode(code).ifPresent(m -> {
+                    m.setCode(m.getCode() + "toChange");
+                    moduleLeipzigRepository.save(m);
+                });
+            }
+            LogUtil.printModuleLog(LogUtil.ModuleType.CREATED, name, code, null, null);
+            return moduleLeipzigRepository.save(new ModuleLeipzig(name, code));
+        }
+        else {
+            ModuleLeipzig moduleLeipzig = moduleOptional.get();
+            if (!moduleLeipzig.getIsActive()) {
+                moduleLeipzig.setIsActive(true);
+                LogUtil.printModuleLog(LogUtil.ModuleType.REACTIVATED, name, code, null, null);
+            }
+            else {
+                LogUtil.printModuleLog(LogUtil.ModuleType.FOUND, name, code, null, null);
+            }
+            
+            if (code != null && !code.isBlank()) {
+                if (!moduleLeipzig.getCode().equals(code)) {
+                    moduleLeipzigRepository.findByCode(code).ifPresent(m -> {
+                        String newCode = m.getCode() + "toChange";
+                        LogUtil.printModuleLog(LogUtil.ModuleType.UPDATED, m.getName(), m.getCode(), m.getName(), newCode);
+                        m.setCode(newCode);
+                        moduleLeipzigRepository.save(m);
+                    });
+                    LogUtil.printModuleLog(LogUtil.ModuleType.UPDATED, name, moduleLeipzig.getCode(), name, code);
+                    moduleLeipzig.setCode(code);
+                    return moduleLeipzigRepository.save(moduleLeipzig);
+                }
+            }
+            return moduleLeipzig;
+        }
     }
 
     public String createModuleLeipzig(ModuleLeipzigDTO moduleLeipzigDTO) {
@@ -97,13 +130,14 @@ ModuleLeipzigRepository moduleLeipzigRepository;
             // reactivate
             moduleLeipzig.setIsActive(true);
             moduleLeipzig.setCode(moduleCode);
-            
+            LogUtil.printModuleLog(LogUtil.ModuleType.REACTIVATED, moduleLeipzig.getName(), moduleLeipzig.getCode(), null, null);
             moduleLeipzigRepository.save(moduleLeipzig);
             return moduleLeipzig.getName();
         }
 
         // create new module
         ModuleLeipzig moduleLeipzig = new ModuleLeipzig(moduleName, moduleCode);
+        LogUtil.printModuleLog(LogUtil.ModuleType.CREATED, moduleLeipzig.getName(), moduleLeipzig.getCode(), null, null);
         moduleLeipzigRepository.save(moduleLeipzig);
         return moduleLeipzig.getName();
     }
@@ -127,13 +161,14 @@ ModuleLeipzigRepository moduleLeipzigRepository;
 
         String moduleCode = "";
         if (!moduleLeipzigDTO.getCode().isBlank()) {
-            Optional<ModuleLeipzig> possibleConflictModuleCode = moduleLeipzigRepository.findByName(moduleLeipzigDTO.getCode());
-            if (possibleConflictModuleCode.isPresent())
+            Optional<ModuleLeipzig> possibleConflictModuleCode = moduleLeipzigRepository.findByCode(moduleLeipzigDTO.getCode());
+            if (possibleConflictModuleCode.isPresent() && possibleConflictModuleCode.get().getName().equals(name))
                 throw new ResponseStatusException(HttpStatus.CONFLICT, "Module with this code already exists");
             
             moduleCode = moduleLeipzigDTO.getCode();
         }
 
+        LogUtil.printModuleLog(LogUtil.ModuleType.UPDATED, name, moduleLeipzig.getCode(), moduleLeipzigDTO.getName(), moduleLeipzigDTO.getCode());
         moduleLeipzig.setName(moduleLeipzigDTO.getName());
         moduleLeipzig.setCode(moduleCode);
         moduleLeipzigRepository.save(moduleLeipzig);
@@ -148,12 +183,12 @@ ModuleLeipzigRepository moduleLeipzigRepository;
         moduleLeipzig.setIsActive(false);
 
         if (!checkIfModuleIsUsedInApplications(moduleLeipzig)) {
-            System.out.println("Delete Module Leipzig: " + moduleLeipzig.getName() + ", " + moduleLeipzig.getCode());
+            LogUtil.printModuleLog(LogUtil.ModuleType.DELETED, moduleLeipzig.getName(), moduleLeipzig.getCode(), null, null);
             moduleLeipzigRepository.deleteById(moduleLeipzig.getId());
             return "DELETED";
         }
 
-        System.out.println("Deactivate Module Leipzig: " + moduleLeipzig.getName() + ", " + moduleLeipzig.getCode());
+        LogUtil.printModuleLog(LogUtil.ModuleType.DEACTIVATED, moduleLeipzig.getName(), moduleLeipzig.getCode(), null, null);
         moduleLeipzigRepository.save(moduleLeipzig);
         return "DEACTIVATED";
     }

@@ -20,6 +20,7 @@ import swtp12.modulecrediting.model.User;
 import swtp12.modulecrediting.repository.RoleRepository;
 import swtp12.modulecrediting.repository.UserRepository;
 import swtp12.modulecrediting.util.IncorrectKeyOnDecryptException;
+import swtp12.modulecrediting.util.LogUtil;
 
 /**
  * {@link UserService} is a {@link Service} and provides the 
@@ -111,8 +112,7 @@ public class UserService {
         Optional<User> userCandidate = userRepository.findByUsername(registerRequest.getUsername());
         if(userCandidate.isPresent()) throw new ResponseStatusException(HttpStatus.CONFLICT, "Username already exists!");
 
-        Optional<Role> roleCandidate = roleRepository.findByRoleName(registerRequest.getRole());
-        if (!roleCandidate.isPresent()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Role does not exist!"); 
+        Role role = roleRepository.findByRoleName(registerRequest.getRole()).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Role does not exist!"));
 
         if (registerRequest.getUsername().contains(" ") || registerRequest.getPassword().contains(" ") || registerRequest.getPasswordConfirm().contains(" ") )
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username and password cannot include whitespaces"); 
@@ -130,8 +130,9 @@ public class UserService {
             true
         );
         
-        user.setRole(roleCandidate.get());
+        user.setRole(role);
         userRepository.save(user);
+        LogUtil.printUserLog(LogUtil.UserType.CREATED, user.getUsername(), user.getRole().getRoleName(), null, null);
         return "User registered successfully!";
     }
 
@@ -145,11 +146,11 @@ public class UserService {
         List<User> userAdmin = getAllUserWithRole("ROLE_ADMIN");
         if (userAdmin.size() == 1 && userAdmin.get(0).getUserId() == deleteRequest.getId()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "There has to be at least one admin user");
 
-        Optional<User> userDeleteOptional = userRepository.findById(deleteRequest.getId());
-        if(!userDeleteOptional.isPresent()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No user with this id found");
+        User userDelete = userRepository.findById(deleteRequest.getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "No user with this id found"));
 
-        userRepository.delete(userDeleteOptional.get());
-
+        
+        userRepository.delete(userDelete);
+        LogUtil.printUserLog(LogUtil.UserType.DELETED, userDelete.getUsername(), userDelete.getRole().getRoleName(), null, null);
         return "User deleted successfully!";
     }
 
@@ -188,14 +189,17 @@ public class UserService {
     }
 
     public String changeRole(EditUserDTO changeRequest) {
+        if(changeRequest.getId() == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User id cannot be null");
         if(changeRequest.getRole() == null || changeRequest.getRole().isBlank()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Role cannot be empty");
+        User user = identifyUser();
+        if (changeRequest.getId() == user.getUserId()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "You can't change your own Role");
+        Role role = roleRepository.findByRoleName(changeRequest.getRole()).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Role not found in database"));
+        
         User userDb = getUser(changeRequest.getId());
-        if (changeRequest.getId() == userDb.getUserId()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "You can't change your own Role");
-        Optional<Role> roleOptional = roleRepository.findByRoleName(changeRequest.getRole());
-        if (!roleOptional.isPresent()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found in database");
-        Role role = roleOptional.get();
+        Role oldRole = userDb.getRole();
         userDb.setRole(role);
         userRepository.save(userDb);
+        LogUtil.printUserLog(LogUtil.UserType.ROLE_CHANGED, userDb.getUsername(), oldRole.getRoleName(), null, userDb.getRole().getRoleName());
         return "Role changed successfully";
     }
 

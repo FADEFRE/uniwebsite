@@ -21,6 +21,7 @@ import swtp12.modulecrediting.model.CourseLeipzig;
 import swtp12.modulecrediting.model.EnumApplicationStatus;
 import swtp12.modulecrediting.model.ModulesConnection;
 import swtp12.modulecrediting.repository.ApplicationRepository;
+import swtp12.modulecrediting.util.LogUtil;
 
 
 @Service
@@ -46,6 +47,7 @@ public class ApplicationService {
         application.setModulesConnections(modulesConnections);
 
         application = applicationRepository.save(application);
+        LogUtil.printApplicationLog(LogUtil.ApplicationType.CREATED, application.getId());
         return application.getId();
     }
 
@@ -67,6 +69,7 @@ public class ApplicationService {
 
         application.addModulesConnections(modulesConnections);
         application = applicationRepository.save(application);
+        LogUtil.printApplicationLog(LogUtil.ApplicationType.REAPPLIED, application.getId());
         return application.getId();
     }
 
@@ -115,12 +118,26 @@ public class ApplicationService {
 
         if(containsFormalRejection) {
             application.setFullStatus(FORMFEHLER);
-        }else if(allDecisionsFinalEdited) {
+
+            applicationRepository.save(application);
+            LogUtil.printApplicationLog(LogUtil.ApplicationType.FORMAL_REJECTION, application.getId());
+            return application.getFullStatus();
+        }
+        else if(allDecisionsFinalEdited) {
             application.setFullStatus(ABGESCHLOSSEN);
             application.setDecisionDate(LocalDateTime.now());
             modulesConnectionService.deleteOriginalModulesConnections(application.getModulesConnections());
-        }else if(allDecisionSuggestionEdited) {
+
+            applicationRepository.save(application);
+            LogUtil.printApplicationLog(LogUtil.ApplicationType.FINISHED, application.getId());
+            return application.getFullStatus();
+        }
+        else if(allDecisionSuggestionEdited) {
             application.setFullStatus(PRÜFUNGSAUSSCHUSS);
+
+            applicationRepository.save(application);
+            LogUtil.printApplicationLog(LogUtil.ApplicationType.MOVED_TO_CHAIRMAN, application.getId());
+            return application.getFullStatus();
         }
 
         applicationRepository.save(application);
