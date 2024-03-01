@@ -48,8 +48,8 @@ const openPdf = () => {
       <div class="id-section">
         <div class="id-container">
           <h2 class="id">{{ formattedId }}</h2>
-          <div class="copy-icon-container" @click=copyId>
-            <CopyIcon v-if="isSupported" :disabled="copied"/>
+          <div @click="copyId" @keydown.enter="copyId" class="copy-icon-container" tabindex="0" aria-label="Kopieren der Vorgangsnummer">
+            <CopyIcon v-if="isSupported" :disabled="copied" />
           </div>
         </div>
         <p class="description-text">
@@ -108,6 +108,10 @@ const openPdf = () => {
   top: 0;
   right: 0;
   padding: spacing(s);
+
+  &:focus {
+    outline: 2.5px solid $dark-gray-hover;
+  }
 }
 
 .description-text {
