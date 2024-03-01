@@ -71,8 +71,6 @@ const points = ref(props.points || "")
 const pointSystem = ref(props.pointSystem || "")
 
 const validatePointInput = () => {
-  console.log(points.value)
-  console.log(points.value.replace(/[^0-9]/g, ''))
   points.value = points.value.replace(/[^0-9]/g, '')
 }
 

@@ -3,8 +3,7 @@ import { useRouter } from 'vue-router'
 import { ref } from 'vue'
 import SideInfoApplicationProcess from '@/components/side-info/SideInfoApplicationProcess.vue';
 import ButtonLink from '@/components/button/ButtonLink.vue';
-
-import {getApplicationExists} from "@/requests/application-requests";
+import { getApplicationExists } from "@/requests/application-requests";
 
 const router = useRouter()
 
