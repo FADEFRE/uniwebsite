@@ -37,12 +37,12 @@
     "AccountAdminCreate": {
         "CreateUser": "Benutzer erstellen",
         "Username": "Benutzername",
-        "UsernameEmpty": "Der Benutzername darf nicht leer sein",
+        "UsernameForbidden": "Dieser Benutzername ist nicht erlaubt",
         "UserExists": "Es existiert bereits ein Benutzer mit diesem Namen",
         "Password": "Passwort",
-        "PasswordEmpty": "Passwort darf nicht leer sein",
+        "PasswordForbidden": "Passwort ist nicht erlaubt",
         "ConfirmPassword": "Passwort bestätigen",
-        "ConfirmPasswordEmpty": "Passwort bestätigen darf nicht leer sein",
+        "ConfirmPasswordSame": "Die Passwörter müssen übereinstimmen",
         "CreateUserButton": "Benutzer erstellen"
     },
 
@@ -54,11 +54,11 @@
     "AccountSettings": {
         "Usersettings": "Benutzereinstellungen",
         "ChangeUsername": "Benutzername ändern",
-        "UsernameEmpty": "Der Benutzername darf nicht leer sein",
+        "UsernameForbidden": "Dieser Benutzername ist nicht erlaubt",
         "UsernameExists": "Benutzername existiert bereits",
         "save": "Speichern",
         "ChangePassword": "Passwort ändern",
-        "PasswordEmpty": "Das Passwort darf nicht leer sein",
+        "PasswordForbidden": "Das Passwort darf nicht leer sein",
         "PasswordConfirm": "Passwort bestätigen",
         "Passwordsame": "Die Passwörter müssen übereinstimmen"
     },
@@ -104,17 +104,17 @@
         "Explanation": "Wählen Sie den Studiengang aus, für den Sie sich Leistungen anrechnen lassen wollen. Tragen sie dann die Details der Leistungen ein. Hierfür können sie beliebig viele Modulzuweisungen hinzufügen.",
         "ShowExplanation": "Erklärung anzeigen",
         "ModuleAssignment": "Modulzuweisung",
-        "ForeignModule": "Ein oder mehrere Fremdmodule die als Modul(e) der Universität Leipzig angerechnet werden sollen.",
+        "ForeignModule": "Anzurechnende Module anderer Universitäten, die als Module der Universität Leipzig angerechnet werden sollen.",
         "belongingModules": "Es sollen nur konkret zusammengehörige Module in eine Modulzuweisung geschrieben werden.",
-        "multipleAssignments": "Für den gesamten Antrag können sie mehrere Modulzuweisungen hinzufügen.",
-        "Foreign": "Fremdmodul",
-        "exactModule": "Ein konkretes Modul, das an einer anderen Universität belegt wurde.",
+        "multipleAssignments": "Für den gesamten Antrag können Sie mehrere Modulzuweisungen hinzufügen.",
+        "Foreign": "Anzurechnende Module",
+        "exactModule": "Geben Sie ein oder mehrere Modul(e) an, die an einer anderen Universität absolviert wurden.",
         "FillFields": "Hierfür müssen die gegebenen Felder ausgefüllt werden.",
-        "CreditSystem": "Geben Sie das Punktesystem an (LP, ECTS oder ähnliches).",
-        "uploadPDF": "Als Modulbeschreibung muss eine PDF-Datei mit der offiziellen Beschreibung des einzelnen Modul hochgeladen werden.",
+        "CreditSystem": "Geben Sie das Punktesystem an (ECTS oder anderes).",
+        "uploadPDF": "Als Modulbeschreibung muss eine PDF-Datei mit der offiziellen Beschreibung des einzelnen Moduls hochgeladen werden.",
         "ModulesLeipzig": "Module der Universität Leipzig",
-        "ChoseModule": "Wählen sie ein oder mehrere Modul(e) aus, für die Sie ihre Leistungen anrechnen lassen wollen.",
-        "ChoseNone": "Sollten sie kein passendes Modul finden, besteht auch die Möglichkeit, keines auszuwählen.",
+        "ChoseModule": "Wählen Sie ein oder mehrere Modul(e) aus, für die Sie ihre Leistungen anrechnen lassen wollen.",
+        "ChoseNone": "Sollten Sie kein passendes Modul finden, besteht auch die Möglichkeit keines auszuwählen.",
         "Comment": "Kommentar",
         "FurtherInformation": "Hier können weitere Informationen zu dieser Modulzuweisung mitgeteilt werden, dies ist optional.",
         "ShowExample": "Beispiel anzeigen",
@@ -123,9 +123,9 @@
         "AutomataandLanguages": "Automaten und Sprachen",
         "Predictability": "Berechenbarkeit",
         "ModuleName": "Modulname 'Automaten und Berechenbarkeit'",
-        "UniHalle": "Universität 'Halle'",
-        "Credits": "Punkte '10'",
-        "CreditingSystem": "Punktsystem 'LP'"
+        "UniHalle": "Martin-Luther-Universität Halle-Wittenberg",
+        "Credits": "Punkte '10', Punktesystem 'LP'",
+        "ModuleDescription": "Modulbeschreibung: PDF-Datei mit der Beschreibung des Moduls Automaten und Berechenbarkeit"
     },
 
     "ManagementCreate": {
@@ -237,9 +237,10 @@
     "PanelInternalModules": {
         "ModulesUniLeipzig": "Module der Universität Leipzig",
         "ChooseModule": "Modul auswählen",
-        "ChooseCourse": "Studiengang auswählen",
+        "EmptyMessage": "leere Nachricht",
         "ModuleNotFound": "Modul nicht gefunden",
-        "NoModulesSelected": "Es sind keine Module der Universität Leipzig ausgewählt."
+        "NoModulesSelected": "Es sind keine Module der Universität Leipzig ausgewählt.",
+        "SelectableModules": "auswählbare Module"
     },
 
     "PanelHeader": {
