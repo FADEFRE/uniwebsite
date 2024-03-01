@@ -141,7 +141,7 @@ defineExpose({
           @change="emit('change')"
           ref="newModulesRef"
       />
-      <ButtonAdd @click="addNewModule">{{ $t('DateIcPanelExternalModules.AddModule') }}</ButtonAdd>
+      <ButtonAdd @click="addNewModule">{{ $t('PanelExternalModules.AddModule') }}</ButtonAdd>
     </div>
 
   </div>

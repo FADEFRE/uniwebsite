@@ -83,7 +83,7 @@ const triggerPostApplication = () => {
       <ApplicationOverview :creation-date="getFormattedDate(creationDate)" :last-edited-date="undefined"
                            :decision-date="undefined" status="NEU">
         <CustomDropdown
-            placeholder="$t('SubmitApplicationView.ChooseCourse')"
+            :placeholder="$t('SubmitApplicationView.ChooseCourse')"
             :options="courses"
             v-model="selectedCourse"
             @change="setSelectableModules"
