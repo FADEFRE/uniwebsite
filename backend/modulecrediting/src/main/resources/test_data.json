@@ -13,6 +13,7 @@
     "randExternalModules": [
         {
             "name": ["externer Testkurs ", "Academicum subiectum ab extra", "external testcourse"],
+            "externalCourse": ["test Course", "cursum temptare", "Kurs test"],
             "uni": ["test Uni", "schola temptare", "Uni test"],
             "points": [42,69,420,1337],
             "pointSystem": ["ECTS", "PI", "SIN", "COS"],

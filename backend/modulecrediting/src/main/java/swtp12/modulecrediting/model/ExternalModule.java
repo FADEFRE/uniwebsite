@@ -44,6 +44,9 @@ public class ExternalModule {
     @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class,Views.ApplicationLoginOverview.class})
     @NotBlank(message = "university must not be blank (empty String)")
     private String university;
+    @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class,Views.ApplicationLoginOverview.class})
+    @NotBlank(message = "externalCourse must not be blank (empty String)")
+    private String externalCourse;
 
     //Relation ExternalModule <-> PdfDocument
     @ManyToOne(cascade = CascadeType.ALL)
