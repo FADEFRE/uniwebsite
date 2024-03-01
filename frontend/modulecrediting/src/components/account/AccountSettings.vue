@@ -3,7 +3,7 @@ import { onBeforeMount, ref } from "vue";
 import { logout } from "@/router/logout"
 import ButtonLink from "@/components/button/ButtonLink.vue";
 import { getUserMe, putUserUsername, putUserPassword } from "@/requests/user-requests";
-import {passwordRegex, usernameRegex} from "@/config/regex";
+import { passwordRegex, usernameRegex } from "@/config/regex";
 
 const userId = ref()
 

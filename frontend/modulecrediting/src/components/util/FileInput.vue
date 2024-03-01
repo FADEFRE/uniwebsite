@@ -14,7 +14,7 @@ displays:
 import { ref } from "vue";
 import ButtonLink from "@/components/button/ButtonLink.vue";
 import FileIcon from "@/assets/icons/FileIcon.vue";
-import { url } from "@/url-config";
+import { url } from "@/config/url-config";
 
 const props = defineProps({
   readonly: {
@@ -85,15 +85,12 @@ const handleFiles = (e) => {
     const file = e.target.files[0]
     if (checkFile(file)) {
       selectedFile.value = file
-
-      console.log(selectedFile.value);
     }
   }
 }
 
 const dragOverHandler = (e) => {
   if (!props.readonly) e.currentTarget.classList.add('edit-container-highlight')
-  console.log(selectedFile.value);
 }
 
 const dragLeaveHandler = (e) => {
@@ -108,7 +105,6 @@ const dropHandler = (e) => {
     }
     e.currentTarget.classList.remove('edit-container-highlight')
   }
-  console.log(selectedFile.value);
 }
 
 const isValid = ref(true)

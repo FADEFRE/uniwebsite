@@ -15,7 +15,7 @@ import { parseRequestDate } from "@/utils/date-utils";
 import DateIcon from "@/assets/icons/DateIcon.vue";
 import PanelHeader from "@/components/panel-parts/PanelHeader.vue";
 import ModuleStatusIcon from "@/assets/icons/ModuleStatusIcon.vue";
-import {getRelatedModuleConnections} from "@/requests/application-requests";
+import { getRelatedModuleConnections } from "@/requests/application-requests";
 
 const props = defineProps({
   connectionId: {

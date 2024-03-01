@@ -1,33 +1,40 @@
 package swtp12.modulecrediting.service;
 
-import static swtp12.modulecrediting.model.EnumApplicationStatus.*;
-import static swtp12.modulecrediting.model.EnumModuleConnectionDecision.*;
 import static swtp12.modulecrediting.dto.EnumStatusChangeAllowed.*;
+import static swtp12.modulecrediting.model.EnumApplicationStatus.*;
+import static swtp12.modulecrediting.model.EnumModuleConnectionDecision.unedited;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import jakarta.transaction.Transactional;
-
-import swtp12.modulecrediting.dto.*;
-import swtp12.modulecrediting.model.*;
+import swtp12.modulecrediting.dto.ApplicationDTO;
+import swtp12.modulecrediting.dto.EnumStatusChangeAllowed;
+import swtp12.modulecrediting.model.Application;
+import swtp12.modulecrediting.model.CourseLeipzig;
+import swtp12.modulecrediting.model.EnumApplicationStatus;
+import swtp12.modulecrediting.model.ModulesConnection;
 import swtp12.modulecrediting.repository.ApplicationRepository;
+import swtp12.modulecrediting.util.LogUtil;
 
 
 @Service
 public class ApplicationService {
     @Autowired
     private ApplicationRepository applicationRepository;
-    @Autowired
-    ModulesConnectionService modulesConnectionService;
-    @Autowired
+    private ModulesConnectionService modulesConnectionService;
     private CourseLeipzigService courseLeipzigService;
+
+    public ApplicationService(@Lazy ModulesConnectionService modulesConnectionService, @Lazy CourseLeipzigService courseLeipzigService) {
+        this.modulesConnectionService = modulesConnectionService;
+        this.courseLeipzigService = courseLeipzigService;
+    }
 
     public String createApplication(ApplicationDTO applicationDTO) {
         String id = generateValidApplicationId();
@@ -40,6 +47,7 @@ public class ApplicationService {
         application.setModulesConnections(modulesConnections);
 
         application = applicationRepository.save(application);
+        LogUtil.printApplicationLog(LogUtil.ApplicationType.CREATED, application.getId());
         return application.getId();
     }
 
@@ -48,7 +56,7 @@ public class ApplicationService {
         Application application = getApplicationById(id);
 
         if(application.getFullStatus() != FORMFEHLER)
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only FORMFEHLER applications can be updated by student");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Only FORMFEHLER applications can be updated by student");
 
         application.setFullStatus(STUDIENBÜRO);
         application.setLastEditedDate(LocalDateTime.now());
@@ -61,6 +69,7 @@ public class ApplicationService {
 
         application.addModulesConnections(modulesConnections);
         application = applicationRepository.save(application);
+        LogUtil.printApplicationLog(LogUtil.ApplicationType.REAPPLIED, application.getId());
         return application.getId();
     }
 
@@ -109,41 +118,47 @@ public class ApplicationService {
 
         if(containsFormalRejection) {
             application.setFullStatus(FORMFEHLER);
-        }else if(allDecisionsFinalEdited) {
+
+            applicationRepository.save(application);
+            LogUtil.printApplicationLog(LogUtil.ApplicationType.FORMAL_REJECTION, application.getId());
+            return application.getFullStatus();
+        }
+        else if(allDecisionsFinalEdited) {
             application.setFullStatus(ABGESCHLOSSEN);
             application.setDecisionDate(LocalDateTime.now());
             modulesConnectionService.deleteOriginalModulesConnections(application.getModulesConnections());
-        }else if(allDecisionSuggestionEdited) {
+
+            applicationRepository.save(application);
+            LogUtil.printApplicationLog(LogUtil.ApplicationType.FINISHED, application.getId());
+            return application.getFullStatus();
+        }
+        else if(allDecisionSuggestionEdited) {
             application.setFullStatus(PRÜFUNGSAUSSCHUSS);
+
+            applicationRepository.save(application);
+            LogUtil.printApplicationLog(LogUtil.ApplicationType.MOVED_TO_CHAIRMAN, application.getId());
+            return application.getFullStatus();
         }
 
         applicationRepository.save(application);
         return application.getFullStatus();
     }
 
-    // helper methos to update applicaiton status
-    boolean allDecisionSuggestionUnedited(Application application) {
-        boolean allDecisionSuggestionUnedited = true;
-        for(ModulesConnection m : application.getModulesConnections()) {
-            if(m.getDecisionSuggestion() != unedited)  allDecisionSuggestionUnedited = false;
-        }
-        return allDecisionSuggestionUnedited;
-    }
-    boolean allDecisionSuggestionEdited(Application application) {
+    private boolean allDecisionSuggestionEdited(Application application) {
         boolean allDecisionSuggestionEdited = true;
         for(ModulesConnection m : application.getModulesConnections()) {
             if(m.getDecisionSuggestion() == unedited)  allDecisionSuggestionEdited = false;
         }
         return allDecisionSuggestionEdited;
     }
-    boolean allDecisionsFinalEdited(Application application) {
+    private boolean allDecisionsFinalEdited(Application application) {
         boolean allDecisionsFinalEdited = true;
         for(ModulesConnection m : application.getModulesConnections()) {
             if(m.getDecisionFinal() == unedited) allDecisionsFinalEdited = false;
         }
         return allDecisionsFinalEdited;
     }
-    boolean containsFormalRejection(Application application) {
+    private boolean containsFormalRejection(Application application) {
         boolean containsFormalRejection = false;
         for(ModulesConnection m : application.getModulesConnections()) {
             if(m.getFormalRejection()) containsFormalRejection = true;
@@ -164,19 +179,15 @@ public class ApplicationService {
     }
 
     // Simple Getters for Application
-    // is used internally and for login requests
+    // is used internally
     public List<Application> getAllApplciations(){
         return applicationRepository.findAll();
     }
 
-    // is used internally and for login requests
+    // is used internally
     public Application getApplicationById(String id) {
-        Optional<Application> applicationOptional = applicationRepository.findById(id);
-        if(applicationOptional.isPresent()) {
-            return applicationOptional.get();
-        }else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Application with id: " + id + " not Found");
-        }
+        Application application = applicationRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Application with id: " + id + " not Found"));
+        return application;
     }
     // is used only for student request
     public Application getApplicationStudentById(String id) {

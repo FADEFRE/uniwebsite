@@ -15,7 +15,7 @@ const showExample = ref(false)
         Tragen sie dann die Details der Leistungen ein. Hierfür können sie beliebig viele Modulzuweisungen hinzufügen.
       </p>
     </div>
-    <Button @click="showInformation = !showInformation">
+    <Button @click="showInformation = !showInformation" class="info-box-button">
       Erklärung anzeigen
       <ArrowIcon :direction="showInformation ? 'up' : 'down'" color="red" />
     </Button>
@@ -23,26 +23,25 @@ const showExample = ref(false)
       <div class="explanation-item">
         <h3 class="h4">Modulzuweisung</h3>
         <ul class="points">
-          <li>Ein oder mehrere Fremdmodule die als Modul(e) der Universität Leipzig angerechnet werden sollen.</li>
+          <li>Anzurechnende Module anderer Universitäten, die als Module der Universität Leipzig angerechnet werden sollen.</li>
           <li>Es sollen nur konkret zusammengehörige Module in eine Modulzuweisung geschrieben werden.</li>
-          <li>Für den gesamten Antrag können sie mehrere Modulzuweisungen hinzufügen.</li>
+          <li>Für den gesamten Antrag können Sie mehrere Modulzuweisungen hinzufügen.</li>
         </ul>
       </div>
       <div class="explanation-item">
-        <h3 class="h4">Fremdmodul</h3>
+        <h3 class="h4">Anzurechnende Module</h3>
         <ul class="points">
-          <li>Ein konkretes Modul, das an einer anderen Universität belegt wurde.</li>
+          <li>Geben Sie ein oder mehrere Modul(e) an, die an einer anderen Universität absolviert wurden.</li>
           <li>Hierfür müssen die gegebenen Felder ausgefüllt werden.</li>
-          <li>Geben Sie das Punktesystem an (LP, ECTS oder ähnliches).</li>
-          <li>Als Modulbeschreibung muss eine PDF-Datei mit der offiziellen Beschreibung des einzelnen Modul
-            hochgeladen werden.</li>
+          <li>Geben Sie das Punktesystem an (ECTS oder anderes).</li>
+          <li>Als Modulbeschreibung muss eine PDF-Datei mit der offiziellen Beschreibung des einzelnen Moduls hochgeladen werden.</li>
         </ul>
       </div>
       <div class="explanation-item">
         <h3 class="h4">Module der Universität Leipzig</h3>
         <ul class="points">
-          <li>Wählen sie ein oder mehrere Modul(e) aus, für die Sie ihre Leistungen anrechnen lassen wollen.</li>
-          <li>Sollten sie kein passendes Modul finden, besteht auch die Möglichkeit, keines auszuwählen.</li>
+          <li>Wählen Sie ein oder mehrere Modul(e) aus, für die Sie ihre Leistungen anrechnen lassen wollen.</li>
+          <li>Sollten Sie kein passendes Modul finden, besteht auch die Möglichkeit keines auszuwählen.</li>
         </ul>
       </div>
       <div class="explanation-item">
@@ -52,25 +51,30 @@ const showExample = ref(false)
         </ul>
       </div>
     </div>
-    <Button @click="showExample = !showExample">
+    <Button @click="showExample = !showExample" class="info-box-button">
       Beispiel anzeigen
       <ArrowIcon :direction="showExample ? 'up' : 'down'" color="red" />
     </Button>
     <div v-if="showExample" class="explanation-expanded-container">
       <div class="explanation-item">
         <h3 class="h4">
-          Modulzuweisung: "Automaten und Berechenbarkeit
-          <ArrowIcon direction="right" color="red" aria-label="wird angerechnet für" />
-          Automaten und Sprachen, Berechenbarkeit"
+          Modulzuweisung
         </h3>
+        <ul class="points">
+          <li>
+            "Automaten und Berechenbarkeit
+            <ArrowIcon direction="right" color="red" aria-label="wird angerechnet für" />
+            Automaten und Sprachen, Berechenbarkeit"
+          </li>
+        </ul>
       </div>
       <div class="explanation-item">
-        <h4>Fremdmodul</h4>
+        <h4>Anzurechnende Module</h4>
         <ul class="points">
           <li>Modulname "Automaten und Berechenbarkeit"</li>
-          <li>Universität "Halle"</li>
-          <li>Punkte "10"</li>
-          <li>Punktsystem "LP"</li>
+          <li>Universität "Martin-Luther-Universität Halle-Wittenberg"</li>
+          <li>Punkte "10", Punktesystem "LP"</li>
+          <li>Modulbeschreibung: PDF-Datei mit der Beschreibung des Moduls Automaten und Berechenbarkeit</li>
         </ul>
       </div>
       <div class="explanation-item">
@@ -95,8 +99,8 @@ const showExample = ref(false)
 }
 .explanation-expanded-container {
   @include verticalList(s);
-  border-bottom: 2px solid $dark-gray;
+  // border-bottom: 2px solid $dark-gray;
   margin-bottom: spacing(s);
-  padding-bottom: spacing(s);
+  padding: spacing(xs);
 }
 </style>

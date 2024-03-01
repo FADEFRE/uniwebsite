@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -13,17 +13,19 @@ import swtp12.modulecrediting.dto.ModuleLeipzigDTO;
 import swtp12.modulecrediting.model.ModuleLeipzig;
 import swtp12.modulecrediting.model.ModulesConnection;
 import swtp12.modulecrediting.repository.ModuleLeipzigRepository;
-import swtp12.modulecrediting.repository.ModulesConnectionRepository;
+import swtp12.modulecrediting.util.LogUtil;
 
 
 
 @Service
 public class ModuleLeipzigService {
-    @Autowired
-    private ModuleLeipzigRepository moduleLeipzigRepository;
+ModuleLeipzigRepository moduleLeipzigRepository;
+    private ModulesConnectionService modulesConnectionService;
 
-    @Autowired
-    private ModulesConnectionRepository modulesConnectionRepository;
+    public ModuleLeipzigService(ModuleLeipzigRepository moduleLeipzigRepository, @Lazy ModulesConnectionService modulesConnectionService) {
+        this.moduleLeipzigRepository = moduleLeipzigRepository;
+        this.modulesConnectionService = modulesConnectionService;
+    }
 
     // used for application update
     public void updateRelationModulesConnectionToModulesLeipzig(ModulesConnection modulesConnection, List<ModuleLeipzigDTO> modulesLeipzigDTO) {
@@ -39,15 +41,15 @@ public class ModuleLeipzigService {
         }
     }
 
-    public List<ModuleLeipzig> getModulesLeipzig() {
+    public List<ModuleLeipzig> getAllModulesLeipzig() {
         return moduleLeipzigRepository.findAll();
     }
 
-    public ArrayList<ModuleLeipzig> getModulesLeipzigByNames(List<ModuleLeipzigDTO> moduleNamesLeipzig) {
+    public List<ModuleLeipzig> getModulesLeipzigByNames(List<ModuleLeipzigDTO> moduleNamesLeipzig) {
         if(moduleNamesLeipzig == null || moduleNamesLeipzig.size() == 0)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No Module Leipzig Names provided");
 
-        ArrayList<ModuleLeipzig> modulesLeipzig = new ArrayList<>();
+        List<ModuleLeipzig> modulesLeipzig = new ArrayList<>();
         for(ModuleLeipzigDTO ml : moduleNamesLeipzig) {
             modulesLeipzig.add(getModuleLeipzigByName(ml.getName()));
         }
@@ -55,11 +57,52 @@ public class ModuleLeipzigService {
     }
 
     public ModuleLeipzig getModuleLeipzigByName(String name) {
-        Optional<ModuleLeipzig> moduleLeipzig = moduleLeipzigRepository.findByName(name);
-        if(moduleLeipzig.isPresent())
-            return moduleLeipzig.get();
+        ModuleLeipzig moduleLeipzig = moduleLeipzigRepository.findByName(name).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Module Leipzig not found with moduleName: " + name));
+        return moduleLeipzig;
+    }
 
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Module Leipzig not found with moduleName: " + name);
+    public String getModuleLeipzigNameById(Long id) {
+        ModuleLeipzig moduleLeipzig = moduleLeipzigRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Course Leipzig not found with given id: " + id));
+        return moduleLeipzig.getName();
+    }
+
+    public ModuleLeipzig findOrCreateNewModuleLeipzig(String name, String code) {
+        Optional<ModuleLeipzig> moduleOptional = moduleLeipzigRepository.findByName(name);
+        if (!moduleOptional.isPresent()) {
+            if (code != null && !code.isBlank()) {
+                moduleLeipzigRepository.findByCode(code).ifPresent(m -> {
+                    m.setCode(m.getCode() + "toChange");
+                    moduleLeipzigRepository.save(m);
+                });
+            }
+            LogUtil.printModuleLog(LogUtil.ModuleType.CREATED, name, code, null, null);
+            return moduleLeipzigRepository.save(new ModuleLeipzig(name, code));
+        }
+        else {
+            ModuleLeipzig moduleLeipzig = moduleOptional.get();
+            if (!moduleLeipzig.getIsActive()) {
+                moduleLeipzig.setIsActive(true);
+                LogUtil.printModuleLog(LogUtil.ModuleType.REACTIVATED, name, code, null, null);
+            }
+            else {
+                LogUtil.printModuleLog(LogUtil.ModuleType.FOUND, name, code, null, null);
+            }
+            
+            if (code != null && !code.isBlank()) {
+                if (!moduleLeipzig.getCode().equals(code)) {
+                    moduleLeipzigRepository.findByCode(code).ifPresent(m -> {
+                        String newCode = m.getCode() + "toChange";
+                        LogUtil.printModuleLog(LogUtil.ModuleType.UPDATED, m.getName(), m.getCode(), m.getName(), newCode);
+                        m.setCode(newCode);
+                        moduleLeipzigRepository.save(m);
+                    });
+                    LogUtil.printModuleLog(LogUtil.ModuleType.UPDATED, name, moduleLeipzig.getCode(), name, code);
+                    moduleLeipzig.setCode(code);
+                    return moduleLeipzigRepository.save(moduleLeipzig);
+                }
+            }
+            return moduleLeipzig;
+        }
     }
 
     public String createModuleLeipzig(ModuleLeipzigDTO moduleLeipzigDTO) {
@@ -87,13 +130,14 @@ public class ModuleLeipzigService {
             // reactivate
             moduleLeipzig.setIsActive(true);
             moduleLeipzig.setCode(moduleCode);
-            
+            LogUtil.printModuleLog(LogUtil.ModuleType.REACTIVATED, moduleLeipzig.getName(), moduleLeipzig.getCode(), null, null);
             moduleLeipzigRepository.save(moduleLeipzig);
             return moduleLeipzig.getName();
         }
 
         // create new module
         ModuleLeipzig moduleLeipzig = new ModuleLeipzig(moduleName, moduleCode);
+        LogUtil.printModuleLog(LogUtil.ModuleType.CREATED, moduleLeipzig.getName(), moduleLeipzig.getCode(), null, null);
         moduleLeipzigRepository.save(moduleLeipzig);
         return moduleLeipzig.getName();
     }
@@ -117,13 +161,14 @@ public class ModuleLeipzigService {
 
         String moduleCode = "";
         if (!moduleLeipzigDTO.getCode().isBlank()) {
-            Optional<ModuleLeipzig> possibleConflictModuleCode = moduleLeipzigRepository.findByName(moduleLeipzigDTO.getCode());
-            if (possibleConflictModuleCode.isPresent())
+            Optional<ModuleLeipzig> possibleConflictModuleCode = moduleLeipzigRepository.findByCode(moduleLeipzigDTO.getCode());
+            if (possibleConflictModuleCode.isPresent() && possibleConflictModuleCode.get().getName().equals(name))
                 throw new ResponseStatusException(HttpStatus.CONFLICT, "Module with this code already exists");
             
             moduleCode = moduleLeipzigDTO.getCode();
         }
 
+        LogUtil.printModuleLog(LogUtil.ModuleType.UPDATED, name, moduleLeipzig.getCode(), moduleLeipzigDTO.getName(), moduleLeipzigDTO.getCode());
         moduleLeipzig.setName(moduleLeipzigDTO.getName());
         moduleLeipzig.setCode(moduleCode);
         moduleLeipzigRepository.save(moduleLeipzig);
@@ -138,18 +183,18 @@ public class ModuleLeipzigService {
         moduleLeipzig.setIsActive(false);
 
         if (!checkIfModuleIsUsedInApplications(moduleLeipzig)) {
-            System.out.println("Delete Module Leipzig: " + moduleLeipzig.getName() + ", " + moduleLeipzig.getCode());
+            LogUtil.printModuleLog(LogUtil.ModuleType.DELETED, moduleLeipzig.getName(), moduleLeipzig.getCode(), null, null);
             moduleLeipzigRepository.deleteById(moduleLeipzig.getId());
             return "DELETED";
         }
 
-        System.out.println("Deactivate Module Leipzig: " + moduleLeipzig.getName() + ", " + moduleLeipzig.getCode());
+        LogUtil.printModuleLog(LogUtil.ModuleType.DEACTIVATED, moduleLeipzig.getName(), moduleLeipzig.getCode(), null, null);
         moduleLeipzigRepository.save(moduleLeipzig);
         return "DEACTIVATED";
     }
 
     public Boolean checkIfModuleIsUsedInApplications(ModuleLeipzig moduleLeipzig) {
-        List<ModulesConnection> modulesConnections = modulesConnectionRepository.findAll();
+        List<ModulesConnection> modulesConnections = modulesConnectionService.getAllModulesConnections();
 
         if (modulesConnections.isEmpty()) return false;
 

@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.apache.commons.text.similarity.LevenshteinDistance;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -23,13 +23,19 @@ import swtp12.modulecrediting.repository.ModulesConnectionRepository;
 
 @Service
 public class ModulesConnectionService {
-    @Autowired
     ModulesConnectionRepository modulesConnectionRepository;
-    @Autowired
     ExternalModuleService externalModuleService;
-    @Autowired
     ModuleLeipzigService moduleLeipzigService;
+    
+    public ModulesConnectionService(ModulesConnectionRepository modulesConnectionRepository, @Lazy ExternalModuleService externalModuleService, @Lazy ModuleLeipzigService moduleLeipzigService) {
+        this.modulesConnectionRepository = modulesConnectionRepository;
+        this.externalModuleService = externalModuleService;
+        this.moduleLeipzigService = moduleLeipzigService;
+    }
 
+    public List<ModulesConnection> getAllModulesConnections() {
+        return modulesConnectionRepository.findAll();
+    }
 
     public ModulesConnection getModulesConnectionById(Long id) {
         Optional<ModulesConnection> modulesConnection = modulesConnectionRepository.findById(id);
@@ -56,7 +62,7 @@ public class ModulesConnectionService {
         return modulesConnections;
     }
 
-    public void updateModulesConnection(List<ModulesConnectionDTO> modulesConnectionsDTO, String userRole) { // todo: change name for login specfiic update
+    public void updateModulesConnection(List<ModulesConnectionDTO> modulesConnectionsDTO, String userRole) {
         if(modulesConnectionsDTO == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Modules Connections must not be null");
 
         for(ModulesConnectionDTO mcuDTO : modulesConnectionsDTO) {
@@ -89,9 +95,8 @@ public class ModulesConnectionService {
                     modulesConnection.setDecisionFinal(mcuDTO.getDecisionFinal());
             }
 
-            // TODO: create function
             // handle module applications changes
-            if(mcuDTO.getExternalModules() == null)  throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You cant delete all External Modules of a Modules Connection " + mcuDTO.getId());
+            if(mcuDTO.getExternalModules() == null)  throw new ResponseStatusException(HttpStatus.CONFLICT, "You cant delete all External Modules of a Modules Connection " + mcuDTO.getId());
 
             // check difference saved external modules <-> external modules sent in dto => remove deleted external modules
             List<Long> savedIdList = getIdListFromModuleConnection(modulesConnection);

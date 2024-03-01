@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import ButtonLink from "@/components/button/ButtonLink.vue";
-import {postCourseLeipzig, postModuleLeipzig} from "@/requests/module-course-requests";
+import { postCourseLeipzig, postModuleLeipzig } from "@/requests/module-course-requests";
 
 const props = defineProps({
     type: {
