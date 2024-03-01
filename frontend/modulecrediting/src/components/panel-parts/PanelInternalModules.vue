@@ -76,7 +76,7 @@ defineExpose({
             :placeholder="$t('PanelInternalModules.ChooseModule')"
             :emptyMessage="$t('PanelInternalModules.EmptyMessage')"
             :emptyFilterMessage="$t('PanelInternalModules.ModuleNotFound')"
-            :options="$t('PanelInternalModules.SelectableModules')"
+            :options="selectableModules"
             @change="e => addSelectedModule(e.value)"
         />
       </div>
