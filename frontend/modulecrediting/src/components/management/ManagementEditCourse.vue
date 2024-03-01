@@ -9,6 +9,7 @@ import {
   getModulesNameCodeByCourse,
   putCourseLeipzigEdit
 } from "@/requests/module-course-requests";
+import CustomDropdown from "@/components/util/CustomDropdown.vue";
 
 const courses = ref()
 const selectedCourse = ref()
@@ -103,12 +104,14 @@ const saveCourseLeipzig = () => {
   <div class="management-edit-course-container">
     <div class="select-header-container">
       <h2>STUDIENGANG BEARBEITEN</h2>
-      <Dropdown v-model="selectedCourse" :options="courses" placeholder="Studiengang wählen" @change="setSelectedModules"
-        class="dropdown" v-if="!selectedCourse">
-        <template #dropdownicon>
-          <ArrowIcon color="white" direction="down" />
-        </template>
-      </Dropdown>
+      <CustomDropdown
+          v-if="!selectedCourse"
+          placeholder="Studiengang wählen"
+          :options="courses"
+          v-model="selectedCourse"
+          @change="setSelectedModules"
+          class="dropdown"
+      />
       <div v-else class="saving-buttons-container">
         <ButtonLink @click="discardEditCourseChanges">Änderung verwerfen</ButtonLink>
         <ButtonLink @click="saveCourseLeipzig" :redButton="true">Speichern</ButtonLink>

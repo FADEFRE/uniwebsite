@@ -14,9 +14,8 @@ displays:
 -->
 
 <script setup>
-import ArrowIcon from "@/assets/icons/ArrowIcon.vue";
-import TrashIcon from "@/assets/icons/TrashIcon.vue";
 import { ref } from "vue";
+import TrashIcon from "@/assets/icons/TrashIcon.vue";
 import CustomDropdown from "@/components/util/CustomDropdown.vue";
 
 const props = defineProps({
