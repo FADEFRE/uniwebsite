@@ -6,13 +6,13 @@ const props = defineProps(['header', 'text'])
     <div class="homepage-container">
         <div>
             <h2 v-if="header">{{ header }}</h2>
-            <h2 v-else>Platzhalter heading</h2>
+            <h2 v-else>{{ $t('HomepageContainer.PlaceholderHeading') }}</h2>
         </div>
         <div v-if="text">
             <p class="text-justify">{{ text }}</p>
         </div>
         <div v-else>
-            <p>Platzhalter Text</p>
+            <p>{{ $t('HomepageContainer.PlaceholderText') }}</p>
         </div>
         <div class="input-button-with-invalid-container">
             <slot></slot>

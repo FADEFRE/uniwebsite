@@ -11,7 +11,7 @@ slots:
 <template>
     <Button class="button-container">
       <slot></slot>
-      <img src="../../assets/icons/PlusIcon.svg" alt="">
+      <img src="../../assets/icons/PlusIcon.svg" :alt="$t('ButtonAdd.Add')">
     </Button>
 </template>
 

@@ -19,6 +19,7 @@ const props = defineProps({
     <svg :class="[direction, size, color]" class="arrow-icon"  viewBox="0 0 16 10" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path fill-rule="evenodd" clip-rule="evenodd"
             d="M15 2.57996L12.897 0.5L8 5.34094L3.10303 0.5L1 2.57996L8 9.5L15 2.57996Z"/>
+        <title>{{ $t('ArrowIcon.Arrow') }}</title>
     </svg>
 </template>
 

@@ -41,30 +41,30 @@ const triggerCreateUser = () => {
 <template>
   <div class="admin-create-container">
 
-    <h2>Benutzer erstellen</h2>
+    <h2>{{ $t('AccountAdminCreate.CreateUser') }}</h2>
     <div class="first-row">
       <div class="input-container">
-        <InputText type="text" placeholder="Benutzername" v-model="username"
+        <InputText type="text" :placeholder="$t('AccountAdminCreate.Username')" v-model="username"
                    class="button-height white" :class="{ 'invalid': usernameEmpty || createFailed }" />
-        <small v-if="usernameEmpty" class="invalid-text">Der Benutzername darf nicht leer sein</small>
-        <small v-if="createFailed" class="invalid-text">Es existiert bereits ein Benutzer mit diesem Namen</small>
+        <small v-if="usernameEmpty" class="invalid-text">{{ $t('AccountAdminCreate.UsernameEmpty') }}</small>
+        <small v-if="createFailed" class="invalid-text">{{ $t('AccountAdminCreate.UserExists') }}</small>
       </div>
       <RoleDropdown v-model="role" :invalid="roleEmpty" />
     </div>
     <div class="second-row">
       <div class="input-container">
-        <InputText type="text" placeholder="Passwort" v-model="password" class="white" :class="{ 'invalid': passwordEmpty }" />
-        <small v-if="passwordEmpty" class="invalid-text">Passwort darf nicht leer sein</small>
+        <InputText type="text" :placeholder="$t('AccountAdminCreate.Password')" v-model="password" class="white" :class="{ 'invalid': passwordEmpty }" />
+        <small v-if="passwordEmpty" class="invalid-text">{{ $t('AccountAdminCreate.PasswordEmpty') }}</small>
       </div>
       <div class="input-container">
-        <InputText type="text" placeholder="Passwort bestätigen" v-model="passwordConfirm" class="white" :class="{ 'invalid': passwordConfirmEmpty }" />
-        <small v-if="passwordConfirmEmpty" class="invalid-text">Passwort bestätigen darf nicht leer sein</small>
+        <InputText type="text" :placeholder="$t('AccountAdminCreate.ConfirmPassword')" v-model="passwordConfirm" class="white" :class="{ 'invalid': passwordConfirmEmpty }" />
+        <small v-if="passwordConfirmEmpty" class="invalid-text">{{ $t('AccountAdminCreate.ConfirmPasswordEmpty') }}</small>
       </div>
       
     </div>
 
 
-    <ButtonLink :redButton="true" @click="triggerCreateUser">Benutzer erstellen</ButtonLink>
+    <ButtonLink :redButton="true" @click="triggerCreateUser">{{ $t('AccountAdminCreate.CreateUserButton') }}</ButtonLink>
 
   </div>
 </template>

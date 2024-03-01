@@ -33,11 +33,11 @@ const props = defineProps({
         class="single-module">
         {{ externalModules.join(', ') }}
       </span>
-      <span v-else class="single-module">(Anzurechnende Module)</span>
+      <span v-else class="single-module">({{ $t('PanelHeader.ModulesToBeCredited') }})</span>
     </span>
 
     <span class="arrow-icon">
-      <ArrowIcon color="red" direction="right" aria-label="wird angerechnet für" />
+      <ArrowIcon color="red" direction="right" :aria-label="$t('PanelHeader.CreditedFor')" />
     </span>
 
     <span class="modules-container">
@@ -45,7 +45,7 @@ const props = defineProps({
         class="single-module">
         {{ internalModules.join(', ') }}
       </span>
-      <span v-else class="single-module">(Module der Universität Leipzig)</span>
+      <span v-else class="single-module">({{ $t('PanelHeader.ModulesUniLeipzig') }})</span>
     </span>
   </h3>
 </template>

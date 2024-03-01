@@ -109,7 +109,7 @@ defineExpose({
 <template>
   <div class="panel-container" id="exteral-modules-container">
 
-    <h4>Anzurechnende Module</h4>
+    <h4>{{ $t('PanelExternalModules.ModulesToBeCredited') }}</h4>
 
     <div v-if="existingModulesList" class="external-modules-list">
       <PanelExternalModulesItem
@@ -141,7 +141,7 @@ defineExpose({
           @change="emit('change')"
           ref="newModulesRef"
       />
-      <ButtonAdd @click="addNewModule">Fremdmodul hinzufügen</ButtonAdd>
+      <ButtonAdd @click="addNewModule">{{ $t('DateIcPanelExternalModules.AddModule') }}</ButtonAdd>
     </div>
 
   </div>

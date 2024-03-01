@@ -71,7 +71,7 @@ defineExpose({
     <template #icons>
       <ModuleStatusIcon v-if="connection['decisionFinal'] !== 'unedited'" :status-decision="connection['decisionFinal']" />
       <TrashIcon v-if="allowDelete" @click="emit('deleteSelf')" background-color="white"
-                 aria-label="Modulzuweisung löschen" />
+                 :aria-label="$t('StatusPanel.DeleteModule')" />
     </template>
 
     <div>
@@ -89,7 +89,7 @@ defineExpose({
         <div v-else>
           <PanelDecisionBlock v-if="connection['decisionFinal'] !== 'unedited'" :readonly="true"
             :display-decision="connection['decisionFinal']" :comment="connection['commentDecision']" />
-          <p v-else>Es wurde noch keine Entscheidung getroffen.</p>
+          <p v-else>{{ $t('StatusPanel.NotYetDecided') }}</p>
         </div>
       </PanelDecision>
     </div>

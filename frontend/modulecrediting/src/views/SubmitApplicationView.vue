@@ -74,7 +74,7 @@ const triggerPostApplication = () => {
 
 <template>
   <div class="main">
-    <h1 class="screen-reader-only">Antrag stellen</h1>
+    <h1 class="screen-reader-only">{{ $t('SubmitApplicationView.CreateApplication') }}</h1>
 
     <div class="content-container split">
 
@@ -82,13 +82,13 @@ const triggerPostApplication = () => {
 
       <ApplicationOverview :creation-date="getFormattedDate(creationDate)" :last-edited-date="undefined"
                            :decision-date="undefined" status="NEU">
-        <Dropdown v-model="selectedCourse" :options="courses" placeholder="Studiengang wählen"
+        <Dropdown v-model="selectedCourse" :options="courses" :placeholder="$t('SubmitApplicationView.ChooseCourse')"
                   @change="setSelectableModules" :class="{ 'invalid': !courseValid }">
           <template #dropdownicon>
             <ArrowIcon direction="down" />
           </template>
         </Dropdown>
-        <small v-if="!courseValid" class="invalid-text">Es muss ein Studiengang ausgewählt werden</small>
+        <small v-if="!courseValid" class="invalid-text">{{ $t('SubmitApplicationView.CourseEmpty') }}</small>
       </ApplicationOverview>
 
       <ApplicationPanel v-for="item in moduleConnections" :key="item" :selectable-modules="selectableModules"
@@ -96,8 +96,8 @@ const triggerPostApplication = () => {
                         @delete-self="deleteModuleConnection(item)" />
 
       <div class="application-buttons-container">
-        <ButtonAdd @click="addModuleConnection">Modulzuweisung hinzufügen</ButtonAdd>
-        <ButtonLink @click="triggerPostApplication" :redButton="true">Absenden</ButtonLink>
+        <ButtonAdd @click="addModuleConnection">{{ $t('SubmitApplicationView.AddModule') }}</ButtonAdd>
+        <ButtonLink @click="triggerPostApplication" :redButton="true">{{ $t('SubmitApplicationView.submit') }}</ButtonLink>
       </div>
     </div>
 

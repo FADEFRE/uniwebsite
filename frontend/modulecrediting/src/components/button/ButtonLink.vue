@@ -25,7 +25,7 @@ const props = defineProps({
         class="icon-hover-right"
     >
       <slot />
-      <ArrowIcon direction="right" :hover="true"/>
+      <ArrowIcon direction="right" :hover="true" :alt="$t('ButtonLink.Link')" />
     </Button>
 </template>
 

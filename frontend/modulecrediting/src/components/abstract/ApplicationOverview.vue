@@ -58,7 +58,7 @@ const triggerForward = () => {
 <template>
     <div :tabindex="adminSelectionView ? 0 : -1" @keydown.enter="triggerForward" @click="triggerForward"
          class="application-overview-container" :class="{ 'admin-selection-view': adminSelectionView }">
-        <h2 class="screen-reader-only">Antrag</h2>
+        <h2 class="screen-reader-only">{{ $t('ApplicationConnectionLinks.Overview') }}</h2>
         <div class="dates">
             <!-- Div-Block Creation Date -->
             <div v-if="creationDate" class="date-block">
@@ -84,7 +84,7 @@ const triggerForward = () => {
             <div v-if="id" class="vorgangsnummer-container info-container"
                 :class="{ 'admin-selection-view': adminSelectionView }">
                 <div class="vorgangsnummer-text overview-text white">
-                    Vorgangsnummer: {{ id || 'Placeholder for Vorgangsnummer' }}
+                    {{ $t('ApplicationOverview.CaseNumber') }}: {{ id || 'Placeholder for Vorgangsnummer' }}
                 </div>
             </div>
 

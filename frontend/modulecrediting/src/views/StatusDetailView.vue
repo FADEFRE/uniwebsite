@@ -98,45 +98,36 @@ const triggerSubmit = () => {
 
 <template>
   <div v-if="applicationData" class="main">
-    <h1 class="screen-reader-only">Status des Antrags</h1>
+    <h1 class="screen-reader-only">{{ $t('StatusDetailView.ApplicationStatus') }}</h1>
 
     <div class="content-container split">
 
       <div v-if="applicationData['fullStatus'] === 'FORMFEHLER'" class="application-info-container">
-        <h2>Formfehler</h2>
+        <h2>{{ $t('StatusDetailView.FormalMistake') }}</h2>
         <p class="text-justify">
-          Ihr Antrag wurde aufgrund von Formfehlern zurückgewiesen.
-          Es sind die Modulzuweisungen rot markiert, die Formfehler enthalten.
-          In der Modulzuweisung finden sie unten eine Erklärung des konkreten Fehlers.
-          Bitte korrigieren sie alle angegebenen Fehler.
-          Anschließend können sie ihren Antrag neu einreichen.
+          {{ $t('StatusDetailView.FormalMistakeExplanation') }}
         </p>
       </div>
 
       <div v-if="applicationData['fullStatus'] === 'ABGESCHLOSSEN'" class="application-info-container">
-        <h2>Wie geht es weiter?</h2>
+        <h2>{{ $t('StatusDetailView.WhatNext') }}</h2>
         <p class="text-justify">
-          Es wurde eine finale Entscheidung zu ihrem Antrag getroffen.
-          Dies ist nur eine Informationen über die Möglichkeit der Anrechnung.
-          Um sich ihre Leistungen offiziell anrechnen zu lassen, müssen sie zum Studienbüro gehen.
-          Bringen sie hierfür bitte alle relevanten Dokumente mit, die den Abschluss der anzurechnenden Leistungen
-          belegen.
-          Falls sie weitere Fragen zu ihrem Antrag haben, kontaktieren sie bitte das Studienbüro.
+          {{ $t('StatusDetailView.FinalDecisionExplanation') }}
         </p>
         <div class="legend-container">
-          <h3 class="h4">Legende</h3>
+          <h3 class="h4">{{ $t('StatusDetailView.legend') }}</h3>
           <ul>
             <li class="explanation-list-item">
               <ModuleStatusIcon status-decision="accepted" size="small"/>
-              <p>Anrechnung angenommen</p>
+              <p>{{ $t('StatusDetailView.CreditingAccepted') }}</p>
             </li>
             <li class="explanation-list-item">
               <ModuleStatusIcon status-decision="asExamCertificate" size="small"/>
-              <p>Anrechnung als Übungsschein</p>
+              <p>{{ $t('StatusDetailView.CreditingAsAdmission') }}</p>
             </li>
             <li class="explanation-list-item">
               <ModuleStatusIcon status-decision="denied" size="small"/>
-              <p>Anrechnung abgelehnt</p>
+              <p>{{ $t('StatusDetailView.CreditingRejected') }}</p>
             </li>
           </ul>
         </div>
@@ -163,14 +154,14 @@ const triggerSubmit = () => {
 
       <div class="application-buttons-container">
         <ButtonAdd v-if="applicationData['fullStatus'] === 'FORMFEHLER'" @click="addNewConnection">
-          Modulzuweisung hinzufügen
+          {{ $t('StatusDetailView.AddModule') }}
         </ButtonAdd>
         <ButtonLink v-if="applicationData['fullStatus'] === 'FORMFEHLER'" :redButton="true" @click="triggerSubmit">
-          Neu einreichen
+          {{ $t('StatusDetailView.Renew') }}
         </ButtonLink>
       </div>
       <ButtonDownloadVue @click="openSummaryDocument">
-        Antrag herunterladen
+        {{ $t('StatusDetailView.DownloadApplication') }}
       </ButtonDownloadVue>
     </div>
 

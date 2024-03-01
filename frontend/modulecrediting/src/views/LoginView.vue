@@ -26,25 +26,25 @@ const attemptLogin = () => {
   <div class="main centered">
     <div class="login-container">
       <div class="logo-container">
-        <img src="@/assets/Universität_Leipzig_logo.svg" alt="Logo" />
+        <img src="@/assets/Universität_Leipzig_logo.svg" :alt="$t('LoginView.Logo')" />
       </div>
       <div class="login-content">
-        <h1 class="login-heading">ANMELDUNG</h1>
+        <h1 class="login-heading">{{ $t('LoginView.LogIn') }}</h1>
 
         <div class="input-container">
-          <InputText type="text" placeholder="Benutzername" v-model="login_username" class="white"
+          <InputText type="text" :placeholder="$t('LoginView.Username')" v-model="login_username" class="white"
                      :class="{ 'invalid': usernameEmpty || styleInvalid }" />
-          <small v-if="usernameEmpty" class="invalid-text">Benutzername darf nicht leer sein</small>
+          <small v-if="usernameEmpty" class="invalid-text">{{ $t('LoginView.UsernameEmpty') }}</small>
 
-          <InputText type="password" placeholder="Passwort" v-model="login_password" class="white"
+          <InputText type="password" :placeholder="$t('LoginView.Password')" v-model="login_password" class="white"
                      :class="{ 'invalid': passwordEmpty || styleInvalid }" @keydown.enter.prevent="attemptLogin" />
-          <small v-if="passwordEmpty" class="invalid-text">Passwort darf nicht leer sein</small>
+          <small v-if="passwordEmpty" class="invalid-text">{{ $t('LoginView.PasswordEmpty') }}</small>
         </div>
 
         <div class="button-container">
-          <ButtonLink @click="attemptLogin" class="button-login">Anmelden</ButtonLink>
+          <ButtonLink @click="attemptLogin" class="button-login">{{ $t('LoginView.login') }}</ButtonLink>
         </div>
-        <small v-if="styleInvalid" class="invalid-text">Ungültige Anmeldedaten. Bitte versuche es erneut.</small>
+        <small v-if="styleInvalid" class="invalid-text">{{ $t('LoginView.InvalidData') }}</small>
       </div>
     </div>
   </div>

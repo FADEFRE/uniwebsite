@@ -43,7 +43,7 @@ const openPdf = () => {
 
 <template>
   <div class="main centered">
-    <h1 class="screen-reader-only">Bestätigung des Antrags</h1>
+    <h1 class="screen-reader-only">{{ $t('ApplicationConfirmationView.Confirmation') }}</h1>
     <div class="confirmation-container">
       <div class="id-section">
         <div class="id-container">
@@ -53,14 +53,14 @@ const openPdf = () => {
           </div>
         </div>
         <p class="description-text">
-          Notieren Sie sich die Vorgangsnummer. Diese ist notwendig, um später den Status Ihres Antrags einsehen zu können.
+          {{ $t('ApplicationConfirmationView.NoteCode') }}
         </p>
       </div>
       <div class="button-container">
         <ButtonDownload @click="openPdf">
-          Antrag herunterladen
+          {{ $t('ApplicationConfirmationView.DownloadApplication') }}
         </ButtonDownload>
-        <ButtonLink @click="openDetailView" class="status-button">Status einsehen</ButtonLink>
+        <ButtonLink @click="openDetailView" class="status-button">{{ $t('ApplicationConfirmationView.ViewStatus') }}</ButtonLink>
       </div>
     </div>
   </div>

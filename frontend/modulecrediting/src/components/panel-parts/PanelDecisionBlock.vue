@@ -42,7 +42,7 @@ defineExpose({
 
 
     <div v-if="!readonly">
-      <SelectButton :allow-empty="false" :options="decisionOptions" optionLabel="label" optionValue="value" v-model="decision"/>
+      <SelectButton :allow-empty="false" :options="decisionOptions" optionLabel="label" optionValue="value" v-model="decision" :aria-label="$t('PanelDecisionBlock.ChooseDecision')"/>
     </div>
 
     <div v-else class="readonly-decision-container">
@@ -59,7 +59,7 @@ defineExpose({
       </div>
     </div>
 
-    <textarea :readonly="readonly" placeholder="Begründung" v-model="comment" @change="emit('change')" class="white"></textarea>
+    <textarea :readonly="readonly" :placeholder="$t('PanelDecisionBlock.reason')" v-model="comment" @change="emit('change')" class="white"></textarea>
   </div>
 </template>
 

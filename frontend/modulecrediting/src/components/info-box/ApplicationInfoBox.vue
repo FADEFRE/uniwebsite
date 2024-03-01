@@ -8,76 +8,72 @@ const showExample = ref(false)
 
 <template>
   <div class="application-info-container">
-    <h2>Informationen</h2>
+    <h2>{{ $t('ApplicationInfoBox.Information') }}</h2>
     <div class="explanation-collapsed-container">
-      <p class="text-justify">
-        Wählen Sie den Studiengang aus, für den Sie sich Leistungen anrechnen lassen wollen.
-        Tragen sie dann die Details der Leistungen ein. Hierfür können sie beliebig viele Modulzuweisungen hinzufügen.
-      </p>
+      <p class="text-justify">{{ $t('ApplicationInfoBox.Information') }}</p>
     </div>
     <Button @click="showInformation = !showInformation">
-      Erklärung anzeigen
+      {{ $t('ApplicationInfoBox.ShowExplanation') }}
       <ArrowIcon :direction="showInformation ? 'up' : 'down'" color="red" />
     </Button>
     <div v-if="showInformation" class="explanation-expanded-container">
       <div class="explanation-item">
-        <h3 class="h4">Modulzuweisung</h3>
+        <h3 class="h4">{{ $t('ApplicationInfoBox.ModuleAssignment') }}</h3>
         <ul class="points">
-          <li>Ein oder mehrere Fremdmodule die als Modul(e) der Universität Leipzig angerechnet werden sollen.</li>
-          <li>Es sollen nur konkret zusammengehörige Module in eine Modulzuweisung geschrieben werden.</li>
-          <li>Für den gesamten Antrag können sie mehrere Modulzuweisungen hinzufügen.</li>
+          <li>{{ $t('ApplicationInfoBox.ForeignModule') }}</li>
+          <li>{{ $t('ApplicationInfoBox.belongingModule') }}</li>
+          <li>{{ $t('ApplicationInfoBox.multipleAssignments') }}</li>
         </ul>
       </div>
       <div class="explanation-item">
-        <h3 class="h4">Fremdmodul</h3>
+        <h3 class="h4">{{ $t('ApplicationInfoBox.Foreign') }}</h3>
         <ul class="points">
-          <li>Ein konkretes Modul, das an einer anderen Universität belegt wurde.</li>
-          <li>Hierfür müssen die gegebenen Felder ausgefüllt werden.</li>
-          <li>Geben Sie das Punktesystem an (LP, ECTS oder ähnliches).</li>
-          <li>Als Modulbeschreibung muss eine PDF-Datei mit der offiziellen Beschreibung des einzelnen Modul
-            hochgeladen werden.</li>
+          <li>{{ $t('ApplicationInfoBox.exactModule') }}</li>
+          <li>{{ $t('ApplicationInfoBox.FillFields') }}</li>
+          <li>{{ $t('ApplicationInfoBox.CreditSystem') }}</li>
+          <li>{{ $t('ApplicationInfoBox.uploadPDF') }}</li>
         </ul>
       </div>
       <div class="explanation-item">
-        <h3 class="h4">Module der Universität Leipzig</h3>
+        <h3 class="h4">{{ $t('ApplicationInfoBox.ModulesLeipzig') }}</h3>
         <ul class="points">
-          <li>Wählen sie ein oder mehrere Modul(e) aus, für die Sie ihre Leistungen anrechnen lassen wollen.</li>
-          <li>Sollten sie kein passendes Modul finden, besteht auch die Möglichkeit, keines auszuwählen.</li>
+          <li>{{ $t('ApplicationInfoBox.ChoseModule') }}</li>
+          <li>{{ $t('ApplicationInfoBox.ChoseNone') }}</li>
         </ul>
       </div>
       <div class="explanation-item">
-        <h3 class="h4">Kommentar</h3>
+        <h3 class="h4">{{ $t('ApplicationInfoBox.Comment') }}</h3>
         <ul class="points">
-          <li>Hier können weitere Informationen zu dieser Modulzuweisung mitgeteilt werden, dies ist optional.</li>
+          <li>{{ $t('ApplicationInfoBox.FurtherInformation') }}</li>
         </ul>
       </div>
     </div>
     <Button @click="showExample = !showExample">
-      Beispiel anzeigen
+      {{ $t('ApplicationInfoBox.ShowExample') }}
       <ArrowIcon :direction="showExample ? 'up' : 'down'" color="red" />
     </Button>
     <div v-if="showExample" class="explanation-expanded-container">
       <div class="explanation-item">
         <h3 class="h4">
-          Modulzuweisung: "Automaten und Berechenbarkeit
-          <ArrowIcon direction="right" color="red" aria-label="wird angerechnet für" />
-          Automaten und Sprachen, Berechenbarkeit"
+          {{ $t('ApplicationInfoBox.ExModuleAssignment') }}
+          <ArrowIcon direction="right" color="red" :aria-label="$t('ApplicationInfoBox.CreditedFor')" />
+          {{ $t('ApplicationInfoBox.AutomataandLanguages') }}, {{ $t('ApplicationInfoBox.Predictability') }}"
         </h3>
       </div>
       <div class="explanation-item">
-        <h4>Fremdmodul</h4>
+        <h4>{{ $t('ApplicationInfoBox.Foreign') }}</h4>
         <ul class="points">
-          <li>Modulname "Automaten und Berechenbarkeit"</li>
-          <li>Universität "Halle"</li>
-          <li>Punkte "10"</li>
-          <li>Punktsystem "LP"</li>
+          <li>{{ $t('ApplicationInfoBox.ModuleName') }}</li>
+          <li>{{ $t('ApplicationInfoBox.UniHalle') }}</li>
+          <li>{{ $t('ApplicationInfoBox.Credits') }}</li>
+          <li>{{ $t('ApplicationInfoBox.CreditingSystem') }}</li>
         </ul>
       </div>
       <div class="explanation-item">
-        <h4>Module der Universität Leipzig</h4>
+        <h4>{{ $t('ApplicationInfoBox.ModulesLeipzig') }}</h4>
         <ul class="points">
-          <li>"Automaten und Sprachen"</li>
-          <li>"Berechenbarkeit"</li>
+          <li>{{ $t('ApplicationInfoBox.AutomataandLanguages') }}</li>
+          <li>{{ $t('ApplicationInfoBox.Predictability') }}</li>
         </ul>
       </div>
     </div>

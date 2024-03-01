@@ -112,12 +112,12 @@ defineExpose({
         <div class="input-container">
           <InputText :readonly="!allowTextEdit" type="text" placeholder="Modulname" v-model="name"
             :class="{ 'invalid': !nameValid }" class="gray"/>
-          <small v-if="!nameValid" class="invalid-text">Modulname darf nicht leer sein</small>
+          <small v-if="!nameValid" class="invalid-text">{{ $t('PanelExternalModulesItem.NameEmpty') }}</small>
         </div>
         <div class="input-container">
           <InputText :readonly="!allowTextEdit" type="text" placeholder="Universität" v-model="university"
             :class="{ 'invalid': !universityValid }" class="gray" />
-          <small v-if="!universityValid" class="invalid-text">Universität darf nicht leer sein</small>
+          <small v-if="!universityValid" class="invalid-text">{{ $t('PanelExternalModulesItem.UniEmpty') }}</small>
         </div>
       </div>
 
@@ -127,25 +127,25 @@ defineExpose({
           <div class="input-container">
             <InputText :readonly="!allowTextEdit" type="text" placeholder="Punkte" v-model="points"
               @input.prevent="validatePointInput" :class="{ 'invalid': !pointsValid }" class="gray"/>
-            <small v-if="!pointsValid" class="invalid-text">Punkte müssen als Zahl angegeben werden</small>
+            <small v-if="!pointsValid" class="invalid-text">{{ $t('PanelExternalModulesItem.PointsNum') }}</small>
           </div>
 
           <div class="input-container">
             <InputText :readonly="!allowTextEdit" type="text" placeholder="Punktesystem" v-model="pointSystem"
               :class="{ 'invalid': !pointSystemValid }" class="gray"/>
-            <small v-if="!pointSystemValid" class="invalid-text">Punktsystem darf nicht leer sein</small>
+            <small v-if="!pointSystemValid" class="invalid-text">{{ $t('PanelExternalModulesItem.CredSysEmpty') }}</small>
           </div>
 
         </div>
 
         <FileInput :readonly="!allowFileEdit" type="pdf" :selected-file="props.selectedFile" ref="fileInput">
-          Modulbeschreibung auswählen
+          {{ $t('PanelExternalModulesItem.ChooseModuleDescription') }}
         </FileInput>
       </div>
 
     </div>
     <TrashIcon v-if="allowDelete" @click="emit('deleteSelf')" background-size="small"
-               :aria-label="`Externes Modul ${name || 'ohne Namen'} löschen`"/>
+               :aria-label="`{{ $t('PanelExternalModulesItem.ExtModule') }} ${name || 'ohne Namen'} {{ $t('PanelExternalModulesItem.delete') }}`"/>
   </div>
 </template>
 

@@ -22,12 +22,12 @@ const specificRole = computed(() => navStore.getCurrentRoleNav)
   <div v-if="isNavType === 'standard'" class="links-container" :class="{ 'small-screen-links-container': isMenuOpen }">
     <router-link :to="{ name: 'home' }" @click="$emit('linkClicked')"
                  class="router-link icon-hover-right" :class="{ 'white': isMenuOpen }">
-      {{ $t('navigation.homepage') }}
+      {{ $t('TheNavigation.homepage') }}
       <ArrowIcon direction="right" :color="isMenuOpen ? 'dark-gray' : 'white'"/>
     </router-link>
     <router-link :to="{ name: 'login' }" @click="$emit('linkClicked')"
                  class="router-link icon-hover-right" :class="{ 'white': isMenuOpen }">
-      {{ $t('navigation.login') }}
+      {{ $t('TheNavigation.login') }}
 
       <AuthIcon type="login" :color="isMenuOpen ? 'dark-gray' : 'white'"/>
     </router-link>
@@ -39,14 +39,14 @@ const specificRole = computed(() => navStore.getCurrentRoleNav)
     <div v-if="specificRole === 'study'" :class="{ 'user-specific-container': isMenuOpen }">
       <router-link :to="{ name: 'studyOfficeSelection' }" @click="$emit('linkClicked')"
                    class="router-link icon-hover-right" :class="{ 'white': isMenuOpen }">
-        {{ $t('navigation.Overview') }}
+        {{ $t('TheNavigation.Overview') }}
         <ArrowIcon direction="right" :color="isMenuOpen ? 'dark-gray' : 'white'"/>
       </router-link>
     </div>
     <div v-else-if="specificRole === 'chair'" :class="{ 'user-specific-container': isMenuOpen }">
       <router-link :to="{ name: 'chairmanSelection' }" @click="$emit('linkClicked')"
                    class="router-link icon-hover-right" :class="{ 'white': isMenuOpen }">
-        {{ $t('navigation.Overview') }}
+        {{ $t('TheNavigation.Overview') }}
         <ArrowIcon direction="right" :color="isMenuOpen ? 'dark-gray' : 'white'"/>
       </router-link>
     </div>
@@ -54,14 +54,14 @@ const specificRole = computed(() => navStore.getCurrentRoleNav)
     <div v-if="specificRole === 'admin'" :class="{ 'user-specific-container': isMenuOpen }">
       <router-link :to="{ name: 'managementAdmin' }" @click="$emit('linkClicked')"
                    class="router-link icon-hover-right" :class="{ 'white': isMenuOpen }">
-        {{ $t('navigation.Control') }}
+        {{ $t('TheNavigation.Control') }}
         <ArrowIcon direction="right" :color="isMenuOpen ? 'dark-gray' : 'white'"/>
       </router-link>
     </div>
     <div v-else :class="{ 'user-specific-container': isMenuOpen }">
       <router-link :to="{ name: 'management' }" @click="$emit('linkClicked')"
                    class="router-link icon-hover-right" :class="{ 'white': isMenuOpen }">
-        {{ $t('navigation.Control') }}
+        {{ $t('TheNavigation.Control') }}
         <ArrowIcon direction="right" :color="isMenuOpen ? 'dark-gray' : 'white'"/>
       </router-link>
     </div>
@@ -69,20 +69,20 @@ const specificRole = computed(() => navStore.getCurrentRoleNav)
     <div v-if="specificRole === 'admin'" :class="{ 'user-specific-container': isMenuOpen }">
       <router-link :to="{ name: 'accountAdmin' }" @click="$emit('linkClicked')"
                    class="router-link icon-hover-right" :class="{ 'white': isMenuOpen }">
-        {{ $t('navigation.Account') }}
+        {{ $t('TheNavigation.Account') }}
         <ArrowIcon direction="right" :color="isMenuOpen ? 'dark-gray' : 'white'"/>
       </router-link>
     </div>
     <div v-else :class="{ 'user-specific-container': isMenuOpen }">
       <router-link :to="{ name: 'account' }" @click="$emit('linkClicked')"
                    class="router-link icon-hover-right" :class="{ 'white': isMenuOpen }">
-        {{ $t('navigation.Account') }}
+        {{ $t('TheNavigation.Account') }}
         <ArrowIcon direction="right" :color="isMenuOpen ? 'dark-gray' : 'white'"/>
       </router-link>
     </div>
 
     <Button role="link" @click="logout" class="router-link icon-hover-right" :class="{ 'white': isMenuOpen }">
-      {{ $t('navigation.Logout') }}
+      {{ $t('TheNavigation.Logout') }}
       <AuthIcon type="logout" :color="isMenuOpen ? 'dark-gray' : 'white'"/>
     </Button>
   </div>

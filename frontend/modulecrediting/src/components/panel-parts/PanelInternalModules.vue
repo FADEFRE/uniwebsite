@@ -57,16 +57,16 @@ defineExpose({
 <template>
   <div class="panel-container">
 
-    <h4>Module der Universität Leipzig</h4>
+    <h4>{{ $t('PanelInternalModules.ModulesUniLeipzig') }}</h4>
 
     <div class="screen-split">
 
       <div class="module-dropdown" v-if="allowSelect">
         <Dropdown
             filter
-            placeholder="Modul auswählen"
-            emptyMessage="Studiengang auswählen"
-            emptyFilterMessage="Modul nicht gefunden"
+            :placeholder="$t('PanelInternalModules.ChooseModule')"
+            :emptyMessage="$t('PanelInternalModules.ChooseCourse')"
+            :emptyFilterMessage="$t('PanelInternalModules.ModuleNotFound')"
             :options="options"
             @change="e => addSelectedModule(e.value)"
         >
@@ -85,7 +85,7 @@ defineExpose({
           <TrashIcon v-if="allowDelete" @click="removeSelectedModule(index)"/>
         </div>
         <div v-else-if="!allowSelect">
-          <p>Es sind keine Module der Universität Leipzig ausgewählt.</p>
+          <p>{{ $t('PanelInternalModules.NoModulesSelected') }}</p>
         </div>
       </div>
 

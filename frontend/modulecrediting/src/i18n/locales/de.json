@@ -1,10 +1,14 @@
 {
-    "navigation": {
+    "TheNavigation": {
         "homepage": "Startseite",
-        "login": "log-in intern"
+        "login": "log-in intern",
+        "Overview": "Übersicht",
+        "Control": "Verwaltung",
+        "Account": "Account",
+        "Logout": "Logout"
     },
 
-    "homepage": {
+    "HomepageView": {
         "makeApplication": "Antrag stellen",
         "makeApplicationExplanation": "Lassen sie sich an anderen Universitäten erworbene Leistungspunkte für Module an der Universität Leipzig anrechnen. Dies ist beispielsweise sinnvoll, wenn Sie von einer anderen Universität zur Universität Leipzig wechseln, nach einem Auslandssemester zurückkehren oder Kurse parallel an einer anderen Universität absolviert haben.",
 
@@ -16,8 +20,277 @@
             "submitApplication": "Antrag auf dieser Website stellen",
             "viewStatus": "Status mit Hilfe der Vorgangsnummer verfolgen",
             "goToStudy": "Sobald der Antrag abgeschlossen ist, gehen Sie mit allen relevanten Dokumenten zum Studienbüro"
-        }
-        
-    }
+        },
+        "ApplicationCode": "Vorgangsnummer des aufzurufenden Antrags",
+        "NotExisting": "Dieser Vorgang existiert nicht"
+    },
 
+    "ApplicationConnectionLinks": {
+        "Overview": "Übersicht"
+    },
+
+    "ApplicationOverview": {
+        "Application": "Antrag",
+        "CaseNumber": "Vorgangsnummer"
+    },
+
+    "AccountAdminCreate": {
+        "CreateUser": "Benutzer erstellen",
+        "Username": "Benutzername",
+        "UsernameEmpty": "Der Benutzername darf nicht leer sein",
+        "UserExists": "Es existiert bereits ein Benutzer mit diesem Namen",
+        "Password": "Passwort",
+        "PasswordEmpty": "Passwort darf nicht leer sein",
+        "ConfirmPassword": "Passwort bestätigen",
+        "ConfirmPasswordEmpty": "Passwort bestätigen darf nicht leer sein",
+        "CreateUserButton": "Benutzer erstellen"
+    },
+
+    "AccountAdminList": {
+        "AllUsers": "Alle Benutzer",
+        "Admin": "Admin"
+    },
+
+    "AccountSettings": {
+        "Usersettings": "Benutzereinstellungen",
+        "ChangeUsername": "Benutzername ändern",
+        "UsernameEmpty": "Der Benutzername darf nicht leer sein",
+        "UsernameExists": "Benutzername existiert bereits",
+        "save": "Speichern",
+        "ChangePassword": "Passwort ändern",
+        "PasswordEmpty": "Das Passwort darf nicht leer sein",
+        "PasswordConfirm": "Passwort bestätigen",
+        "Passwordsame": "Die Passwörter müssen übereinstimmen"
+    },
+
+    "ButtonAdd": {
+        "Add": "hinzufügen"
+    },
+
+    "ButtonDownload": {
+        "Download": "herunterladen"
+    },
+
+    "ButtonLink": {
+        "Link": "Link"
+    },
+
+    "HomepageContainer": {
+        "PlaceholderHeading": "Platzhalter heading",
+        "PlaceholderText": "Platzhalter Text"
+    },
+
+    "FilterSelector": {
+        "Filters": "Filteroptionen",
+        "Course": "Studiengang",
+        "ChoseCourse": "Studiengang auswählen",
+        "Search": "Suchen",
+        "SearchApplication": "Antrag suchen",
+        "SearchAfter": "Suchen nach: Vorgangsnummer, Modulname, Universität",
+        "Time": "Zeit",
+        "Created": "Erstellt",
+        "lastEdited": "Zuletzt bearbeitet",
+        "Decided": "Beschlossen",
+        "Status": "Status",
+        "NEW": "NEU",
+        "FORMALMISTAKE": "FORMFEHLER",
+        "STUDYOFFICE": "STUDIENBÜRO",
+        "EXAMINATIONCOMITTEE": "PRÜFUNGSAUSSCHUSS",
+        "DONE": "ABGESCHLOSSEN"
+    },
+
+    "ApplicationInfoBox": {
+        "Information": "Informationen",
+        "Explanation": "Wählen Sie den Studiengang aus, für den Sie sich Leistungen anrechnen lassen wollen. Tragen sie dann die Details der Leistungen ein. Hierfür können sie beliebig viele Modulzuweisungen hinzufügen.",
+        "ShowExplanation": "Erklärung anzeigen",
+        "ModuleAssignment": "Modulzuweisung",
+        "ForeignModule": "Ein oder mehrere Fremdmodule die als Modul(e) der Universität Leipzig angerechnet werden sollen.",
+        "belongingModules": "Es sollen nur konkret zusammengehörige Module in eine Modulzuweisung geschrieben werden.",
+        "multipleAssignments": "Für den gesamten Antrag können sie mehrere Modulzuweisungen hinzufügen.",
+        "Foreign": "Fremdmodul",
+        "exactModule": "Ein konkretes Modul, das an einer anderen Universität belegt wurde.",
+        "FillFields": "Hierfür müssen die gegebenen Felder ausgefüllt werden.",
+        "CreditSystem": "Geben Sie das Punktesystem an (LP, ECTS oder ähnliches).",
+        "uploadPDF": "Als Modulbeschreibung muss eine PDF-Datei mit der offiziellen Beschreibung des einzelnen Modul hochgeladen werden.",
+        "ModulesLeipzig": "Module der Universität Leipzig",
+        "ChoseModule": "Wählen sie ein oder mehrere Modul(e) aus, für die Sie ihre Leistungen anrechnen lassen wollen.",
+        "ChoseNone": "Sollten sie kein passendes Modul finden, besteht auch die Möglichkeit, keines auszuwählen.",
+        "Comment": "Kommentar",
+        "FurtherInformation": "Hier können weitere Informationen zu dieser Modulzuweisung mitgeteilt werden, dies ist optional.",
+        "ShowExample": "Beispiel anzeigen",
+        "ExModuleAssignment": "Modulzuweisung: Automaten und Berechenbarkeit",
+        "CreditedFor": "wird angerechnet für",
+        "AutomataandLanguages": "Automaten und Sprachen",
+        "Predictability": "Berechenbarkeit",
+        "ModuleName": "Modulname 'Automaten und Berechenbarkeit'",
+        "UniHalle": "Universität 'Halle'",
+        "Credits": "Punkte '10'",
+        "CreditingSystem": "Punktsystem 'LP'"
+    },
+
+    "ManagementCreate": {
+        "CreateCourse": "Studiengang erstellen",
+        "NameCourse": "Name des Studiengangs",
+        "NameCourseEmpty": "Name des Studiengangs darf nicht leer sein",
+        "CourseExists": "Studiengang existiert bereits",
+        "AddCourse": "Studiengang hinzufügen",
+        "CreateModule": "Modul erstellen",
+        "NameModule": "Modulname",
+        "ModuleCode": "Modulcode",
+        "ModuleNameEmpty": "Modulname darf nicht leer sein",
+        "ModuleNameExists": "Modulname oder Modulcode existiert bereits",
+        "AddModule": "Modul hinzufügen"
+    },
+
+    "StatusDetailView": {
+        "ApplicationStatus": "Status des Antrags",
+        "FormalMistake": "Formfehler",
+        "FormalMistakeExplanation": "Ihr Antrag wurde aufgrund von Formfehlern zurückgewiesen. Es sind die Modulzuweisungen rot markiert, die Formfehler enthalten. In der Modulzuweisung finden sie unten eine Erklärung des konkreten Fehlers. Bitte korrigieren sie alle angegebenen Fehler. Anschließend können sie ihren Antrag neu einreichen.",
+        "WhatNext": "Wie geht es weiter?",
+        "FinalDecisionExplanation": "Es wurde eine finale Entscheidung zu ihrem Antrag getroffen. Dies ist nur eine Informationen über die Möglichkeit der Anrechnung. Um sich ihre Leistungen offiziell anrechnen zu lassen, müssen sie zum Studienbüro gehen. Bringen sie hierfür bitte alle relevanten Dokumente mit, die den Abschluss der anzurechnenden Leistungen belegen. Falls sie weitere Fragen zu ihrem Antrag haben, kontaktieren sie bitte das Studienbüro.",
+        "legend": "Legende",
+        "CreditingAccepted": "Anrechnung angenommen",
+        "CreditingAsAdmission": "Anrechnung als Übungsschein",
+        "CreditingRejected": "Anrechnung abgelehnt",
+        "AddModule": "Modulzuweisung hinzufügen",
+        "Renew": "Neu einreichen",
+        "DownloadApplication": "Antrag herunterladen"
+    },
+
+    "ModuleStatusIcon": {
+        "Unedited": "Unbearbeitet",
+        "Accepted": "Akzeptiert",
+        "AsExamCertificate": "Als Übungsschein",
+        "Denied": "Abgelehnt",
+        "FormalRejection": "Formal abgelehnt"
+    },
+
+    "FileIcon": {
+        "upload": "hochladen"
+    },
+
+    "ArrowIcon": {
+        "Arrow": "Link"
+    },
+
+    "SideInfoStudyOffice": {
+        "Studyoffice": "Studienbüro",
+        "fmi": "Fakultät für Mathematik und Informatik",
+        "address": "Anschrift",
+        "contact": "Kontakt",
+        "officeHours": "Sprechzeiten",
+        "ActualOfficeHours": "Dienstag und Donnerstag: 9:00 - 11:30 Uhr und 12:30 - 16:00 Uhr",
+        "ToStudyOffice": "Zum Studienbüro"
+    },
+
+    "DateIcon": {
+        "CreationDate": "Erstelldatum",
+        "created": "erstellt",
+        "lastEditedDate": "Datum des letzten Bearbeitens",
+        "lastEdited": "zuletzt bearbeitet",
+        "decisionDate": "Beschlussdatum",
+        "decision": "Entscheidung"
+    },
+
+    "StatusPanel": {
+        "DeleteModule": "Modulzuweisung löschen",
+        "NotYetDecided": "Es wurde noch keine Entscheidung getroffen"
+    },
+
+    "TrashIcon": {
+        "delete": "löschen"
+    },
+
+    "PanelDecision": {
+        "Decision": "Entscheidung"
+    },
+
+    "PanelFormalRejectionBlock": {
+        "FormalMistake": "Formfehler"
+    },
+
+    "PanelDecisionBlock": {
+        "ChooseDecision": "Wähle eine Option",
+        "reason": "Begründung"
+    },
+
+    "PanelExternalModules": {
+        "ModulesToBeCredited": "Anzurechnende Module",
+        "AddModule": "Fremdmodul hinzufügen"
+    },
+
+    "PanelExternalModulesItem": {
+        "NameEmpty": "Modulname darf nicht leer sein",
+        "UniEmpty": "Universität darf nicht leer sein",
+        "PointsNum": "Punkte müssen als Zahl angegeben werden",
+        "CredSysEmpty": "Punktsystem darf nicht leer sein",
+        "ChooseModuleDescription": "Modulbeschreibung auswählen",
+        "ExtModule": "Externes Modul",
+        "delete": "löschen"
+    },
+
+    "FileInput": {
+        "openPDF": "PDF öffnen",
+        "FileEmpty": "Es muss eine Datei ausgewählt sein"
+    },
+
+    "PanelInternalModules": {
+        "ModulesUniLeipzig": "Module der Universität Leipzig",
+        "ChooseModule": "Modul auswählen",
+        "ChooseCourse": "Studiengang auswählen",
+        "ModuleNotFound": "Modul nicht gefunden",
+        "NoModulesSelected": "Es sind keine Module der Universität Leipzig ausgewählt."
+    },
+
+    "PanelHeader": {
+        "ModulesToBeCredited": "Anzurechnende Module",
+        "CreditedFor": "wird angerechnet für",
+        "ModulesUniLeipzig": "Module der Universität Leipzig"
+    },
+
+    "PanelComment": {
+        "Comment": "Kommentar"
+    },
+
+    "ApplicationPanel": {
+        "deleteModule": "Modulzuweisung löschen"
+    },
+
+    "ApplicationConfirmationView": {
+        "Confirmation": "Bestätigung des Antrags",
+        "NoteCode": "Notieren Sie sich die Vorgangsnummer. Diese ist notwendig, um später den Status Ihres Antrags einsehen zu können.",
+        "DownloadApplication": "Antrag herunterladen",
+        "ViewStatus": "Status einsehen"
+    },
+
+    "CopyIcon": {
+        "Copy": "kopieren"
+    },
+
+    "SubmitApplicationView": {
+        "CreateApplication": "Antrag erstellen",
+        "ChooseCourse": "Studiengang auswählen",
+        "CourseEmpty": "Es muss ein Studiengang ausgewählt werden",
+        "AddModule": "Modulzuweisung hinzufügen",
+        "submit": "Absenden"
+    },
+
+    "App": {
+        "Logo": "Logo der Universität Leipzig",
+        "MenuOpen": "Menü öffnen",
+        "MenuClosed": "Menü schließen",
+        "Imprint": "Impressum",
+        "PrivacyPolicy": "Datenschutz"
+    },
+
+    "LoginView": {
+        "Logo": "Logo der Universität Leipzig",
+        "LogIn": "ANMELDUNG",
+        "Username": "Benutzername",
+        "UsernameEmpty": "Benutzername darf nicht leer sein",
+        "Password": "Passwort",
+        "PasswordEmpty": "Passwort darf nicht leer sein",
+        "login": "Anmelden",
+        "InvalidData": "Ungültige Anmeldedaten. Bitte versuche es erneut"
+    }
 }

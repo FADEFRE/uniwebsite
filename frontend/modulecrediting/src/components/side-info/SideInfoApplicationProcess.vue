@@ -4,16 +4,16 @@
 
 <template>
   <div class="sideinfo-container">
-    <h2 class="heading h3">{{ $t('homepage.sideInfo.applicationProcess') }}</h2>
+    <h2 class="heading h3">{{ $t('HomepageView.sideInfo.applicationProcess') }}</h2>
     <ul class="points">
       <li>
-        <p>{{ $t('homepage.sideInfo.submitApplication') }}</p>
+        <p>{{ $t('HomepageView.sideInfo.submitApplication') }}</p>
       </li>
       <li>
-        <p>{{ $t('homepage.sideInfo.viewStatus') }}</p>
+        <p>{{ $t('HomepageView.sideInfo.viewStatus') }}</p>
       </li>
       <li>
-        <p>{{ $t('homepage.sideInfo.goToStudy') }}</p>
+        <p>{{ $t('HomepageView.sideInfo.goToStudy') }}</p>
       </li>
     </ul>
   </div>

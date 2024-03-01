@@ -22,7 +22,7 @@ const props = defineProps({
 
 <template>
   <div class="panel-container">
-    <h4>Entscheidung</h4>
+    <h4>{{ $t('PanelDecision.Decision') }}</h4>
 
     <div v-if="type === 'single'" class="decision-container">
       <slot />

@@ -52,19 +52,19 @@ const getFormattedId = () => {
 
     <div class="content-container split">
       <!-- HomepageContainer Application -->
-      <HomepageContainer :header="$t('homepage.makeApplication')" :text="$t('homepage.makeApplicationExplanation')">
-        <ButtonLink @click="goToSubmitApplication">{{ $t('homepage.makeApplication') }}</ButtonLink>
+      <HomepageContainer :header="$t('HomepageView.makeApplication')" :text="$t('HomepageView.makeApplicationExplanation')">
+        <ButtonLink @click="goToSubmitApplication">{{ $t('HomepageView.makeApplication') }}</ButtonLink>
       </HomepageContainer>
 
       <!-- HomepageContainer StatusView -->
-      <HomepageContainer :header="$t('homepage.viewStatus')" :text="$t('homepage.viewStatusExplanation')">
+      <HomepageContainer :header="$t('HomepageView.viewStatus')" :text="$t('HomepageView.viewStatusExplanation')">
         <div class="input-button-container">
-          <InputText v-model="id" placeholder="0-0-0-0-0-0" aria-label="Vorgangsnummer des aufzurufenden Antrags"
+          <InputText v-model="id" placeholder="0-0-0-0-0-0" :aria-label="$t('HomepageView.ApplicationCode')"
                      :class="{ 'invalid': isInvalid }" class="status-input gray"
                      @keydown.enter.prevent="openDetailView" @input.prevent="validateInput" />
-          <ButtonLink @click="openDetailView">{{ $t('homepage.viewStatus') }}</ButtonLink>
+          <ButtonLink @click="openDetailView">{{ $t('HomepageView.viewStatus') }}</ButtonLink>
         </div>
-        <small v-if="isInvalid" class="invalid-text">Dieser Vorgang existiert nicht</small>
+        <small v-if="isInvalid" class="invalid-text">{{ $t('HomepageView.NotExisting') }}</small>
       </HomepageContainer>
     </div>
 

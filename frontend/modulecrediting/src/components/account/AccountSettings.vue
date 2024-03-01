@@ -59,33 +59,33 @@ const savePassword = () => {
 <template>
   <div class="account-settings-container">
 
-    <h2>Benutzereinstellungen</h2>
+    <h2>{{$t('AccountSettings.Usersettings')}}</h2>
     <div class="settings-container">
       <div class="input-container">
-        <label for="username">Benutzername ändern</label>
+        <label for="username">{{$t('AccountSettings.ChangeUsername')}}</label>
         <InputText type="text" class="white" v-model="username" id="username" :class="{ 'invalid': usernameEmpty || usernameExists }" />
-        <small v-if="usernameEmpty" class="invalid-text">Benutzername darf nicht leer sein</small>
-        <small v-if="usernameExists" class="invalid-text">Benutzername existiert bereits</small>
+        <small v-if="usernameEmpty" class="invalid-text">{{$t('AccountSettings.UsernameEmpty')}}</small>
+        <small v-if="usernameExists" class="invalid-text">{{$t('AccountSettings.UsernameExists')}}</small>
       </div>
-      <ButtonLink class="save-button" @click="saveUsername">Speichern</ButtonLink>
+      <ButtonLink class="save-button" @click="saveUsername">{{$t('AccountSettings.save')}}</ButtonLink>
     </div>
 
     <div class="settings-container">
       <div class="password-container">
       <div class="input-container">
-        <label for="password">Passwort ändern</label>
+        <label for="password">{{$t('AccountSettings.ChangePassword')}}</label>
         <InputText type="password" class="white" v-model="password" id="password"
           :class="{ 'invalid': passwordNotMatching || passwordEmpty }" />
-        <small v-if="passwordEmpty" class="invalid-text">Das Passwort darf nicht leer sein</small>
+        <small v-if="passwordEmpty" class="invalid-text">{{$t('AccountSettings.PasswordEmpty')}}</small>
       </div>
       <div class="input-container">
-        <label for="password-confirm">Passwort bestätigen</label>
+        <label for="password-confirm">{{$t('AccountSettings.PasswordConfirm')}}</label>
         <InputText type="password" class="white" v-model="passwordConfirm" id="password-confirm"
           :class="{ 'invalid': passwordNotMatching || passwordEmpty }" />
-        <small v-if="passwordNotMatching" class="invalid-text">Die Passwörter müssen übereinstimmen</small>
+        <small v-if="passwordNotMatching" class="invalid-text">{{$t('AccountSettings.Passwordsame')}}</small>
       </div>
     </div>
-      <ButtonLink @click="savePassword">Speichern</ButtonLink>
+      <ButtonLink @click="savePassword">{{$t('AccountSettings.save')}}</ButtonLink>
     </div>
 
   </div>
