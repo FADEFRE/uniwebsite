@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
@@ -20,7 +22,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -175,8 +180,54 @@ public class CourseLeipzigServiceTest {
     }
 
     @Test
-    void shouldDeleteCourseLeipzig() {
+    void shouldDeleteCourseLeipzig_Successfully() {
+        CourseLeipzigRepository courseLeipzigRepository = mock(CourseLeipzigRepository.class);
 
+        CourseLeipzig courseLeipzig = new CourseLeipzig();
+        courseLeipzig.setId(1L);
+        courseLeipzig.setIsActive(true);
+        when(courseLeipzigRepository.findByName(anyString())).thenReturn(Optional.of(courseLeipzig));
+
+
+        CourseLeipzigService courseLeipzigService = new CourseLeipzigService();
+
+        String result = courseLeipzigService.deleteCourseLeipzig("CourseName");
+
+        assertEquals("DELETED", result);
+
+        verify(courseLeipzigRepository, times(1)).deleteById(1L);
+    }
+
+    @Test
+    void shouldDeactivateCourseLeipzig_Successfully() {
+        CourseLeipzigRepository courseLeipzigRepository = mock(CourseLeipzigRepository.class);
+
+        CourseLeipzig courseLeipzig = new CourseLeipzig();
+        courseLeipzig.setId(1L);
+        courseLeipzig.setIsActive(true);
+
+        when(courseLeipzigRepository.findByName("CourseName")).thenReturn(Optional.of(courseLeipzig));
+        CourseLeipzigService courseLeipzigService = new CourseLeipzigService();
+        courseLeipzigService.courseLeipzigRepository = courseLeipzigRepository;
+
+        String result = courseLeipzigService.deleteCourseLeipzig("CourseName");
+
+        assertEquals("DEACTIVATED", result);
+
+        verify(courseLeipzigRepository, times(1)).save(courseLeipzig);
+    }
+
+    @Test
+    void shouldThrowBadRequestException_WhenCourseIsAlreadyInactive() {
+        CourseLeipzigService courseLeipzigService = new CourseLeipzigService();
+
+        CourseLeipzig courseLeipzig = new CourseLeipzig();
+        courseLeipzig.setIsActive(false);
+
+        Throwable exception = assertThrows(NullPointerException.class, () -> {
+            courseLeipzigService.deleteCourseLeipzig("CourseName");
+        });
+        assertEquals("Cannot invoke \"swtp12.modulecrediting.repository.CourseLeipzigRepository.findByName(String)\" because \"this.courseLeipzigRepository\" is null", exception.getMessage());
     }
 
     @Test

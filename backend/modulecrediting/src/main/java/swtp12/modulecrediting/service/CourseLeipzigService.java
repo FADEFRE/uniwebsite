@@ -101,7 +101,7 @@ public class CourseLeipzigService {
         return "DEACTIVATED";
     }
 
-    private Boolean checkIfCourseIsUsedInApplications(CourseLeipzig courseLeipzig) {
+    public Boolean checkIfCourseIsUsedInApplications(CourseLeipzig courseLeipzig) {
         List<Application> applications = applicationRepository.findAll();
 
         if(applications.isEmpty()) return false;
