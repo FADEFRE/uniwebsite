@@ -105,11 +105,11 @@ public class LogUtil {
             case FORMAL_REJECTION:
                 typeString = ApplicationType.FORMAL_REJECTION.toString();
                 break;
-            case MOVED_TO_CHAIRMAN:
-                typeString = ApplicationType.MOVED_TO_CHAIRMAN.toString();
+            case PASSED_ON:
+                typeString = ApplicationType.PASSED_ON.toString();
                 break;
-            case REAPPLIED:
-                typeString = ApplicationType.REAPPLIED.toString();
+            case RESUBMIT:
+                typeString = ApplicationType.RESUBMIT.toString();
                 break;
             
             default:
@@ -219,8 +219,8 @@ public class LogUtil {
         CREATED,
         FINISHED,
         FORMAL_REJECTION,
-        MOVED_TO_CHAIRMAN,
-        REAPPLIED,
+        PASSED_ON,
+        RESUBMIT,
     }
 
     public enum UserType {

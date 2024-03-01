@@ -69,7 +69,7 @@ public class ApplicationService {
 
         application.addModulesConnections(modulesConnections);
         application = applicationRepository.save(application);
-        LogUtil.printApplicationLog(LogUtil.ApplicationType.REAPPLIED, application.getId());
+        LogUtil.printApplicationLog(LogUtil.ApplicationType.RESUBMIT, application.getId());
         return application.getId();
     }
 
@@ -136,7 +136,7 @@ public class ApplicationService {
             application.setFullStatus(PRÜFUNGSAUSSCHUSS);
 
             applicationRepository.save(application);
-            LogUtil.printApplicationLog(LogUtil.ApplicationType.MOVED_TO_CHAIRMAN, application.getId());
+            LogUtil.printApplicationLog(LogUtil.ApplicationType.PASSED_ON, application.getId());
             return application.getFullStatus();
         }
 
