@@ -182,7 +182,6 @@ public class CourseLeipzigServiceTest {
         assertEquals(HttpStatus.BAD_REQUEST, e.getStatusCode());
     }
 
-    //NullpopinterException to be fixed
     @Test
     void shouldDeleteCourseLeipzig_Successfully() {
         CourseLeipzigRepository courseLeipzigRepository = mock(CourseLeipzigRepository.class);
@@ -199,9 +198,10 @@ public class CourseLeipzigServiceTest {
         String result = courseLeipzigService.deleteCourseLeipzig("CourseName");
 
         verify(courseLeipzigRepository, times(1)).deleteById(1L);
+
+        assertEquals("DELETED", result);
     }
 
-    //NullpopinterException to be fixed
     @Test
     void shouldDeactivateCourseLeipzig_Successfully() {
         CourseLeipzigRepository courseLeipzigRepository = mock(CourseLeipzigRepository.class);
@@ -223,9 +223,9 @@ public class CourseLeipzigServiceTest {
 
         String result = courseLeipzigService.deleteCourseLeipzig("CourseName");
 
-        assertEquals("DEACTIVATED", result);
-
         verify(courseLeipzigRepository, times(1)).save(courseLeipzig);
+
+        assertEquals("DEACTIVATED", result);
     }
 
     @Test
