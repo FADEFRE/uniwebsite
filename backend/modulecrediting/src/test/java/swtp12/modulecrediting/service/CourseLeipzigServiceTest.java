@@ -4,12 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
@@ -17,6 +15,7 @@ import org.springframework.web.server.ResponseStatusException;
 import swtp12.modulecrediting.dto.CourseLeipzigDTO;
 import swtp12.modulecrediting.dto.CourseLeipzigRelationEditDTO;
 import swtp12.modulecrediting.dto.ModuleLeipzigDTO;
+import swtp12.modulecrediting.model.Application;
 import swtp12.modulecrediting.model.CourseLeipzig;
 import swtp12.modulecrediting.model.ModuleLeipzig;
 import swtp12.modulecrediting.repository.CourseLeipzigRepository;
@@ -183,10 +182,10 @@ public class CourseLeipzigServiceTest {
         assertEquals(HttpStatus.BAD_REQUEST, e.getStatusCode());
     }
 
-    //NullpopinterException to be fixed
     @Test
     void shouldDeleteCourseLeipzig_Successfully() {
         CourseLeipzigRepository courseLeipzigRepository = mock(CourseLeipzigRepository.class);
+        ApplicationService applicationService = mock(ApplicationService.class);
 
         CourseLeipzig courseLeipzig = new CourseLeipzig();
         courseLeipzig.setId(1L);
@@ -194,31 +193,39 @@ public class CourseLeipzigServiceTest {
         when(courseLeipzigRepository.findByName(anyString())).thenReturn(Optional.of(courseLeipzig));
 
 
-        CourseLeipzigService courseLeipzigService = new CourseLeipzigService();
+        CourseLeipzigService courseLeipzigService = new CourseLeipzigService(courseLeipzigRepository, null, applicationService);
 
         String result = courseLeipzigService.deleteCourseLeipzig("CourseName");
 
         verify(courseLeipzigRepository, times(1)).deleteById(1L);
+
+        assertEquals("DELETED", result);
     }
 
-    //NullpopinterException to be fixed
     @Test
     void shouldDeactivateCourseLeipzig_Successfully() {
         CourseLeipzigRepository courseLeipzigRepository = mock(CourseLeipzigRepository.class);
+        ApplicationService applicationService = mock(ApplicationService.class);
 
         CourseLeipzig courseLeipzig = new CourseLeipzig();
         courseLeipzig.setId(1L);
         courseLeipzig.setIsActive(true);
 
+        Application application = new Application();
+        application.setCourseLeipzig(courseLeipzig);
+
+
+        CourseLeipzigService courseLeipzigService = new CourseLeipzigService(courseLeipzigRepository, null, applicationService);
+
         when(courseLeipzigRepository.findByName("CourseName")).thenReturn(Optional.of(courseLeipzig));
-        CourseLeipzigService courseLeipzigService = new CourseLeipzigService();
-        courseLeipzigService.courseLeipzigRepository = courseLeipzigRepository;
+        when(applicationService.getAllApplciations()).thenReturn(List.of(application));
+
 
         String result = courseLeipzigService.deleteCourseLeipzig("CourseName");
 
-        assertEquals("DEACTIVATED", result);
-
         verify(courseLeipzigRepository, times(1)).save(courseLeipzig);
+
+        assertEquals("DEACTIVATED", result);
     }
 
     @Test
