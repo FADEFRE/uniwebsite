@@ -277,7 +277,6 @@
     },
 
     "LoginView": {
-        "Logo": "Leipzig University Logo",
         "LogIn": "LOG IN",
         "Username": "Username",
         "UsernameEmpty": "Username cannot be empty",

@@ -286,7 +286,6 @@
     },
 
     "LoginView": {
-        "Logo": "Logo der Universität Leipzig",
         "LogIn": "ANMELDUNG",
         "Username": "Benutzername",
         "UsernameEmpty": "Benutzername darf nicht leer sein",
