@@ -5,11 +5,12 @@ import TrashIcon from "@/assets/icons/TrashIcon.vue";
 
 const emit = defineEmits(['clear'])
 
-const dropdown = ref()
+const isOpen = ref()
 </script>
 
 <template>
-  <Dropdown ref="dropdown" @focus="dropdown.show()">
+  <Dropdown @show="isOpen = true" @hide="isOpen = false">
+
     <template #clearicon>
       <TrashIcon @click="emit('clear')" background-color="dark-gray"/>
     </template>
@@ -17,8 +18,9 @@ const dropdown = ref()
       <img class="search-icon" src="../../assets/icons/SearchIcon.svg">
     </template>
     <template #dropdownicon>
-      <ArrowIcon color="white" direction="down" />
+      <ArrowIcon color="white" :direction="isOpen ? 'up' : 'down'" />
     </template>
+
   </Dropdown>
 </template>
 

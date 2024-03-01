@@ -10,7 +10,7 @@ import MoveTop from "@/assets/icons/MoveTop.vue";
 import NotSavedIcon from "@/assets/icons/NotSavedIcon.vue";
 import { parseRequestDate } from "@/utils/date-utils";
 import LoadingContainer from "@/components/util/LoadingContainer.vue";
-import {getModulesByCourse} from "@/requests/module-course-requests";
+import { getModulesByCourse } from "@/requests/module-course-requests";
 import {
   getApplicationById,
   getUpdateStatusAllowed,

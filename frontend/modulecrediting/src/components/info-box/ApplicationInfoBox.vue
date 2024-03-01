@@ -12,7 +12,7 @@ const showExample = ref(false)
     <div class="explanation-collapsed-container">
       <p class="text-justify">{{ $t('ApplicationInfoBox.Information') }}</p>
     </div>
-    <Button @click="showInformation = !showInformation">
+    <Button @click="showInformation = !showInformation" class="info-box-button">
       {{ $t('ApplicationInfoBox.ShowExplanation') }}
       <ArrowIcon :direction="showInformation ? 'up' : 'down'" color="red" />
     </Button>
@@ -48,17 +48,22 @@ const showExample = ref(false)
         </ul>
       </div>
     </div>
-    <Button @click="showExample = !showExample">
+    <Button @click="showExample = !showExample" class="info-box-button">
       {{ $t('ApplicationInfoBox.ShowExample') }}
       <ArrowIcon :direction="showExample ? 'up' : 'down'" color="red" />
     </Button>
     <div v-if="showExample" class="explanation-expanded-container">
       <div class="explanation-item">
         <h3 class="h4">
-          {{ $t('ApplicationInfoBox.ExModuleAssignment') }}
-          <ArrowIcon direction="right" color="red" :aria-label="$t('ApplicationInfoBox.CreditedFor')" />
-          {{ $t('ApplicationInfoBox.AutomataandLanguages') }}, {{ $t('ApplicationInfoBox.Predictability') }}"
+          {{ $t('ApplicationInfoBox.ModuleAssignment') }}
         </h3>
+        <ul class="points">
+          <li>
+            "Automaten und Berechenbarkeit
+            <ArrowIcon direction="right" color="red" aria-label="wird angerechnet für" />
+            Automaten und Sprachen, Berechenbarkeit"
+          </li>
+        </ul>
       </div>
       <div class="explanation-item">
         <h4>{{ $t('ApplicationInfoBox.Foreign') }}</h4>
@@ -66,7 +71,7 @@ const showExample = ref(false)
           <li>{{ $t('ApplicationInfoBox.ModuleName') }}</li>
           <li>{{ $t('ApplicationInfoBox.UniHalle') }}</li>
           <li>{{ $t('ApplicationInfoBox.Credits') }}</li>
-          <li>{{ $t('ApplicationInfoBox.CreditingSystem') }}</li>
+          <li>{{ $t('ApplicationInfoBox.ModuleDescription') }}</li>
         </ul>
       </div>
       <div class="explanation-item">
@@ -91,8 +96,8 @@ const showExample = ref(false)
 }
 .explanation-expanded-container {
   @include verticalList(s);
-  border-bottom: 2px solid $dark-gray;
+  // border-bottom: 2px solid $dark-gray;
   margin-bottom: spacing(s);
-  padding-bottom: spacing(s);
+  padding: spacing(xs);
 }
 </style>

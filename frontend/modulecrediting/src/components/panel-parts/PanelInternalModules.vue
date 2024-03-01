@@ -14,9 +14,9 @@ displays:
 -->
 
 <script setup>
-import ArrowIcon from "@/assets/icons/ArrowIcon.vue";
+import { ref, computed } from "vue";
 import TrashIcon from "@/assets/icons/TrashIcon.vue";
-import { ref } from "vue";
+import CustomDropdown from "@/components/util/CustomDropdown.vue";
 
 const props = defineProps({
   allowSelect: {
@@ -49,6 +49,15 @@ const removeSelectedModule = (index) => {
   emit('change')
 }
 
+const selectableModules = computed(() => {
+  return props.options.filter(m => !selectedModules.value.includes(m))
+})
+
+const emptyMessage = computed(() => {
+  if (props.options.length > 0) return "Alle Module sind ausgewählt"
+  else return "Studiengang auswählen"
+})
+
 defineExpose({
   selectedModules
 })
@@ -62,21 +71,14 @@ defineExpose({
     <div class="screen-split">
 
       <div class="module-dropdown" v-if="allowSelect">
-        <Dropdown
+        <CustomDropdown
             filter
             :placeholder="$t('PanelInternalModules.ChooseModule')"
-            :emptyMessage="$t('PanelInternalModules.ChooseCourse')"
+            :emptyMessage="$t('PanelInternalModules.EmptyMessage')"
             :emptyFilterMessage="$t('PanelInternalModules.ModuleNotFound')"
-            :options="options"
+            :options="$t('PanelInternalModules.SelectableModules')"
             @change="e => addSelectedModule(e.value)"
-        >
-          <template #filtericon>
-            <img class="search-icon" src="../../assets/icons/SearchIcon.svg">
-          </template>
-          <template #dropdownicon>
-            <ArrowIcon color="white" direction="down" />
-          </template>
-        </Dropdown>
+        />
       </div>
 
       <div class="module-list" :class="{ 'module-list-full': !allowSelect }">

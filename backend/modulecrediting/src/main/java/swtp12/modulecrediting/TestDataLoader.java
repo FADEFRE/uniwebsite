@@ -41,6 +41,8 @@ import swtp12.modulecrediting.repository.CourseLeipzigRepository;
 import swtp12.modulecrediting.repository.ModuleLeipzigRepository;
 import swtp12.modulecrediting.repository.UserRepository;
 import swtp12.modulecrediting.service.ApplicationService;
+import swtp12.modulecrediting.util.JsonUtil;
+import swtp12.modulecrediting.util.LogUtil;
 
 
 /**
@@ -111,12 +113,10 @@ public class TestDataLoader {
                     if(userCreate.getRole() == null) {
                         userCreate.setRole(roleCandidate.get());
                     }
-                    System.out.println("Created User " + userCreate.getUsername());
                     userRepository.save(userCreate);
                 }
             }
         }
-        System.out.println();
     }
 
 
@@ -139,7 +139,7 @@ public class TestDataLoader {
                         return courseLeipzigRepo.save(new CourseLeipzig(courseName));
                     });
 
-            JsonNode modules = grabModulesFromJsonNode(courseNode);
+            JsonNode modules = JsonUtil.grabJsonNodeFromJsonNode(courseNode, "modules");
             for (JsonNode module : modules) {
                 String moduleName = module.get("name").asText();
                 String moduleCode = module.get("number").asText();
@@ -152,7 +152,7 @@ public class TestDataLoader {
                 courseLeipzigRepo.save(courseLeipzig);
             }
         }
-        System.out.println("Leipzig-Data successfully loaded into Database \n");
+        LogUtil.printLog("Leipzig-Data successfully loaded into Database");
     }
 
 
@@ -167,9 +167,6 @@ public class TestDataLoader {
 
     @Transactional
     private void createTestData(String testFileName) {
-        //Loads specified courses/modules
-        //leipzigDataLoader(testFileName);
-        //System.out.print("\033[2K\033[1G");
 
         JsonNode applicationSettingsNode = grabFirstNodeFromJson(testFileName, "randApplications").get(0);
         JsonNode moduleSettingsNode = grabFirstNodeFromJson(testFileName, "randExternalModules").get(0);
@@ -190,8 +187,9 @@ public class TestDataLoader {
             listOfCourseLeipzig.add(courseLeipzig);
         }
         
-
-        System.out.println("Generating random Dummy Applications:");
+        LogUtil.printLog("");
+        LogUtil.printLog("Generating random Dummy Applications:");
+        List<String> listOfApplicationNumbersGenerated = new ArrayList<>();
         for (CourseLeipzig cL : listOfCourseLeipzig) {
             List<ModulesConnectionDTO> listModuleCreateDTO = new ArrayList<>();
 
@@ -214,7 +212,7 @@ public class TestDataLoader {
             ApplicationDTO applicationUpdateDTO = new ApplicationDTO();
             Application application = applicationService.getApplicationById(vorgangsnummer);
 
-            String updatedData = "";
+
             if (closed > 0) { // update application to ABGESCHLOSSEN
                 List<ModulesConnectionDTO> mcuDTO = new ArrayList<>();
                 mcuDTO = updateModulesConnectionDTO(ABGESCHLOSSEN, application);
@@ -223,7 +221,8 @@ public class TestDataLoader {
                 applicationService.updateApplication(vorgangsnummer, applicationUpdateDTO, "study-office");
                 applicationService.updateApplication(vorgangsnummer, applicationUpdateDTO, "chairman");
                 applicationService.updateApplicationStatus(vorgangsnummer);
-                updatedData = "closed";
+
+                listOfApplicationNumbersGenerated.add(vorgangsnummer);
                 closed--;
             }
             else if (pav > 0) { // update application to PRUEFUNGSAUSSCHUSS
@@ -235,7 +234,7 @@ public class TestDataLoader {
                 applicationService.updateApplication(vorgangsnummer, applicationUpdateDTO, "chairman");
                 applicationService.updateApplicationStatus(vorgangsnummer);
 
-                updatedData = "pav";
+                listOfApplicationNumbersGenerated.add(vorgangsnummer);
                 pav--;
             }
             else if (studyOffice > 0) { // update application to STUDIENBUERO
@@ -244,7 +243,8 @@ public class TestDataLoader {
                 applicationUpdateDTO.setModulesConnections(mcuDTOs);
                 applicationService.updateApplication(vorgangsnummer, applicationUpdateDTO, "study-office");
                 applicationService.updateApplicationStatus(vorgangsnummer);
-                updatedData = "studyOffice";
+
+                listOfApplicationNumbersGenerated.add(vorgangsnummer);
                 studyOffice--;
             }
             
@@ -254,15 +254,21 @@ public class TestDataLoader {
                 applicationUpdateDTO.setModulesConnections(mcuDTOs);
                 applicationService.updateApplication(vorgangsnummer, applicationUpdateDTO, "study-office");
                 applicationService.updateApplicationStatus(vorgangsnummer);
-                updatedData = "formfehler";
+                
+                listOfApplicationNumbersGenerated.add(vorgangsnummer);
                 formfehler--;
             }
             
             else if (open > 0) { // update application to ABGESCHLOSSEN
-                updatedData = "open";
+                listOfApplicationNumbersGenerated.add(vorgangsnummer);
                 open--;
             }
-            System.out.println("Created Dummy Application: " + vorgangsnummer + " as: " + updatedData);
+        }
+
+        LogUtil.printLog("");
+        LogUtil.printLog("Generated Dummy Applications:");
+        for (String string : listOfApplicationNumbersGenerated) {
+            LogUtil.printLog("Application: " + string + " - " + applicationService.getApplicationById(string).getFullStatus());
         }
     }
 
@@ -292,22 +298,6 @@ public class TestDataLoader {
                 .map(j -> j.get(nodeName))
                 .orElseThrow(() -> new IllegalArgumentException("Invalid JSON Object"));
     }
-
-    /**
-     * The function grabs the "modules" field from the 'courses' JsonNode and returns it as a JsonNode object 
-     * or throws an exception if object invalid.
-     * 
-     * @exception IllegalArgumentException Gets thrown if JsonNode is invalid
-     * @param courseNode A JsonNode object representing a course.
-     * @return The 'modules' JsonNode of the 'courseNode'
-     */
-    private JsonNode grabModulesFromJsonNode(JsonNode courseNode) {
-        return Optional.ofNullable(courseNode)
-        .map(c -> c.get("modules"))
-        .orElseThrow(() -> new IllegalArgumentException("Invalid JSON Object"));
-    }
-
-
 
     //Helper methods for creating and updating application data in the database:
 

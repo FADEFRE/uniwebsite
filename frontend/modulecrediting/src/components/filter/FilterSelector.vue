@@ -10,11 +10,10 @@ exposes:
 
 <script setup>
 import { ref, computed, onBeforeMount } from "vue";
-import { getWeekAgo, getMonthAgo, getSixMonthAgo, getYearAgo } from "@/utils/date-utils";
-import ArrowIcon from "@/assets/icons/ArrowIcon.vue";
 import DateIcon from '@/assets/icons/DateIcon.vue';
-import TrashIcon from "@/assets/icons/TrashIcon.vue";
-import {getCoursesLeipzigName} from "@/requests/module-course-requests";
+import CustomDropdown from "@/components/util/CustomDropdown.vue";
+import { getCoursesLeipzigName } from "@/requests/module-course-requests";
+import { getWeekAgo, getMonthAgo, getSixMonthAgo, getYearAgo } from "@/utils/date-utils";
 
 const searchString = ref()
 
@@ -143,14 +142,7 @@ defineExpose({
       <div class="left-side-container">
         <div class="single-filter-container">
           <h3 class="h4">{{ $t('FilterSelector.Course') }}</h3>
-          <Dropdown show-clear v-model="course" :options="courses" :placeholder="$t('FilterSelector.ChoseCourse')">
-            <template #clearicon>
-              <TrashIcon @click="deleteCourse" background-color="dark-gray"/>
-            </template>
-            <template #dropdownicon>
-              <ArrowIcon color="white" direction="down"/>
-            </template>
-          </Dropdown>
+          <CustomDropdown show-clear :placeholder="$t('FilterSelector.ChoseCourse')" :options="courses" v-model="course" @clear="deleteCourse" />
         </div>
 
 
@@ -184,11 +176,7 @@ defineExpose({
             </div>
           </div>
           <div>
-            <Dropdown v-model="selectedDateOption" :options="dateOptions">
-              <template #dropdownicon>
-                <ArrowIcon color="white" direction="down"/>
-              </template>
-            </Dropdown>
+            <CustomDropdown v-model="selectedDateOption" :options="dateOptions" />
           </div>
         </div>
       </div>

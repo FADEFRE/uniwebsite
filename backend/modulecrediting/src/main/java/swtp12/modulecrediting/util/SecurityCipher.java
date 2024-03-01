@@ -3,7 +3,6 @@ package swtp12.modulecrediting.util;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Base64;
 
@@ -72,12 +71,12 @@ public class SecurityCipher {
                 cipher.init(Cipher.DECRYPT_MODE, secretKey);
 
                 //Debug:
-                //System.out.println("Debug: SecurityCiper -> SecretKey: " + secretKey + " / HashCode: " + secretKey.hashCode() + " / Try:" + counter);
+                //LogUtil.printLog("Debug: SecurityCiper -> SecretKey: " + secretKey + " / HashCode: " + secretKey.hashCode() + " / Try:" + counter);
 
 
                 return new String(cipher.doFinal(Base64.getDecoder().decode(strToDecrypt)));
             } catch (Exception e) {
-                System.out.println(LocalDateTime.now() + " Der Fehler im Backend: " + counter);
+                LogUtil.printLog("The specific error in SecurityCipher: " + counter);
                 counter ++;
             }
         }

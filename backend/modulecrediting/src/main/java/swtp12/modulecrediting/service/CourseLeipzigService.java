@@ -5,9 +5,11 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
 
 import swtp12.modulecrediting.dto.CourseLeipzigDTO;
 import swtp12.modulecrediting.dto.CourseLeipzigRelationEditDTO;
@@ -15,28 +17,49 @@ import swtp12.modulecrediting.dto.ModuleLeipzigDTO;
 import swtp12.modulecrediting.model.Application;
 import swtp12.modulecrediting.model.CourseLeipzig;
 import swtp12.modulecrediting.model.ModuleLeipzig;
-import swtp12.modulecrediting.repository.ApplicationRepository;
 import swtp12.modulecrediting.repository.CourseLeipzigRepository;
+import swtp12.modulecrediting.util.LogUtil;
 
 
 @Service
 public class CourseLeipzigService {
-    @Autowired
     CourseLeipzigRepository courseLeipzigRepository;
-    @Autowired
     ModuleLeipzigService moduleLeipzigService;
+    ApplicationService applicationService;
+
     @Autowired
-    ApplicationRepository applicationRepository;
+    public CourseLeipzigService(CourseLeipzigRepository courseLeipzigRepository, @Lazy ModuleLeipzigService moduleLeipzigService, @Lazy ApplicationService applicationService) {
+        this.courseLeipzigRepository = courseLeipzigRepository;
+        this.moduleLeipzigService = moduleLeipzigService;
+        this.applicationService = applicationService;
+    }
+    public CourseLeipzigService() { } // This cannot!! be a lombok @NoArgsConstructor due to the way @Autowired works in Springboot
+
 
     public CourseLeipzig getCourseLeipzigByName(String name) {
-        Optional<CourseLeipzig> courseLeipzig = courseLeipzigRepository.findByName(name);
-        if(!courseLeipzig.isPresent()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Course Leipzig not found with moduleName: " + name);
+        CourseLeipzig courseLeipzig = courseLeipzigRepository.findByName(name).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Course Leipzig not found with given name: " + name));
+        return courseLeipzig;
+    }
 
-        return courseLeipzig.get();
+    public String getCourseLeipzigNameById(Long id) {
+        CourseLeipzig courseLeipzig = courseLeipzigRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Course Leipzig not found with given id: " + id));
+        return courseLeipzig.getName();
     }
 
     public List<CourseLeipzig> getAllCoursesLeipzig() {
         return courseLeipzigRepository.findAll();
+    }
+
+    public CourseLeipzig findOrCreateNewCourseLeipzig(String name) {
+        CourseLeipzig courseLeipzig = courseLeipzigRepository.findByName(name).orElseGet(() -> {
+            return courseLeipzigRepository.save(new CourseLeipzig(name));
+        });
+        LogUtil.printCourseLog(LogUtil.CourseType.CREATED, name, null);
+        return courseLeipzig;
+    }
+
+    public CourseLeipzig saveCourseLeipzigToDatabase(CourseLeipzig courseLeipzig) {
+        return courseLeipzigRepository.save(courseLeipzig);
     }
 
     public String createCourseLeipzig(CourseLeipzigDTO courseLeipzigDTO) {
@@ -52,12 +75,13 @@ public class CourseLeipzigService {
                 throw new ResponseStatusException(HttpStatus.CONFLICT, "The Course already exists:" + courseLeipzigDTO.getCourseName() );
 
             courseLeipzig.setIsActive(true);
+            LogUtil.printCourseLog(LogUtil.CourseType.REACTIVATED, courseLeipzig.getName(), null);
             courseLeipzigRepository.save(courseLeipzig);
             return courseLeipzig.getName();
         }
 
-        // create new course leipzig
         CourseLeipzig courseLeipzig = new CourseLeipzig(courseLeipzigDTO.getCourseName());
+        LogUtil.printCourseLog(LogUtil.CourseType.CREATED, courseLeipzig.getName(), null);
         courseLeipzigRepository.save(courseLeipzig);
         return courseLeipzig.getName();
     }
@@ -78,6 +102,7 @@ public class CourseLeipzigService {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Course with this name already exists");
 
         courseLeipzig.setName(courseLeipzigDTO.getCourseName());
+        LogUtil.printCourseLog(LogUtil.CourseType.RENAMED, courseName, courseLeipzig.getName());
         courseLeipzigRepository.save(courseLeipzig);
         return courseLeipzig.getName();
     }
@@ -86,23 +111,23 @@ public class CourseLeipzigService {
     public String deleteCourseLeipzig(String name) {
         CourseLeipzig courseLeipzig = getCourseLeipzigByName(name);
         if (!courseLeipzig.getIsActive())
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Course Leipzig is already deactivated with name: " + name);
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Course Leipzig is already deactivated with name: " + name);
 
         courseLeipzig.setIsActive(false);
 
         if (!checkIfCourseIsUsedInApplications(courseLeipzig)) {
-            System.out.println("Delete Course Leipzig: " + courseLeipzig.getName());
+            LogUtil.printCourseLog(LogUtil.CourseType.DELETED, courseLeipzig.getName(), null);
             courseLeipzigRepository.deleteById(courseLeipzig.getId());
             return "DELETED";
         }
 
-        System.out.println("Deactivate Course Leipzig: " + courseLeipzig.getName());
+        LogUtil.printCourseLog(LogUtil.CourseType.DEACTIVATED, courseLeipzig.getName(), null);
         courseLeipzigRepository.save(courseLeipzig);
         return "DEACTIVATED";
     }
 
     private Boolean checkIfCourseIsUsedInApplications(CourseLeipzig courseLeipzig) {
-        List<Application> applications = applicationRepository.findAll();
+        List<Application> applications = applicationService.getAllApplciations();
 
         if(applications.isEmpty()) return false;
 
@@ -120,35 +145,52 @@ public class CourseLeipzigService {
         CourseLeipzig courseLeipzig = getCourseLeipzigByName(courseName);
         if(!courseLeipzig.getIsActive()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Course Leipzig with this name is deactivated: " + courseLeipzig.getName());
 
-        List<ModuleLeipzig> modulesLeipzig = new ArrayList<>();
-
-        // remove all modules from course leipzig
-        courseLeipzig.removeModulesLeipzig();
-        System.out.println("Remove all Modules from Course: " + courseLeipzig.getName());
+        List<ModuleLeipzig> modulesLeipzigToDelete = new ArrayList<>(courseLeipzig.getModulesLeipzigCourse());
+        List<ModuleLeipzig> modulesLeipzigToAdd = new ArrayList<>();
 
         // add new modules
         if(editCourseRelationsDTO.getModulesLeipzig() != null) {
-            for(ModuleLeipzigDTO ml : editCourseRelationsDTO.getModulesLeipzig()) {
-                if(ml.getName() == null)
+            for(ModuleLeipzigDTO mLDTO : editCourseRelationsDTO.getModulesLeipzig()) {
+                if(mLDTO.getName() == null)
                     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No Module Name sent");
-                if(ml.getCode() == null)
+                if(mLDTO.getCode() == null)
                     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No Module Code sent");
 
+                ModuleLeipzig moduleLeipzig = moduleLeipzigService.getModuleLeipzigByName(mLDTO.getName());
 
-                ModuleLeipzig moduleLeipzig = moduleLeipzigService.getModuleLeipzigByName(ml.getName());
+                if(!moduleLeipzig.getCode().equals(mLDTO.getCode()))
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Module Code doesn't match: " + mLDTO.getName() + " <-> " + mLDTO.getCode());
 
-                if(!moduleLeipzig.getCode().equals(ml.getCode()))
-                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Module Code doesn't match: " + ml.getName() + " <-> " + ml.getCode());
-
-                System.out.println("Added Module to Course: " + moduleLeipzig.getName() + " => " + courseLeipzig.getName());
-                modulesLeipzig.add(moduleLeipzig);
+                modulesLeipzigToDelete = removeModulesFromList(modulesLeipzigToDelete, moduleLeipzig);
+                modulesLeipzigToAdd.add(moduleLeipzig);
             }
         }
 
+        for (ModuleLeipzig moduleLeipzig : modulesLeipzigToDelete) {
+            LogUtil.printCourseLog(LogUtil.CourseType.REMOVED, courseLeipzig.getName(), moduleLeipzig.getName());
+            courseLeipzig.removeModuleLeipzig(moduleLeipzig);
+        }
+        
+        for (ModuleLeipzig moduleLeipzig : courseLeipzig.getModulesLeipzigCourse()) {
+            modulesLeipzigToAdd = removeModulesFromList(modulesLeipzigToAdd, moduleLeipzig);
+        }
 
-        courseLeipzig.setModulesLeipzigCourse(modulesLeipzig);
+        for (ModuleLeipzig moduleLeipzig : modulesLeipzigToAdd) {
+            LogUtil.printCourseLog(LogUtil.CourseType.ADDED, courseLeipzig.getName(), moduleLeipzig.getName());
+            courseLeipzig.addModulesLeipzig(moduleLeipzig);
+        }
 
         courseLeipzigRepository.save(courseLeipzig);
         return courseLeipzig.getName();
+    }
+
+    private List<ModuleLeipzig> removeModulesFromList(List<ModuleLeipzig> moduleList, ModuleLeipzig moduleLeipzig) {
+        for (int i = 0; i < moduleList.size(); i++) {
+            ModuleLeipzig mL = moduleList.get(i);
+            if (moduleLeipzig.getName().equals(mL.getName())) {
+                moduleList.remove(i);
+            }
+        }
+        return moduleList;
     }
 }

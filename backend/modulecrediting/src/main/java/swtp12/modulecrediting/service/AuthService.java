@@ -18,7 +18,6 @@ import swtp12.modulecrediting.util.CookieUtil;
 
 @Service
 public class AuthService {
-
     @Autowired
     private TokenProvider tokenProvider;
     @Autowired
@@ -66,12 +65,10 @@ public class AuthService {
             addAccessTokenCookie(responseHeaders, newAccessToken);
             addRefreshTokenCookie(responseHeaders, newRefreshToken);
         }
-
         if (!accessTokenValid && refreshTokenValid) {
             newAccessToken = tokenProvider.generateAccessToken(user.getUsername());
             addAccessTokenCookie(responseHeaders, newAccessToken);
         }
-
         if (accessTokenValid && refreshTokenValid) {
             newAccessToken = tokenProvider.generateAccessToken(user.getUsername());
             newRefreshToken = tokenProvider.generateRefreshToken(user.getUsername());

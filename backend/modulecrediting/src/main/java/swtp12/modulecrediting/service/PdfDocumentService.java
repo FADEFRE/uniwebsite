@@ -3,7 +3,6 @@ package swtp12.modulecrediting.service;
 import java.io.IOException;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,9 +14,12 @@ import swtp12.modulecrediting.repository.PdfDocumentRepository;
 
 @Service
 public class PdfDocumentService {
-    @Autowired
-    private PdfDocumentRepository pdfDocumentRepository;
 
+    PdfDocumentRepository pdfDocumentRepository;
+
+    public PdfDocumentService(PdfDocumentRepository pdfDocumentRepository) {
+        this.pdfDocumentRepository = pdfDocumentRepository;
+    }
 
     public PdfDocument createOrGetPdfDocument(MultipartFile pdfData, Long pdfId) {
 

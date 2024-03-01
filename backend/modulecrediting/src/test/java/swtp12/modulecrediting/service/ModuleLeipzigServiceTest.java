@@ -77,6 +77,7 @@ public class ModuleLeipzigServiceTest {
     }
 
 
+    // UpdateModules - Test
     @Test
     void testUpdateModuleLeipzig_Success() {
         ModuleLeipzig existingModule = new ModuleLeipzig("Test Module", "TEST");
@@ -156,6 +157,20 @@ public class ModuleLeipzigServiceTest {
         });
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
         assertEquals("Module name or code is null", exception.getReason());
+    }
+
+    //DeleteModules - Test
+    @Test
+    void testDeleteModuleLeipzig_ModuleAlreadyDeactivated() {
+        ModuleLeipzig deactivatedModule = new ModuleLeipzig("Test Module", "TEST");
+        deactivatedModule.setIsActive(false);
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
+            moduleLeipzigService.deleteModuleLeipzig("Test Module");
+        });
+    
+        assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
+        assertEquals("Module Leipzig not found with moduleName: Test Module", exception.getReason());
     }
 }
 

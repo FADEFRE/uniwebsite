@@ -51,10 +51,6 @@ import ButtonLink from "@/components/button/ButtonLink.vue";
   @include verticalList(m);
 }
 
-.info-group-container {
-  @include verticalList(xs);
-}
-
 .heading {
   width: max-content;
 }

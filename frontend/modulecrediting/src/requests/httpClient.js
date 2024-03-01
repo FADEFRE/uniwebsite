@@ -1,5 +1,5 @@
 import axios from "axios";
-import { url } from "@/url-config";
+import { url } from "@/config/url-config";
 import { performLogout } from "@/router/logout";
 import router from "@/router";
 
@@ -83,29 +83,29 @@ const errorHandler = (error) => {
 
     switch (apiError.statusCode) {
 
-      case 401:
+      case 401: // UNAUTHORIZED
         performLogout();
         router.push({ name: "login" });
         break;
 
-      case 402:
+      case 402: // PAYMENT_REQUIRED -> used for debug
         console.debug("%c" + "Debug 402 catch", errorColor);
         router.replace("/error" + currentRouteFullPath);
         break;
 
-      case 403:
+      case 403: // FORBIDDEN
         router.replace("/forbidden" + currentRouteFullPath);
         break;
 
-      case 404:
+      case 404: // NOT_FOUND
         router.replace("/not-found" + currentRouteFullPath);
         break;
 
-      case 409:
+      case 409: // CONFLICT
         // no routing, this error should be handled in components / views
         break;
 
-      case 503:
+      case 503: // SERVER_UNAVAILABLE
         router.replace("/server-unavailable" + currentRouteFullPath);
         break;
 

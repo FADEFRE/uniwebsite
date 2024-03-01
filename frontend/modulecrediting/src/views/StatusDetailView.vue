@@ -12,13 +12,13 @@ import ButtonLink from '@/components/button/ButtonLink.vue';
 import ButtonAdd from "@/components/button/ButtonAdd.vue";
 import ButtonDownloadVue from '@/components/button/ButtonDownload.vue';
 import LoadingContainer from "@/components/util/LoadingContainer.vue";
-import { url } from "@/url-config"
+import { url } from "@/config/url-config"
 import { parseRequestDate } from "@/utils/date-utils";
 import SideInfoApplicationProcess from '@/components/side-info/SideInfoApplicationProcess.vue';
 import SideInfoStudyOffice from '@/components/side-info/SideInfoStudyOffice.vue';
 import ModuleStatusIcon from "@/assets/icons/ModuleStatusIcon.vue";
-import {getModulesByCourse} from "@/requests/module-course-requests";
-import {getApplicationByIdForStatus, putApplicationStudent} from "@/requests/application-requests";
+import { getModulesByCourse } from "@/requests/module-course-requests";
+import { getApplicationByIdForStatus, putApplicationStudent } from "@/requests/application-requests";
 
 const id = useRoute().params.id
 const summaryDocumentLink = `${url}/file/pdf-documents/application/${id}`
