@@ -10,7 +10,7 @@ const showExample = ref(false)
   <div class="application-info-container">
     <h2>{{ $t('ApplicationInfoBox.Information') }}</h2>
     <div class="explanation-collapsed-container">
-      <p class="text-justify">{{ $t('ApplicationInfoBox.Information') }}</p>
+      <p class="text-justify">{{ $t('ApplicationInfoBox.Explanation') }}</p>
     </div>
     <Button @click="showInformation = !showInformation" class="info-box-button">
       {{ $t('ApplicationInfoBox.ShowExplanation') }}
