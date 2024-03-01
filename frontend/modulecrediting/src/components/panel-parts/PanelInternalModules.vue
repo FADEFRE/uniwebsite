@@ -14,7 +14,7 @@ displays:
 -->
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import TrashIcon from "@/assets/icons/TrashIcon.vue";
 import CustomDropdown from "@/components/util/CustomDropdown.vue";
 
@@ -49,6 +49,10 @@ const removeSelectedModule = (index) => {
   emit('change')
 }
 
+const selectableModules = computed(() => {
+  return props.options.filter(m => !selectedModules.value.includes(m))
+})
+
 defineExpose({
   selectedModules
 })
@@ -67,7 +71,7 @@ defineExpose({
             placeholder="Modul auswählen"
             emptyMessage="Studiengang auswählen"
             emptyFilterMessage="Modul nicht gefunden"
-            :options="options"
+            :options="selectableModules"
             @change="e => addSelectedModule(e.value)"
         />
       </div>
