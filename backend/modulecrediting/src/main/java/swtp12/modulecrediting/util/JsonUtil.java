@@ -13,14 +13,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Component
 public class JsonUtil {
 
-    private final ObjectMapper objectMapper;
+    private static final ObjectMapper objectMapper = new ObjectMapper();
 
-    public JsonUtil(ObjectMapper objectMapper) {
-        this.objectMapper = objectMapper;
-    }
-
-
-    public JsonNode grabJsonNodeFromMultipartFile(MultipartFile multipartFile, String nodeName) {
+    public static JsonNode grabJsonNodeFromMultipartFile(MultipartFile multipartFile, String nodeName) {
         JsonNode jsonNode;
         try (InputStream inputStream = multipartFile.getInputStream()) {
             jsonNode = objectMapper.readValue(inputStream, JsonNode.class);
@@ -32,8 +27,8 @@ public class JsonUtil {
                 .orElseThrow(() -> new IllegalArgumentException("Invalid JSON Object"));
     }
 
-    public JsonNode grabJsonNodeFromJsonNode(JsonNode courseNode, String nodeName) {
-        return Optional.ofNullable(courseNode)
+    public static JsonNode grabJsonNodeFromJsonNode(JsonNode currentNode, String nodeName) {
+        return Optional.ofNullable(currentNode)
         .map(j -> j.get(nodeName))
         .orElseThrow(() -> new IllegalArgumentException("Invalid JSON Object"));
     }
