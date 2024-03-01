@@ -48,7 +48,7 @@ public class DataLoader implements CommandLineRunner {
 
         if (loadTestData.equals("true")) {
             LogUtil.printLog("");
-            LogUtil.printLog("--- Dataloader: Starting to load testdata ---");
+            LogUtil.printLog("--- Dataloader: Loading testdata ---");
             LogUtil.printLog("");
             testDataLoader.run();
             LogUtil.printLog("");
