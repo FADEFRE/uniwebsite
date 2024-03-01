@@ -1,27 +1,18 @@
 {
-    "TheNavigation": {
-        "homepage": "Homepage",
-        "login": "log in internally",
-        "Overview": "Overview",
-        "Control": "Control",
-        "Account": "Account",
-        "Logout": "Logout"
-    },
-
     "HomepageView": {
         "makeApplication": "Make Application",
-        "makeApplicationExplanation": "Have credits earned at other universities recognized for modules at the University of Leipzig. This is useful, for example, if you are transferring from another university to the University of Leipzig, returning after a semester abroad, or taking courses concurrently at another university.",
+        "makeApplicationExplanation": "Apply to have credits earned at other universities recognized for modules at Leipzig University. This is useful, for example, if you are transferring from another university to Leipzig University, returning after a semester abroad, or taking courses simultaneously at another university.",
 
         "viewStatus": "View Status",
-        "viewStatusExplanation": "Here you can view the status of your already submitted application. Enter the 6-digit process number provided to you when submitting the application. Alternatively, you can also find this process number in the overview of your application as a PDF.",
+        "viewStatusExplanation": "Here you can check the status of your previously submitted application. Enter the 6-digit case number provided to you during the application process. Alternatively, you can find this case number in the overview of your application as a PDF.",
 
         "sideInfo": {
             "applicationProcess": "Application Process",
-            "submitApplication": "Submit Application on this Website",
-            "viewStatus": "Track Status using Process Number",
-            "goToStudy": "Once the application is complete, take all relevant documents to the Student Office"
+            "submitApplication": "Submit application on this website",
+            "viewStatus": "Track status using the case number",
+            "goToStudy": "Once the application is complete, take all relevant documents to the student office"
         },
-        "ApplicationCode": "Process Number of the Application to Be Accessed",
+        "ApplicationCode": "Case Number of the Application to Be Called",
         "NotExisting": "This process does not exist"
     },
 
@@ -31,18 +22,18 @@
 
     "ApplicationOverview": {
         "Application": "Application",
-        "CaseNumber": "Process Number"
+        "CaseNumber": "Case Number"
     },
 
     "AccountAdminCreate": {
         "CreateUser": "Create User",
         "Username": "Username",
-        "UsernameEmpty": "Username cannot be empty",
+        "UsernameForbidden": "This username is not allowed",
         "UserExists": "A user with this name already exists",
         "Password": "Password",
-        "PasswordEmpty": "Password cannot be empty",
+        "PasswordForbidden": "Password is not allowed",
         "ConfirmPassword": "Confirm Password",
-        "ConfirmPasswordEmpty": "Confirm Password cannot be empty",
+        "ConfirmPasswordSame": "Passwords must match",
         "CreateUserButton": "Create User"
     },
 
@@ -54,11 +45,11 @@
     "AccountSettings": {
         "Usersettings": "User Settings",
         "ChangeUsername": "Change Username",
-        "UsernameEmpty": "Username cannot be empty",
+        "UsernameForbidden": "This username is not allowed",
         "UsernameExists": "Username already exists",
         "save": "Save",
         "ChangePassword": "Change Password",
-        "PasswordEmpty": "Password cannot be empty",
+        "PasswordForbidden": "Password cannot be empty",
         "PasswordConfirm": "Confirm Password",
         "Passwordsame": "Passwords must match"
     },
@@ -86,7 +77,7 @@
         "ChoseCourse": "Choose Course",
         "Search": "Search",
         "SearchApplication": "Search Application",
-        "SearchAfter": "Search for: Process Number, Module Name, University",
+        "SearchAfter": "Search for: Case Number, Module Name, University",
         "Time": "Time",
         "Created": "Created",
         "lastEdited": "Last Edited",
@@ -104,41 +95,41 @@
         "Explanation": "Select the course for which you want to have credits recognized. Then enter the details of the credits. You can add as many module assignments as you like.",
         "ShowExplanation": "Show Explanation",
         "ModuleAssignment": "Module Assignment",
-        "ForeignModule": "One or more foreign modules to be credited as module(s) at the University of Leipzig.",
+        "ForeignModule": "Modules from other universities to be credited as Leipzig University modules.",
         "belongingModules": "Only specifically related modules should be written in a module assignment.",
-        "multipleAssignments": "For the entire application, you can add multiple module assignments.",
-        "Foreign": "Foreign Module",
-        "exactModule": "A specific module taken at another university.",
-        "FillFields": "The given fields must be filled out for this.",
-        "CreditSystem": "Specify the credit system (LP, ECTS, or similar).",
-        "uploadPDF": "As module description, a PDF file with the official description of the individual module must be uploaded.",
-        "ModulesLeipzig": "Modules of the University of Leipzig",
+        "multipleAssignments": "You can add multiple module assignments for the entire application.",
+        "Foreign": "Credits Modules",
+        "exactModule": "Specify one or more module(s) completed at another university.",
+        "FillFields": "The given fields must be completed for this.",
+        "CreditSystem": "Specify the credit system (ECTS or other).",
+        "uploadPDF": "A PDF file with the official description of the individual module must be uploaded as a module description.",
+        "ModulesLeipzig": "Leipzig University Modules",
         "ChoseModule": "Choose one or more module(s) for which you want to have your credits recognized.",
-        "ChoseNone": "If you cannot find a suitable module, you also have the option not to select one.",
+        "ChoseNone": "If you cannot find a suitable module, you also have the option of not selecting one.",
         "Comment": "Comment",
         "FurtherInformation": "Additional information about this module assignment can be provided here, this is optional.",
         "ShowExample": "Show Example",
         "ExModuleAssignment": "Module Assignment: Automata and Computability",
         "CreditedFor": "credited for",
         "AutomataandLanguages": "Automata and Languages",
-        "Predictability": "Computability",
+        "Predictability": "Predictability",
         "ModuleName": "Module Name 'Automata and Computability'",
-        "UniHalle": "University 'Halle'",
-        "Credits": "Points '10'",
-        "CreditingSystem": "Point System 'LP'"
+        "UniHalle": "Martin Luther University Halle-Wittenberg",
+        "Credits": "Credits '10', Credit System 'LP'",
+        "ModuleDescription": "Module Description: PDF file with the description of the module Automata and Computability"
     },
 
     "ManagementCreate": {
         "CreateCourse": "Create Course",
-        "NameCourse": "Name of the Course",
-        "NameCourseEmpty": "Name of the Course cannot be empty",
+        "NameCourse": "Course Name",
+        "NameCourseEmpty": "Course name cannot be empty",
         "CourseExists": "Course already exists",
         "AddCourse": "Add Course",
         "CreateModule": "Create Module",
         "NameModule": "Module Name",
         "ModuleCode": "Module Code",
-        "ModuleNameEmpty": "Module Name cannot be empty",
-        "ModuleNameExists": "Module Name or Module Code already exists",
+        "ModuleNameEmpty": "Module name cannot be empty",
+        "ModuleNameExists": "Module name or code already exists",
         "AddModule": "Add Module"
     },
 
@@ -147,11 +138,11 @@
         "FormalMistake": "Formal Mistake",
         "FormalMistakeExplanation": "Your application has been rejected due to formal errors. The module assignments containing formal errors are marked in red. In the module assignment, you will find an explanation of the specific error at the bottom. Please correct all indicated errors. Then you can resubmit your application.",
         "WhatNext": "What's Next?",
-        "FinalDecisionExplanation": "A final decision has been made on your application. This is only information about the possibility of recognition. To officially have your credits recognized, you must go to the Student Office. Please bring all relevant documents that prove the completion of the credits to be recognized. If you have further questions about your application, please contact the Student Office.",
+        "FinalDecisionExplanation": "A final decision has been made regarding your application. This is only information about the possibility of recognition. To officially have your credits recognized, you must go to the student office. Please bring all relevant documents that prove the completion of the credits to be recognized. If you have further questions about your application, please contact the student office.",
         "legend": "Legend",
-        "CreditingAccepted": "Crediting Accepted",
-        "CreditingAsAdmission": "Crediting as Admission",
-        "CreditingRejected": "Crediting Rejected",
+        "CreditingAccepted": "Recognition Accepted",
+        "CreditingAsAdmission": "Recognition as Admission",
+        "CreditingRejected": "Recognition Rejected",
         "AddModule": "Add Module Assignment",
         "Renew": "Resubmit",
         "DownloadApplication": "Download Application"
@@ -166,11 +157,11 @@
     },
 
     "FileIcon": {
-        "upload": "upload"
+        "upload": "Upload"
     },
 
     "ArrowIcon": {
-        "Arrow": "Link"
+        "Arrow": "Arrow"
     },
 
     "SideInfoStudyOffice": {
@@ -179,8 +170,8 @@
         "address": "Address",
         "contact": "Contact",
         "officeHours": "Office Hours",
-        "ActualOfficeHours": "Tuesday and Thursday: 9:00 - 11:30 am and 12:30 - 4:00 pm",
-        "ToStudyOffice": "To Student Office"
+        "ActualOfficeHours": "Tuesday and Thursday: 9:00 am - 11:30 am and 12:30 pm - 4:00 pm",
+        "ToStudyOffice": "To the Student Office"
     },
 
     "DateIcon": {
@@ -189,7 +180,7 @@
         "lastEditedDate": "Last Edited Date",
         "lastEdited": "last edited",
         "decisionDate": "Decision Date",
-        "decision": "Decision"
+        "decision": "decision"
     },
 
     "StatusPanel": {
@@ -198,7 +189,7 @@
     },
 
     "TrashIcon": {
-        "delete": "delete"
+        "delete": "Delete"
     },
 
     "PanelDecision": {
@@ -215,18 +206,18 @@
     },
 
     "PanelExternalModules": {
-        "ModulesToBeCredited": "Modules to Be Credited",
+        "ModulesToBeCredited": "Modules to be Credited",
         "AddModule": "Add External Module"
     },
 
     "PanelExternalModulesItem": {
-        "NameEmpty": "Module Name cannot be empty",
+        "NameEmpty": "Module name cannot be empty",
         "UniEmpty": "University cannot be empty",
         "PointsNum": "Points must be specified as a number",
-        "CredSysEmpty": "Credit System cannot be empty",
+        "CredSysEmpty": "Credit system cannot be empty",
         "ChooseModuleDescription": "Choose Module Description",
         "ExtModule": "External Module",
-        "delete": "delete"
+        "delete": "Delete"
     },
 
     "FileInput": {
@@ -235,17 +226,18 @@
     },
 
     "PanelInternalModules": {
-        "ModulesUniLeipzig": "Modules of the University of Leipzig",
+        "ModulesUniLeipzig": "Modules of Leipzig University",
         "ChooseModule": "Choose Module",
-        "ChooseCourse": "Choose Course",
+        "EmptyMessage": "Empty Message",
         "ModuleNotFound": "Module not found",
-        "NoModulesSelected": "No modules of the University of Leipzig are selected."
+        "NoModulesSelected": "No modules of Leipzig University are selected.",
+        "SelectableModules": "Selectable Modules"
     },
 
     "PanelHeader": {
-        "ModulesToBeCredited": "Modules to Be Credited",
-        "CreditedFor": "credited for",
-        "ModulesUniLeipzig": "Modules of the University of Leipzig"
+        "ModulesToBeCredited": "Modules to be Credited",
+        "CreditedFor": "Credited for",
+        "ModulesUniLeipzig": "Modules of Leipzig University"
     },
 
     "PanelComment": {
@@ -258,7 +250,7 @@
 
     "ApplicationConfirmationView": {
         "Confirmation": "Application Confirmation",
-        "NoteCode": "Note the process number. This is necessary to later check the status of your application.",
+        "NoteCode": "Note down the case number. This is necessary to later check the status of your application.",
         "DownloadApplication": "Download Application",
         "ViewStatus": "View Status"
     },
@@ -274,9 +266,9 @@
         "AddModule": "Add Module Assignment",
         "submit": "Submit"
     },
-    
+
     "App": {
-        "Logo": "University of Leipzig Logo",
+        "Logo": "Leipzig University Logo",
         "MenuOpen": "Open Menu",
         "MenuClosed": "Close Menu",
         "Imprint": "Imprint",
@@ -284,8 +276,8 @@
     },
 
     "LoginView": {
-        "Logo": "University of Leipzig Logo",
-        "LogIn": "LOGIN",
+        "Logo": "Leipzig University Logo",
+        "LogIn": "LOG IN",
         "Username": "Username",
         "UsernameEmpty": "Username cannot be empty",
         "Password": "Password",
