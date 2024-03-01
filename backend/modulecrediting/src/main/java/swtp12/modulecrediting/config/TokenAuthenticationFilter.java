@@ -19,6 +19,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import swtp12.modulecrediting.service.CustomUserDetailsServiceImpl;
 import swtp12.modulecrediting.service.TokenProvider;
 import swtp12.modulecrediting.util.IncorrectKeyOnDecryptException;
+import swtp12.modulecrediting.util.LogUtil;
 import swtp12.modulecrediting.util.SecurityCipher;
 
 public class TokenAuthenticationFilter extends OncePerRequestFilter{
@@ -47,12 +48,10 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter{
             }
         } 
         catch (UsernameNotFoundException uEx) {
-            System.out.println("doFilterInternal UsernameNotFoundException: This might be thrown due to a change of username by the user and SpringSecurities automatic doFilterInternal on the logout request");
+            LogUtil.printErrorLog("TokenAuthenticationFilter.doFilterInternal()", "UsernameNotFoundException: This might be thrown due to a change of username by the user and SpringSecurities automatic doFilterInternal on the logout request", null);
         }
         catch (Exception ex) {
-            System.out.println("----------doFilterInternal error stacktrace start:-------------");
-            ex.printStackTrace();
-            System.out.println("----------end of doFilterInternal error stacktrace-------------");
+            LogUtil.printErrorLog("TokenAuthenticationFilter.doFilterInternal()", "Exception: ", ex);
         } 
         finally {
             filterChain.doFilter(httpServletRequest, httpServletResponse);
