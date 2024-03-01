@@ -42,6 +42,7 @@ import swtp12.modulecrediting.repository.ModuleLeipzigRepository;
 import swtp12.modulecrediting.repository.UserRepository;
 import swtp12.modulecrediting.service.ApplicationService;
 import swtp12.modulecrediting.util.JsonUtil;
+import swtp12.modulecrediting.util.LogUtil;
 
 
 /**
@@ -151,7 +152,7 @@ public class TestDataLoader {
                 courseLeipzigRepo.save(courseLeipzig);
             }
         }
-        System.out.println("Leipzig-Data successfully loaded into Database \n");
+        LogUtil.printLog("Leipzig-Data successfully loaded into Database");
     }
 
 
@@ -166,9 +167,6 @@ public class TestDataLoader {
 
     @Transactional
     private void createTestData(String testFileName) {
-        //Loads specified courses/modules
-        //leipzigDataLoader(testFileName);
-        //System.out.print("\033[2K\033[1G");
 
         JsonNode applicationSettingsNode = grabFirstNodeFromJson(testFileName, "randApplications").get(0);
         JsonNode moduleSettingsNode = grabFirstNodeFromJson(testFileName, "randExternalModules").get(0);
@@ -189,8 +187,9 @@ public class TestDataLoader {
             listOfCourseLeipzig.add(courseLeipzig);
         }
         
-
-        System.out.println("Generating random Dummy Applications:");
+        LogUtil.printLog("");
+        LogUtil.printLog("Generating random Dummy Applications:");
+        List<String> listOfApplicationNumbersGenerated = new ArrayList<>();
         for (CourseLeipzig cL : listOfCourseLeipzig) {
             List<ModulesConnectionDTO> listModuleCreateDTO = new ArrayList<>();
 
@@ -223,6 +222,7 @@ public class TestDataLoader {
                 applicationService.updateApplication(vorgangsnummer, applicationUpdateDTO, "chairman");
                 applicationService.updateApplicationStatus(vorgangsnummer);
 
+                listOfApplicationNumbersGenerated.add(vorgangsnummer);
                 closed--;
             }
             else if (pav > 0) { // update application to PRUEFUNGSAUSSCHUSS
@@ -234,7 +234,7 @@ public class TestDataLoader {
                 applicationService.updateApplication(vorgangsnummer, applicationUpdateDTO, "chairman");
                 applicationService.updateApplicationStatus(vorgangsnummer);
 
-
+                listOfApplicationNumbersGenerated.add(vorgangsnummer);
                 pav--;
             }
             else if (studyOffice > 0) { // update application to STUDIENBUERO
@@ -244,6 +244,7 @@ public class TestDataLoader {
                 applicationService.updateApplication(vorgangsnummer, applicationUpdateDTO, "study-office");
                 applicationService.updateApplicationStatus(vorgangsnummer);
 
+                listOfApplicationNumbersGenerated.add(vorgangsnummer);
                 studyOffice--;
             }
             
@@ -253,14 +254,21 @@ public class TestDataLoader {
                 applicationUpdateDTO.setModulesConnections(mcuDTOs);
                 applicationService.updateApplication(vorgangsnummer, applicationUpdateDTO, "study-office");
                 applicationService.updateApplicationStatus(vorgangsnummer);
-
+                
+                listOfApplicationNumbersGenerated.add(vorgangsnummer);
                 formfehler--;
             }
             
             else if (open > 0) { // update application to ABGESCHLOSSEN
-
+                listOfApplicationNumbersGenerated.add(vorgangsnummer);
                 open--;
             }
+        }
+
+        LogUtil.printLog("");
+        LogUtil.printLog("Generated Dummy Applications:");
+        for (String string : listOfApplicationNumbersGenerated) {
+            LogUtil.printLog("Application: " + string + " - " + applicationService.getApplicationById(string).getFullStatus());
         }
     }
 
