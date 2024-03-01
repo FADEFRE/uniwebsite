@@ -151,6 +151,28 @@ public class LogUtil {
         printLog(log);
     }
 
+    public static void printErrorLog(String location, String errorToPrint, Exception ex) {
+        String locationString = "";
+        String stackTraceString = "";
+        if (location != null && !location.isBlank()) {
+            if (ex != null && ex.getStackTrace() != null) {
+                for (StackTraceElement stackTraceElement : ex.getStackTrace()) {
+                    stackTraceString = stackTraceString + "StackTrace: " + stackTraceElement.toString() + "\n";
+                }
+            }
+            else {
+                locationString = "in " + location + ": \n    ";
+            }
+            
+        }
+        else if (ex != null && ex.getStackTrace() != null) {
+            for (StackTraceElement stackTraceElement : ex.getStackTrace()) {
+                stackTraceString = stackTraceString + "StackTrace: " + stackTraceElement.toString() + "\n";
+            }
+        }
+        printLog("ERROR: " + locationString + errorToPrint + stackTraceString);
+    }
+
 
 
     private static String getLogStringForCode(String code, String newCode) {
