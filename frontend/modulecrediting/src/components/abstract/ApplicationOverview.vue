@@ -84,7 +84,7 @@ const triggerForward = () => {
             <div v-if="id" class="vorgangsnummer-container info-container"
                 :class="{ 'admin-selection-view': adminSelectionView }">
                 <div class="vorgangsnummer-text overview-text white">
-                    {{ $t('ApplicationOverview.CaseNumber') }}: {{ id || 'Placeholder for Vorgangsnummer' }}
+                    {{ $t('ApplicationOverview.CaseNumber') }}: {{ id }}
                 </div>
             </div>
 
