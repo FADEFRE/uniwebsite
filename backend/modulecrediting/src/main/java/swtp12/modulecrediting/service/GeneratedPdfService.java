@@ -48,15 +48,16 @@ public class GeneratedPdfService {
         Context context = new Context();
         context.setVariable("id", id);
         context.setVariable("Erstelldatum", application.getCreationDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+
         String status = application.getFullStatus().toString();
-        if (status.equals("IN_BEARBEITUNG")) { status = "IN BEARBEITUNG"; }
+        if (status.equals("IN_BEARBEITUNG")) status = "IN BEARBEITUNG";
+
         context.setVariable("Status", status);
         context.setVariable("Studiengang", application.getCourseLeipzig().getName());
 
 
-        if (application.getDecisionDate() != null)
-            context.setVariable("Entscheidungsdatum", application.getDecisionDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
-
+        if (application.getDecisionDate() == null) context.setVariable("Entscheidungsdatum", "ausstehend");
+        else context.setVariable("Entscheidungsdatum", application.getDecisionDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
 
         return templateEngine.process("GeneralData", context);
     }

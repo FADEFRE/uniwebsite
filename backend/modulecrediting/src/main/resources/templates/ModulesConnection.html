@@ -159,8 +159,12 @@ ul {
                 <p class="bold" th:text="${externalModule.points} + ' ' + ${externalModule.pointSystem}">nicht verf&#252gbar</p>
             </div>
             <div class="table-row">
-                <p>Modulname</p>
+                <p>Universit&#228t</p>
                 <p class="bold" th:text="${externalModule.university}">nicht verf&#252gbar</p>
+            </div>
+            <div class="table-row">
+                <p>Studiengang</p>
+                <p class="bold" th:text="${externalModule.externalCourse}">nicht verf&#252gbar</p>
             </div>
         </div>
     </div>
