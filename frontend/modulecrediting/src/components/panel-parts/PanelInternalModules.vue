@@ -53,9 +53,9 @@ const selectableModules = computed(() => {
   return props.options.filter(m => !selectedModules.value.includes(m))
 })
 
-const emptyMessage = computed(() => {
-  if (props.options.length > 0) return "Alle Module sind ausgewählt"
-  else return "Studiengang auswählen"
+const emptyMessageKey = computed(() => {
+  if (props.options.length > 0) return 'PanelInternalModules.AllSelected'
+  else return 'PanelInternalModules.SelectCourse'
 })
 
 defineExpose({
@@ -74,7 +74,7 @@ defineExpose({
         <CustomDropdown
             filter
             :placeholder="$t('PanelInternalModules.ChooseModule')"
-            :emptyMessage="$t('PanelInternalModules.EmptyMessage')"
+            :emptyMessage="$t(emptyMessageKey)"
             :emptyFilterMessage="$t('PanelInternalModules.ModuleNotFound')"
             :options="selectableModules"
             @change="e => addSelectedModule(e.value)"

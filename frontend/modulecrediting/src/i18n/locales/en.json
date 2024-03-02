@@ -227,7 +227,8 @@
     "PanelInternalModules": {
         "ModulesUniLeipzig": "Modules of Leipzig University",
         "ChooseModule": "Choose Module",
-        "EmptyMessage": "Empty Message",
+        "AllSelected": "All modules are selected",
+        "SelectCourse": "Select course",
         "ModuleNotFound": "Module not found",
         "NoModulesSelected": "No modules of Leipzig University are selected.",
         "SelectableModules": "Selectable Modules"
