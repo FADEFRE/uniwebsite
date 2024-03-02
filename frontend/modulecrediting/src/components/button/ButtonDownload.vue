@@ -2,21 +2,20 @@
 import FileIcon from '@/assets/icons/FileIcon.vue';
 
 const props = defineProps({
-    fixed: {
-        type: Boolean,
-        default: false
-    }
+  fixed: {
+    type: Boolean,
+    default: false
+  }
 })
 </script>
 
 <template>
-    <div class="button-container">
-        <Button :class="{ ' fixed-button': fixed }">
-            <slot />
-            <FileIcon type="download"/>
-        </Button>
-    </div>
-    
+  <div class="button-container">
+    <Button :class="{ ' fixed-button': fixed }">
+      <slot />
+      <FileIcon type="download"/>
+    </Button>
+  </div>
 </template>
 
 <style scoped lang="scss">
@@ -25,8 +24,8 @@ const props = defineProps({
 @use '@/assets/styles/components' as *;
 
 .button-container {
-    display: flex;
-    gap: spacing(s);
-    width: max-content;
+  display: flex;
+  gap: spacing(s);
+  width: max-content;
 }
 </style>
