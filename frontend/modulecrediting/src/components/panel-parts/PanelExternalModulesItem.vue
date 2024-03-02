@@ -112,44 +112,54 @@ defineExpose({
 <template>
   <div class="external-modules-item">
 
-    <div class="input-container">
-      <InputText :readonly="!allowTextEdit" type="text" placeholder="Modulname" v-model="name"
-        :class="{ 'invalid': !nameValid }" class="gray"/>
-      <small v-if="!nameValid" class="invalid-text">{{ $t('PanelExternalModulesItem.NameEmpty') }}</small>
+    <div class="item-content">
+    <div class="screen-split">
+
+      <div class="input-container left-side">
+        <InputText :readonly="!allowTextEdit" type="text" placeholder="Modulname" v-model="name"
+          :class="{ 'invalid': !nameValid }" class="gray" />
+        <small v-if="!nameValid" class="invalid-text">{{ $t('PanelExternalModulesItem.NameEmpty') }}</small>
+      </div>
+
+      <div class="point-container right-side">
+        <div class="input-container">
+          <InputText :readonly="!allowTextEdit" type="text" placeholder="Punkte" v-model="points"
+            @input.prevent="validatePointInput" :class="{ 'invalid': !pointsValid }" class="gray" />
+          <small v-if="!pointsValid" class="invalid-text">{{ $t('PanelExternalModulesItem.PointsNum') }}</small>
+        </div>
+
+        <div class="input-container">
+          <InputText :readonly="!allowTextEdit" type="text" placeholder="Punktesystem" v-model="pointSystem"
+            :class="{ 'invalid': !pointSystemValid }" class="gray" />
+          <small v-if="!pointSystemValid" class="invalid-text">{{ $t('PanelExternalModulesItem.CredSysEmpty') }}</small>
+        </div>
+      </div>
+
     </div>
 
-    <div class="point-container">
+    <div class="screen-split">
+
       <div class="input-container">
-        <InputText :readonly="!allowTextEdit" type="text" placeholder="Punkte" v-model="points"
-          @input.prevent="validatePointInput" :class="{ 'invalid': !pointsValid }" class="gray"/>
-        <small v-if="!pointsValid" class="invalid-text">{{ $t('PanelExternalModulesItem.PointsNum') }}</small>
+        <InputText :readonly="!allowTextEdit" type="text" placeholder="Universität" v-model="university"
+          :class="{ 'invalid': !universityValid }" class="gray" />
+        <small v-if="!universityValid" class="invalid-text">{{ $t('PanelExternalModulesItem.UniEmpty') }}</small>
       </div>
 
       <div class="input-container">
-        <InputText :readonly="!allowTextEdit" type="text" placeholder="Punktesystem" v-model="pointSystem"
-          :class="{ 'invalid': !pointSystemValid }" class="gray"/>
-        <small v-if="!pointSystemValid" class="invalid-text">{{ $t('PanelExternalModulesItem.CredSysEmpty') }}</small>
+        <InputText :readonly="!allowTextEdit" type="text" placeholder="Studiengang" v-model="externalCourse"
+          :class="{ 'invalid': !externalCourseValid }" class="gray" />
+        <small v-if="!externalCourseValid" class="invalid-text">{{ $t('PanelExternalModulesItem.ExtCourseEmpty')}}</small>
       </div>
-    </div>
 
-    <div class="input-container">
-      <InputText :readonly="!allowTextEdit" type="text" placeholder="Universität" v-model="university"
-        :class="{ 'invalid': !universityValid }" class="gray" />
-      <small v-if="!universityValid" class="invalid-text">{{ $t('PanelExternalModulesItem.UniEmpty') }}</small>
-    </div>
-
-    <div class="input-container">
-      <InputText :readonly="!allowTextEdit" type="text" placeholder="Studiengang" v-model="externalCourse"
-        :class="{ 'invalid': !externalCourseValid }" class="gray"/>
-      <small v-if="!externalCourseValid" class="invalid-text">{{ $t('PanelExternalModulesItem.ExtCourseEmpty') }}</small>
     </div>
 
     <FileInput :readonly="!allowFileEdit" type="pdf" :selected-file="props.selectedFile" ref="fileInput">
       {{ $t('PanelExternalModulesItem.ChooseModuleDescription') }}
     </FileInput>
+  </div>
 
     <TrashIcon v-if="allowDelete" @click="emit('deleteSelf')" background-size="small"
-               :aria-label="`${$t('PanelExternalModulesItem.ExtModule')} ${name || 'ohne Namen'} ${$t('PanelExternalModulesItem.delete')}`"/>
+      :aria-label="`${$t('PanelExternalModulesItem.ExtModule')} ${name || 'ohne Namen'} ${$t('PanelExternalModulesItem.delete')}`" />
   </div>
 </template>
 
@@ -161,19 +171,21 @@ defineExpose({
 
 .external-modules-item {
   @include verticalListItem($gray);
-
   width: 100%;
-  padding: spacing(s);
+  padding: spacing(m);
 
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
   align-items: center;
   gap: spacing(s);
 }
 
+.item-content {
+  @include verticalList(s);
+}
+
 .screen-split {
   @include screenSplit();
+  gap: spacing(s);
 
   @include breakpoint(s) {
     flex-wrap: wrap;
@@ -182,9 +194,6 @@ defineExpose({
 }
 
 .left-side {
-  @include verticalList(s);
-  justify-content: space-between;
-  align-self: stretch;
   width: 50%;
 
   @include breakpoint(s) {
@@ -193,9 +202,6 @@ defineExpose({
 }
 
 .right-side {
-  @include verticalList(s);
-  justify-content: space-between;
-  align-self: stretch;
   width: 50%;
 
   @include breakpoint(s) {
@@ -207,6 +213,4 @@ defineExpose({
   display: flex;
   gap: spacing(s);
 }
-
-
 </style>
