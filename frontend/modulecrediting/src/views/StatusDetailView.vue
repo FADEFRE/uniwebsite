@@ -12,11 +12,12 @@ import ButtonLink from '@/components/button/ButtonLink.vue';
 import ButtonAdd from "@/components/button/ButtonAdd.vue";
 import ButtonDownloadVue from '@/components/button/ButtonDownload.vue';
 import LoadingContainer from "@/components/util/LoadingContainer.vue";
-import { url } from "@/config/url-config"
-import { parseRequestDate } from "@/utils/date-utils";
+import FormalRejectionInfoBox from "@/components/info-box/FormalRejectionInfoBox.vue";
+import FinishedInfoBox from "@/components/info-box/FinishedInfoBox.vue";
 import SideInfoApplicationProcess from '@/components/side-info/SideInfoApplicationProcess.vue';
 import SideInfoStudyOffice from '@/components/side-info/SideInfoStudyOffice.vue';
-import ModuleStatusIcon from "@/assets/icons/ModuleStatusIcon.vue";
+import { url } from "@/config/url-config"
+import { parseRequestDate } from "@/utils/date-utils";
 import { getModulesByCourse } from "@/requests/module-course-requests";
 import { getApplicationByIdForStatus, putApplicationStudent } from "@/requests/application-requests";
 
@@ -102,35 +103,12 @@ const triggerSubmit = () => {
 
     <div class="content-container split">
 
-      <div v-if="applicationData['fullStatus'] === 'FORMFEHLER'" class="application-info-container">
-        <h2>{{ $t('StatusDetailView.FormalMistake') }}</h2>
-        <p class="text-justify">
-          {{ $t('StatusDetailView.FormalMistakeExplanation') }}
-        </p>
+      <div v-if="applicationData['fullStatus'] === 'FORMFEHLER'">
+        <FormalRejectionInfoBox />
       </div>
 
-      <div v-if="applicationData['fullStatus'] === 'ABGESCHLOSSEN'" class="application-info-container">
-        <h2>{{ $t('StatusDetailView.WhatNext') }}</h2>
-        <p class="text-justify">
-          {{ $t('StatusDetailView.FinalDecisionExplanation') }}
-        </p>
-        <div class="legend-container">
-          <h3 class="h4">{{ $t('StatusDetailView.legend') }}</h3>
-          <ul>
-            <li class="explanation-list-item">
-              <ModuleStatusIcon status-decision="accepted" size="small"/>
-              <p>{{ $t('StatusDetailView.CreditingAccepted') }}</p>
-            </li>
-            <li class="explanation-list-item">
-              <ModuleStatusIcon status-decision="asExamCertificate" size="small"/>
-              <p>{{ $t('StatusDetailView.CreditingAsAdmission') }}</p>
-            </li>
-            <li class="explanation-list-item">
-              <ModuleStatusIcon status-decision="denied" size="small"/>
-              <p>{{ $t('StatusDetailView.CreditingRejected') }}</p>
-            </li>
-          </ul>
-        </div>
+      <div v-if="applicationData['fullStatus'] === 'ABGESCHLOSSEN'">
+        <FinishedInfoBox />
       </div>
 
       <ApplicationOverview :creation-date="parseRequestDate(applicationData['creationDate'])"
@@ -190,15 +168,5 @@ const triggerSubmit = () => {
 
 .formal-rejection-highlight {
   border-left: spacing(m) solid $red;
-}
-
-.legend-container {
-  @include verticalList(s);
-}
-
-.explanation-list-item {
-  @include smallHighlightBox();
-  @include verticalListItem($gray);
-  justify-content: flex-start;
 }
 </style>
