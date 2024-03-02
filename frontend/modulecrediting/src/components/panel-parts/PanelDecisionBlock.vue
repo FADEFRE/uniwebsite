@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch } from "vue";
+import { ref, computed, watch } from "vue";
 import ModuleStatusIcon from "@/assets/icons/ModuleStatusIcon.vue";
 const props = defineProps({
   readonly: {
@@ -36,13 +36,11 @@ defineExpose({
 })
 </script>
 
-<!-- todo accessibility -->
 <template>
   <div class="panel-decision-block">
 
-
     <div v-if="!readonly">
-      <SelectButton :allow-empty="false" :options="decisionOptions" optionLabel="label" optionValue="value" v-model="decision" :aria-label="$t('PanelDecisionBlock.ChooseDecision')"/>
+      <SelectButton :allow-empty="false" :options="decisionOptions" optionLabel="label" optionValue="value" v-model="decision" />
     </div>
 
     <div v-else class="readonly-decision-container">

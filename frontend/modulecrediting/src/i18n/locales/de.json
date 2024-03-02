@@ -158,11 +158,10 @@
     },
 
     "ModuleStatusIcon": {
-        "Unedited": "Unbearbeitet",
-        "Accepted": "Akzeptiert",
-        "AsExamCertificate": "Als Übungsschein",
-        "Denied": "Abgelehnt",
-        "FormalRejection": "Formal abgelehnt"
+        "accepted": "Anrechnung angenommen",
+        "asExamCertificate": "Anrechnung als Übungsschein",
+        "denied": "Anrechnung abgelehnt",
+        "formalRejection": "Formfehler"
     },
 
     "FileIcon": {
@@ -210,7 +209,6 @@
     },
 
     "PanelDecisionBlock": {
-        "ChooseDecision": "Wähle eine Option",
         "reason": "Begründung"
     },
 

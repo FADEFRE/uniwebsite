@@ -149,11 +149,10 @@
     },
 
     "ModuleStatusIcon": {
-        "Unedited": "Unedited",
-        "Accepted": "Accepted",
-        "AsExamCertificate": "As Exam Certificate",
-        "Denied": "Denied",
-        "FormalRejection": "Formal Rejection"
+        "accepted": "Crediting accepted",
+        "asExamCertificate": "Crediting as exam certificate",
+        "denied": "Crediting denied",
+        "formalRejection": "formal rejection"
     },
 
     "FileIcon": {
@@ -201,7 +200,6 @@
     },
 
     "PanelDecisionBlock": {
-        "ChooseDecision": "Choose an Option",
         "reason": "Reason"
     },
 
