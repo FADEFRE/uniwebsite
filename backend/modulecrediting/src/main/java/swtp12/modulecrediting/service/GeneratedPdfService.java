@@ -20,10 +20,7 @@ import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.kernel.pdf.WriterProperties;
 import com.itextpdf.layout.font.FontProvider;
 
-import swtp12.modulecrediting.model.Application;
-import swtp12.modulecrediting.model.ExternalModule;
-import swtp12.modulecrediting.model.ModuleLeipzig;
-import swtp12.modulecrediting.model.ModulesConnection;
+import swtp12.modulecrediting.model.*;
 
 
 @Service
@@ -50,9 +47,12 @@ public class GeneratedPdfService {
         context.setVariable("Erstelldatum", application.getCreationDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
 
         String status = application.getFullStatus().toString();
-        if (status.equals("IN_BEARBEITUNG")) status = "IN BEARBEITUNG";
-
+        if (status.equals(EnumApplicationStatus.IN_BEARBEITUNG.toString())) status = "in Bearbeitung";
+        if (status.equals(EnumApplicationStatus.NEU.toString())) status = "neu";
+        if (status.equals(EnumApplicationStatus.ABGESCHLOSSEN.toString())) status = "abgeschlossen";
+        if (status.equals(EnumApplicationStatus.FORMFEHLER.toString())) status = "Formfehler";
         context.setVariable("Status", status);
+
         context.setVariable("Studiengang", application.getCourseLeipzig().getName());
 
 
@@ -102,6 +102,15 @@ public class GeneratedPdfService {
 
         context.setVariable("externalModulesArray", externalModulesArray);
         context.setVariable("modulesLeipzigArray", modulesLeipzigArray);
+
+        String decisionFinal = connection.getDecisionFinal().toString();
+        if(decisionFinal.equals(EnumModuleConnectionDecision.unedited.toString())) decisionFinal = "ausstehend";
+        if(decisionFinal.equals(EnumModuleConnectionDecision.accepted.toString())) decisionFinal = "angenommen";
+        if(decisionFinal.equals(EnumModuleConnectionDecision.asExamCertificate.toString())) decisionFinal = "als Übungsschein angenommen";
+        if(decisionFinal.equals(EnumModuleConnectionDecision.denied.toString())) decisionFinal = "abgelehnt";
+        context.setVariable("decisionFinal", decisionFinal);
+
+        context.setVariable("commentDecision", connection.getCommentDecision());
 
         return context;
     }

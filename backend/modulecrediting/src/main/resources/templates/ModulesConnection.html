@@ -9,11 +9,12 @@
             }
 
             .panel-header {
-                margin-bottom: 10px;
+
             }
 
             .module-leipzig-container,
-             external-modul-container {
+            .external-modul-container,
+            .decision-container {
                 margin-top: 20px;
 
             }
@@ -117,7 +118,28 @@
                 </div>
             </div>
         </div>
+    <div class="decision-container">
+        <h3>Entscheidung</h3>
+
+        <div class="table">
+            <div class="table-content">
+                <div class="table-row">
+                    <p>Entscheidung</p>
+                    <p class="bold" th:text="${decisionFinal}">nicht entschieden</p>
+                </div>
+                <div class="table-row">
+                    <p>Begr&#252ndung</p>
+                    <p class="bold" th:text="${commentDecision}"></p>
+                </div>
+            </div>
+        </div>
     </div>
+
+
+    </div>
+
+
+</div>
 </div>
 </body>
 </html>
