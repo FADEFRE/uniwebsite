@@ -25,7 +25,7 @@ public class PdfDocumentService {
 
         if (pdfData == null) {
             if (pdfId == null) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No external module id given");
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No PDF file provided and no existing PDF file found");
             }
             else return getPdfDocumentById(pdfId);
         }
