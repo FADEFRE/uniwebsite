@@ -3,13 +3,11 @@ package swtp12.modulecrediting.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,9 +19,7 @@ import jakarta.validation.Valid;
 import swtp12.modulecrediting.dto.LoginRequest;
 import swtp12.modulecrediting.dto.LoginResponse;
 import swtp12.modulecrediting.dto.LogoutResponse;
-import swtp12.modulecrediting.dto.EditUserDTO;
 import swtp12.modulecrediting.service.AuthService;
-import swtp12.modulecrediting.service.UserService;
 import swtp12.modulecrediting.util.IncorrectKeyOnDecryptException;
 import swtp12.modulecrediting.util.SecurityCipher;
 
@@ -41,8 +37,6 @@ public class AuthController {
     private AuthenticationManager authenticationManager;
     @Autowired
     private AuthService authService;
-    @Autowired
-    private UserService userService;
 
 
     @PostMapping("/login")
@@ -82,17 +76,5 @@ public class AuthController {
         else logoutResponse = new LogoutResponse(LogoutResponse.SuccessFailure.SUCCESS, "No cookies");
         return ResponseEntity.ok().body(logoutResponse);
     }
-    
 
-    @PostMapping("/register")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<String> registerUser(@ModelAttribute EditUserDTO registerRequest) {
-        return ResponseEntity.ok(userService.register(registerRequest));
-    }
-
-    @PostMapping("/delete")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<String> deleteUser(@ModelAttribute EditUserDTO deleteRequest) {
-        return ResponseEntity.ok(userService.deleteUser(deleteRequest));
-    }
 }
