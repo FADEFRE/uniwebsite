@@ -27,6 +27,7 @@
         }
     ],
 
+
     "users": [
         {
             "name": "studyoffice",
@@ -47,6 +48,7 @@
         }
     ],
 
+    
     "courses": [
         {
             "name": "B.Sc. Informatik",
@@ -76,18 +78,78 @@
                     "number": "10-201-2006-2"
                 },
                 {
-                    "name": "Betriebs- und Kommuikationssysteme",
+                    "name": "Betriebs- und Kommunikationssysteme",
                     "number": ""
                 },
                 {
                     "name": "Logik",
                     "number": "10-201-2108-1"
+                },
+                {
+                    "name": "Automaten und Sprachen",
+                    "number": "10-201-2108-2"
+                },
+                {
+                    "name": "Berechenbarkeit",
+                    "number": "10-201-2009"
+                },
+                {
+                    "name": "Datenbanksysteme 1",
+                    "number": "10-201-2211"
+                },
+                {
+                    "name": "Software Engineering",
+                    "number": "10-201-2321"
+                },
+                {
+                    "name": "Software Engineering Praktikum",
+                    "number": "10-201-2320"
+                },
+                {
+                    "name": "Diskrete Strukturen",
+                    "number": "10-201-1602"
+                },
+                {
+                    "name": "Analysis",
+                    "number": "10-201-1011"
+                },
+                {
+                    "name": "Lineare Algebra",
+                    "number": "10-201-1015"
+                },
+                {
+                    "name": "Wahrscheinlichkeitstheorie",
+                    "number": "10-201-1802"
+                },
+                {
+                    "name": "Kernmodul (Wahlpflichtfach)",
+                    "number": ""
+                },
+                {
+                    "name": "Seminarmodule (Wahlpflichtfach)",
+                    "number": ""
+                },
+                {
+                    "name": "Vertiefungsmodul (Wahlpflichtfach)",
+                    "number": ""
+                },
+                {
+                    "name": "Ergänzungsbereich (Wahlpflichtfach)",
+                    "number": ""
+                },
+                {
+                    "name": "Schlüsselqualifikation (Wahlpflichtfach)",
+                    "number": ""
+                },
+                {
+                    "name": "Bachelorseminar",
+                    "number": ""
                 }
             ]
         },
 
         {
-            "name": "test course",
+            "name": "Test Course",
             "modules" : [
                 {
                     "name": "Programmierparadigmen",
@@ -108,6 +170,30 @@
                 {
                     "name": "Grundlagen der Technischen Informatik 2",
                     "number": "10-201-2006-2"
+                },
+                {
+                    "name": "Betriebs- und Kommunikationssysteme",
+                    "number": ""
+                },
+                {
+                    "name": "Logik",
+                    "number": "10-201-2108-1"
+                },
+                {
+                    "name": "Automaten und Sprachen",
+                    "number": "10-201-2108-2"
+                },
+                {
+                    "name": "Berechenbarkeit",
+                    "number": "10-201-2009"
+                },
+                {
+                    "name": "Datenbanksysteme 1",
+                    "number": "10-201-2211"
+                },
+                {
+                    "name": "Software Engineering",
+                    "number": "10-201-2321"
                 }
             ]
         }

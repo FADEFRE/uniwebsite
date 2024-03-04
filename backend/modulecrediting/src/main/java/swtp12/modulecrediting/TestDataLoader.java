@@ -81,12 +81,11 @@ public class TestDataLoader {
      */
     @Transactional
     public void run() {
-        String moduleLeipzigData = "/module_liste.json";
         String testData = "/test_data.json";
 
         userCreation(testData);
 
-        leipzigDataLoader(moduleLeipzigData);
+        leipzigDataLoader(testData);
 
         createTestData(testData);
     }
