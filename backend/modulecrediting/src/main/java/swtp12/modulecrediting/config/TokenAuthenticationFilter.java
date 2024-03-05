@@ -3,7 +3,6 @@ package swtp12.modulecrediting.config;
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,12 +22,8 @@ import swtp12.modulecrediting.util.LogUtil;
 import swtp12.modulecrediting.util.SecurityCipher;
 
 public class TokenAuthenticationFilter extends OncePerRequestFilter{
-    @Value("${app.auth.accessTokenCookieName}")
-    private String accessTokenCookieName;
 
-    @Value("${app.auth.refreshTokenCookieName}")
-    private String refreshTokenCookieName;
-
+    private final String accessTokenCookieName = "accessToken";
     @Autowired
     private TokenProvider tokenProvider;
 

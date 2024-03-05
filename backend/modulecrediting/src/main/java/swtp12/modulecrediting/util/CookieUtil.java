@@ -1,17 +1,14 @@
 package swtp12.modulecrediting.util;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpCookie;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Component;
 
 @Component
 public class CookieUtil {
-    @Value("${app.auth.accessTokenCookieName}")
-    private String accessTokenCookieName;
 
-    @Value("${app.auth.refreshTokenCookieName}")
-    private String refreshTokenCookieName;
+    private final String accessTokenCookieName = "accessToken";
+    private final String refreshTokenCookieName = "refreshToken";
 
     public HttpCookie createAccessTokenCookie(String token, Long duration) {
         String encryptedToken = SecurityCipher.encrypt(token);

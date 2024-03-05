@@ -1,7 +1,6 @@
 package swtp12.modulecrediting.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,11 +27,9 @@ import swtp12.modulecrediting.util.SecurityCipher;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
-    
-    @Value("${app.auth.accessTokenCookieName}")
-    private String accessTokenCookieName;
-    @Value("${app.auth.refreshTokenCookieName}")
-    private String refreshTokenCookieName;
+        
+    private final String accessTokenCookieName = "accessToken";
+    private final String refreshTokenCookieName = "refreshToken";
     @Autowired
     private AuthenticationManager authenticationManager;
     @Autowired
@@ -41,8 +38,8 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(
-            @CookieValue(name = "accessToken", required = false) String accessToken,
-            @CookieValue(name = "refreshToken", required = false) String refreshToken,
+            @CookieValue(name = accessTokenCookieName, required = false) String accessToken,
+            @CookieValue(name = refreshTokenCookieName, required = false) String refreshToken,
             @Valid @RequestBody LoginRequest loginRequest
     ) throws IncorrectKeyOnDecryptException {
         Authentication authenticationRequest = UsernamePasswordAuthenticationToken.unauthenticated(loginRequest.getUsername().toString(), loginRequest.getPassword().toString());
@@ -55,8 +52,8 @@ public class AuthController {
 
     @PostMapping("/refresh")
     public ResponseEntity<LoginResponse> refreshToken(
-            @CookieValue(name = "accessToken", required = false) String accessToken, 
-            @CookieValue(name = "refreshToken", required = false) String refreshToken) throws IncorrectKeyOnDecryptException {
+            @CookieValue(name = accessTokenCookieName, required = false) String accessToken, 
+            @CookieValue(name = refreshTokenCookieName, required = false) String refreshToken) throws IncorrectKeyOnDecryptException {
         String decryptedAccessToken = SecurityCipher.decrypt(accessToken);
         String decryptedRefreshToken = SecurityCipher.decrypt(refreshToken);
         return authService.refresh(decryptedAccessToken, decryptedRefreshToken);
