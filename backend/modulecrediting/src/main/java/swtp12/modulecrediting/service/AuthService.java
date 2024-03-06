@@ -108,7 +108,10 @@ public class AuthService {
 
         String currentUserUsername = null;
         try { currentUserUsername = tokenProvider.getUsernameFromToken(accessTokenString); } 
-        catch (Exception e) { throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "No accessToken provided, you are most likely not actively logged in"); }
+        catch (Exception e) { 
+            try { currentUserUsername = tokenProvider.getUsernameFromToken(refreshTokenString); } 
+                catch (Exception e2) { throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "No valid Tokens provided"); }
+        }
 
         Token newAccessToken = tokenProvider.generateAccessToken(currentUserUsername);
         HttpHeaders responseHeaders = new HttpHeaders();
@@ -126,18 +129,18 @@ public class AuthService {
      * @return {@link ResponseEntity} with the created {@link HttpHeaders} and a {@link LogoutResponse} as body.
      * 
      * @see CookieUtil
-     * @see CookieUtil#createAccessTokenCookie
+     * @see CookieUtil#deleteAccessTokenCookie
      * @see LogoutResponse
      * @see Token
      * @see <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/http/ResponseEntity.html"> HttpCookie </a>
      * @see <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/http/ResponseEntity.html"> HttpHeaders </a>
      * @see <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/http/ResponseEntity.html"> ResponseEntity </a>
      */
-    public ResponseEntity<LogoutResponse> logout() {
+    public static ResponseEntity<LogoutResponse> logout() {
         LogoutResponse logoutResponse = new LogoutResponse(LogoutResponse.SuccessFailure.ERROR, "Error in userservice logout()");
 
         HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.add(HttpHeaders.SET_COOKIE, cookieUtil.deleteAccessTokenCookie().toString());
+        responseHeaders.add(HttpHeaders.SET_COOKIE, CookieUtil.deleteAccessTokenCookie().toString());
 
         logoutResponse = new LogoutResponse(LogoutResponse.SuccessFailure.SUCCESS, "Successfully logged out");
         return ResponseEntity.ok().headers(responseHeaders).body(logoutResponse);
@@ -153,16 +156,16 @@ public class AuthService {
      * @return {@link ResponseEntity} with the created {@link HttpHeaders} and a {@link LogoutResponse} as body.
      * 
      * @see CookieUtil
-     * @see CookieUtil#createAccessTokenCookie
+     * @see CookieUtil#deleteRefreshTokenCookie
      * @see LogoutResponse
      * @see Token
      * @see <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/http/ResponseEntity.html"> HttpCookie </a>
      * @see <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/http/ResponseEntity.html"> HttpHeaders </a>
      * @see <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/http/ResponseEntity.html"> ResponseEntity </a>
      */
-    public ResponseEntity<LogoutResponse> deleteRefreshCookie() {
+    public static ResponseEntity<LogoutResponse> deleteRefreshCookie() {
         HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.add(HttpHeaders.SET_COOKIE, cookieUtil.deleteRefreshTokenCookie().toString());
+        responseHeaders.add(HttpHeaders.SET_COOKIE, CookieUtil.deleteRefreshTokenCookie().toString());
 
         LogoutResponse logoutResponse = new LogoutResponse(LogoutResponse.SuccessFailure.SUCCESS, "Successfully deleted refreshToken");
         return ResponseEntity.ok().headers(responseHeaders).body(logoutResponse);

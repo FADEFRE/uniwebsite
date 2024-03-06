@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { useUserStore } from "@/store/userStore";
+import { logout } from "./logout";
 import translate from '@/i18n/translate';
 import httpClient from "@/requests/httpClient";
 import HomepageView from "@/views/HomepageView.vue";
@@ -167,7 +168,7 @@ router.beforeEach(async (to, from) => {
     return true;
   }
   if (to.meta.authType !== "standard" && user === false) {
-    userStore.logout();
+    logout();
     return { name: "login" };
   }
   if (to.meta.authType !== "standard") {
