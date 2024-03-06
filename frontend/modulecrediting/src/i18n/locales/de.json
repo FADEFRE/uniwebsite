@@ -1,11 +1,7 @@
 {
     "TheNavigation": {
         "homepage": "Startseite",
-        "login": "log-in intern",
-        "Overview": "Übersicht",
-        "Control": "Verwaltung",
-        "Account": "Account",
-        "Logout": "Logout"
+        "login": "login intern"
     },
 
     "HomepageView": {
@@ -26,42 +22,9 @@
         "ProcessNumberOfApplication": "Vorgangsnummer des aufzurufenden Antrags"
     },
 
-    "ApplicationConnectionLinks": {
-        "Overview": "Übersicht"
-    },
-
     "ApplicationOverview": {
         "Application": "Antrag",
         "CaseNumber": "Vorgangsnummer"
-    },
-
-    "AccountAdminCreate": {
-        "CreateUser": "Benutzer erstellen",
-        "Username": "Benutzername",
-        "UsernameForbidden": "Dieser Benutzername ist nicht erlaubt",
-        "UserExists": "Es existiert bereits ein Benutzer mit diesem Namen",
-        "Password": "Passwort",
-        "PasswordForbidden": "Passwort ist nicht erlaubt",
-        "ConfirmPassword": "Passwort bestätigen",
-        "ConfirmPasswordSame": "Die Passwörter müssen übereinstimmen",
-        "CreateUserButton": "Benutzer erstellen"
-    },
-
-    "AccountAdminList": {
-        "AllUsers": "Alle Benutzer",
-        "Admin": "Admin"
-    },
-
-    "AccountSettings": {
-        "Usersettings": "Benutzereinstellungen",
-        "ChangeUsername": "Benutzername ändern",
-        "UsernameForbidden": "Dieser Benutzername ist nicht erlaubt",
-        "UsernameExists": "Benutzername existiert bereits",
-        "save": "Speichern",
-        "ChangePassword": "Passwort ändern",
-        "PasswordForbidden": "Das Passwort darf nicht leer sein",
-        "PasswordConfirm": "Passwort bestätigen",
-        "Passwordsame": "Die Passwörter müssen übereinstimmen"
     },
 
     "ButtonAdd": {
@@ -79,25 +42,6 @@
     "HomepageContainer": {
         "PlaceholderHeading": "Platzhalter heading",
         "PlaceholderText": "Platzhalter Text"
-    },
-
-    "FilterSelector": {
-        "Filters": "Filteroptionen",
-        "Course": "Studiengang",
-        "ChoseCourse": "Studiengang auswählen",
-        "Search": "Suchen",
-        "SearchApplication": "Antrag suchen",
-        "SearchAfter": "Suchen nach: Vorgangsnummer, Modulname, Universität",
-        "Time": "Zeit",
-        "Created": "Erstellt",
-        "lastEdited": "Zuletzt bearbeitet",
-        "Decided": "Beschlossen",
-        "Status": "Status",
-        "NEW": "NEU",
-        "FORMALMISTAKE": "FORMFEHLER",
-        "STUDYOFFICE": "STUDIENBÜRO",
-        "EXAMINATIONCOMITTEE": "PRÜFUNGSAUSSCHUSS",
-        "DONE": "ABGESCHLOSSEN"
     },
 
     "ApplicationInfoBox": {
@@ -127,20 +71,6 @@
         "UniHalle": "Martin-Luther-Universität Halle-Wittenberg",
         "Credits": "Punkte '10', Punktesystem 'LP'",
         "ModuleDescription": "Modulbeschreibung: PDF-Datei mit der Beschreibung des Moduls Automaten und Berechenbarkeit"
-    },
-
-    "ManagementCreate": {
-        "CreateCourse": "Studiengang erstellen",
-        "NameCourse": "Name des Studiengangs",
-        "NameCourseEmpty": "Name des Studiengangs darf nicht leer sein",
-        "CourseExists": "Studiengang existiert bereits",
-        "AddCourse": "Studiengang hinzufügen",
-        "CreateModule": "Modul erstellen",
-        "NameModule": "Modulname",
-        "ModuleCode": "Modulcode",
-        "ModuleNameEmpty": "Modulname darf nicht leer sein",
-        "ModuleNameExists": "Modulname oder Modulcode existiert bereits",
-        "AddModule": "Modul hinzufügen"
     },
 
     "StatusDetailView": {

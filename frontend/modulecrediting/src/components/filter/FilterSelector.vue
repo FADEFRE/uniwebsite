@@ -135,44 +135,41 @@ defineExpose({
 <template>
   <div class="filter-container">
 
-    <h2 class="h3">{{ $t('FilterSelector.Filters') }}</h2>
+    <h2 class="h3">Filteroptionen</h2>
 
     <div class="screen-split-container">
 
       <div class="left-side-container">
         <div class="single-filter-container">
-          <h3 class="h4">{{ $t('FilterSelector.Course') }}</h3>
-          <CustomDropdown show-clear :placeholder="$t('FilterSelector.ChoseCourse')" :options="courses" v-model="course" @clear="deleteCourse" />
+          <h3 class="h4">Studiengang</h3>
+          <CustomDropdown show-clear placeholder="Studiengang auswählen" :options="courses" v-model="course" @clear="deleteCourse" />
         </div>
 
 
         <div class="single-filter-container">
-          <h3 class="h4">{{ $t('FilterSelector.Search') }}</h3>
+          <h3 class="h4">Suchen</h3>
           <div class="input-search-field-container">
-            <InputText v-model="searchString" :placeholder="$t('FilterSelector.SearchApplication')" class="white"/>
+            <InputText v-model="searchString" placeholder="Antrag suchen" class="white"/>
             <img src="../../assets/icons/SearchIcon.svg" class="search-icon">
           </div>
 
-          <small>{{ $t('FilterSelector.SearchAfter') }}</small>
+          <small>Suchen nach: Vorgangsnummer, Modulname, Universität</small>
         </div>
 
         <div class="single-filter-container">
-          <h3 class="h4">{{ $t('FilterSelector.Time') }}</h3>
+          <h3 class="h4">Zeit</h3>
           <div class="date-filter-container">
-            <div tabindex="0" @keydown.enter="setDateTypeCreation" @click="setDateTypeCreation"
-                 class="date-block" :class="{ 'selected': dateType === 'creationDate' }">
+            <div tabindex="0" @keydown.enter="setDateTypeCreation" @click="setDateTypeCreation" class="date-block" :class="{ 'selected': dateType === 'creationDate' }">
               <DateIcon type="creation"/>
-              <p v-if="dateType === 'creationDate'">{{ $t('FilterSelector.Created') }}</p>
+              <p v-if="dateType === 'creationDate'">Erstellt</p>
             </div>
-            <div tabindex="0" @keydown.enter="setDateTypeLastEdit" @click="setDateTypeLastEdit"
-                 class="date-block" :class="{ 'selected': dateType === 'lastEditedDate' }">
+            <div tabindex="0" @keydown.enter="setDateTypeLastEdit" @click="setDateTypeLastEdit" class="date-block" :class="{ 'selected': dateType === 'lastEditedDate' }">
               <DateIcon type="lastEdited"/>
-              <p v-if="dateType === 'lastEditedDate'">{{ $t('FilterSelector.lastEdited') }}</p>
+              <p v-if="dateType === 'lastEditedDate'">Zuletzt bearbeitet</p>
             </div>
-            <div tabindex="0" @keydown.enter="setDateTypeDecision" @click="setDateTypeDecision"
-                 class="date-block" :class="{ 'selected': dateType === 'decisionDate' }">
+            <div tabindex="0" @keydown.enter="setDateTypeDecision" @click="setDateTypeDecision" class="date-block" :class="{ 'selected': dateType === 'decisionDate' }">
               <DateIcon type="decision"/>
-              <p v-if="dateType === 'decisionDate'">{{ $t('FilterSelector.Decided') }}</p>
+              <p v-if="dateType === 'decisionDate'">Beschlossen</p>
             </div>
           </div>
           <div>
@@ -183,26 +180,23 @@ defineExpose({
 
       <div class="right-side-container">
         <div class="single-filter-container">
-          <h3 class="h4">{{ $t('FilterSelector.Status') }}</h3>
-          <div tabindex="0" @keydown.enter="toggleStatusNew" @click="toggleStatusNew"
-               :class="{ 'selected': statusNew }" class="statusNew status-container" >
-            <p class="overview-text">{{ $t('FilterSelector.NEW') }}</p>
+          <h3 class="h4">Status</h3>
+          <div tabindex="0" @keydown.enter="toggleStatusNew" @click="toggleStatusNew" :class="{ 'selected': statusNew }" class="statusNew status-container" >
+            <p class="overview-text">NEU</p>
           </div>
           <div tabindex="0" @keydown.enter="toggleStatusFormalRejection" @click="toggleStatusFormalRejection"
               :class="{ 'selected': statusFormalRejection }" class="statusFormalRejection status-container">
-            <p class="overview-text">{{ $t('FilterSelector.FORMALMISTAKE') }}</p>
+            <p class="overview-text">FORMFEHLER</p>
           </div>
           <div tabindex="0" @keydown.enter="toggleStatusStudyOffice" @click="toggleStatusStudyOffice"
               :class="{ 'selected': statusStudyOffice }" class="statusStudyOffice status-container">
-            <p class="overview-text">{{ $t('FilterSelector.STUDYOFFICE') }}</p>
+            <p class="overview-text">STUDIENBÜRO</p>
           </div>
-          <div tabindex="0" @keydown.enter="toggleStatusChairman" @click="toggleStatusChairman"
-               :class="{ 'selected': statusChairman }" class="statusChairman status-container">
-            <p class="overview-text">{{ $t('FilterSelector.EXAMINATIONCOMITTEE') }}</p>
+          <div tabindex="0" @keydown.enter="toggleStatusChairman" @click="toggleStatusChairman" :class="{ 'selected': statusChairman }" class="statusChairman status-container">
+            <p class="overview-text">PRÜFUNGSAUSSCHUSS</p>
           </div>
-          <div tabindex="0" @keydown.enter="toggleStatusClosed" @click="toggleStatusClosed"
-               :class="{ 'selected': statusClosed }" class="statusClosed status-container">
-            <p class="overview-text">{{ $t('FilterSelector.DONE') }}</p>
+          <div tabindex="0" @keydown.enter="toggleStatusClosed" @click="toggleStatusClosed" :class="{ 'selected': statusClosed }" class="statusClosed status-container">
+            <p class="overview-text">ABGESCHLOSSEN</p>
           </div>
         </div>
       </div>

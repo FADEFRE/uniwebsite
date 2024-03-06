@@ -32,7 +32,7 @@ const triggerDeleteUser = (id) => {
 <template>
   <div class="admin-list-container">
 
-    <h2>{{ $t('AccountAdminList.AllUsers') }}</h2>
+    <h2>Alle Benutzer</h2>
 
     <div class="user-list">
       <div v-for="user in userList">
@@ -43,7 +43,7 @@ const triggerDeleteUser = (id) => {
           </div>
           
           <div class="user-self-role">
-              <p class="overview-text">{{ $t('AccountAdminList.Admin') }}</p>
+              <p class="overview-text">Admin</p>
           </div>
 
         </div>

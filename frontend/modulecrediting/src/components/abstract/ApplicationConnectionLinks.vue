@@ -26,7 +26,7 @@ const scrollTo = (id) => {
 <template>
   <div class="application-connection-links-container">
 
-    <h2>{{ $t('ApplicationConnectionLinks.Overview') }}</h2>
+    <h2>Übersicht</h2>
 
     <div class="connection-link-container">
       <div v-for="connection in connectionsData" @click="scrollTo(connection.id)" class="connection-link-item icon-hover-right">

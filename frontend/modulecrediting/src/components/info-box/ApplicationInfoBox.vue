@@ -21,7 +21,7 @@ const showExample = ref(false)
         <h3 class="h4">{{ $t('ApplicationInfoBox.ModuleAssignment') }}</h3>
         <ul class="points">
           <li>{{ $t('ApplicationInfoBox.ForeignModule') }}</li>
-          <li>{{ $t('ApplicationInfoBox.belongingModule') }}</li>
+          <li>{{ $t('ApplicationInfoBox.belongingModules') }}</li>
           <li>{{ $t('ApplicationInfoBox.multipleAssignments') }}</li>
         </ul>
       </div>

@@ -58,30 +58,27 @@ const createModuleLeipzig = () => {
 
 <template>
   <div v-if="type === 'course'" class="management-create-container">
-    <h2>{{ $t('ManagementCreate.CreateCourse') }}</h2>
+    <h2>Studiengang erstellen</h2>
     <div class="input-container">
-      <InputText type="text" :placeholder="$t('ManagementCreate.NameCourse')" v-model="coursename"
-                 class="white" :class="{ 'invalid': courseNameEmpty || courseExists }" />
-      <small v-if="courseNameEmpty" class="invalid-text">{{ $t('ManagementCreate.NameCourseEmpty') }}</small>
-      <small v-if="courseExists" class="invalid-text">{{ $t('ManagementCreate.CourseExists') }}</small>
+      <InputText type="text" placeholder="Name des Studiengangs" v-model="coursename" class="white" :class="{ 'invalid': courseNameEmpty || courseExists }" />
+      <small v-if="courseNameEmpty" class="invalid-text">Name des Studiengangs darf nicht leer sein</small>
+      <small v-if="courseExists" class="invalid-text">Studiengang existiert bereits</small>
     </div>
-    <ButtonLink @click="createCourseLeipzig">{{ $t('ManagementeCreat.AddCourse') }}</ButtonLink>
+    <ButtonLink @click="createCourseLeipzig">Studiengang hinzufügen</ButtonLink>
   </div>
 
 
   <div v-else-if="type === 'module'" class="management-create-container">
-    <h2>{{ $t('ManagementCreate.CreateModule') }}</h2>
+    <h2>Modul erstellen</h2>
     <div class="input-container">
       <div class="module-input-container">
-        <InputText type="text" :placeholder="$t('ManagementCreate.NameModule')" v-model="modulename"
-                   class="white" :class="{ 'invalid': moduleNameEmpty || moduleExists }" />
-        <InputText type="text"  :placeholder="$t('ManagementCreate.ModuleCode')" v-model="modulecode"
-                   class="white" :class="{ 'invalid': moduleExists }" />
+        <InputText type="text" placeholder="Modulname" v-model="modulename" class="white" :class="{ 'invalid': moduleNameEmpty || moduleExists }" />
+        <InputText type="text"  placeholder="Modulcode" v-model="modulecode" class="white" :class="{ 'invalid': moduleExists }" />
       </div>
-      <small v-if="moduleNameEmpty" class="invalid-text">{{ $t('ManagementCreate.ModuleNameEmpty') }}</small>
-      <small v-if="moduleExists" class="invalid-text">{{ $t('ManagementCreate.ModuleNameExists') }}</small>
+      <small v-if="moduleNameEmpty" class="invalid-text">Modulname darf nicht leer sein</small>
+      <small v-if="moduleExists" class="invalid-text">Modulname oder Modulcode existiert bereits</small>
     </div>
-    <ButtonLink @click="createModuleLeipzig">{{ $t('ManagementCreate.AddModule') }}</ButtonLink>
+    <ButtonLink @click="createModuleLeipzig">Modul hinzufügen</ButtonLink>
   </div>
 </template>
 

@@ -1,11 +1,7 @@
 {
     "TheNavigation": {
-    "homepage": "Homepage",
-    "login": "Log-in Intern",
-    "Overview": "Overview",
-    "Control": "Management",
-    "Account": "Account",
-    "Logout": "Logout"
+        "homepage": "homepage",
+        "login": "login"
     },
 
     "HomepageView": {
@@ -26,42 +22,9 @@
         "ProcessNumberOfApplication": "Transaction Number of the Application to be Accessed"
     },
 
-    "ApplicationConnectionLinks": {
-        "Overview": "Overview"
-    },
-
     "ApplicationOverview": {
         "Application": "Application",
         "CaseNumber": "Transaction Number"
-    },
-
-    "AccountAdminCreate": {
-        "CreateUser": "Create User",
-        "Username": "Username",
-        "UsernameForbidden": "This username is not allowed",
-        "UserExists": "A user with this name already exists",
-        "Password": "Password",
-        "PasswordForbidden": "Password is not allowed",
-        "ConfirmPassword": "Confirm Password",
-        "ConfirmPasswordSame": "Passwords must match",
-        "CreateUserButton": "Create User"
-    },
-
-    "AccountAdminList": {
-        "AllUsers": "All Users",
-        "Admin": "Admin"
-    },
-
-    "AccountSettings": {
-        "Usersettings": "User Settings",
-        "ChangeUsername": "Change Username",
-        "UsernameForbidden": "This username is not allowed",
-        "UsernameExists": "Username already exists",
-        "save": "Save",
-        "ChangePassword": "Change Password",
-        "PasswordForbidden": "Password cannot be empty",
-        "PasswordConfirm": "Confirm Password",
-        "Passwordsame": "Passwords must match"
     },
 
     "ButtonAdd": {
@@ -79,25 +42,6 @@
     "HomepageContainer": {
         "PlaceholderHeading": "Placeholder Heading",
         "PlaceholderText": "Placeholder Text"
-    },
-
-    "FilterSelector": {
-        "Filters": "Filter Options",
-        "Course": "Course",
-        "ChoseCourse": "Choose Course",
-        "Search": "Search",
-        "SearchApplication": "Search Application",
-        "SearchAfter": "Search by: Transaction Number, Module Name, University",
-        "Time": "Time",
-        "Created": "Created",
-        "lastEdited": "Last Edited",
-        "Decided": "Decided",
-        "Status": "Status",
-        "NEW": "NEW",
-        "FORMALMISTAKE": "FORMAL MISTAKE",
-        "STUDYOFFICE": "STUDY OFFICE",
-        "EXAMINATIONCOMITTEE": "EXAMINATION COMMITTEE",
-        "DONE": "DONE"
     },
 
     "ApplicationInfoBox": {
@@ -127,20 +71,6 @@
         "UniHalle": "Martin Luther University Halle-Wittenberg",
         "Credits": "Points '10', Credit System 'LP'",
         "ModuleDescription": "Module Description: PDF file with the description of the module Automata and Computability"
-    },
-
-    "ManagementCreate": {
-        "CreateCourse": "Create Course",
-        "NameCourse": "Name of Course",
-        "NameCourseEmpty": "Name of course cannot be empty",
-        "CourseExists": "Course already exists",
-        "AddCourse": "Add Course",
-        "CreateModule": "Create Module",
-        "NameModule": "Module Name",
-        "ModuleCode": "Module Code",
-        "ModuleNameEmpty": "Module name cannot be empty",
-        "ModuleNameExists": "Module name or module code already exists",
-        "AddModule": "Add Module"
     },
 
     "StatusDetailView": {
@@ -292,12 +222,12 @@
         "Logo": "Leipzig University Logo",
         "MenuOpen": "Open Menu",
         "MenuClosed": "Close Menu",
-        "LegalDisclosure": "Imprint",
+        "LegalDisclosure": "Legal Disclosure",
         "PrivacyPolicy": "Privacy Policy"
     },
 
     "LoginView": {
-        "LogIn": "LOG IN",
+        "LogIn": "LOGIN",
         "Username": "Username",
         "UsernameEmpty": "Username cannot be empty",
         "Password": "Password",

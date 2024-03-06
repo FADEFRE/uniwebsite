@@ -41,30 +41,29 @@ const triggerCreateUser = () => {
 <template>
   <div class="admin-create-container">
 
-    <h2>{{ $t('AccountAdminCreate.CreateUser') }}</h2>
+    <h2>Benutzer erstellen</h2>
     <div class="first-row">
       <div class="input-container">
-        <InputText type="text" :placeholder="$t('AccountAdminCreate.Username')" v-model="username"
-                   class="button-height white" :class="{ 'invalid': usernameInvalid || createFailed }" />
-        <small v-if="usernameInvalid" class="invalid-text">$t('AccountAdminCreate.UsernameForbidden')</small>
-        <small v-if="createFailed" class="invalid-text">$t('AccountAdminCreate.UserExists')</small>
+        <InputText type="text" placeholder="Benutzername" v-model="username" class="button-height white" :class="{ 'invalid': usernameInvalid || createFailed }" />
+        <small v-if="usernameInvalid" class="invalid-text">Dieser Benutzername ist nicht erlaubt</small>
+        <small v-if="createFailed" class="invalid-text">Es existiert bereits ein Benutzer mit diesem Namen</small>
       </div>
       <RoleDropdown v-model="role" :invalid="roleEmpty" />
     </div>
     <div class="second-row">
       <div class="input-container">
-        <InputText type="text" :placeholder="$t('AccountAdminCreate.Password')" v-model="password" class="white" :class="{ 'invalid': passwordInvalid }" />
-        <small v-if="passwordInvalid" class="invalid-text">{{$t('AccountAdminCreate.PasswordForbidden')}}</small>
+        <InputText type="text" placeholder="Passwort" v-model="password" class="white" :class="{ 'invalid': passwordInvalid }" />
+        <small v-if="passwordInvalid" class="invalid-text">Passwort ist nicht erlaubt</small>
       </div>
       <div class="input-container">
-        <InputText type="text" :placeholder="$t('AccountAdminCreate.ConfirmPassword')" v-model="passwordConfirm" class="white" :class="{ 'invalid': passwordConfirmInvalid }" />
-        <small v-if="passwordConfirmInvalid" class="invalid-text">{{$t('AccountAdminCreate.ConfirmPasswordSame')}}</small>
+        <InputText type="text" placeholder="Passwort bestätigen" v-model="passwordConfirm" class="white" :class="{ 'invalid': passwordConfirmInvalid }" />
+        <small v-if="passwordConfirmInvalid" class="invalid-text">Die Passwörter müssen übereinstimmen</small>
       </div>
       
     </div>
 
 
-    <ButtonLink :redButton="true" @click="triggerCreateUser">{{ $t('AccountAdminCreate.CreateUserButton') }}</ButtonLink>
+    <ButtonLink :redButton="true" @click="triggerCreateUser">Benutzer erstellen</ButtonLink>
 
   </div>
 </template>
