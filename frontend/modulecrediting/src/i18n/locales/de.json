@@ -22,7 +22,8 @@
             "goToStudy": "Sobald der Antrag abgeschlossen ist, gehen Sie mit allen relevanten Dokumenten zum Studienbüro"
         },
         "ApplicationCode": "Vorgangsnummer des aufzurufenden Antrags",
-        "NotExisting": "Dieser Vorgang existiert nicht"
+        "NotExisting": "Dieser Vorgang existiert nicht",
+        "ProcessNumberOfApplication": "Vorgangsnummer des aufzurufenden Antrags"
     },
 
     "ApplicationConnectionLinks": {
@@ -197,7 +198,7 @@
     },
 
     "TrashIcon": {
-        "delete": "löschen"
+        "delete": "Löschen"
     },
 
     "PanelDecision": {
@@ -225,12 +226,22 @@
         "ExtCourseEmpty": "Studiengang darf nicht leer sein",
         "ChooseModuleDescription": "Modulbeschreibung auswählen",
         "ExtModule": "Externes Modul",
-        "delete": "löschen"
+        "delete": "löschen",
+        "ModuleName": "Modulname",
+        "Credits": "Punkte",
+        "CreditingSystem": "Punktesystem",
+        "University": "Universität",
+        "Course": "Studiengang"
     },
 
     "FileInput": {
         "openPDF": "PDF öffnen",
         "FileEmpty": "Es muss eine Datei ausgewählt sein"
+    },
+
+    "TheLanguageSelection": {
+        "ChooseGerman": "Sprachauswahl Deutsch",
+        "ChooseEnglish": "Sprachauswahl Englisch"
     },
 
     "PanelInternalModules": {
@@ -261,7 +272,8 @@
         "Confirmation": "Bestätigung des Antrags",
         "NoteCode": "Notieren Sie sich die Vorgangsnummer. Diese ist notwendig, um später den Status Ihres Antrags einsehen zu können.",
         "DownloadApplication": "Antrag herunterladen",
-        "ViewStatus": "Status einsehen"
+        "ViewStatus": "Status einsehen",
+        "CopyProcessNumber": "Kopieren der Vorgangsnummer"
     },
 
     "CopyIcon": {
@@ -296,12 +308,12 @@
 
     "ErrorViewIndexjs": {
         "SomethingWentWrong": "Etwas ist schiefgelaufen",
-        "LogIn": "ANMELDUNG",
-        "Username": "Benutzername",
-        "UsernameEmpty": "Benutzername darf nicht leer sein",
-        "Password": "Passwort",
-        "PasswordEmpty": "Passwort darf nicht leer sein",
-        "login": "Anmelden",
-        "InvalidData": "Ungültige Anmeldedaten. Bitte versuche es erneut"
+        "SomethingWentWrongContent": "Es gab einen Fehler, der nicht abgefangen werden konnte. Bitte versuchen sie es erneut. Sollte weiterhin ein Fehler auftreten, wende sie sich bitte an die Administratoren.",
+        "NoAccess": "Kein Zugang",
+        "NoAccesContent": "Es fehlt die Berechtigung, um diese Seite anzeigen zu können.",
+        "SiteNotFound": "Seite nicht gefunden",
+        "SiteNotFoundContent": "Die gewünschte Seite existiert leider nicht.",
+        "ServerUnreachable": "Server nicht erreichbar",
+        "ServerUnreachableContent": "Der Server ist momentan nicht erreichbar. Versuchen sie es später erneut"
     }
 }

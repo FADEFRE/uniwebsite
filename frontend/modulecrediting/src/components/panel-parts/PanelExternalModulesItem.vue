@@ -116,20 +116,20 @@ defineExpose({
     <div class="screen-split">
 
       <div class="input-container left-side">
-        <InputText :readonly="!allowTextEdit" type="text" placeholder="Modulname" v-model="name"
+        <InputText :readonly="!allowTextEdit" type="text" :placeholder="$t('PanelExternalModulesItem.ModuleName')" v-model="name"
           :class="{ 'invalid': !nameValid }" class="gray" />
         <small v-if="!nameValid" class="invalid-text">{{ $t('PanelExternalModulesItem.NameEmpty') }}</small>
       </div>
 
       <div class="point-container right-side">
         <div class="input-container">
-          <InputText :readonly="!allowTextEdit" type="text" placeholder="Punkte" v-model="points"
+          <InputText :readonly="!allowTextEdit" type="text" :placeholder="$t('PanelExternalModulesItem.Credits')" v-model="points"
             @input.prevent="validatePointInput" :class="{ 'invalid': !pointsValid }" class="gray" />
           <small v-if="!pointsValid" class="invalid-text">{{ $t('PanelExternalModulesItem.PointsNum') }}</small>
         </div>
 
         <div class="input-container">
-          <InputText :readonly="!allowTextEdit" type="text" placeholder="Punktesystem" v-model="pointSystem"
+          <InputText :readonly="!allowTextEdit" type="text" :placeholder="$t('PanelExternalModulesItem.CreditingSystem')" v-model="pointSystem"
             :class="{ 'invalid': !pointSystemValid }" class="gray" />
           <small v-if="!pointSystemValid" class="invalid-text">{{ $t('PanelExternalModulesItem.CredSysEmpty') }}</small>
         </div>
@@ -140,13 +140,13 @@ defineExpose({
     <div class="screen-split">
 
       <div class="input-container">
-        <InputText :readonly="!allowTextEdit" type="text" placeholder="Universität" v-model="university"
+        <InputText :readonly="!allowTextEdit" type="text" :placeholder="$t('PanelExternalModulesItem.University')" v-model="university"
           :class="{ 'invalid': !universityValid }" class="gray" />
         <small v-if="!universityValid" class="invalid-text">{{ $t('PanelExternalModulesItem.UniEmpty') }}</small>
       </div>
 
       <div class="input-container">
-        <InputText :readonly="!allowTextEdit" type="text" placeholder="Studiengang" v-model="externalCourse"
+        <InputText :readonly="!allowTextEdit" type="text" :placeholder="$t('ApplicationConfirmationView.Course')" v-model="externalCourse"
           :class="{ 'invalid': !externalCourseValid }" class="gray" />
         <small v-if="!externalCourseValid" class="invalid-text">{{ $t('PanelExternalModulesItem.ExtCourseEmpty')}}</small>
       </div>

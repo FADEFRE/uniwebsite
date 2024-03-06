@@ -96,11 +96,7 @@ const router = createRouter({
       name: "internalError",
       component: () => import("@/views/ErrorView.vue"),
       meta: { authType: "standard", error: {
-          heading: "Etwas ist schiefgelaufen", content: `
-          Es gab einen Fehler, der nicht abgefangen werden konnte. 
-          Bitte versuchen sie es erneut. 
-          Sollte weiterhin ein Fehler auftreten, wende sie sich bitte an die Administratoren.
-          `
+          heading: "ErrorViewIndexjs.SomethingWentWrong", content: `ErrorViewIndexjs.SomethingWentWrongContent`
         }}
     },
     {
@@ -108,7 +104,7 @@ const router = createRouter({
       name: "forbidden",
       component: () => import("@/views/ErrorView.vue"),
       meta: { authType: "standard", error: {
-          heading: "Kein Zugang", content: "Es fehlt die Berechtigung, um diese Seite anzeigen zu können."
+          heading: "ErrorViewIndexjs.NoAccess", content: "ErrorViewIndexjs.NoAccesContent"
         }},
     },
     {
@@ -116,7 +112,7 @@ const router = createRouter({
       name: "notFoundResponse",
       component: () => import("@/views/ErrorView.vue"),
       meta: { authType: "standard", error: {
-          heading: "Seite nicht gefunden", content: "Die gewünschte Seite existiert leider nicht."
+          heading: "ErrorViewIndexjs.SiteNotFound", content: "ErrorViewIndexjs.SiteNotFoundContent"
         }},
     },
     {
@@ -124,7 +120,7 @@ const router = createRouter({
       name: "serverUnavailable",
       component: () => import ("@/views/ErrorView.vue"),
       meta: { authType: "standard", error: {
-        heading: "Server nicht erreichbar", content: "Der Server ist momentan nicht erreichbar. Versuchen sie es später erneut"
+        heading: "ErrorViewIndexjs.ServerUnreachable", content: "ErrorViewIndexjs.ServerUnreachableContent"
         }}
     },
       // not found route
@@ -133,7 +129,7 @@ const router = createRouter({
       name: "notFound",
       component: () => import("@/views/ErrorView.vue"),
       meta: { authType: "standard", error: {
-          heading: "Seite nicht gefunden", content: "Die gewünschte Seite existiert leider nicht."
+          heading: "ErrorViewIndexjs.SiteNotFound", content: "ErrorViewIndexjs.SiteNotFoundContent"
         }},
     }
   ],

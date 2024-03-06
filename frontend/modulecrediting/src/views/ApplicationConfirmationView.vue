@@ -48,7 +48,7 @@ const openPdf = () => {
       <div class="id-section">
         <div class="id-container">
           <h2 class="id">{{ formattedId }}</h2>
-          <div @click="copyId" @keydown.enter="copyId" class="copy-icon-container" tabindex="0" aria-label="Kopieren der Vorgangsnummer">
+          <div @click="copyId" @keydown.enter="copyId" class="copy-icon-container" tabindex="0" :aria-label="$t('ApplicationConfirmationView.CopyProcessNumber')">
             <CopyIcon v-if="isSupported" :disabled="copied" />
           </div>
         </div>

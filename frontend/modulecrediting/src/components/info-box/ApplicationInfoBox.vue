@@ -60,7 +60,7 @@ const showExample = ref(false)
         <ul class="points">
           <li>
             "Automaten und Berechenbarkeit
-            <ArrowIcon direction="right" color="red" aria-label="wird angerechnet für" />
+            <ArrowIcon direction="right" color="red" :aria-label="$t('ApplicationInfoBox.CreditedFor')" />
             Automaten und Sprachen, Berechenbarkeit"
           </li>
         </ul>
