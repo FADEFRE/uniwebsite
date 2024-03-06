@@ -1,43 +1,54 @@
 # Summary of this Readme
 
- 1. Setup and settings
-     - Setup backend and database
-     - Other application.properties settings
-        - spring.jpa.hibernate.ddl-auto
-        - server.port
-     - Dataloader settings in application-(dev/prod).properties
-         - app.config.data.adminUsername/Password
-         - app.config.data.loadTestData
-     - Test Data
-        - users
-        - random applications
-        - random external modules
-        - internal courses and modules
+1. **[Setup and settings](#1-setup-and-settings)**
+    1. [Setup backend and database](#setup-backend-and-database)
+    2. [Other application.properties settings](#other-applicationproperties-settings)
+        - [spring.jpa.hibernate.ddl-auto](#springjpahibernateddl-auto-create-drop--update)
+        - [server.port](#serverport--default-8090)
+    3. [Dataloader settings in *.properties files](#13-dataloader-settings-in-application-devprodproperties)
+         - [app.config.data.adminUsername/Password](#appconfigdataadminusernamepassword)
+         - [app.config.data.loadTestData](#appconfigdataloadtestdata-true--false)
+    4. [Test Data](#14-test-data)
+        - [users](#1-parameters-to-create-these-users)
+        - [random applications](#2-parameters-to-create-randapplications)
+        - [random external modules](#3-parameters-to-create-randexternalmodules)
+        - [internal courses and modules](#4-internal-courses-and-modules---courses)
+2. **[Javadoc](#2-javadoc-generation)**
+3. **[Api-Endpoints](#3-api-endpoints)**
+    1. [List of Views.class](#overview-of-views-modelviewsjava)
+    2. [Application: "ApplicationController" -> /api/applications](#32-application-applicationcontroller)
+        - [GET-Requests](#get---requests)
+        - [POST-Requests](#post---requests)
+        - [PUT-Requests](#put---requests)
+    3. [Authentication: "AuthController" -> /api/auth](#authentication-authcontroller)
+        - [POST-Requests](#post---requests-1)
+    4. Studiengaenge in Leipzig: "CourseLeipzigController" -> /api/courses-leipzig
+        - GET-Requests
+        - POST-Requests
+        - PUT-Requests
+        - DELETE-Requests
+    5. Handling of JSON files: "JsonFileController" -> /file/json
+        - GET-Requests
+        - POST-Requests
+    6. Module in Leipzig: "ModuleLeipzigController" -> /api/modules-leipzig
+        - GET-Requests
+        - POST-Requests
+        - PUT-Requests
+        - DELETE-Requests
+    7. ModulesConnection: "ModulesConnectionController" -> /api/modules-connection
+        - GET-Requests
+    8. Handling of PDF files: "PdfDocumentContoller" -> /file/pdf-documents
+        - GET-Requests
+    9. User: "UserController" -> /api/user
+        - GET-Requests
+        - POST-Requests
+        - PUT-Requests  
 
- 2. Javadoc generation
+.  
+ <a href="#top">Back to top</a>
 
- 3. Api-Endpoints -> TODO
-    - List of Views.class 
-    - Application: "ApplicationController" -> /api/applications
-        - GET / POST / PUT
-    - Authentication: "AuthController" -> /api/auth
-        - POST
-    - Studiengaenge in Leipzig: "CourseLeipzigController" -> /api/courses-leipzig
-        - GET / POST / PUT / DELETE
-    - Handling of JSON files: "JsonFileController" -> /file/json
-        - GET / POST
-    - Module in Leipzig: "ModuleLeipzigController" -> /api/modules-leipzig
-        - GET / POST / PUT / DELETE
-    - ModulesConnection: "ModulesConnectionController" -> /api/modules-connection
-        - GET
-    - Handling of PDF files: "PdfDocumentContoller" -> /file/pdf-documents
-        - GET
-    - User: "UserController" -> /api/user
-        - GET / POST / PUT
-
-
-# Setup and settings
-## Setup backend and database
+# 1. Setup and settings
+## 1.1. Setup backend and database
 
 JDK version 17.0.8: https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html
 
@@ -58,8 +69,8 @@ pgAdmin 4: https://www.pgadmin.org/download/
     - spring.profiles.active= dev / prod
 
 
-## Other application.properties settings:
-### spring.jpa.hibernate.ddl-auto= create-drop / update
+## 1.2. Other application.properties settings:
+### > spring.jpa.hibernate.ddl-auto= create-drop / update
 This will tell jpa what to do on startup and shutdown.
 
  - create-drop: The (existing) database will be dropped on startup and shutdown and the tables will be newly generated
@@ -67,21 +78,21 @@ This will tell jpa what to do on startup and shutdown.
 
 create-drop is recommended for development purposes
 
-### server.port = (default: 8090)
+### > server.port = (default: 8090)
 This is the port on which the backend will run. If this is changed, it needs to be changed in the url-config.js aswell      
 frontend\modulecrediting\src\config\url-config.js
 
 
-## Dataloader settings in application-(dev/prod).properties:
-### app.config.data.adminUsername/Password:
+## 1.3. Dataloader settings in application-(dev/prod).properties:
+### > app.config.data.adminUsername/Password:
 Everytime the backend service is started, the dataloader will check if at least one admin-user exists. 
 If it does not, the dataloader will create an admin-user with these parameters.
 
-### app.config.data.loadTestData= true / false
+### > app.config.data.loadTestData= true / false
 On startup the dataloader will check if it should run the "TestDataLoader.java" class.
 The TestDataLoader class reads in test_data.json from the backend ressources folder.
 
-## Test Data
+## 1.4. Test Data
 ### The testData currently includes:
 #### 1. Parameters to create these "users":
 
@@ -116,10 +127,10 @@ The TestDataLoader class reads in test_data.json from the backend ressources fol
  - duplicates will not be written multiple times
  - BUT if modules appear in multiple courses, they will be added to all of these courses
 
-.
+.  
+ <a href="#top">Back to top</a>
 
-
-# JAVADOC GENERATION
+# 2. JAVADOC GENERATION
 
  - to (re)generate the Javadoc for this project run these commands in \backend\modulecrediting :
     
@@ -133,11 +144,11 @@ The TestDataLoader class reads in test_data.json from the backend ressources fol
  - afterwards the documentation can be found under \backend\modulecrediting\target\apidocs\index.html      
  - it is recommended to open the file with a browser and not in an IDE
 
-.
+.  
+ <a href="#top">Back to top</a>
 
-
-# API ENDPOINTS
-## Overview of Views: "\model\Views.java"
+# 3. API ENDPOINTS
+## 3.1. Overview of Views: "\model\Views.java"
 
 In some cases Views are used, instead of DTOs, to generate ResponseData
 
@@ -154,153 +165,171 @@ In some cases Views are used, instead of DTOs, to generate ResponseData
  - RelatedModulesConnection
     - TODO: explanation
 
-## Application: "ApplicationController"
-### GET - Requests:
+## 3.2. Application: "ApplicationController"
+### _**GET - Requests:**_
 
-#### > /api/applications
- - returns a "List" of all "Applications"
+#### > **/api/applications**
+ - returns a "List" of all "Applications" with fields definied by "Views.ApplicationLoginOverview"
  - required role:
     - ROLE_STUDY
     - ROLE_CHAIR
- - views: 
-    - ApplicationLoginOverview
-- http://localhost:8090/api/applications
+ - http://localhost:8090/api/applications
 
-#### > /api/applications/{id}
- - pathvariable
+#### > **/api/applications/{id}**
+ - pathvariables:
     - {id} ->  id of the requested application
- - returns corresponding "Application"
+ - returns corresponding "Application" with fields definied by "Views.ApplicationLoginOverview"
  - required role:
     - ROLE_STUDY
     - ROLE_CHAIR
- - views: 
-    - ApplicationLoginOverview
-- http://localhost:8090/api/applications/{id}
+ - http://localhost:8090/api/applications/{id}
+
+#### > **/api/applications/student/{id}**
+ - pathvariables:
+    - {id} ->  id of the requested application 
+ - returns corresponding "Application" with fields definied by "Views.ApplicationStudent"
+ - http://localhost:8090/api/applications/student/{id}
+
+#### > **/api/applications/{id}/exists**
+ - pathvariables:
+    - {id} ->  id of the requested application 
+ - returns Boolean with true if the specified "Application" exists
+ - http://localhost:8090/api/applications/{id}/exists
+
+#### > **/api/applications/{id}/update-status-allowed**
+ - pathvariables:
+    - {id} ->  id of the requested application 
+ - returns "EnumStatusChangeAllowed" 
+ - required role:
+    - ROLE_STUDY
+    - ROLE_CHAIR
+ - http://localhost:8090/api/applications/{id}/update-status-allowed
 
 
+.  
+ <a href="#top">Back to top</a>
 
-http://localhost:8090/api/applications/original -> returns a "List" of all "OriginalApplications"   
+### _**Basic Formdata for "Application"-Requests**_
+This basic formdata is used in most "Application"-Requests
 
-    [
-        {
-            "id": id,
-            "fullStatus": NEU / FORMFEHLER / STUDIENBÜRO / PRÜFUNGSAUSSCHUSS / ABGESCHLOSSEN,
+    courseLeipzig: ***
+    modulesConnectionDTO[0].commentApplicant: ***
+    modulesConnectionDTO[0].externalModuleDTO[0].name: ***
+    modulesConnectionDTO[0].externalModuleDTO[0].externalCourse: ***
+    modulesConnectionDTO[0].externalModuleDTO[0].university: ***
+    modulesConnectionDTO[0].externalModuleDTO[0].points: ***
+    modulesConnectionDTO[0].externalModuleDTO[0].pointSystem: ***
+    modulesConnectionDTO[0].externalModuleDTO[0].description: *** -> multipart/file
+    modulesConnectionDTO[0].moduleLeipzigDTO[0].name
 
-            "creationDate": creationDate,
-            "lastEditedDate": null / lastEditedDate,
-            "decisionDate": null / decisionDate,
+.  
+ <a href="#top">Back to top</a>
 
-            "courseLeipzig": { "name": name },
-            "modulesConnections": [
-                {
-                    "externalModules": [
-                        {
-                            "name": name,
-                            "university": university
-                        },
-                        ...
-                    ]
-                },
-                ...
-            ]
-        },
-        ...
-    ]
-.
+### _**POST - Requests:**_
 
-http://localhost:8090/api/applications/{id} -> needs {id}, returns corresponding "Application"    
-"Views.ApplicationLogin.class"      
-http://localhost:8090/api/applications/{id}/original -> needs {id}, returns corresponding "OriginalApplications"  
-
-    "id": id,
-    "fullStatus": NEU / FORMFEHLER / STUDIENBÜRO / PRÜFUNGSAUSSCHUSS / ABGESCHLOSSEN,
-
-    "creationDate": creationDate,
-    "lastEditedDate": null / lastEditedDate,
-    "decisionDate": null / decisionDate,
-
-    "courseLeipzig": { "name": name },
-    "modulesConnections": [
-        {
-            "id": id,
-            "decisionFinal": accepted / asExamCertificate / denied / unedited,
-            "commentDecision": "" / comment,
-            "decisionSuggestion": accepted / asExamCertificate / denied / unedited,
-            "commentStudyOffice": "" / comment,
-            "formalRejection": true / false,
-            "formalRejectionComment": "" / comment,
-            "commentApplicant": "" / comment,
-            "externalModules": [
-                {
-                    "id": id,
-                    "name": name,
-                    "points": points,
-                    "pointSystem": pointSystem,
-                    "university": university,
-                    "pdfDocument": {
-                        "id": id,
-                        "name": name
-                    }
-                },
-                ...
-            ]
-        },
-        ...
-    ]
-.
-
-http://localhost:8090/api/applications/{id}/exists -> needs {id}, returns "Boolean"
-
-    true / false
-.
-
-http://localhost:8090/api/applications/{id}/update-status-allowed -> needs {id}, returns "EnumStatusChange"
-
-    NOT_ALLOWED / PASSON / REJECT
-.
-
-http://localhost:8090/api/applications/student/{id} -> needs {id}, returns corresponding "Application"      
-"Views.ApplicationStudent.class"
-
-    NEEDS FIXING IN BACKEND FIRST
-.
+#### > **/api/applications**
+ - modelAttribute: "ApplicationDTO" 
+    - [Basic Formdata](#basic-formdata-for-application-requests)
+ - returns "id" of created "Application" 
+ - http://localhost:8090/api/applications
 
 
-### POST - Requests:
+.  
+ <a href="#top">Back to top</a>
 
-http://localhost:8090/api/applications -> needs "ApplicationCreateDTO", returns "id" of the created application
+### _**PUT - Requests:**_
 
-    id
-.
-
-
-### PUT - Requests:
-
-http://localhost:8090/api/applications/{id}/update-status -> needs {id}, returns "EnumApplicationStatus"
-
-    NEU / FORMFEHLER / STUDIENBÜRO / PRÜFUNGSAUSSCHUSS / ABGESCHLOSSEN
-.
-
-http://localhost:8090/api/applications/standard/{id} -> needs {id} "ApplicationUpdateDTO" "BindingResult?", returns "id" of updated application
-
-    id
-.
-
-Requires Role: "ROLE_STUDY":     
-http://localhost:8090/api/applications/study-office/{id} -> needs {id} "ApplicationUpdateDTO" "BindingResult?", returns "id" of updated application
-
-    id
-.
-
-Requires Role: "ROLE_CHAIR":  
-http://localhost:8090/api/applications/chairman/{id} -> needs {id} "ApplicationUpdateDTO" "BindingResult?", returns "id" of updated application
-
-    id
-.
+#### > **/api/applications/student/{id}**
+ - pathvariables:
+    - {id} ->  id of the requested application 
+ - modelAttribute: "ApplicationDTO" 
+    - [Basic Formdata](#basic-formdata-for-application-requests)
+ - returns "id" of created "Application" 
+ - http://localhost:8090/api/applications/student/{id}
 
 
-.
+#### > **/api/applications/{id}/update-status**
+ - pathvariables:
+    - {id} ->  id of the requested application 
+ - required role:
+    - ROLE_STUDY
+    - ROLE_CHAIR
+ - returns "EnumApplicationStatus"
+ - http://localhost:8090/api/applications/{id}/update-status
 
+
+#### > **/api/applications/study-office/{id}**
+ - pathvariables:
+    - {id} ->  id of the requested application 
+ - required role:
+    - ROLE_STUDY
+ - modelAttribute: "ApplicationDTO"
+    - [Basic Formdata](#basic-formdata-for-application-requests) and
+    - either:
+
+            modulesConnectionDTO[0].formalRejection: true
+            modulesConnectionDTO[0].formalRejectionComment: ***
+    - or:
+
+            modulesConnectionDTO[0].formalRejection: false
+            modulesConnectionDTO[0].formalRejectionComment: ""
+            modulesConnectionDTO[0].decisionSuggestion: *** (optional)
+            modulesConnectionDTO[0].commentStudyOffice: *** (optional)
+ - returns "id" of created "Application" 
+ - http://localhost:8090/api/applications/study-office/{id}
+
+
+#### > **/api/applications/chairman/{id}**
+ - pathvariables:
+    - {id} ->  id of the requested application 
+ - required role:
+    - ROLE_CHAIR
+ - modelAttribute: "ApplicationDTO"
+    - [Basic Formdata](#basic-formdata-for-application-requests) and
+
+            modulesConnectionDTO[0].decisionSuggestion: *** (optional)
+            modulesConnectionDTO[0].commentStudyOffice: *** (optional)
+ - returns "id" of created "Application" 
+ - http://localhost:8090/api/applications/chairman/{id}
+
+.  
+ <a href="#top">Back to top</a>
+
+
+## 3.3. Authentication: "AuthController"
+### _**POST - Requests:**_
+
+#### > **/api/auth/login**
+ - cookies:
+    - accessToken (optional)
+    - refreshToken (optional)
+ - requestBody: "LoginRequest"
+    
+        username: ***
+        password: ***
+ - returns "LoginResponse"
+ - http://localhost:8090/api/auth/login
+
+#### > **/api/auth/refresh**
+ - cookies:
+    - accessToken (optional)
+    - refreshToken (optional)
+ - returns "LoginResponse"
+ - http://localhost:8090/api/auth/refresh
+
+#### > **/api/auth/logout**
+ - returns "LogoutResponse"
+ - http://localhost:8090/api/auth/logout
+
+
+.  
+ <a href="#top">Back to top</a>
+
+## devider
+.  
+ <a href="#top">Back to top</a>
+
+## Old readme
 ## Authentication: "AuthController"
 ### POST - Requests:
 
@@ -563,7 +592,7 @@ http://localhost:8090/api/user/{id}/role -> needs user {id}, returns "Role" of u
 
 
 
-## OLD README:
+## OLDest README:
 
 .
 http://localhost:8090/api/courses-leipzig
