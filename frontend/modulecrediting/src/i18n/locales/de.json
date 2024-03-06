@@ -293,5 +293,16 @@
         "PasswordEmpty": "Passwort darf nicht leer sein",
         "login": "Anmelden",
         "InvalidData": "Ungültige Anmeldedaten. Bitte versuche es erneut"
+    },
+
+    "ErrorViewIndexjs": {
+        "SomethingWentWrong": "Etwas ist schiefgelaufen",
+        "LogIn": "ANMELDUNG",
+        "Username": "Benutzername",
+        "UsernameEmpty": "Benutzername darf nicht leer sein",
+        "Password": "Passwort",
+        "PasswordEmpty": "Passwort darf nicht leer sein",
+        "login": "Anmelden",
+        "InvalidData": "Ungültige Anmeldedaten. Bitte versuche es erneut"
     }
 }
