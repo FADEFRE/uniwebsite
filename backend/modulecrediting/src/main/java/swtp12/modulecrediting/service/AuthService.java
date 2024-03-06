@@ -104,7 +104,7 @@ public class AuthService {
      */
     public ResponseEntity<LoginResponse> refresh(String accessTokenString, String refreshTokenString) {
         Boolean refreshTokenValid = tokenProvider.validateToken(refreshTokenString);
-        if (!refreshTokenValid) throw new IllegalArgumentException("Refresh Token is invalid!");
+        if (!refreshTokenValid) throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Refresh Token is invalid!");
 
         String currentUserUsername = null;
         try { currentUserUsername = tokenProvider.getUsernameFromToken(accessTokenString); } 
