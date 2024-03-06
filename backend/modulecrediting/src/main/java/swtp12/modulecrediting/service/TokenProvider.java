@@ -84,7 +84,7 @@ public class TokenProvider {
 
 
     public boolean validateToken(String token) {
-        if (token == null) { return false; }
+        if (token == null || token.isBlank()) { return false; }
         try {
             Jwts.parserBuilder()
                 .setSigningKey(getSignInKey())
