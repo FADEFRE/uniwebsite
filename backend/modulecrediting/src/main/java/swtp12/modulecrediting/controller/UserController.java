@@ -17,7 +17,6 @@ import swtp12.modulecrediting.model.Role;
 import swtp12.modulecrediting.model.User;
 import swtp12.modulecrediting.repository.UserRepository;
 import swtp12.modulecrediting.service.UserService;
-import swtp12.modulecrediting.util.IncorrectKeyOnDecryptException;
 
 
 @RestController
@@ -123,7 +122,7 @@ public class UserController {
 
     @PutMapping("/change/username")
     @PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR') or hasRole('ROLE_ADMIN')")
-    public ResponseEntity<String> changeUsername(@ModelAttribute EditUserDTO changeRequest) throws IncorrectKeyOnDecryptException {
+    public ResponseEntity<String> changeUsername(@ModelAttribute EditUserDTO changeRequest) {
         return ResponseEntity.ok(userService.changeUsername(changeRequest));
     }
 
