@@ -56,7 +56,7 @@ const requestHandler = (request) => {
 
     //TODO remove debug logs start
     if (request.data instanceof FormData) {
-      console.debug("%c" + request.method.toUpperCase() + "-Request: " + request.url, requestColor, "  Start of Data: " ); 
+      console.debug("%c" + request.method.toUpperCase() + "-Request: " + request.url, requestColor, "  Start of Request-Data: " ); 
       let formData = new FormData();
       formData = request.data;
       for (const pair of formData.entries()) {
@@ -64,7 +64,7 @@ const requestHandler = (request) => {
       }
       console.debug("%c" + "End of Data", requestColor);
     } else
-      console.debug("%c" + request.method.toUpperCase() + "-Request: " + request.url, requestColor, "  Data: " + request.data );
+      console.debug("%c" + request.method.toUpperCase() + "-Request: " + request.url, requestColor, "  Request-Data: " + request.data );
     //TODO remove debug logs end
     
   }
