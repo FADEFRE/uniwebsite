@@ -51,7 +51,7 @@ function postNewUser(username, password, passwordConfirm, role) {
     formData.append('passwordConfirm', passwordConfirm)
     formData.append('role', role)
 
-    return httpClient.post("/api/auth/register", formData)
+    return httpClient.post("/api/user/register", formData)
         .then(response => response.data)
         .catch(error => Promise.reject(error))
 }
@@ -105,7 +105,7 @@ function deleteUser(id) {
 
     formData.append('id', id)
 
-    return httpClient.post('api/auth/delete', formData)
+    return httpClient.post('/api/user/delete', formData)
         .then(response => response.data)
         .catch(_ => {
         })

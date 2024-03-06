@@ -61,7 +61,7 @@ public class PdfDocumentServiceTest {
             pdfDocumentService.createOrGetPdfDocument(null, null);
         });
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
-        assertEquals("No external module id given", exception.getReason());
+        assertEquals("No PDF file provided and no existing PDF file found", exception.getReason());
         verify(pdfDocumentRepository, never()).findById(any(Long.class));
         verify(pdfDocumentRepository, never()).save(any(swtp12.modulecrediting.model.PdfDocument.class));
     }

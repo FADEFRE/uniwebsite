@@ -36,6 +36,8 @@ public class ExternalModuleService {
 
             if(externalModuleDTO.getName() == null)
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, " No External Module Module Name provided in the request");
+            if(externalModuleDTO.getExternalCourse() == null)
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, " No External Module Course provided in the request");
             if(externalModuleDTO.getUniversity() == null)
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, " No External Module University provided in the request");
             if(externalModuleDTO.getPoints() == null)
@@ -44,6 +46,7 @@ public class ExternalModuleService {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, " No External Module Points provided in the request");
 
             externalModule.setName(externalModuleDTO.getName());
+            externalModule.setExternalCourse(externalModuleDTO.getExternalCourse());
             externalModule.setUniversity(externalModuleDTO.getUniversity());
             externalModule.setPoints(externalModuleDTO.getPoints());
             externalModule.setPointSystem(externalModuleDTO.getPointSystem());
@@ -73,6 +76,9 @@ public class ExternalModuleService {
             
             if(ma.getName() != null) {
                 externalModule.setName(ma.getName());
+            }
+            if(ma.getExternalCourse() != null) {
+                externalModule.setExternalCourse(ma.getExternalCourse());
             }
             if(ma.getUniversity() != null) {
                 externalModule.setUniversity(ma.getUniversity());

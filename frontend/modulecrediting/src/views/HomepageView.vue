@@ -57,15 +57,15 @@ const getFormattedId = () => {
       </div>
 
       <div class="homepage-container">
-        <h2>{{ $t('homepage.viewStatus') }}</h2>
-        <p class="text-justify">{{ $t('homepage.viewStatusExplanation') }}</p>
+        <h2>{{ $t('HomepageView.viewStatus') }}</h2>
+        <p class="text-justify">{{ $t('HomepageView.viewStatusExplanation') }}</p>
         <div class="input-button-container">
           <InputText
               v-model="id" placeholder="0-0-0-0-0-0" aria-label="Vorgangsnummer des aufzurufenden Antrags"
               :class="{ 'invalid': isInvalid }" class="status-input gray"
               @keydown.enter.prevent="openDetailView" @input.prevent="validateInput"
           />
-          <ButtonLink @click="openDetailView">{{ $t('homepage.viewStatus') }}</ButtonLink>
+          <ButtonLink @click="openDetailView">{{ $t('HomepageView.viewStatus') }}</ButtonLink>
         </div>
         <small v-if="isInvalid" class="invalid-text">Dieser Vorgang existiert nicht</small>
       </div>

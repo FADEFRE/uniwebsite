@@ -1,73 +1,184 @@
-# swtp-2023-12
+# Summary of this Readme
 
-## Setup Database Connection
+ 1. Setup and settings
+     - Setup backend and database
+     - Other application.properties settings
+        - spring.jpa.hibernate.ddl-auto
+        - server.port
+     - Dataloader settings in application-(dev/prod).properties
+         - app.config.data.adminUsername/Password
+         - app.config.data.loadTestData
+     - Test Data
+        - users
+        - random applications
+        - random external modules
+        - internal courses and modules
 
-install Java SE Development Kit 17.0.8:
-https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html
+ 2. Javadoc generation
+
+ 3. Api-Endpoints -> TODO
+    - List of Views.class 
+    - Application: "ApplicationController" -> /api/applications
+        - GET / POST / PUT
+    - Authentication: "AuthController" -> /api/auth
+        - POST
+    - Studiengaenge in Leipzig: "CourseLeipzigController" -> /api/courses-leipzig
+        - GET / POST / PUT / DELETE
+    - Handling of JSON files: "JsonFileController" -> /file/json
+        - GET / POST
+    - Module in Leipzig: "ModuleLeipzigController" -> /api/modules-leipzig
+        - GET / POST / PUT / DELETE
+    - ModulesConnection: "ModulesConnectionController" -> /api/modules-connection
+        - GET
+    - Handling of PDF files: "PdfDocumentContoller" -> /file/pdf-documents
+        - GET
+    - User: "UserController" -> /api/user
+        - GET / POST / PUT
 
 
-install postgre database and remeber password!
-https://www.postgresql.org/download/
+# Setup and settings
+## Setup backend and database
+
+JDK version 17.0.8: https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html
+
+PostgreSQL: https://www.postgresql.org/download/
+
+pgAdmin 4: https://www.pgadmin.org/download/
 
 
-install pg4Admin
-https://www.pgadmin.org/download/
+1. Create new Database in pgAdmin
+2. Edit application-dev.properties in backend\modulecrediting\src\main\recources\ :
+
+    - spring.datasource.url=jdbc:postgresql://localhost:5432/<your_database_name>
+    - spring.datasource.username=<your_username> (default: postgres)
+    - spring.datasource.password=<your_password>
+
+3. Edit application.properties in backend\modulecrediting\src\main\recources\ :
+
+    - spring.profiles.active= dev / prod
 
 
-open pg4Admin click on servers, create new database
+## Other application.properties settings:
+### spring.jpa.hibernate.ddl-auto= create-drop / update
+This will tell jpa what to do on startup and shutdown.
+
+ - create-drop: The (existing) database will be dropped on startup and shutdown and the tables will be newly generated
+ - update: The existing database will not be dropped, but rather be updated 
+
+create-drop is recommended for development purposes
+
+### server.port = (default: 8090)
+This is the port on which the backend will run. If this is changed, it needs to be changed in the url-config.js aswell      
+frontend\modulecrediting\src\config\url-config.js
 
 
-edit application.properties in /src/main/recources/:
-spring.datasource.url=jdbc:postgresql://localhost:5432/<your_database_name>
-spring.datasource.username=postgres
-spring.datasource.password=<your_password>
+## Dataloader settings in application-(dev/prod).properties:
+### app.config.data.adminUsername/Password:
+Everytime the backend service is started, the dataloader will check if at least one admin-user exists. 
+If it does not, the dataloader will create an admin-user with these parameters.
 
+### app.config.data.loadTestData= true / false
+On startup the dataloader will check if it should run the "TestDataLoader.java" class.
+The TestDataLoader class reads in test_data.json from the backend ressources folder.
 
-// this line says the database schema will always be created after starting and deleted after stopping // other config possible
-spring.jpa.hibernate.ddl-auto=create-drop
+## Test Data
+### The testData currently includes:
+#### 1. Parameters to create these "users":
 
+ - Admin:
+    - username: admin
+    - password: admin
+    - role: admin
 
-    !! Always stop programm with CTRL+C inside your IDE terminal/console, otherwise DB-tables won't be dropped !!
+ - Studienbuero:
+    - username: studyoffice
+    - password: abc123
+    - role: study
 
-## Login Daten 
+ - Pruefungsausschuss:
+    - username: pav
+    - password: pav123
+    - role: chair
 
-Studienbüro:
+#### 2. Parameters to create "randApplications":
 
-    username: studyoffice
-    password: abc123
+ - all these parameters should be a number of how many of this type of "application" should be created.
+ - current fields are: new, study-office, formfehler, pav, closed
 
-Prüfungsausschuss:
+#### 3. Parameters to create "randExternalModules":
 
-    username: pav
-    password: pav123
+ - all these parameters should be JSON array literals, from which the testDataLoader will randomly select a value to use.
+ - current fields are: name, externalCourse, uni, points, pointSystem, comment
 
-Admin:
+#### 4. Internal Courses and Modules -> "courses":
 
-    username: admin
-    password: admin
+ - these are all the courses and modules that will be written into the database when "app.config.data.loadTestData" is set to true.
+ - duplicates will not be written multiple times
+ - BUT if modules appear in multiple courses, they will be added to all of these courses
 
 .
 
-## JAVADOC GENERATION
 
-to (re)generate the Javadoc for this project run these commands in \backend\modulecrediting
+# JAVADOC GENERATION
 
-    mvn clean (optional)
-    mvn install
+ - to (re)generate the Javadoc for this project run these commands in \backend\modulecrediting :
+    
+    - mvn clean (optional)
+    - mvn install
 
-afterwards the documentation can be found under \backend\modulecrediting\target\apidocs\index.html      
-it is recommended to open the file with a browser and not in an IDE, du to the structure of javadoc.
+    - alternatively "mvn javadoc:javadoc" can be run aswell
+
+ - NOTE: in production the first two commands are executed everytime the pipeline makes a new build of the backend
+
+ - afterwards the documentation can be found under \backend\modulecrediting\target\apidocs\index.html      
+ - it is recommended to open the file with a browser and not in an IDE
 
 .
+
 
 # API ENDPOINTS
+## Overview of Views: "\model\Views.java"
+
+In some cases Views are used, instead of DTOs, to generate ResponseData
+
+ - ApplicationLoginOverview
+    - TODO: explanation
+ - ApplicationLogin
+    - TODO: explanation
+ - ApplicationStudent
+    - TODO: explanation
+ - CoursesWithModules
+    - TODO: explanation
+ - ModulesWithoutCourse
+    - TODO: explanation
+ - RelatedModulesConnection
+    - TODO: explanation
 
 ## Application: "ApplicationController"
-
 ### GET - Requests:
 
-http://localhost:8090/api/applications -> returns a "List" of all "Applications"    
-"Views.ApplicationOverview.class"   
+#### > /api/applications
+ - returns a "List" of all "Applications"
+ - required role:
+    - ROLE_STUDY
+    - ROLE_CHAIR
+ - views: 
+    - ApplicationLoginOverview
+- http://localhost:8090/api/applications
+
+#### > /api/applications/{id}
+ - pathvariable
+    - {id} ->  id of the requested application
+ - returns corresponding "Application"
+ - required role:
+    - ROLE_STUDY
+    - ROLE_CHAIR
+ - views: 
+    - ApplicationLoginOverview
+- http://localhost:8090/api/applications/{id}
+
+
+
 http://localhost:8090/api/applications/original -> returns a "List" of all "OriginalApplications"   
 
     [
@@ -189,8 +300,8 @@ http://localhost:8090/api/applications/chairman/{id} -> needs {id} "ApplicationU
 
 
 .
-## Authentication: "AuthController"
 
+## Authentication: "AuthController"
 ### POST - Requests:
 
 http://localhost:8090/api/auth/login -> needs "LoginRequest", optional "authCookie" "refreshCookie", returns "LoginResponse"
@@ -239,8 +350,8 @@ http://localhost:8090/api/auth/register -> needs "RegisterRequest", returns "mes
 
 
 .
-## Studiengänge in Leipzig: "CourseLeipzigController"
 
+## Studiengänge in Leipzig: "CourseLeipzigController"
 ### GET - Requests:
 
 http://localhost:8090/api/courses-leipzig -> returns a "List" of all "CourseLeipzig"
@@ -315,8 +426,8 @@ Requires Role: "ROLE_STUDY" or "ROLE_CHAIR"
 
 
 .
-## Module in Leipzig: "ModuleLeipzigController"
 
+## Module in Leipzig: "ModuleLeipzigController"
 ### GET - Requests:
 
 http://localhost:8090/api/modules-leipzig -> returns a "List" of all "ModuleLeipzig"    
@@ -374,8 +485,8 @@ Requires Role: "ROLE_STUDY" or "ROLE_CHAIR"
 .
 
 .
-## ModulesConnection: "ModulesConnectionController"
 
+## ModulesConnection: "ModulesConnectionController"
 ### GET - Requests:
 
 http://localhost:8090/api/modules-connection/{id}/related -> needs {id}, returns "List" of related "ModulesConnection"
@@ -410,8 +521,8 @@ http://localhost:8090/api/modules-connection/{id}/related -> needs {id}, returns
 .
 
 .
-## PDF Dokumente: "PdfDocumentContoller"
 
+## PDF Dokumente: "PdfDocumentContoller"
 ### GET - Requests:
 
 http://localhost:8090/file/pdf-documents/{id} -> needs pdf {id}, returns "PDF"
@@ -425,8 +536,8 @@ http://localhost:8090/file/pdf-documents/application/{id} -> needs application {
 .
 
 .
-## User: "UserController"
 
+## User: "UserController"
 ### GET - Requests:
 
 http://localhost:8090/api/user/me -> returns "UserSummary" 
@@ -448,6 +559,9 @@ http://localhost:8090/api/user/{id}/role -> needs user {id}, returns "Role" of u
 .
 
 .
+
+
+
 
 ## OLD README:
 

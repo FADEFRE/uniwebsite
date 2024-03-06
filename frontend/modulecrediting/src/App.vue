@@ -3,6 +3,8 @@ import TheNavigation from "@/components/TheNavigation.vue";
 import TheLanguageSelection from "@/components/TheLanguageSelection.vue";
 import { onBeforeMount, ref } from "vue";
 import translate from '@/i18n/translate';
+import { intervalMilliSeconds } from "@/config/refreshTokenInterval-config"
+import { runInterval } from "@/router/login";
 
 onBeforeMount(() => {
     const locale = translate.guessDefaultLocale()
@@ -17,6 +19,7 @@ function openMenu() {
 function closeMenu() {
   isMenuOpen.value = false;
 }
+setInterval(runInterval, intervalMilliSeconds)
 </script>
 
 <template>
@@ -28,7 +31,7 @@ function closeMenu() {
     <header class="header-background">
       <div class="header-container">
         <a tabindex="-1" href="/" class="logo-container">
-          <img tabindex="-1" class="logo" src="@/assets/Universität_Leipzig_logo.svg" :alt="$t('App.Logo')" />
+          <img tabindex="-1" class="logo" src="@/assets/Universität_Leipzig_logo.svg" alt="" />
         </a>
         
         <Button class="burger-menu" @click="openMenu">
@@ -52,7 +55,7 @@ function closeMenu() {
 
     <footer>
       <div class="footer-content">
-        <p>{{$t('App.Imprint')}}</p>
+        <p>{{$t('App.LegalDisclosure')}}</p>
         <p>{{$t('App.PrivacyPolicy')}}</p>
       </div>
     </footer>

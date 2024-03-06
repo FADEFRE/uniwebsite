@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class ExternalModuleDTO {
     private Long id;
     private String name;
+    private String externalCourse;
     private String university;
     private Integer points;
     private String pointSystem;

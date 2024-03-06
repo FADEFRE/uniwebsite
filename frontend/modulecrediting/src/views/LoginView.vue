@@ -26,7 +26,7 @@ const attemptLogin = () => {
   <div class="main centered">
     <div class="login-container">
       <div class="logo-container">
-        <img src="@/assets/Universität_Leipzig_logo.svg" :alt="$t('LoginView.Logo')" />
+        <img src="@/assets/Universität_Leipzig_logo.svg" alt="" />
       </div>
       <div class="login-content">
         <h1 class="login-heading">{{ $t('LoginView.LogIn') }}</h1>

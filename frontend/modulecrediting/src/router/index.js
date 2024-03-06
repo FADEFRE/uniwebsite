@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { useUserStore } from "@/store/userStore";
+import translate from '@/i18n/translate';
 import httpClient from "@/requests/httpClient";
 import HomepageView from "@/views/HomepageView.vue";
 
@@ -168,6 +169,9 @@ router.beforeEach(async (to, from) => {
   if (to.meta.authType !== "standard" && user === false) {
     userStore.logout();
     return { name: "login" };
+  }
+  if (to.meta.authType !== "standard") {
+    translate.switchLanguage('de')
   }
   console.log("getRole Router");
   const responseRole = await httpClient.get(`/api/user/role`);

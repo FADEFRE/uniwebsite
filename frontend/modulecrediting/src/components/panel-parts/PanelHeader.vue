@@ -36,8 +36,8 @@ const props = defineProps({
       <span v-else class="single-module">({{ $t('PanelHeader.ModulesToBeCredited') }})</span>
     </span>
 
-    <span class="arrow-icon">
-      <ArrowIcon color="red" direction="right" :aria-label="$t('PanelHeader.CreditedFor')" />
+    <span class="arrow-icon" :aria-label="$t('PanelHeader.CreditedFor')">
+      <ArrowIcon color="red" direction="right" />
     </span>
 
     <span class="modules-container">

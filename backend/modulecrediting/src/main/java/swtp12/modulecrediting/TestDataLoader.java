@@ -81,12 +81,11 @@ public class TestDataLoader {
      */
     @Transactional
     public void run() {
-        String moduleLeipzigData = "/module_liste.json";
         String testData = "/test_data.json";
 
         userCreation(testData);
 
-        leipzigDataLoader(moduleLeipzigData);
+        leipzigDataLoader(testData);
 
         createTestData(testData);
     }
@@ -342,6 +341,7 @@ public class TestDataLoader {
 
         Random rdm = new Random();
         externalModuleDTO.setName(getRandValueOfNode(moduleSettingNode, "name", rdm));
+        externalModuleDTO.setExternalCourse(getRandValueOfNode(moduleSettingNode, "externalCourse", rdm));
         externalModuleDTO.setUniversity(getRandValueOfNode(moduleSettingNode, "uni", rdm));
         externalModuleDTO.setPoints(Integer.parseInt(getRandValueOfNode(moduleSettingNode, "points", rdm)));
         externalModuleDTO.setPointSystem(getRandValueOfNode(moduleSettingNode, "pointSystem", rdm));

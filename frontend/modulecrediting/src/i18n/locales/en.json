@@ -149,11 +149,10 @@
     },
 
     "ModuleStatusIcon": {
-        "Unedited": "Unedited",
-        "Accepted": "Accepted",
-        "AsExamCertificate": "As Exam Certificate",
-        "Denied": "Denied",
-        "FormalRejection": "Formal Rejection"
+        "accepted": "Crediting accepted",
+        "asExamCertificate": "Crediting as exam certificate",
+        "denied": "Crediting denied",
+        "formalRejection": "formal rejection"
     },
 
     "FileIcon": {
@@ -201,7 +200,6 @@
     },
 
     "PanelDecisionBlock": {
-        "ChooseDecision": "Choose an Option",
         "reason": "Reason"
     },
 
@@ -212,9 +210,10 @@
 
     "PanelExternalModulesItem": {
         "NameEmpty": "Module name cannot be empty",
-        "UniEmpty": "University cannot be empty",
         "PointsNum": "Points must be specified as a number",
         "CredSysEmpty": "Credit system cannot be empty",
+        "UniEmpty": "University cannot be empty",
+        "ExtCourseEmpty": "Course cannot be empty",
         "ChooseModuleDescription": "Choose Module Description",
         "ExtModule": "External Module",
         "delete": "Delete"
@@ -228,7 +227,8 @@
     "PanelInternalModules": {
         "ModulesUniLeipzig": "Modules of Leipzig University",
         "ChooseModule": "Choose Module",
-        "EmptyMessage": "Empty Message",
+        "AllSelected": "All modules are selected",
+        "SelectCourse": "Select course",
         "ModuleNotFound": "Module not found",
         "NoModulesSelected": "No modules of Leipzig University are selected.",
         "SelectableModules": "Selectable Modules"
@@ -236,7 +236,7 @@
 
     "PanelHeader": {
         "ModulesToBeCredited": "Modules to be Credited",
-        "CreditedFor": "Credited for",
+        "CreditedFor": "credited as",
         "ModulesUniLeipzig": "Modules of Leipzig University"
     },
 
@@ -276,7 +276,6 @@
     },
 
     "LoginView": {
-        "Logo": "Leipzig University Logo",
         "LogIn": "LOG IN",
         "Username": "Username",
         "UsernameEmpty": "Username cannot be empty",

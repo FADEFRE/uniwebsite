@@ -158,11 +158,10 @@
     },
 
     "ModuleStatusIcon": {
-        "Unedited": "Unbearbeitet",
-        "Accepted": "Akzeptiert",
-        "AsExamCertificate": "Als Übungsschein",
-        "Denied": "Abgelehnt",
-        "FormalRejection": "Formal abgelehnt"
+        "accepted": "Anrechnung angenommen",
+        "asExamCertificate": "Anrechnung als Übungsschein",
+        "denied": "Anrechnung abgelehnt",
+        "formalRejection": "Formfehler"
     },
 
     "FileIcon": {
@@ -210,7 +209,6 @@
     },
 
     "PanelDecisionBlock": {
-        "ChooseDecision": "Wähle eine Option",
         "reason": "Begründung"
     },
 
@@ -221,9 +219,10 @@
 
     "PanelExternalModulesItem": {
         "NameEmpty": "Modulname darf nicht leer sein",
-        "UniEmpty": "Universität darf nicht leer sein",
         "PointsNum": "Punkte müssen als Zahl angegeben werden",
         "CredSysEmpty": "Punktsystem darf nicht leer sein",
+        "UniEmpty": "Universität darf nicht leer sein",
+        "ExtCourseEmpty": "Studiengang darf nicht leer sein",
         "ChooseModuleDescription": "Modulbeschreibung auswählen",
         "ExtModule": "Externes Modul",
         "delete": "löschen"
@@ -237,7 +236,8 @@
     "PanelInternalModules": {
         "ModulesUniLeipzig": "Module der Universität Leipzig",
         "ChooseModule": "Modul auswählen",
-        "EmptyMessage": "leere Nachricht",
+        "AllSelected": "Alle Module sind ausgewählt",
+        "SelectCourse": "Studiengang wählen",
         "ModuleNotFound": "Modul nicht gefunden",
         "NoModulesSelected": "Es sind keine Module der Universität Leipzig ausgewählt.",
         "SelectableModules": "auswählbare Module"
@@ -285,7 +285,6 @@
     },
 
     "LoginView": {
-        "Logo": "Logo der Universität Leipzig",
         "LogIn": "ANMELDUNG",
         "Username": "Benutzername",
         "UsernameEmpty": "Benutzername darf nicht leer sein",

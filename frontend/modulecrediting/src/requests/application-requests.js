@@ -24,16 +24,20 @@ function createBasicFormData(courseLeipzig, basicConnectionObjects) {
                     externalModule.name
                 );
                 formData.append(
-                    `modulesConnections[${connectionIndex}].externalModules[${externalModuleIndex}].university`,
-                    externalModule.university
-                );
-                formData.append(
                     `modulesConnections[${connectionIndex}].externalModules[${externalModuleIndex}].points`,
                     externalModule.points
                 );
                 formData.append(
                     `modulesConnections[${connectionIndex}].externalModules[${externalModuleIndex}].pointSystem`,
                     externalModule.pointSystem
+                );
+                formData.append(
+                    `modulesConnections[${connectionIndex}].externalModules[${externalModuleIndex}].university`,
+                    externalModule.university
+                );
+                formData.append(
+                    `modulesConnections[${connectionIndex}].externalModules[${externalModuleIndex}].externalCourse`,
+                    externalModule.externalCourse
                 );
             }
         );
@@ -189,16 +193,20 @@ function postApplication(course, applicationObjects) {
                     externalModule.name
                 );
                 formData.append(
-                    `modulesConnections[${connectionIndex}].externalModules[${externalModuleIndex}].university`,
-                    externalModule.university
-                );
-                formData.append(
                     `modulesConnections[${connectionIndex}].externalModules[${externalModuleIndex}].points`,
                     externalModule.points
                 );
                 formData.append(
                     `modulesConnections[${connectionIndex}].externalModules[${externalModuleIndex}].pointSystem`,
                     externalModule.pointSystem
+                );
+                formData.append(
+                    `modulesConnections[${connectionIndex}].externalModules[${externalModuleIndex}].university`,
+                    externalModule.university
+                );
+                formData.append(
+                    `modulesConnections[${connectionIndex}].externalModules[${externalModuleIndex}].externalCourse`,
+                    externalModule.externalCourse
                 );
                 formData.append(
                     `modulesConnections[${connectionIndex}].externalModules[${externalModuleIndex}].description`,
