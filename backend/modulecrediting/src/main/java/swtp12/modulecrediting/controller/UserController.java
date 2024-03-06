@@ -113,12 +113,6 @@ public class UserController {
         return ResponseEntity.ok(userService.register(registerRequest));
     }
 
-    @PostMapping("/delete")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<String> deleteUser(@ModelAttribute EditUserDTO deleteRequest) {
-        return ResponseEntity.ok(userService.deleteUser(deleteRequest));
-    }
-    
 
     @PutMapping("/change/username")
     @PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR') or hasRole('ROLE_ADMIN')")
@@ -136,5 +130,12 @@ public class UserController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<String> changeRole(@ModelAttribute EditUserDTO changeRequest) {
         return ResponseEntity.ok(userService.changeRole(changeRequest));
+    }
+    
+    
+    @DeleteMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<String> deleteUser(@ModelAttribute EditUserDTO deleteRequest) {
+        return ResponseEntity.ok(userService.deleteUser(deleteRequest));
     }
 }

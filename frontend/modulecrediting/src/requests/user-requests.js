@@ -105,7 +105,7 @@ function deleteUser(id) {
 
     formData.append('id', id)
 
-    return httpClient.post('/api/user/delete', formData)
+    return httpClient.delete('/api/user', formData)
         .then(response => response.data)
         .catch(_ => {
         })
