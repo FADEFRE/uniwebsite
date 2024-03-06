@@ -9,6 +9,8 @@ import java.util.Base64;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
+import swtp12.modulecrediting.service.AuthService;
+
 public class SecurityCipher {
     private static final String KEYVALUE = "JPnJqOfaEge";
     private static SecretKeySpec secretKey;
@@ -46,7 +48,7 @@ public class SecurityCipher {
     }
 
 
-    public static String decrypt(String strToDecrypt) throws IncorrectKeyOnDecryptException {
+    public static String decrypt(String strToDecrypt) {
         if (strToDecrypt == null) return null;
 
         /*
@@ -80,6 +82,8 @@ public class SecurityCipher {
                 counter ++;
             }
         }
-        throw new IncorrectKeyOnDecryptException("there seems to be a problem with your authentication Tokens, please try again");
+        AuthService.deleteRefreshCookie();
+        AuthService.logout();
+        return null;
     }
 }

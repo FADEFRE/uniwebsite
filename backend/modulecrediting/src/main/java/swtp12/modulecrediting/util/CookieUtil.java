@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class CookieUtil {
 
-    private final String accessTokenCookieName = "accessToken";
-    private final String refreshTokenCookieName = "refreshToken";
+    private static final String accessTokenCookieName = "accessToken";
+    private static final String refreshTokenCookieName = "refreshToken";
 
     public HttpCookie createAccessTokenCookie(String token, Long duration) {
         String encryptedToken = SecurityCipher.encrypt(token);
@@ -34,7 +34,7 @@ public class CookieUtil {
                 .build();
     }
 
-    public HttpCookie deleteAccessTokenCookie() {
+    public static HttpCookie deleteAccessTokenCookie() {
         return ResponseCookie.from(accessTokenCookieName, null)
                 .maxAge(0)
                 .httpOnly(true)
@@ -44,7 +44,7 @@ public class CookieUtil {
                 .build();
     }
 
-    public HttpCookie deleteRefreshTokenCookie() {
+    public static HttpCookie deleteRefreshTokenCookie() {
         return ResponseCookie.from(refreshTokenCookieName, null)
                 .maxAge(0)
                 .httpOnly(true)

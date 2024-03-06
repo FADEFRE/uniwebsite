@@ -19,7 +19,6 @@ import swtp12.modulecrediting.dto.LoginRequest;
 import swtp12.modulecrediting.dto.LoginResponse;
 import swtp12.modulecrediting.dto.LogoutResponse;
 import swtp12.modulecrediting.service.AuthService;
-import swtp12.modulecrediting.util.IncorrectKeyOnDecryptException;
 import swtp12.modulecrediting.util.SecurityCipher;
 
 
@@ -40,8 +39,7 @@ public class AuthController {
     public ResponseEntity<LoginResponse> login(
             @CookieValue(name = accessTokenCookieName, required = false) String accessToken,
             @CookieValue(name = refreshTokenCookieName, required = false) String refreshToken,
-            @Valid @RequestBody LoginRequest loginRequest
-    ) throws IncorrectKeyOnDecryptException {
+            @Valid @RequestBody LoginRequest loginRequest) {
         Authentication authenticationRequest = UsernamePasswordAuthenticationToken.unauthenticated(loginRequest.getUsername().toString(), loginRequest.getPassword().toString());
         Authentication authenticationResponse = authenticationManager.authenticate(authenticationRequest);
         SecurityContextHolder.getContext().setAuthentication(authenticationResponse);
@@ -53,7 +51,7 @@ public class AuthController {
     @PostMapping("/refresh")
     public ResponseEntity<LoginResponse> refreshToken(
             @CookieValue(name = accessTokenCookieName, required = false) String accessToken, 
-            @CookieValue(name = refreshTokenCookieName, required = false) String refreshToken) throws IncorrectKeyOnDecryptException {
+            @CookieValue(name = refreshTokenCookieName, required = false) String refreshToken) {
         String decryptedAccessToken = SecurityCipher.decrypt(accessToken);
         String decryptedRefreshToken = SecurityCipher.decrypt(refreshToken);
         return authService.refresh(decryptedAccessToken, decryptedRefreshToken);
@@ -66,7 +64,7 @@ public class AuthController {
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals(accessTokenCookieName)) {
-                    return authService.logout();
+                    return AuthService.logout();
                 }
             }
         } 

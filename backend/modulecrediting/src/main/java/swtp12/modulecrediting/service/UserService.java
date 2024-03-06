@@ -19,7 +19,6 @@ import swtp12.modulecrediting.model.Role;
 import swtp12.modulecrediting.model.User;
 import swtp12.modulecrediting.repository.RoleRepository;
 import swtp12.modulecrediting.repository.UserRepository;
-import swtp12.modulecrediting.util.IncorrectKeyOnDecryptException;
 import swtp12.modulecrediting.util.LogUtil;
 
 /**
@@ -156,7 +155,7 @@ public class UserService {
 
 
 
-    public String changeUsername(EditUserDTO changeRequest) throws IncorrectKeyOnDecryptException {
+    public String changeUsername(EditUserDTO changeRequest) {
         if(changeRequest.getUsername() == null || changeRequest.getUsername().isBlank()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username cannot be empty");
         if (changeRequest.getUsername().contains(" ")) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username cannot contain whitespaces"); 
 

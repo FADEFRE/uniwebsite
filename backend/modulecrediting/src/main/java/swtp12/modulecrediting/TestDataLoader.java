@@ -98,7 +98,7 @@ public class TestDataLoader {
             String username = user.get("name").asText();
             String password = user.get("password").asText();
             String roleName = user.get("role").asText();
-            
+            LogUtil.printLog("Creating user: " + username);
             Optional<User> userCandidate = userRepository.findByUsername(username);
 
             if (!userCandidate.isPresent()) {
@@ -116,6 +116,7 @@ public class TestDataLoader {
                 }
             }
         }
+        LogUtil.printLog("");
     }
 
 
