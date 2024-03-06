@@ -2,19 +2,25 @@ import router from "@/router";
 import httpClient from "@/requests/httpClient";
 import { performLogout } from "@/router/logout";
 import { useUserStore } from "@/store/userStore";
-
-
-const intervalMilliSeconds = 600000; // 10 minutes
-
+import { getUserMeId } from "@/requests/user-requests";
 
 async function refreshTokenInternal() {
     console.debug("refreshTokenInternal()");
     try {
+        console.debug("firing");
         const response = await httpClient.post("/api/auth/refresh");
         if (response.status !== 200) performLogout();
     } 
     catch (error) { performLogout(); }
 }
+
+export async function runInterval() {
+    const authUserStore = useUserStore();
+    if (authUserStore.getCurrentUser === true) {
+        refreshTokenInternal();
+    }
+}
+
 
 
 export async function login (login_username, login_password) {
@@ -27,12 +33,10 @@ export async function login (login_username, login_password) {
     try {
         const response = await httpClient.post("/api/auth/login", loginRequest);
         if (response.status === 200) {
-            const userResponse = await httpClient.get("/api/user/me/id"); //TODO cahnge to axios request call
-            if (userResponse.data.userId !== null) {
+            const userResponse = await getUserMeId();
+            if (userResponse.userId !== null) {
                 authUserStore.setCurrentUser(true);
                 await refreshTokenInternal();
-                const intervalName = setInterval(async () => { await refreshTokenInternal(); } , intervalMilliSeconds);
-                authUserStore.setIntervalName(intervalName);
             }
             const response = await httpClient.get(`/api/user/role`)
             switch (response.data) {
