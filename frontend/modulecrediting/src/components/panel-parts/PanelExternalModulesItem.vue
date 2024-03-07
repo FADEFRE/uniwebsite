@@ -146,7 +146,7 @@ defineExpose({
       </div>
 
       <div class="input-container">
-        <InputText :readonly="!allowTextEdit" type="text" :placeholder="$t('ApplicationConfirmationView.Course')" v-model="externalCourse"
+        <InputText :readonly="!allowTextEdit" type="text" :placeholder="$t('PanelExternalModulesItem.Course')" v-model="externalCourse"
           :class="{ 'invalid': !externalCourseValid }" class="gray" />
         <small v-if="!externalCourseValid" class="invalid-text">{{ $t('PanelExternalModulesItem.ExtCourseEmpty')}}</small>
       </div>

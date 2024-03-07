@@ -9,22 +9,22 @@
         "makeApplicationExplanation": "Have credits earned at other universities credited for modules at Leipzig University. This is useful, for example, if you are transferring from another university to Leipzig University, returning after a semester abroad, or taking courses concurrently at another university.",
 
         "viewStatus": "View Status",
-        "viewStatusExplanation": "Here you can view the status of your already submitted application. Enter the 6-digit transaction number provided to you when you submitted the application. Alternatively, you can also find this transaction number in the overview of your application as a PDF.",
+        "viewStatusExplanation": "Here you can view the status of your already submitted application. Enter the 6-digit process number provided to you when you submitted the application. Alternatively, you can also find this process number in the overview of your application as a PDF.",
 
         "sideInfo": {
             "applicationProcess": "Application Process",
             "submitApplication": "Submit Application on this Website",
-            "viewStatus": "Track Status using Transaction Number",
+            "viewStatus": "Track Status using process Number",
             "goToStudy": "Once the application is completed, go to the study office with all relevant documents"
         },
-        "ApplicationCode": "Transaction Number of the Application to be Accessed",
-        "NotExisting": "This transaction does not exist",
-        "ProcessNumberOfApplication": "Transaction Number of the Application to be Accessed"
+        "ApplicationCode": "process Number of the Application to be Accessed",
+        "NotExisting": "This process does not exist",
+        "ProcessNumberOfApplication": "process Number of the Application to be Accessed"
     },
 
     "ApplicationOverview": {
         "Application": "Application",
-        "CaseNumber": "Transaction Number"
+        "CaseNumber": "process Number"
     },
 
     "ButtonAdd": {
@@ -64,10 +64,10 @@
         "FurtherInformation": "Additional information about this module assignment can be provided here, this is optional.",
         "ShowExample": "Show Example",
         "ExModuleAssignment": "Module Assignment: Automata and Computability",
-        "CreditedFor": "credited for",
+        "CreditedFor": "credited as",
         "AutomataandLanguages": "Automata and Languages",
         "Predictability": "Predictability",
-        "ModuleName": "Module Name 'Automata and Computability'",
+        "ModuleName": "modulename 'Automata and Computability'",
         "UniHalle": "Martin Luther University Halle-Wittenberg",
         "Credits": "Points '10', Credit System 'LP'",
         "ModuleDescription": "Module Description: PDF file with the description of the module Automata and Computability"
@@ -200,10 +200,10 @@
 
     "ApplicationConfirmationView": {
         "Confirmation": "Application Confirmation",
-        "NoteCode": "Note down the transaction number. This is necessary to later view the status of your application.",
+        "NoteCode": "Note down the process number. This is necessary to later view the status of your application.",
         "DownloadApplication": "Download Application",
         "ViewStatus": "View Status",
-        "CopyProcessNumber": "Copy Transaction Number"
+        "CopyProcessNumber": "Copy process Number"
     },
 
     "CopyIcon": {
