@@ -159,7 +159,7 @@ defineExpose({
   </div>
 
     <TrashIcon v-if="allowDelete" @click="emit('deleteSelf')" background-size="small"
-      :aria-label="`${$t('PanelExternalModulesItem.ExtModule')} ${name || 'ohne Namen'} ${$t('PanelExternalModulesItem.delete')}`" /> <!-- TODO: missing translation-->
+      :aria-label="`${$t('PanelExternalModulesItem.AriaExtModule')} ${name || 'ohne Namen'} ${$t('PanelExternalModulesItem.AriaDelete')}`" /> <!-- TODO: missing translation-->
   </div>
 </template>
 

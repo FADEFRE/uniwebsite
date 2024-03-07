@@ -72,7 +72,7 @@ defineExpose({
       <!-- Icons Slot -->
       <template #icons>
         <TrashIcon v-if="allowDelete" @click="emit('deleteSelf')" backgroundColor="white"
-                   :aria-label="$t('ApplicationPanel.deleteModule')" />
+                   :aria-label="$t('ApplicationPanel.AriaDeleteModule')" />
       </template>
 
       <!-- Panel Content -->

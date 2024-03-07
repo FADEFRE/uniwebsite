@@ -15,7 +15,7 @@ watch(useRoute(), newRoute => {
 <template>
   <div v-if="showLanguage" class="language-selection-container">
     <Button
-        :aria-label="$t('TheLanguageSelection.ChooseGerman')"
+        :aria-label="$t('TheLanguageSelection.AriaChooseGerman')"
         @click="translate.switchLanguage('de')"
         class="language-button"
         :class="{ 'active': store.locale == 'de' }"
@@ -23,7 +23,7 @@ watch(useRoute(), newRoute => {
       DE
     </Button>
     <Button
-        :aria-label="$t('TheLanguageSelection.ChooseEnglish')"
+        :aria-label="$t('TheLanguageSelection.AriaChooseEnglish')"
         @click="translate.switchLanguage('en')"
         class="language-button"
         :class="{ 'active': store.locale == 'en' }"

@@ -19,7 +19,7 @@
         },
         "ApplicationCode": "process Number of the Application to be Accessed",
         "NotExisting": "This process does not exist",
-        "ProcessNumberOfApplication": "process Number of the Application to be Accessed"
+        "AriaProcessNumberOfApplication": "process Number of the Application to be Accessed"
     },
 
     "ApplicationOverview": {
@@ -64,7 +64,7 @@
         "FurtherInformation": "Additional information about this module assignment can be provided here, this is optional.",
         "ShowExample": "Show Example",
         "ExModuleAssignment": "Module Assignment: Automata and Computability",
-        "CreditedFor": "credited as",
+        "AriaCreditedFor": "credited as",
         "AutomataandLanguages": "Automata and Languages",
         "Predictability": "Predictability",
         "ModuleName": "modulename 'Automata and Computability'",
@@ -114,21 +114,21 @@
     },
 
     "DateIcon": {
-        "CreationDate": "Creation Date",
+        "AriaCreationDate": "Creation Date",
         "created": "created",
-        "lastEditedDate": "Last Edited Date",
+        "AriaLastEditedDate": "Last Edited Date",
         "lastEdited": "last edited",
-        "decisionDate": "Decision Date",
+        "AriaDecisionDate": "Decision Date",
         "decision": "decision"
     },
 
     "StatusPanel": {
-        "DeleteModule": "Delete Module Assignment",
+        "AriaDeleteModule": "Delete Module Assignment",
         "NotYetDecided": "No decision has been made yet"
     },
 
     "TrashIcon": {
-        "delete": "Delete"
+        "AriaDelete": "Delete"
     },
 
     "PanelDecision": {
@@ -155,8 +155,8 @@
         "UniEmpty": "University cannot be empty",
         "ExtCourseEmpty": "Course cannot be empty",
         "ChooseModuleDescription": "Choose Module Description",
-        "ExtModule": "External Module",
-        "delete": "delete",
+        "AriaExtModule": "External Module",
+        "AriaDelete": "delete",
         "ModuleName": "Module Name",
         "Credits": "Credits",
         "CreditingSystem": "Credit System",
@@ -186,7 +186,7 @@
 
     "PanelHeader": {
         "ModulesToBeCredited": "Modules to be credited",
-        "CreditedFor": "credited for",
+        "AriaCreditedFor": "credited for",
         "ModulesUniLeipzig": "Modules of Leipzig University"
     },
 
@@ -195,7 +195,7 @@
     },
 
     "ApplicationPanel": {
-        "deleteModule": "Delete Module Assignment"
+        "AriaDeleteModule": "Delete Module Assignment"
     },
 
     "ApplicationConfirmationView": {
@@ -203,7 +203,7 @@
         "NoteCode": "Note down the process number. This is necessary to later view the status of your application.",
         "DownloadApplication": "Download Application",
         "ViewStatus": "View Status",
-        "CopyProcessNumber": "Copy process Number"
+        "AriaCopyProcessNumber": "Copy process Number"
     },
 
     "CopyIcon": {

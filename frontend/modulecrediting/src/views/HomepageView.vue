@@ -61,7 +61,7 @@ const getFormattedId = () => {
         <p class="text-justify">{{ $t('HomepageView.viewStatusExplanation') }}</p>
         <div class="input-button-container">
           <InputText
-              v-model="id" placeholder="0-0-0-0-0-0" :aria-label="$t('HomepageView.ProcessNumberOfApplication')"
+              v-model="id" placeholder="0-0-0-0-0-0" :aria-label="$t('HomepageView.AriaProcessNumberOfApplication')"
               :class="{ 'invalid': isInvalid }" class="status-input gray"
               @keydown.enter.prevent="openDetailView" @input.prevent="validateInput"
           />

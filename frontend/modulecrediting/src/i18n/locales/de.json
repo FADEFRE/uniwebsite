@@ -19,7 +19,7 @@
         },
         "ApplicationCode": "Vorgangsnummer des aufzurufenden Antrags",
         "NotExisting": "Dieser Vorgang existiert nicht",
-        "ProcessNumberOfApplication": "Vorgangsnummer des aufzurufenden Antrags"
+        "AriaProcessNumberOfApplication": "Vorgangsnummer des aufzurufenden Antrags"
     },
 
     "ApplicationOverview": {
@@ -64,7 +64,7 @@
         "FurtherInformation": "Hier können weitere Informationen zu dieser Modulzuweisung mitgeteilt werden, dies ist optional.",
         "ShowExample": "Beispiel anzeigen",
         "ExModuleAssignment": "Modulzuweisung: Automaten und Berechenbarkeit",
-        "CreditedFor": "wird angerechnet für",
+        "AriaCreditedFor": "wird angerechnet für",
         "AutomataandLanguages": "Automaten und Sprachen",
         "Predictability": "Berechenbarkeit",
         "ModuleName": "Modulname 'Automaten und Berechenbarkeit'",
@@ -114,21 +114,21 @@
     },
 
     "DateIcon": {
-        "CreationDate": "Erstelldatum",
+        "AriaCreationDate": "Erstelldatum",
         "created": "erstellt",
-        "lastEditedDate": "Datum des letzten Bearbeitens",
+        "AriaLastEditedDate": "Datum des letzten Bearbeitens",
         "lastEdited": "zuletzt bearbeitet",
-        "decisionDate": "Beschlussdatum",
+        "AriaDecisionDate": "Beschlussdatum",
         "decision": "Entscheidung"
     },
 
     "StatusPanel": {
-        "DeleteModule": "Modulzuweisung löschen",
+        "AriaDeleteModule": "Modulzuweisung löschen",
         "NotYetDecided": "Es wurde noch keine Entscheidung getroffen"
     },
 
     "TrashIcon": {
-        "delete": "Löschen"
+        "AriaDelete": "Löschen"
     },
 
     "PanelDecision": {
@@ -155,8 +155,8 @@
         "UniEmpty": "Universität darf nicht leer sein",
         "ExtCourseEmpty": "Studiengang darf nicht leer sein",
         "ChooseModuleDescription": "Modulbeschreibung auswählen",
-        "ExtModule": "Externes Modul",
-        "delete": "löschen",
+        "AriaExtModule": "Externes Modul",
+        "AriaDelete": "löschen",
         "ModuleName": "Modulname",
         "Credits": "Punkte",
         "CreditingSystem": "Punktesystem",
@@ -170,8 +170,8 @@
     },
 
     "TheLanguageSelection": {
-        "ChooseGerman": "Sprachauswahl Deutsch",
-        "ChooseEnglish": "Sprachauswahl Englisch"
+        "AriaChooseGerman": "Sprachauswahl Deutsch",
+        "AriaChooseEnglish": "Sprachauswahl Englisch"
     },
 
     "PanelInternalModules": {
@@ -186,7 +186,7 @@
 
     "PanelHeader": {
         "ModulesToBeCredited": "Anzurechnende Module",
-        "CreditedFor": "wird angerechnet für",
+        "AriaCreditedFor": "wird angerechnet für",
         "ModulesUniLeipzig": "Module der Universität Leipzig"
     },
 
@@ -195,7 +195,7 @@
     },
 
     "ApplicationPanel": {
-        "deleteModule": "Modulzuweisung löschen"
+        "AriaDeleteModule": "Modulzuweisung löschen"
     },
 
     "ApplicationConfirmationView": {
@@ -203,7 +203,7 @@
         "NoteCode": "Notieren Sie sich die Vorgangsnummer. Diese ist notwendig, um später den Status Ihres Antrags einsehen zu können.",
         "DownloadApplication": "Antrag herunterladen",
         "ViewStatus": "Status einsehen",
-        "CopyProcessNumber": "Kopieren der Vorgangsnummer"
+        "AriaCopyProcessNumber": "Kopieren der Vorgangsnummer"
     },
 
     "CopyIcon": {
