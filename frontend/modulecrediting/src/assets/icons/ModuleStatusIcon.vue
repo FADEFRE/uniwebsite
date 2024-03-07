@@ -25,26 +25,26 @@ const props = defineProps({
   <svg v-else-if="statusDecision==='accepted'" class="status-icon" :class="[size, gray ? 'gray' : 'green']" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg" :aria-hidden="Boolean(props.gray)">
     <circle cx="13" cy="13" r="12" stroke-width="2"/>
     <path d="M19 8L11.5 17L7 13" stroke-width="2"/>
-    <title>{{ $t('ModuleStatusIcon.accepted') }}</title>
+    <title>{{ $t('IconModuleStatus.accepted') }}</title>
   </svg>
 
 
   <svg v-else-if="statusDecision==='asExamCertificate'" class="status-icon" :class="[size, gray ? 'gray' : 'orange']" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg" :aria-hidden="Boolean(props.gray)">
     <circle cx="13" cy="13" r="12" stroke-width="2"/>
     <path d="M15.25 11.1667H10.75M15.25 14.8333H10.75M8.5 7.5H17.5V18.5H8.5V14.375V11.1667V7.5Z" stroke-width="2"/>
-    <title>{{ $t('ModuleStatusIcon.asExamCertificate') }}</title>
+    <title>{{ $t('IconModuleStatus.asExamCertificate') }}</title>
   </svg>
 
   <svg v-else-if="statusDecision==='denied'" class="status-icon" :class="[size, gray ? 'gray' : 'red']" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg" :aria-hidden="Boolean(props.gray)">
     <circle cx="13" cy="13" r="12" stroke-width="2"/>
     <path d="M8.5 17.5L13 13M17.5 8.5L13 13M13 13L17.5 17.5L8.5 8.5" stroke-width="2"/>
-    <title>{{ $t('ModuleStatusIcon.denied') }}</title>
+    <title>{{ $t('IconModuleStatus.denied') }}</title>
   </svg>
 
   <svg v-else-if="statusDecision==='formalRejection'" class="status-icon" :class="size" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg" :aria-hidden="Boolean(props.gray)">
     <circle cx="13" cy="13" r="12" class="red" stroke-width="2"/>
     <path class="red-fill" d="M11.53 6.4H14.41L13.888 15.022H12.052L11.53 6.4ZM11.494 18.01C11.494 17.614 11.632 17.29 11.908 17.038C12.196 16.774 12.55 16.642 12.97 16.642C13.402 16.642 13.756 16.774 14.032 17.038C14.308 17.29 14.446 17.614 14.446 18.01C14.446 18.406 14.308 18.736 14.032 19C13.756 19.252 13.402 19.378 12.97 19.378C12.55 19.378 12.196 19.252 11.908 19C11.632 18.736 11.494 18.406 11.494 18.01Z"/>
-    <title>{{ $t('ModuleStatusIcon.formalRejection') }}</title>
+    <title>{{ $t('IconModuleStatus.formalRejection') }}</title>
   </svg>
 </template>
 
