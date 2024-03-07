@@ -1,4 +1,5 @@
 import httpClient from "@/requests/httpClient";
+import { consoleDebug } from "@/requests/consoleDebug";
 
 let axiosColor = "color:deepskyblue";
 
@@ -10,7 +11,7 @@ parameters:
     none
  */
 function getCoursesLeipzigName() {
-    console.debug("%c" + "getCoursesLeipzigName ()", axiosColor);
+    consoleDebug("%c" + "getCoursesLeipzigName ()", axiosColor);
 
     return httpClient
         .get("/api/courses-leipzig")
@@ -29,7 +30,7 @@ parameters:
     course - String, course name
  */
 function getModulesByCourse(course) {
-    console.debug("%c" + "getModulesByCourse (" + course + ")", axiosColor);
+    consoleDebug("%c" + "getModulesByCourse (" + course + ")", axiosColor);
 
     return httpClient
         .get("/api/courses-leipzig")
@@ -45,7 +46,7 @@ function getModulesByCourse(course) {
 }
 
 function getModulesNameCode() {
-    console.debug("%c" + "getModulesNameCode", axiosColor);
+    consoleDebug("%c" + "getModulesNameCode", axiosColor);
 
     return httpClient
         .get("/api/modules-leipzig")
@@ -71,7 +72,7 @@ parameters:
     course - String, course name
  */
 function getModulesNameCodeByCourse(course) {
-    console.debug("%c" + "getModulesByCourse (" + course + ")", axiosColor);
+    consoleDebug("%c" + "getModulesByCourse (" + course + ")", axiosColor);
 
     return httpClient
         .get("/api/courses-leipzig")
@@ -94,7 +95,7 @@ parameters:
     name of course
  */
 function postCourseLeipzig(courseName) {
-    console.debug(
+    consoleDebug(
         "%c" + "create course leipzig (name: " + courseName + ")",
         axiosColor
     );
@@ -117,7 +118,7 @@ parameters:
     moduleCode
  */
 function postModuleLeipzig(moduleName, moduleCode) {
-    console.debug(
+    consoleDebug(
         "%c" + "create module leipzig (name: " + moduleName + ")",
         axiosColor
     );
@@ -133,7 +134,7 @@ function postModuleLeipzig(moduleName, moduleCode) {
 }
 
 function postJsonConfig(configFile) {
-    console.debug("%c" + "postJsonConfig (configFile: " + configFile + ")", axiosColor)
+    consoleDebug("%c" + "postJsonConfig (configFile: " + configFile + ")", axiosColor)
 
     const formData = new FormData()
     formData.append("jsonFile", configFile)
@@ -145,7 +146,7 @@ function postJsonConfig(configFile) {
 }
 
 function putCourseLeipzigEdit(coursename, moduleList) {
-    console.debug("%c" + "putCourseLeipzigEdit", axiosColor);
+    consoleDebug("%c" + "putCourseLeipzigEdit", axiosColor);
 
     const formData = new FormData();
 
@@ -162,7 +163,7 @@ function putCourseLeipzigEdit(coursename, moduleList) {
 }
 
 function putUpdateCourseLeipzig(courseName, newCourseName) {
-    console.debug("%c" + "putUpdateCourseLeipzig", axiosColor);
+    consoleDebug("%c" + "putUpdateCourseLeipzig", axiosColor);
 
     const formData = new FormData();
     formData.append("courseName", newCourseName);
@@ -173,7 +174,7 @@ function putUpdateCourseLeipzig(courseName, newCourseName) {
 }
 
 function putUpdateModuleLeipzig(moduleName, newModuleName, newModuleCode) {
-    console.debug("%c" + "putUpdateModuleLeipzig (moduleName: " + moduleName + ", newModuleName: " + newModuleName + ", newModuleCode: " + newModuleCode + ")", axiosColor)
+    consoleDebug("%c" + "putUpdateModuleLeipzig (moduleName: " + moduleName + ", newModuleName: " + newModuleName + ", newModuleCode: " + newModuleCode + ")", axiosColor)
 
     const formData = new FormData()
 
@@ -185,7 +186,7 @@ function putUpdateModuleLeipzig(moduleName, newModuleName, newModuleCode) {
 }
 
 function deleteCourseLeipzig(coursename) {
-    console.debug("%c" + "deleteCourseLeipzig", axiosColor);
+    consoleDebug("%c" + "deleteCourseLeipzig", axiosColor);
 
     return httpClient
         .delete(`/api/courses-leipzig/${coursename}`)
@@ -195,7 +196,7 @@ function deleteCourseLeipzig(coursename) {
 }
 
 function deleteModuleLeipzig(modulename) {
-    console.debug("%c" + "deleteModuleLeipzig", axiosColor);
+    consoleDebug("%c" + "deleteModuleLeipzig", axiosColor);
 
     return httpClient
         .delete(`/api/modules-leipzig/${modulename}`)

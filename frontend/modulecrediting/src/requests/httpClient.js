@@ -2,6 +2,7 @@ import axios from "axios";
 import { url } from "@/config/url-config";
 import { performLogout } from "@/router/logout";
 import router from "@/router";
+import { consoleDebug } from "@/requests/consoleDebug";
 
 const isHandlerEnabled = (config = {}) => {
   return config.hasOwnProperty("handlerEnabled") && !config.handlerEnabled
@@ -30,7 +31,7 @@ function create503() {
 }
 
 function parseApierror(error) {
-  console.debug("parseapierror", error);
+  consoleDebug("parseapierror", error);
   try {
       if (error && error.hasOwnProperty("response") && error.response.hasOwnProperty("data")) {
           const apierror = error.response.data;
@@ -50,23 +51,21 @@ function parseApierror(error) {
 }
 
 
-
 const requestHandler = (request) => {
   if (isHandlerEnabled(request)) {
 
-    //TODO remove debug logs start
     if (request.data instanceof FormData) {
-      console.debug("%c" + request.method.toUpperCase() + "-Request: " + request.url, requestColor, "  Start of Request-Data: " ); 
+      consoleDebug("%c" + request.method.toUpperCase() + "-Request: " + request.url, requestColor, "  Start of Request-Data: " ); 
       let formData = new FormData();
       formData = request.data;
       for (const pair of formData.entries()) {
-        console.debug(pair[0], pair[1]);
+        consoleDebug(pair[0], pair[1]);
       }
-      console.debug("%c" + "End of Data", requestColor);
-    } else
-      console.debug("%c" + request.method.toUpperCase() + "-Request: " + request.url, requestColor, "  Request-Data: " + request.data );
-    //TODO remove debug logs end
-    
+      consoleDebug("%c" + "End of Data", requestColor);
+    } 
+    else {
+      consoleDebug("%c" + request.method.toUpperCase() + "-Request: " + request.url, requestColor, "  Request-Data: " + request.data );
+    }
   }
   return request;
 };
@@ -74,10 +73,9 @@ const requestHandler = (request) => {
 const errorHandler = (error) => {  
 
   if (isHandlerEnabled(error.config)) {
-    console.debug("%c" + "Error Interceptor", errorColor); //TODO remove debug log
+    consoleDebug("%c" + "Error Interceptor", errorColor);
 
     const apiError = parseApierror(error)
-    console.error(apiError)
 
     const currentRouteFullPath = router.currentRoute.value.fullPath
 
@@ -89,7 +87,7 @@ const errorHandler = (error) => {
         break;
 
       case 402: // PAYMENT_REQUIRED -> used for debug
-        console.debug("%c" + "Debug 402 catch", errorColor);
+        consoleDebug("%c" + "Debug 402 catch", errorColor);
         router.replace("/error" + currentRouteFullPath);
         break;
 
@@ -122,7 +120,7 @@ const errorHandler = (error) => {
 
 const successHandler = (response) => {
   if (isHandlerEnabled(response.config)) {
-    console.debug("%c" + "Response: " + response.status + " ", responseColor, response.request.responseURL, "  Data:", response.data); //TODO remove debug log
+    consoleDebug("%c" + "Response: " + response.status + " ", responseColor, response.request.responseURL, "  Data:", response.data);
   }
   return response;
 };

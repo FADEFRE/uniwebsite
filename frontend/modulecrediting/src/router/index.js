@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { useUserStore } from "@/store/userStore";
+import { consoleDebug } from "@/requests/consoleDebug";
 import { logout } from "./logout";
 import translate from '@/i18n/translate';
 import httpClient from "@/requests/httpClient";
@@ -170,7 +171,7 @@ router.beforeEach(async (to, from) => {
   if (to.meta.authType !== "standard") {
     translate.switchLanguage('de')
   }
-  console.log("getRole Router");
+  consoleDebug("getRole Router");
   const responseRole = await httpClient.get(`/api/user/role`);
   switch (to.meta.authType) {
     case "standard":
@@ -222,7 +223,6 @@ router.beforeEach(async (to, from) => {
       break;
   }
 
-  console.log("default");
   return false;
 });
 

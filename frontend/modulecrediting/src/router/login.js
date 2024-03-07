@@ -3,11 +3,11 @@ import httpClient from "@/requests/httpClient";
 import { performLogout } from "@/router/logout";
 import { useUserStore } from "@/store/userStore";
 import { getUserMeId } from "@/requests/user-requests";
+import { consoleDebug } from "@/requests/consoleDebug";
 
 async function refreshTokenInternal() {
-    console.debug("refreshTokenInternal()");
+    consoleDebug("refreshTokenInternal()");
     try {
-        console.debug("firing");
         const response = await httpClient.post("/api/auth/refresh");
         if (response.status !== 200) performLogout();
     } 

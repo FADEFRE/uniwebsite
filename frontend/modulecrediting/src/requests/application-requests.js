@@ -1,6 +1,8 @@
 import httpClient from "@/requests/httpClient";
+import { consoleDebug } from "@/requests/consoleDebug";
 
 let axiosColor = "color:deepskyblue";
+
 
 // helper - creates basicFormData for PUT-Requests
 // basicConnectionObjects has to be array containing objects with below used data
@@ -59,7 +61,7 @@ parameters:
     none
  */
 function getApplications() {
-    console.debug("%c" + "getApplications ()", axiosColor);
+    consoleDebug("%c" + "getApplications ()", axiosColor);
 
     return httpClient
         .get("/api/applications")
@@ -76,7 +78,7 @@ parameters:
     id - Number, application id
  */
 function getApplicationById(id) {
-    console.debug("%c" + "getApplicationById (" + id + ")", axiosColor);
+    consoleDebug("%c" + "getApplicationById (" + id + ")", axiosColor);
 
     return httpClient
         .get("/api/applications/" + id)
@@ -99,7 +101,7 @@ parameters:
     id - Number, application id
  */
 function getApplicationByIdForStatus(id) {
-    console.debug("%c" + "getApplicationByIdForStatus (" + id + ")", axiosColor);
+    consoleDebug("%c" + "getApplicationByIdForStatus (" + id + ")", axiosColor);
 
     return httpClient
         .get("/api/applications/student/" + id)
@@ -122,7 +124,7 @@ parameters:
     id - Number, application id
  */
 function getApplicationExists(id) {
-    console.debug("%c" + "getApplicationExists ()", axiosColor);
+    consoleDebug("%c" + "getApplicationExists ()", axiosColor);
 
     return httpClient
         .get(`/api/applications/${id}/exists`)
@@ -139,7 +141,7 @@ parameters:
     moduleConnectionId - Number, module connection id
  */
 function getRelatedModuleConnections(moduleConnectionId) {
-    console.debug("%c" + "getRelatedModuleConnections (moduleConnectionId: " + moduleConnectionId + ")", axiosColor);
+    consoleDebug("%c" + "getRelatedModuleConnections (moduleConnectionId: " + moduleConnectionId + ")", axiosColor);
 
     return httpClient
         .get("/api/modules-connection/" + moduleConnectionId + "/related")
@@ -158,10 +160,7 @@ parameters:
     - id, Number application id
  */
 function getUpdateStatusAllowed(id) {
-    console.debug(
-        "%c" + "getUpdateStatusAllowed (id: " + id + ")",
-        axiosColor
-    );
+    consoleDebug("%c" + "getUpdateStatusAllowed (id: " + id + ")", axiosColor);
 
     return httpClient
         .get("/api/applications/" + id + "/update-status-allowed")
@@ -180,7 +179,7 @@ parameters:
     ... String pointSystem, File descriptionFile, String comment, array of Strings selectedInternalModules
  */
 function postApplication(course, applicationObjects) {
-    console.debug("%c" + "postApplication (course: " + course + ", applicationObjects: " + applicationObjects + ")", axiosColor);
+    consoleDebug("%c" + "postApplication (course: " + course + ", applicationObjects: " + applicationObjects + ")", axiosColor);
 
     const formData = new FormData();
     formData.append(`courseLeipzig`, course);
@@ -240,7 +239,7 @@ function putApplicationStudent(
     courseLeipzig,
     connectionObjects
 ) {
-    console.debug(
+    consoleDebug(
         "%c" +
         "putApplicationStandard (applicationId: " +
         applicationId +
@@ -282,7 +281,7 @@ function putApplicationStudyOffice(
     courseLeipzig,
     connectionObjects
 ) {
-    console.debug(
+    consoleDebug(
         "%c" +
         "putApplicationStudyOffice (applicationId: " +
         applicationId +
@@ -342,7 +341,7 @@ function putApplicationChairman(
     courseLeipzig,
     connectionObjects
 ) {
-    console.debug(
+    consoleDebug(
         "%c" +
         "putApplicationStudyOffice (applicationId: " +
         applicationId +
@@ -386,7 +385,7 @@ parameters:
     - id, Number application id
  */
 function putUpdateStatus(id) {
-    console.debug("%c" + "updateStatus (id: " + id + ")", axiosColor);
+    consoleDebug("%c" + "updateStatus (id: " + id + ")", axiosColor);
 
     return httpClient
         .put("/api/applications/" + id + "/update-status")
