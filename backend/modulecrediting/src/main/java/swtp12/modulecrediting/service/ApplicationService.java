@@ -144,21 +144,21 @@ public class ApplicationService {
         return application.getFullStatus();
     }
 
-    private boolean allDecisionSuggestionEdited(Application application) {
+    boolean allDecisionSuggestionEdited(Application application) {
         boolean allDecisionSuggestionEdited = true;
         for(ModulesConnection m : application.getModulesConnections()) {
             if(m.getDecisionSuggestion() == unedited)  allDecisionSuggestionEdited = false;
         }
         return allDecisionSuggestionEdited;
     }
-    private boolean allDecisionsFinalEdited(Application application) {
+    boolean allDecisionsFinalEdited(Application application) {
         boolean allDecisionsFinalEdited = true;
         for(ModulesConnection m : application.getModulesConnections()) {
             if(m.getDecisionFinal() == unedited) allDecisionsFinalEdited = false;
         }
         return allDecisionsFinalEdited;
     }
-    private boolean containsFormalRejection(Application application) {
+    public boolean containsFormalRejection(Application application) {
         boolean containsFormalRejection = false;
         for(ModulesConnection m : application.getModulesConnections()) {
             if(m.getFormalRejection()) containsFormalRejection = true;
@@ -167,7 +167,7 @@ public class ApplicationService {
     }
 
     // helper method for create application
-    private String generateValidApplicationId() {
+    public String generateValidApplicationId() {
         String id;
         do {
             StringBuilder sb = new StringBuilder();
