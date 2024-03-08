@@ -118,8 +118,8 @@
         "ModulesToBeCredited": "Modules to be credited"
     },
     "PanelExternalModulesItem": {
-        "AriaDelete": "delete",
-        "AriaExtModule": "External Module",
+        "AriaDelete": "",
+        "AriaExtModule": "delete this external module",
         "ChooseModuleDescription": "Choose Module Description",
         "Course": "Course",
         "CreditingSystem": "Credit System",
@@ -130,7 +130,8 @@
         "NameEmpty": "Module name cannot be empty",
         "PointsNum": "Points must be specified as a number",
         "UniEmpty": "University cannot be empty",
-        "University": "University"
+        "University": "University",
+        "NoName": "which has no name"
     },
     "PanelFormalRejectionBlock": {
         "FormalMistake": "Formal Mistake"

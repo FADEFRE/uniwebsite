@@ -119,7 +119,7 @@
     },
     "PanelExternalModulesItem": {
         "AriaDelete": "löschen",
-        "AriaExtModule": "Externes Modul",
+        "AriaExtModule": "Dieses externe Modul,",
         "ChooseModuleDescription": "Modulbeschreibung auswählen",
         "Course": "Studiengang",
         "CreditingSystem": "Punktesystem",
@@ -130,7 +130,8 @@
         "NameEmpty": "Modulname darf nicht leer sein",
         "PointsNum": "Punkte müssen als Zahl angegeben werden",
         "UniEmpty": "Universität darf nicht leer sein",
-        "University": "Universität"
+        "University": "Universität",
+        "NoName": "dass keinen Namen hat"
     },
     "PanelFormalRejectionBlock": {
         "FormalMistake": "Formfehler"
