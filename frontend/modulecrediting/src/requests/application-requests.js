@@ -390,11 +390,6 @@ function putUpdateStatus(id) {
     return httpClient
         .put("/api/applications/" + id + "/update-status")
         .then((response) => {
-            if (response.data) {
-                console.log("update successful");
-            } else {
-                console.log("update was not successful");
-            }
             return response.data;
         })
         .catch((_) => {
