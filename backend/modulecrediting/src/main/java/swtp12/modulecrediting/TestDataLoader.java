@@ -73,7 +73,7 @@ public class TestDataLoader {
      * Reads test data from a Json and writes it into the databse.
      * <p> It creates {@link User Users} defined in the JSON aswell.
      * 
-     * @implNote This should only be used for testing and it is recommended to use it with "create-drop" for your database.
+     * <p> NOTE: This should only be used for testing and it is recommended to use it with "create-drop" for your database.
      * 
      * @see Application
      * @see CourseLeipzig
@@ -285,6 +285,8 @@ public class TestDataLoader {
      * The function "grabFirstNodeFromJson" reads a JSON file from the given path and returns the first JsonNode
      * with the given name or throws mutliple exception if failed to do so.
      * 
+     * <p> NOTE: This is an older documentation and might be out of date!
+     * 
      * @exception IOException Gets thrown as RuntimeException if failed to read JSON data
      * @exception IllegalArgumentException Gets thrown if JsonNode is invalid
      * @param jsonPath String that represents the path to the JSON file that you want to read. 
@@ -292,7 +294,6 @@ public class TestDataLoader {
      * @param nodeName String that represents the Name of the JsonNode you want to be returned
      * @return The JsonNode of the JSON file.
      * 
-     * @implNote This is an older documentation and might be out of date!
      */
     private JsonNode grabFirstNodeFromJson(String jsonPath, String nodeName) {
         JsonNode jsonNode;
@@ -312,13 +313,12 @@ public class TestDataLoader {
      * The function `createModuleDTO` creates a `ModuleBlockCreateDTO` object with various properties and
      * sets a description file based on a resource file.
      * 
+     * <p> NOTE: This is an older documentation and might be out of date!
      * @param cL An instance of the CourseLeipzig class, which contains information about the Leipzig
      * course.
      * @param moduleSettingNode A JSON object containing the settings for a module. It has the following
      * properties: name, university, points, pointsystem, comment.
      * @return The method is returning a ModuleBlockCreateDTO object.
-     * 
-     * @implNote This is an older documentation and might be out of date!
      */
     private ModulesConnectionDTO createModulesConnectionDTO(CourseLeipzig cL, JsonNode moduleSettingNode) {
         ModulesConnectionDTO modulesConnectionDTO = new ModulesConnectionDTO();
@@ -347,11 +347,10 @@ public class TestDataLoader {
     }
 
     /**
-     * 
+     * <p> NOTE: This is an older documentation and might be out of date!
      * @param moduleSettingNode
      * @return
      * 
-     * @implNote This is an older documentation and might be out of date!
      */
     private ExternalModuleDTO createExternalModuleDTO(JsonNode moduleSettingNode) {
         ExternalModuleDTO externalModuleDTO = new ExternalModuleDTO();
@@ -372,6 +371,8 @@ public class TestDataLoader {
     /**
      * The function retrieves a String from a random index from a specified node in a JSON object.
      * 
+     * <p> NOTE: This is an older documentation and might be out of date!
+     * 
      * @param currentNode The `currentNode` parameter is a `JsonNode` object that represents the current
      * node in a JSON structure.
      * @param nodeName The `nodeName` parameter is a `String` that represents the name of the node one layer
@@ -380,8 +381,6 @@ public class TestDataLoader {
      * numbers. It is passed as an argument to the method so that the method can use it to generate a
      * random index for selecting a value from the "valueNode".
      * @return The method is returning a randomly selected value from a specific node in a JSON object.
-     * 
-     * @implNote This is an older documentation and might be out of date!
      */
     private String getRandValueOfNode(JsonNode currentNode, String nodeName, Random rdm) {
         JsonNode valueNode = currentNode.get(nodeName);
@@ -390,12 +389,10 @@ public class TestDataLoader {
     }
 
     /**
-     * 
+     * <p> NOTE: This is an older documentation and might be out of date!
      * @param status
      * @param application
      * @return
-     * 
-     * @implNote This is an older documentation and might be out of date!
      */
     private List<ModulesConnectionDTO> updateModulesConnectionDTO(EnumApplicationStatus status, Application application) {
         List<ModulesConnectionDTO> mcuDTO = new ArrayList<>();
@@ -476,7 +473,7 @@ public class TestDataLoader {
 
     /** 
      * 
-     * @implNote This is an older documentation and might be out of date!
+     * <p> NOTE: This is an older documentation and might be out of date!
     */
     private EnumModuleConnectionDecision generateDecision() {
         Random rand = new Random();
