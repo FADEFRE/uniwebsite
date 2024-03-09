@@ -134,7 +134,7 @@
         "University": "University"
     },
     "PanelFormalRejectionBlock": {
-        "FormalMistake": "Formal Mistake"
+        "FormalMistake": "Formal error"
     },
     "PanelHeader": {
         "AriaCreditedFor": "credited for",
@@ -173,7 +173,7 @@
         "CreditingRejected": "Credit rejected",
         "DownloadApplication": "Download Application",
         "FinalDecisionExplanation": "A final decision has been made on your application. This is only information about the possibility of recognition. To officially have your credits recognized, you must go to the study office. Please bring all relevant documents that prove the completion of the credits to be recognized. If you have further questions about your application, please contact the study office.",
-        "FormalMistake": "Formal Mistake",
+        "FormalMistake": "Formal error",
         "FormalMistakeExplanation": "Your application was rejected due to formal errors. The module assignments containing formal errors are marked in red. In the module assignment, you will find an explanation of the specific error at the bottom. Please correct all indicated errors. Then you can resubmit your application.",
         "legend": "Legend",
         "Renew": "Resubmit",
