@@ -75,7 +75,7 @@ public class Application {
 
 
     /**
-     * Sets the given {@link List} of {@link ModulesConnection} to this {@link Application}.
+     * Sets the given {@link List} of {@link ModulesConnection ModulesConnections} to this {@link Application}.
      * <p>Also sets this {@link Application} for every {@link ModulesConnection} in the given {@link List}.
      * 
      * @see Application
@@ -89,7 +89,7 @@ public class Application {
     }
 
     /**
-     * Adds the given {@link List} of {@link ModulesConnection} to this {@link Application}.
+     * Adds the given {@link List} of {@link ModulesConnection ModulesConnections} to the existing List of {@link ModulesConnection ModulesConnections} of this {@link Application}.
      * <p>Also sets this {@link Application} for every {@link ModulesConnection} in the given {@link List}.
      * 
      * @see Application
@@ -103,8 +103,8 @@ public class Application {
     }
 
     /**
-     * Remove all Related {@link ModulesConnection}.
-     * <p>Also deletes Modules Connections in DB due to Cascade Options</p>
+     * Removes all {@link ModulesConnection ModulesConnections} of this {@link Application}.
+     * <p>Also removes {@link Application} of these {@link ModulesConnection ModulesConnections}.</p>
      * @see Application
      * @see ModulesConnection
      */

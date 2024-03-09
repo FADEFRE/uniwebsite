@@ -4,7 +4,11 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
 
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -63,14 +67,11 @@ public class ExternalModule {
 
     /**
      * Sets the given {@link PdfDocument} to this {@link ExternalModule}.
-     * <p>Also sets this {@link ExternalModule} to the given {@link PdfDocument}.
      * 
      * @see ExternalModule
      * @see PdfDocument 
      */
     public void setPdfDocument(PdfDocument pdfDocument) {
-
         this.pdfDocument = pdfDocument;
-
     }
 }
