@@ -21,8 +21,6 @@ public class AuthService {
     @Autowired
     private TokenProvider tokenProvider;
     @Autowired
-    private CookieUtil cookieUtil;
-    @Autowired
     private UserRepository userRepository;
 
 
@@ -115,7 +113,7 @@ public class AuthService {
 
         Token newAccessToken = tokenProvider.generateAccessToken(currentUserUsername);
         HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.add(HttpHeaders.SET_COOKIE, cookieUtil.createAccessTokenCookie(newAccessToken.getTokenValue(), newAccessToken.getDuration()).toString());
+        responseHeaders.add(HttpHeaders.SET_COOKIE, CookieUtil.createAccessTokenCookie(newAccessToken.getTokenValue(), newAccessToken.getDuration()).toString());
 
         LoginResponse loginResponse = new LoginResponse(LoginResponse.SuccessFailure.SUCCESS, "Auth successful. Tokens are created in cookie.");
         return ResponseEntity.ok().headers(responseHeaders).body(loginResponse);
@@ -183,7 +181,7 @@ public class AuthService {
      * @see HttpHeaders
      */
     private void addAccessTokenCookie(HttpHeaders httpHeaders, Token accessToken) {
-        httpHeaders.add(HttpHeaders.SET_COOKIE, cookieUtil.createAccessTokenCookie(accessToken.getTokenValue(), accessToken.getDuration()).toString());
+        httpHeaders.add(HttpHeaders.SET_COOKIE, CookieUtil.createAccessTokenCookie(accessToken.getTokenValue(), accessToken.getDuration()).toString());
     }
 
     /**
@@ -195,7 +193,7 @@ public class AuthService {
      * @see HttpHeaders
      */
     private void addRefreshTokenCookie(HttpHeaders httpHeaders, Token refreshToken) {
-        httpHeaders.add(HttpHeaders.SET_COOKIE, cookieUtil.createRefreshTokenCookie(refreshToken.getTokenValue(), refreshToken.getDuration()).toString());
+        httpHeaders.add(HttpHeaders.SET_COOKIE, CookieUtil.createRefreshTokenCookie(refreshToken.getTokenValue(), refreshToken.getDuration()).toString());
     }
 
 }
