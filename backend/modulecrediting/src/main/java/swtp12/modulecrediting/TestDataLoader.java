@@ -11,34 +11,32 @@ import java.util.Optional;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.transaction.Transactional;
-
-
 import swtp12.modulecrediting.dto.ApplicationDTO;
 import swtp12.modulecrediting.dto.ExternalModuleDTO;
 import swtp12.modulecrediting.dto.ModuleLeipzigDTO;
 import swtp12.modulecrediting.dto.ModulesConnectionDTO;
 import swtp12.modulecrediting.model.Application;
-import swtp12.modulecrediting.model.Role;
 import swtp12.modulecrediting.model.CourseLeipzig;
 import swtp12.modulecrediting.model.EnumApplicationStatus;
 import swtp12.modulecrediting.model.EnumModuleConnectionDecision;
 import swtp12.modulecrediting.model.ExternalModule;
 import swtp12.modulecrediting.model.ModuleLeipzig;
 import swtp12.modulecrediting.model.ModulesConnection;
+import swtp12.modulecrediting.model.Role;
 import swtp12.modulecrediting.model.User;
-import swtp12.modulecrediting.repository.RoleRepository;
 import swtp12.modulecrediting.repository.CourseLeipzigRepository;
 import swtp12.modulecrediting.repository.ModuleLeipzigRepository;
+import swtp12.modulecrediting.repository.RoleRepository;
 import swtp12.modulecrediting.repository.UserRepository;
 import swtp12.modulecrediting.service.ApplicationService;
 import swtp12.modulecrediting.util.JsonUtil;
@@ -52,19 +50,14 @@ import swtp12.modulecrediting.util.LogUtil;
 public class TestDataLoader {
     @Autowired
     private ModuleLeipzigRepository modulLeipzigRepo;
-
     @Autowired
     private CourseLeipzigRepository courseLeipzigRepo;
-
     @Autowired
     private ApplicationService applicationService;
-
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private RoleRepository roleRepository;
-    
     @Autowired
     private PasswordEncoder encoder;
 
@@ -76,8 +69,16 @@ public class TestDataLoader {
     }
 
     /**
-     * The run function reads Uni Leipzig Data from a JSON and writes it into the database
-     * Reads test data from a Json and writes it into the databse
+     * The run function reads Uni Leipzig Data from a JSON and writes it into the database.
+     * Reads test data from a Json and writes it into the databse.
+     * <p> It creates {@link User Users} defined in the JSON aswell.
+     * 
+     * @implNote This should only be used for testing and it is recommended to use it with "create-drop" for your database.
+     * 
+     * @see Application
+     * @see CourseLeipzig
+     * @see ModuleLeipzig
+     * @see User
      */
     @Transactional
     public void run() {
@@ -91,7 +92,14 @@ public class TestDataLoader {
     }
 
 
-    //creates users defined in filename (test data)
+
+    /**
+     * Loads data from a JSON file into the database, creating and linking {@link CourseLeipzig} and {@link ModuleLeipzig} objects.
+     * 
+     * @param fileName The `fileName` parameter is the name of the JSON file that contains the data to be loaded into the database.
+     * @see CourseLeipzig
+     * @see ModuleLeipzig
+     */
     private void userCreation(String fileName) {
         JsonNode userSettings = grabFirstNodeFromJson(fileName, "users");
         for (JsonNode user : userSettings) {
@@ -120,14 +128,12 @@ public class TestDataLoader {
     }
 
 
-    //the two dataloader functions (leipzigData/ testData):
-
     /**
-     * The function `leipzigDataLoader` loads data from a JSON file into the database, creating and linking
-     * `CourseLeipzig` and `ModuleLeipzig` objects.
+     * Loads data from a JSON file into the database, creating and linking {@link CourseLeipzig} and {@link ModuleLeipzig} objects.
      * 
-     * @param fileName The `fileName` parameter is the name of the JSON file that contains the data to be
-     * loaded into the database.
+     * @param fileName The `fileName` parameter is the name of the JSON file that contains the data to be loaded into the database.
+     * @see CourseLeipzig
+     * @see ModuleLeipzig
      */
     @Transactional
     private void leipzigDataLoader(String fileName) {
@@ -158,13 +164,12 @@ public class TestDataLoader {
 
 
     /**
-     * The `createTestData` function generates dummy data for testing purposes by creating random
-     * applications with associated module blocks.
+     * This function generates dummy data for testing purposes by creating random {@link Application Applications}.
      * 
      * @param testFileName The `testFileName` parameter is the name of the JSON file from which the test
      * data settings will be extracted.
+     * @see Application
      */
-
     @Transactional
     private void createTestData(String testFileName) {
 
@@ -286,6 +291,8 @@ public class TestDataLoader {
      *                      It can be either an absolute path or a relative path to the JSON file.
      * @param nodeName String that represents the Name of the JsonNode you want to be returned
      * @return The JsonNode of the JSON file.
+     * 
+     * @implNote This is an older documentation and might be out of date!
      */
     private JsonNode grabFirstNodeFromJson(String jsonPath, String nodeName) {
         JsonNode jsonNode;
@@ -310,6 +317,8 @@ public class TestDataLoader {
      * @param moduleSettingNode A JSON object containing the settings for a module. It has the following
      * properties: name, university, points, pointsystem, comment.
      * @return The method is returning a ModuleBlockCreateDTO object.
+     * 
+     * @implNote This is an older documentation and might be out of date!
      */
     private ModulesConnectionDTO createModulesConnectionDTO(CourseLeipzig cL, JsonNode moduleSettingNode) {
         ModulesConnectionDTO modulesConnectionDTO = new ModulesConnectionDTO();
@@ -337,6 +346,13 @@ public class TestDataLoader {
         return modulesConnectionDTO;
     }
 
+    /**
+     * 
+     * @param moduleSettingNode
+     * @return
+     * 
+     * @implNote This is an older documentation and might be out of date!
+     */
     private ExternalModuleDTO createExternalModuleDTO(JsonNode moduleSettingNode) {
         ExternalModuleDTO externalModuleDTO = new ExternalModuleDTO();
 
@@ -364,6 +380,8 @@ public class TestDataLoader {
      * numbers. It is passed as an argument to the method so that the method can use it to generate a
      * random index for selecting a value from the "valueNode".
      * @return The method is returning a randomly selected value from a specific node in a JSON object.
+     * 
+     * @implNote This is an older documentation and might be out of date!
      */
     private String getRandValueOfNode(JsonNode currentNode, String nodeName, Random rdm) {
         JsonNode valueNode = currentNode.get(nodeName);
@@ -371,6 +389,14 @@ public class TestDataLoader {
         return valueNode.get(rdmIdx).asText();
     }
 
+    /**
+     * 
+     * @param status
+     * @param application
+     * @return
+     * 
+     * @implNote This is an older documentation and might be out of date!
+     */
     private List<ModulesConnectionDTO> updateModulesConnectionDTO(EnumApplicationStatus status, Application application) {
         List<ModulesConnectionDTO> mcuDTO = new ArrayList<>();
         boolean studyBool = true;
@@ -448,8 +474,11 @@ public class TestDataLoader {
         return mcuDTO;
     }
 
-
-    public EnumModuleConnectionDecision generateDecision() {
+    /** 
+     * 
+     * @implNote This is an older documentation and might be out of date!
+    */
+    private EnumModuleConnectionDecision generateDecision() {
         Random rand = new Random();
         int index = rand.nextInt(3);
         if (index == 0) return accepted;
