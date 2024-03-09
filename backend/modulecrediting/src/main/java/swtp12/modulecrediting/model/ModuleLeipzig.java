@@ -6,7 +6,12 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonView;
 
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -33,11 +38,11 @@ public class ModuleLeipzig {
 
     @NotBlank
     @JsonView({
+        Views.ApplicationLogin.class,
+        Views.ApplicationStudent.class,
         Views.CoursesWithModules.class, 
         Views.ModulesWithoutCourse.class, 
-        Views.ApplicationStudent.class,
         Views.RelatedModulesConnection.class,
-        Views.ApplicationLogin.class
     })
     @Column(unique = true, nullable = false)
     private String name;
