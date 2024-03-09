@@ -4,13 +4,19 @@ import org.springframework.http.HttpCookie;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Component;
 
+/**
+ * This {@link Component} includes functions to create and delete {@link HttpCookie HttpCookies}.
+ */
 @Component
 public class CookieUtil {
 
     private static final String accessTokenCookieName = "accessToken";
     private static final String refreshTokenCookieName = "refreshToken";
 
-    public HttpCookie createAccessTokenCookie(String token, Long duration) {
+    /**
+     * This function creates {@link HttpCookie AccessTokenCookie} with given {@link String token} and {@link Long duration}.
+     */
+    public static HttpCookie createAccessTokenCookie(String token, Long duration) {
         String encryptedToken = SecurityCipher.encrypt(token);
         duration = duration / 1000;
         return ResponseCookie.from(accessTokenCookieName, encryptedToken)
@@ -22,7 +28,10 @@ public class CookieUtil {
                 .build();
     }
 
-    public HttpCookie createRefreshTokenCookie(String token, Long duration) {
+    /**
+     * This function creates {@link HttpCookie RefreshTokenCookie} with given {@link String token} and {@link Long duration}.
+     */
+    public static HttpCookie createRefreshTokenCookie(String token, Long duration) {
         String encryptedToken = SecurityCipher.encrypt(token);
         duration = duration / 1000;
         return ResponseCookie.from(refreshTokenCookieName, encryptedToken)
@@ -34,6 +43,9 @@ public class CookieUtil {
                 .build();
     }
 
+    /**
+     * This function deletes {@link HttpCookie AccessTokenCookie} by creating a new one with 'maxAge' of 0.
+     */
     public static HttpCookie deleteAccessTokenCookie() {
         return ResponseCookie.from(accessTokenCookieName, null)
                 .maxAge(0)
@@ -44,6 +56,9 @@ public class CookieUtil {
                 .build();
     }
 
+    /**
+     * This function deletes {@link HttpCookie RefreshTokenCookie} by creating a new one with 'maxAge' of 0.
+     */
     public static HttpCookie deleteRefreshTokenCookie() {
         return ResponseCookie.from(refreshTokenCookieName, null)
                 .maxAge(0)
