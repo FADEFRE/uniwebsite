@@ -11,6 +11,12 @@ import jakarta.persistence.Id;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
+/**
+ * Role {@link Entity}. Implements {@link Serializable}.
+ * 
+ * @see GrantedAuthority
+ */
 @Entity
 @NoArgsConstructor
 @Data
@@ -21,7 +27,12 @@ public class Role implements Serializable {
 
     private String roleName;
 
-    
+    /**
+     * Returns {@link GrantedAuthority} of this {@link Role}.
+     * 
+     * @see Role
+     * @see GrantedAuthority
+     */
     public GrantedAuthority grantedAuthority() {
         return new SimpleGrantedAuthority(this.roleName);
     }

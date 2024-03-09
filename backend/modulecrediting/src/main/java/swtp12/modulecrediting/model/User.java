@@ -15,6 +15,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import swtp12.modulecrediting.dto.UserSummary;
 
+/**
+ * User {@link Entity}. Implements {@link Serializable}.
+ * 
+ * @see UserSummary
+ */
 @Entity
 @Data
 @Table(name = "app-user")

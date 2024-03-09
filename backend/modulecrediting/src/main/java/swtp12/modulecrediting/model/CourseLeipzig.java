@@ -89,7 +89,7 @@ public class CourseLeipzig {
     }
 
     /**
-     * Adds the given {@link List} of {@link ModuleLeipzig} to this {@link CourseLeipzig}.
+     * Adds the given {@link List} of {@link ModuleLeipzig ModuleLeipzigs} to this {@link CourseLeipzig}.
      * <p>Also adds this {@link CourseLeipzig} to from every {@link ModuleLeipzig} in the given {@link List}.
      * 
      * @see CourseLeipzig
@@ -115,7 +115,7 @@ public class CourseLeipzig {
     }
 
     /**
-     * Removes the given {@link List} of {@link ModuleLeipzig} from this {@link CourseLeipzig}.
+     * Removes the given {@link List} of {@link ModuleLeipzig ModuleLeipzigs} from this {@link CourseLeipzig}.
      * <p>Also removes this {@link CourseLeipzig} from from every {@link ModuleLeipzig} in the given {@link List}.
      * 
      * @see CourseLeipzig
@@ -128,6 +128,12 @@ public class CourseLeipzig {
         }
     }
 
+    /**
+     * Removes all {@link ModuleLeipzig ModuleLeipzigs} of this {@link CourseLeipzig}.
+     * <p>Also removes {@link CourseLeipzig} of these {@link ModuleLeipzig ModuleLeipzigs}.</p>
+     * @see CourseLeipzig
+     * @see ModuleLeipzig
+     */
     public void removeModulesLeipzig() {
         for (ModuleLeipzig moduleLeipzig : modulesLeipzigCourse) {
             moduleLeipzig.getCoursesLeipzig().remove(this);
