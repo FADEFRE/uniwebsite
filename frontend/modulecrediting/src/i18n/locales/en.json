@@ -32,7 +32,7 @@
         "Information": "Information",
         "ModuleAssignment": "Module Assignment",
         "ModuleDescription": "Module Description: PDF file with the description of the module Automata and Computability",
-        "ModuleName": "modulename 'Automata and Computability'",
+        "ModuleName": "Modulename 'Automata and Computability'",
         "ModulesLeipzig": "Modules of Leipzig University",
         "multipleAssignments": "You can add multiple module assignments for the entire application.",
         "Predictability": "Predictability",
@@ -97,8 +97,8 @@
     },
     "LoginView": {
         "InvalidData": "Invalid login data. Please try again",
-        "LogIn": "LOGIN",
         "login": "Log In",
+        "LogIn": "LOGIN",
         "Password": "Password",
         "PasswordEmpty": "Password cannot be empty",
         "Username": "Username",
@@ -128,10 +128,10 @@
         "ExtCourseEmpty": "Course cannot be empty",
         "ModuleName": "Module Name",
         "NameEmpty": "Module name cannot be empty",
+        "NoName": "which has no name",
         "PointsNum": "Points must be specified as a number",
         "UniEmpty": "University cannot be empty",
-        "University": "University",
-        "NoName": "which has no name"
+        "University": "University"
     },
     "PanelFormalRejectionBlock": {
         "FormalMistake": "Formal Mistake"
@@ -158,6 +158,12 @@
         "officeHours": "Office Hours",
         "Studyoffice": "Study Office",
         "ToStudyOffice": "To the Study Office"
+    },
+    "Status": {
+        "Finished": "FINISHED",
+        "FormalError": "FORMAL ERROR",
+        "InProgress": "IN PROGRESS",
+        "New": "NEW"
     },
     "StatusDetailView": {
         "AddModule": "Add Module Assignment",

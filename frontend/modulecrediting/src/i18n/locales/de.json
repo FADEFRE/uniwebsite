@@ -1,4 +1,10 @@
 {
+    "Status": {
+        "New": "NEU",
+        "InProgress": "IN BEARBEITUNG",
+        "Finished": "ABGESCHLOSSEN",
+        "FormalError": "FORMFEHLER"
+    },
     "App": {
         "LegalDisclosure": "Impressum",
         "Logo": "Logo der Universität Leipzig",
