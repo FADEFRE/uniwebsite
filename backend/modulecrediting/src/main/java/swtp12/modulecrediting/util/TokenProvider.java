@@ -1,4 +1,4 @@
-package swtp12.modulecrediting.service;
+package swtp12.modulecrediting.util;
 
 
 import java.security.Key;

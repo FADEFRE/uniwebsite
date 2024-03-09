@@ -16,9 +16,9 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import swtp12.modulecrediting.service.CustomUserDetailsServiceImpl;
-import swtp12.modulecrediting.service.TokenProvider;
 import swtp12.modulecrediting.util.LogUtil;
 import swtp12.modulecrediting.util.SecurityCipher;
+import swtp12.modulecrediting.util.TokenProvider;
 
 public class TokenAuthenticationFilter extends OncePerRequestFilter{
 

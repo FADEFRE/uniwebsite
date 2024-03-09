@@ -158,7 +158,7 @@ public class ApplicationService {
         }
         return allDecisionsFinalEdited;
     }
-    public boolean containsFormalRejection(Application application) {
+    boolean containsFormalRejection(Application application) {
         boolean containsFormalRejection = false;
         for(ModulesConnection m : application.getModulesConnections()) {
             if(m.getFormalRejection()) containsFormalRejection = true;
@@ -167,7 +167,7 @@ public class ApplicationService {
     }
 
     // helper method for create application
-    public String generateValidApplicationId() {
+    String generateValidApplicationId() {
         String id;
         do {
             StringBuilder sb = new StringBuilder();

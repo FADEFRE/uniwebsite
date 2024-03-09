@@ -15,6 +15,7 @@ import swtp12.modulecrediting.dto.Token;
 import swtp12.modulecrediting.model.User;
 import swtp12.modulecrediting.repository.UserRepository;
 import swtp12.modulecrediting.util.CookieUtil;
+import swtp12.modulecrediting.util.TokenProvider;
 
 @Service
 public class AuthService {
