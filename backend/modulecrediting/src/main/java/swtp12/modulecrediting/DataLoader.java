@@ -50,7 +50,9 @@ public class DataLoader implements CommandLineRunner {
             LogUtil.printLog("");
             LogUtil.printLog("--- Dataloader: Loading testdata ---");
             LogUtil.printLog("");
+
             testDataLoader.run();
+
             LogUtil.printLog("");
             LogUtil.printLog("--- Dataloader: Finished loading testdata ---");
         }
@@ -59,7 +61,9 @@ public class DataLoader implements CommandLineRunner {
     }
 
 
-
+    /**
+     * This function creates all the necessary {@link Role Roles} for this application.
+     */
     private void roleCreation() {
         LogUtil.printLog("");
         LogUtil.printLog("Checking for Roles: ");
@@ -85,6 +89,9 @@ public class DataLoader implements CommandLineRunner {
         }
     }
 
+    /**
+     * This function returns the {@link String names} of all the necessary {@link Role Roles} for this application.
+     */
     private List<String> namesList() {
         List<String> names = new ArrayList<>();
         names.add("ROLE_ADMIN");
@@ -93,6 +100,9 @@ public class DataLoader implements CommandLineRunner {
         return names;
     }
 
+    /**
+     * This function creates the {@link Role Roles} with the {@link String names} in the given {@link List}.
+     */
     private void createGivenRoles(List<String> names) {
         for (String name : names) {
             LogUtil.printLog("  => Creating " + name);
@@ -102,6 +112,10 @@ public class DataLoader implements CommandLineRunner {
     }
 
 
+    /**
+     * This function checks if at least one {@link User} with the {@link Role Role "Admin"} exists and creates one if it doesnt.
+     * <p> Config for the default Admin can be found in the application-*.properties files.
+     */
     private void adminCreation() {
         LogUtil.printLog("");
         LogUtil.printLog("Checking for Admin user: ");
