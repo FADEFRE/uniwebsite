@@ -19,15 +19,5 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(errorMessage.toString());
     }
 
-    // Add other exception handlers if needed for different types of exceptions
-
-    // Example for handling other exceptions
-    /*
-    @ExceptionHandler(OtherException.class)
-    public ResponseEntity<String> handleOtherException(OtherException ex) {
-        // Handle other exceptions and return an appropriate response
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred");
-    }
-    */
 }
 
