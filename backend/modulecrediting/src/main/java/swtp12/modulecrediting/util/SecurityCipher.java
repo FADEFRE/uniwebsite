@@ -11,6 +11,9 @@ import javax.crypto.spec.SecretKeySpec;
 
 import swtp12.modulecrediting.service.AuthService;
 
+/**
+ * This class has functions for encrypting and decrypting Token strings
+ */
 public class SecurityCipher {
     private static final String KEYVALUE = "JPnJqOfaEge";
     private static SecretKeySpec secretKey;
@@ -20,6 +23,10 @@ public class SecurityCipher {
         throw new AssertionError("Static!");
     }
 
+    /**
+     * This function sets the {@link #secretKey} 
+     * @see SecretKeySpec
+     */
     public static void setKey() {
         MessageDigest sha;
         try {
@@ -33,6 +40,9 @@ public class SecurityCipher {
         }
     }
 
+    /**
+     * This function decrypts the given String
+     */
     public static String encrypt(String strToEncrypt) {
         if (strToEncrypt == null) return null;
 
@@ -47,13 +57,15 @@ public class SecurityCipher {
         return null;
     }
 
-
+    /**
+     * This function decrypts the given String
+     */
     public static String decrypt(String strToDecrypt) {
         if (strToDecrypt == null) return null;
 
         /*
          * There seems to be an issue with "setKey()" while decrypting. Therefore I had to 
-         * let the code below run twice, if the decrypt was not succesfull, due to the diffrent
+         * let the code below run multiple times, if the decrypt was not succesfull, due to the diffrent
          * generated key
          * 
          * Somebody more expirenced with this, might find the issue, why sometimes "setKey()"

@@ -5,13 +5,24 @@ import java.time.temporal.ChronoUnit;
 
 import org.springframework.stereotype.Component;
 
+/**
+ * This {@link Component} includes functions to print Logs with System.out.print with a timestamp.
+ */
 @Component
 public class LogUtil {
 
+    /**
+     * This function is the basic printLog function and will just System.out.println the given {@link String} with timestamp.
+     * @param stringToPrint
+     */
     public static void printLog(String stringToPrint) {
         System.out.println(OffsetDateTime.now().truncatedTo(ChronoUnit.MILLIS) + "  " + stringToPrint);
     }
 
+    /**
+     * This function will create a {@link String stringToPrint} with more infomation about which method was called and then calls {@link #printLog( stringToPrint )}.
+     * @param type {@link CourseType} Which method was this Log called on 
+     */
     public static void printCourseLog(CourseType type, String courseName, String optionalName) {
         String typeString = "";
         String logString = "";
@@ -53,6 +64,10 @@ public class LogUtil {
         printLog(log);
     }
 
+    /**
+     * This function will create a {@link String stringToPrint} with more infomation about which method was called and then calls {@link #printLog( stringToPrint )}.
+     * @param type {@link ModuleType} Which method was this Log called on 
+     */
     public static void printModuleLog(ModuleType type, String moduleName, String code, String optionalName, String optionalCode) {
         String typeString = "";
         String logString = "";
@@ -92,6 +107,10 @@ public class LogUtil {
         printLog(log);
     }
 
+    /**
+     * This function will create a {@link String stringToPrint} with more infomation about which method was called and then calls {@link #printLog( stringToPrint )}.
+     * @param type {@link ApplicationType} Which method was this Log called on 
+     */
     public static void printApplicationLog(ApplicationType type, String id) {
         String typeString = "";
         String logString = "";
@@ -120,6 +139,10 @@ public class LogUtil {
         printLog(log);
     }
 
+    /**
+     * This function will create a {@link String stringToPrint} with more infomation about which method was called and then calls {@link #printLog( stringToPrint )}.
+     * @param type {@link UserType} Which method was this Log called on 
+     */
     public static void printUserLog(UserType type, String username, String role, String optionalName, String optionalRole) {
         String typeString = "";
         String logString = "";
@@ -151,6 +174,10 @@ public class LogUtil {
         printLog(log);
     }
 
+    /**
+     * This function will create a {@link String stringToPrint} with more infomation about the error and then calls {@link #printLog( stringToPrint )}.
+     * 
+     */
     public static void printErrorLog(String location, String errorToPrint, Exception ex) {
         String locationString = "";
         String stackTraceString = "";
@@ -174,7 +201,9 @@ public class LogUtil {
     }
 
 
-
+    /**
+     * This helper function will create a {@link String stringToPrint} with more infomation about which code was replace with which newCode for {@link #printModuleLog()}.
+     */
     private static String getLogStringForCode(String code, String newCode) {
         String codeLogString = "";
         if (code == null || code.isBlank()) { 

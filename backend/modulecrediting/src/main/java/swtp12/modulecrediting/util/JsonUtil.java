@@ -10,11 +10,20 @@ import org.springframework.web.multipart.MultipartFile;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * This {@link Component} includes functions to grab a {@link JsonNode} from diffrent sources.
+ */
 @Component
 public class JsonUtil {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
+    /**
+     * This function grabs a {@link JsonNode} with given {@link String name} from given {@link MultipartFile multipartFile}.
+     * 
+     * @see JsonNode
+     * @see MultipartFile
+     */
     public static JsonNode grabJsonNodeFromMultipartFile(MultipartFile multipartFile, String nodeName) {
         JsonNode jsonNode;
         try (InputStream inputStream = multipartFile.getInputStream()) {
@@ -27,6 +36,11 @@ public class JsonUtil {
                 .orElseThrow(() -> new IllegalArgumentException("Invalid JSON Object"));
     }
 
+    /**
+     * This function grabs a {@link JsonNode} with given {@link String name} from given {@link JsonNode currentNode}.
+     * 
+     * @see JsonNode
+     */
     public static JsonNode grabJsonNodeFromJsonNode(JsonNode currentNode, String nodeName) {
         return Optional.ofNullable(currentNode)
         .map(j -> j.get(nodeName))
