@@ -97,11 +97,11 @@ const triggerForward = () => {
             </div>
 
             <div :class="statusStyle" class="info-container status-container">
-                <div v-if="props.status === 'NEU' " class="status-text overview-text">Status: {{ $t('Status.New') || 'Placeholder for Status' }}</div>
-                <div v-else-if="props.status === 'IN BEARBEITUNG'" class="status-text overview-text">Status: {{ $t('Status.InProgress') || 'Placeholder for Status' }}</div>
-                <div v-else-if="props.status === 'ABGESCHLOSSEN'" class="status-text overview-text">Status: {{ $t('Status.Finished') || 'Placeholder for Status' }}</div>
-                <div v-else-if="props.status === 'FORMFEHLER'" class="status-text overview-text">Status: {{ $t('Status.FormalError') || 'Placeholder for Status' }}</div>
-                <div v-else class="status-text overview-text">Status: {{ translateStatus || 'Placeholder for Status' }}</div>
+                <div v-if="props.status === 'NEU' " class="status-text overview-text">Status: {{ $t('Status.New') }}</div>
+                <div v-else-if="props.status === 'IN BEARBEITUNG'" class="status-text overview-text">Status: {{ $t('Status.InProgress') }}</div>
+                <div v-else-if="props.status === 'ABGESCHLOSSEN'" class="status-text overview-text">Status: {{ $t('Status.Finished') }}</div>
+                <div v-else-if="props.status === 'FORMFEHLER'" class="status-text overview-text">Status: {{ $t('Status.FormalError') }}</div>
+                <div v-else class="status-text overview-text">Status: {{ props.status }}</div>
             </div>
         </div>
     </div>
