@@ -53,7 +53,7 @@ const getFormattedId = () => {
       <div class="homepage-container">
         <h2>{{ $t('HomepageView.Application.Heading') }}</h2>
         <p class="text-justify">{{ $t('HomepageView.Application.Text') }}</p>
-        <ButtonLink @click="goToSubmitApplication">{{ $t('HomepageView.SubmitButton') }}</ButtonLink>
+        <ButtonLink @click="goToSubmitApplication">{{ $t('HomepageView.Application.SubmitButton') }}</ButtonLink>
       </div>
 
       <div class="homepage-container">
