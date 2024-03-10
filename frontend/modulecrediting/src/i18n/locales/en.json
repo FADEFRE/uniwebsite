@@ -14,32 +14,53 @@
         "ViewStatus": "View Status"
     },
     "ApplicationInfoBox": {
-        "AriaCreditedFor": "credited as",
-        "AutomataandLanguages": "Automata and Languages",
-        "belongingModules": "Only specifically related modules should be written in a module assignment.",
-        "ChoseModule": "Select one or more module(s) for which you want to have your credits credited.",
-        "ChoseNone": "If you cannot find a suitable module, you also have the option not to select any.",
-        "Comment": "Comment",
-        "Credits": "Points '10', Credit System 'LP'",
-        "CreditSystem": "Specify the credit system (ECTS or other).",
-        "exactModule": "Specify one or more module(s) completed at another university.",
-        "ExModuleAssignment": "Module Assignment: Automata and Computability",
-        "Explanation": "Select the course for which you want to have credits credited. Then enter the details of the credits. You can add as many module assignments as you like.",
-        "FillFields": "The given fields must be filled out for this.",
-        "Foreign": "Credits to be credited",
-        "ForeignModule": "Credits earned at other universities that should be credited as modules of Leipzig University.",
-        "FurtherInformation": "Additional information about this module assignment can be provided here, this is optional.",
-        "Information": "Information",
-        "ModuleAssignment": "Module Assignment",
-        "ModuleDescription": "Module Description: PDF file with the description of the module Automata and Computability",
-        "ModuleName": "Modulename 'Automata and Computability'",
-        "ModulesLeipzig": "Modules of Leipzig University",
-        "multipleAssignments": "You can add multiple module assignments for the entire application.",
-        "Predictability": "Predictability",
-        "ShowExample": "Show Example",
-        "ShowExplanation": "Show Explanation",
-        "UniHalle": "Martin Luther University Halle-Wittenberg",
-        "uploadPDF": "A PDF file with the official description of each module must be uploaded as a module description."
+        "BasicExplanation": "Select the course for which you would like to have credits transferred. Then enter the details of the modules you like to have credited. You can add as many module assignments as you need.",
+        "Explanation": {
+            "ShowExplanation": "Show Explanation",
+            "ModuleAssignment": {
+                "Heading": "Module Assignment",
+                "0": "Modules earned at other universities you like to have credited as modules of Leipzig University.",
+                "1": "Only specifically related modules should be written in a single module assignment.",
+                "2": "You can add multiple module assignments for the entire application."
+            },
+            "ExternalModules": {
+                "Heading": "Modules to be credited",
+                "0": "Enter one or more module(s) completed at another university.",
+                "1": "The given fields must be filled in.",
+                "2": "Enter the credit system (ECTS or other).",
+                "3": "A PDF file with the official description of the individual module must be uploaded as the module description."
+            },
+            "ModulesLeipzig": {
+                "Heading": "Modules of Leipzig University",
+                "0": "Select one or more module(s) for which you would like to have credits transferred.",
+                "1": "If you cannot find a suitable module, you also have the option of not selecting one."
+            },
+            "Comment": {
+                "Heading": "Comment",
+                "0": "Further information on this module assignment can be entered here, this is optional."
+            }
+        },
+        "Example": {
+            "ShowExample": "Show Example",
+            "ModuleAssignment": {
+                "Heading": "Module Assignment",
+                "AriaCreditedFor": "credited as",
+                "0": "external gibt ein issue",
+                "1": "leipzig gibt ein issue"
+            },
+            "ExternalModules": {
+                "Heading": "Modules to be credited",
+                "0": "name gibt ein issue",
+                "1": "uni gibt ein issue",
+                "2": "point u system gibt ein issue",
+                "3": "pdf gibt ein issue"
+            },
+            "ModulesLeipzig": {
+                "Heading": "Modules of Leipzig University",
+                "0": "module gibt ein issue",
+                "1": "module gibt ein issue"
+            }
+        }
     },
     "ApplicationOverview": {
         "Application": "Application",
@@ -62,24 +83,14 @@
         "FileEmpty": "A file must be selected",
         "openPDF": "Open PDF"
     },
-    "HomepageContainer": {
-        "PlaceholderHeading": "Placeholder Heading",
-        "PlaceholderText": "Placeholder Text"
-    },
     "HomepageView": {
         "ApplicationCode": "process Number of the Application to be Accessed",
         "AriaProcessNumberOfApplication": "process Number of the Application to be Accessed",
         "makeApplication": "Submit Application",
-        "makeApplicationExplanation": "Have credits earned at other universities credited for modules at Leipzig University. This is useful, for example, if you are transferring from another university to Leipzig University, returning after a semester abroad, or taking courses concurrently at another university.",
+        "makeApplicationExplanation": "Have credits, you earned at other universities, credited for modules at Leipzig University. This is useful, for example, if you are transferring from another university to Leipzig University, returning after a semester abroad, or taking courses concurrently at another university.",
         "NotExisting": "This process does not exist",
-        "sideInfo": {
-            "applicationProcess": "Application Process",
-            "goToStudy": "Once the application is completed, go to the study office with all relevant documents",
-            "submitApplication": "Submit Application on this Website",
-            "viewStatus": "Track Status using process Number"
-        },
         "viewStatus": "View Status",
-        "viewStatusExplanation": "Here you can view the status of your already submitted application. Enter the 6-digit process number provided to you when you submitted the application. Alternatively, you can also find this process number in the overview of your application as a PDF."
+        "viewStatusExplanation": "Enter the 6-digit process number, provided to you when you submitted the application, to view the status. Alternatively you can find this process number in the overview PDF of your application."
     },
     "IconDate": {
         "AriaCreationDate": "Creation Date",
@@ -150,18 +161,27 @@
         "NoModulesSelected": "No modules of Leipzig University are selected.",
         "SelectableModules": "selectable Modules",
         "SelectCourse": "Select Course"
+    },        
+    "SideInfoApplicationProcess": {
+        "ApplicationProcess": "Application process",
+        "GoToStudy": "Once the application is completed, go to the study office with all relevant documents",
+        "SubmitApplication": "Submit application on this website",
+        "ViewStatus": "Track status using process number"
     },
     "SideInfoStudyOffice": {
-        "ActualOfficeHours": "Tuesday and Thursday: 9:00 am - 11:30 am and 12:30 pm - 4:00 pm",
-        "address": "Address",
-        "contact": "Contact",
-        "fmi": "Faculty of Mathematics and Computer Science",
-        "officeHours": "Office Hours",
-        "Studyoffice": "Study Office",
+        "Address": "Address",
+        "Contact": "Contact",
+        "Email": "Email",
+        "Faculty": "Faculty of Mathematics and Computer Science",
+        "Fax": "Fax",
+        "OfficeHours": "Office Hours",
+        "OfficeHourTimes": "Tuesday and Thursday: 9:00 am - 11:30 am and 12:30 pm - 4:00 pm",
+        "Phone": "Phone",
+        "StudyOffice": "Study Office",
         "ToStudyOffice": "To the Study Office"
     },
     "Status": {
-        "Finished": "FINISHED",
+        "Finished": "COMPLETED",
         "FormalError": "FORMAL ERROR",
         "InProgress": "IN PROGRESS",
         "New": "NEW"
