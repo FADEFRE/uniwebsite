@@ -170,7 +170,7 @@ public class UserService {
      * @throws ResponseStatusException with {@link HttpStatus BAD_REQUEST} if no {@link User Users} are saved in the database.
      * @throws ResponseStatusException with {@link HttpStatus BAD_REQUEST} if the given {@code id} is {@code null}.
      * @throws ResponseStatusException with {@link HttpStatus BAD_REQUEST} if the {@link User} making the request is the same as the one to be deleted.
-     * @throws ResponseStatusException with {@link HttpStatus BAD_REQUEST} if the to be deleted {@link User} is the only {@link Admin}.
+     * @throws ResponseStatusException with {@link HttpStatus BAD_REQUEST} if the to be deleted {@link User} is the only {@link Role Admin}.
      * @throws ResponseStatusException with {@link HttpStatus BAD_REQUEST} if the {@link User} with the given {@code userId} is not in the database.
      * @throws IllegalArgumentException if no {@link User} is logged in.
      * 
