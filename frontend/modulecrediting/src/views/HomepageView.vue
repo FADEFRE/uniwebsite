@@ -46,7 +46,7 @@ const getFormattedId = () => {
 
 <template>
   <div class="main">
-    <h1 class="screen-reader-only">Startseite</h1>
+    <h1 class="screen-reader-only">{{ $t('HomepageView.SRHeading') }}</h1>
 
     <div class="content-container split">
 
