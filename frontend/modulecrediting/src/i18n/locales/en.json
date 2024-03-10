@@ -7,10 +7,10 @@
         "PrivacyPolicy": "Privacy Policy"
     },
     "ApplicationConfirmationView": {
-        "AriaCopyProcessNumber": "Copy process Number",
-        "Confirmation": "Application Confirmation",
+        "AriaCopyProcessNumber": "copy process number",
+        "SRHeading": "Application Confirmation",
         "DownloadApplication": "Download Application",
-        "NoteCode": "Note down the process number. This is necessary to later view the status of your application.",
+        "Text": "Make a note of the process number. This is necessary in order to be able to view the status of your application at a later date.",
         "ViewStatus": "View Status"
     },
     "ApplicationInfoBox": {
@@ -130,9 +130,8 @@
         "ModulesToBeCredited": "Modules to be credited"
     },
     "PanelExternalModulesItem": {
-        "AriaDelete": "",
-        "AriaExtModule": "delete this external module",
-        "AriaNoName": "which has no name",
+        "AriaDelete": "delete external module",
+        "AriaNoName": "without name",
         "ModuleName": "Module Name",
         "ModuleNameEmpty": "Module name cannot be empty",
         "CreditPoints": "Credit Points",
@@ -210,7 +209,7 @@
         "AddModule": "Add Module Assignment",
         "ChooseCourse": "Select Course",
         "CourseEmpty": "A course must be selected",
-        "SRCreateApplication": "Create Application",
+        "SRHeading": "Create Application",
         "Submit": "Submit"
     },
     "TheLanguageSelection": {
