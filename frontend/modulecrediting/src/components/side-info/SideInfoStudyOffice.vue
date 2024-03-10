@@ -4,7 +4,7 @@ import ButtonLink from "@/components/button/ButtonLink.vue";
 </script>
 
 <template>
-  <div class="sideinfo-container">
+  <div class="side-info-container">
     <h2 class="heading h3">{{ $t('SideInfoStudyOffice.Studyoffice') }}</h2>
     <p>{{ $t('SideInfoStudyOffice.fmi') }}</p>
     <div class="main-info-container">
@@ -42,7 +42,7 @@ import ButtonLink from "@/components/button/ButtonLink.vue";
 @use '@/assets/styles/global' as *;
 @use '@/assets/styles/components' as *;
 
-.sideinfo-container {
+.side-info-container {
   @include basicContainer();
   width: 100%;
 }

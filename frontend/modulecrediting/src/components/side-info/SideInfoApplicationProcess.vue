@@ -3,17 +3,17 @@
 </script>
 
 <template>
-  <div class="sideinfo-container">
-    <h2 class="heading h3">{{ $t('HomepageView.sideInfo.applicationProcess') }}</h2>
+  <div class="side-info-container">
+    <h2 class="heading h3">{{ $t('SideInfoApplicationProcess.ApplicationProcess') }}</h2>
     <ul class="points">
       <li>
-        <p>{{ $t('HomepageView.sideInfo.submitApplication') }}</p>
+        <p>{{ $t('SideInfoApplicationProcess.SubmitApplication') }}</p>
       </li>
       <li>
-        <p>{{ $t('HomepageView.sideInfo.viewStatus') }}</p>
+        <p>{{ $t('SideInfoApplicationProcess.ViewStatus') }}</p>
       </li>
       <li>
-        <p>{{ $t('HomepageView.sideInfo.goToStudy') }}</p>
+        <p>{{ $t('SideInfoApplicationProcess.GoToStudy') }}</p>
       </li>
     </ul>
   </div>
@@ -24,7 +24,7 @@
 @use '@/assets/styles/global' as *;
 @use '@/assets/styles/components' as *;
 
-.sideinfo-container {
+.side-info-container {
   @include basicContainer();
   width: 100%;
 }
