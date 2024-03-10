@@ -8,77 +8,77 @@ const showExample = ref(false)
 
 <template>
   <div class="application-info-container">
-    <h2>{{ $t('ApplicationInfoBox.Information') }}</h2>
+    <h2>{{ $t('ApplicationInfoBox.Heading') }}</h2>
     <div class="explanation-collapsed-container">
-      <p class="text-justify">{{ $t('ApplicationInfoBox.Explanation') }}</p>
+      <p class="text-justify">{{ $t('ApplicationInfoBox.BasicExplanation') }}</p>
     </div>
     <Button @click="showInformation = !showInformation" class="info-box-button">
-      {{ $t('ApplicationInfoBox.ShowExplanation') }}
+      {{ $t('ApplicationInfoBox.Explanation.ShowExplanation') }}
       <ArrowIcon :direction="showInformation ? 'up' : 'down'" color="red" />
     </Button>
     <div v-if="showInformation" class="explanation-expanded-container">
       <div class="explanation-item">
-        <h3 class="h4">{{ $t('ApplicationInfoBox.ModuleAssignment') }}</h3>
+        <h3 class="h4">{{ $t('ApplicationInfoBox.Explanation.ModuleAssignment.Heading') }}</h3>
         <ul class="points">
-          <li>{{ $t('ApplicationInfoBox.ForeignModule') }}</li>
-          <li>{{ $t('ApplicationInfoBox.belongingModules') }}</li>
-          <li>{{ $t('ApplicationInfoBox.multipleAssignments') }}</li>
+          <li>{{ $t('ApplicationInfoBox.Explanation.ModuleAssignment.0') }}</li>
+          <li>{{ $t('ApplicationInfoBox.Explanation.ModuleAssignment.1') }}</li>
+          <li>{{ $t('ApplicationInfoBox.Explanation.ModuleAssignment.2') }}</li>
         </ul>
       </div>
       <div class="explanation-item">
-        <h3 class="h4">{{ $t('ApplicationInfoBox.Foreign') }}</h3>
+        <h3 class="h4">{{ $t('ApplicationInfoBox.Explanation.ExternalModules.Heading') }}</h3>
         <ul class="points">
-          <li>{{ $t('ApplicationInfoBox.exactModule') }}</li>
-          <li>{{ $t('ApplicationInfoBox.FillFields') }}</li>
-          <li>{{ $t('ApplicationInfoBox.CreditSystem') }}</li>
-          <li>{{ $t('ApplicationInfoBox.uploadPDF') }}</li>
+          <li>{{ $t('ApplicationInfoBox.Explanation.ExternalModules.0') }}</li>
+          <li>{{ $t('ApplicationInfoBox.Explanation.ExternalModules.1') }}</li>
+          <li>{{ $t('ApplicationInfoBox.Explanation.ExternalModules.2') }}</li>
+          <li>{{ $t('ApplicationInfoBox.Explanation.ExternalModules.3') }}</li>
         </ul>
       </div>
       <div class="explanation-item">
-        <h3 class="h4">{{ $t('ApplicationInfoBox.ModulesLeipzig') }}</h3>
+        <h3 class="h4">{{ $t('ApplicationInfoBox.Explanation.ModulesLeipzig.Heading') }}</h3>
         <ul class="points">
-          <li>{{ $t('ApplicationInfoBox.ChoseModule') }}</li>
-          <li>{{ $t('ApplicationInfoBox.ChoseNone') }}</li>
+          <li>{{ $t('ApplicationInfoBox.Explanation.ModulesLeipzig.0') }}</li>
+          <li>{{ $t('ApplicationInfoBox.Explanation.ModulesLeipzig.1') }}</li>
         </ul>
       </div>
       <div class="explanation-item">
-        <h3 class="h4">{{ $t('ApplicationInfoBox.Comment') }}</h3>
+        <h3 class="h4">{{ $t('ApplicationInfoBox.Explanation.Comment.Heading') }}</h3>
         <ul class="points">
-          <li>{{ $t('ApplicationInfoBox.FurtherInformation') }}</li>
+          <li>{{ $t('ApplicationInfoBox.Explanation.Comment.0') }}</li>
         </ul>
       </div>
     </div>
     <Button @click="showExample = !showExample" class="info-box-button">
-      {{ $t('ApplicationInfoBox.ShowExample') }}
+      {{ $t('ApplicationInfoBox.Example.ShowExample') }}
       <ArrowIcon :direction="showExample ? 'up' : 'down'" color="red" />
     </Button>
     <div v-if="showExample" class="explanation-expanded-container">
       <div class="explanation-item">
         <h3 class="h4">
-          {{ $t('ApplicationInfoBox.ModuleAssignment') }}
+          {{ $t('ApplicationInfoBox.Example.ModuleAssignment.Heading') }}
         </h3>
         <ul class="points">
           <li>
-            "Automaten und Berechenbarkeit
-            <ArrowIcon direction="right" color="red" :aria-label="$t('ApplicationInfoBox.AriaCreditedFor')" />
-            Automaten und Sprachen, Berechenbarkeit"
+            "{{ $t('ApplicationInfoBox.Example.ModuleAssignment.ExternalModules') }}
+            <ArrowIcon direction="right" color="red" :aria-label="$t('ApplicationInfoBox.Example.ModuleAssignment.AriaCreditedFor')" />
+            {{ $t('ApplicationInfoBox.Example.ModuleAssignment.ModulesLeipzig') }}"
           </li>
         </ul>
       </div>
       <div class="explanation-item">
-        <h4>{{ $t('ApplicationInfoBox.Foreign') }}</h4>
+        <h4>{{ $t('ApplicationInfoBox.Example.ExternalModules.Heading') }}</h4>
         <ul class="points">
-          <li>{{ $t('ApplicationInfoBox.ModuleName') }}</li>
-          <li>{{ $t('ApplicationInfoBox.UniHalle') }}</li>
-          <li>{{ $t('ApplicationInfoBox.Credits') }}</li>
-          <li>{{ $t('ApplicationInfoBox.ModuleDescription') }}</li>
+          <li>{{ $t('ApplicationInfoBox.Example.ExternalModules.0') }}</li>
+          <li>{{ $t('ApplicationInfoBox.Example.ExternalModules.1') }}</li>
+          <li>{{ $t('ApplicationInfoBox.Example.ExternalModules.2') }}</li>
+          <li>{{ $t('ApplicationInfoBox.Example.ExternalModules.3') }}</li>
         </ul>
       </div>
       <div class="explanation-item">
-        <h4>{{ $t('ApplicationInfoBox.ModulesLeipzig') }}</h4>
+        <h4>{{ $t('ApplicationInfoBox.Example.ModulesLeipzig.Heading') }}</h4>
         <ul class="points">
-          <li>{{ $t('ApplicationInfoBox.AutomataandLanguages') }}</li>
-          <li>{{ $t('ApplicationInfoBox.Predictability') }}</li>
+          <li>{{ $t('ApplicationInfoBox.Example.ModulesLeipzig.0') }}</li>
+          <li>{{ $t('ApplicationInfoBox.Example.ModulesLeipzig.1') }}</li>
         </ul>
       </div>
     </div>
