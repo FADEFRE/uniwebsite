@@ -24,8 +24,7 @@ const uploadJson = () => {
 
     <div class="screen-split-container">
 
-
-      <div class="info-container">
+      <div class="info-container text-justify">
         <h3>Hinweis zum Datei-Upload</h3>
         <p>
           Durch das Hochladen einer JSON-Konfigurationsdatei werden alle Daten verändert,
@@ -61,7 +60,6 @@ const uploadJson = () => {
           
           <small>Ändert die Konfiguration gemäß der ausgewählten Datei. Bitte Hinweis beachten.</small>
         </div>
-        
 
       </div>
     </div>
@@ -87,6 +85,7 @@ const uploadJson = () => {
 .info-container, .buttons-container {
   @include verticalList(s);
   width: 50%;
+  padding: 10px;
 
   @include breakpoint(m) {
     width: 100%;
