@@ -29,7 +29,7 @@ const attemptLogin = () => {
         <img src="@/assets/Universität_Leipzig_logo.svg" alt="" />
       </div>
       <div class="login-content">
-        <h1 class="login-heading">{{ $t('LoginView.LogIn') }}</h1>
+        <h1 class="login-heading">{{ $t('LoginView.Heading') }}</h1>
 
         <div class="input-container">
           <InputText type="text" :placeholder="$t('LoginView.Username')" v-model="login_username" class="white"
@@ -42,7 +42,7 @@ const attemptLogin = () => {
         </div>
 
         <div class="button-container">
-          <ButtonLink @click="attemptLogin" class="button-login">{{ $t('LoginView.login') }}</ButtonLink>
+          <ButtonLink @click="attemptLogin" class="button-login">{{ $t('LoginView.LoginButton') }}</ButtonLink>
         </div>
         <small v-if="styleInvalid" class="invalid-text">{{ $t('LoginView.InvalidData') }}</small>
       </div>
