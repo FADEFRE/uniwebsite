@@ -140,7 +140,8 @@
         "NoName": "dass keinen Namen hat"
     },
     "PanelFormalRejectionBlock": {
-        "FormalMistake": "Formfehler"
+        "FormalMistake": "Formfehler",
+        "reason": "Begründung"
     },
     "PanelHeader": {
         "AriaCreditedFor": "wird angerechnet für",

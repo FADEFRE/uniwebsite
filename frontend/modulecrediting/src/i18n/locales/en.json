@@ -134,7 +134,8 @@
         "University": "University"
     },
     "PanelFormalRejectionBlock": {
-        "FormalMistake": "Formal error"
+        "FormalMistake": "Formal error",
+        "reason": "Reason"
     },
     "PanelHeader": {
         "AriaCreditedFor": "credited for",
