@@ -4,9 +4,9 @@
 
 <template>
   <div class="application-info-container">
-    <h2>{{ $t('StatusDetailView.FormalMistake') }}</h2>
+    <h2>{{ $t('FormalRejectionInfoBox.Heading') }}</h2>
     <p class="text-justify">
-      {{ $t('StatusDetailView.FormalMistakeExplanation') }}
+      {{ $t('FormalRejectionInfoBox.Text') }}
     </p>
   </div>
 </template>
