@@ -223,6 +223,6 @@
     },
     "TheNavigation": {
         "homepage": "homepage",
-        "login": "login"
+        "login": "internal login"
     }
 }
