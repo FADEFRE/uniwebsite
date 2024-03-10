@@ -82,16 +82,30 @@
     },
     "FileInput": {
         "FileEmpty": "A file must be selected",
-        "openPDF": "Open PDF"
+        "OpenPDF": "Open PDF"
+    },
+    "FinishedInfoBox": {
+        "Heading": "What's Next?",
+        "Text": "A final decision has been made on your application. This is only information about the possibility of recognition. To officially have your credits recognized, you must go to the study office. Please bring all relevant documents that prove the completion of the credits to be recognized. If you have further questions about your application, please contact the study office.",
+        "Explanation": "Symbol explanation"
+    },
+    "FormalRejectionInfoBox": {
+        "Heading": "Formal rejection",
+        "Text": "Your application was rejected due to formal rejections. The module assignments containing formal rejections are marked in red. In the module assignment, you will find an explanation of the specific error at the bottom. Please correct all indicated errors. Then you can resubmit your application."
     },
     "HomepageView": {
-        "ApplicationCode": "process Number of the Application to be Accessed",
-        "AriaProcessNumberOfApplication": "process Number of the Application to be Accessed",
-        "makeApplication": "Submit Application",
-        "makeApplicationExplanation": "Have credits, you earned at other universities, credited for modules at Leipzig University. This is useful, for example, if you are transferring from another university to Leipzig University, returning after a semester abroad, or taking courses concurrently at another university.",
-        "NotExisting": "This process does not exist",
-        "viewStatus": "View Status",
-        "viewStatusExplanation": "Enter the 6-digit process number, provided to you when you submitted the application, to view the status. Alternatively you can find this process number in the overview PDF of your application."
+        "Application": {
+            "Heading": "Submit Application",
+            "Text": "Have credits, you earned at other universities, credited for modules at Leipzig University. This is useful, for example, if you are transferring from another university to Leipzig University, returning after a semester abroad, or taking courses concurrently at another university.",
+            "SubmitButton": "Submit Application"
+        },
+        "Status": {
+            "Heading": "View Status",
+            "Text": "Enter the 6-digit process number, provided to you when you submitted the application, to view the status. Alternatively you can find this process number in the overview PDF of your application.",
+            "AriaProcessNumber": "process number of the application to be Accessed",
+            "NotExisting": "This application does not exist",
+            "ViewButton": "View Status"
+        }
     },
     "IconDate": {
         "AriaCreationDate": "Creation Date",
@@ -99,10 +113,10 @@
         "AriaLastEditedDate": "Last Edited Date"
     },
     "IconModuleStatus": {
-        "accepted": "Credit accepted",
-        "asExamCertificate": "Credit as Admission",
-        "denied": "Credit rejected",
-        "formalRejection": "Formal error"
+        "Accepted": "Crediting accepted",
+        "AsExamCertificate": "Crediting as admission",
+        "Denied": "Crediting denied",
+        "FormalRejection": "Formal rejection"
     },
     "IconTrash": {
         "AriaDelete": "Delete"
@@ -123,7 +137,7 @@
         "Decision": "Decision"
     },
     "PanelDecisionBlock": {
-        "reason": "Reason"
+        "Cause": "Cause"
     },
     "PanelExternalModules": {
         "AddModule": "Add External Module",
@@ -146,8 +160,8 @@
         "SelectModuleDescription": "Select Module Description"
     },
     "PanelFormalRejectionBlock": {
-        "FormalMistake": "Formal error",
-        "reason": "Reason"
+        "FormalRejection": "Formal rejection",
+        "Cause": "Cause"
     },
     "PanelHeader": {
         "AriaCreditedFor": "credited for",
@@ -183,23 +197,15 @@
     },
     "Status": {
         "Finished": "COMPLETED",
-        "FormalError": "FORMAL ERROR",
+        "FormalError": "FORMAL REJECTION",
         "InProgress": "IN PROGRESS",
         "New": "NEW"
     },
     "StatusDetailView": {
+        "SRHeading": "Application Status",
         "AddModule": "Add Module Assignment",
-        "ApplicationStatus": "Application Status",
-        "CreditingAccepted": "Credit accepted",
-        "CreditingAsAdmission": "Credit as Admission",
-        "CreditingRejected": "Credit rejected",
-        "DownloadApplication": "Download Application",
-        "FinalDecisionExplanation": "A final decision has been made on your application. This is only information about the possibility of recognition. To officially have your credits recognized, you must go to the study office. Please bring all relevant documents that prove the completion of the credits to be recognized. If you have further questions about your application, please contact the study office.",
-        "FormalMistake": "Formal error",
-        "FormalMistakeExplanation": "Your application was rejected due to formal errors. The module assignments containing formal errors are marked in red. In the module assignment, you will find an explanation of the specific error at the bottom. Please correct all indicated errors. Then you can resubmit your application.",
-        "legend": "Legend",
         "Renew": "Resubmit",
-        "WhatNext": "What's Next?"
+        "DownloadApplication": "Download Application"
     },
     "StatusPanel": {
         "AriaDeleteModule": "Delete Module Assignment",
