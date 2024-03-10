@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, watch } from "vue";
+import { ref, watch } from "vue";
 import ModuleStatusIcon from "@/assets/icons/ModuleStatusIcon.vue";
 const props = defineProps({
   readonly: {
@@ -57,7 +57,7 @@ defineExpose({
       </div>
     </div>
 
-    <textarea :readonly="readonly" :placeholder="$t('PanelDecisionBlock.reason')" v-model="comment" @change="emit('change')" class="white"></textarea>
+    <textarea :readonly="readonly" :placeholder="$t('PanelDecisionBlock.Cause')" v-model="comment" @change="emit('change')" class="white"></textarea>
   </div>
 </template>
 
@@ -66,14 +66,12 @@ defineExpose({
 @use '@/assets/styles/global' as *;
 @use '@/assets/styles/components' as *;
 
-
 .panel-decision-block {
   display: flex;
   width: 100%;
 
   border: 2px solid $dark-gray;
 }
-
 
 :deep(.p-button) {
   width: 100%;
@@ -85,20 +83,20 @@ defineExpose({
     background-color: $green-hover;
   }
 }
+
 :deep(.p-button:nth-child(2).p-highlight) {
   background-color: $orange;
   &:hover, &:focus {
     background-color: $orange-hover;
   }
-  
 }
+
 :deep(.p-button:last-child.p-highlight) {
   background-color: $red;
   &:hover, &:focus {
     background-color: $red-hover;
   }
 }
-
 
 .readonly-decision-container {
   display: flex;

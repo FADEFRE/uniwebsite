@@ -5,24 +5,24 @@ import ModuleStatusIcon from "@/assets/icons/ModuleStatusIcon.vue";
 
 <template>
   <div class="application-info-container">
-    <h2>{{ $t('StatusDetailView.WhatNext') }}</h2>
+    <h2>{{ $t('FinishedInfoBox.Heading') }}</h2>
     <p class="text-justify">
-      {{ $t('StatusDetailView.FinalDecisionExplanation') }}
+      {{ $t('FinishedInfoBox.Text') }}
     </p>
     <div class="legend-container">
-      <h3 class="h4">{{ $t('StatusDetailView.legend') }}</h3>
+      <h3 class="h4">{{ $t('FinishedInfoBox.Explanation') }}</h3>
       <ul>
         <li class="explanation-list-item">
           <ModuleStatusIcon status-decision="accepted" size="small"/>
-          <p>{{ $t('StatusDetailView.CreditingAccepted') }}</p>
+          <p>{{ $t('IconModuleStatus.Accepted') }}</p>
         </li>
         <li class="explanation-list-item">
           <ModuleStatusIcon status-decision="asExamCertificate" size="small"/>
-          <p>{{ $t('StatusDetailView.CreditingAsAdmission') }}</p>
+          <p>{{ $t('IconModuleStatus.AsExamCertificate') }}</p>
         </li>
         <li class="explanation-list-item">
           <ModuleStatusIcon status-decision="denied" size="small"/>
-          <p>{{ $t('StatusDetailView.CreditingRejected') }}</p>
+          <p>{{ $t('IconModuleStatus.Denied') }}</p>
         </li>
       </ul>
     </div>
