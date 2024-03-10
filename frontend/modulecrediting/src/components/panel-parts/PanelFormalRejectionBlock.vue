@@ -21,9 +21,9 @@ defineExpose({
 <template>
   <div class="panel-formal-rejection-block">
     <div class="formal-rejection-container">
-      <p class="overview-text">{{ $t('PanelFormalRejectionBlock.FormalMistake') }}</p>
+      <p class="overview-text">{{ $t('PanelFormalRejectionBlock.FormalRejection') }}</p>
     </div>
-    <textarea :placeholder="$t('PanelFormalRejectionBlock.reason')" :readonly="readonly" v-model="comment" />
+    <textarea :placeholder="$t('PanelFormalRejectionBlock.Cause')" :readonly="readonly" v-model="comment" />
   </div>
 </template>
 

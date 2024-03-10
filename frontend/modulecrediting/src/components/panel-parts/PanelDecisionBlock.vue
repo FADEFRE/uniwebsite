@@ -57,7 +57,7 @@ defineExpose({
       </div>
     </div>
 
-    <textarea :readonly="readonly" :placeholder="$t('PanelDecisionBlock.reason')" v-model="comment" @change="emit('change')" class="white"></textarea>
+    <textarea :readonly="readonly" :placeholder="$t('PanelDecisionBlock.Cause')" v-model="comment" @change="emit('change')" class="white"></textarea>
   </div>
 </template>
 
