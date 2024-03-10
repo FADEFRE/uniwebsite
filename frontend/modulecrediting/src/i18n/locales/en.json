@@ -1,9 +1,8 @@
 {
     "App": {
+        "MenuOpen": "open menu",
+        "MenuClosed": "close menu",
         "LegalDisclosure": "Legal Disclosure",
-        "Logo": "Leipzig University Logo",
-        "MenuClosed": "Close Menu",
-        "MenuOpen": "Open Menu",
         "PrivacyPolicy": "Privacy Policy"
     },
     "ApplicationConfirmationView": {
@@ -64,20 +63,20 @@
         }
     },
     "ApplicationOverview": {
-        "Application": "Application",
-        "CaseNumber": "process Number"
+        "SRHeading":"Application",
+        "ProcessNumber": "process Number"
     },
     "ApplicationPanel": {
         "AriaDeleteModule": "Delete Module Assignment"
     },
     "ErrorViewIndexjs": {
-        "NoAccesContent": "Permission is missing to display this page.",
-        "NoAccess": "No Access",
-        "ServerUnreachable": "Server Unreachable",
+        "NoAccess": "No access",
+        "NoAccesContent": "You do not have permission to view this page.",
+        "ServerUnreachable": "Server unreachable",
         "ServerUnreachableContent": "The server is currently unreachable. Please try again later.",
-        "SiteNotFound": "Site Not Found",
+        "SiteNotFound": "Site not found",
         "SiteNotFoundContent": "The requested page does not exist.",
-        "SomethingWentWrong": "Something Went Wrong",
+        "SomethingWentWrong": "Something went wrong",
         "SomethingWentWrongContent": "There was an unhandled error. Please try again. If the error persists, please contact the administrators."
     },
     "FileInput": {
@@ -94,15 +93,16 @@
         "Text": "Your application was rejected due to formal rejections. The module assignments containing formal rejections are marked in red. In the module assignment, you will find an explanation of the specific error at the bottom. Please correct all indicated errors. Then you can resubmit your application."
     },
     "HomepageView": {
+        "SRHeading": "Homepage",
         "Application": {
             "Heading": "Submit Application",
             "Text": "Have credits, you earned at other universities, credited for modules at Leipzig University. This is useful, for example, if you are transferring from another university to Leipzig University, returning after a semester abroad, or taking courses concurrently at another university.",
             "SubmitButton": "Submit Application"
         },
-        "Status": {
+        "Status": {            
+            "AriaProcessNumber": "process number of the application to be Accessed",
             "Heading": "View Status",
             "Text": "Enter the 6-digit process number, provided to you when you submitted the application, to view the status. Alternatively you can find this process number in the overview PDF of your application.",
-            "AriaProcessNumber": "process number of the application to be Accessed",
             "NotExisting": "This application does not exist",
             "ViewButton": "View Status"
         }
@@ -122,13 +122,13 @@
         "AriaDelete": "Delete"
     },
     "LoginView": {
-        "InvalidData": "Invalid login data. Please try again",
-        "login": "Log In",
-        "LogIn": "LOGIN",
+        "Heading": "Login",
+        "LoginButton": "Login",
+        "Username": "Username",
+        "UsernameEmpty": "Username cannot be empty",
         "Password": "Password",
         "PasswordEmpty": "Password cannot be empty",
-        "Username": "Username",
-        "UsernameEmpty": "Username cannot be empty"
+        "InvalidData": "Invalid login data. Please try again"
     },
     "PanelComment": {
         "Comment": "Comment"
@@ -156,7 +156,6 @@
         "UniversityEmpty": "University cannot be empty",
         "Course": "Course",
         "CourseEmpty": "Course cannot be empty",
-        "UniEmpty": "University cannot be empty",
         "SelectModuleDescription": "Select Module Description"
     },
     "PanelFormalRejectionBlock": {
@@ -170,12 +169,12 @@
     },
     "PanelInternalModules": {
         "AllSelected": "All modules are selected",
-        "ChooseModule": "Choose Module",
+        "ChooseModule": "Choose module",
         "ModuleNotFound": "Module not found",
         "ModulesUniLeipzig": "Modules of Leipzig University",
         "NoModulesSelected": "No modules of Leipzig University are selected.",
-        "SelectableModules": "selectable Modules",
-        "SelectCourse": "Select Course"
+        "SelectableModules": "Selectable modules",
+        "SelectCourse": "Select course"
     },        
     "SideInfoApplicationProcess": {
         "ApplicationProcess": "Application process",
@@ -196,10 +195,10 @@
         "ToStudyOffice": "To the Study Office"
     },
     "Status": {
-        "Finished": "COMPLETED",
-        "FormalError": "FORMAL REJECTION",
+        "New": "NEW",
         "InProgress": "IN PROGRESS",
-        "New": "NEW"
+        "Finished": "COMPLETED",
+        "FormalError": "FORMAL REJECTION"
     },
     "StatusDetailView": {
         "SRHeading": "Application Status",
@@ -212,15 +211,15 @@
         "NotYetDecided": "No decision has been made yet"
     },
     "SubmitApplicationView": {
+        "SRHeading": "Create Application",
         "AddModule": "Add Module Assignment",
         "ChooseCourse": "Select Course",
         "CourseEmpty": "A course must be selected",
-        "SRHeading": "Create Application",
         "Submit": "Submit"
     },
     "TheLanguageSelection": {
-        "ChooseEnglish": "Language Selection English",
-        "ChooseGerman": "Language Selection German"
+        "AriaChooseEnglish": "Language Selection English",
+        "AriaChooseGerman": "Language Selection German"
     },
     "TheNavigation": {
         "homepage": "homepage",
