@@ -99,7 +99,7 @@ const triggerSubmit = () => {
 
 <template>
   <div v-if="applicationData" class="main">
-    <h1 class="screen-reader-only">{{ $t('StatusDetailView.ApplicationStatus') }}</h1>
+    <h1 class="screen-reader-only">{{ $t('StatusDetailView.SRHeading') }}</h1>
 
     <div class="content-container split">
 

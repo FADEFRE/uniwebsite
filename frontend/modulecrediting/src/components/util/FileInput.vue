@@ -124,7 +124,7 @@ defineExpose({
 <template>
     <div v-if="readonly" class="read-only-container" :class="{ 'invalid': !isValid }">
       <p class="read-only-file-name">{{ props.selectedFile?.name }}</p>
-      <ButtonLink @click="openFile">{{ $t('FileInput.openPDF') }}</ButtonLink>
+      <ButtonLink @click="openFile">{{ $t('FileInput.OpenPDF') }}</ButtonLink>
     </div>
     
     <div v-else
