@@ -74,7 +74,7 @@ const triggerPostApplication = () => {
 
 <template>
   <div class="main">
-    <h1 class="screen-reader-only">{{ $t('SubmitApplicationView.CreateApplication') }}</h1>
+    <h1 class="screen-reader-only">{{ $t('SubmitApplicationView.SRHeading') }}</h1>
 
     <div class="content-container split">
 

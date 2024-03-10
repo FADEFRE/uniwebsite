@@ -113,53 +113,57 @@ defineExpose({
   <div class="external-modules-item">
 
     <div class="item-content">
-    <div class="screen-split">
+      <div class="screen-split">
 
-      <div class="input-container left-side">
-        <InputText :readonly="!allowTextEdit" type="text" :placeholder="$t('PanelExternalModulesItem.ModuleName')" v-model="name"
-          :class="{ 'invalid': !nameValid }" class="gray" />
-        <small v-if="!nameValid" class="invalid-text">{{ $t('PanelExternalModulesItem.NameEmpty') }}</small>
+        <div class="input-container left-side">
+          <InputText :readonly="!allowTextEdit" type="text" :placeholder="$t('PanelExternalModulesItem.ModuleName')" v-model="name"
+                     :class="{ 'invalid': !nameValid }" class="gray" />
+          <small v-if="!nameValid" class="invalid-text">{{ $t('PanelExternalModulesItem.ModuleNameEmpty') }}</small>
+        </div>
+
+        <div class="point-container right-side">
+          <div class="input-container">
+            <InputText :readonly="!allowTextEdit" type="text" :placeholder="$t('PanelExternalModulesItem.CreditPoints')" v-model="points"
+                       @input.prevent="validatePointInput" :class="{ 'invalid': !pointsValid }" class="gray" />
+            <small v-if="!pointsValid" class="invalid-text">{{ $t('PanelExternalModulesItem.CreditPointsEmpty') }}</small>
+          </div>
+
+          <div class="input-container">
+            <InputText :readonly="!allowTextEdit" type="text" :placeholder="$t('PanelExternalModulesItem.CreditSystem')" v-model="pointSystem"
+                       :class="{ 'invalid': !pointSystemValid }" class="gray" />
+            <small v-if="!pointSystemValid" class="invalid-text">{{ $t('PanelExternalModulesItem.CreditSystemEmpty') }}</small>
+          </div>
+        </div>
+
       </div>
 
-      <div class="point-container right-side">
+      <div class="screen-split">
+
         <div class="input-container">
-          <InputText :readonly="!allowTextEdit" type="text" :placeholder="$t('PanelExternalModulesItem.Credits')" v-model="points"
-            @input.prevent="validatePointInput" :class="{ 'invalid': !pointsValid }" class="gray" />
-          <small v-if="!pointsValid" class="invalid-text">{{ $t('PanelExternalModulesItem.PointsNum') }}</small>
+          <InputText :readonly="!allowTextEdit" type="text" :placeholder="$t('PanelExternalModulesItem.University')" v-model="university"
+                     :class="{ 'invalid': !universityValid }" class="gray" />
+          <small v-if="!universityValid" class="invalid-text">{{ $t('PanelExternalModulesItem.UniversityEmpty') }}</small>
         </div>
 
         <div class="input-container">
-          <InputText :readonly="!allowTextEdit" type="text" :placeholder="$t('PanelExternalModulesItem.CreditingSystem')" v-model="pointSystem"
-            :class="{ 'invalid': !pointSystemValid }" class="gray" />
-          <small v-if="!pointSystemValid" class="invalid-text">{{ $t('PanelExternalModulesItem.CredSysEmpty') }}</small>
+          <InputText :readonly="!allowTextEdit" type="text" :placeholder="$t('PanelExternalModulesItem.Course')" v-model="externalCourse"
+                     :class="{ 'invalid': !externalCourseValid }" class="gray" />
+          <small v-if="!externalCourseValid" class="invalid-text">{{ $t('PanelExternalModulesItem.CourseEmpty')}}</small>
         </div>
+
       </div>
 
+      <FileInput :readonly="!allowFileEdit" type="pdf" :selected-file="props.selectedFile" ref="fileInput">
+        {{ $t('PanelExternalModulesItem.SelectModuleDescription') }}
+      </FileInput>
     </div>
 
-    <div class="screen-split">
-
-      <div class="input-container">
-        <InputText :readonly="!allowTextEdit" type="text" :placeholder="$t('PanelExternalModulesItem.University')" v-model="university"
-          :class="{ 'invalid': !universityValid }" class="gray" />
-        <small v-if="!universityValid" class="invalid-text">{{ $t('PanelExternalModulesItem.UniEmpty') }}</small>
-      </div>
-
-      <div class="input-container">
-        <InputText :readonly="!allowTextEdit" type="text" :placeholder="$t('PanelExternalModulesItem.Course')" v-model="externalCourse"
-          :class="{ 'invalid': !externalCourseValid }" class="gray" />
-        <small v-if="!externalCourseValid" class="invalid-text">{{ $t('PanelExternalModulesItem.ExtCourseEmpty')}}</small>
-      </div>
-
-    </div>
-
-    <FileInput :readonly="!allowFileEdit" type="pdf" :selected-file="props.selectedFile" ref="fileInput">
-      {{ $t('PanelExternalModulesItem.ChooseModuleDescription') }}
-    </FileInput>
-  </div>
-
-    <TrashIcon v-if="allowDelete" @click="emit('deleteSelf')" background-size="small"
-      :aria-label="`${$t('PanelExternalModulesItem.AriaExtModule')} ${name || $t('PanelExternalModulesItem.NoName')} ${$t('PanelExternalModulesItem.AriaDelete')}`" /> <!-- TODO: missing translation-->
+    <TrashIcon
+        v-if="allowDelete"
+        background-size="small"
+        @click="emit('deleteSelf')"
+        :aria-label="`${$t('PanelExternalModulesItem.AriaDelete')} ${name || $t('PanelExternalModulesItem.AriaNoName')}`"
+    />
   </div>
 </template>
 

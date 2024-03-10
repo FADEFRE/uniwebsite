@@ -43,7 +43,7 @@ const openPdf = () => {
 
 <template>
   <div class="main centered">
-    <h1 class="screen-reader-only">{{ $t('ApplicationConfirmationView.Confirmation') }}</h1>
+    <h1 class="screen-reader-only">{{ $t('ApplicationConfirmationView.SRHeading') }}</h1>
     <div class="confirmation-container">
       <div class="id-section">
         <div class="id-container">
@@ -53,7 +53,7 @@ const openPdf = () => {
           </div>
         </div>
         <p class="description-text">
-          {{ $t('ApplicationConfirmationView.NoteCode') }}
+          {{ $t('ApplicationConfirmationView.Text') }}
         </p>
       </div>
       <div class="button-container">
