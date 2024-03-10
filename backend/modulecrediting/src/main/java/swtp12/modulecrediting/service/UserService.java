@@ -22,11 +22,13 @@ import swtp12.modulecrediting.repository.UserRepository;
 import swtp12.modulecrediting.util.LogUtil;
 
 /**
- * {@link UserService} is a {@link Service} and provides the 
- * and {@link #getUserProfile() getUserProfile} methods.
+ * This is a {@link Service} for {@link User} and provides 
+ * {@link #getUserProfile() getUserProfile} methods.
  * 
  * @see #getUserProfile()
- * @see <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/stereotype/Service.html"> Springboot @Service </a>
+ * @see #getUserProfileId()
+ * @see #getUserProfileName()
+ * @see <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/stereotype/Service.html">Springboot Service</a>
  */
 @Service
 public class UserService {
@@ -86,6 +88,16 @@ public class UserService {
 
 
 
+    /**
+     * This method gets a {@link List} of {@link UserSummary UserSummaries} of all {@link User Users} saved in the database. 
+     * 
+     * @return {@link UserSummary} of the authenticated {@link User}.
+     * 
+     * @throws ResponseStatusException with {@link HttpStatus NOT_FOUND} if no {@link User Users} are saved in the database.
+     * 
+     * @see User
+     * @see UserSummary
+     */
     public List<UserSummary> getAllUsers() {
         List<User> users = userRepository.findAll();
         List<UserSummary> userSummaries = new ArrayList<>();
@@ -102,7 +114,22 @@ public class UserService {
         return userSummaries;
     }
 
-
+    /**
+     * This method creates a new {@link User}.
+     * 
+     * @return {@code String: Success message}
+     * 
+     * @throws ResponseStatusException with {@link HttpStatus BAD_REQUEST} if any of the needed {@link EditUserDTO} fields are {@code null} or {@code blank}.
+     * @throws ResponseStatusException with {@link HttpStatus BAD_REQUEST} if the given {@code role} does not exist.
+     * @throws ResponseStatusException with {@link HttpStatus BAD_REQUEST} if the given {@code username} or {@code password(Confirm)} include {@code whitespaces}.
+     * @throws ResponseStatusException with {@link HttpStatus BAD_REQUEST} if the given {@code password} and {@code passwordConfirm} are {@code not equal}.
+     * @throws ResponseStatusException with {@link HttpStatus CONFLICT} if a {@link User} with the given username already {@code exists}.
+     * 
+     * @param registerRequest {@link EditUserDTO} with {@code username}, {@code password}, {@code passwordConfirm} and {@code role}
+     * 
+     * @see User
+     * @see EditUserDTO
+     */
     public String register(EditUserDTO registerRequest) {
 
         if (registerRequest.getUsername() == null || registerRequest.getPassword() == null || registerRequest.getPasswordConfirm() == null || registerRequest.getRole() == null)
@@ -135,13 +162,31 @@ public class UserService {
         return "User registered successfully!";
     }
 
-
+    /**
+     * This method deletes a {@link User}.
+     * 
+     * @return {@code String: Success message}
+     * 
+     * @throws ResponseStatusException with {@link HttpStatus BAD_REQUEST} if no {@link User Users} are saved in the database.
+     * @throws ResponseStatusException with {@link HttpStatus BAD_REQUEST} if the given {@code id} is {@code null}.
+     * @throws ResponseStatusException with {@link HttpStatus BAD_REQUEST} if the {@link User} making the request is the same as the one to be deleted.
+     * @throws ResponseStatusException with {@link HttpStatus BAD_REQUEST} if the to be deleted {@link User} is the only {@link Admin}.
+     * @throws ResponseStatusException with {@link HttpStatus BAD_REQUEST} if the {@link User} with the given {@code userId} is not in the database.
+     * @throws IllegalArgumentException if no {@link User} is logged in.
+     * 
+     * @param deleteRequest {@link EditUserDTO} with {@code id}
+     * 
+     * @see User
+     * @see Role
+     * @see EditUserDTO
+     */
     public String deleteUser(EditUserDTO deleteRequest) {
+        if(deleteRequest.getId() == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User id cannot be null");
         User user = identifyUser();
 
         if (deleteRequest.getId() == user.getUserId()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "You can't delete yourself");
         List<User> usersDB = userRepository.findAll();
-        if(usersDB.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "there are no users in the database");
+        if(usersDB.isEmpty()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "there are no users in the database");
         List<User> userAdmin = getAllUserWithRole("ROLE_ADMIN");
         if (userAdmin.size() == 1 && userAdmin.get(0).getUserId() == deleteRequest.getId()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "There has to be at least one admin user");
 
@@ -153,9 +198,25 @@ public class UserService {
         return "User deleted successfully!";
     }
 
-
-
+    /**
+     * This method changes the {@code username} of a {@link User}.
+     * 
+     * @return {@code String: Success message}
+     * 
+     * @throws ResponseStatusException with {@link HttpStatus BAD_REQUEST} if the given {@code id} is {@code null}.
+     * @throws ResponseStatusException with {@link HttpStatus BAD_REQUEST} if the {@link User} making the request is not the same as the one to be changed.
+     * @throws ResponseStatusException with {@link HttpStatus BAD_REQUEST} if the new {@code username} includes {@code whitespaces}, is {@code null} or {@code blank}.
+     * @throws ResponseStatusException with {@link HttpStatus BAD_REQUEST} if the {@link User} with the given {@code userId} is not in the database.
+     * @throws ResponseStatusException with {@link HttpStatus CONFLICT} if a {@link User} with the given username already {@code exists}.
+     * @throws IllegalArgumentException if no {@link User} is logged in.
+     * 
+     * @param changeRequest {@link EditUserDTO} with {@code id} and new {@code username}
+     * 
+     * @see User
+     * @see EditUserDTO
+     */
     public String changeUsername(EditUserDTO changeRequest) {
+        if(changeRequest.getId() == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User id cannot be null");
         if(changeRequest.getUsername() == null || changeRequest.getUsername().isBlank()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username cannot be empty");
         if (changeRequest.getUsername().contains(" ")) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username cannot contain whitespaces"); 
 
@@ -171,8 +232,26 @@ public class UserService {
         return "Username changed successfully";
     }
 
+    /**
+     * This method changes the {@code password} of a {@link User}.
+     * 
+     * @return {@code String: Success message}
+     * 
+     * @throws ResponseStatusException with {@link HttpStatus BAD_REQUEST} if the given {@code id} is {@code null}.
+     * @throws ResponseStatusException with {@link HttpStatus BAD_REQUEST} if the {@link User} making the request is not the same as the one to be changed.
+     * @throws ResponseStatusException with {@link HttpStatus BAD_REQUEST} if the new {@code password} or {@code passwordConfirm} include {@code whitespaces}, is {@code null} or {@code blank}.
+     * @throws ResponseStatusException with {@link HttpStatus BAD_REQUEST} if the {@link User} with the given {@code userId} is not in the database.
+     * @throws ResponseStatusException with {@link HttpStatus BAD_REQUEST} if the given {@code password} and {@code passwordConfirm} are {@code not equal}.
+     * @throws IllegalArgumentException if no {@link User} is logged in.
+     * 
+     * @param changeRequest {@link EditUserDTO} with {@code id} and new {@code password} and {@code passwordConfirm}
+     * 
+     * @see User
+     * @see EditUserDTO
+     */
     public String changePassword(EditUserDTO changeRequest) {
-        if(changeRequest.getPassword() == null || changeRequest.getPassword().isBlank()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Password cannot be empty");
+        if(changeRequest.getId() == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User id cannot be null");
+        if(changeRequest.getPassword() == null || changeRequest.getPassword().isBlank() || changeRequest.getPasswordConfirm() == null || changeRequest.getPasswordConfirm().isBlank()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Password cannot be empty");
         if (changeRequest.getPassword().contains(" ") || changeRequest.getPasswordConfirm().contains(" ")) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Password cannot contain whitespaces");
 
         User user = identifyUser();
@@ -187,6 +266,23 @@ public class UserService {
         return "Password changed successfully";
     }
 
+    /**
+     * This method changes the {@code role} of a {@link User}.
+     * 
+     * @return {@code String: Success message}
+     * 
+     * @throws ResponseStatusException with {@link HttpStatus BAD_REQUEST} if the given {@code id} is {@code null}.
+     * @throws ResponseStatusException with {@link HttpStatus BAD_REQUEST} if the new {@code role} is {@code null} or {@code blank}.
+     * @throws ResponseStatusException with {@link HttpStatus BAD_REQUEST} if the {@link User} making the request is the same as the one to be changed.
+     * @throws ResponseStatusException with {@link HttpStatus BAD_REQUEST} if the given {@link Role} is not in the database.
+     * @throws IllegalArgumentException if no {@link User} is logged in.
+     * 
+     * @param changeRequest {@link EditUserDTO} with {@code id} and new {@code password} and {@code passwordConfirm}
+     * 
+     * @see User
+     * @see Role
+     * @see EditUserDTO
+     */
     public String changeRole(EditUserDTO changeRequest) {
         if(changeRequest.getId() == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User id cannot be null");
         if(changeRequest.getRole() == null || changeRequest.getRole().isBlank()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Role cannot be empty");
@@ -202,7 +298,12 @@ public class UserService {
         return "Role changed successfully";
     }
 
-
+    /**
+     * This method gets the current logged in {@link User}.
+     * @return current logged in {@link User}.
+     * @throws IllegalArgumentException if no {@link User} is logged in.
+     * @see User
+     */
     private User identifyUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = new User();
@@ -218,13 +319,24 @@ public class UserService {
         return user;
     }
 
+    /**
+     * This method gets a {@link User} from the database by {@code id}.
+     * @return {@link User} with given {@code id}.
+     * @throws ResponseStatusException if no {@link User} with the given {@code id} is found.
+     * @see User
+     */
     private User getUser(Long id) {
         Optional<User> userOptional = userRepository.findById(id);
         if (!userOptional.isPresent()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found in database");
         return userOptional.get();
     }
 
-    public List<User> getAllUserWithRole(String roleName) {
+    /**
+     * This method gets all {@link User Users} from the database with the given {@code rolename}.
+     * @return List of {@link User Users} with given {@code rolename}.
+     * @see User
+     */
+    private List<User> getAllUserWithRole(String roleName) {
         List<User> userWithRole = new ArrayList<>();
         List<User> usersDB = userRepository.findAll();
         for (User userDB : usersDB) {
