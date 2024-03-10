@@ -14,7 +14,8 @@
         "ViewStatus": "View Status"
     },
     "ApplicationInfoBox": {
-        "BasicExplanation": "Select the course for which you would like to have credits transferred. Then enter the details of the modules you like to have credited. You can add as many module assignments as you need.",
+        "Heading": "Information",
+        "BasicExplanation": "Select the course of Leipzig University which you would like to have credits transferred. Then enter the details of the modules you like to have credited. You can add as many module assignments as you need.",
         "Explanation": {
             "ShowExplanation": "Show Explanation",
             "ModuleAssignment": {
@@ -45,8 +46,8 @@
             "ModuleAssignment": {
                 "Heading": "Module Assignment",
                 "AriaCreditedFor": "credited as",
-                "0": "external gibt ein issue",
-                "1": "leipzig gibt ein issue"
+                "ExternalModules": "external gibt ein issue",
+                "ModulesLeipzig": "leipzig gibt ein issue"
             },
             "ExternalModules": {
                 "Heading": "Modules to be credited",
@@ -131,18 +132,19 @@
     "PanelExternalModulesItem": {
         "AriaDelete": "",
         "AriaExtModule": "delete this external module",
-        "ChooseModuleDescription": "Choose Module Description",
-        "Course": "Course",
-        "CreditingSystem": "Credit System",
-        "Credits": "Credits",
-        "CredSysEmpty": "Credit system cannot be empty",
-        "ExtCourseEmpty": "Course cannot be empty",
+        "AriaNoName": "which has no name",
         "ModuleName": "Module Name",
-        "NameEmpty": "Module name cannot be empty",
-        "NoName": "which has no name",
-        "PointsNum": "Points must be specified as a number",
+        "ModuleNameEmpty": "Module name cannot be empty",
+        "CreditPoints": "Credit Points",
+        "CreditPointsEmpty": "Points must be specified as a number",
+        "CreditSystem": "Credit System",
+        "CreditSystemEmpty": "Credit system cannot be empty",
+        "University": "University",
+        "UniversityEmpty": "University cannot be empty",
+        "Course": "Course",
+        "CourseEmpty": "Course cannot be empty",
         "UniEmpty": "University cannot be empty",
-        "University": "University"
+        "SelectModuleDescription": "Select Module Description"
     },
     "PanelFormalRejectionBlock": {
         "FormalMistake": "Formal error",
@@ -206,10 +208,10 @@
     },
     "SubmitApplicationView": {
         "AddModule": "Add Module Assignment",
-        "ChooseCourse": "Choose Course",
+        "ChooseCourse": "Select Course",
         "CourseEmpty": "A course must be selected",
-        "CreateApplication": "Create Application",
-        "submit": "Submit"
+        "SRCreateApplication": "Create Application",
+        "Submit": "Submit"
     },
     "TheLanguageSelection": {
         "ChooseEnglish": "Language Selection English",
