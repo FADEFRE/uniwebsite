@@ -1,24 +1,24 @@
 <script setup>
-const props = defineProps(['header', 'text'])
+const props = defineProps({
+  header: {
+    required: true,
+    type: String,
+  },
+  text: {
+    required: true,
+    type: String
+  }
+})
 </script>
 
 <template>
-    <div class="homepage-container">
-        <div>
-            <h2 v-if="header">{{ header }}</h2>
-            <h2 v-else>{{ $t('HomepageContainer.PlaceholderHeading') }}</h2>
-        </div>
-        <div v-if="text">
-            <p class="text-justify">{{ text }}</p>
-        </div>
-        <div v-else>
-            <p>{{ $t('HomepageContainer.PlaceholderText') }}</p>
-        </div>
-        <div class="input-button-with-invalid-container">
-            <slot></slot>
-        </div>
-
+  <div class="homepage-container">
+    <h2>{{ header }}</h2>
+    <p class="text-justify">{{ text }}</p>
+    <div class="input-button-with-invalid-container">
+      <slot></slot>
     </div>
+  </div>
 </template>
 
 
@@ -29,42 +29,42 @@ const props = defineProps(['header', 'text'])
 
 
 .homepage-container {
-    @include basicContainer();
-    @include verticalListItem($white);
-    @include verticalList(l);
+  @include basicContainer();
+  @include verticalListItem($white);
+  @include verticalList(l);
 }
 
 .input-button-with-invalid-container {
-    display: flex;
-    flex-direction: column;
-    gap: spacing(xs);
+  display: flex;
+  flex-direction: column;
+  gap: spacing(xs);
 
-    @include breakpoint(xs) {
-        width: 100%;
-    }
+  @include breakpoint(xs) {
+    width: 100%;
+  }
 }
 
 :slotted(.input-button-container) {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    @include breakpoint(xs) {
-        flex-direction: column;
-    }
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  @include breakpoint(xs) {
+    flex-direction: column;
+  }
 }
 
 :deep(.p-inputtext) {
-    width: 100%;
-    max-width: 250px;
+  width: 100%;
+  max-width: 250px;
 
-    @include breakpoint(xs) {
-        max-width: 100%;
-    }
+  @include breakpoint(xs) {
+    max-width: 100%;
+  }
 
-    text-align: center;
-    font-family: 'Jost';
-    font-weight: 500;
-    letter-spacing: 0.3rem;
+  text-align: center;
+  font-family: 'Jost';
+  font-weight: 500;
+  letter-spacing: 0.3rem;
 }
 </style>
 

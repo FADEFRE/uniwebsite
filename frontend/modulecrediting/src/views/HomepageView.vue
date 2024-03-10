@@ -59,15 +59,17 @@ const getFormattedId = () => {
       <div class="homepage-container">
         <h2>{{ $t('HomepageView.viewStatus') }}</h2>
         <p class="text-justify">{{ $t('HomepageView.viewStatusExplanation') }}</p>
-        <div class="input-button-container">
-          <InputText
-              v-model="id" placeholder="0-0-0-0-0-0" :aria-label="$t('HomepageView.AriaProcessNumberOfApplication')"
-              :class="{ 'invalid': isInvalid }" class="status-input gray"
-              @keydown.enter.prevent="openDetailView" @input.prevent="validateInput"
-          />
-          <ButtonLink @click="openDetailView">{{ $t('HomepageView.viewStatus') }}</ButtonLink>
+        <div>
+          <div class="input-button-container">
+            <InputText
+                v-model="id" placeholder="0-0-0-0-0-0" :aria-label="$t('HomepageView.AriaProcessNumberOfApplication')"
+                :class="{ 'invalid': isInvalid }" class="status-input gray"
+                @keydown.enter.prevent="openDetailView" @input.prevent="validateInput"
+            />
+            <ButtonLink @click="openDetailView">{{ $t('HomepageView.viewStatus') }}</ButtonLink>
+          </div>
+          <small v-if="isInvalid" class="invalid-text">{{ $t('HomepageView.NotExisting') }}</small>
         </div>
-        <small v-if="isInvalid" class="invalid-text">{{ $t('HomepageView.NotExisting') }}</small>
       </div>
 
     </div>
