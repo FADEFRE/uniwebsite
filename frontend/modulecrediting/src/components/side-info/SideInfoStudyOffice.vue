@@ -1,15 +1,14 @@
 <script setup>
-
 import ButtonLink from "@/components/button/ButtonLink.vue";
 </script>
 
 <template>
   <div class="side-info-container">
-    <h2 class="heading h3">{{ $t('SideInfoStudyOffice.Studyoffice') }}</h2>
-    <p>{{ $t('SideInfoStudyOffice.fmi') }}</p>
+    <h2 class="heading h3">{{ $t('SideInfoStudyOffice.StudyOffice') }}</h2>
+    <p>{{ $t('SideInfoStudyOffice.Faculty') }}</p>
     <div class="main-info-container">
       <div class="info-group-container">
-        <h3 class="h4">{{ $t('SideInfoStudyOffice.address') }}</h3>
+        <h3 class="h4">{{ $t('SideInfoStudyOffice.Address') }}</h3>
         <ul class="points">
           <li>Neues Augusteum</li>
           <li>Augustusplatz 10</li>
@@ -17,16 +16,16 @@ import ButtonLink from "@/components/button/ButtonLink.vue";
         </ul>
       </div>
       <div class="info-group-container">
-        <h3 class="h4">{{ $t('SideInfoStudyOffice.contact') }}</h3>
+        <h3 class="h4">{{ $t('SideInfoStudyOffice.Contact') }}</h3>
         <ul class="points">
-          <li>Telefon: +49 341 97-32165</li>
-          <li>Telefax: +49 341 97-32193</li>
-          <li>E-Mail: studienbuero@math.uni-leipzig.de</li>
+          <li>{{ $t('SideInfoStudyOffice.Phone') }}: +49 341 97-32165</li>
+          <li>{{ $t('SideInfoStudyOffice.Fax') }}: +49 341 97-32193</li>
+          <li>{{ $t('SideInfoStudyOffice.Email') }}: studienbuero@math.uni-leipzig.de</li>
         </ul>
       </div>
       <div class="info-group-container">
-        <h3 class="h4">{{ $t('SideInfoStudyOffice.officeHours') }}</h3>
-        <p>{{ $t('SideInfoStudyOffice.ActualOfficeHours') }}</p>
+        <h3 class="h4">{{ $t('SideInfoStudyOffice.OfficeHours') }}</h3>
+        <p>{{ $t('SideInfoStudyOffice.OfficeHourTimes') }}</p>
       </div>
       <a href="https://www.mathcs.uni-leipzig.de/studium/studienbuero" target="_blank" >
         <ButtonLink>
