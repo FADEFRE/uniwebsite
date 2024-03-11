@@ -3,7 +3,7 @@ shows status of an application
 -->
 
 <script setup>
-import { useRoute, useRouter } from 'vue-router';
+import { useRoute } from 'vue-router';
 import { ref, onBeforeMount, computed } from "vue";
 import ApplicationOverview from "@/components/abstract/ApplicationOverview.vue";
 import StatusPanel from "@/components/panel/StatusPanel.vue";
@@ -27,7 +27,6 @@ const summaryDocumentLink = `${url}/file/pdf-documents/application/${id}`
 
 const applicationData = ref()
 const moduleOptions = ref([])
-const router = useRouter();
 
 
 onBeforeMount(() => {
