@@ -20,7 +20,7 @@ import { url } from "@/config/url-config"
 import { parseRequestDate } from "@/utils/date-utils";
 import { getModulesByCourse } from "@/requests/module-course-requests";
 import { getApplicationByIdForStatus, putApplicationStudent } from "@/requests/application-requests";
-import i18n from '@/i18n'
+import i18n from '@/i18n';
 
 const id = useRoute().params.id
 const summaryDocumentLink = `${url}/file/pdf-documents/application/${id}`

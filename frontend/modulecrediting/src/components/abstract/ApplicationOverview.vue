@@ -4,6 +4,7 @@
 import { computed } from 'vue';
 import router from "@/router";
 import DateIcon from '@/assets/icons/DateIcon.vue';
+import i18n from '@/i18n';
 
 const props = defineProps({
     creationDate: {
@@ -45,6 +46,15 @@ const statusStyle = computed(() => {
     if (props.adminSelectionView) style += " admin-selection-view"
 
     return style;
+})
+
+const statusTranslate = computed(() => {
+    let translation = props.status;
+    if (props.status === "NEU") translation = i18n.global.t('Status.New');
+    if (props.status === "IN BEARBEITUNG") translation = i18n.global.t('Status.InProgress');
+    if (props.status === "ABGESCHLOSSEN") translation = i18n.global.t('Status.Finished');
+    if (props.status === "FORMFEHLER") translation = i18n.global.t('Status.FormalError');
+    return translation;
 })
 
 const triggerForward = () => {
@@ -97,11 +107,7 @@ const triggerForward = () => {
             </div>
 
             <div :class="statusStyle" class="info-container status-container">
-                <div v-if="props.status === 'NEU' " class="status-text overview-text">Status: {{ $t('Status.New') }}</div>
-                <div v-else-if="props.status === 'IN BEARBEITUNG'" class="status-text overview-text">Status: {{ $t('Status.InProgress') }}</div>
-                <div v-else-if="props.status === 'ABGESCHLOSSEN'" class="status-text overview-text">Status: {{ $t('Status.Finished') }}</div>
-                <div v-else-if="props.status === 'FORMFEHLER'" class="status-text overview-text">Status: {{ $t('Status.FormalError') }}</div>
-                <div v-else class="status-text overview-text">Status: {{ props.status }}</div>
+                <div class="status-text overview-text">Status: {{ statusTranslate }}</div>
             </div>
         </div>
     </div>
