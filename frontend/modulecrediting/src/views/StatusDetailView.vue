@@ -20,6 +20,7 @@ import { url } from "@/config/url-config"
 import { parseRequestDate } from "@/utils/date-utils";
 import { getModulesByCourse } from "@/requests/module-course-requests";
 import { getApplicationByIdForStatus, putApplicationStudent } from "@/requests/application-requests";
+import i18n from '@/i18n'
 
 const id = useRoute().params.id
 const summaryDocumentLink = `${url}/file/pdf-documents/application/${id}`
@@ -89,7 +90,8 @@ const checkValidity = () => {
 
 const triggerSubmit = () => {
   if (checkValidity()) {
-    if (confirm('Haben Sie alle Formfehler korrigiert?\n\nNach dem erneuten Einreichen können Sie den Antrag nicht weiter bearbeiten.')) {
+    let popup = i18n.global.t('StatusDetailView.Popup.Heading') + "\n\n" + i18n.global.t('StatusDetailView.Popup.Text')
+    if (confirm(popup)) {
       putApplicationStudent(applicationData.value['id'], applicationData.value['courseLeipzig']['name'], moduleConnections.value)
           .then(_ => location.reload())
     }

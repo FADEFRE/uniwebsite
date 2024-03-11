@@ -204,7 +204,11 @@
         "SRHeading": "Status des Antrags",
         "AddModule": "Modulzuweisung hinzufügen",
         "Renew": "Neu einreichen",
-        "DownloadApplication": "Antrag herunterladen"
+        "DownloadApplication": "Antrag herunterladen",
+        "Popup": {
+            "Heading":"Haben Sie alle Formfehler korrigiert?",
+            "Text": "Nach dem erneuten Einreichen können Sie den Antrag nicht weiter bearbeiten."
+        }
     },
     "StatusPanel": {
         "AriaDeleteModule": "Modulzuweisung löschen",
