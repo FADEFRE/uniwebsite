@@ -204,7 +204,11 @@
         "SRHeading": "Application Status",
         "AddModule": "Add Module Assignment",
         "Renew": "Resubmit",
-        "DownloadApplication": "Download Application"
+        "DownloadApplication": "Download Application",
+        "Popup": {
+            "Heading":"Have you corrected all formal errors?",
+            "Text": "After resubmitting the application, you will no longer be able to edit it."
+        }
     },
     "StatusPanel": {
         "AriaDeleteModule": "Delete Module Assignment",
