@@ -98,7 +98,7 @@ const triggerPostApplication = () => {
 
       <div class="application-buttons-container">
         <ButtonAdd @click="addModuleConnection">{{ $t('SubmitApplicationView.AddModule') }}</ButtonAdd>
-        <ButtonLink @click="triggerPostApplication" :redButton="true">{{ $t('SubmitApplicationView.submit') }}</ButtonLink>
+        <ButtonLink @click="triggerPostApplication" :redButton="true">{{ $t('SubmitApplicationView.Submit') }}</ButtonLink>
       </div>
     </div>
 
