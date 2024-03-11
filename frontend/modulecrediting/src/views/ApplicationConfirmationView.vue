@@ -109,7 +109,7 @@ const openPdf = () => {
   right: 0;
   padding: spacing(s);
 
-  &:focus {
+  &:focus-visible {
     outline: 2.5px solid $dark-gray-hover;
   }
 }
