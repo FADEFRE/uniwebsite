@@ -81,8 +81,7 @@ public class UserController {
 
     /**
      * Get {@link GetMapping /api/user/role} 
-     * <p> User needs to be logged in
-     * <p> Returns {@link Role} name of the currently logged in {@link User}
+     * <p> Returns {@link Role} name of the currently logged in {@link User} or {@code User} if current user is not logged in
      * 
      * @return Role name
      * @see GetMapping
@@ -91,18 +90,14 @@ public class UserController {
      * @see User
      */
     @GetMapping("/role")
-    @PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR') or hasRole('ROLE_ADMIN')")
     public ResponseEntity<String> getRole() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String name = auth.getName();
-        Optional<User> userCandidate = userRepository.findByUsername(name);
+        Optional<User> userCandidate = userRepository.findByUsername(auth.getName());
         if (userCandidate.isPresent()) {
-            User user = userCandidate.get();
-            Role role = user.getRole();
-            String roleName = role.getRoleName();
+            String roleName = userCandidate.get().getRole().getRoleName();
             return new ResponseEntity<>(roleName, HttpStatus.OK); 
         }
-        return new ResponseEntity<>("User doesnt exists!", HttpStatus.NOT_FOUND); 
+        return new ResponseEntity<>("User", HttpStatus.OK); 
     }
 
 
