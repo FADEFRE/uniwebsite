@@ -30,7 +30,7 @@ setInterval(runInterval, intervalMilliSeconds)
     
     <header class="header-background">
       <div class="header-container">
-        <a tabindex="-1" href="/" class="logo-container">
+        <a tabindex="-1" href="/" class="logo-container" aria-hidden="true">
           <img tabindex="-1" class="logo" src="@/assets/Universität_Leipzig_logo.svg" alt="" />
         </a>
         
