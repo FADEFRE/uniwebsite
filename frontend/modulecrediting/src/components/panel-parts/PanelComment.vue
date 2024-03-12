@@ -35,9 +35,9 @@ defineExpose({
 
 <template>
   <div class="panel-container">
-    <h4>{{ $t('PanelComment.Comment') }}</h4>
+    <h4 id="commentHeading">{{ $t('PanelComment.Comment') }}</h4>
     <div class="textarea-container">
-      <textarea :readonly="readonly" rows="3" v-model="comment" class="white" />
+      <textarea :readonly="readonly" rows="3" v-model="comment" class="white" aria-labelledby="commentHeading" />
     </div>
 
   </div>
