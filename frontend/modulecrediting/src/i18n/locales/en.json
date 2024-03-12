@@ -51,9 +51,10 @@
             "ExternalModules": {
                 "Heading": "Modules to be credited",
                 "0": "name gibt ein issue",
-                "1": "uni gibt ein issue",
-                "2": "point u system gibt ein issue",
-                "3": "pdf gibt ein issue"
+                "1": "point u system gibt ein issue",
+                "2": "uni gibt ein issue",
+                "3": "studiengang gibt ein issue",
+                "4": "pdf gibt ein issue"
             },
             "ModulesLeipzig": {
                 "Heading": "Modules of Leipzig University",
