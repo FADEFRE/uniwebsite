@@ -16,7 +16,7 @@ public class ExternalModuleDTO {
     private String name;
     private String externalCourse;
     private String university;
-    private Integer points;
+    private String points;
     private String pointSystem;
     private MultipartFile description;
 }

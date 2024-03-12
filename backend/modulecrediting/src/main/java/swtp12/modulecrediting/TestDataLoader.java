@@ -359,7 +359,7 @@ public class TestDataLoader {
         externalModuleDTO.setName(getRandValueOfNode(moduleSettingNode, "name", rdm));
         externalModuleDTO.setExternalCourse(getRandValueOfNode(moduleSettingNode, "externalCourse", rdm));
         externalModuleDTO.setUniversity(getRandValueOfNode(moduleSettingNode, "uni", rdm));
-        externalModuleDTO.setPoints(Integer.parseInt(getRandValueOfNode(moduleSettingNode, "points", rdm)));
+        externalModuleDTO.setPoints(getRandValueOfNode(moduleSettingNode, "points", rdm));
         externalModuleDTO.setPointSystem(getRandValueOfNode(moduleSettingNode, "pointSystem", rdm));
 
         MultipartFile pdfMultipartFile = new MockMultipartFile("dummy", "dummy.pdf", "application/pdf", "pdf_data_mock".getBytes());

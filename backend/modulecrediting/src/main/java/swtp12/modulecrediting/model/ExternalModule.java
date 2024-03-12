@@ -41,7 +41,7 @@ public class ExternalModule {
     private String name;
     @JsonView({Views.ApplicationStudent.class,Views.ApplicationLogin.class})
     @NotNull(message = "points must not be null")
-    private Integer points;
+    private String points;
     @JsonView({Views.ApplicationStudent.class,Views.ApplicationLogin.class})
     @NotNull(message = "point system must not be null")
     private String pointSystem;
