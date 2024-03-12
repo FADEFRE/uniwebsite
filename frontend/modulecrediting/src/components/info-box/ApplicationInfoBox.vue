@@ -60,7 +60,9 @@ const showExample = ref(false)
         <ul class="points">
           <li>
             "{{ $t('ApplicationInfoBox.Example.ModuleAssignment.ExternalModules') }}
-            <ArrowIcon direction="right" color="red" :aria-label="$t('ApplicationInfoBox.Example.ModuleAssignment.AriaCreditedFor')" />
+            <span :aria-label="$t('ApplicationInfoBox.Example.ModuleAssignment.AriaCreditedFor')">
+              <ArrowIcon direction="right" color="red" />
+            </span>
             {{ $t('ApplicationInfoBox.Example.ModuleAssignment.ModulesLeipzig') }}"
           </li>
         </ul>
