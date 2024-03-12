@@ -22,12 +22,17 @@ import swtp12.modulecrediting.repository.UserRepository;
 import swtp12.modulecrediting.util.LogUtil;
 
 /**
- * This is a {@link Service} for {@link User} and provides 
- * {@link #getUserProfile() getUserProfile} methods.
+ * This is a {@code Service} for {@link User}
  * 
  * @see #getUserProfile()
  * @see #getUserProfileId()
  * @see #getUserProfileName()
+ * @see #getAllUsers()
+ * @see #register()
+ * @see #deleteUser()
+ * @see #changeUsername()
+ * @see #changePassword()
+ * @see #changeRole()
  * @see <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/stereotype/Service.html">Springboot Service</a>
  */
 @Service

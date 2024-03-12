@@ -90,7 +90,7 @@ void testCreateExternalModules() {
     pdfDocument.setId(1L); 
     pdfDocument.setName("Beispiel-PDF-Name"); 
     pdfDocument.setPdfData(new byte[]{0x01, 0x02, 0x03}); 
-    when(pdfDocumentService.createOrGetPdfDocument(any(MultipartFile.class), anyLong())).thenReturn(pdfDocument);
+    when(pdfDocumentService.getOrCreatePdfDocument(any(MultipartFile.class), anyLong())).thenReturn(pdfDocument);
 
     when(externalModuleRepository.save(any(ExternalModule.class))).thenReturn(new ExternalModule());
 

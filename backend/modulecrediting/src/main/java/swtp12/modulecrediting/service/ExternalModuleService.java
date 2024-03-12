@@ -59,7 +59,7 @@ public class ExternalModuleService {
                     .getPdfDocument()
                     .getId();
             }
-            PdfDocument pdfDocument = pdfDocumentService.createOrGetPdfDocument(externalModuleDTO.getDescription(), pdfId);
+            PdfDocument pdfDocument = pdfDocumentService.getOrCreatePdfDocument(externalModuleDTO.getDescription(), pdfId);
             externalModule.setPdfDocument(pdfDocument);
 
             externalModules.add(externalModule);
