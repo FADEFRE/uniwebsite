@@ -4,8 +4,6 @@ import static swtp12.modulecrediting.model.EnumModuleConnectionDecision.unedited
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-
 import org.apache.commons.text.similarity.LevenshteinDistance;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
@@ -21,6 +19,20 @@ import swtp12.modulecrediting.model.ModuleLeipzig;
 import swtp12.modulecrediting.model.ModulesConnection;
 import swtp12.modulecrediting.repository.ModulesConnectionRepository;
 
+/**
+ * This is a {@code Service} for {@link ModulesConnection}
+ * @author Frederik Kluge
+ * @author Luca Kippe
+ * @see #getAllModulesConnections
+ * @see #getModulesConnectionById
+ * @see #getOriginalModulesConnections
+ * @see #getOriginalModulesConnectionsWithFormalRejectionData
+ * @see #getRelatedModulesConnections
+ * @see #createModulesConnectionsWithDuplicate
+ * @see #updateModulesConnection
+ * @see #deleteOriginalModulesConnections
+ * @see <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/stereotype/Service.html">Springboot Service</a>
+ */
 @Service
 public class ModulesConnectionService {
     ModulesConnectionRepository modulesConnectionRepository;
@@ -33,128 +45,65 @@ public class ModulesConnectionService {
         this.moduleLeipzigService = moduleLeipzigService;
     }
 
+    /**
+     * This method finds all {@link ModulesConnection} in the database
+     * @return {@code List} of {@link ModulesConnection ModulesConnections}
+     * @see ModulesConnection
+     */
     public List<ModulesConnection> getAllModulesConnections() {
         return modulesConnectionRepository.findAll();
     }
 
+    /**
+     * This method gets the {@link ModulesConnection} with the given {@code id}
+     * @param id of a {@link ModulesConnection} 
+     * @throws ResponseStatusException with {@code HttpStatus.NOT_FOUND: 404} if the {@link ModulesConnection} could not be found
+     * @return {@link ModulesConnection} with the given {@code id}
+     * @see ModulesConnection
+     * @see <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/http/HttpStatus.html">Spring HttpStatus</a>
+     * @see <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/server/ResponseStatusException.html">Spring ResponseStatusException</a>
+     */
     public ModulesConnection getModulesConnectionById(Long id) {
-        Optional<ModulesConnection> modulesConnection = modulesConnectionRepository.findById(id);
-        if(modulesConnection.isPresent()) return modulesConnection.get();
-
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "ModulesConnection with id " + id + " not found");
+        return modulesConnectionRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "ModulesConnection with id " + id + " not found"));
     }
 
-    public List<ModulesConnection> createModulesConnectionsWithDuplicate(List<ModulesConnectionDTO> modulesConnectionsDTO) {
-        if(modulesConnectionsDTO == null || modulesConnectionsDTO.size() == 0)
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, " No Modules Connections provided in the request");
-
-        List<ModulesConnection> modulesConnections = new ArrayList<>();
-
-        for(ModulesConnectionDTO modulesConnectionDTO : modulesConnectionsDTO) {
-            ModulesConnection modulesConnection = createModulesConnection(modulesConnectionDTO);
-            ModulesConnection modulesConnectionOriginal = createModulesConnection(modulesConnectionDTO);
-            modulesConnectionOriginal.setIsOriginalModulesConnection(true);
-
-            modulesConnection.setModulesConnectionOriginal(modulesConnectionOriginal);
-
-            modulesConnections.add(modulesConnection);
-        }
-        return modulesConnections;
-    }
-
-    public void updateModulesConnection(List<ModulesConnectionDTO> modulesConnectionsDTO, String userRole) {
-        if(modulesConnectionsDTO == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Modules Connections must not be null");
-
-        for(ModulesConnectionDTO mcuDTO : modulesConnectionsDTO) {
-            if(mcuDTO.getId() == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Modules Connection id must not be null");
-
-            ModulesConnection modulesConnection = getModulesConnectionById(mcuDTO.getId());
-
-            // handle study office decision
-            if(userRole.equals("study-office")) {
-                if (mcuDTO.getCommentStudyOffice() != null)
-                    modulesConnection.setCommentStudyOffice(mcuDTO.getCommentStudyOffice());
-
-                if (mcuDTO.getDecisionSuggestion() != null)
-                    modulesConnection.setDecisionSuggestion(mcuDTO.getDecisionSuggestion());
-
-                // allow only study-office to reject as formal rejection
-                if(mcuDTO.getFormalRejection() != null)
-                    modulesConnection.setFormalRejection(mcuDTO.getFormalRejection());
-
-                if(mcuDTO.getFormalRejectionComment() != null)
-                    modulesConnection.setFormalRejectionComment(mcuDTO.getFormalRejectionComment());
-            }
-
-            // handle chairman decision
-            if(userRole.equals("chairman")) {
-                if (mcuDTO.getCommentDecision() != null)
-                    modulesConnection.setCommentDecision(mcuDTO.getCommentDecision());
-
-                if (mcuDTO.getDecisionFinal() != null)
-                    modulesConnection.setDecisionFinal(mcuDTO.getDecisionFinal());
-            }
-
-            // handle module applications changes
-            if(mcuDTO.getExternalModules() == null)  throw new ResponseStatusException(HttpStatus.CONFLICT, "You cant delete all External Modules of a Modules Connection " + mcuDTO.getId());
-
-            // check difference saved external modules <-> external modules sent in dto => remove deleted external modules
-            List<Long> savedIdList = getIdListFromModuleConnection(modulesConnection);
-            List<Long> updatedIdList = getIdListFromModuleConnectionUpdateDTO(mcuDTO);
-            List<Long> deleteIdList = new ArrayList<>(savedIdList);
-            deleteIdList.removeAll(updatedIdList);
-            removeAllDeletedExternalModules(deleteIdList);
-            // update external modules data
-            externalModuleService.updateExternalModules(mcuDTO.getExternalModules());
-
-            // handle modules leipzig changes
-            if(mcuDTO.getModulesLeipzig() == null) modulesConnection.removeAllModulesLeipzig(); // remove all module leipzig
-            else{
-                // check difference saved modules leipzig <-> modules leipzig sent in dto => remove relation deleted module leipzig
-                List<String> savedNameList = getModuleLeipzigNameFromModuleConnection(modulesConnection);
-                List<String> updatedNameList = getModuleLeipzigNameFromModuleConnectionUpdateDTO(mcuDTO);
-                List<String> deleteNameList = new ArrayList<>(savedNameList);
-                deleteNameList.removeAll(updatedNameList);
-                removeAllDeletedModulesLeipzig(modulesConnection, deleteNameList);
-                // update relation (create new, ignoring old)
-                moduleLeipzigService.updateRelationModulesConnectionToModulesLeipzig(modulesConnection, mcuDTO.getModulesLeipzig());
-            }
-
-            // modulesConnection will be saved in application service due to cascade all
-        }
-    }
-
-    public void deleteOriginalModulesConnections(List<ModulesConnection> modulesConnections) {
-        for(ModulesConnection modulesConnection : modulesConnections) {
-            modulesConnection.setModulesConnectionOriginal(null);
-            modulesConnectionRepository.save(modulesConnection);
-        }
-    }
-
+    /**
+     * This method returns for each element in the given {@code List} of {@link ModulesConnection} their {@code OriginalModulesConnection}
+     * @param modulesConnections {@code List} of {@link ModulesConnection}
+     * @return {@code List} of {@link ModulesConnection} which represent the {@code OriginalModulesConnections}
+     * @see ModulesConnection
+     */
     public List<ModulesConnection> getOriginalModulesConnections(List<ModulesConnection> modulesConnections) {
-        ArrayList<ModulesConnection> modulesConnectionsOriginal = new ArrayList<>();
-
+        List<ModulesConnection> modulesConnectionsOriginal = new ArrayList<>();
         for(ModulesConnection modulesConnection : modulesConnections) {
             modulesConnectionsOriginal.add(modulesConnection.getModulesConnectionOriginal());
         }
         return modulesConnectionsOriginal;
     }
 
+    /**
+     * This method returns for each element in the given {@code List} of {@link ModulesConnection} their {@code OriginalModulesConnection} and adds the {@code FormalRejection(Comment)}
+     * @param editModulesConnections {@code List} of {@link ModulesConnection}
+     * @return {@code List} of {@link ModulesConnection} which represent the {@code OriginalModulesConnections} with the {@code FormalRejection(Comment)}
+     * @see ModulesConnection
+     */
     public List<ModulesConnection> getOriginalModulesConnectionsWithFormalRejectionData(List<ModulesConnection> editModulesConnections) {
-        ArrayList<ModulesConnection> modulesConnectionsOriginal = new ArrayList<>();
-
+        List<ModulesConnection> modulesConnectionsOriginal = new ArrayList<>();
         for(ModulesConnection editModulesConnection : editModulesConnections) {
-
             ModulesConnection modulesConnectionOriginal = editModulesConnection.getModulesConnectionOriginal();
-            // adding formal rejection data
             modulesConnectionOriginal.setFormalRejection(editModulesConnection.getFormalRejection());
             modulesConnectionOriginal.setFormalRejectionComment(editModulesConnection.getFormalRejectionComment());
-
             modulesConnectionsOriginal.add(modulesConnectionOriginal);
         }
         return modulesConnectionsOriginal;
     }
 
+    /**
+     * This method gets the {@code RelatedModulesConnections} of a {@link ModulesConnection} and filters them
+     * @param id of a {@link ModulesConnection} 
+     * @return {@code List} of {@link ModulesConnection} which represent the {@code RelatedModulesConnections}
+     * @see ModulesConnection
+     */
     public List<ModulesConnection> getRelatedModulesConnections(Long id) {
         ModulesConnection baseModulesConnection = getModulesConnectionById(id);
         List<ModulesConnection> allModulesConnections = modulesConnectionRepository.findAll();
@@ -167,7 +116,7 @@ public class ModulesConnectionService {
             // skip original modules connections
             if(m.getIsOriginalModulesConnection()) continue;
 
-            // only abgeschlossene applications
+            // only completed applications
             if(m.getApplication().getFullStatus() != EnumApplicationStatus.ABGESCHLOSSEN) continue;
 
             if(m.getDecisionFinal() == unedited) continue;
@@ -177,6 +126,102 @@ public class ModulesConnectionService {
         return filterRelevantRelatedModulesConnections(relatedModuleConnections, id);
     }
 
+    /**
+     * This method creates all {@link ModulesConnection} defined in {@code modulesConnectionDTOs} and a duplicate of each as {@code OriginalModulesConnection}
+     * @param modulesConnectionDTOs {@code List} of {@link ModulesConnectionDTO}
+     * @throws ResponseStatusException with {@code HttpStatus.BAD_REQUEST: 400} if the {@code List} of {@link ModulesConnectionDTO} is {@code null} or {@code empty}
+     * @return {@code List} of all created {@link ModulesConnection} (without the {@code OriginalModulesConnection})
+     * @see ModulesConnection
+     * @see ModulesConnectionDTO
+     * @see <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/http/HttpStatus.html">Spring HttpStatus</a>
+     * @see <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/server/ResponseStatusException.html">Spring ResponseStatusException</a>
+     */
+    public List<ModulesConnection> createModulesConnectionsWithDuplicate(List<ModulesConnectionDTO> modulesConnectionDTOs) {
+        if(modulesConnectionDTOs == null || modulesConnectionDTOs.size() == 0) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, " No Modules Connections provided in the request");
+        
+        List<ModulesConnection> modulesConnections = new ArrayList<>();
+
+        for(ModulesConnectionDTO modulesConnectionDTO : modulesConnectionDTOs) {
+            ModulesConnection modulesConnection = createModulesConnection(modulesConnectionDTO);
+            ModulesConnection modulesConnectionOriginal = createModulesConnection(modulesConnectionDTO);
+            modulesConnectionOriginal.setIsOriginalModulesConnection(true);
+
+            modulesConnection.setModulesConnectionOriginal(modulesConnectionOriginal);
+
+            modulesConnections.add(modulesConnection);
+        }
+        return modulesConnections;
+    }
+
+    /**
+     * This method updates all {@link ModulesConnection} defined in {@code modulesConnectionDTOs} and depending on the {@code userRole}
+     * @param modulesConnectionDTOs {@code List} of {@link ModulesConnectionDTO}
+     * @throws ResponseStatusException with {@code HttpStatus.BAD_REQUEST: 400} if the {@code List} of {@link ModulesConnectionDTO} is {@code null}
+     * @throws ResponseStatusException with {@code HttpStatus.BAD_REQUEST: 400} if the {@code id} of any of the {@link ModulesConnectionDTO} in the given {@code List} is {@code null}
+     * @throws ResponseStatusException with {@code HttpStatus.CONFLICT: 409} if the {@code ExternalModules} of any of the {@link ModulesConnectionDTO} in the given {@code List} is {@code null}
+     * @see ModulesConnection
+     * @see ModulesConnectionDTO
+     * @see <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/http/HttpStatus.html">Spring HttpStatus</a>
+     * @see <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/server/ResponseStatusException.html">Spring ResponseStatusException</a>
+     */
+    public void updateModulesConnection(List<ModulesConnectionDTO> modulesConnectionDTOs, String userRole) {
+        if(modulesConnectionDTOs == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Modules Connections must not be null");
+
+        for(ModulesConnectionDTO mcuDTO : modulesConnectionDTOs) {
+            if(mcuDTO.getId() == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Modules Connection id must not be null");
+            if(mcuDTO.getExternalModules() == null) throw new ResponseStatusException(HttpStatus.CONFLICT, "You cant delete all External Modules of a Modules Connection " + mcuDTO.getId());
+
+            ModulesConnection modulesConnection = getModulesConnectionById(mcuDTO.getId());
+
+            // handle study office decision
+            if(userRole.equals("study-office")) {
+                if (mcuDTO.getCommentStudyOffice() != null) { modulesConnection.setCommentStudyOffice(mcuDTO.getCommentStudyOffice()); }
+                if (mcuDTO.getDecisionSuggestion() != null) { modulesConnection.setDecisionSuggestion(mcuDTO.getDecisionSuggestion()); }
+                // allow only study-office to reject as formal rejection
+                if(mcuDTO.getFormalRejection() != null) { modulesConnection.setFormalRejection(mcuDTO.getFormalRejection()); }
+                if(mcuDTO.getFormalRejectionComment() != null) { modulesConnection.setFormalRejectionComment(mcuDTO.getFormalRejectionComment()); }
+            }
+            // handle chairman decision
+            if(userRole.equals("chairman")) {
+                if (mcuDTO.getCommentDecision() != null) { modulesConnection.setCommentDecision(mcuDTO.getCommentDecision()); }
+                if (mcuDTO.getDecisionFinal() != null) { modulesConnection.setDecisionFinal(mcuDTO.getDecisionFinal()); }
+            }
+
+            // check difference saved external modules <-> external modules sent in dto => remove deleted external modules
+            removeAllDeletedExternalModules(modulesConnection, mcuDTO);
+
+            // update external modules data
+            externalModuleService.updateExternalModules(mcuDTO.getExternalModules());
+
+            // handle modules leipzig changes
+            if(mcuDTO.getModulesLeipzig() == null) {
+                modulesConnection.removeAllModulesLeipzig(); 
+            }
+            else {
+                // check difference saved modules leipzig <-> modules leipzig sent in dto => remove relation deleted module leipzig
+                removeAllDeletedModulesLeipzig(modulesConnection, mcuDTO);
+                // update relation (create new, ignoring old)
+                moduleLeipzigService.updateRelationModulesConnectionToModulesLeipzig(modulesConnection, mcuDTO.getModulesLeipzig());
+            }
+
+            // modulesConnection will be saved in application service due to cascade all
+        }
+    }
+
+    /**
+     * This method deletes all {@code OriginalModulesConnection} of all given {@code modulesConnections}
+     * @param modulesConnections {@code List} of {@link ModulesConnection}
+     * @see ModulesConnection
+     */
+    public void deleteOriginalModulesConnections(List<ModulesConnection> modulesConnections) {
+        for(ModulesConnection modulesConnection : modulesConnections) {
+            modulesConnection.setModulesConnectionOriginal(null);
+            modulesConnectionRepository.save(modulesConnection);
+        }
+    }
+
+
+    // ------- Private Methods -------
 
     private ModulesConnection createModulesConnection(ModulesConnectionDTO modulesConnectionDTO) {
         ModulesConnection modulesConnection = new ModulesConnection();
@@ -198,22 +243,26 @@ public class ModulesConnectionService {
     }
 
     // modules leipzig helper methods for update application
-    private void removeAllDeletedModulesLeipzig(ModulesConnection modulesConnection, List<String> deleteIdList) {
-        ArrayList<ModuleLeipzig> modulesLeipzig = new ArrayList<>();
-        for(String name : deleteIdList) {
+    private void removeAllDeletedModulesLeipzig(ModulesConnection modulesConnection, ModulesConnectionDTO mcuDTO) {
+        List<String> savedNameList = getModuleLeipzigNameFromModuleConnection(modulesConnection);
+        List<String> updatedNameList = getModuleLeipzigNameFromModuleConnectionUpdateDTO(mcuDTO);
+        List<String> deleteNameList = new ArrayList<>(savedNameList);
+        deleteNameList.removeAll(updatedNameList);
+        List<ModuleLeipzig> modulesLeipzig = new ArrayList<>();
+        for(String name : deleteNameList) {
             modulesLeipzig.add(moduleLeipzigService.getModuleLeipzigByName(name));
         }
         modulesConnection.removeModulesLeipzig(modulesLeipzig);
     }
     private List<String> getModuleLeipzigNameFromModuleConnection(ModulesConnection modulesConnection) {
-        ArrayList<String> nameList = new ArrayList<>();
+        List<String> nameList = new ArrayList<>();
         for(ModuleLeipzig ml : modulesConnection.getModulesLeipzig()) {
             nameList.add(ml.getName());
         }
         return nameList;
     }
     private List<String> getModuleLeipzigNameFromModuleConnectionUpdateDTO(ModulesConnectionDTO modulesConnection) {
-        ArrayList<String> nameList = new ArrayList<>();
+        List<String> nameList = new ArrayList<>();
         for(ModuleLeipzigDTO ml : modulesConnection.getModulesLeipzig()) {
             nameList.add(ml.getName());
         }
@@ -221,20 +270,24 @@ public class ModulesConnectionService {
     }
 
     // external modules helper methods for update application
-    private void removeAllDeletedExternalModules(List<Long> deleteIdList) {
+    private void removeAllDeletedExternalModules(ModulesConnection modulesConnection, ModulesConnectionDTO mcuDTO) {
+        List<Long> savedIdList = getIdListFromModuleConnection(modulesConnection);
+        List<Long> updatedIdList = getIdListFromModuleConnectionUpdateDTO(mcuDTO);
+        List<Long> deleteIdList = new ArrayList<>(savedIdList);
+        deleteIdList.removeAll(updatedIdList);
         for(Long id : deleteIdList) {
             externalModuleService.deleteExternalModuleById(id);
         }
     }
     private List<Long> getIdListFromModuleConnection(ModulesConnection modulesConnection) {
-        ArrayList<Long> idList = new ArrayList<>();
+        List<Long> idList = new ArrayList<>();
         for(ExternalModule eM : modulesConnection.getExternalModules()) {
             idList.add(eM.getId());
         }
         return idList;
     }
     private List<Long> getIdListFromModuleConnectionUpdateDTO(ModulesConnectionDTO modulesConnection) {
-        ArrayList<Long> idList = new ArrayList<>();
+        List<Long> idList = new ArrayList<>();
         for(ExternalModuleDTO eM : modulesConnection.getExternalModules()) {
             idList.add(eM.getId());
         }
