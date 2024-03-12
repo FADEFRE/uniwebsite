@@ -32,7 +32,7 @@ const moduleOptions = ref([])
 onBeforeMount(() => {
   getApplicationByIdForStatus(id)
     .then(data => {
-      applicationData.value = data;
+      setTimeout(() => applicationData.value = data, 5000)
       existingConnections.value = data['modulesConnections']
       return data;
     })

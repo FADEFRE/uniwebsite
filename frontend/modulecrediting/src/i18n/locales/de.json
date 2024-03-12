@@ -127,6 +127,9 @@
     "IconTrash": {
         "AriaDelete": "Löschen"
     },
+    "LoadingContainer": {
+        "AriaLoading": "lade Inhalte"
+    },
     "LoginView": {
         "Heading": "ANMELDUNG",
         "LoginButton": "Anmelden",
