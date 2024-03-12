@@ -70,6 +70,10 @@
     "ApplicationPanel": {
         "AriaDeleteModule": "Delete Module Assignment"
     },
+    "CustomPanel": {
+        "AriaOpenPanel": "open module assignment",
+        "AriaClosePanel": "close module assignment"
+    },
     "ErrorViewIndexjs": {
         "NoAccess": "No access",
         "NoAccesContent": "You do not have permission to view this page.",

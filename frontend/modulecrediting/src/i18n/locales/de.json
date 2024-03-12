@@ -70,6 +70,10 @@
     "ApplicationPanel": {
         "AriaDeleteModule": "Modulzuweisung löschen"
     },
+    "CustomPanel": {
+        "AriaOpenPanel": "öffne Modulzuweisung",
+        "AriaClosePanel": "schließe Modulzuweisung"
+    },
     "ErrorViewIndexjs": {
         "NoAccess": "Kein Zugang",
         "NoAccesContent": "Es fehlt die Berechtigung, um diese Seite anzeigen zu können.",

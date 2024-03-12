@@ -21,6 +21,8 @@ const setCollapsed = (value) => {
   d_collapsed.value = value
 }
 
+const ariaLabelKey = computed(() => d_collapsed.value ? 'CustomPanel.AriaOpenPanel' : 'CustomPanel.AriaClosePanel')
+
 defineExpose({
   setCollapsed
 })
@@ -36,7 +38,9 @@ defineExpose({
         <slot name="icons"></slot>
       </template>
       <template #togglericon>
-        <ArrowIcon :direction="d_collapsed ? 'down' : 'up'" color="red"/>
+        <span :aria-label="$t(ariaLabelKey)">
+          <ArrowIcon :direction="d_collapsed ? 'down' : 'up'" color="red"/>
+        </span>
       </template>
       <slot></slot>
     </Panel>
