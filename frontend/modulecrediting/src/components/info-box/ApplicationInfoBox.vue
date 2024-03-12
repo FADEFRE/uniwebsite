@@ -13,12 +13,12 @@ const showExample = ref(false)
       <p class="text-justify">{{ $t('ApplicationInfoBox.BasicExplanation') }}</p>
     </div>
     <Button @click="showInformation = !showInformation" class="info-box-button">
-      {{ $t('ApplicationInfoBox.Explanation.ShowExplanation') }}
+      <h3>{{ $t('ApplicationInfoBox.Explanation.ShowExplanation') }}</h3>
       <ArrowIcon :direction="showInformation ? 'up' : 'down'" color="red" />
     </Button>
     <div v-if="showInformation" class="explanation-expanded-container">
       <div class="explanation-item">
-        <h3 class="h4">{{ $t('ApplicationInfoBox.Explanation.ModuleAssignment.Heading') }}</h3>
+        <h4>{{ $t('ApplicationInfoBox.Explanation.ModuleAssignment.Heading') }}</h4>
         <ul class="points">
           <li>{{ $t('ApplicationInfoBox.Explanation.ModuleAssignment.0') }}</li>
           <li>{{ $t('ApplicationInfoBox.Explanation.ModuleAssignment.1') }}</li>
@@ -26,7 +26,7 @@ const showExample = ref(false)
         </ul>
       </div>
       <div class="explanation-item">
-        <h3 class="h4">{{ $t('ApplicationInfoBox.Explanation.ExternalModules.Heading') }}</h3>
+        <h4>{{ $t('ApplicationInfoBox.Explanation.ExternalModules.Heading') }}</h4>
         <ul class="points">
           <li>{{ $t('ApplicationInfoBox.Explanation.ExternalModules.0') }}</li>
           <li>{{ $t('ApplicationInfoBox.Explanation.ExternalModules.1') }}</li>
@@ -35,28 +35,28 @@ const showExample = ref(false)
         </ul>
       </div>
       <div class="explanation-item">
-        <h3 class="h4">{{ $t('ApplicationInfoBox.Explanation.ModulesLeipzig.Heading') }}</h3>
+        <h4>{{ $t('ApplicationInfoBox.Explanation.ModulesLeipzig.Heading') }}</h4>
         <ul class="points">
           <li>{{ $t('ApplicationInfoBox.Explanation.ModulesLeipzig.0') }}</li>
           <li>{{ $t('ApplicationInfoBox.Explanation.ModulesLeipzig.1') }}</li>
         </ul>
       </div>
       <div class="explanation-item">
-        <h3 class="h4">{{ $t('ApplicationInfoBox.Explanation.Comment.Heading') }}</h3>
+        <h4>{{ $t('ApplicationInfoBox.Explanation.Comment.Heading') }}</h4>
         <ul class="points">
           <li>{{ $t('ApplicationInfoBox.Explanation.Comment.0') }}</li>
         </ul>
       </div>
     </div>
     <Button @click="showExample = !showExample" class="info-box-button">
-      {{ $t('ApplicationInfoBox.Example.ShowExample') }}
+      <h3>{{ $t('ApplicationInfoBox.Example.ShowExample') }}</h3>
       <ArrowIcon :direction="showExample ? 'up' : 'down'" color="red" />
     </Button>
     <div v-if="showExample" class="explanation-expanded-container">
       <div class="explanation-item">
-        <h3 class="h4">
+        <h4>
           {{ $t('ApplicationInfoBox.Example.ModuleAssignment.Heading') }}
-        </h3>
+        </h4>
         <ul class="points">
           <li>
             "{{ $t('ApplicationInfoBox.Example.ModuleAssignment.ExternalModules') }}
