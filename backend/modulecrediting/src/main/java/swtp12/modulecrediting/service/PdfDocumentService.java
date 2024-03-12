@@ -14,11 +14,11 @@ import swtp12.modulecrediting.repository.PdfDocumentRepository;
  * This is a {@code Service} for {@link PdfDocument} and provides {@code create} and  {@code get} methods.
  * @author Frederik Kluge
  * @author Luca Kippe
- * @see #getOrCreatePdfDocument()
- * @see #createPdfDocument()
- * @see #getPdfDocumentDataById()
- * @see #getPdfDocumentNameById()
- * @see #getPdfDocumentById()
+ * @see #getOrCreatePdfDocument
+ * @see #createPdfDocument
+ * @see #getPdfDocumentDataById
+ * @see #getPdfDocumentNameById
+ * @see #getPdfDocumentById
  * @see <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/stereotype/Service.html">Springboot Service</a>
  */
 @Service

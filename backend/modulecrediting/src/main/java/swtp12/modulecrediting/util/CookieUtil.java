@@ -14,7 +14,10 @@ public class CookieUtil {
     private static final String refreshTokenCookieName = "refreshToken";
 
     /**
-     * This function creates {@link HttpCookie AccessTokenCookie} with given {@link String token} and {@link Long duration}.
+     * This function creates {@code AccessTokenCookie} with given {@link String token} and {@link Long duration}.
+     * @param token {@code String }
+     * @param duration {@code Long}
+     * @return AccessToken in {@code HttpCookie} 
      */
     public static HttpCookie createAccessTokenCookie(String token, Long duration) {
         String encryptedToken = SecurityCipher.encrypt(token);
@@ -30,6 +33,9 @@ public class CookieUtil {
 
     /**
      * This function creates {@link HttpCookie RefreshTokenCookie} with given {@link String token} and {@link Long duration}.
+     * @param token {@code String }
+     * @param duration {@code Long}
+     * @return RefreshToken in {@code HttpCookie} 
      */
     public static HttpCookie createRefreshTokenCookie(String token, Long duration) {
         String encryptedToken = SecurityCipher.encrypt(token);
@@ -45,6 +51,7 @@ public class CookieUtil {
 
     /**
      * This function deletes {@link HttpCookie AccessTokenCookie} by creating a new one with 'maxAge' of 0.
+     * @return {@code AccessCookie} with maxAge of 0
      */
     public static HttpCookie deleteAccessTokenCookie() {
         return ResponseCookie.from(accessTokenCookieName, null)
@@ -58,6 +65,7 @@ public class CookieUtil {
 
     /**
      * This function deletes {@link HttpCookie RefreshTokenCookie} by creating a new one with 'maxAge' of 0.
+     * @return {@code RefreshCookie} with maxAge of 0
      */
     public static HttpCookie deleteRefreshTokenCookie() {
         return ResponseCookie.from(refreshTokenCookieName, null)

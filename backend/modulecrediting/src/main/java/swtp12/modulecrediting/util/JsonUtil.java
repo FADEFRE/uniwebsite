@@ -20,7 +20,9 @@ public class JsonUtil {
 
     /**
      * This function grabs a {@link JsonNode} with given {@link String name} from given {@link MultipartFile multipartFile}.
-     * 
+     * @param multipartFile {@code MultipartFile}
+     * @param nodeName {@code String}
+     * @return JsonNode
      * @see JsonNode
      * @see MultipartFile
      */
@@ -38,7 +40,9 @@ public class JsonUtil {
 
     /**
      * This function grabs a {@link JsonNode} with given {@link String name} from given {@link JsonNode currentNode}.
-     * 
+     * @param currentNode {@code JsonNode}
+     * @param nodeName {@code String}
+     * @return JsonNode
      * @see JsonNode
      */
     public static JsonNode grabJsonNodeFromJsonNode(JsonNode currentNode, String nodeName) {

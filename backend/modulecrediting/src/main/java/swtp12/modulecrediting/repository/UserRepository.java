@@ -8,6 +8,12 @@ import org.springframework.stereotype.Repository;
 
 import swtp12.modulecrediting.model.User;
 
+/**
+ * This is the {@code JpaRepository} for {@link User}
+ * @see User
+ * @see <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/stereotype/Repository.html">Spring Repository</a>
+ * @see <a href="https://docs.spring.io/spring-data/jpa/docs/current/api/org/springframework/data/jpa/repository/JpaRepository.html">Spring JpaRepository</a> 
+ */
 @Repository
 public interface UserRepository extends JpaRepository<User, Long>{
 

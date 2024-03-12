@@ -13,7 +13,7 @@ public class LogUtil {
 
     /**
      * This function is the basic printLog function and will just System.out.println the given {@link String} with timestamp.
-     * @param stringToPrint
+     * @param stringToPrint {@code String}
      */
     public static void printLog(String stringToPrint) {
         System.out.println(OffsetDateTime.now().truncatedTo(ChronoUnit.MILLIS) + "  " + stringToPrint);
@@ -22,6 +22,8 @@ public class LogUtil {
     /**
      * This function will create a {@link String stringToPrint} with more infomation about which method was called and then calls {@link #printLog( stringToPrint )}.
      * @param type {@link CourseType} Which method was this Log called on 
+     * @param courseName {@code String}
+     * @param optionalName {@code String}
      */
     public static void printCourseLog(CourseType type, String courseName, String optionalName) {
         String typeString = "";
@@ -67,6 +69,10 @@ public class LogUtil {
     /**
      * This function will create a {@link String stringToPrint} with more infomation about which method was called and then calls {@link #printLog( stringToPrint )}.
      * @param type {@link ModuleType} Which method was this Log called on 
+     * @param moduleName {@code String}
+     * @param code {@code String}
+     * @param optionalName {@code String}
+     * @param optionalCode {@code String}
      */
     public static void printModuleLog(ModuleType type, String moduleName, String code, String optionalName, String optionalCode) {
         String typeString = "";
@@ -110,6 +116,7 @@ public class LogUtil {
     /**
      * This function will create a {@link String stringToPrint} with more infomation about which method was called and then calls {@link #printLog( stringToPrint )}.
      * @param type {@link ApplicationType} Which method was this Log called on 
+     * @param id {@code String}
      */
     public static void printApplicationLog(ApplicationType type, String id) {
         String typeString = "";
@@ -142,6 +149,10 @@ public class LogUtil {
     /**
      * This function will create a {@link String stringToPrint} with more infomation about which method was called and then calls {@link #printLog( stringToPrint )}.
      * @param type {@link UserType} Which method was this Log called on 
+     * @param username {@code String}
+     * @param role {@code String}
+     * @param optionalName {@code String}
+     * @param optionalRole {@code String}
      */
     public static void printUserLog(UserType type, String username, String role, String optionalName, String optionalRole) {
         String typeString = "";
@@ -176,7 +187,9 @@ public class LogUtil {
 
     /**
      * This function will create a {@link String stringToPrint} with more infomation about the error and then calls {@link #printLog( stringToPrint )}.
-     * 
+     * @param location {@code String}
+     * @param errorToPrint {@code String}
+     * @param ex {@code Exception}
      */
     public static void printErrorLog(String location, String errorToPrint, Exception ex) {
         String locationString = "";
@@ -203,6 +216,8 @@ public class LogUtil {
 
     /**
      * This helper function will create a {@link String stringToPrint} with more infomation about which code was replace with which newCode for {@link #printModuleLog()}.
+     * @param code {@code String}
+     * @param newCode {@code String}
      */
     private static String getLogStringForCode(String code, String newCode) {
         String codeLogString = "";
@@ -225,6 +240,9 @@ public class LogUtil {
         return codeLogString;
     }
     
+    /**
+     * Type of action performed related to Course
+     */
     public enum CourseType {
         ADDED,
         CREATED,
@@ -235,6 +253,9 @@ public class LogUtil {
         RENAMED,
     }
 
+    /**
+     * Type of action performed related to Module
+     */
     public enum ModuleType {
         CREATED, 
         DEACTIVATED,
@@ -244,6 +265,9 @@ public class LogUtil {
         UPDATED, 
     }
 
+    /**
+     * Type of action performed related to Application
+     */
     public enum ApplicationType {
         CREATED,
         FINISHED,
@@ -252,6 +276,9 @@ public class LogUtil {
         RESUBMIT,
     }
 
+    /**
+     * Type of action performed related to User
+     */
     public enum UserType {
         CREATED, 
         DELETED, 

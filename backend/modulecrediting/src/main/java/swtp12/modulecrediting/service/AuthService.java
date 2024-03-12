@@ -19,10 +19,10 @@ import swtp12.modulecrediting.util.TokenProvider;
 /**
  * This is a {@code Service} for {@code Authentication}
  * @author Frederik Kluge
- * @see #login()
- * @see #refresh()
- * @see #logout()
- * @see #deleteRefreshCookie()
+ * @see #login
+ * @see #refresh
+ * @see #logout
+ * @see #deleteRefreshCookie
  * @see <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/stereotype/Service.html">Springboot Service</a>
  */
 @Service

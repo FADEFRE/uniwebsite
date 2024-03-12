@@ -64,7 +64,7 @@ public class Application {
      * Constructor for {@link Application}.
      * <p>Creates {@link Application} with given {@link String} as {@link #id}
      * and sets {@link #fullStatus} to {@link EnumApplicationStatus NEU}.
-     * 
+     * @param id {@code String}
      * @see Application
      * @see EnumApplicationStatus
      */
@@ -77,7 +77,7 @@ public class Application {
     /**
      * Sets the given {@link List} of {@link ModulesConnection ModulesConnections} to this {@link Application}.
      * <p>Also sets this {@link Application} for every {@link ModulesConnection} in the given {@link List}.
-     * 
+     * @param modulesConnections {@code List} of {@link ModulesConnection}
      * @see Application
      * @see ModulesConnection 
      */
@@ -91,7 +91,7 @@ public class Application {
     /**
      * Adds the given {@link List} of {@link ModulesConnection ModulesConnections} to the existing List of {@link ModulesConnection ModulesConnections} of this {@link Application}.
      * <p>Also sets this {@link Application} for every {@link ModulesConnection} in the given {@link List}.
-     * 
+     * @param modulesConnections {@code List} of {@link ModulesConnection}
      * @see Application
      * @see ModulesConnection 
      */
@@ -118,7 +118,7 @@ public class Application {
     /**
      * Set the given {@link CourseLeipzig} for this {@link Application}.
      * <p>Also adds this {@link Application} to the {@link List} of {@link Application Applications} in the given {@link CourseLeipzig}.
-     * 
+     * @param courseLeipzig {@link CourseLeipzig}
      * @see Application
      * @see CourseLeipzig 
      */

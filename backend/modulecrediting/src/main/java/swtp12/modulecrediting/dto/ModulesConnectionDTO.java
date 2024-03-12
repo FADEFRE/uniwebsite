@@ -1,12 +1,16 @@
 package swtp12.modulecrediting.dto;
 
+import java.util.List;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import swtp12.modulecrediting.model.EnumModuleConnectionDecision;
+import swtp12.modulecrediting.model.ModulesConnection;
 
-import java.util.List;
-
+/**
+ * DTO for creating and updating {@link ModulesConnection}
+ */
 @Getter
 @Setter
 @NoArgsConstructor

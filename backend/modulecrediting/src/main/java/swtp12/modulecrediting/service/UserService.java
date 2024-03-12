@@ -24,15 +24,15 @@ import swtp12.modulecrediting.util.LogUtil;
 /**
  * This is a {@code Service} for {@link User}
  * @author Frederik Kluge
- * @see #getUserProfile()
- * @see #getUserProfileId()
- * @see #getUserProfileName()
- * @see #getAllUsers()
- * @see #register()
- * @see #deleteUser()
- * @see #changeUsername()
- * @see #changePassword()
- * @see #changeRole()
+ * @see #getUserProfile
+ * @see #getUserProfileId
+ * @see #getUserProfileName
+ * @see #getAllUsers
+ * @see #register
+ * @see #deleteUser
+ * @see #changeUsername
+ * @see #changePassword
+ * @see #changeRole
  * @see <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/stereotype/Service.html">Springboot Service</a>
  */
 @Service
@@ -82,9 +82,9 @@ public class UserService {
     }
 
     /**
-     * This method gets a {@link List} of {@link UserSummary UserSummaries} of all {@link User Users} saved in the database. 
+     * This method gets a {@code List} of {@link UserSummary UserSummaries} of all {@link User Users} saved in the database. 
      * @throws ResponseStatusException with {@link HttpStatus NOT_FOUND} if no {@link User Users} are saved in the database.
-     * @return {@link UserSummary} of the authenticated {@link User}.
+     * @return {@code List} of {@link UserSummary UserSummaries}
      * @see User
      * @see UserSummary
      * @see <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/http/HttpStatus.html">Spring HttpStatus</a>

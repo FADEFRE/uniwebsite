@@ -12,6 +12,10 @@ import lombok.Data;
 import swtp12.modulecrediting.model.Role;
 import swtp12.modulecrediting.model.User;
 
+/**
+ * This class implements {@code UserDetails}
+ * @see <a href="https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/core/userdetails/UserDetails.html">Spring UserDetails</a> 
+ */
 @Data
 public class CustomUserDetails implements UserDetails{
     private final User user;
@@ -24,7 +28,7 @@ public class CustomUserDetails implements UserDetails{
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<Role> roles = new HashSet<>();
         roles.add(user.getRole());
-        return roles.stream().map(Role::grantedAuthority).collect(Collectors.toList()); //To the person this may concern: FCK JAVA
+        return roles.stream().map(Role::grantedAuthority).collect(Collectors.toList()); //To whom it may concern: FCK JAVA
     }
 
     @Override
