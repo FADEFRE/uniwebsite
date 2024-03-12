@@ -56,12 +56,11 @@ const requestHandler = (request) => {
 
     if (request.data instanceof FormData) {
       consoleDebug(requestColor, request.method.toUpperCase() + "-Request: " + request.url, "  Start of Request-Data: " ); 
-      let formData = new FormData();
-      formData = request.data;
+      let formData = request.data;
       for (const pair of formData.entries()) {
-        consoleDebug(null, pair[0], pair[1]); //TODO: Fix for new debugger
+        consoleDebug(null, pair[0], pair[1]);
       }
-      consoleDebug(requestColor, "End of Data");
+      consoleDebug(requestColor, "End of " + request.url + " Request-Data");
     } 
     else {
       consoleDebug(requestColor, request.method.toUpperCase() + "-Request: " + request.url, "  Request-Data: " + request.data );
@@ -120,7 +119,16 @@ const errorHandler = (error) => {
 
 const successHandler = (response) => {
   if (isHandlerEnabled(response.config)) {
-    consoleDebug(responseColor, "Response: " + response.status + " ", response.request.responseURL + "  Data:" + response.data);
+
+    if (response.data instanceof Object) { //response.data instanceof FormData
+      console.log("hallo")
+      consoleDebug(responseColor, "Response: " + response.status + " ", " " + response.request.responseURL + "  Start of Request-Data: " );
+      consoleDebug(null, response.data)
+      consoleDebug(responseColor, "End of Request-Data");
+    } 
+    else {
+      consoleDebug(responseColor, "Response: " + response.status + " ", " " + response.request.responseURL + "  Data: " + response.data);
+    }
   }
   return response;
 };
