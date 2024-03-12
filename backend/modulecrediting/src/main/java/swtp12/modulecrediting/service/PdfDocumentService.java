@@ -11,9 +11,9 @@ import swtp12.modulecrediting.model.PdfDocument;
 import swtp12.modulecrediting.repository.PdfDocumentRepository;
 
 /**
- * This is a {@code Service} for {@link PdfDocument} and provides 
- * {@code create} and  {@code get} methods.
- * 
+ * This is a {@code Service} for {@link PdfDocument} and provides {@code create} and  {@code get} methods.
+ * @author Frederik Kluge
+ * @author Luca Kippe
  * @see #getOrCreatePdfDocument()
  * @see #createPdfDocument()
  * @see #getPdfDocumentDataById()

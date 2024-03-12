@@ -18,7 +18,7 @@ import swtp12.modulecrediting.util.TokenProvider;
 
 /**
  * This is a {@code Service} for {@code Authentication}
- * 
+ * @author Frederik Kluge
  * @see #login()
  * @see #refresh()
  * @see #logout()

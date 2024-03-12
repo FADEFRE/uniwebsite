@@ -23,7 +23,7 @@ import swtp12.modulecrediting.util.LogUtil;
 
 /**
  * This is a {@code Service} for {@link User}
- * 
+ * @author Frederik Kluge
  * @see #getUserProfile()
  * @see #getUserProfileId()
  * @see #getUserProfileName()
