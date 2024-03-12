@@ -31,7 +31,7 @@ function create503() {
 }
 
 function parseApierror(error) {
-  consoleDebug("parseapierror", error);
+  consoleDebug(errorColor, "parseapierror \n" + error);
   try {
       if (error && error.hasOwnProperty("response") && error.response.hasOwnProperty("data")) {
           const apierror = error.response.data;
@@ -55,16 +55,16 @@ const requestHandler = (request) => {
   if (isHandlerEnabled(request)) {
 
     if (request.data instanceof FormData) {
-      consoleDebug("%c" + request.method.toUpperCase() + "-Request: " + request.url, requestColor, "  Start of Request-Data: " ); 
+      consoleDebug(requestColor, request.method.toUpperCase() + "-Request: " + request.url, "  Start of Request-Data: " ); 
       let formData = new FormData();
       formData = request.data;
       for (const pair of formData.entries()) {
-        consoleDebug(pair[0], pair[1]);
+        consoleDebug(null, pair[0], pair[1]); //TODO: Fix for new debugger
       }
-      consoleDebug("%c" + "End of Data", requestColor);
+      consoleDebug(requestColor, "End of Data");
     } 
     else {
-      consoleDebug("%c" + request.method.toUpperCase() + "-Request: " + request.url, requestColor, "  Request-Data: " + request.data );
+      consoleDebug(requestColor, request.method.toUpperCase() + "-Request: " + request.url, "  Request-Data: " + request.data );
     }
   }
   return request;
@@ -73,7 +73,7 @@ const requestHandler = (request) => {
 const errorHandler = (error) => {  
 
   if (isHandlerEnabled(error.config)) {
-    consoleDebug("%c" + "Error Interceptor", errorColor);
+    consoleDebug(errorColor, "Error Interceptor");
 
     const apiError = parseApierror(error)
 
@@ -87,7 +87,7 @@ const errorHandler = (error) => {
         break;
 
       case 402: // PAYMENT_REQUIRED -> used for debug
-        consoleDebug("%c" + "Debug 402 catch", errorColor);
+        consoleDebug(errorColor, "Debug 402 catch");
         router.replace("/error" + currentRouteFullPath);
         break;
 
@@ -120,7 +120,7 @@ const errorHandler = (error) => {
 
 const successHandler = (response) => {
   if (isHandlerEnabled(response.config)) {
-    consoleDebug("%c" + "Response: " + response.status + " ", responseColor, response.request.responseURL, "  Data:", response.data);
+    consoleDebug(responseColor, "Response: " + response.status + " ", response.request.responseURL + "  Data:" + response.data);
   }
   return response;
 };

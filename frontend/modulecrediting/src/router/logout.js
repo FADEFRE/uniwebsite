@@ -10,9 +10,9 @@ async function logout() {
 }
 
 async function performLogout() {
-  consoleDebug("performLogout()");
+  consoleDebug(null, "performLogout()");
   const response = await httpClient.post("/api/auth/logout");
-  consoleDebug(response)
+  consoleDebug(null, "Logout response: " + response)
   const authUserStore = useUserStore();
   authUserStore.logout();
   const intervalName = authUserStore.getIntervalName;

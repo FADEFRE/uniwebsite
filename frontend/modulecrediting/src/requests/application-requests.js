@@ -61,7 +61,7 @@ parameters:
     none
  */
 function getApplications() {
-    consoleDebug("%c" + "getApplications ()", axiosColor);
+    consoleDebug(axiosColor, "getApplications ()");
 
     return httpClient
         .get("/api/applications")
@@ -78,7 +78,7 @@ parameters:
     id - Number, application id
  */
 function getApplicationById(id) {
-    consoleDebug("%c" + "getApplicationById (" + id + ")", axiosColor);
+    consoleDebug(axiosColor, "getApplicationById (" + id + ")");
 
     return httpClient
         .get("/api/applications/" + id)
@@ -101,7 +101,7 @@ parameters:
     id - Number, application id
  */
 function getApplicationByIdForStatus(id) {
-    consoleDebug("%c" + "getApplicationByIdForStatus (" + id + ")", axiosColor);
+    consoleDebug(axiosColor, "getApplicationByIdForStatus (" + id + ")");
 
     return httpClient
         .get("/api/applications/student/" + id)
@@ -124,7 +124,7 @@ parameters:
     id - Number, application id
  */
 function getApplicationExists(id) {
-    consoleDebug("%c" + "getApplicationExists ()", axiosColor);
+    consoleDebug(axiosColor, "getApplicationExists ()");
 
     return httpClient
         .get(`/api/applications/${id}/exists`)
@@ -141,7 +141,7 @@ parameters:
     moduleConnectionId - Number, module connection id
  */
 function getRelatedModuleConnections(moduleConnectionId) {
-    consoleDebug("%c" + "getRelatedModuleConnections (moduleConnectionId: " + moduleConnectionId + ")", axiosColor);
+    consoleDebug(axiosColor, "getRelatedModuleConnections (moduleConnectionId: " + moduleConnectionId + ")");
 
     return httpClient
         .get("/api/modules-connection/" + moduleConnectionId + "/related")
@@ -160,7 +160,7 @@ parameters:
     - id, Number application id
  */
 function getUpdateStatusAllowed(id) {
-    consoleDebug("%c" + "getUpdateStatusAllowed (id: " + id + ")", axiosColor);
+    consoleDebug(axiosColor, "getUpdateStatusAllowed (id: " + id + ")");
 
     return httpClient
         .get("/api/applications/" + id + "/update-status-allowed")
@@ -179,7 +179,7 @@ parameters:
     ... String pointSystem, File descriptionFile, String comment, array of Strings selectedInternalModules
  */
 function postApplication(course, applicationObjects) {
-    consoleDebug("%c" + "postApplication (course: " + course + ", applicationObjects: " + applicationObjects + ")", axiosColor);
+    consoleDebug(axiosColor, "postApplication (course: " + course + ", applicationObjects: " + applicationObjects + ")");
 
     const formData = new FormData();
     formData.append(`courseLeipzig`, course);
@@ -234,22 +234,8 @@ function postApplication(course, applicationObjects) {
         });
 }
 
-function putApplicationStudent(
-    applicationId,
-    courseLeipzig,
-    connectionObjects
-) {
-    consoleDebug(
-        "%c" +
-        "putApplicationStandard (applicationId: " +
-        applicationId +
-        ", courseLeipzig: " +
-        courseLeipzig +
-        ", connectionsObjects: " +
-        connectionObjects +
-        ")",
-        axiosColor
-    );
+function putApplicationStudent(applicationId, courseLeipzig, connectionObjects) {
+    consoleDebug(axiosColor, "putApplicationStandard (applicationId: " + applicationId + ", courseLeipzig: " + courseLeipzig + ", connectionsObjects: " + connectionObjects + ")");
 
     const formData = createBasicFormData(courseLeipzig, connectionObjects);
 
@@ -276,22 +262,8 @@ function putApplicationStudent(
         });
 }
 
-function putApplicationStudyOffice(
-    applicationId,
-    courseLeipzig,
-    connectionObjects
-) {
-    consoleDebug(
-        "%c" +
-        "putApplicationStudyOffice (applicationId: " +
-        applicationId +
-        ", courseLeipzig: " +
-        courseLeipzig +
-        ", connectionsObjects: " +
-        connectionObjects +
-        ")",
-        axiosColor
-    );
+function putApplicationStudyOffice(applicationId, courseLeipzig, connectionObjects) {
+    consoleDebug(axiosColor, "putApplicationStudyOffice (applicationId: " + applicationId + ", courseLeipzig: " + courseLeipzig + ", connectionsObjects: " + connectionObjects + ")");
 
     const formData = createBasicFormData(courseLeipzig, connectionObjects);
 
@@ -336,22 +308,8 @@ function putApplicationStudyOffice(
         });
 }
 
-function putApplicationChairman(
-    applicationId,
-    courseLeipzig,
-    connectionObjects
-) {
-    consoleDebug(
-        "%c" +
-        "putApplicationStudyOffice (applicationId: " +
-        applicationId +
-        ", courseLeipzig: " +
-        courseLeipzig +
-        ", connectionsObjects: " +
-        connectionObjects +
-        ")",
-        axiosColor
-    );
+function putApplicationChairman(applicationId, courseLeipzig, connectionObjects) {
+    consoleDebug(axiosColor, "putApplicationStudyOffice (applicationId: " + applicationId + ", courseLeipzig: " + courseLeipzig + ", connectionsObjects: " + connectionObjects + ")");
 
     const formData = createBasicFormData(courseLeipzig, connectionObjects);
 
@@ -385,7 +343,7 @@ parameters:
     - id, Number application id
  */
 function putUpdateStatus(id) {
-    consoleDebug("%c" + "updateStatus (id: " + id + ")", axiosColor);
+    consoleDebug(axiosColor, "updateStatus (id: " + id + ")");
 
     return httpClient
         .put("/api/applications/" + id + "/update-status")

@@ -11,7 +11,7 @@ parameters:
     none
  */
 function getCoursesLeipzigName() {
-    consoleDebug("%c" + "getCoursesLeipzigName ()", axiosColor);
+    consoleDebug(axiosColor, "getCoursesLeipzigName ()");
 
     return httpClient
         .get("/api/courses-leipzig")
@@ -30,7 +30,7 @@ parameters:
     course - String, course name
  */
 function getModulesByCourse(course) {
-    consoleDebug("%c" + "getModulesByCourse (" + course + ")", axiosColor);
+    consoleDebug(axiosColor, "getModulesByCourse (" + course + ")");
 
     return httpClient
         .get("/api/courses-leipzig")
@@ -46,7 +46,7 @@ function getModulesByCourse(course) {
 }
 
 function getModulesNameCode() {
-    consoleDebug("%c" + "getModulesNameCode", axiosColor);
+    consoleDebug(axiosColor, "getModulesNameCode");
 
     return httpClient
         .get("/api/modules-leipzig")
@@ -72,7 +72,7 @@ parameters:
     course - String, course name
  */
 function getModulesNameCodeByCourse(course) {
-    consoleDebug("%c" + "getModulesByCourse (" + course + ")", axiosColor);
+    consoleDebug(axiosColor, "getModulesByCourse (" + course + ")");
 
     return httpClient
         .get("/api/courses-leipzig")
@@ -95,10 +95,7 @@ parameters:
     name of course
  */
 function postCourseLeipzig(courseName) {
-    consoleDebug(
-        "%c" + "create course leipzig (name: " + courseName + ")",
-        axiosColor
-    );
+    consoleDebug(axiosColor, "create course leipzig (name: " + courseName + ")");
 
     const formData = new FormData();
     formData.append(`courseName`, courseName);
@@ -118,10 +115,7 @@ parameters:
     moduleCode
  */
 function postModuleLeipzig(moduleName, moduleCode) {
-    consoleDebug(
-        "%c" + "create module leipzig (name: " + moduleName + ")",
-        axiosColor
-    );
+    consoleDebug(axiosColor, "create module leipzig (name: " + moduleName + ")");
 
     const formData = new FormData();
     formData.append(`name`, moduleName);
@@ -134,7 +128,7 @@ function postModuleLeipzig(moduleName, moduleCode) {
 }
 
 function postJsonConfig(configFile) {
-    consoleDebug("%c" + "postJsonConfig (configFile: " + configFile + ")", axiosColor)
+    consoleDebug(axiosColor, "postJsonConfig (configFile: " + configFile + ")")
 
     const formData = new FormData()
     formData.append("jsonFile", configFile)
@@ -146,7 +140,7 @@ function postJsonConfig(configFile) {
 }
 
 function putCourseLeipzigEdit(coursename, moduleList) {
-    consoleDebug("%c" + "putCourseLeipzigEdit", axiosColor);
+    consoleDebug(axiosColor, "putCourseLeipzigEdit");
 
     const formData = new FormData();
 
@@ -163,7 +157,7 @@ function putCourseLeipzigEdit(coursename, moduleList) {
 }
 
 function putUpdateCourseLeipzig(courseName, newCourseName) {
-    consoleDebug("%c" + "putUpdateCourseLeipzig", axiosColor);
+    consoleDebug(axiosColor, "putUpdateCourseLeipzig", axiosColor);
 
     const formData = new FormData();
     formData.append("courseName", newCourseName);
@@ -174,7 +168,7 @@ function putUpdateCourseLeipzig(courseName, newCourseName) {
 }
 
 function putUpdateModuleLeipzig(moduleName, newModuleName, newModuleCode) {
-    consoleDebug("%c" + "putUpdateModuleLeipzig (moduleName: " + moduleName + ", newModuleName: " + newModuleName + ", newModuleCode: " + newModuleCode + ")", axiosColor)
+    consoleDebug(axiosColor, "putUpdateModuleLeipzig (moduleName: " + moduleName + ", newModuleName: " + newModuleName + ", newModuleCode: " + newModuleCode + ")")
 
     const formData = new FormData()
 
@@ -186,7 +180,7 @@ function putUpdateModuleLeipzig(moduleName, newModuleName, newModuleCode) {
 }
 
 function deleteCourseLeipzig(coursename) {
-    consoleDebug("%c" + "deleteCourseLeipzig", axiosColor);
+    consoleDebug(axiosColor, "deleteCourseLeipzig");
 
     return httpClient
         .delete(`/api/courses-leipzig/${coursename}`)
@@ -196,7 +190,7 @@ function deleteCourseLeipzig(coursename) {
 }
 
 function deleteModuleLeipzig(modulename) {
-    consoleDebug("%c" + "deleteModuleLeipzig", axiosColor);
+    consoleDebug(axiosColor, "deleteModuleLeipzig");
 
     return httpClient
         .delete(`/api/modules-leipzig/${modulename}`)

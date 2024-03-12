@@ -6,7 +6,7 @@ import { getUserMeId } from "@/requests/user-requests";
 import { consoleDebug } from "@/requests/consoleDebug";
 
 async function refreshTokenInternal() {
-    consoleDebug("refreshTokenInternal()");
+    consoleDebug(null, "refreshTokenInternal()");
     try {
         const response = await httpClient.post("/api/auth/refresh");
         if (response.status !== 200) performLogout();

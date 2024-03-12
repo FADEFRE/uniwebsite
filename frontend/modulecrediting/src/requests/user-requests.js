@@ -4,7 +4,7 @@ import { consoleDebug } from "@/requests/consoleDebug";
 let axiosColor = "color:deepskyblue";
 
 function getAllUsers() {
-    consoleDebug("%c" + "getAllUsers ()", axiosColor);
+    consoleDebug(axiosColor, "getAllUsers ()");
 
     return httpClient.get("/api/user/all")
         .then(response => response.data)
@@ -13,7 +13,7 @@ function getAllUsers() {
 }
 
 function getUserMe() {
-    consoleDebug("%c" + "getUserMe ()", axiosColor)
+    consoleDebug(axiosColor, "getUserMe ()")
 
     return httpClient.get("/api/user/me")
         .then(response => response.data)
@@ -22,7 +22,7 @@ function getUserMe() {
 }
 
 function getUserMeId() {
-    consoleDebug("%c" + "getUserMeId ()", axiosColor)
+    consoleDebug(axiosColor, "getUserMeId ()")
 
     return httpClient.get("/api/user/me/id")
         .then(response => response.data)
@@ -31,7 +31,7 @@ function getUserMeId() {
 }
 
 function getUserMeName() {
-    consoleDebug("%c" + "getUserMeName ()", axiosColor)
+    consoleDebug(axiosColor, "getUserMeName ()")
 
     return httpClient.get("/api/user/me/name")
         .then(response => response.data)
@@ -40,10 +40,7 @@ function getUserMeName() {
 }
 
 function postNewUser(username, password, passwordConfirm, role) {
-    consoleDebug(
-        "%c" + "create user (username: " + username + ", role: " + role + ")",
-        axiosColor
-    );
+    consoleDebug(axiosColor, "create user (username: " + username + ", role: " + role + ")");
 
     const formData = new FormData()
 
@@ -58,7 +55,7 @@ function postNewUser(username, password, passwordConfirm, role) {
 }
 
 function putUserUsername(id, username) {
-    consoleDebug("%c" + "getUserUsername (id: " + id + ", username: " + username + ")", axiosColor)
+    consoleDebug(axiosColor, "getUserUsername (id: " + id + ", username: " + username + ")")
 
     const formData = new FormData()
 
@@ -71,7 +68,7 @@ function putUserUsername(id, username) {
 }
 
 function putUserPassword(id, password, passwordConfirm) {
-    consoleDebug("%c" + "putUserPassword (id: " + id + ", password: [hidden]" + ", passwordConfirm: [hidden]" + ")", axiosColor)
+    consoleDebug(axiosColor, "putUserPassword (id: " + id + ", password: [hidden]" + ", passwordConfirm: [hidden]" + ")")
 
     const formData = new FormData()
 
@@ -86,7 +83,7 @@ function putUserPassword(id, password, passwordConfirm) {
 }
 
 function putUserRole(id, role) {
-    consoleDebug("%c" + "getAllUsers (id: " + id + ", role: " + role + ")", axiosColor);
+    consoleDebug(axiosColor, "getAllUsers (id: " + id + ", role: " + role + ")");
 
     const formData = new FormData()
 
@@ -100,7 +97,7 @@ function putUserRole(id, role) {
 }
 
 function deleteUser(id) {
-    consoleDebug("%c" + "delteUser (id: " + id + ")", axiosColor)
+    consoleDebug(axiosColor, "delteUser (id: " + id + ")")
 
     const formData = new FormData()
 

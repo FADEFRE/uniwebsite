@@ -171,7 +171,7 @@ router.beforeEach(async (to, from) => {
   if (to.meta.authType !== "standard") {
     translate.switchLanguage('de')
   }
-  consoleDebug("getRole Router");
+  consoleDebug(null, "getRole Router");
   const responseRole = await httpClient.get(`/api/user/role`);
   switch (to.meta.authType) {
     case "standard":
