@@ -45,21 +45,21 @@
             "ModuleAssignment": {
                 "Heading": "Module Assignment",
                 "AriaCreditedFor": "credited as",
-                "ExternalModules": "external gibt ein issue",
-                "ModulesLeipzig": "leipzig gibt ein issue"
+                "ExternalModules": "Data Structures and Algorithms",
+                "ModulesLeipzig": "Algorithmen und Datenstrukturen 1, Algorithmen und Datenstrukturen 2"
             },
             "ExternalModules": {
                 "Heading": "Modules to be credited",
-                "0": "name gibt ein issue",
-                "1": "point u system gibt ein issue",
-                "2": "uni gibt ein issue",
-                "3": "studiengang gibt ein issue",
-                "4": "pdf gibt ein issue"
+                "0": "Module Name 'Data Structures and Algorithms'",
+                "1": "Credits Points '7.5', Credit System 'ECTS'",
+                "2": "University 'University of Gothenburg'",
+                "3": "Course 'Software Engineering and Management Bachelor's Programme'",
+                "4": "Module Description: pdf-document with the description of Data Structures and Algorithms module"
             },
             "ModulesLeipzig": {
                 "Heading": "Modules of Leipzig University",
-                "0": "module gibt ein issue",
-                "1": "module gibt ein issue"
+                "0": "Algorithmen und Datenstrukturen 1",
+                "1": "Algorithmen und Datenstrukturen 2"
             }
         }
     },
