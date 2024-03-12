@@ -37,7 +37,6 @@ import swtp12.modulecrediting.util.LogUtil;
  */
 @Service
 public class UserService {
-
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -48,11 +47,8 @@ public class UserService {
 
     /**
      * This method gets the {@link UserSummary} of a current authenticated {@link User}. 
-     * 
-     * @return {@code UserSummary} of the authenticated {@code User}.
-     * 
      * @throws IllegalArgumentException if {@link User} could not be found in the database with the given {@code username}.
-     * 
+     * @return {@code UserSummary} of the authenticated {@code User}.
      * @see User
      * @see UserSummary
      */
@@ -63,11 +59,8 @@ public class UserService {
 
     /**
      * This method gets the {@link UserSummary} of a current authenticated {@link User}. 
-     * 
-     * @return {@code UserSummary} of the authenticated {@code User}.
-     * 
      * @throws IllegalArgumentException if {@link User} could not be found in the database with the given {@code username}.
-     * 
+     * @return {@code UserSummary} of the authenticated {@code User}.
      * @see User
      * @see UserSummary
      */
@@ -77,12 +70,9 @@ public class UserService {
     }
 
     /**
-     * This method gets the {@link UserSummary} of a current authenticated {@link User}. 
-     * 
-     * @return {@code UserSummary} of the authenticated {@code User}.
-     * 
+     * This method gets the {@link UserSummary} of a current authenticated {@link User}.
      * @throws IllegalArgumentException if {@link User} could not be found in the database with the given {@code username}.
-     * 
+     * @return {@code UserSummary} of the authenticated {@code User}.
      * @see User
      * @see UserSummary
      */
@@ -91,17 +81,14 @@ public class UserService {
         return user.toUserSummaryName();
     }
 
-
-
     /**
      * This method gets a {@link List} of {@link UserSummary UserSummaries} of all {@link User Users} saved in the database. 
-     * 
-     * @return {@link UserSummary} of the authenticated {@link User}.
-     * 
      * @throws ResponseStatusException with {@link HttpStatus NOT_FOUND} if no {@link User Users} are saved in the database.
-     * 
+     * @return {@link UserSummary} of the authenticated {@link User}.
      * @see User
      * @see UserSummary
+     * @see <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/http/HttpStatus.html">Spring HttpStatus</a>
+     * @see <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/server/ResponseStatusException.html">Spring ResponseStatusException</a>
      */
     public List<UserSummary> getAllUsers() {
         List<User> users = userRepository.findAll();
@@ -121,19 +108,17 @@ public class UserService {
 
     /**
      * This method creates a new {@link User}.
-     * 
-     * @return {@code String: Success message}
-     * 
-     * @throws ResponseStatusException with {@link HttpStatus BAD_REQUEST} if any of the needed {@link EditUserDTO} fields are {@code null} or {@code blank}.
-     * @throws ResponseStatusException with {@link HttpStatus BAD_REQUEST} if the given {@code role} does not exist.
-     * @throws ResponseStatusException with {@link HttpStatus BAD_REQUEST} if the given {@code username} or {@code password(Confirm)} include {@code whitespaces}.
-     * @throws ResponseStatusException with {@link HttpStatus BAD_REQUEST} if the given {@code password} and {@code passwordConfirm} are {@code not equal}.
-     * @throws ResponseStatusException with {@link HttpStatus CONFLICT} if a {@link User} with the given username already {@code exists}.
-     * 
      * @param registerRequest {@link EditUserDTO} with {@code username}, {@code password}, {@code passwordConfirm} and {@code role}
-     * 
+     * @throws ResponseStatusException with {@code HttpStatus.BAD_REQUEST: 400} if any of the needed {@link EditUserDTO} fields are {@code null} or {@code blank}.
+     * @throws ResponseStatusException with {@code HttpStatus.BAD_REQUEST: 400} if the given {@code role} does not exist.
+     * @throws ResponseStatusException with {@code HttpStatus.BAD_REQUEST: 400} if the given {@code username} or {@code password(Confirm)} include {@code whitespaces}.
+     * @throws ResponseStatusException with {@code HttpStatus.BAD_REQUEST: 400} if the given {@code password} and {@code passwordConfirm} are {@code not equal}.
+     * @throws ResponseStatusException with {@link HttpStatus CONFLICT} if a {@link User} with the given username already {@code exists}.
+     * @return {@code String: Success message}
      * @see User
      * @see EditUserDTO
+     * @see <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/http/HttpStatus.html">Spring HttpStatus</a>
+     * @see <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/server/ResponseStatusException.html">Spring ResponseStatusException</a>
      */
     public String register(EditUserDTO registerRequest) {
 
@@ -154,7 +139,6 @@ public class UserService {
         if (!registerRequest.getPassword().equals(registerRequest.getPasswordConfirm()))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Passwords are not equal"); 
 
-
         User user = new User(
             registerRequest.getUsername(),
             encoder.encode(registerRequest.getPassword()),
@@ -169,21 +153,19 @@ public class UserService {
 
     /**
      * This method deletes a {@link User}.
-     * 
-     * @return {@code String: Success message}
-     * 
-     * @throws ResponseStatusException with {@link HttpStatus BAD_REQUEST} if no {@link User Users} are saved in the database.
-     * @throws ResponseStatusException with {@link HttpStatus BAD_REQUEST} if the given {@code id} is {@code null}.
-     * @throws ResponseStatusException with {@link HttpStatus BAD_REQUEST} if the {@link User} making the request is the same as the one to be deleted.
-     * @throws ResponseStatusException with {@link HttpStatus BAD_REQUEST} if the to be deleted {@link User} is the only {@link Role Admin}.
-     * @throws ResponseStatusException with {@link HttpStatus BAD_REQUEST} if the {@link User} with the given {@code userId} is not in the database.
-     * @throws IllegalArgumentException if no {@link User} is logged in.
-     * 
      * @param deleteRequest {@link EditUserDTO} with {@code id}
-     * 
+     * @throws ResponseStatusException with {@code HttpStatus.BAD_REQUEST: 400} if no {@link User Users} are saved in the database.
+     * @throws ResponseStatusException with {@code HttpStatus.BAD_REQUEST: 400} if the given {@code id} is {@code null}.
+     * @throws ResponseStatusException with {@code HttpStatus.BAD_REQUEST: 400} if the {@link User} making the request is the same as the one to be deleted.
+     * @throws ResponseStatusException with {@code HttpStatus.BAD_REQUEST: 400} if the to be deleted {@link User} is the only {@link Role Admin}.
+     * @throws ResponseStatusException with {@code HttpStatus.BAD_REQUEST: 400} if the {@link User} with the given {@code userId} is not in the database.
+     * @throws IllegalArgumentException if no {@link User} is logged in.
+     * @return {@code String: Success message}
      * @see User
      * @see Role
      * @see EditUserDTO
+     * @see <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/http/HttpStatus.html">Spring HttpStatus</a>
+     * @see <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/server/ResponseStatusException.html">Spring ResponseStatusException</a>
      */
     public String deleteUser(EditUserDTO deleteRequest) {
         if(deleteRequest.getId() == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User id cannot be null");
@@ -205,20 +187,18 @@ public class UserService {
 
     /**
      * This method changes the {@code username} of a {@link User}.
-     * 
-     * @return {@code String: Success message}
-     * 
-     * @throws ResponseStatusException with {@link HttpStatus BAD_REQUEST} if the given {@code id} is {@code null}.
-     * @throws ResponseStatusException with {@link HttpStatus BAD_REQUEST} if the {@link User} making the request is not the same as the one to be changed.
-     * @throws ResponseStatusException with {@link HttpStatus BAD_REQUEST} if the new {@code username} includes {@code whitespaces}, is {@code null} or {@code blank}.
-     * @throws ResponseStatusException with {@link HttpStatus BAD_REQUEST} if the {@link User} with the given {@code userId} is not in the database.
+     * @param changeRequest {@link EditUserDTO} with {@code id} and new {@code username}
+     * @throws ResponseStatusException with {@code HttpStatus.BAD_REQUEST: 400} if the given {@code id} is {@code null}.
+     * @throws ResponseStatusException with {@code HttpStatus.BAD_REQUEST: 400} if the {@link User} making the request is not the same as the one to be changed.
+     * @throws ResponseStatusException with {@code HttpStatus.BAD_REQUEST: 400} if the new {@code username} includes {@code whitespaces}, is {@code null} or {@code blank}.
+     * @throws ResponseStatusException with {@code HttpStatus.BAD_REQUEST: 400} if the {@link User} with the given {@code userId} is not in the database.
      * @throws ResponseStatusException with {@link HttpStatus CONFLICT} if a {@link User} with the given username already {@code exists}.
      * @throws IllegalArgumentException if no {@link User} is logged in.
-     * 
-     * @param changeRequest {@link EditUserDTO} with {@code id} and new {@code username}
-     * 
+     * @return {@code String: Success message}
      * @see User
      * @see EditUserDTO
+     * @see <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/http/HttpStatus.html">Spring HttpStatus</a>
+     * @see <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/server/ResponseStatusException.html">Spring ResponseStatusException</a>
      */
     public String changeUsername(EditUserDTO changeRequest) {
         if(changeRequest.getId() == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User id cannot be null");
@@ -239,20 +219,18 @@ public class UserService {
 
     /**
      * This method changes the {@code password} of a {@link User}.
-     * 
-     * @return {@code String: Success message}
-     * 
-     * @throws ResponseStatusException with {@link HttpStatus BAD_REQUEST} if the given {@code id} is {@code null}.
-     * @throws ResponseStatusException with {@link HttpStatus BAD_REQUEST} if the {@link User} making the request is not the same as the one to be changed.
-     * @throws ResponseStatusException with {@link HttpStatus BAD_REQUEST} if the new {@code password} or {@code passwordConfirm} include {@code whitespaces}, is {@code null} or {@code blank}.
-     * @throws ResponseStatusException with {@link HttpStatus BAD_REQUEST} if the {@link User} with the given {@code userId} is not in the database.
-     * @throws ResponseStatusException with {@link HttpStatus BAD_REQUEST} if the given {@code password} and {@code passwordConfirm} are {@code not equal}.
-     * @throws IllegalArgumentException if no {@link User} is logged in.
-     * 
      * @param changeRequest {@link EditUserDTO} with {@code id} and new {@code password} and {@code passwordConfirm}
-     * 
+     * @throws ResponseStatusException with {@code HttpStatus.BAD_REQUEST: 400} if the given {@code id} is {@code null}.
+     * @throws ResponseStatusException with {@code HttpStatus.BAD_REQUEST: 400} if the {@link User} making the request is not the same as the one to be changed.
+     * @throws ResponseStatusException with {@code HttpStatus.BAD_REQUEST: 400} if the new {@code password} or {@code passwordConfirm} include {@code whitespaces}, is {@code null} or {@code blank}.
+     * @throws ResponseStatusException with {@code HttpStatus.BAD_REQUEST: 400} if the {@link User} with the given {@code userId} is not in the database.
+     * @throws ResponseStatusException with {@code HttpStatus.BAD_REQUEST: 400} if the given {@code password} and {@code passwordConfirm} are {@code not equal}.
+     * @throws IllegalArgumentException if no {@link User} is logged in.
+     * @return {@code String: Success message}
      * @see User
      * @see EditUserDTO
+     * @see <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/http/HttpStatus.html">Spring HttpStatus</a>
+     * @see <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/server/ResponseStatusException.html">Spring ResponseStatusException</a>
      */
     public String changePassword(EditUserDTO changeRequest) {
         if(changeRequest.getId() == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User id cannot be null");
@@ -273,20 +251,18 @@ public class UserService {
 
     /**
      * This method changes the {@code role} of a {@link User}.
-     * 
-     * @return {@code String: Success message}
-     * 
-     * @throws ResponseStatusException with {@link HttpStatus BAD_REQUEST} if the given {@code id} is {@code null}.
-     * @throws ResponseStatusException with {@link HttpStatus BAD_REQUEST} if the new {@code role} is {@code null} or {@code blank}.
-     * @throws ResponseStatusException with {@link HttpStatus BAD_REQUEST} if the {@link User} making the request is the same as the one to be changed.
-     * @throws ResponseStatusException with {@link HttpStatus BAD_REQUEST} if the given {@link Role} is not in the database.
-     * @throws IllegalArgumentException if no {@link User} is logged in.
-     * 
      * @param changeRequest {@link EditUserDTO} with {@code id} and new {@code password} and {@code passwordConfirm}
-     * 
+     * @throws ResponseStatusException with {@code HttpStatus.BAD_REQUEST: 400} if the given {@code id} is {@code null}.
+     * @throws ResponseStatusException with {@code HttpStatus.BAD_REQUEST: 400} if the new {@code role} is {@code null} or {@code blank}.
+     * @throws ResponseStatusException with {@code HttpStatus.BAD_REQUEST: 400} if the {@link User} making the request is the same as the one to be changed.
+     * @throws ResponseStatusException with {@code HttpStatus.BAD_REQUEST: 400} if the given {@link Role} is not in the database.
+     * @throws IllegalArgumentException if no {@link User} is logged in.
+     * @return {@code String: Success message}
      * @see User
      * @see Role
      * @see EditUserDTO
+     * @see <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/http/HttpStatus.html">Spring HttpStatus</a>
+     * @see <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/server/ResponseStatusException.html">Spring ResponseStatusException</a>
      */
     public String changeRole(EditUserDTO changeRequest) {
         if(changeRequest.getId() == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User id cannot be null");
@@ -303,10 +279,13 @@ public class UserService {
         return "Role changed successfully";
     }
 
+
+    // ------- Private Methods -------
+
     /**
      * This method gets the current logged in {@link User}.
-     * @return current logged in {@link User}.
      * @throws IllegalArgumentException if no {@link User} is logged in.
+     * @return current logged in {@link User}.
      * @see User
      */
     private User identifyUser() {
@@ -326,9 +305,11 @@ public class UserService {
 
     /**
      * This method gets a {@link User} from the database by {@code id}.
+     * @throws ResponseStatusException with {@code HttpStatus.BAD_REQUEST: 400} if no {@link User} with the given {@code id} is found.
      * @return {@link User} with given {@code id}.
-     * @throws ResponseStatusException if no {@link User} with the given {@code id} is found.
      * @see User
+     * @see <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/http/HttpStatus.html">Spring HttpStatus</a>
+     * @see <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/server/ResponseStatusException.html">Spring ResponseStatusException</a>
      */
     private User getUser(Long id) {
         Optional<User> userOptional = userRepository.findById(id);
