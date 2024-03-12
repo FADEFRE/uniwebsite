@@ -50,11 +50,12 @@
             },
             "ExternalModules": {
                 "Heading": "Modules to be credited",
-                "0": "Module Name 'Data Structures and Algorithms'",
-                "1": "Credits Points '7.5', Credit System 'ECTS'",
-                "2": "University 'University of Gothenburg'",
-                "3": "Course 'Software Engineering and Management Bachelor's Programme'",
-                "4": "Module Description: pdf-document with the description of Data Structures and Algorithms module"
+                "0": "Module Name: 'Data Structures and Algorithms'",
+                "1": "Credits Points: '7.5'", 
+                "2": "Credit System: 'ECTS'",
+                "3": "University: 'University of Gothenburg'",
+                "4": "Course: 'Software Engineering and Management Bachelor's Programme'",
+                "5": "Module Description: pdf-document with the description of Data Structures and Algorithms module"
             },
             "ModulesLeipzig": {
                 "Heading": "Modules of Leipzig University",

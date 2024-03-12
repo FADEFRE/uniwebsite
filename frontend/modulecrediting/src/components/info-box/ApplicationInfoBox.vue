@@ -75,6 +75,7 @@ const showExample = ref(false)
           <li>{{ $t('ApplicationInfoBox.Example.ExternalModules.2') }}</li>
           <li>{{ $t('ApplicationInfoBox.Example.ExternalModules.3') }}</li>
           <li>{{ $t('ApplicationInfoBox.Example.ExternalModules.4') }}</li>
+          <li>{{ $t('ApplicationInfoBox.Example.ExternalModules.5') }}</li>
         </ul>
       </div>
       <div class="explanation-item">

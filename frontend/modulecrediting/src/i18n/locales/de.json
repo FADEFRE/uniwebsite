@@ -50,11 +50,12 @@
             },
             "ExternalModules": {
                 "Heading": "Anzurechnende Module",
-                "0": "Modulname 'Automaten und Berechenbarkeit'",
-                "1": "Punkte '10', Punktesystem 'LP'",
-                "2": "Universität 'Martin-Luther-Universität Halle-Wittenberg'",
-                "3": "Studiengang 'Informatik (B.Sc.)'",
-                "4": "Modulbeschreibung: PDF-Datei mit der Beschreibung des Moduls Automaten und Berechenbarkeit"
+                "0": "Modulname: 'Automaten und Berechenbarkeit'",
+                "1": "Punkte: '10'", 
+                "2": "Punktesystem: 'LP'",
+                "3": "Universität: 'Martin-Luther-Universität Halle-Wittenberg'",
+                "4": "Studiengang: 'Informatik (B.Sc.)'",
+                "5": "Modulbeschreibung: PDF-Datei mit der Beschreibung des Moduls Automaten und Berechenbarkeit"
             },
             "ModulesLeipzig": {
                 "Heading": "Module der Universität Leipzig",
