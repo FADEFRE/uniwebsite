@@ -13,15 +13,15 @@ import ModuleStatusIcon from "@/assets/icons/ModuleStatusIcon.vue";
       <h3 class="h4">{{ $t('FinishedInfoBox.Explanation') }}</h3>
       <ul>
         <li class="explanation-list-item">
-          <ModuleStatusIcon status-decision="accepted" size="small"/>
+          <ModuleStatusIcon status-decision="accepted" size="small" aria-hidden="true" />
           <p>{{ $t('IconModuleStatus.Accepted') }}</p>
         </li>
         <li class="explanation-list-item">
-          <ModuleStatusIcon status-decision="asExamCertificate" size="small"/>
+          <ModuleStatusIcon status-decision="asExamCertificate" size="small" aria-hidden="true" />
           <p>{{ $t('IconModuleStatus.AsExamCertificate') }}</p>
         </li>
         <li class="explanation-list-item">
-          <ModuleStatusIcon status-decision="denied" size="small"/>
+          <ModuleStatusIcon status-decision="denied" size="small" aria-hidden="true" />
           <p>{{ $t('IconModuleStatus.Denied') }}</p>
         </li>
       </ul>
