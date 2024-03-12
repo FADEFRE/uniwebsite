@@ -48,7 +48,7 @@ const props = defineProps({
     type: String
   },
   points: {
-    type: Number
+    type: String
   },
   pointSystem: {
     type: String
@@ -75,7 +75,7 @@ const university = ref(props.university || "")
 const externalCourse = ref(props.externalCourse || "")
 
 const validatePointInput = () => {
-  points.value = points.value.replace(/[^0-9]/g, '')
+  points.value = points.value.replace(/[^0-9,.]/g, '')
 }
 
 const fileInput = ref()
