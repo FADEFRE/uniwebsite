@@ -153,7 +153,7 @@ public class UserService {
 
     /**
      * This method deletes a {@link User}.
-     * @param deleteRequest {@link EditUserDTO} with {@code id}
+     * @param requestId {@code id} of the {@link User} to be deleted
      * @throws ResponseStatusException with {@code HttpStatus.BAD_REQUEST: 400} if no {@link User Users} are saved in the database.
      * @throws ResponseStatusException with {@code HttpStatus.BAD_REQUEST: 400} if the given {@code id} is {@code null}.
      * @throws ResponseStatusException with {@code HttpStatus.BAD_REQUEST: 400} if the {@link User} making the request is the same as the one to be deleted.
