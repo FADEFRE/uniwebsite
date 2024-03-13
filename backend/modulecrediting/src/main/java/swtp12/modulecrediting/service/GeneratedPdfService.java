@@ -1,6 +1,5 @@
 package swtp12.modulecrediting.service;
 
-
 import java.io.ByteArrayOutputStream;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -20,9 +19,20 @@ import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.kernel.pdf.WriterProperties;
 import com.itextpdf.layout.font.FontProvider;
 
-import swtp12.modulecrediting.model.*;
+import swtp12.modulecrediting.model.Application;
+import swtp12.modulecrediting.model.EnumApplicationStatus;
+import swtp12.modulecrediting.model.EnumModuleConnectionDecision;
+import swtp12.modulecrediting.model.ExternalModule;
+import swtp12.modulecrediting.model.ModuleLeipzig;
+import swtp12.modulecrediting.model.ModulesConnection;
 
-
+/**
+ * This is a {@code Service} for generating the PDF for an {@link Application}
+ * @author Jonas Fischer
+ * @author Luca Kippe
+ * @see #generatePdfFromHtml
+ * @see <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/stereotype/Service.html">Spring Service</a>
+ */
 @Service
 public class GeneratedPdfService {
     @Autowired
@@ -30,7 +40,55 @@ public class GeneratedPdfService {
     public static final String FONTS_JOST = "src/main/resources/static/fonts/jost";
     public static final String FONTS_ROMAN = "src/main/resources/static/fonts/TimesNewRoman";
 
-    public String generalDataTemplate(String id) {
+
+    /**
+     * This method creates the {@code PDF-Data} for an {@link Application} from an HTML template
+     * @param id {@code String} the ID of an {@link Application}
+     * @return {@code byte[]} that represents the PDF
+     * @see Application
+     */
+    public byte[] generatePdfFromHtml(String id) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+        WriterProperties writerProperties = new WriterProperties();
+
+        ConverterProperties properties = new ConverterProperties();
+        FontProvider fontProvider = new DefaultFontProvider();
+        fontProvider.addDirectory(FONTS_JOST);
+
+        properties.setFontProvider(fontProvider);
+
+        PdfWriter pdfWriter = new PdfWriter(outputStream, writerProperties);
+        PdfDocument pdfDocument = new PdfDocument(pdfWriter);
+
+        StringBuilder html = new StringBuilder();
+
+        // Convert the general data HTML to PDF
+        html.append(generalDataTemplate(id));
+
+        // Convert each module connection HTML to PDF and append to the main document
+        Application application = applicationService.getApplicationById(id);
+        List<ModulesConnection> modulesConnections = application.getModulesConnections();
+        for(ModulesConnection mc : modulesConnections) {
+            html.append(modulesConnectionsTemplate(mc));
+        }
+
+        HtmlConverter.convertToPdf(html.toString(), pdfDocument, properties);
+
+        pdfDocument.close(); // Close the main PdfDocument
+        return outputStream.toByteArray();
+    }
+
+
+    // ------- Private Methods -------
+
+    /**
+     * This method generates the general Data Template for the PDF of an {@link Application}
+     * @param id {@code String} the ID of an {@link Application}
+     * @return template as a {@code String}
+     * @see Application
+     */
+    private String generalDataTemplate(String id) {
         ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
         templateResolver.setSuffix(".html");
         templateResolver.setPrefix("templates/");
@@ -62,7 +120,13 @@ public class GeneratedPdfService {
         return templateEngine.process("GeneralData", context);
     }
 
-    public String modulesConnectionsTemplate(ModulesConnection modulesConnection) {
+    /**
+     * This method geneates the template for a {@link ModulesConnection}
+     * @param modulesConnection {@link ModulesConnection}
+     * @return template as a {@code String}
+     * @see ModulesConnection
+     */
+    private String modulesConnectionsTemplate(ModulesConnection modulesConnection) {
         ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
         templateResolver.setSuffix(".html");
         templateResolver.setPrefix("templates/");
@@ -76,7 +140,14 @@ public class GeneratedPdfService {
         return templateEngine.process("ModulesConnection", modulesConnectionContext);
     }
 
-    public Context fillModuleConnectionTemplate(ModulesConnection connection) {
+    /**
+     * This method creates the {@code Context} for a {@link ModulesConnection}
+     * @param connection {@link ModulesConnection}
+     * @return {@code Context} of the given {@link ModulesConnection}
+     * @see ModulesConnection
+     * @see <a href="https://www.thymeleaf.org/apidocs/thymeleaf/2.0.2/org/thymeleaf/context/Context.html">Thymeleaf Context</a>
+     */
+    private Context fillModuleConnectionTemplate(ModulesConnection connection) {
         Context context = new Context();
 
         List<ExternalModule> externalModules = connection.getExternalModules();
@@ -113,38 +184,6 @@ public class GeneratedPdfService {
         context.setVariable("commentDecision", connection.getCommentDecision());
 
         return context;
-    }
-
-    public byte[] generatePdfFromHtml(String id) {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-
-        WriterProperties writerProperties = new WriterProperties();
-
-        ConverterProperties properties = new ConverterProperties();
-        FontProvider fontProvider = new DefaultFontProvider();
-        fontProvider.addDirectory(FONTS_JOST);
-
-        properties.setFontProvider(fontProvider);
-
-        PdfWriter pdfWriter = new PdfWriter(outputStream, writerProperties);
-        PdfDocument pdfDocument = new PdfDocument(pdfWriter);
-
-        StringBuilder html = new StringBuilder();
-
-        // Convert the general data HTML to PDF
-        html.append(generalDataTemplate(id));
-
-        // Convert each module connection HTML to PDF and append to the main document
-        Application application = applicationService.getApplicationById(id);
-        List<ModulesConnection> modulesConnections = application.getModulesConnections();
-        for(ModulesConnection mc : modulesConnections) {
-            html.append(modulesConnectionsTemplate(mc));
-        }
-
-        HtmlConverter.convertToPdf(html.toString(), pdfDocument, properties);
-
-        pdfDocument.close(); // Close the main PdfDocument
-        return outputStream.toByteArray();
     }
 
 }
