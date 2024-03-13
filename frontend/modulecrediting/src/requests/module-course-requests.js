@@ -99,6 +99,9 @@ create new course leipzig
 
 parameters:
     courseName - String, name of course
+
+throws:
+    Conflict (409) if courseName already exists
  */
 function postCourseLeipzig(courseName) {
     consoleDebug(axiosColor, "create course leipzig (name: " + courseName + ")");
@@ -119,6 +122,10 @@ create new module leipzig
 parameters:
     moduleName - String, name of module
     moduleCode - String, code of module
+
+throws:
+    Conflict (409) if moduleName already exists
+    Conflict (409) if moduleCode already exists
  */
 function postModuleLeipzig(moduleName, moduleCode) {
     consoleDebug(axiosColor, "create module leipzig (name: " + moduleName + ")");
@@ -202,6 +209,9 @@ modifies name of a course
 parameters:
     courseName - String, old name of the course
     newCourseName - String, new name of the course
+
+throws:
+    Conflict (409) if courseName already exists
  */
 function putUpdateCourseLeipzig(courseName, newCourseName) {
     consoleDebug(axiosColor, "putUpdateCourseLeipzig", axiosColor);
@@ -222,6 +232,10 @@ parameters:
     moduleName - String, old name of the module
     newModuleName - Sting, new name of the module
     newModuleCode - String, new code of the module
+
+throws:
+    Conflict (409) if moduleName already exists
+    Conflict (409) if moduleCode already exists
  */
 function putUpdateModuleLeipzig(moduleName, newModuleName, newModuleCode) {
     consoleDebug(axiosColor, "putUpdateModuleLeipzig (moduleName: " + moduleName + ", newModuleName: " + newModuleName + ", newModuleCode: " + newModuleCode + ")")
