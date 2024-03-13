@@ -1,14 +1,12 @@
-<!--
-displays link overview for one application
-props:
-  - connectionData, array of objects, each having id (Number),
-    externalModules (array of Strings), internalModules (array of Strings) property
--->
-
 <script setup>
 import ArrowIcon from '@/assets/icons/ArrowIcon.vue';
 
+/*
+links to every connection
+*/
+
 const props = defineProps({
+  /* array of connection objects, each containing id and externalModules */
   connectionsData: {
     required: true,
     type: Array,
@@ -34,7 +32,6 @@ const scrollTo = (id) => {
         <ArrowIcon direction="right" color="red" :hover="true"/>
       </div>
     </div>
-    
 
   </div>
 </template>
