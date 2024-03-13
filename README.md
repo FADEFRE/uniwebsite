@@ -2,13 +2,14 @@
 
 1. **[Setup and settings](#1-setup-and-settings)**
     1. [Setup backend and database (development)](#11-setup-backend-and-database-development)
-    2. [Dataloader settings in *.properties files](#12-dataloader-settings-in-application-devprodproperties)
+    2. [Setup frontend (development)]()
+    3. [Dataloader settings in *.properties files](#13-dataloader-settings-in-application-devprodproperties)
          - [app.config.data.adminUsername/Password](#appconfigdataadminusernamepassword)
          - [app.config.data.loadTestData](#appconfigdataloadtestdata-true--false)
-    3. [Other application.properties settings](#13-other-applicationproperties-settings)
+    4. [Other application.properties settings](#14-other-applicationproperties-settings)
         - [spring.jpa.hibernate.ddl-auto](#springjpahibernateddl-auto-create-drop--update)
         - [server.port](#serverport--default-8090)
-    4. [Test Data](#14-test-data)
+    5. [Test Data](#15-test-data)
         - [users](#1-parameters-to-create-these-users)
         - [random applications](#2-parameters-to-create-randapplications)
         - [random external modules](#3-parameters-to-create-randexternalmodules)
@@ -43,7 +44,6 @@
         - [GET-Requests](#get---requests-6)
         - [POST-Requests](#post---requests-5)
         - [PUT-Requests](#put---requests-3)
-        - [DELETE-Requests](#delete---requests-2)
 
 .  
  <a href="#top">Back to top</a>
@@ -71,7 +71,32 @@ pgAdmin 4: https://www.pgadmin.org/download/
 
  <a href="#top">Back to top</a>
 
-## 1.2. Dataloader settings in application-(dev/prod).properties:
+## 1.2. Setup frontend (development)
+
+Node: https://nodejs.org/en/download/
+
+1. After Node is installed, run these commands in frontend\modulecrediting\src\
+   - npm install
+
+   - npm run dev
+
+2. After the first install, only "npm run dev" needs to be executed to start the frontend
+
+3. (optional) for dev purposes you can add a "jsconfig.json" file to frontend\modulecrediting\ with following content, to remove some IDE warnings:
+
+         {
+            "compilerOptions": {
+               "baseUrl": ".",
+               "paths": {
+                  "@/*": ["./src/*"],
+               }
+            }
+         }
+
+
+ <a href="#top">Back to top</a>
+
+## 1.3. Dataloader settings in application-(dev/prod).properties:
 ### > app.config.data.adminUsername/Password:
 Everytime the backend service is started, the dataloader will check if at least one admin-user exists. 
 If it does not, the dataloader will create an admin-user with these parameters.
@@ -82,7 +107,7 @@ The TestDataLoader class reads in test_data.json from the backend ressources fol
 
  <a href="#top">Back to top</a>
 
-## 1.3. Other application.properties settings:
+## 1.4. Other application.properties settings:
 ### > spring.jpa.hibernate.ddl-auto= create-drop / update
 This will tell jpa what to do on startup and shutdown.
 
@@ -103,7 +128,7 @@ When set to "true", the refreshTokenExpirationDate will be changed to midnight a
 
  <a href="#top">Back to top</a>
 
-## 1.4. Test Data
+## 1.5. Test Data
 ### The testData currently includes:
 #### 1. Parameters to create these "users":
 
@@ -182,19 +207,19 @@ In some cases Views are used, instead of DTOs, to generate ResponseData
 ### _**GET - Requests:**_
 
 #### > **/api/applications**
- - returns a "List" of all "Applications" with fields definied by "Views.ApplicationLoginOverview"
  - required role:
     - ROLE_STUDY
     - ROLE_CHAIR
+ - returns a "List" of all "Applications" with fields definied by "Views.ApplicationLoginOverview"
  - http://localhost:8090/api/applications
 
 #### > **/api/applications/{id}**
  - pathvariables:
     - {id} ->  id of the requested application
- - returns corresponding "Application" with fields definied by "Views.ApplicationLoginOverview"
  - required role:
     - ROLE_STUDY
     - ROLE_CHAIR
+ - returns corresponding "Application" with fields definied by "Views.ApplicationLoginOverview"
  - http://localhost:8090/api/applications/{id}
 
 #### > **/api/applications/student/{id}**
@@ -212,10 +237,10 @@ In some cases Views are used, instead of DTOs, to generate ResponseData
 #### > **/api/applications/{id}/update-status-allowed**
  - pathvariables:
     - {id} ->  id of the requested application 
- - returns "EnumStatusChangeAllowed" 
  - required role:
     - ROLE_STUDY
     - ROLE_CHAIR
+ - returns "EnumStatusChangeAllowed" 
  - http://localhost:8090/api/applications/{id}/update-status-allowed
 
 
@@ -597,7 +622,8 @@ This basic formdata is used in most "Application"-Requests
  - returns success message
  - http://localhost:8090/api/user/change/role
 
-
+ <a href="#top">Back to top</a>
+ 
 ### _**DELETE - Requests:**_
 
 #### > **/api/user**
