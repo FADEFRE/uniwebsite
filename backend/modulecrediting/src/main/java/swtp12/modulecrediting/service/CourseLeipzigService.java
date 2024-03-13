@@ -55,6 +55,7 @@ public class CourseLeipzigService {
             return courseLeipzigRepository.save(new CourseLeipzig(name));
         });
         LogUtil.printCourseLog(LogUtil.CourseType.CREATED, name, null);
+        courseLeipzig.setIsActive(true);
         return courseLeipzig;
     }
 

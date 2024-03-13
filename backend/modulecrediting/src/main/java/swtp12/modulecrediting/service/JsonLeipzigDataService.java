@@ -56,14 +56,14 @@ public class JsonLeipzigDataService {
 
     public void uploadData(MultipartFile multipartFile) {
         JsonNode coursesNode = JsonUtil.grabJsonNodeFromMultipartFile(multipartFile, "courses");
-        List<Long> courseIds = getAllCourseIds();
-        List<Long> moduelIds = getAllModuleIds();
+        List<Long> courseIdsToRemove = getAllCourseIds();
+        List<Long> moduelIdsToRemove = getAllModuleIds();
         LogUtil.printLog("--- Uploaded JSON Data. Starting editing of data: ---");
         for (JsonNode course : coursesNode) {
             LogUtil.printLog("");
             String courseName = course.get("name").asText();
             CourseLeipzig courseLeipzig = courseLeipzigService.findOrCreateNewCourseLeipzig(courseName);
-            courseIds.remove(courseLeipzig.getId());
+            courseIdsToRemove.remove(courseLeipzig.getId());
             courseLeipzig.removeModulesLeipzig();
             List<ModuleLeipzigDTO> moduleLeipzigDTOs = new ArrayList<>();
 
@@ -72,7 +72,7 @@ public class JsonLeipzigDataService {
                 String moduleName = module.get("name").asText();
                 String moduleCode = module.get("code").asText();
                 ModuleLeipzig moduleLeipzig = moduleLeipzigService.findOrCreateNewModuleLeipzig(moduleName, moduleCode);
-                moduelIds.remove(moduleLeipzig.getId());
+                moduelIdsToRemove.remove(moduleLeipzig.getId());
                 moduleLeipzigDTOs.add(new ModuleLeipzigDTO(moduleLeipzig.getName(), moduleLeipzig.getCode()));
             }
 
@@ -80,7 +80,7 @@ public class JsonLeipzigDataService {
             courseLeipzigService.saveCourseLeipzigToDatabase(courseLeipzig);
         }
 
-        removeAllNonUploaded(courseIds, moduelIds);
+        removeAllNonUploaded(courseIdsToRemove, moduelIdsToRemove);
         LogUtil.printLog("");
         LogUtil.printLog("--- Finished editing of data provided by uploaded JSON ---");
     }
