@@ -237,7 +237,7 @@ public class ModulesConnectionService {
 
         // create modules lepizig relation
         if(modulesConnectionDTO.getModulesLeipzig() != null) { // no modules leipzig sent in dto
-            List<ModuleLeipzig> modulesLeipzig = moduleLeipzigService.getModulesLeipzigByNames(modulesConnectionDTO.getModulesLeipzig());
+            List<ModuleLeipzig> modulesLeipzig = moduleLeipzigService.getModulesLeipzigByNamesFromDTO(modulesConnectionDTO.getModulesLeipzig());
             modulesConnection.setModulesLeipzig(modulesLeipzig);
         }
 
