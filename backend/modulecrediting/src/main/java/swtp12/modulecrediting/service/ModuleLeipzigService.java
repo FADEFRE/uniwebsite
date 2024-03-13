@@ -24,11 +24,12 @@ import swtp12.modulecrediting.util.LogUtil;
  * @see #getAllModulesLeipzig
  * @see #getModuleLeipzigByName
  * @see #getModuleLeipzigNameById
- * @see #getOriginalModulesConnectionsWithFormalRejectionData
- * @see #getRelatedModulesConnections
- * @see #createModulesConnectionsWithDuplicate
- * @see #updateModulesConnection
- * @see #deleteOriginalModulesConnections
+ * @see #getModulesLeipzigByNamesFromDTO
+ * @see #updateRelationModulesConnectionToModulesLeipzig
+ * @see #findOrCreateNewModuleLeipzig
+ * @see #createModuleLeipzig
+ * @see #updateModuleLeipzig
+ * @see #deleteModuleLeipzig
  * @see <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/stereotype/Service.html">Spring Service</a>
  */
 @Service
