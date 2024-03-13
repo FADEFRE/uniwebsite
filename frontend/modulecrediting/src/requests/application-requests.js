@@ -54,8 +54,8 @@ function createBasicFormData(courseLeipzig, basicConnectionObjects) {
 }
 
 /*
-GET-Request to '/applications' endpoint
-returns list of applications (only data needed for overview)
+GET-Request to '/api/applications' endpoint
+returns list of applications (containing only data needed for overview)
 
 parameters:
     none
@@ -71,8 +71,8 @@ function getApplications() {
 }
 
 /*
-GET-Request to '/applications/{id}' endpoint
-returns data of the related application
+GET-Request to '/api/applications/{id}' endpoint
+returns data of the application
 
 parameters:
     id - Number, application id
@@ -94,8 +94,8 @@ function getApplicationById(id) {
 }
 
 /*
-GET-Request to '/applications/student/{id}' endpoint
-return application data without study office and chairman data
+GET-Request to '/api/applications/student/{id}' endpoint
+returns data of the application (only data that should be visible to applicants)
 
 parameters:
     id - Number, application id
@@ -117,8 +117,9 @@ function getApplicationByIdForStatus(id) {
 }
 
 /*
-GET-Request to '/applications/{id}/exists' endpoint
-returns true if application with id exists: else returns false
+GET-Request to '/api/applications/{id}/exists' endpoint
+returns true if application with id exists
+else returns false
 
 parameters:
     id - Number, application id
@@ -134,8 +135,8 @@ function getApplicationExists(id) {
 }
 
 /*
-GET-Request to '/applications/{id}/related' endpoint
-returns related module connections
+GET-Request to '/api/applications/{id}/related' endpoint
+returns list of all related module-connections
 
 parameters:
     moduleConnectionId - Number, module connection id
@@ -153,7 +154,7 @@ function getRelatedModuleConnections(moduleConnectionId) {
 }
 
 /*
-GET-Request to /applications/{id}/update-status-allowed endpoint
+GET-Request to '/api/applications/{id}/update-status-allowed' endpoint
 returns true/false if updating application status is allowed
 
 parameters:
@@ -170,13 +171,16 @@ function getUpdateStatusAllowed(id) {
 }
 
 /*
-POST-Request to '/applications' endpoint
+POST-Request to '/api/applications' endpoint
 posts a new application
 
 parameters:
     course - String, must match a backend option
-    applicationObjects - array of objects, each containing String moduleName, String university, Number CreditPoints, ...
-    ... String pointSystem, File descriptionFile, String comment, array of Strings selectedInternalModules
+    applicationObjects - array of objects, each containing ...
+        externalModules, list of objects, each containing ...
+            String name, String points, String pointSystem, String university, String externalCourse, PDF description
+        internalModules, list of Strings (must match existing module names)
+        commentApplicant, String comment
  */
 function postApplication(course, applicationObjects) {
     consoleDebug(axiosColor, "postApplication (course: " + course + ", applicationObjects: " + applicationObjects + ")");
@@ -234,6 +238,20 @@ function postApplication(course, applicationObjects) {
         });
 }
 
+/*
+PUT-request to '/api/applications/student/{id}' endpoint
+puts new application data
+
+parameters:
+    applicationId - Number, application id
+    courseLeipzig - String, must match an existing course
+    applicationObjects - array of objects, each containing ...
+        id, Number, connection id
+        externalModules, list of objects, each containing ...
+            Number id, String name, String points, String pointSystem, String university, String externalCourse, (optional) PDF description
+        internalModules, list of Strings (must match existing module names)
+        commentApplicant, String comment
+ */
 function putApplicationStudent(applicationId, courseLeipzig, connectionObjects) {
     consoleDebug(axiosColor, "putApplicationStandard (applicationId: " + applicationId + ", courseLeipzig: " + courseLeipzig + ", connectionsObjects: " + connectionObjects + ")");
 
@@ -262,6 +280,23 @@ function putApplicationStudent(applicationId, courseLeipzig, connectionObjects) 
         });
 }
 
+/*
+PUT-request to '/api/applications/study-office/{id}' endpoint
+puts modified application data and decision data
+
+parameters:
+    applicationId - Number, application id
+    courseLeipzig - String, must match an existing course
+    applicationObjects - array of objects, each containing ...
+        id, Number, connection id
+        externalModules, list of objects, each containing ...
+            Number id, String name, String points, String pointSystem, String university, String externalCourse, (optional) PDF description
+        internalModules, list of Strings (must match existing module names)
+        formalRejectionData, object containing ...
+            Boolean formalRejection, String comment
+        studyOfficeDecisionData, object containing ...
+            Boolean decision, String comment
+ */
 function putApplicationStudyOffice(applicationId, courseLeipzig, connectionObjects) {
     consoleDebug(axiosColor, "putApplicationStudyOffice (applicationId: " + applicationId + ", courseLeipzig: " + courseLeipzig + ", connectionsObjects: " + connectionObjects + ")");
 
@@ -308,6 +343,21 @@ function putApplicationStudyOffice(applicationId, courseLeipzig, connectionObjec
         });
 }
 
+/*
+PUT-request to '/api/applications/chairman/{id}' endpoint
+puts modified application data and decision data
+
+parameters:
+    applicationId - Number, application id
+    courseLeipzig - String, must match an existing course
+    applicationObjects - array of objects, each containing ...
+        id, Number, connection id
+        externalModules, list of objects, each containing ...
+            Number id, String name, String points, String pointSystem, String university, String externalCourse, (optional) PDF description
+        internalModules, list of Strings (must match existing module names)
+        chairmanDecisionData, object containing ...
+            Boolean decision, String comment
+ */
 function putApplicationChairman(applicationId, courseLeipzig, connectionObjects) {
     consoleDebug(axiosColor, "putApplicationStudyOffice (applicationId: " + applicationId + ", courseLeipzig: " + courseLeipzig + ", connectionsObjects: " + connectionObjects + ")");
 
@@ -336,7 +386,7 @@ function putApplicationChairman(applicationId, courseLeipzig, connectionObjects)
 }
 
 /*
-PUT-Request to /applications/{id}/update-status endpoint
+PUT-Request to '/api/applications/{id}/update-status' endpoint
 updates application status if possible
 
 parameters:
@@ -355,15 +405,16 @@ function putUpdateStatus(id) {
 }
 
 export {
+    // GET-requests
     getApplications,
     getApplicationById,
     getApplicationByIdForStatus,
     getApplicationExists,
     getRelatedModuleConnections,
     getUpdateStatusAllowed,
-
+    // POST-requests
     postApplication,
-
+    // PUT-requests
     putApplicationStudent,
     putApplicationStudyOffice,
     putApplicationChairman,

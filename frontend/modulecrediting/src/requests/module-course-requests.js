@@ -4,9 +4,9 @@ import { consoleDebug } from "@/requests/consoleDebug";
 let axiosColor = "color:deepskyblue";
 
 /*
-GET-Request to '/courses-leipzig' endpoint
-return list of all course names
-removes non active courses
+GET-Request to '/api/courses-leipzig' endpoint
+return list with names of all active courses
+
 parameters:
     none
  */
@@ -23,8 +23,8 @@ function getCoursesLeipzigName() {
 }
 
 /*
-GET-Request to '/courses-leipzig' endpoint
-returns a list containing all modules related to a specific course
+GET-Request to '/api/courses-leipzig' endpoint
+returns a sorted list with names of all modules associated to a specific course
 
 parameters:
     course - String, course name
@@ -45,6 +45,13 @@ function getModulesByCourse(course) {
         });
 }
 
+/*
+GET-request to '/api/modules-leipzig' endpoint
+returns a list of all active modules (each object containing name and code) sorted by name
+
+parameters:
+    none
+ */
 function getModulesNameCode() {
     consoleDebug(axiosColor, "getModulesNameCode");
 
@@ -64,9 +71,8 @@ function getModulesNameCode() {
 }
 
 /*
-GET-Request to '/courses-leipzig' endpoint
-returns a list containing all modules related to a specific course
-{name: module name, code: module code }
+GET-Request to '/api/courses-leipzig' endpoint
+returns a list of all active modules (each object containing name and code) associated to a specific course sorted by name
 
 parameters:
     course - String, course name
@@ -92,7 +98,7 @@ POST-Request to '/api/courses-leipzig' endpoint
 create new course leipzig
 
 parameters:
-    name of course
+    courseName - String, name of course
  */
 function postCourseLeipzig(courseName) {
     consoleDebug(axiosColor, "create course leipzig (name: " + courseName + ")");
@@ -111,8 +117,8 @@ POST-Request to '/api/modules-leipzig' endpoint
 create new module leipzig
 
 parameters:
-    moduleName
-    moduleCode
+    moduleName - String, name of module
+    moduleCode - String, code of module
  */
 function postModuleLeipzig(moduleName, moduleCode) {
     consoleDebug(axiosColor, "create module leipzig (name: " + moduleName + ")");
@@ -127,6 +133,30 @@ function postModuleLeipzig(moduleName, moduleCode) {
         .catch((error) => Promise.reject(error));
 }
 
+/*
+POST-request to '/file/json/courses/upload' endpoint
+configures courses and modules according to configuration file
+new courses and modules will be created
+existing courses and modules, that are not mentioned in the configuration file, will be deleted / set inactive
+
+parameters:
+    configFile - JSON file of structure like below
+
+|file structure|
+courses: [
+    {
+        name: ___,
+        modules : [
+            {
+                name: ___,
+                code: ___
+            },
+            ...
+        ]
+    },
+    ...
+]
+ */
 function postJsonConfig(configFile) {
     consoleDebug(axiosColor, "postJsonConfig (configFile: " + configFile + ")")
 
@@ -139,7 +169,16 @@ function postJsonConfig(configFile) {
         })
 }
 
-function putCourseLeipzigEdit(coursename, moduleList) {
+/*
+PUT-request to '/api/courses-leipzig/{courseName}/edit' endpoint
+modifies list of associated modules for a course
+
+parameters:
+    courseName, String name of the course to be modified
+    moduleList, list of objects (modules to be associated to the course), each containing ...
+        String name, String code
+ */
+function putCourseLeipzigEdit(courseName, moduleList) {
     consoleDebug(axiosColor, "putCourseLeipzigEdit");
 
     const formData = new FormData();
@@ -150,12 +189,20 @@ function putCourseLeipzigEdit(coursename, moduleList) {
     });
 
     return httpClient
-        .put(`/api/courses-leipzig/${coursename}/edit`, formData)
+        .put(`/api/courses-leipzig/${courseName}/edit`, formData)
         .then((response) => response.data)
         .catch((_) => {
         });
 }
 
+/*
+PUT-request to '/api/courses-leipzig/{courseName}' endpoint
+modifies name of a course
+
+parameters:
+    courseName - String, old name of the course
+    newCourseName - String, new name of the course
+ */
 function putUpdateCourseLeipzig(courseName, newCourseName) {
     consoleDebug(axiosColor, "putUpdateCourseLeipzig", axiosColor);
 
@@ -167,6 +214,15 @@ function putUpdateCourseLeipzig(courseName, newCourseName) {
         .then((response) => response.data)
 }
 
+/*
+PUT-request to '/api/modules-leipzig/{moduleName}' endpoint
+modifies name and code of a module
+
+parameters:
+    moduleName - String, old name of the module
+    newModuleName - Sting, new name of the module
+    newModuleCode - String, new code of the module
+ */
 function putUpdateModuleLeipzig(moduleName, newModuleName, newModuleCode) {
     consoleDebug(axiosColor, "putUpdateModuleLeipzig (moduleName: " + moduleName + ", newModuleName: " + newModuleName + ", newModuleCode: " + newModuleCode + ")")
 
@@ -179,40 +235,55 @@ function putUpdateModuleLeipzig(moduleName, newModuleName, newModuleCode) {
         .then(response => response.data)
 }
 
-function deleteCourseLeipzig(coursename) {
+/*
+DELETE-request to '/api/courses-leipzig/{courseName}' endpoint
+deletes a course (or if referenced in any application will be set inactive)
+
+parameters:
+    courseName - String, name of the course to be deleted
+ */
+function deleteCourseLeipzig(courseName) {
     consoleDebug(axiosColor, "deleteCourseLeipzig");
 
     return httpClient
-        .delete(`/api/courses-leipzig/${coursename}`)
+        .delete(`/api/courses-leipzig/${courseName}`)
         .then((response) => response.data)
         .catch((_) => {
         });
 }
 
-function deleteModuleLeipzig(modulename) {
+/*
+DELETE-request to '/api/modules-leipzig/{moduleName}' endpoint
+deletes a module (or if referenced in any application will be set inactive)
+
+parameters:
+    moduleName - String, name of the module to be deleted
+ */
+function deleteModuleLeipzig(moduleName) {
     consoleDebug(axiosColor, "deleteModuleLeipzig");
 
     return httpClient
-        .delete(`/api/modules-leipzig/${modulename}`)
+        .delete(`/api/modules-leipzig/${moduleName}`)
         .then((response) => response.data)
         .catch((_) => {
         });
 }
 
 export {
+    // GET-requests
     getCoursesLeipzigName,
     getModulesByCourse,
     getModulesNameCode,
     getModulesNameCodeByCourse,
-
+    // POST-requests
     postCourseLeipzig,
     postModuleLeipzig,
     postJsonConfig,
-
+    // PUT-requests
     putCourseLeipzigEdit,
     putUpdateCourseLeipzig,
     putUpdateModuleLeipzig,
-
+    // DELETE-requests
     deleteCourseLeipzig,
     deleteModuleLeipzig,
 }

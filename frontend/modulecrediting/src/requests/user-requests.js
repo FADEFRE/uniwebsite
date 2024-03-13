@@ -3,6 +3,13 @@ import { consoleDebug } from "@/requests/consoleDebug";
 
 let axiosColor = "color:deepskyblue";
 
+/*
+GET-request to '/api/user/all' endpoint
+returns list of all users (username, userId, role)
+
+parameters:
+    none
+ */
 function getAllUsers() {
     consoleDebug(axiosColor, "getAllUsers ()");
 
@@ -12,6 +19,14 @@ function getAllUsers() {
         })
 }
 
+/*
+GET-request to '/api/user/me' endpoint
+returns logged in user (username, userId, role)
+if not logged in returns user with all fields null
+
+parameters:
+    none
+ */
 function getUserMe() {
     consoleDebug(axiosColor, "getUserMe ()")
 
@@ -21,6 +36,14 @@ function getUserMe() {
         })
 }
 
+/*
+GET-request to '/api/user/me/id' endpoint
+returns logged in user (userId)
+if not logged in returns user with userId null
+
+parameters:
+    none
+ */
 function getUserMeId() {
     consoleDebug(axiosColor, "getUserMeId ()")
 
@@ -30,6 +53,14 @@ function getUserMeId() {
         })
 }
 
+/*
+GET-request to '/api/user/me/name' endpoint
+returns logged in user (username)
+if not logged in returns user with username null
+
+parameters:
+    none
+ */
 function getUserMeName() {
     consoleDebug(axiosColor, "getUserMeName ()")
 
@@ -39,6 +70,19 @@ function getUserMeName() {
         })
 }
 
+/*
+POST-request to 'api/user/register' endpoint
+creates new user
+
+parameters:
+    username - String, username
+    password - String, password
+    passwordConfirm - String, passwordConfirm
+    role - String, must match existing role
+
+throws:
+    Conflict (409) if passwordConfirm does not match password  // todo change to Bad_Request ?
+ */
 function postNewUser(username, password, passwordConfirm, role) {
     consoleDebug(axiosColor, "create user (username: " + username + ", role: " + role + ")");
 
@@ -54,6 +98,17 @@ function postNewUser(username, password, passwordConfirm, role) {
         .catch(error => Promise.reject(error))
 }
 
+/*
+PUT-request to '/api/user/change/username' endpoint
+modifies username
+
+parameters:
+    id - Number, user id
+    username - String, new username
+
+throws:
+    Conflict (409) if username already exists
+ */
 function putUserUsername(id, username) {
     consoleDebug(axiosColor, "getUserUsername (id: " + id + ", username: " + username + ")")
 
@@ -67,6 +122,15 @@ function putUserUsername(id, username) {
         .catch(error => Promise.reject(error))
 }
 
+/*
+PUT-request to '/api/user/change/password' endpoint
+modifies password
+
+parameters:
+    id - Number, user id
+    password - String, new password
+    passwordConfirm - String, confirm new password
+ */
 function putUserPassword(id, password, passwordConfirm) {
     consoleDebug(axiosColor, "putUserPassword (id: " + id + ", password: [hidden]" + ", passwordConfirm: [hidden]" + ")")
 
@@ -82,6 +146,14 @@ function putUserPassword(id, password, passwordConfirm) {
         })
 }
 
+/*
+PUT-request to '/api/user/change/role' endpoint
+modifies role
+
+parameters:
+    id - Number, user id
+    role - String, must match existing role
+ */
 function putUserRole(id, role) {
     consoleDebug(axiosColor, "getAllUsers (id: " + id + ", role: " + role + ")");
 
@@ -96,8 +168,15 @@ function putUserRole(id, role) {
         })
 }
 
+/*
+DELETE-request to '/api/user' endpoint
+deletes user
+
+parameters:
+    id - Number, user id
+ */
 function deleteUser(id) {
-    consoleDebug(axiosColor, "delteUser (id: " + id + ")")
+    consoleDebug(axiosColor, "deleteUser (id: " + id + ")")
 
     const formData = new FormData()
 
@@ -110,16 +189,17 @@ function deleteUser(id) {
 }
 
 export {
+    // GET-requests
     getAllUsers,
     getUserMe,
     getUserMeId,
     getUserMeName,
-
+    // POST-requests
     postNewUser,
-
+    // PUT-requests
     putUserUsername,
     putUserPassword,
     putUserRole,
-
+    // DELETE-requests
     deleteUser,
 }
