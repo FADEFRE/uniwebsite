@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,6 +22,7 @@ import swtp12.modulecrediting.model.Role;
 import swtp12.modulecrediting.model.User;
 import swtp12.modulecrediting.repository.UserRepository;
 import swtp12.modulecrediting.service.UserService;
+
 
 
 @RestController
@@ -134,7 +134,7 @@ public class UserController {
     }
     
     
-    @DeleteMapping
+    @PutMapping("/delete")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<String> deleteUser(@ModelAttribute EditUserDTO deleteRequest) {
         return ResponseEntity.ok(userService.deleteUser(deleteRequest));

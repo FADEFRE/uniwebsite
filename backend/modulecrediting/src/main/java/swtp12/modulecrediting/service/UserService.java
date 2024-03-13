@@ -170,7 +170,6 @@ public class UserService {
     public String deleteUser(EditUserDTO deleteRequest) {
         if(deleteRequest.getId() == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User id cannot be null");
         User user = identifyUser();
-
         if (deleteRequest.getId() == user.getUserId()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "You can't delete yourself");
         List<User> usersDB = userRepository.findAll();
         if(usersDB.isEmpty()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "there are no users in the database");
@@ -179,7 +178,6 @@ public class UserService {
 
         User userDelete = userRepository.findById(deleteRequest.getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "No user with this id found"));
 
-        
         userRepository.delete(userDelete);
         LogUtil.printUserLog(LogUtil.UserType.DELETED, userDelete.getUsername(), userDelete.getRole().getRoleName(), null, null);
         return "User deleted successfully!";
@@ -224,7 +222,7 @@ public class UserService {
      * @throws ResponseStatusException with {@code HttpStatus.BAD_REQUEST: 400} if the {@link User} making the request is not the same as the one to be changed.
      * @throws ResponseStatusException with {@code HttpStatus.BAD_REQUEST: 400} if the new {@code password} or {@code passwordConfirm} include {@code whitespaces}, is {@code null} or {@code blank}.
      * @throws ResponseStatusException with {@code HttpStatus.BAD_REQUEST: 400} if the {@link User} with the given {@code userId} is not in the database.
-     * @throws ResponseStatusException with {@code HttpStatus.BAD_REQUEST: 400} if the given {@code password} and {@code passwordConfirm} are {@code not equal}.
+     * @throws ResponseStatusException with {@code HttpStatus.CONFLICT: 409} if the given {@code password} and {@code passwordConfirm} are {@code not equal}.
      * @throws IllegalArgumentException if no {@link User} is logged in.
      * @return {@code String: Success message}
      * @see User
@@ -242,7 +240,7 @@ public class UserService {
         if (user.getUserId() != changeRequest.getId()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User id is not matching");
         User userDb = getUser(changeRequest.getId());
 
-        if(!changeRequest.getPassword().equals(changeRequest.getPasswordConfirm())) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Passwords are not matching");
+        if(!changeRequest.getPassword().equals(changeRequest.getPasswordConfirm())) throw new ResponseStatusException(HttpStatus.CONFLICT, "Passwords are not matching");
 
         userDb.setPassword(encoder.encode(changeRequest.getPassword()));
         userRepository.save(userDb);
