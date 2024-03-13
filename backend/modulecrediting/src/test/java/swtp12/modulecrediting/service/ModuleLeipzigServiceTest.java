@@ -31,10 +31,8 @@ public class ModuleLeipzigServiceTest {
     // CreateModules - Test
     @Test
     void testCreateModuleLeipzig_NoDataGiven() {
-        ModuleLeipzigDTO moduleLeipzigDTO = new ModuleLeipzigDTO();
-
-        assertThrows(java.lang.NullPointerException.class, () -> {
-            moduleLeipzigService.createModuleLeipzig(moduleLeipzigDTO);
+        assertThrows(ResponseStatusException.class, () -> {
+            moduleLeipzigService.createModuleLeipzig(null);
         }, "No data given");
     }
 
