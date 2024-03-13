@@ -62,7 +62,7 @@ ModuleLeipzigRepository moduleLeipzigRepository;
     }
 
     public String getModuleLeipzigNameById(Long id) {
-        ModuleLeipzig moduleLeipzig = moduleLeipzigRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Course Leipzig not found with given id: " + id));
+        ModuleLeipzig moduleLeipzig = moduleLeipzigRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Module Leipzig not found with given id: " + id));
         return moduleLeipzig.getName();
     }
 
@@ -193,7 +193,7 @@ ModuleLeipzigRepository moduleLeipzigRepository;
         return "DEACTIVATED";
     }
 
-    public Boolean checkIfModuleIsUsedInApplications(ModuleLeipzig moduleLeipzig) {
+    private Boolean checkIfModuleIsUsedInApplications(ModuleLeipzig moduleLeipzig) {
         List<ModulesConnection> modulesConnections = modulesConnectionService.getAllModulesConnections();
 
         if (modulesConnections.isEmpty()) return false;

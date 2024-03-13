@@ -57,7 +57,7 @@ public class JsonLeipzigDataService {
     public void uploadData(MultipartFile multipartFile) {
         JsonNode coursesNode = JsonUtil.grabJsonNodeFromMultipartFile(multipartFile, "courses");
         List<Long> courseIdsToRemove = getAllCourseIds();
-        List<Long> moduelIdsToRemove = getAllModuleIds();
+        List<Long> moduleIdsToRemove = getAllModuleIds();
         LogUtil.printLog("--- Uploaded JSON Data. Starting editing of data: ---");
         for (JsonNode course : coursesNode) {
             LogUtil.printLog("");
@@ -72,15 +72,14 @@ public class JsonLeipzigDataService {
                 String moduleName = module.get("name").asText();
                 String moduleCode = module.get("code").asText();
                 ModuleLeipzig moduleLeipzig = moduleLeipzigService.findOrCreateNewModuleLeipzig(moduleName, moduleCode);
-                moduelIdsToRemove.remove(moduleLeipzig.getId());
+                moduleIdsToRemove.remove(moduleLeipzig.getId());
                 moduleLeipzigDTOs.add(new ModuleLeipzigDTO(moduleLeipzig.getName(), moduleLeipzig.getCode()));
             }
 
             courseLeipzigService.editCourseRelations(courseLeipzig.getName(), new CourseLeipzigRelationEditDTO(moduleLeipzigDTOs));
             courseLeipzigService.saveCourseLeipzigToDatabase(courseLeipzig);
         }
-
-        removeAllNonUploaded(courseIdsToRemove, moduelIdsToRemove);
+        removeAllNonUploaded(courseIdsToRemove, moduleIdsToRemove);
         LogUtil.printLog("");
         LogUtil.printLog("--- Finished editing of data provided by uploaded JSON ---");
     }
@@ -107,14 +106,19 @@ public class JsonLeipzigDataService {
     private void removeAllNonUploaded(List<Long> courseIds, List<Long> moduleIds) {
         for (Long courseId : courseIds) {
             String courseName = courseLeipzigService.getCourseLeipzigNameById(courseId);
-            courseLeipzigService.deleteCourseLeipzig(courseName);
+            CourseLeipzig courseLeipzig = courseLeipzigService.getCourseLeipzigByName(courseName);
+            if (courseLeipzig.getIsActive()) {
+                courseLeipzigService.deleteCourseLeipzig(courseName);
+            }
         }
 
         for (Long moduleId : moduleIds) {
             String moduleName = moduleLeipzigService.getModuleLeipzigNameById(moduleId);
-            moduleLeipzigService.deleteModuleLeipzig(moduleName);
+            ModuleLeipzig moduleLeipzig = moduleLeipzigService.getModuleLeipzigByName(moduleName);
+            if (moduleLeipzig.getIsActive()) {
+                moduleLeipzigService.deleteModuleLeipzig(moduleName);
+            }
         }
-
     }
 
 }
