@@ -112,7 +112,7 @@ public class UserService {
      * @throws ResponseStatusException with {@code HttpStatus.BAD_REQUEST: 400} if any of the needed {@link EditUserDTO} fields are {@code null} or {@code blank}.
      * @throws ResponseStatusException with {@code HttpStatus.BAD_REQUEST: 400} if the given {@code role} does not exist.
      * @throws ResponseStatusException with {@code HttpStatus.BAD_REQUEST: 400} if the given {@code username} or {@code password(Confirm)} include {@code whitespaces}.
-     * @throws ResponseStatusException with {@code HttpStatus.BAD_REQUEST: 400} if the given {@code password} and {@code passwordConfirm} are {@code not equal}.
+     * @throws ResponseStatusException with {@code HttpStatus.BAD_REQUEST: 400} if the given {@code password} and {@code passwordConfirm} are {@code not equal}.(Bcs it should already be checked in frontend)
      * @throws ResponseStatusException with {@link HttpStatus CONFLICT} if a {@link User} with the given username already {@code exists}.
      * @return {@code String: Success message}
      * @see User
@@ -222,7 +222,7 @@ public class UserService {
      * @throws ResponseStatusException with {@code HttpStatus.BAD_REQUEST: 400} if the {@link User} making the request is not the same as the one to be changed.
      * @throws ResponseStatusException with {@code HttpStatus.BAD_REQUEST: 400} if the new {@code password} or {@code passwordConfirm} include {@code whitespaces}, is {@code null} or {@code blank}.
      * @throws ResponseStatusException with {@code HttpStatus.BAD_REQUEST: 400} if the {@link User} with the given {@code userId} is not in the database.
-     * @throws ResponseStatusException with {@code HttpStatus.CONFLICT: 409} if the given {@code password} and {@code passwordConfirm} are {@code not equal}.
+     * @throws ResponseStatusException with {@code HttpStatus.BAD_REQUEST: 400} if the given {@code password} and {@code passwordConfirm} are {@code not equal}. (Bcs it should already be checked in frontend)
      * @throws IllegalArgumentException if no {@link User} is logged in.
      * @return {@code String: Success message}
      * @see User
@@ -240,7 +240,7 @@ public class UserService {
         if (user.getUserId() != changeRequest.getId()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User id is not matching");
         User userDb = getUser(changeRequest.getId());
 
-        if(!changeRequest.getPassword().equals(changeRequest.getPasswordConfirm())) throw new ResponseStatusException(HttpStatus.CONFLICT, "Passwords are not matching");
+        if(!changeRequest.getPassword().equals(changeRequest.getPasswordConfirm())) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Passwords are not matching");
 
         userDb.setPassword(encoder.encode(changeRequest.getPassword()));
         userRepository.save(userDb);
