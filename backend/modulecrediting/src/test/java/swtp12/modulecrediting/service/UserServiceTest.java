@@ -46,12 +46,11 @@ public class UserServiceTest {
 
     @Test
     void testDeleteUser() {
-        EditUserDTO deleteRequest = new EditUserDTO();
-        deleteRequest.setId(1L);
+        Long requestId = 1L;
 
-        when(userRepository.findById(deleteRequest.getId())).thenReturn(Optional.empty());
+        when(userRepository.findById(requestId)).thenReturn(Optional.empty());
 
-        assertThrows(ResponseStatusException.class, () -> userService.deleteUser(deleteRequest));
+        assertThrows(ResponseStatusException.class, () -> userService.deleteUser(requestId));
     }
 
     @Test

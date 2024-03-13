@@ -167,16 +167,16 @@ public class UserService {
      * @see <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/http/HttpStatus.html">Spring HttpStatus</a>
      * @see <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/server/ResponseStatusException.html">Spring ResponseStatusException</a>
      */
-    public String deleteUser(EditUserDTO deleteRequest) {
-        if(deleteRequest.getId() == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User id cannot be null");
+    public String deleteUser(Long requestId) {
+        if(requestId == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User id cannot be null");
         User user = identifyUser();
-        if (deleteRequest.getId() == user.getUserId()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "You can't delete yourself");
+        if (requestId == user.getUserId()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "You can't delete yourself");
         List<User> usersDB = userRepository.findAll();
         if(usersDB.isEmpty()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "there are no users in the database");
         List<User> userAdmin = getAllUserWithRole("ROLE_ADMIN");
-        if (userAdmin.size() == 1 && userAdmin.get(0).getUserId() == deleteRequest.getId()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "There has to be at least one admin user");
+        if (userAdmin.size() == 1 && userAdmin.get(0).getUserId() == requestId) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "There has to be at least one admin user");
 
-        User userDelete = userRepository.findById(deleteRequest.getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "No user with this id found"));
+        User userDelete = userRepository.findById(requestId).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "No user with this id found"));
 
         userRepository.delete(userDelete);
         LogUtil.printUserLog(LogUtil.UserType.DELETED, userDelete.getUsername(), userDelete.getRole().getRoleName(), null, null);

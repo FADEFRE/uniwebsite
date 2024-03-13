@@ -169,7 +169,7 @@ function putUserRole(id, role) {
 }
 
 /*
-DELETE-request to '/api/user' endpoint
+DELETE-request to '/api/user/{id}' endpoint
 deletes user
 
 parameters:
@@ -178,11 +178,7 @@ parameters:
 function deleteUser(id) {
     consoleDebug(axiosColor, "deleteUser (id: " + id + ")")
 
-    const formData = new FormData()
-
-    formData.append('id', id)
-
-    return httpClient.put('/api/user/delete', formData)
+    return httpClient.delete('/api/user/' + id)
         .then(response => response.data)
         .catch(_ => {
         })
