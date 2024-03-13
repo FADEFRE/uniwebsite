@@ -44,7 +44,7 @@ public class ModulesConnectionServiceTest {
         dtos.add(dto);
 
         when(externalModuleService.createExternalModules(any())).thenReturn(new ArrayList<>());
-        when(moduleLeipzigService.getModulesLeipzigByNames(any())).thenReturn(new ArrayList<>());
+        when(moduleLeipzigService.getModulesLeipzigByNamesFromDTO(any())).thenReturn(new ArrayList<>());
 
         List<ModulesConnection> result = modulesConnectionService.createModulesConnectionsWithDuplicate(dtos);
 

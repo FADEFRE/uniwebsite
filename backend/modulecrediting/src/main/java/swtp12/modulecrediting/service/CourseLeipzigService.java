@@ -112,7 +112,7 @@ public class CourseLeipzigService {
     public String deleteCourseLeipzig(String name) {
         CourseLeipzig courseLeipzig = getCourseLeipzigByName(name);
         if (!courseLeipzig.getIsActive())
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Course Leipzig is already deactivated with name: " + name);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Course Leipzig is already deactivated with name: " + name);
 
         courseLeipzig.setIsActive(false);
 

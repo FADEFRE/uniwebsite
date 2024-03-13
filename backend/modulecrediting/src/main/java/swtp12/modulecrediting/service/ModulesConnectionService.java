@@ -10,8 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import swtp12.modulecrediting.dto.ExternalModuleDTO;
-import swtp12.modulecrediting.dto.ModuleLeipzigDTO;
 import swtp12.modulecrediting.dto.ModulesConnectionDTO;
 import swtp12.modulecrediting.model.EnumApplicationStatus;
 import swtp12.modulecrediting.model.ExternalModule;
@@ -123,7 +121,7 @@ public class ModulesConnectionService {
 
             if(checkSimilarityOfModulesConnection(baseModulesConnection,m)) relatedModuleConnections.add(m);
         }
-        return filterRelevantRelatedModulesConnections(relatedModuleConnections, id);
+        return filterRelevantRelatedModulesConnections(relatedModuleConnections);
     }
 
     /**
@@ -223,6 +221,13 @@ public class ModulesConnectionService {
 
     // ------- Private Methods -------
 
+    /**
+     * This method creates a {@link ModulesConnection}
+     * @param modulesConnectionDTO {@link ModulesConnectionDTO}
+     * @return the created {@link ModulesConnection}
+     * @see ModulesConnection
+     * @see ModulesConnectionDTO
+     */
     private ModulesConnection createModulesConnection(ModulesConnectionDTO modulesConnectionDTO) {
         ModulesConnection modulesConnection = new ModulesConnection();
 
@@ -232,7 +237,7 @@ public class ModulesConnectionService {
 
         // create modules lepizig relation
         if(modulesConnectionDTO.getModulesLeipzig() != null) { // no modules leipzig sent in dto
-            List<ModuleLeipzig> modulesLeipzig = moduleLeipzigService.getModulesLeipzigByNames(modulesConnectionDTO.getModulesLeipzig());
+            List<ModuleLeipzig> modulesLeipzig = moduleLeipzigService.getModulesLeipzigByNamesFromDTO(modulesConnectionDTO.getModulesLeipzig());
             modulesConnection.setModulesLeipzig(modulesLeipzig);
         }
 
@@ -242,60 +247,57 @@ public class ModulesConnectionService {
         return modulesConnection;
     }
 
-    // modules leipzig helper methods for update application
+    /**
+     * This methods removes all {@link ModuleLeipzig} not definied in the {@link ModulesConnectionDTO} from the given {@link ModulesConnection}
+     * @param modulesConnection {@link ModulesConnection}
+     * @param mcuDTO {@link ModulesConnectionDTO}
+     * @see ModulesConnection
+     * @see ModulesConnectionDTO
+     * @see ModuleLeipzig
+     */
     private void removeAllDeletedModulesLeipzig(ModulesConnection modulesConnection, ModulesConnectionDTO mcuDTO) {
-        List<String> savedNameList = getModuleLeipzigNameFromModuleConnection(modulesConnection);
-        List<String> updatedNameList = getModuleLeipzigNameFromModuleConnectionUpdateDTO(mcuDTO);
+        List<String> savedNameList = new ArrayList<>();
+        List<String> updatedNameList = new ArrayList<>();
+        List<ModuleLeipzig> modulesLeipzig = new ArrayList<>();
+
+        modulesConnection.getModulesLeipzig().forEach(mL-> savedNameList.add(mL.getName()));
+        mcuDTO.getModulesLeipzig().forEach(mLDTO -> updatedNameList.add(mLDTO.getName()));
+
         List<String> deleteNameList = new ArrayList<>(savedNameList);
         deleteNameList.removeAll(updatedNameList);
-        List<ModuleLeipzig> modulesLeipzig = new ArrayList<>();
-        for(String name : deleteNameList) {
-            modulesLeipzig.add(moduleLeipzigService.getModuleLeipzigByName(name));
-        }
+        deleteNameList.forEach(name -> modulesLeipzig.add(moduleLeipzigService.getModuleLeipzigByName(name)));
+
         modulesConnection.removeModulesLeipzig(modulesLeipzig);
     }
-    private List<String> getModuleLeipzigNameFromModuleConnection(ModulesConnection modulesConnection) {
-        List<String> nameList = new ArrayList<>();
-        for(ModuleLeipzig ml : modulesConnection.getModulesLeipzig()) {
-            nameList.add(ml.getName());
-        }
-        return nameList;
-    }
-    private List<String> getModuleLeipzigNameFromModuleConnectionUpdateDTO(ModulesConnectionDTO modulesConnection) {
-        List<String> nameList = new ArrayList<>();
-        for(ModuleLeipzigDTO ml : modulesConnection.getModulesLeipzig()) {
-            nameList.add(ml.getName());
-        }
-        return nameList;
-    }
 
-    // external modules helper methods for update application
+    /**
+     * This methods removes all {@link ExternalModule} not definied in the {@link ModulesConnectionDTO} from the given {@link ModulesConnection}
+     * @param modulesConnection {@link ModulesConnection}
+     * @param mcuDTO {@link ModulesConnectionDTO}    
+     * @see ExternalModule
+     * @see ModulesConnection
+     * @see ModulesConnectionDTO
+     */
     private void removeAllDeletedExternalModules(ModulesConnection modulesConnection, ModulesConnectionDTO mcuDTO) {
-        List<Long> savedIdList = getIdListFromModuleConnection(modulesConnection);
-        List<Long> updatedIdList = getIdListFromModuleConnectionUpdateDTO(mcuDTO);
+        List<Long> savedIdList = new ArrayList<>();
+        List<Long> updatedIdList = new ArrayList<>();
+
+        modulesConnection.getExternalModules().forEach(eM -> savedIdList.add(eM.getId()));
+        mcuDTO.getExternalModules().forEach(eMDTO -> updatedIdList.add(eMDTO.getId()));
+
         List<Long> deleteIdList = new ArrayList<>(savedIdList);
         deleteIdList.removeAll(updatedIdList);
-        for(Long id : deleteIdList) {
-            externalModuleService.deleteExternalModuleById(id);
-        }
-    }
-    private List<Long> getIdListFromModuleConnection(ModulesConnection modulesConnection) {
-        List<Long> idList = new ArrayList<>();
-        for(ExternalModule eM : modulesConnection.getExternalModules()) {
-            idList.add(eM.getId());
-        }
-        return idList;
-    }
-    private List<Long> getIdListFromModuleConnectionUpdateDTO(ModulesConnectionDTO modulesConnection) {
-        List<Long> idList = new ArrayList<>();
-        for(ExternalModuleDTO eM : modulesConnection.getExternalModules()) {
-            idList.add(eM.getId());
-        }
-        return idList;
+        deleteIdList.forEach(id -> externalModuleService.deleteExternalModuleById(id));
     }
 
-    // helper methods for related modules
-    // checks if a module connection is similar, based on if any of a modulename, university pair matches with another pair.
+    /**
+     * This method checks if two {@link ModulesConnection} are related by comparing their {@link ExternalModule ExternalModules}
+     * @param baseModulesConnection {@link ModulesConnection}
+     * @param relatedModulesConnection {@link ModulesConnection}
+     * @return {@code True} when the two given {@link ModulesConnection ModulesConnections} are deemed related
+     * @see ExternalModule
+     * @see ModulesConnection
+     */
     private boolean checkSimilarityOfModulesConnection(ModulesConnection baseModulesConnection, ModulesConnection relatedModulesConnection) {
         for(ExternalModule emBase : baseModulesConnection.getExternalModules()) {
             for(ExternalModule emRel : relatedModulesConnection.getExternalModules()) {
@@ -307,13 +309,28 @@ public class ModulesConnectionService {
         }
         return false;
     }
+    
+    /**
+     * This method gets the {@code LevenshteinDistance} of two {@code String}
+     * @param name1 {@code String}
+     * @param name2 {@code String}
+     * @return {@code int} that represents the {@code LevenshteinDistance} of the two given {@code String}
+     * @see <a href="https://commons.apache.org/proper/commons-text/apidocs/org/apache/commons/text/similarity/LevenshteinDistance.html">Apache LevenshteinDistance</a> 
+     */
     private int checkSimilarityOfStrings(String name1, String name2) {
         LevenshteinDistance levenshteinDistance = new LevenshteinDistance();
         String name1Clean = name1.toLowerCase().replaceAll(" ", "");
         String name2Clean = name2.toLowerCase().replaceAll(" ", "");
         return levenshteinDistance.apply(name1Clean, name2Clean);
     }
-    private List<ModulesConnection> filterRelevantRelatedModulesConnections(List<ModulesConnection> allRelatedModulesConnections, Long id) {
+    
+    /**
+     * This method filters the given {@code List} of {@link ModulesConnection} to return the latest {@code 5}
+     * @param allRelatedModulesConnections {@code List} of {@link ModulesConnection}
+     * @return the filtered {@code List} of {@link ModulesConnection}
+     * @see ModulesConnection
+     */
+    private List<ModulesConnection> filterRelevantRelatedModulesConnections(List<ModulesConnection> allRelatedModulesConnections) {
         List<ModulesConnection> filteredRelatedModCons = new ArrayList<>();
         for (ModulesConnection modulesConnection : allRelatedModulesConnections) {
             if (filteredRelatedModCons.size() >= 5) {

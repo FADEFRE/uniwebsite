@@ -24,7 +24,7 @@ public class JsonUtil {
      * @param nodeName {@code String}
      * @return JsonNode
      * @see JsonNode
-     * @see MultipartFile
+     * @see <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/multipart/MultipartFile.html">Spring MultipartFile</a> 
      */
     public static JsonNode grabJsonNodeFromMultipartFile(MultipartFile multipartFile, String nodeName) {
         JsonNode jsonNode;
