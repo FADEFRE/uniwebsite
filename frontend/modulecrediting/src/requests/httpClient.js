@@ -120,8 +120,7 @@ const errorHandler = (error) => {
 const successHandler = (response) => {
   if (isHandlerEnabled(response.config)) {
 
-    if (response.data instanceof Object) { //response.data instanceof FormData
-      console.log("hallo")
+    if (response.data instanceof Object) {
       consoleDebug(responseColor, "Response: " + response.status + " ", " " + response.request.responseURL + "  Start of Request-Data: " );
       consoleDebug(null, response.data)
       consoleDebug(responseColor, "End of Request-Data");
