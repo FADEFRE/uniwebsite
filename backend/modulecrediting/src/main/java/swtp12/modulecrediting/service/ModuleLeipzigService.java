@@ -119,11 +119,11 @@ public class ModuleLeipzigService {
     }
 
     /**
-     * This method gets the {@link ModuleLeipzig} with the given {@code name} and {@cdoe code} or creates it, in the case it does not already exist
+     * This method gets the {@link ModuleLeipzig} with the given {@code name} and {@code code} or creates it, in the case it does not already exist
      * <p> If the {@link ModuleLeipzig} already exists but is {@code inactive}, it will be set to {@code isActive = true}
      * @param name {@code String}
      * @param code {@code String}
-     * @return {@link ModuleLeipzig} with the given {@code name} and {@cdoe code}
+     * @return {@link ModuleLeipzig} with the given {@code name} and {@code code}
      * @see ModuleLeipzig
      */
     public ModuleLeipzig findOrCreateNewModuleLeipzig(String name, String code) {
