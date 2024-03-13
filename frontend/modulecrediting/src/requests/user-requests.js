@@ -81,7 +81,7 @@ parameters:
     role - String, must match existing role
 
 throws:
-    Conflict (409) if passwordConfirm does not match password  // todo change to Bad_Request ?
+    Conflict (409) if username already exists
  */
 function postNewUser(username, password, passwordConfirm, role) {
     consoleDebug(axiosColor, "create user (username: " + username + ", role: " + role + ")");
