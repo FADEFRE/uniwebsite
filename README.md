@@ -1,55 +1,68 @@
 # Summary of this Readme
 
-1. **[Setup and settings](#1-setup-and-settings)**
-    1. [Setup backend and database (development)](#11-setup-backend-and-database-development)
-    2. [Setup frontend (development)]()
-    3. [Dataloader settings in *.properties files](#13-dataloader-settings-in-application-devprodproperties)
+1. **[General Information](#1-general-information)**
+2. **[Setup and settings](#2-setup-and-settings)**
+    1. [Setup backend and database (development)](#21-setup-backend-and-database-development)
+    2. [Setup frontend (development)](#22-setup-frontend-development)
+    3. [Dataloader settings in *.properties files](#23-dataloader-settings-in-application-devprodproperties)
          - [app.config.data.adminUsername/Password](#appconfigdataadminusernamepassword)
          - [app.config.data.loadTestData](#appconfigdataloadtestdata-true--false)
-    4. [Other application.properties settings](#14-other-applicationproperties-settings)
+    4. [Other application.properties settings](#24-other-applicationproperties-settings)
         - [spring.jpa.hibernate.ddl-auto](#springjpahibernateddl-auto-create-drop--update)
         - [server.port](#serverport--default-8090)
-    5. [Test Data](#15-test-data)
+    5. [Test Data](#25-test-data)
         - [users](#1-parameters-to-create-these-users)
         - [random applications](#2-parameters-to-create-randapplications)
         - [random external modules](#3-parameters-to-create-randexternalmodules)
         - [internal courses and modules](#4-internal-courses-and-modules---courses)
-2. **[Javadoc](#2-javadoc-generation)**
-3. **[Api-Endpoints](#3-api-endpoints)**
-    1. [List of Views.class](#31-overview-of-views-modelviewsjava)
-    2. [Application: "ApplicationController" -> /api/applications](#32-application-applicationcontroller)
+3. **[Javadoc](#3-javadoc-generation)**
+4. **[Api-Endpoints](#4-api-endpoints)**
+    1. [List of Views.class](#41-overview-of-views-modelviewsjava)
+    2. [Application: "ApplicationController" -> /api/applications](#42-application-applicationcontroller)
         - [GET-Requests](#get---requests)
         - [POST-Requests](#post---requests)
         - [PUT-Requests](#put---requests)
-    3. [Authentication: "AuthController" -> /api/auth](#33-authentication-authcontroller)
+    3. [Authentication: "AuthController" -> /api/auth](#43-authentication-authcontroller)
         - [POST-Requests](#post---requests-1)
-    4. [Studiengaenge in Leipzig: "CourseLeipzigController" -> /api/courses-leipzig](#34-studiengaenge-in-leipzig-courseleipzigcontroller)
+    4. [Studiengaenge in Leipzig: "CourseLeipzigController" -> /api/courses-leipzig](#44-studiengaenge-in-leipzig-courseleipzigcontroller)
         - [GET-Requests](#get---requests-1)
         - [POST-Requests](#post---requests-2)
         - [PUT-Requests](#put---requests-1)
         - [DELETE-Requests](#delete---requests)
-    5. [Handling of JSON files: "JsonFileController" -> /file/json](#35-handling-of-json-files-jsonfilecontroller)
+    5. [Handling of JSON files: "JsonFileController" -> /file/json](#45-handling-of-json-files-jsonfilecontroller)
         - [GET-Requests](#get---requests-2)
         - [POST-Requests](#post---requests-3)
-    6. [Module in Leipzig: "ModuleLeipzigController" -> /api/modules-leipzig](#36-module-in-leipzig-moduleleipzigcontroller)
+    6. [Module in Leipzig: "ModuleLeipzigController" -> /api/modules-leipzig](#46-module-in-leipzig-moduleleipzigcontroller)
         - [GET-Requests](#get---requests-3)
         - [POST-Requests](#post---requests-4)
         - [PUT-Requests](#put---requests-2)
         - [DELETE-Requests](#delete---requests-1)
-    7. [ModulesConnection: "ModulesConnectionController" -> /api/modules-connection](#37-modulesconnection-modulesconnectioncontroller)
+    7. [ModulesConnection: "ModulesConnectionController" -> /api/modules-connection](#47-modulesconnection-modulesconnectioncontroller)
         - [GET-Requests](#get---requests-4)
-    8. [Handling of PDF files: "PdfDocumentContoller" -> /file/pdf-documents](#38-handling-of-pdf-files-pdfdocumentcontoller)
+    8. [Handling of PDF files: "PdfDocumentContoller" -> /file/pdf-documents](#48-handling-of-pdf-files-pdfdocumentcontoller)
         - [GET-Requests](#get---requests-5)
     9. [User: "UserController" -> /api/user](#39-user-usercontroller)
         - [GET-Requests](#get---requests-6)
         - [POST-Requests](#post---requests-5)
         - [PUT-Requests](#put---requests-3)
+5. **[Folder structure explanation](#5-folder-structure-explanation)**
+    1. [Backend](#51-backend)
+    2. [Frontend](#52-frontend)
 
 .  
  <a href="#top">Back to top</a>
 
-# 1. Setup and settings
-## 1.1. Setup backend and database (development)
+# 1. General Information 
+
+You can reach this groups VM under http://172.26.92.91:8080
+
+An explanation of the folder structures both in backend and frontend, 
+can be found at the <a href="#5-folder-structure-explanation"> end </a>of this README
+
+ <a href="#top">Back to top</a>
+
+# 2. Setup and settings
+## 2.1. Setup backend and database (development)
 
 JDK version 17.0.8: https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html
 
@@ -71,7 +84,7 @@ pgAdmin 4: https://www.pgadmin.org/download/
 
  <a href="#top">Back to top</a>
 
-## 1.2. Setup frontend (development)
+## 2.2. Setup frontend (development)
 
 Node: https://nodejs.org/en/download/
 
@@ -96,7 +109,7 @@ Node: https://nodejs.org/en/download/
 
  <a href="#top">Back to top</a>
 
-## 1.3. Dataloader settings in application-(dev/prod).properties:
+## 2.3. Dataloader settings in application-(dev/prod).properties:
 ### > app.config.data.adminUsername/Password:
 Everytime the backend service is started, the dataloader will check if at least one admin-user exists. 
 If it does not, the dataloader will create an admin-user with these parameters.
@@ -107,7 +120,7 @@ The TestDataLoader class reads in test_data.json from the backend ressources fol
 
  <a href="#top">Back to top</a>
 
-## 1.4. Other application.properties settings:
+## 2.4. Other application.properties settings:
 ### > spring.jpa.hibernate.ddl-auto= create-drop / update
 This will tell jpa what to do on startup and shutdown.
 
@@ -128,7 +141,7 @@ When set to "true", the refreshTokenExpirationDate will be changed to midnight a
 
  <a href="#top">Back to top</a>
 
-## 1.5. Test Data
+## 2.5. Test Data
 ### The testData currently includes:
 #### 1. Parameters to create these "users":
 
@@ -166,7 +179,7 @@ When set to "true", the refreshTokenExpirationDate will be changed to midnight a
   
  <a href="#top">Back to top</a>
 
-# 2. JAVADOC GENERATION
+# 3. JAVADOC GENERATION
 
  - to (re)generate the Javadoc for this project run these commands in \backend\modulecrediting :
     
@@ -183,8 +196,8 @@ When set to "true", the refreshTokenExpirationDate will be changed to midnight a
 
  <a href="#top">Back to top</a>
 
-# 3. API ENDPOINTS
-## 3.1. Overview of Views: "\model\Views.java"
+# 4. API ENDPOINTS
+## 4.1. Overview of Views: "\model\Views.java"
 
 In some cases Views are used, instead of DTOs, to generate ResponseData
 
@@ -203,7 +216,7 @@ In some cases Views are used, instead of DTOs, to generate ResponseData
 
  <a href="#top">Back to top</a>
 
-## 3.2. Application: "ApplicationController"
+## 4.2. Application: "ApplicationController"
 ### _**GET - Requests:**_
 
 #### > **/api/applications**
@@ -334,7 +347,7 @@ This basic formdata is used in most "Application"-Requests
  <a href="#top">Back to top</a>
 
 
-## 3.3. Authentication: "AuthController"
+## 4.3. Authentication: "AuthController"
 ### _**POST - Requests:**_
 
 #### > **/api/auth/login**
@@ -362,7 +375,7 @@ This basic formdata is used in most "Application"-Requests
  <a href="#top">Back to top</a>
 
 
-## 3.4. Studiengaenge in Leipzig: "CourseLeipzigController"
+## 4.4. Studiengaenge in Leipzig: "CourseLeipzigController"
 ### _**GET - Requests:**_
 
 #### > **/api/courses-leipzig**
@@ -433,7 +446,7 @@ This basic formdata is used in most "Application"-Requests
  <a href="#top">Back to top</a>
 
 
-## 3.5. Handling of JSON files: "JsonFileController" 
+## 4.5. Handling of JSON files: "JsonFileController" 
 ### _**GET - Requests:**_
 
 #### > **/file/json/courses**
@@ -457,7 +470,7 @@ This basic formdata is used in most "Application"-Requests
  <a href="#top">Back to top</a>
 
 
-## 3.6. Module in Leipzig: "ModuleLeipzigController"
+## 4.6. Module in Leipzig: "ModuleLeipzigController"
 ### _**GET - Requests:**_
 
 #### > **/api/modules-leipzig**
@@ -515,7 +528,7 @@ This basic formdata is used in most "Application"-Requests
  <a href="#top">Back to top</a>
 
 
-## 3.7. ModulesConnection: "ModulesConnectionController"
+## 4.7. ModulesConnection: "ModulesConnectionController"
 ### _**GET - Requests:**_
 
 #### > **/api/modules-connection/{id}/related**
@@ -530,7 +543,7 @@ This basic formdata is used in most "Application"-Requests
  <a href="#top">Back to top</a>
 
 
-## 3.8. Handling of PDF files: "PdfDocumentContoller"
+## 4.8. Handling of PDF files: "PdfDocumentContoller"
 ### _**GET - Requests:**_
 
 #### > **/file/pdf-documents/{id}**
@@ -551,7 +564,7 @@ This basic formdata is used in most "Application"-Requests
  <a href="#top">Back to top</a>
 
 
-## 3.9. User: "UserController"
+## 4.9. User: "UserController"
 ### _**GET - Requests:**_
 
 #### > **/api/user/me**
@@ -637,4 +650,67 @@ This basic formdata is used in most "Application"-Requests
 
  <a href="#top">Back to top</a>
 
-ef 
+# 5. Folder structure explanation 
+## 5.1. Backend
+
+### resources:
+- The static- and templates-folders are for the pdf generation.
+- The application*.properties are explained in
+<a href="#21-setup-backend-and-database-development">2.1.</a>, 
+<a href="#23-dataloader-settings-in-application-devprodproperties">2.3.</a> and 
+<a href="#24-other-applicationproperties-settings">2.4.</a>
+- The 'test_data.json' is the config for the 'TestDataLoader'. For more see <a href="#25-test-data">here</a>
+
+#### The following folder and files are in the \src folder:
+### config: 
+- These are all the springsecurity config classes
+### controller: 
+- These classes are the controller of the API-Endpoints
+### dto: 
+- These are all the DTO classes used for requests and responses
+### model: 
+- These classes are the 'Entity' classes of the app
+### repository: 
+- These classes are responsible for the communication between the backend and the database
+### service: 
+- These classes are the main 'logic' classes of this app
+### util: 
+- These classes have mostly 'utility' methods
+### ModulecreditingApplication.java: 
+- This is the 'main'
+### Dataloader.java: 
+- This class is responsible for writing, if it not already exist, the necessary data into the database on startup.
+- It can start the TestDataLoader with a setting change in application-dev.properties
+### TestDataLoader.java: 
+- This class creates testdata for development purposes 
+
+ <a href="#top">Back to top</a>
+
+## 5.2. Frontend
+#### The following folder and files are in the \src folder:
+### assets:
+- todo
+### components: 
+- todo
+### config:
+- todo
+### i18n:
+- todo
+### requests:
+- todo
+### router:
+- todo
+### store:
+- todo
+### utils:
+- todo
+### views:
+- todo
+### App.vue:
+- todo
+### main.js:
+- todo
+
+ <a href="#top">Back to top</a>
+
+end of file 
