@@ -1,19 +1,14 @@
-<!--
-filter selectors
-exposes:
-  - searchString
-  - dateType (may be 'creationDate', 'lastEditedDate' or 'decisionDate')
-  - earliestDate
-  - statusTypes (array, may include 'new', 'open', 'studyOffice', 'pav', 'closed')
-  - selectedCourse (may be course registered in database)
--->
-
 <script setup>
 import { ref, computed, onBeforeMount } from "vue";
 import DateIcon from '@/assets/icons/DateIcon.vue';
 import CustomDropdown from "@/components/util/CustomDropdown.vue";
 import { getCoursesLeipzigName } from "@/requests/module-course-requests";
 import { getWeekAgo, getMonthAgo, getSixMonthAgo, getYearAgo } from "@/utils/date-utils";
+
+/*
+filter options for selection views
+allows to filter by searchString, dateType, earliestDate, statusTypes, selectedCourse
+ */
 
 const searchString = ref()
 
@@ -127,9 +122,16 @@ const toggleStatusClosed = () => {
 }
 
 defineExpose({
-  searchString, dateType, earliestDate, statusTypes, course
+  /* entered search string */
+  searchString,
+  /* 'creationDate', 'lastEditedDate' or 'decisionDate' */
+  dateType,
+  earliestDate,
+  /* array potentially including 'new', 'open', 'studyOffice', 'pav', 'closed' */
+  statusTypes,
+  /* name of an existing course */
+  course
 })
-
 </script>
 
 <template>
