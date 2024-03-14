@@ -35,10 +35,10 @@ const props = defineProps({
       </span>
       <span v-else class="single-module">({{ $t('PanelHeader.ModulesToBeCredited') }})</span>
     </span>
-
-    <span class="arrow-icon" :aria-label="$t('PanelHeader.AriaCreditedFor')">
+    
+    <div class="arrow-icon-container" :aria-label="$t('PanelHeader.AriaCreditedFor')">
       <ArrowIcon color="red" direction="right" />
-    </span>
+    </div>
 
     <span class="modules-container">
       <span v-if="internalModules && internalModules.length" :class="{ 'related-modules-text': relatedModules }"
@@ -47,6 +47,7 @@ const props = defineProps({
       </span>
       <span v-else class="single-module">({{ $t('PanelHeader.ModulesUniLeipzig') }})</span>
     </span>
+
   </h3>
 </template>
 
@@ -69,5 +70,10 @@ const props = defineProps({
 .single-module {
   @include ellipsisTextOverflow();
   display: block;
+}
+
+.arrow-icon-container {
+  display: flex;
+  align-items: center;
 }
 </style>
