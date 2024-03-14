@@ -1,23 +1,17 @@
-<!--
-comment input
-props:
-  - type (may be 'new', 'edit' or 'readonly')
-  - comment (optional)
-exposes:
-  - comment
-displays:
-  - commentary heading
-  - textarea element
--->
-
 <script setup>
 import { ref } from 'vue';
 
+/*
+comment section
+ */
+
 const props = defineProps({
+  /* controls if editable */
   readonly: {
     required: true,
     Boolean
   },
+  /* comment to be displayed (initially) */
   comment: {
     type: String
   }
@@ -29,15 +23,16 @@ if (props.comment) {
 }
 
 defineExpose({
+  /* String comment */
   comment
 })
 </script>
 
 <template>
   <div class="panel-container">
-    <h4>Kommentar</h4>
+    <h4 id="commentHeading">{{ $t('PanelComment.Comment') }}</h4>
     <div class="textarea-container">
-      <textarea :readonly="readonly" rows="3" v-model="comment" class="white" />
+      <textarea :readonly="readonly" rows="3" v-model="comment" class="white" aria-labelledby="commentHeading" />
     </div>
 
   </div>

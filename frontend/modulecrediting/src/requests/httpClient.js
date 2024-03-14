@@ -1,7 +1,8 @@
 import axios from "axios";
-import { url } from "@/scripts/url-config";
+import { url } from "@/config/url-config";
 import { performLogout } from "@/router/logout";
 import router from "@/router";
+import { consoleDebug } from "@/requests/consoleDebug";
 
 const isHandlerEnabled = (config = {}) => {
   return config.hasOwnProperty("handlerEnabled") && !config.handlerEnabled
@@ -30,7 +31,7 @@ function create503() {
 }
 
 function parseApierror(error) {
-  console.debug("parseapierror", error);
+  consoleDebug(errorColor, "parseapierror \n" + error);
   try {
       if (error && error.hasOwnProperty("response") && error.response.hasOwnProperty("data")) {
           const apierror = error.response.data;
@@ -50,28 +51,20 @@ function parseApierror(error) {
 }
 
 
-
 const requestHandler = (request) => {
   if (isHandlerEnabled(request)) {
-    //TODO remove debug logs
+
     if (request.data instanceof FormData) {
-      console.debug(
-        "%c" + request.method.toUpperCase() + "-Request: " + request.url,
-        requestColor,
-        "  Start of Data: "
-      );
-      let formData = new FormData();
-      formData = request.data;
+      consoleDebug(requestColor, request.method.toUpperCase() + "-Request: " + request.url, "  Start of Request-Data: " ); 
+      let formData = request.data;
       for (const pair of formData.entries()) {
-        console.debug(pair[0], pair[1]);
+        consoleDebug(null, pair[0], pair[1]);
       }
-      console.debug("%c" + "End of Data", requestColor);
-    } else
-      console.debug(
-        "%c" + request.method.toUpperCase() + "-Request: " + request.url,
-        requestColor,
-        "  Data: " + request.data
-      );
+      consoleDebug(requestColor, "End of " + request.url + " Request-Data");
+    } 
+    else {
+      consoleDebug(requestColor, request.method.toUpperCase() + "-Request: " + request.url, "  Request-Data: " + request.data );
+    }
   }
   return request;
 };
@@ -79,38 +72,37 @@ const requestHandler = (request) => {
 const errorHandler = (error) => {  
 
   if (isHandlerEnabled(error.config)) {
-    console.debug("%c" + "Error Interceptor", errorColor); //TODO remove debug log
+    consoleDebug(errorColor, "Error Interceptor");
 
     const apiError = parseApierror(error)
-    console.error(apiError)
 
     const currentRouteFullPath = router.currentRoute.value.fullPath
 
     switch (apiError.statusCode) {
 
-      case 401:
+      case 401: // UNAUTHORIZED
         performLogout();
         router.push({ name: "login" });
         break;
 
-      case 402:
-        console.debug("%c" + "Debug 402 catch", errorColor);
+      case 402: // PAYMENT_REQUIRED -> used for debug
+        consoleDebug(errorColor, "Debug 402 catch");
         router.replace("/error" + currentRouteFullPath);
         break;
 
-      case 403:
+      case 403: // FORBIDDEN
         router.replace("/forbidden" + currentRouteFullPath);
         break;
 
-      case 404:
+      case 404: // NOT_FOUND
         router.replace("/not-found" + currentRouteFullPath);
         break;
 
-      case 409:
+      case 409: // CONFLICT
         // no routing, this error should be handled in components / views
         break;
 
-      case 503:
+      case 503: // SERVER_UNAVAILABLE
         router.replace("/server-unavailable" + currentRouteFullPath);
         break;
 
@@ -127,13 +119,15 @@ const errorHandler = (error) => {
 
 const successHandler = (response) => {
   if (isHandlerEnabled(response.config)) {
-    console.debug(
-      "%c" + "Response: " + response.status + " ",
-      responseColor,
-      response.request.responseURL,
-      "  Data:",
-      response.data
-    ); //TODO remove debug log
+
+    if (response.data instanceof Object) {
+      consoleDebug(responseColor, "Response: " + response.status + " ", " " + response.request.responseURL + "  Start of Request-Data: " );
+      consoleDebug(null, response.data)
+      consoleDebug(responseColor, "End of Request-Data");
+    } 
+    else {
+      consoleDebug(responseColor, "Response: " + response.status + " ", " " + response.request.responseURL + "  Data: " + response.data);
+    }
   }
   return response;
 };

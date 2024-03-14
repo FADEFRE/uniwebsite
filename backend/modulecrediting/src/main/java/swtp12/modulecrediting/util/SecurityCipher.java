@@ -3,13 +3,17 @@ package swtp12.modulecrediting.util;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Base64;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
+import swtp12.modulecrediting.service.AuthService;
+
+/**
+ * This class has functions for encrypting and decrypting Token strings
+ */
 public class SecurityCipher {
     private static final String KEYVALUE = "JPnJqOfaEge";
     private static SecretKeySpec secretKey;
@@ -19,6 +23,10 @@ public class SecurityCipher {
         throw new AssertionError("Static!");
     }
 
+    /**
+     * This function sets the {@link #secretKey} 
+     * @see SecretKeySpec
+     */
     public static void setKey() {
         MessageDigest sha;
         try {
@@ -32,6 +40,9 @@ public class SecurityCipher {
         }
     }
 
+    /**
+     * This function decrypts the given String
+     */
     public static String encrypt(String strToEncrypt) {
         if (strToEncrypt == null) return null;
 
@@ -46,13 +57,15 @@ public class SecurityCipher {
         return null;
     }
 
-
-    public static String decrypt(String strToDecrypt) throws IncorrectKeyOnDecryptException {
+    /**
+     * This function decrypts the given String
+     */
+    public static String decrypt(String strToDecrypt) {
         if (strToDecrypt == null) return null;
 
         /*
          * There seems to be an issue with "setKey()" while decrypting. Therefore I had to 
-         * let the code below run twice, if the decrypt was not succesfull, due to the diffrent
+         * let the code below run multiple times, if the decrypt was not succesfull, due to the diffrent
          * generated key
          * 
          * Somebody more expirenced with this, might find the issue, why sometimes "setKey()"
@@ -72,15 +85,17 @@ public class SecurityCipher {
                 cipher.init(Cipher.DECRYPT_MODE, secretKey);
 
                 //Debug:
-                //System.out.println("Debug: SecurityCiper -> SecretKey: " + secretKey + " / HashCode: " + secretKey.hashCode() + " / Try:" + counter);
+                //LogUtil.printLog("Debug: SecurityCiper -> SecretKey: " + secretKey + " / HashCode: " + secretKey.hashCode() + " / Try:" + counter);
 
 
                 return new String(cipher.doFinal(Base64.getDecoder().decode(strToDecrypt)));
             } catch (Exception e) {
-                System.out.println(LocalDateTime.now() + " Der Fehler im Backend: " + counter);
+                LogUtil.printLog("The specific error in SecurityCipher: " + counter);
                 counter ++;
             }
         }
-        throw new IncorrectKeyOnDecryptException("there seems to be a problem with your authentication Tokens, please try again");
+        AuthService.deleteRefreshCookie();
+        AuthService.logout();
+        return null;
     }
 }

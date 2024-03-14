@@ -67,7 +67,7 @@ public class CourseLeipzig {
      * Constructor for {@link CourseLeipzig}.
      * <p>Creates {@link CourseLeipzig} with given {@link String} as {@link #name}
      * and sets {@link #isActive} to {@link Boolean true}.
-     * 
+     * @param name {@code String}
      * @see CourseLeipzig
      */
     public CourseLeipzig(String name) {
@@ -79,7 +79,7 @@ public class CourseLeipzig {
     /**
      * Adds the given {@link ModuleLeipzig} to this {@link CourseLeipzig}.
      * <p>Also adds this {@link CourseLeipzig} to the given {@link ModuleLeipzig}.
-     * 
+     * @param moduleLeipzig {@link ModuleLeipzig}
      * @see CourseLeipzig
      * @see ModuleLeipzig
      */
@@ -89,9 +89,9 @@ public class CourseLeipzig {
     }
 
     /**
-     * Adds the given {@link List} of {@link ModuleLeipzig} to this {@link CourseLeipzig}.
+     * Adds the given {@link List} of {@link ModuleLeipzig ModuleLeipzigs} to this {@link CourseLeipzig}.
      * <p>Also adds this {@link CourseLeipzig} to from every {@link ModuleLeipzig} in the given {@link List}.
-     * 
+     * @param moduleLeipzigs {@code List} of {@link ModuleLeipzig}
      * @see CourseLeipzig
      * @see ModuleLeipzig
      */
@@ -105,7 +105,7 @@ public class CourseLeipzig {
     /**
      * Removes the given {@link ModuleLeipzig} from this {@link CourseLeipzig}.
      * <p>Also removes this {@link CourseLeipzig} from the given {@link ModuleLeipzig}.
-     * 
+     * @param moduleLeipzig {@link ModuleLeipzig}
      * @see CourseLeipzig
      * @see ModuleLeipzig
      */
@@ -115,9 +115,9 @@ public class CourseLeipzig {
     }
 
     /**
-     * Removes the given {@link List} of {@link ModuleLeipzig} from this {@link CourseLeipzig}.
+     * Removes the given {@link List} of {@link ModuleLeipzig ModuleLeipzigs} from this {@link CourseLeipzig}.
      * <p>Also removes this {@link CourseLeipzig} from from every {@link ModuleLeipzig} in the given {@link List}.
-     * 
+     * @param moduleLeipzigs {@code List} of {@link ModuleLeipzig}
      * @see CourseLeipzig
      * @see ModuleLeipzig
      */
@@ -128,6 +128,12 @@ public class CourseLeipzig {
         }
     }
 
+    /**
+     * Removes all {@link ModuleLeipzig ModuleLeipzigs} of this {@link CourseLeipzig}.
+     * <p>Also removes {@link CourseLeipzig} of these {@link ModuleLeipzig ModuleLeipzigs}.</p>
+     * @see CourseLeipzig
+     * @see ModuleLeipzig
+     */
     public void removeModulesLeipzig() {
         for (ModuleLeipzig moduleLeipzig : modulesLeipzigCourse) {
             moduleLeipzig.getCoursesLeipzig().remove(this);

@@ -3,8 +3,8 @@ import { ref } from "vue";
 import ButtonDownload from "@/components/button/ButtonDownload.vue";
 import FileInput from "@/components/util/FileInput.vue";
 import ButtonLink from "@/components/button/ButtonLink.vue";
-import { url } from "@/scripts/url-config";
-import { postJsonConfig } from "@/scripts/axios-requests";
+import { url } from "@/config/url-config";
+import { postJsonConfig } from "@/requests/module-course-requests";
 
 const jsonLink = `${url}/file/json/courses`
 
@@ -21,11 +21,11 @@ const uploadJson = () => {
 <template>
   <div class="config-container">
     <h2>Konfiguration</h2>
-
+    
     <div class="screen-split-container">
+      
 
-
-      <div class="info-container">
+      <div class="info-container text-justify">
         <h3>Hinweis zum Datei-Upload</h3>
         <p>
           Durch das Hochladen einer JSON-Konfigurationsdatei werden alle Daten verändert,
@@ -61,7 +61,6 @@ const uploadJson = () => {
           
           <small>Ändert die Konfiguration gemäß der ausgewählten Datei. Bitte Hinweis beachten.</small>
         </div>
-        
 
       </div>
     </div>
@@ -87,6 +86,7 @@ const uploadJson = () => {
 .info-container, .buttons-container {
   @include verticalList(s);
   width: 50%;
+  padding: 10px;
 
   @include breakpoint(m) {
     width: 100%;
@@ -100,8 +100,6 @@ const uploadJson = () => {
 
 
 .file-button-container {
-  display: flex;
-  align-items: center;
-  gap: spacing(m);
+  @include verticalList(s)
 }
 </style>

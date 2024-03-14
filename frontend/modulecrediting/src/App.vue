@@ -3,6 +3,8 @@ import TheNavigation from "@/components/TheNavigation.vue";
 import TheLanguageSelection from "@/components/TheLanguageSelection.vue";
 import { onBeforeMount, ref } from "vue";
 import translate from '@/i18n/translate';
+import { intervalMilliSeconds } from "@/config/refreshTokenInterval-config"
+import { runInterval } from "@/router/login";
 
 onBeforeMount(() => {
     const locale = translate.guessDefaultLocale()
@@ -17,6 +19,7 @@ function openMenu() {
 function closeMenu() {
   isMenuOpen.value = false;
 }
+setInterval(runInterval, intervalMilliSeconds)
 </script>
 
 <template>
@@ -27,16 +30,16 @@ function closeMenu() {
     
     <header class="header-background">
       <div class="header-container">
-        <a tabindex="-1" href="/" class="logo-container">
+        <a tabindex="-1" href="/" class="logo-container" aria-hidden="true">
           <img tabindex="-1" class="logo" src="@/assets/Universität_Leipzig_logo.svg" alt="" />
         </a>
         
         <Button class="burger-menu" @click="openMenu">
-          <img src="@/assets/icons/BurgerIcon.svg" alt="Menu Open"/>
+          <img src="@/assets/icons/BurgerIcon.svg" :alt="$t('App.MenuOpen')"/>
         </Button>
 
         <Button class="close-menu" :class="{ 'open': isMenuOpen }" @click="closeMenu">
-            <img src="@/assets/icons/CloseMenu.svg" alt="Menu Close"/>
+            <img src="@/assets/icons/CloseMenu.svg" :alt="$t('App.MenuClosed')"/>
         </Button>
 
         <div class="nav-menu-container" :class="{ 'closed': !isMenuOpen }">
@@ -52,8 +55,8 @@ function closeMenu() {
 
     <footer>
       <div class="footer-content">
-        <p>Impressum</p>
-        <p>Datenschutz</p>
+        <p>{{$t('App.LegalDisclosure')}}</p>
+        <p>{{$t('App.PrivacyPolicy')}}</p>
       </div>
     </footer>
   </div>

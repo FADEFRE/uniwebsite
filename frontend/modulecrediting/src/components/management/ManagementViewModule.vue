@@ -2,7 +2,11 @@
 import { ref, computed, onBeforeMount } from "vue";
 import ManagementListElement from "@/components/management/ManagementListElement.vue";
 import LoadingContainer from "@/components/util/LoadingContainer.vue";
-import { getModulesNameCode, deleteModuleLeipzig, putUpdateModuleLeipzig } from "@/scripts/axios-requests";
+import { deleteModuleLeipzig, getModulesNameCode, putUpdateModuleLeipzig } from "@/requests/module-course-requests";
+
+/*
+list of all modules
+ */
 
 const modules = ref();
 const searchString = ref('');

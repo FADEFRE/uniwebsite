@@ -1,10 +1,10 @@
 <script setup>
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
-import HomepageContainer from '@/components/container/HomepageContainer.vue';
 import SideInfoApplicationProcess from '@/components/side-info/SideInfoApplicationProcess.vue';
 import ButtonLink from '@/components/button/ButtonLink.vue';
-import { getApplicationExists } from "@/scripts/axios-requests";
+import { getApplicationExists } from "@/requests/application-requests";
+import SideInfoStudyOffice from "@/components/side-info/SideInfoStudyOffice.vue";
 
 const router = useRouter()
 
@@ -47,28 +47,37 @@ const getFormattedId = () => {
 
 <template>
   <div class="main">
-    <h1 class="screen-reader-only">Startseite</h1>
+    <h1 class="screen-reader-only">{{ $t('HomepageView.SRHeading') }}</h1>
 
     <div class="content-container split">
-      <!-- HomepageContainer Application -->
-      <HomepageContainer :header="$t('homepage.makeApplication')" :text="$t('homepage.makeApplicationExplanation')">
-        <ButtonLink @click="goToSubmitApplication">{{ $t('homepage.makeApplication') }}</ButtonLink>
-      </HomepageContainer>
 
-      <!-- HomepageContainer StatusView -->
-      <HomepageContainer :header="$t('homepage.viewStatus')" :text="$t('homepage.viewStatusExplanation')">
-        <div class="input-button-container">
-          <InputText v-model="id" placeholder="0-0-0-0-0-0" aria-label="Vorgangsnummer des aufzurufenden Antrags"
-                     :class="{ 'invalid': isInvalid }" class="status-input gray"
-                     @keydown.enter.prevent="openDetailView" @input.prevent="validateInput" />
-          <ButtonLink @click="openDetailView">{{ $t('homepage.viewStatus') }}</ButtonLink>
+      <div class="homepage-container">
+        <h2>{{ $t('HomepageView.Application.Heading') }}</h2>
+        <p class="text-justify">{{ $t('HomepageView.Application.Text') }}</p>
+        <ButtonLink @click="goToSubmitApplication">{{ $t('HomepageView.Application.SubmitButton') }}</ButtonLink>
+      </div>
+
+      <div class="homepage-container">
+        <h2>{{ $t('HomepageView.Status.Heading') }}</h2>
+        <p class="text-justify">{{ $t('HomepageView.Status.Text') }}</p>
+        <div>
+          <div class="input-button-container">
+            <InputText
+                v-model="id" placeholder="0-0-0-0-0-0" :aria-label="$t('HomepageView.Status.AriaProcessNumber')"
+                :class="{ 'invalid': isInvalid }" class="status-input gray"
+                @keydown.enter.prevent="openDetailView" @input.prevent="validateInput"
+            />
+            <ButtonLink @click="openDetailView">{{ $t('HomepageView.Status.ViewButton') }}</ButtonLink>
+          </div>
+          <small v-if="isInvalid" class="invalid-text">{{ $t('HomepageView.Status.NotExisting') }}</small>
         </div>
-        <small v-if="isInvalid" class="invalid-text">Dieser Vorgang existiert nicht</small>
-      </HomepageContainer>
+      </div>
+
     </div>
 
     <aside class="side-infos-list">
       <SideInfoApplicationProcess/>
+      <SideInfoStudyOffice/>
     </aside>
 
   </div>
@@ -91,5 +100,34 @@ const getFormattedId = () => {
   &.invalid {
     border: 2px solid $red;
   }
+}
+
+.homepage-container {
+  @include basicContainer();
+  @include verticalListItem($white);
+  @include verticalList(l);
+}
+
+.input-button-container {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  @include breakpoint(xs) {
+    flex-direction: column;
+  }
+}
+
+.p-inputtext {
+  width: 100%;
+  max-width: 250px;
+
+  @include breakpoint(xs) {
+    max-width: 100%;
+  }
+
+  text-align: center;
+  font-family: 'Jost';
+  font-weight: 500;
+  letter-spacing: 0.3rem;
 }
 </style>

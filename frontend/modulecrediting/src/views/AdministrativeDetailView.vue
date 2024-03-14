@@ -8,12 +8,16 @@ import ButtonLink from "@/components/button/ButtonLink.vue";
 import ApplicationControl from "@/assets/icons/ApplicationControl.vue";
 import MoveTop from "@/assets/icons/MoveTop.vue";
 import NotSavedIcon from "@/assets/icons/NotSavedIcon.vue";
-import {
-  getApplicationById, getModulesByCourse,
-  getUpdateStatusAllowed, updateStatus, putApplicationStudyOffice, putApplicationChairman
-} from "@/scripts/axios-requests";
-import { parseRequestDate } from "@/scripts/date-utils";
+import { parseRequestDate } from "@/utils/date-utils";
 import LoadingContainer from "@/components/util/LoadingContainer.vue";
+import { getModulesByCourse } from "@/requests/module-course-requests";
+import {
+  getApplicationById,
+  getUpdateStatusAllowed,
+  putApplicationChairman,
+  putApplicationStudyOffice,
+  putUpdateStatus
+} from "@/requests/application-requests";
 
 const route = useRoute()
 const router = useRouter();
@@ -108,7 +112,7 @@ const saveChanges = () => {
 }
 
 const triggerPassOn = () => {
-  if (passOnStatus) updateStatus(id).then(_ => location.reload())
+  if (passOnStatus) putUpdateStatus(id).then(_ => location.reload())
 }
 
 </script>
@@ -129,10 +133,17 @@ const triggerPassOn = () => {
 
       <div v-for="connection in applicationData['modulesConnections']">
 
-        <AdministrativePanel :type="type" :readonly="readonly" :selectable-modules="moduleOptions"
-          :connection-data="connection" ref="moduleConnections"
-          :class="{ 'connection-highlight': connection.id == connectionHighlightId }" :id="connection.id"
-          @change="setUnsaved" />
+        <AdministrativePanel
+            :type="type"
+            :readonly="readonly"
+            :show-related-connections="applicationData['fullStatus'] !== 'ABGESCHLOSSEN'"
+            :selectable-modules="moduleOptions"
+            :connection-data="connection"
+            :id="connection.id"
+            @change="setUnsaved"
+            :class="{ 'connection-highlight': connection.id == connectionHighlightId }"
+            ref="moduleConnections"
+        />
 
       </div>
 

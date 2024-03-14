@@ -1,46 +1,40 @@
-<!--
-list of external modules
-props:
-  - allowTextEdit
-  - allowFileEdit
-  - allowDelete
-  - allowAdd
-  - hasInitialNew (defaults to false)
-  - modulesData (optional)
-      modulesData should be array containing objects, each with properties name, university, creditPoints, pointSystem, selectedFile
-exposes:
-  - externalModules (array similar to modulesData)
-displays:
-  - list of PanelExternModulesItem
-  - add external module button if type is 'new'
--->
-
 <script setup>
-import PanelExternalModulesItem from "@/components/panel-parts/PanelExternalModulesItem.vue";
-import ButtonAdd from "@/components/button/ButtonAdd.vue";
 import { ref, computed } from "vue";
+import ButtonAdd from "@/components/button/ButtonAdd.vue";
+import PanelExternalModulesItem from "@/components/panel-parts/PanelExternalModulesItem.vue";
+
+/*
+list of external modules
+ */
 
 const props = defineProps({
+  /* controls if text fields are editable */
   allowTextEdit: {
     required: true,
     type: Boolean
   },
+  /* controls if description files are editable */
   allowFileEdit: {
     required: true,
     type: Boolean
   },
+  /* controls if modules can be deleted from list, it is never possible to delete all modules from the list */
   allowDelete: {
     required: true,
     type: Boolean
   },
+  /* controls if new modules can be added to list */
   allowAdd: {
     required: true,
     type: Boolean
   },
+  /* should be set true if initially an empty module should be displayed */
   hasInitialNew: {
     type: Boolean,
     default: false
   },
+  /* array of external modules to be displayed initially, each must contain ...
+  *  String name, String university, String points, String pointSystem, PDF-file pdfDocument */
   modulesData: {
     type: Array,
     validator(value) {
@@ -56,7 +50,10 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['change'])
+const emit = defineEmits([
+    /* emitted when any data changes */
+    'change'
+])
 
 // handle existing modules
 const existingModulesList = ref(props.modulesData)
@@ -102,14 +99,17 @@ const checkValidity = () => {
 }
 
 defineExpose({
-  externalModules, checkValidity
+  /* array of PanelExternalModuleItem refs, see expose of PanelExternalModulesItem */
+  externalModules,
+  /* function () to check data validity, cascades call */
+  checkValidity
 })
 </script>
 
 <template>
-  <div class="panel-container" id="exteral-modules-container">
+  <div class="panel-container" id="external-modules-container">
 
-    <h4>Anzurechnende Module</h4>
+    <h4>{{ $t('PanelExternalModules.ModulesToBeCredited') }}</h4>
 
     <div v-if="existingModulesList" class="external-modules-list">
       <PanelExternalModulesItem
@@ -120,9 +120,10 @@ defineExpose({
           :allow-delete="allowDelete && externalModules.length > 1"
           :id="externalModule.id"
           :name="externalModule.name"
-          :university="externalModule.university"
           :points="externalModule.points"
           :point-system="externalModule.pointSystem"
+          :university="externalModule.university"
+          :external-course="externalModule.externalCourse"
           :selected-file="externalModule.pdfDocument"
           @delete-self="deleteExistingModule(externalModule.id)"
           @change="emit('change')"
@@ -141,7 +142,7 @@ defineExpose({
           @change="emit('change')"
           ref="newModulesRef"
       />
-      <ButtonAdd @click="addNewModule">Fremdmodul hinzufügen</ButtonAdd>
+      <ButtonAdd @click="addNewModule">{{ $t('PanelExternalModules.AddModule') }}</ButtonAdd>
     </div>
 
   </div>
@@ -152,7 +153,7 @@ defineExpose({
 @use '@/assets/styles/global' as *;
 @use '@/assets/styles/components' as *;
 
-#exteral-modules-container {
+#external-modules-container {
   border-top: none;
 }
 

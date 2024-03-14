@@ -11,10 +11,10 @@ import { useRoute } from "vue-router";
 import { ref, computed, onBeforeMount } from "vue"
 import FilterSelector from "@/components/filter/FilterSelector.vue";
 import ApplicationOverview from "@/components/abstract/ApplicationOverview.vue";
-import { getApplications } from "@/scripts/axios-requests";
-import { parseRequestDate } from "@/scripts/date-utils";
-import { filterApplications } from "@/scripts/applications-filter";
+import { parseRequestDate } from "@/utils/date-utils";
+import { filterApplications } from "@/utils/applications-filter";
 import LoadingContainer from "@/components/util/LoadingContainer.vue";
+import { getApplications } from "@/requests/application-requests";
 
 const route = useRoute()
 
@@ -32,7 +32,7 @@ const filteredApplications = computed(() => {
   } else {
     return allApplications.value
   }
-})                  //:forward="route.matched.some(route => route.meta['forward'])"
+})
 </script>
 
 <template>
@@ -65,6 +65,7 @@ const filteredApplications = computed(() => {
     </div>
   </div>
   <div v-else class="main centered">
+    <h1 class="screen-reader-only">Übersichtsseite aller Anträge</h1>
     <LoadingContainer />
   </div>
 </template>

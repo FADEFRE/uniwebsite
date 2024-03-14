@@ -1,519 +1,720 @@
-# swtp-2023-12
-
-## Setup Database Connection
-
-install Java SE Development Kit 17.0.8:
-https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html
-
-
-install postgre database and remeber password!
-https://www.postgresql.org/download/
-
-
-install pg4Admin
-https://www.pgadmin.org/download/
-
-
-open pg4Admin click on servers, create new database
-
-
-edit application.properties in /src/main/recources/:
-spring.datasource.url=jdbc:postgresql://localhost:5432/<your_database_name>
-spring.datasource.username=postgres
-spring.datasource.password=<your_password>
-
-
-// this line says the database schema will always be created after starting and deleted after stopping // other config possible
-spring.jpa.hibernate.ddl-auto=create-drop
-
-
-    !! Always stop programm with CTRL+C inside your IDE terminal/console, otherwise DB-tables won't be dropped !!
-
-## Login Daten 
-
-Studienbüro:
-
-    username: studyoffice
-    password: abc123
-
-Prüfungsausschuss:
-
-    username: pav
-    password: pav123
-
-Admin:
-
-    username: admin
-    password: admin
-
-.
-
-## JAVADOC GENERATION
-
-to (re)generate the Javadoc for this project run these commands in \backend\modulecrediting
-
-    mvn clean (optional)
-    mvn install
-
-afterwards the documentation can be found under \backend\modulecrediting\target\apidocs\index.html      
-it is recommended to open the file with a browser and not in an IDE, du to the structure of javadoc.
-
-.
-
-# API ENDPOINTS
-
-## Application: "ApplicationController"
-
-### GET - Requests:
-
-http://localhost:8090/api/applications -> returns a "List" of all "Applications"    
-"Views.ApplicationOverview.class"   
-http://localhost:8090/api/applications/original -> returns a "List" of all "OriginalApplications"   
-
-    [
-        {
-            "id": id,
-            "fullStatus": NEU / FORMFEHLER / STUDIENBÜRO / PRÜFUNGSAUSSCHUSS / ABGESCHLOSSEN,
-
-            "creationDate": creationDate,
-            "lastEditedDate": null / lastEditedDate,
-            "decisionDate": null / decisionDate,
-
-            "courseLeipzig": { "name": name },
-            "modulesConnections": [
-                {
-                    "externalModules": [
-                        {
-                            "name": name,
-                            "university": university
-                        },
-                        ...
-                    ]
-                },
-                ...
-            ]
-        },
-        ...
-    ]
-.
-
-http://localhost:8090/api/applications/{id} -> needs {id}, returns corresponding "Application"    
-"Views.ApplicationLogin.class"      
-http://localhost:8090/api/applications/{id}/original -> needs {id}, returns corresponding "OriginalApplications"  
-
-    "id": id,
-    "fullStatus": NEU / FORMFEHLER / STUDIENBÜRO / PRÜFUNGSAUSSCHUSS / ABGESCHLOSSEN,
-
-    "creationDate": creationDate,
-    "lastEditedDate": null / lastEditedDate,
-    "decisionDate": null / decisionDate,
-
-    "courseLeipzig": { "name": name },
-    "modulesConnections": [
-        {
-            "id": id,
-            "decisionFinal": accepted / asExamCertificate / denied / unedited,
-            "commentDecision": "" / comment,
-            "decisionSuggestion": accepted / asExamCertificate / denied / unedited,
-            "commentStudyOffice": "" / comment,
-            "formalRejection": true / false,
-            "formalRejectionComment": "" / comment,
-            "commentApplicant": "" / comment,
-            "externalModules": [
-                {
-                    "id": id,
-                    "name": name,
-                    "points": points,
-                    "pointSystem": pointSystem,
-                    "university": university,
-                    "pdfDocument": {
-                        "id": id,
-                        "name": name
-                    }
-                },
-                ...
-            ]
-        },
-        ...
-    ]
-.
-
-http://localhost:8090/api/applications/{id}/exists -> needs {id}, returns "Boolean"
-
-    true / false
-.
-
-http://localhost:8090/api/applications/{id}/update-status-allowed -> needs {id}, returns "EnumStatusChange"
-
-    NOT_ALLOWED / PASSON / REJECT
-.
-
-http://localhost:8090/api/applications/student/{id} -> needs {id}, returns corresponding "Application"      
-"Views.ApplicationStudent.class"
-
-    NEEDS FIXING IN BACKEND FIRST
-.
-
-
-### POST - Requests:
-
-http://localhost:8090/api/applications -> needs "ApplicationCreateDTO", returns "id" of the created application
-
-    id
-.
-
-
-### PUT - Requests:
-
-http://localhost:8090/api/applications/{id}/update-status -> needs {id}, returns "EnumApplicationStatus"
-
-    NEU / FORMFEHLER / STUDIENBÜRO / PRÜFUNGSAUSSCHUSS / ABGESCHLOSSEN
-.
-
-http://localhost:8090/api/applications/standard/{id} -> needs {id} "ApplicationUpdateDTO" "BindingResult?", returns "id" of updated application
-
-    id
-.
-
-Requires Role: "ROLE_STUDY":     
-http://localhost:8090/api/applications/study-office/{id} -> needs {id} "ApplicationUpdateDTO" "BindingResult?", returns "id" of updated application
-
-    id
-.
-
-Requires Role: "ROLE_CHAIR":  
-http://localhost:8090/api/applications/chairman/{id} -> needs {id} "ApplicationUpdateDTO" "BindingResult?", returns "id" of updated application
-
-    id
-.
-
-
-.
-## Authentication: "AuthController"
-
-### POST - Requests:
-
-http://localhost:8090/api/auth/login -> needs "LoginRequest", optional "authCookie" "refreshCookie", returns "LoginResponse"
-
-    LoginRequest: {
-        "username": username,
-        "password": password
-    }
-
-    LoginResponse: {
-        "SuccessFailure": SUCCESS / FAILURE,
-        "message": message
-    }
-.
-
-http://localhost:8090/api/auth/login -> needs "refreshCookie", optional "authCookie", returns "LoginResponse"
-
-    LoginResponse: {
-        "SuccessFailure": SUCCESS / FAILURE,
-        "message": message
-    }
-.
-
-http://localhost:8090/api/auth/login -> returns "LogoutResponse"
-
-    LogoutResponse: {
-        "SuccessFailure": SUCCESS / FAILURE,
-        "message": message
-    }
-.
-
-Requires Role: "ROLE_ADMIN":        
-http://localhost:8090/api/auth/register -> needs "RegisterRequest", returns "message"
-
-    RegisterRequest: {
-        "username": username,
-        "password": password,
-        "passwordConfirm": passwordConfirm,
-        "role": role
-    }
-
-
-    HttpStatus.OK           -> User registered successfully!
-    HttpStatus.BAD_REQUEST  -> Username already exists!
-.
-
-
-.
-## Studiengänge in Leipzig: "CourseLeipzigController"
-
-### GET - Requests:
-
-http://localhost:8090/api/courses-leipzig -> returns a "List" of all "CourseLeipzig"
-"Views.coursesWithModules.class"
-
-    [
-        {
-            "name": name,
-            "isActive": true / false,
-            "modulesLeipzigCourse": [
-                {
-                    "name": name,
-                    "code": code,
-                    "isActive": true / false
-                },
-                ...
-            ]
-        },
-        ...
-    ]
-.
-
-http://localhost:8090/api/courses-leipzig/{name} -> needs {name}, returns corresponding "CourseLeipzig"
-
-
-    "name": name,
-    "isActive": true / false,
-    "modulesLeipzigCourse": [
-        {
-            "name": name,
-            "code": code,
-            "isActive": true / false
-        },
-        ...
-    ]
-.
-
-http://localhost:8090/api/courses-leipzig/{name}/state -> needs {name}, returns "isActive"      
-Requires Role: "ROLE_STUDY" or "ROLE_CHAIR"
-
-    true / false
-.
-
-
-### POST - Requests:
-
-http://localhost:8090/api/courses-leipzig/create -> needs "CourseLeipzigCreateDTO", returns "name" of created CourseLeipzig         
-Requires Role: "ROLE_STUDY" or "ROLE_CHAIR"
-
-    id
-.
-
-
-### PUT - Requests:
-
-http://localhost:8090/api/courses-leipzig/{name}/edit -> needs {name} "EditCourseDTO", returns "Boolean"            
-Requires Role: "ROLE_STUDY" or "ROLE_CHAIR"     
-
-This Requests edits CourseLeipzig <-> ModuleLeipzig relations
-
-    true / false
-.
-
-
-### DELETE - Requests:
-
-http://localhost:8090/api/courses-leipzig/{name}/delete -> needs {name}, returns            
-Requires Role: "ROLE_STUDY" or "ROLE_CHAIR"
-
-    DELETED / DEACTIVATED
-.
-
-
-.
-## Module in Leipzig: "ModuleLeipzigController"
-
-### GET - Requests:
-
-http://localhost:8090/api/modules-leipzig -> returns a "List" of all "ModuleLeipzig"    
-"Views.modulesWithoutCourse.class"
-
-    [
-        {
-            "name": name,
-            "code": code,
-            "isActive": true / false
-        },
-        ...
-    ]
-.
-
-http://localhost:8090/api/modules-leipzig/{name} -> needs {name}, returns corresponding "ModuleLeipzig"
-
-
-    "name": name,
-    "code": code,
-    "isActive": true / false
-.
-
-http://localhost:8090/api/modules-leipzig/{name}/state -> needs {name}, returns "isActive"      
-Requires Role: "ROLE_STUDY" or "ROLE_CHAIR"
-
-    true / false
-.
-
-
-### POST - Requests:
-
-http://localhost:8090/api/modules-leipzig/create -> needs "ModuleLeipzigCreateDTO", returns "name" of created CourseLeipzig         
-Requires Role: "ROLE_STUDY" or "ROLE_CHAIR"
-
-    id
-.
-
-
-### PUT - Requests:
-
-http://localhost:8090/api/modules-leipzig/{name}/edit -> needs {name} "ModuleLeipzigUpdateDTO", returns "Boolean"   
-Requires Role: "ROLE_STUDY" or "ROLE_CHAIR"
-
-    true / false
-.
-
-
-### DELETE - Requests:
-
-http://localhost:8090/api/modules-leipzig/{name}/delete -> needs {name}, returns        
-Requires Role: "ROLE_STUDY" or "ROLE_CHAIR"
-
-    DELETED / DEACTIVATED
-.
-
-.
-## ModulesConnection: "ModulesConnectionController"
-
-### GET - Requests:
-
-http://localhost:8090/api/modules-connection/{id}/related -> needs {id}, returns "List" of related "ModulesConnection"
-
-    [
-        {
-            "id": id,
-            "decisionFinal": accepted / asExamCertificate / denied / unedited,
-            "externalModules": [
-                {
-                    "name": name,
-                    "university": university
-                },
-                ...
-            ],
-            "modulesLeipzig": [
-                {
-                    "name": name
-                },
-                ...
-            ],
-            "application": {
-                "id": id,
-                "decisionDate": "decisionDate",
-                "courseLeipzig": {
-                    "name": name
-                }
+# Summary of this Readme
+
+1. **[General Information](#1-general-information)**
+2. **[Setup and settings](#2-setup-and-settings)**
+    1. [Setup backend and database (development)](#21-setup-backend-and-database-development)
+    2. [Setup frontend (development)](#22-setup-frontend-development)
+    3. [Dataloader settings in *.properties files](#23-dataloader-settings-in-application-devprodproperties)
+         - [app.config.data.adminUsername/Password](#appconfigdataadminusernamepassword)
+         - [app.config.data.loadTestData](#appconfigdataloadtestdata-true--false)
+    4. [Other application.properties settings](#24-other-applicationproperties-settings)
+        - [spring.jpa.hibernate.ddl-auto](#springjpahibernateddl-auto-create-drop--update)
+        - [server.port](#serverport--default-8090)
+    5. [Test Data](#25-test-data)
+        - [users](#1-parameters-to-create-these-users)
+        - [random applications](#2-parameters-to-create-randapplications)
+        - [random external modules](#3-parameters-to-create-randexternalmodules)
+        - [internal courses and modules](#4-internal-courses-and-modules---courses)
+3. **[Javadoc](#3-javadoc-generation)**
+4. **[Api-Endpoints](#4-api-endpoints)**
+    1. [List of Views.class](#41-overview-of-views-modelviewsjava)
+    2. [Application: "ApplicationController" -> /api/applications](#42-application-applicationcontroller)
+        - [GET-Requests](#get---requests)
+        - [POST-Requests](#post---requests)
+        - [PUT-Requests](#put---requests)
+    3. [Authentication: "AuthController" -> /api/auth](#43-authentication-authcontroller)
+        - [POST-Requests](#post---requests-1)
+    4. [Studiengaenge in Leipzig: "CourseLeipzigController" -> /api/courses-leipzig](#44-studiengaenge-in-leipzig-courseleipzigcontroller)
+        - [GET-Requests](#get---requests-1)
+        - [POST-Requests](#post---requests-2)
+        - [PUT-Requests](#put---requests-1)
+        - [DELETE-Requests](#delete---requests)
+    5. [Handling of JSON files: "JsonFileController" -> /file/json](#45-handling-of-json-files-jsonfilecontroller)
+        - [GET-Requests](#get---requests-2)
+        - [POST-Requests](#post---requests-3)
+    6. [Module in Leipzig: "ModuleLeipzigController" -> /api/modules-leipzig](#46-module-in-leipzig-moduleleipzigcontroller)
+        - [GET-Requests](#get---requests-3)
+        - [POST-Requests](#post---requests-4)
+        - [PUT-Requests](#put---requests-2)
+        - [DELETE-Requests](#delete---requests-1)
+    7. [ModulesConnection: "ModulesConnectionController" -> /api/modules-connection](#47-modulesconnection-modulesconnectioncontroller)
+        - [GET-Requests](#get---requests-4)
+    8. [Handling of PDF files: "PdfDocumentContoller" -> /file/pdf-documents](#48-handling-of-pdf-files-pdfdocumentcontoller)
+        - [GET-Requests](#get---requests-5)
+    9. [User: "UserController" -> /api/user](#39-user-usercontroller)
+        - [GET-Requests](#get---requests-6)
+        - [POST-Requests](#post---requests-5)
+        - [PUT-Requests](#put---requests-3)
+5. **[Folder structure explanation](#5-folder-structure-explanation)**
+    1. [Backend](#51-backend)
+    2. [Frontend](#52-frontend)
+
+.  
+ <a href="#top">Back to top</a>
+
+# 1. General Information 
+
+You can reach this groups VM under http://172.26.92.91:8080
+
+An explanation of the folder structures both in backend and frontend, 
+can be found at the <a href="#5-folder-structure-explanation"> end </a>of this README
+
+NOTE: if you use 'create-drop' this app will only create 1 admin user 
+(<a href="#23-dataloader-settings-in-application-devprodproperties">more here</a>),
+if the 'TestDataLoader' is not enabled
+
+ <a href="#top">Back to top</a>
+
+# 2. Setup and settings
+## 2.1. Setup backend and database (development)
+
+JDK version 17.0.8: https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html
+
+PostgreSQL: https://www.postgresql.org/download/
+
+pgAdmin 4: https://www.pgadmin.org/download/
+
+
+1. Create new Database in pgAdmin
+2. Edit application-dev.properties in backend\modulecrediting\src\main\recources\ :
+
+    - spring.datasource.url=jdbc:postgresql://localhost:5432/<your_database_name>
+    - spring.datasource.username=<your_username> (default: postgres)
+    - spring.datasource.password=<your_password>
+
+3. Edit application.properties in backend\modulecrediting\src\main\recources\ :
+
+    - spring.profiles.active= dev / prod
+
+ <a href="#top">Back to top</a>
+
+## 2.2. Setup frontend (development)
+
+Node: https://nodejs.org/en/download/
+
+1. After Node is installed, run these commands in frontend\modulecrediting\src\
+   - npm install
+
+   - npm run dev
+
+2. After the first install, only "npm run dev" needs to be executed to start the frontend
+
+3. (optional) for dev purposes you can add a "jsconfig.json" file to frontend\modulecrediting\ with following content, to remove some IDE warnings:
+
+         {
+            "compilerOptions": {
+               "baseUrl": ".",
+               "paths": {
+                  "@/*": ["./src/*"],
+               }
             }
-        },
-        ...
-    ]
-.
+         }
 
-.
-## PDF Dokumente: "PdfDocumentContoller"
 
-### GET - Requests:
+ <a href="#top">Back to top</a>
 
-http://localhost:8090/file/pdf-documents/{id} -> needs pdf {id}, returns "PDF"
+## 2.3. Dataloader settings in application-(dev/prod).properties:
+### > app.config.data.adminUsername/Password:
+Everytime the backend service is started, the dataloader will check if at least one admin-user exists. 
+If it does not, the dataloader will create an admin-user with these parameters.
 
-    name.pdf
-.
+### > app.config.data.loadTestData= true / false
+On startup the dataloader will check if it should run the "TestDataLoader.java" class.
+The TestDataLoader class reads in test_data.json from the backend ressources folder.
 
-http://localhost:8090/file/pdf-documents/application/{id} -> needs application {id}, returns new generated "PDF" of corresponding application
+ <a href="#top">Back to top</a>
 
-    antrag.pdf
-.
+## 2.4. Other application.properties settings:
+### > spring.jpa.hibernate.ddl-auto= create-drop / update
+This will tell jpa what to do on startup and shutdown.
 
-.
-## User: "UserController"
+ - create-drop: The (existing) database will be dropped on startup and shutdown and the tables will be newly generated
+ - update: The existing database will not be dropped, but rather be updated 
 
-### GET - Requests:
+create-drop is recommended for development purposes
 
-http://localhost:8090/api/user/me -> returns "UserSummary" 
+### > server.port = (default: 8090)
+This is the port on which the backend will run. If this is changed, it needs to be changed in the url-config.js aswell      
+frontend\modulecrediting\src\config\url-config.js
 
-    "userId": userId,
-    "username": username
-.
+### > app.auth.*TokenExpirationMsec
+These set the duration (in milliseconds) of how long the access/refreshToken are valid 
 
-http://localhost:8090/api/user/{id}/role -> needs user {id}, returns "Role" of user
+### > app.auth.expireAtMidnight = true / false
+When set to "true", the refreshTokenExpirationDate will be changed to midnight after its original expiration set by app.auth.refreshTokenExpirationMsec
 
-    HttpStatus.OK           -> Anonymous user / ROLE_STUDY / ROLE_CHAIR / ROLE_ADMIN , 
-    HttpStatus.NOT_FOUND  -> User doesnt exists! 
-.
+ <a href="#top">Back to top</a>
 
-.
+## 2.5. Test Data
+### The testData currently includes:
+#### 1. Parameters to create these "users":
 
-.
+ - Admin:
+    - username: admin
+    - password: admin
+    - role: admin
 
-.
+ - Studienbuero:
+    - username: studyoffice
+    - password: abc123
+    - role: study
 
-.
+ - Pruefungsausschuss:
+    - username: pav
+    - password: pav123
+    - role: chair
 
-## OLD README:
+#### 2. Parameters to create "randApplications":
 
-.
-http://localhost:8090/api/courses-leipzig
- -> GET: all internal courses leipzig with their modules
+ - all these parameters should be a number of how many of this type of "application" should be created.
+ - current fields are: new, study-office, formfehler, pav, closed
 
-http://localhost:8090/api/modules-leipzig
- -> GET: all internal modules leipzig
+#### 3. Parameters to create "randExternalModules":
 
-http://localhost:8090/api/applications
+ - all these parameters should be JSON array literals, from which the testDataLoader will randomly select a value to use.
+ - current fields are: name, externalCourse, uni, points, pointSystem, comment
 
- -> POST: post new application   Content-Type: multipart/form-data
+#### 4. Internal Courses and Modules -> "courses":
+
+ - these are all the courses and modules that will be written into the database when "app.config.data.loadTestData" is set to true.
+ - duplicates will not be written multiple times
+ - BUT if modules appear in multiple courses, they will be added to all of these courses
+
+  
+ <a href="#top">Back to top</a>
+
+# 3. JAVADOC GENERATION
+
+ - to (re)generate the Javadoc for this project run these commands in \backend\modulecrediting :
     
-    - courseLeipzig: B.Sc. Informatik
-    - moduleBlockCreateDTOList[0].moduleName: ...
-    - moduleBlockCreateDTOList[0].university: ...
-    - moduleBlockCreateDTOList[0].points: ...
-    - moduleBlockCreateDTOList[0].pointSystem: ...
-    - moduleBlockCreateDTOList[0].description: ...
-    - moduleBlockCreateDTOList[0].moduleNameLeipzig[0]: Berechenbarkeit (!!! important name must be in database !!!)
-    - moduleBlockCreateDTOList[0].moduleNameLeipzig[1]:
-    - moduleBlockCreateDTOList[0].commentApplicant: ...
-    - moduleBlockCreateDTOList[1].moduleName: ...
-    ...
+    - mvn clean (optional)
+    - mvn install
 
-http://localhost:8090/api/applications
- -> GET: getAllApplications requestparam: limit (default = 10), optional status,
-    enum status:
-        - OFFEN
-        - IN_BEARBEITUNG
-        - ABGESCHLOSSEN
+    - alternatively "mvn javadoc:javadoc" can be run aswell
 
-http://localhost:8090/api/applications/{id}
- -> GET: getApplicationById (full applicaiton for sutdienbuero and pav)
-    (pdf id is included: use for retrieving pdf data over seperate api endpoint)
+ - NOTE: in production the first two commands are executed everytime the pipeline makes a new build of the backend
 
-http://localhost:8090/api/applications/{id}
- -> PUT: update applicaiton
-    - moduleBlockUpdateDTOList[0].moduleName: ...
-    - moduleBlockUpdateDTOList[0].university: ...
-    - moduleBlockUpdateDTOList[0].points: ...
-    - moduleBlockUpdateDTOList[0].pointSystem: ...
-    - moduleBlockUpdateDTOList[0].moduleNameLeipzig[0]: Berechenbarkeit (!!! important name must be in database !!!)
-    - moduleBlockUpdateDTOList[0].moduleNameLeipzig[1]: ...
-    - moduleBlockUpdateDTOList[0].decision: {ANGENOMMEN,VERAENDERT_ANGENOMMEN,ABGELEHNT,UNBEARBEITET}
-    - moduleBlockUpdateDTOList[0].comment: ...
-    - moduleBlockUpdateDTOList[1].moduleName: ...
-
-http://localhost:8090/api/applications/{id}/exists
- -> GET: boolean if application with id exists
-
-http://localhost:8090/api/applications/student/{id}
- -> GET: getApplicationById (limited info)
-    (pdf id is included: use for retrieving pdf data over seperate api endpoint)
-
-http://localhost:8090/file/pdf-documents/{id}
-
- -> GET: get single pdf file
-
-http://localhost:8090/file/pdf-documents/application/${id}
- -> GET: generated PDF Document with application Data
+ - afterwards the documentation can be found under \backend\modulecrediting\target\apidocs\index.html      
+ - it is recommended to open the file with a browser and not in an IDE
 
 
-http://localhost:8090/api/modules-connection/{id}/related
+ <a href="#top">Back to top</a>
 
--> GET: all related modules-connections of a module connection 
+# 4. API ENDPOINTS
+## 4.1. Overview of Views: "\model\Views.java"
+
+In some cases Views are used, instead of DTOs, to generate ResponseData
+
+ - ApplicationLoginOverview
+    - TODO: explanation
+ - ApplicationLogin
+    - TODO: explanation
+ - ApplicationStudent
+    - TODO: explanation
+ - CoursesWithModules
+    - TODO: explanation
+ - ModulesWithoutCourse
+    - TODO: explanation
+ - RelatedModulesConnection
+    - TODO: explanation
+
+ <a href="#top">Back to top</a>
+
+## 4.2. Application: "ApplicationController"
+### _**GET - Requests:**_
+
+#### > **/api/applications**
+ - required role:
+    - ROLE_STUDY
+    - ROLE_CHAIR
+ - returns a "List" of all "Applications" with fields definied by "Views.ApplicationLoginOverview"
+ - http://localhost:8090/api/applications
+
+#### > **/api/applications/{id}**
+ - pathvariables:
+    - {id} ->  id of the requested application
+ - required role:
+    - ROLE_STUDY
+    - ROLE_CHAIR
+ - returns corresponding "Application" with fields definied by "Views.ApplicationLoginOverview"
+ - http://localhost:8090/api/applications/{id}
+
+#### > **/api/applications/student/{id}**
+ - pathvariables:
+    - {id} ->  id of the requested application 
+ - returns corresponding "Application" with fields definied by "Views.ApplicationStudent"
+ - http://localhost:8090/api/applications/student/{id}
+
+#### > **/api/applications/{id}/exists**
+ - pathvariables:
+    - {id} ->  id of the requested application 
+ - returns Boolean with true if the specified "Application" exists
+ - http://localhost:8090/api/applications/{id}/exists
+
+#### > **/api/applications/{id}/update-status-allowed**
+ - pathvariables:
+    - {id} ->  id of the requested application 
+ - required role:
+    - ROLE_STUDY
+    - ROLE_CHAIR
+ - returns "EnumStatusChangeAllowed" 
+ - http://localhost:8090/api/applications/{id}/update-status-allowed
 
 
+
+ <a href="#top">Back to top</a>
+
+### _**Basic Formdata for "Application"-Requests**_
+This basic formdata is used in most "Application"-Requests
+
+    courseLeipzig: ***
+    modulesConnectionDTO[0].commentApplicant: ***
+    modulesConnectionDTO[0].externalModuleDTO[0].name: ***
+    modulesConnectionDTO[0].externalModuleDTO[0].externalCourse: ***
+    modulesConnectionDTO[0].externalModuleDTO[0].university: ***
+    modulesConnectionDTO[0].externalModuleDTO[0].points: ***
+    modulesConnectionDTO[0].externalModuleDTO[0].pointSystem: ***
+    modulesConnectionDTO[0].externalModuleDTO[0].description: *** -> multipart/file
+    modulesConnectionDTO[0].moduleLeipzigDTO[0].name
+
+ 
+ <a href="#top">Back to top</a>
+
+### _**POST - Requests:**_
+
+#### > **/api/applications**
+ - modelAttribute: "ApplicationDTO" 
+    - [Basic Formdata](#basic-formdata-for-application-requests)
+ - returns "id" of created "Application" 
+ - http://localhost:8090/api/applications
+
+
+ 
+ <a href="#top">Back to top</a>
+
+### _**PUT - Requests:**_
+
+#### > **/api/applications/student/{id}**
+ - pathvariables:
+    - {id} ->  id of the requested application 
+ - modelAttribute: "ApplicationDTO" 
+    - [Basic Formdata](#basic-formdata-for-application-requests)
+ - returns "id" of updated "Application" 
+ - http://localhost:8090/api/applications/student/{id}
+
+
+#### > **/api/applications/{id}/update-status**
+ - pathvariables:
+    - {id} ->  id of the requested application 
+ - required role:
+    - ROLE_STUDY
+    - ROLE_CHAIR
+ - returns "EnumApplicationStatus"
+ - http://localhost:8090/api/applications/{id}/update-status
+
+
+#### > **/api/applications/study-office/{id}**
+ - pathvariables:
+    - {id} ->  id of the requested application 
+ - required role:
+    - ROLE_STUDY
+ - modelAttribute: "ApplicationDTO"
+    - [Basic Formdata](#basic-formdata-for-application-requests) and
+    - either:
+
+            modulesConnectionDTO[0].formalRejection: true
+            modulesConnectionDTO[0].formalRejectionComment: ***
+    - or:
+
+            modulesConnectionDTO[0].formalRejection: false
+            modulesConnectionDTO[0].formalRejectionComment: ""
+            modulesConnectionDTO[0].decisionSuggestion: *** (optional)
+            modulesConnectionDTO[0].commentStudyOffice: *** (optional)
+ - returns "id" of updated "Application" 
+ - http://localhost:8090/api/applications/study-office/{id}
+
+
+#### > **/api/applications/chairman/{id}**
+ - pathvariables:
+    - {id} ->  id of the requested application 
+ - required role:
+    - ROLE_CHAIR
+ - modelAttribute: "ApplicationDTO"
+    - [Basic Formdata](#basic-formdata-for-application-requests) and
+
+            modulesConnectionDTO[0].decisionSuggestion: *** (optional)
+            modulesConnectionDTO[0].commentStudyOffice: *** (optional)
+ - returns "id" of updated "Application" 
+ - http://localhost:8090/api/applications/chairman/{id}
+
+  
+ <a href="#top">Back to top</a>
+
+
+## 4.3. Authentication: "AuthController"
+### _**POST - Requests:**_
+
+#### > **/api/auth/login**
+ - cookies:
+    - accessToken (optional)
+    - refreshToken (optional)
+ - requestBody: "LoginRequest"
+    
+        username: ***
+        password: ***
+ - returns "LoginResponse"
+ - http://localhost:8090/api/auth/login
+
+#### > **/api/auth/refresh**
+ - cookies:
+    - accessToken (optional)
+    - refreshToken (kind of needed -> without forced logout)
+ - returns "LoginResponse"
+ - http://localhost:8090/api/auth/refresh
+
+#### > **/api/auth/logout**
+ - returns "LogoutResponse"
+ - http://localhost:8090/api/auth/logout
+
+ <a href="#top">Back to top</a>
+
+
+## 4.4. Studiengaenge in Leipzig: "CourseLeipzigController"
+### _**GET - Requests:**_
+
+#### > **/api/courses-leipzig**
+ - returns "list" of all "CourseLeipzig" 
+ - http://localhost:8090/api/courses-leipzig
+
+ <a href="#34-studiengaenge-in-leipzig-courseleipzigcontroller">Back to CourseLeipzigController</a>
+
+### _**POST - Requests:**_
+
+#### > **/api/courses-leipzig**
+ - required role:
+    - ROLE_STUDY
+    - ROLE_CHAIR
+    - ROLE_ADMIN
+ - modelAttribute: "CourseLeipzigDTO"
+
+            courseName: ***
+ - returns "name" of created "CourseLeipzig" 
+ - http://localhost:8090/api/courses-leipzig
+
+ <a href="#34-studiengaenge-in-leipzig-courseleipzigcontroller">Back to CourseLeipzigController</a>
+
+### _**PUT - Requests:**_
+
+#### > **/api/courses-leipzig/{name}**
+ - pathvariables:
+    - {name} ->  name of the requested "CourseLeipzig" 
+ - required role:
+    - ROLE_STUDY
+    - ROLE_CHAIR
+    - ROLE_ADMIN
+ - modelAttribute: "CourseLeipzigDTO"
+
+            courseName: ***
+ - returns "name" of updated "CourseLeipzig"
+ - http://localhost:8090/api/courses-leipzig/{name}
+
+#### > **/api/courses-leipzig/{name}/edit**
+ - pathvariables:
+    - {name} ->  name of the requested "CourseLeipzig" 
+ - required role:
+    - ROLE_STUDY
+    - ROLE_CHAIR
+    - ROLE_ADMIN
+ - modelAttribute: "CourseLeipzigRelationEditDTO"
+
+            moduleLeipzigDTO[0].name: ***
+            moduleLeipzigDTO[0].code: ***
+ - returns "name" of updated "CourseLeipzig"
+ - http://localhost:8090/api/courses-leipzig/{name}/edit
+
+ <a href="#34-studiengaenge-in-leipzig-courseleipzigcontroller">Back to CourseLeipzigController</a>
+
+### _**DELETE - Requests:**_
+
+#### > **/api/courses-leipzig/{name}**
+ - pathvariables:
+    - {name} ->  name of the requested "CourseLeipzig" 
+ - required role:
+    - ROLE_STUDY
+    - ROLE_CHAIR
+    - ROLE_ADMIN
+ - returns "DELETED" / "DEACTIVATED" 
+ - http://localhost:8090/api/courses-leipzig/{name}
+
+ <a href="#34-studiengaenge-in-leipzig-courseleipzigcontroller">Back to CourseLeipzigController</a>         
+ <a href="#top">Back to top</a>
+
+
+## 4.5. Handling of JSON files: "JsonFileController" 
+### _**GET - Requests:**_
+
+#### > **/file/json/courses**
+ - required role:
+    - ROLE_ADMIN
+ - returns "APPLICATION_JSON" of all Courses- and ModulesLeipzig 
+ - http://localhost:8090/file/json/courses
+
+ <a href="#top">Back to top</a>
+
+### _**POST - Requests:**_
+
+#### > **/file/json/courses/upload**
+ - required role:
+    - ROLE_ADMIN
+ - requestParam:
+    - "jsonFile": MultipartFile
+ - returns success message with file name
+ - http://localhost:8090/file/json/courses/upload
+
+ <a href="#top">Back to top</a>
+
+
+## 4.6. Module in Leipzig: "ModuleLeipzigController"
+### _**GET - Requests:**_
+
+#### > **/api/modules-leipzig**
+ - returns "List" of all "ModulesLeipzig"
+ - http://localhost:8090/api/modules-leipzig
+
+ <a href="#top">Back to top</a>
+
+### _**POST - Requests:**_
+
+#### > **/api/modules-leipzig**
+ - required role:
+    - ROLE_STUDY
+    - ROLE_CHAIR
+    - ROLE_ADMIN
+ - modelAttribute: "ModuleLeipzigDTO"
+
+            name: ***
+            code: ***
+ - returns "name" of created "ModuleLeipzig"
+ - http://localhost:8090/api/modules-leipzig
+
+ <a href="#top">Back to top</a>
+
+### _**PUT - Requests:**_
+
+#### > **/api/modules-leipzig/{name}**
+ - pathvariables:
+    - {name} ->  name of the requested "ModuleLeipzig" 
+ - required role:
+    - ROLE_STUDY
+    - ROLE_CHAIR
+    - ROLE_ADMIN
+ - modelAttribute: "ModuleLeipzigDTO"
+
+            name: ***
+            code: ***
+ - returns "name" of updated "ModuleLeipzig"
+ - http://localhost:8090/api/modules-leipzig/{name}
+
+ <a href="#top">Back to top</a>
+
+### _**DELETE - Requests:**_
+
+#### > **/api/modules-leipzig/{name}**
+ - pathvariables:
+    - {name} ->  name of the requested "ModuleLeipzig" 
+ - required role:
+    - ROLE_STUDY
+    - ROLE_CHAIR
+    - ROLE_ADMIN
+ - returns "DELETED" / "DEACTIVATED" 
+ - http://localhost:8090/api/modules-leipzig/{name}
+
+ <a href="#top">Back to top</a>
+
+
+## 4.7. ModulesConnection: "ModulesConnectionController"
+### _**GET - Requests:**_
+
+#### > **/api/modules-connection/{id}/related**
+ - pathvariables:
+    - {id} ->  id of the requested "ModulesConnection" 
+ - required role:
+    - ROLE_STUDY
+    - ROLE_CHAIR
+ - returns filtered "List" of related "ModulesConnection"
+ - http://localhost:8090/api/modules-connection/{id}/related
+
+ <a href="#top">Back to top</a>
+
+
+## 4.8. Handling of PDF files: "PdfDocumentContoller"
+### _**GET - Requests:**_
+
+#### > **/file/pdf-documents/{id}**
+ - pathvariables:
+    - {id} ->  id of the requested "pdfDocument" 
+ - required role:
+    - ROLE_STUDY
+    - ROLE_CHAIR
+ - returns "APPLICATION_PDF"
+ - http://localhost:8090/file/pdf-documents/{id}
+
+#### > **/file/pdf-documents/application/{id}**
+ - pathvariables:
+    - {id} ->  id of the "Applicaton" of the requested "pdfDocument" 
+ - returns generated "APPLICATION_PDF" of requested "Applicaton"
+ - http://localhost:8090/file/pdf-documents/application/{id}
+
+ <a href="#top">Back to top</a>
+
+
+## 4.9. User: "UserController"
+### _**GET - Requests:**_
+
+#### > **/api/user/me**
+ - returns "UserSummary" of current user
+ - http://localhost:8090/api/user/me
+
+#### > **/api/user/me/id**
+ - returns "UserSummary" (only id) of current user
+ - http://localhost:8090/api/user/me
+
+#### > **/api/user/me/name**
+ - returns "UserSummary" (only name) of current user
+ - http://localhost:8090/api/user/me
+
+#### > **/api/user/role**
+ - required role:
+    - ROLE_STUDY
+    - ROLE_CHAIR
+    - ROLE_ADMIN
+ - returns "name" of role of the current user
+ - http://localhost:8090/api/user/role
+
+#### > **/api/user/all**
+ - required role:
+    - ROLE_ADMIN
+ - returns "List" of "UserSummary" of all "User"
+ - http://localhost:8090/api/user/all
+
+ <a href="#top">Back to top</a>
+
+### _**POST - Requests:**_
+
+#### > **/api/user/register**
+ - required role:
+    - ROLE_ADMIN
+ - modelAttribute: "EditUserDTO"
+
+            username: ***
+            password: ***
+            passwordConfirm: ***
+            role: ***
+ - returns success message
+ - http://localhost:8090/api/user/register
+
+ <a href="#top">Back to top</a>
+
+### _**PUT - Requests:**_
+
+#### > **/api/user/change/username**
+ - required role:
+    - ROLE_STUDY
+    - ROLE_CHAIR
+    - ROLE_ADMIN
+ - modelAttribute: "EditUserDTO"
+
+            id: ***
+            username: ***
+ - returns success message
+ - http://localhost:8090/api/user/change/username
+
+#### > **/api/user/change/role**
+ - required role:
+    - ROLE_ADMIN
+ - modelAttribute: "EditUserDTO"
+
+            id: ***
+            role: ***
+ - returns success message
+ - http://localhost:8090/api/user/change/role
+
+ <a href="#top">Back to top</a>
+ 
+### _**DELETE - Requests:**_
+
+#### > **/api/user**
+ - required role:
+    - ROLE_ADMIN
+ - modelAttribute: "EditUserDTO"
+
+            id: ***
+ - returns success message
+ - http://localhost:8090/api/user/register
+
+ <a href="#top">Back to top</a>
+
+# 5. Folder structure explanation 
+## 5.1. Backend
+
+### resources:
+- The static- and templates-folders are for the pdf generation.
+- The application*.properties are explained in
+<a href="#21-setup-backend-and-database-development">2.1.</a>, 
+<a href="#23-dataloader-settings-in-application-devprodproperties">2.3.</a> and 
+<a href="#24-other-applicationproperties-settings">2.4.</a>
+- The 'test_data.json' is the config for the 'TestDataLoader'. For more see <a href="#25-test-data">here</a>
+
+#### The following folder and files are in the \src folder:
+### config: 
+- These are all the springsecurity config classes
+### controller: 
+- These classes are the controller of the API-Endpoints
+### dto: 
+- These are all the DTO classes used for requests and responses
+### model: 
+- These classes are the 'Entity' classes of the app
+### repository: 
+- These classes are responsible for the communication between the backend and the database
+### service: 
+- These classes are the main 'logic' classes of this app
+### util: 
+- These classes have mostly 'utility' methods
+### ModulecreditingApplication.java: 
+- This is the 'main'
+### Dataloader.java: 
+- This class is responsible for writing, if it not already exist, the necessary data into the database on startup.
+- It can start the TestDataLoader with a setting change in application-dev.properties
+### TestDataLoader.java: 
+- This class creates testdata for development purposes 
+
+ <a href="#top">Back to top</a>
+
+## 5.2. Frontend
+#### The following folder and files are in the \src folder:
+### assets:
+- todo
+### components: 
+- todo
+### config:
+- todo
+### i18n:
+- todo
+### requests:
+- todo
+### router:
+- todo
+### store:
+- todo
+### utils:
+- todo
+### views:
+- todo
+### App.vue:
+- todo
+### main.js:
+- todo
+
+ <a href="#top">Back to top</a>
+
+end of file 

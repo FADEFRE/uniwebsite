@@ -1,13 +1,21 @@
 <script setup>
 import { ref } from 'vue';
 import ButtonLink from "@/components/button/ButtonLink.vue";
-import { postCourseLeipzig, postModuleLeipzig } from "@/scripts/axios-requests";
+import { postCourseLeipzig, postModuleLeipzig } from "@/requests/module-course-requests";
+
+/*
+creating a course / module (depending on prop type)
+ */
 
 const props = defineProps({
-    type: {
-        required: true,
-        type: String
+  /* 'course' or 'module' */
+  type: {
+    required: true,
+    type: String,
+    validator(value) {
+      return ['course', 'module'].includes(value)
     }
+  }
 });
 
 const coursename = ref('');
@@ -60,8 +68,7 @@ const createModuleLeipzig = () => {
   <div v-if="type === 'course'" class="management-create-container">
     <h2>Studiengang erstellen</h2>
     <div class="input-container">
-      <InputText type="text" placeholder="Name des Studiengangs" v-model="coursename"
-                 class="white" :class="{ 'invalid': courseNameEmpty || courseExists }" />
+      <InputText type="text" placeholder="Name des Studiengangs" v-model="coursename" class="white" :class="{ 'invalid': courseNameEmpty || courseExists }" />
       <small v-if="courseNameEmpty" class="invalid-text">Name des Studiengangs darf nicht leer sein</small>
       <small v-if="courseExists" class="invalid-text">Studiengang existiert bereits</small>
     </div>
@@ -73,10 +80,8 @@ const createModuleLeipzig = () => {
     <h2>Modul erstellen</h2>
     <div class="input-container">
       <div class="module-input-container">
-        <InputText type="text" placeholder="Modulname" v-model="modulename"
-                   class="white" :class="{ 'invalid': moduleNameEmpty || moduleExists }" />
-        <InputText type="text"  placeholder="Modulcode" v-model="modulecode"
-                   class="white" :class="{ 'invalid': moduleExists }" />
+        <InputText type="text" placeholder="Modulname" v-model="modulename" class="white" :class="{ 'invalid': moduleNameEmpty || moduleExists }" />
+        <InputText type="text"  placeholder="Modulcode" v-model="modulecode" class="white" :class="{ 'invalid': moduleExists }" />
       </div>
       <small v-if="moduleNameEmpty" class="invalid-text">Modulname darf nicht leer sein</small>
       <small v-if="moduleExists" class="invalid-text">Modulname oder Modulcode existiert bereits</small>
@@ -92,15 +97,15 @@ const createModuleLeipzig = () => {
 @use '@/assets/styles/components' as *;
 
 .management-create-container {
-    @include basicContainer();
-    @include verticalListItem($white);
-    @include verticalList(l);
-    width: 100%;
+  @include basicContainer();
+  @include verticalListItem($white);
+  @include verticalList(l);
+  width: 100%;
 }
 
 .module-input-container {
-    @include screenSplit();
-    width: 100%;
+  @include screenSplit();
+  width: 100%;
 }
 
 </style>

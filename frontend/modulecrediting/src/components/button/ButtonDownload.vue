@@ -1,22 +1,29 @@
 <script setup>
 import FileIcon from '@/assets/icons/FileIcon.vue';
 
+/*
+button with download icon
+
+slots:
+  default - button text
+ */
+
 const props = defineProps({
-    fixed: {
-        type: Boolean,
-        default: false
-    }
+  /* should be set to true, if button should be fixed */
+  fixed: {
+    type: Boolean,
+    default: false
+  }
 })
 </script>
 
 <template>
-    <div class="button-container">
-        <Button :class="{ ' fixed-button': fixed }">
-            <slot />
-            <FileIcon type="download"/>
-        </Button>
-    </div>
-    
+  <div class="button-container">
+    <Button :class="{ ' fixed-button': fixed }">
+      <slot />
+      <FileIcon type="download"/>
+    </Button>
+  </div>
 </template>
 
 <style scoped lang="scss">
@@ -25,8 +32,8 @@ const props = defineProps({
 @use '@/assets/styles/components' as *;
 
 .button-container {
-    display: flex;
-    gap: spacing(s);
-    width: max-content;
+  display: flex;
+  gap: spacing(s);
+  width: max-content;
 }
 </style>

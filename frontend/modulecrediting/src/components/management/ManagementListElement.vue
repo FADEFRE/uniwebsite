@@ -4,26 +4,38 @@ import TrashIcon from "@/assets/icons/TrashIcon.vue";
 import ButtonLink from "@/components/button/ButtonLink.vue";
 import { ref } from "vue";
 
+/*
+list element for a single course / module,
+allows to delete and edit (by overlay)
+ */
+
 const props = defineProps({
+  /* name of the object */
   name: {
     required: true,
     type: String
   },
+  /* code of the object */
   code: {
     type: String
   },
+  /* should be set false if object does not have a code (courses and some modules) */
   showCode: {
     type: Boolean,
     default: true
   },
+  /* function to be called to save edited name and code,
+  *  should have parameters: exists ref (should be set true if conflict error, old name, new name, new code */
   editCallback: {
     required: true,
     type: Function
   },
+  /* function to be called to delete object */
   deleteCallback: {
     required: true,
     type: Function
   },
+  /* text to be displayed if edit requests returns conflict (name or code already exists) */
   existsText : {
     type: String,
     default: ""

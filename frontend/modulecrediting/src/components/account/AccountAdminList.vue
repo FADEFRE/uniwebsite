@@ -1,8 +1,13 @@
 <script setup>
+import { ref, onBeforeMount } from "vue";
 import RoleDropdown from "@/components/util/RoleDropdown.vue";
 import TrashIcon from "@/assets/icons/TrashIcon.vue";
-import { ref, onBeforeMount } from "vue";
-import { getAllUsers, getUserMeId, putUserRole, deleteUser } from "@/scripts/axios-requests";
+import { deleteUser, getAllUsers, getUserMeId, putUserRole } from "@/requests/user-requests";
+
+/*
+list of all users,
+allows for delete and role change of all users except self
+ */
 
 let currentUserId = undefined
 const userList = ref([])
@@ -43,7 +48,7 @@ const triggerDeleteUser = (id) => {
           </div>
           
           <div class="user-self-role">
-              <p class="overview-text">ADMIN</p>
+              <p class="overview-text">Admin</p>
           </div>
 
         </div>
@@ -62,7 +67,6 @@ const triggerDeleteUser = (id) => {
 
       </div>
     </div>
-
 
   </div>
 </template>

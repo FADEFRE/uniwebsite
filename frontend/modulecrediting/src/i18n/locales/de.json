@@ -1,23 +1,241 @@
 {
-    "navigation": {
-        "homepage": "Startseite",
-        "login": "log-in intern"
+    "App": {
+        "MenuOpen": "Menü öffnen",
+        "MenuClosed": "Menü schließen",
+        "LegalDisclosure": "Impressum",
+        "PrivacyPolicy": "Datenschutz"
     },
-
-    "homepage": {
-        "makeApplication": "Antrag stellen",
-        "makeApplicationExplanation": "Lassen sie sich an anderen Universitäten erworbene Leistungspunkte für Module an der Universität Leipzig anrechnen. Dies ist beispielsweise sinnvoll, wenn Sie von einer anderen Universität zur Universität Leipzig wechseln, nach einem Auslandssemester zurückkehren oder Kurse parallel an einer anderen Universität absolviert haben.",
-
-        "viewStatus": "Status einsehen",
-        "viewStatusExplanation": "Hier können sie den Status von ihrem bereits gestellten Antrag einsehen. Geben sie dafür die 6-stellige Vorgangsnummer ein, die ihnen bei der Antragsstellung mitgeteilt wurde. Alternativ finden sie diese Vorgangsnummer auch in der Übersicht ihres Antrags als PDF.",
-
-        "sideInfo": {
-            "applicationProcess": "Antragsprozess",
-            "submitApplication": "Antrag auf dieser Website stellen",
-            "viewStatus": "Status mit Hilfe der Vorgangsnummer verfolgen",
-            "goToStudy": "Sobald der Antrag abgeschlossen ist, gehen Sie mit allen relevanten Dokumenten zum Studienbüro"
+    "ApplicationConfirmationView": {
+        "AriaCopyProcessNumber": "Kopieren der Vorgangsnummer",
+        "SRHeading": "Bestätigung des Antrags",
+        "DownloadApplication": "Antrag herunterladen",
+        "Text": "Notieren Sie sich die Vorgangsnummer. Diese ist notwendig, um später den Status Ihres Antrags einsehen zu können.",
+        "ViewStatus": "Status einsehen"
+    },
+    "ApplicationInfoBox": {
+        "Heading": "Informationen",
+        "BasicExplanation": "Wählen Sie den Studiengang der Universität Leipzig, für den Sie sich Leistungen anrechnen lassen wollen. Tragen Sie dann die Details der Leistungen ein. Hierfür können Sie beliebig viele Modulzuweisungen hinzufügen.",
+        "Explanation": {
+            "ShowExplanation": "Erklärung anzeigen",
+            "ModuleAssignment": {
+                "Heading": "Modulzuweisung",
+                "0": "Anzurechnende Module anderer Universitäten, die als Module der Universität Leipzig angerechnet werden sollen.",
+                "1": "Es sollen nur konkret zusammengehörige Module in eine Modulzuweisung geschrieben werden.",
+                "2": "Für den gesamten Antrag können Sie mehrere Modulzuweisungen hinzufügen."
+            },
+            "ExternalModules": {
+                "Heading": "Anzurechnende Module",
+                "0": "Geben Sie ein oder mehrere Modul(e) an, die an einer anderen Universität absolviert wurden.",
+                "1": "Hierfür müssen die gegebenen Felder ausgefüllt werden.",
+                "2": "Geben Sie das Punktesystem an (ECTS oder anderes).",
+                "3": "Als Modulbeschreibung muss eine PDF-Datei mit der offiziellen Beschreibung des einzelnen Moduls hochgeladen werden."
+            },
+            "ModulesLeipzig": {
+                "Heading": "Modules of Leipzig University",
+                "0": "Wählen Sie ein oder mehrere Modul(e) aus, für die Sie ihre Leistungen anrechnen lassen wollen.",
+                "1": "Sollten Sie kein passendes Modul finden, besteht auch die Möglichkeit keines auszuwählen."
+            },
+            "Comment": {
+                "Heading": "Kommentar",
+                "0": "Hier können weitere Informationen zu dieser Modulzuweisung mitgeteilt werden, dies ist optional."
+            }
+        },
+        "Example": {
+            "ShowExample": "Beispiel anzeigen",
+            "ModuleAssignment": {
+                "Heading": "Modulzuweisung",
+                "AriaCreditedFor": "wird angerechnet für",
+                "ExternalModules": "Automaten und Berechenbarkeit",
+                "ModulesLeipzig": "Automaten und Sprachen, Berechenbarkeit"
+            },
+            "ExternalModules": {
+                "Heading": "Anzurechnende Module",
+                "0": "Modulname: 'Automaten und Berechenbarkeit'",
+                "1": "Punkte: '10'", 
+                "2": "Punktesystem: 'LP'",
+                "3": "Universität: 'Martin-Luther-Universität Halle-Wittenberg'",
+                "4": "Studiengang: 'Informatik (B.Sc.)'",
+                "5": "Modulbeschreibung: PDF-Datei mit der Beschreibung des Moduls Automaten und Berechenbarkeit"
+            },
+            "ModulesLeipzig": {
+                "Heading": "Module der Universität Leipzig",
+                "0": "Automaten und Sprachen",
+                "1": "Berechenbarkeit"
+            }
         }
-        
+    },
+    "ApplicationOverview": {
+        "SRHeading": "Antrag",
+        "ProcessNumber": "Vorgangsnummer"
+    },
+    "ApplicationPanel": {
+        "AriaDeleteModule": "Modulzuweisung löschen"
+    },
+    "CustomPanel": {
+        "AriaOpenPanel": "öffne Modulzuweisung",
+        "AriaClosePanel": "schließe Modulzuweisung"
+    },
+    "ErrorViewIndexjs": {
+        "NoAccess": "Kein Zugang",
+        "NoAccesContent": "Es fehlt die Berechtigung, um diese Seite anzeigen zu können.",
+        "ServerUnreachable": "Server nicht erreichbar",
+        "ServerUnreachableContent": "Der Server ist momentan nicht erreichbar. Versuchen Sie es später erneut.",
+        "SiteNotFound": "Seite nicht gefunden",
+        "SiteNotFoundContent": "Die gewünschte Seite existiert leider nicht.",
+        "SomethingWentWrong": "Etwas ist schiefgelaufen",
+        "SomethingWentWrongContent": "Es gab einen Fehler, der nicht abgefangen werden konnte. Bitte versuchen Sie es erneut. Sollte weiterhin ein Fehler auftreten, wende Sie sich bitte an die Administratoren."
+    },
+    "FileInput": {
+        "FileEmpty": "Es muss eine Datei ausgewählt sein",
+        "OpenPDF": "PDF öffnen"
+    },
+    "FinishedInfoBox": {
+        "Heading": "Wie geht es weiter?",
+        "Text": "Es wurde eine finale Entscheidung zu ihrem Antrag getroffen. Dies ist nur eine Informationen über die Möglichkeit der Anrechnung. Um sich ihre Leistungen offiziell anrechnen zu lassen, müssen Sie zum Studienbüro gehen. Bringen Sie hierfür bitte alle relevanten Dokumente mit, die den Abschluss der anzurechnenden Leistungen belegen. Falls Sie weitere Fragen zu ihrem Antrag haben, kontaktieren Sie bitte das Studienbüro.",
+        "Explanation": "Symbolerklärung"
+    },
+    "FormalRejectionInfoBox": {
+        "Heading": "Formfehler",
+        "Text": "Ihr Antrag wurde aufgrund von Formfehlern zurückgewiesen. Es sind die Modulzuweisungen rot markiert, die Formfehler enthalten. In der Modulzuweisung finden Sie unten eine Erklärung des konkreten Fehlers. Bitte korrigieren Sie alle angegebenen Fehler. Anschließend können Sie Ihren Antrag neu einreichen."
+    },
+    "HomepageView": {
+        "SRHeading": "Homepage",
+        "Application": {
+            "Heading": "Antrag stellen",
+            "Text": "Lassen Sie sich an anderen Universitäten erworbene Leistungspunkte für Module an der Universität Leipzig anrechnen. Dies ist beispielsweise sinnvoll, wenn Sie von einer anderen Universität zur Universität Leipzig wechseln, nach einem Auslandssemester zurückkehren oder Kurse parallel an einer anderen Universität absolviert haben.",
+            "SubmitButton": "Antrag stellen"
+        },
+        "Status": {
+            "AriaProcessNumber": "Vorgangsnummer des aufzurufenden Antrags",
+            "Heading": "Status einsehen",
+            "Text": "Hier können Sie den Status von ihrem bereits gestellten Antrag einsehen. Geben Sie dafür die 6-stellige Vorgangsnummer ein, die ihnen bei der Antragsstellung mitgeteilt wurde. Alternativ finden Sie diese Vorgangsnummer auch in der Übersicht ihres Antrags als PDF.",
+            "NotExisting": "Dieser Antrag existiert nicht",
+            "ViewButton": "Status einsehen"
+        }
+    },
+    "IconDate": {
+        "AriaCreationDate": "Erstelldatum",
+        "AriaDecisionDate": "Beschlussdatum",
+        "AriaLastEditedDate": "Datum des letzten Bearbeitens"
+    },
+    "IconModuleStatus": {
+        "Accepted": "Anrechnung angenommen",
+        "AsExamCertificate": "Anrechnung als Übungsschein",
+        "Denied": "Anrechnung abgelehnt",
+        "FormalRejection": "Formfehler"
+    },
+    "IconTrash": {
+        "AriaDelete": "Löschen"
+    },
+    "LoadingContainer": {
+        "AriaLoading": "lade Inhalte"
+    },
+    "LoginView": {
+        "Heading": "ANMELDUNG",
+        "LoginButton": "Anmelden",
+        "Username": "Benutzername",
+        "UsernameEmpty": "Benutzername darf nicht leer sein",
+        "Password": "Passwort",
+        "PasswordEmpty": "Passwort darf nicht leer sein",
+        "InvalidData": "Ungültige Anmeldedaten. Bitte versuche es erneut"
+    },
+    "PanelComment": {
+        "Comment": "Kommentar"
+    },
+    "PanelDecision": {
+        "Decision": "Entscheidung"
+    },
+    "PanelDecisionBlock": {
+        "Cause": "Begründung"
+    },
+    "PanelExternalModules": {
+        "AddModule": "Fremdmodul hinzufügen",
+        "ModulesToBeCredited": "Anzurechnende Module"
+    },
+    "PanelExternalModulesItem": {
+        "AriaDelete": "lösche Fremdmodul",
+        "AriaNoName": "ohne Namen",
+        "ModuleName": "Modulname",
+        "ModuleNameEmpty": "Modulname darf nicht leer sein",
+        "CreditPoints": "Punkte",
+        "CreditPointsEmpty": "Punkte müssen als Zahl angegeben werden",
+        "CreditSystem": "Punktesystem",
+        "CreditSystemEmpty": "Punktsystem darf nicht leer sein",
+        "University": "Universität",
+        "UniversityEmpty": "Universität darf nicht leer sein",
+        "Course": "Studiengang",
+        "CourseEmpty": "Studiengang darf nicht leer sein",
+        "SelectModuleDescription": "Modulbeschreibung auswählen"
+    },
+    "PanelFormalRejectionBlock": {
+        "FormalRejection": "Formfehler",
+        "Cause": "Begründung"
+    },
+    "PanelHeader": {
+        "AriaCreditedFor": "wird angerechnet für",
+        "ModulesToBeCredited": "Anzurechnende Module",
+        "ModulesUniLeipzig": "Module der Universität Leipzig"
+    },
+    "PanelInternalModules": {
+        "AllSelected": "Alle Module sind ausgewählt",
+        "ChooseModule": "Modul auswählen",
+        "ModuleNotFound": "Modul nicht gefunden",
+        "ModulesUniLeipzig": "Module der Universität Leipzig",
+        "NoModulesSelected": "Es sind keine Module der Universität Leipzig ausgewählt.",
+        "SelectableModules": "auswählbare Module",
+        "SelectCourse": "Studiengang wählen"
+    },        
+    "SideInfoApplicationProcess": {
+        "ApplicationProcess": "Antragsprozess",
+        "GoToStudy": "Sobald der Antrag abgeschlossen ist, gehen Sie mit allen relevanten Dokumenten zum Studienbüro",
+        "SubmitApplication": "Antrag auf dieser Website stellen",
+        "ViewStatus": "Status mit Hilfe der Vorgangsnummer verfolgen"
+    },
+    "SideInfoStudyOffice": {
+        "Address": "Anschrift",
+        "Contact": "Kontakt",
+        "Email": "E-Mail",
+        "Faculty": "Fakultät für Mathematik und Informatik",
+        "Fax": "Telefax",
+        "OfficeHours": "Sprechzeiten",
+        "OfficeHourTimes": "Dienstag und Donnerstag: 9:00 - 11:30 Uhr und 12:30 - 16:00 Uhr",
+        "Phone": "Telefon",
+        "StudyOffice": "Studienbüro",
+        "ToStudyOffice": "Zum Studienbüro"
+    },    
+    "Status": {
+        "New": "NEU",
+        "InProgress": "IN BEARBEITUNG",
+        "Finished": "ABGESCHLOSSEN",
+        "FormalError": "FORMFEHLER"
+    },
+    "StatusDetailView": {
+        "SRHeading": "Status des Antrags",
+        "AddModule": "Modulzuweisung hinzufügen",
+        "Renew": "Neu einreichen",
+        "DownloadApplication": "Antrag herunterladen",
+        "Popup": {
+            "Heading":"Haben Sie alle Formfehler korrigiert?",
+            "Text": "Nach dem erneuten Einreichen können Sie den Antrag nicht weiter bearbeiten."
+        }
+    },
+    "StatusPanel": {
+        "AriaDeleteModule": "Modulzuweisung löschen",
+        "NotYetDecided": "Es wurde noch keine Entscheidung getroffen"
+    },
+    "SubmitApplicationView": {
+        "SRHeading": "Antrag erstellen",
+        "AddModule": "Modulzuweisung hinzufügen",
+        "ChooseCourse": "Studiengang auswählen",
+        "CourseEmpty": "Es muss ein Studiengang ausgewählt werden",
+        "Submit": "Absenden"
+    },
+    "TheLanguageSelection": {
+        "AriaChooseEnglish": "Sprachauswahl Englisch",
+        "AriaChooseGerman": "Sprachauswahl Deutsch"
+    },
+    "TheNavigation": {
+        "homepage": "Startseite",
+        "login": "login intern"
     }
-
 }

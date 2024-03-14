@@ -5,6 +5,9 @@ import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+/**
+ * DTO for creating and updating Token
+ */
 @Data @AllArgsConstructor
 public class Token {
     private TokenType tokenType;

@@ -1,6 +1,6 @@
 <script setup>
-import ArrowIcon from "@/assets/icons/ArrowIcon.vue";
 import { ref, watch } from "vue";
+import CustomDropdown from "@/components/util/CustomDropdown.vue";
 
 const props = defineProps(['modelValue','invalid'])
 const emit = defineEmits(['update:modelValue'])
@@ -17,11 +17,14 @@ watch(role, (newRole) => emit('update:modelValue', newRole))
 
 <template>
   <div class="role-dropdown-container">
-    <Dropdown placeholder="Rolle" v-model="role" :options="roleOptions" option-value="value" option-label="label" :class="{'invalid': invalid}">
-      <template #dropdownicon>
-        <ArrowIcon color="white" direction="down"/>
-      </template>
-    </Dropdown>
+    <CustomDropdown
+        placeholder="Rolle"
+        :options="roleOptions"
+        option-value="value"
+        option-label="label"
+        v-model="role"
+        :class="{'invalid': invalid}"
+    />
   </div>
 </template>
 

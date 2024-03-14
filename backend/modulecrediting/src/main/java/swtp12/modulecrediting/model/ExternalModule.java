@@ -4,7 +4,11 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
 
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -37,13 +41,16 @@ public class ExternalModule {
     private String name;
     @JsonView({Views.ApplicationStudent.class,Views.ApplicationLogin.class})
     @NotNull(message = "points must not be null")
-    private Integer points;
+    private String points;
     @JsonView({Views.ApplicationStudent.class,Views.ApplicationLogin.class})
     @NotNull(message = "point system must not be null")
     private String pointSystem;
     @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class,Views.ApplicationLoginOverview.class})
     @NotBlank(message = "university must not be blank (empty String)")
     private String university;
+    @JsonView({Views.ApplicationStudent.class,Views.RelatedModulesConnection.class,Views.ApplicationLoginOverview.class})
+    @NotBlank(message = "externalCourse must not be blank (empty String)")
+    private String externalCourse;
 
     //Relation ExternalModule <-> PdfDocument
     @ManyToOne(cascade = CascadeType.ALL)
@@ -60,14 +67,11 @@ public class ExternalModule {
 
     /**
      * Sets the given {@link PdfDocument} to this {@link ExternalModule}.
-     * <p>Also sets this {@link ExternalModule} to the given {@link PdfDocument}.
      * 
      * @see ExternalModule
      * @see PdfDocument 
      */
     public void setPdfDocument(PdfDocument pdfDocument) {
-
         this.pdfDocument = pdfDocument;
-
     }
 }

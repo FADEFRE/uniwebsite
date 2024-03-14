@@ -1,24 +1,241 @@
 {
-    "navigation": {
-        "homepage": "Homepage",
-        "login": "Log-in internally"
+    "App": {
+        "MenuOpen": "open menu",
+        "MenuClosed": "close menu",
+        "LegalDisclosure": "Legal Disclosure",
+        "PrivacyPolicy": "Privacy Policy"
     },
-
-    "homepage": {
-        "makeApplication": "Create application",
-        "makeApplicationExplanation": "Create an application to have modules from other universities recognized at the University of Leipzig.",
-    
-        "viewStatus": "View status",
-        "viewStatusExplanation": "View the status of applications that have already been submitted using the 6-digit process number.",
-
-        "sideInfo": {
-            "applicationProcess": "Application process",
-            "submitApplication": "Submit an application online",
-            "viewStatus": "View status online using process number",
-            "wait": "Wait for the PAV's decision",
-            "goToStudy": "Go to the study office with the completed application"
+    "ApplicationConfirmationView": {
+        "AriaCopyProcessNumber": "copy process number",
+        "SRHeading": "Application Confirmation",
+        "DownloadApplication": "Download Application",
+        "Text": "Make a note of the process number. This is necessary in order to be able to view the status of your application at a later date.",
+        "ViewStatus": "View Status"
+    },
+    "ApplicationInfoBox": {
+        "Heading": "Information",
+        "BasicExplanation": "Select the course of Leipzig University which you would like to have credits transferred. Then enter the details of the modules you like to have credited. You can add as many module assignments as you need.",
+        "Explanation": {
+            "ShowExplanation": "Show Explanation",
+            "ModuleAssignment": {
+                "Heading": "Module Assignment",
+                "0": "Modules earned at other universities you like to have credited as modules of Leipzig University.",
+                "1": "Only specifically related modules should be written in a single module assignment.",
+                "2": "You can add multiple module assignments for the entire application."
+            },
+            "ExternalModules": {
+                "Heading": "Modules to be credited",
+                "0": "Enter one or more module(s) completed at another university.",
+                "1": "The given fields must be filled in.",
+                "2": "Enter the credit system (ECTS or other).",
+                "3": "A PDF file with the official description of the individual module must be uploaded as the module description."
+            },
+            "ModulesLeipzig": {
+                "Heading": "Modules of Leipzig University",
+                "0": "Select one or more module(s) for which you would like to have credits transferred.",
+                "1": "If you cannot find a suitable module, you also have the option of not selecting one."
+            },
+            "Comment": {
+                "Heading": "Comment",
+                "0": "Further information on this module assignment can be entered here, this is optional."
+            }
+        },
+        "Example": {
+            "ShowExample": "Show Example",
+            "ModuleAssignment": {
+                "Heading": "Module Assignment",
+                "AriaCreditedFor": "credited as",
+                "ExternalModules": "Data Structures and Algorithms",
+                "ModulesLeipzig": "Algorithmen und Datenstrukturen 1, Algorithmen und Datenstrukturen 2"
+            },
+            "ExternalModules": {
+                "Heading": "Modules to be credited",
+                "0": "Module Name: 'Data Structures and Algorithms'",
+                "1": "Credits Points: '7.5'", 
+                "2": "Credit System: 'ECTS'",
+                "3": "University: 'University of Gothenburg'",
+                "4": "Course: 'Software Engineering and Management Bachelor's Programme'",
+                "5": "Module Description: pdf-document with the description of Data Structures and Algorithms module"
+            },
+            "ModulesLeipzig": {
+                "Heading": "Modules of Leipzig University",
+                "0": "Algorithmen und Datenstrukturen 1",
+                "1": "Algorithmen und Datenstrukturen 2"
+            }
         }
-
+    },
+    "ApplicationOverview": {
+        "SRHeading":"Application",
+        "ProcessNumber": "process Number"
+    },
+    "ApplicationPanel": {
+        "AriaDeleteModule": "Delete Module Assignment"
+    },
+    "CustomPanel": {
+        "AriaOpenPanel": "open module assignment",
+        "AriaClosePanel": "close module assignment"
+    },
+    "ErrorViewIndexjs": {
+        "NoAccess": "No access",
+        "NoAccesContent": "You do not have permission to view this page.",
+        "ServerUnreachable": "Server unreachable",
+        "ServerUnreachableContent": "The server is currently unreachable. Please try again later.",
+        "SiteNotFound": "Site not found",
+        "SiteNotFoundContent": "The requested page does not exist.",
+        "SomethingWentWrong": "Something went wrong",
+        "SomethingWentWrongContent": "There was an unhandled error. Please try again. If the error persists, please contact the administrators."
+    },
+    "FileInput": {
+        "FileEmpty": "A file must be selected",
+        "OpenPDF": "Open PDF"
+    },
+    "FinishedInfoBox": {
+        "Heading": "What's Next?",
+        "Text": "A final decision has been made on your application. This is only information about the possibility of recognition. To officially have your credits recognized, you must go to the study office. Please bring all relevant documents that prove the completion of the credits to be recognized. If you have further questions about your application, please contact the study office.",
+        "Explanation": "Symbol explanation"
+    },
+    "FormalRejectionInfoBox": {
+        "Heading": "Formal rejection",
+        "Text": "Your application was rejected due to formal rejections. The module assignments containing formal rejections are marked in red. In the module assignment, you will find an explanation of the specific error at the bottom. Please correct all indicated errors. Then you can resubmit your application."
+    },
+    "HomepageView": {
+        "SRHeading": "Homepage",
+        "Application": {
+            "Heading": "Submit Application",
+            "Text": "Have credits, you earned at other universities, credited for modules at Leipzig University. This is useful, for example, if you are transferring from another university to Leipzig University, returning after a semester abroad, or taking courses concurrently at another university.",
+            "SubmitButton": "Submit Application"
+        },
+        "Status": {            
+            "AriaProcessNumber": "process number of the application to be Accessed",
+            "Heading": "View Status",
+            "Text": "Enter the 6-digit process number, provided to you when you submitted the application, to view the status. Alternatively you can find this process number in the overview PDF of your application.",
+            "NotExisting": "This application does not exist",
+            "ViewButton": "View Status"
+        }
+    },
+    "IconDate": {
+        "AriaCreationDate": "Creation Date",
+        "AriaDecisionDate": "Decision Date",
+        "AriaLastEditedDate": "Last Edited Date"
+    },
+    "IconModuleStatus": {
+        "Accepted": "Crediting accepted",
+        "AsExamCertificate": "Crediting as admission",
+        "Denied": "Crediting denied",
+        "FormalRejection": "Formal rejection"
+    },
+    "IconTrash": {
+        "AriaDelete": "Delete"
+    },
+    "LoadingContainer": {
+        "AriaLoading": "loading content"
+    },
+    "LoginView": {
+        "Heading": "Login",
+        "LoginButton": "Login",
+        "Username": "Username",
+        "UsernameEmpty": "Username cannot be empty",
+        "Password": "Password",
+        "PasswordEmpty": "Password cannot be empty",
+        "InvalidData": "Invalid login data. Please try again"
+    },
+    "PanelComment": {
+        "Comment": "Comment"
+    },
+    "PanelDecision": {
+        "Decision": "Decision"
+    },
+    "PanelDecisionBlock": {
+        "Cause": "Cause"
+    },
+    "PanelExternalModules": {
+        "AddModule": "Add External Module",
+        "ModulesToBeCredited": "Modules to be credited"
+    },
+    "PanelExternalModulesItem": {
+        "AriaDelete": "delete external module",
+        "AriaNoName": "without name",
+        "ModuleName": "Module Name",
+        "ModuleNameEmpty": "Module name cannot be empty",
+        "CreditPoints": "Credit Points",
+        "CreditPointsEmpty": "Points must be specified as a number",
+        "CreditSystem": "Credit System",
+        "CreditSystemEmpty": "Credit system cannot be empty",
+        "University": "University",
+        "UniversityEmpty": "University cannot be empty",
+        "Course": "Course",
+        "CourseEmpty": "Course cannot be empty",
+        "SelectModuleDescription": "Select Module Description"
+    },
+    "PanelFormalRejectionBlock": {
+        "FormalRejection": "Formal rejection",
+        "Cause": "Cause"
+    },
+    "PanelHeader": {
+        "AriaCreditedFor": "credited for",
+        "ModulesToBeCredited": "Modules to be credited",
+        "ModulesUniLeipzig": "Modules of Leipzig University"
+    },
+    "PanelInternalModules": {
+        "AllSelected": "All modules are selected",
+        "ChooseModule": "Choose module",
+        "ModuleNotFound": "Module not found",
+        "ModulesUniLeipzig": "Modules of Leipzig University",
+        "NoModulesSelected": "No modules of Leipzig University are selected.",
+        "SelectableModules": "Selectable modules",
+        "SelectCourse": "Select course"
+    },        
+    "SideInfoApplicationProcess": {
+        "ApplicationProcess": "Application process",
+        "GoToStudy": "Once the application is completed, go to the study office with all relevant documents",
+        "SubmitApplication": "Submit application on this website",
+        "ViewStatus": "Track status using process number"
+    },
+    "SideInfoStudyOffice": {
+        "Address": "Address",
+        "Contact": "Contact",
+        "Email": "Email",
+        "Faculty": "Faculty of Mathematics and Computer Science",
+        "Fax": "Fax",
+        "OfficeHours": "Office Hours",
+        "OfficeHourTimes": "Tuesday and Thursday: 9:00 am - 11:30 am and 12:30 pm - 4:00 pm",
+        "Phone": "Phone",
+        "StudyOffice": "Study Office",
+        "ToStudyOffice": "To the Study Office"
+    },
+    "Status": {
+        "New": "NEW",
+        "InProgress": "IN PROGRESS",
+        "Finished": "COMPLETED",
+        "FormalError": "FORMAL REJECTION"
+    },
+    "StatusDetailView": {
+        "SRHeading": "Application Status",
+        "AddModule": "Add Module Assignment",
+        "Renew": "Resubmit",
+        "DownloadApplication": "Download Application",
+        "Popup": {
+            "Heading":"Have you corrected all formal errors?",
+            "Text": "After resubmitting the application, you will no longer be able to edit it."
+        }
+    },
+    "StatusPanel": {
+        "AriaDeleteModule": "Delete Module Assignment",
+        "NotYetDecided": "No decision has been made yet"
+    },
+    "SubmitApplicationView": {
+        "SRHeading": "Create Application",
+        "AddModule": "Add Module Assignment",
+        "ChooseCourse": "Select Course",
+        "CourseEmpty": "A course must be selected",
+        "Submit": "Submit"
+    },
+    "TheLanguageSelection": {
+        "AriaChooseEnglish": "Language Selection English",
+        "AriaChooseGerman": "Language Selection German"
+    },
+    "TheNavigation": {
+        "homepage": "homepage",
+        "login": "internal login"
     }
-
 }

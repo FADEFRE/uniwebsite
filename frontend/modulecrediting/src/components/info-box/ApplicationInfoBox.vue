@@ -1,6 +1,11 @@
 <script setup>
 import ArrowIcon from "@/assets/icons/ArrowIcon.vue";
+import ButtonInfo from "@/components/button/ButtonInfo.vue";
 import { ref } from "vue";
+
+/*
+information about writing an application
+ */
 
 const showInformation = ref(false)
 const showExample = ref(false)
@@ -8,76 +13,77 @@ const showExample = ref(false)
 
 <template>
   <div class="application-info-container">
-    <h2>Informationen</h2>
+    <h2>{{ $t('ApplicationInfoBox.Heading') }}</h2>
     <div class="explanation-collapsed-container">
-      <p class="text-justify">
-        Wählen Sie den Studiengang aus, für den Sie sich Leistungen anrechnen lassen wollen.
-        Tragen sie dann die Details der Leistungen ein. Hierfür können sie beliebig viele Modulzuweisungen hinzufügen.
-      </p>
+      <p class="text-justify">{{ $t('ApplicationInfoBox.BasicExplanation') }}</p>
     </div>
-    <Button @click="showInformation = !showInformation">
-      Erklärung anzeigen
-      <ArrowIcon :direction="showInformation ? 'up' : 'down'" color="red" />
-    </Button>
+
+    <ButtonInfo @click="showInformation = !showInformation" :collapsed="showInformation">{{ $t('ApplicationInfoBox.Explanation.ShowExplanation') }}</ButtonInfo>
+
     <div v-if="showInformation" class="explanation-expanded-container">
       <div class="explanation-item">
-        <h3 class="h4">Modulzuweisung</h3>
+        <h4>{{ $t('ApplicationInfoBox.Explanation.ModuleAssignment.Heading') }}</h4>
         <ul class="points">
-          <li>Ein oder mehrere Fremdmodule die als Modul(e) der Universität Leipzig angerechnet werden sollen.</li>
-          <li>Es sollen nur konkret zusammengehörige Module in eine Modulzuweisung geschrieben werden.</li>
-          <li>Für den gesamten Antrag können sie mehrere Modulzuweisungen hinzufügen.</li>
+          <li>{{ $t('ApplicationInfoBox.Explanation.ModuleAssignment.0') }}</li>
+          <li>{{ $t('ApplicationInfoBox.Explanation.ModuleAssignment.1') }}</li>
+          <li>{{ $t('ApplicationInfoBox.Explanation.ModuleAssignment.2') }}</li>
         </ul>
       </div>
       <div class="explanation-item">
-        <h3 class="h4">Fremdmodul</h3>
+        <h4>{{ $t('ApplicationInfoBox.Explanation.ExternalModules.Heading') }}</h4>
         <ul class="points">
-          <li>Ein konkretes Modul, das an einer anderen Universität belegt wurde.</li>
-          <li>Hierfür müssen die gegebenen Felder ausgefüllt werden.</li>
-          <li>Geben Sie das Punktesystem an (LP, ECTS oder ähnliches).</li>
-          <li>Als Modulbeschreibung muss eine PDF-Datei mit der offiziellen Beschreibung des einzelnen Modul
-            hochgeladen werden.</li>
+          <li>{{ $t('ApplicationInfoBox.Explanation.ExternalModules.0') }}</li>
+          <li>{{ $t('ApplicationInfoBox.Explanation.ExternalModules.1') }}</li>
+          <li>{{ $t('ApplicationInfoBox.Explanation.ExternalModules.2') }}</li>
+          <li>{{ $t('ApplicationInfoBox.Explanation.ExternalModules.3') }}</li>
         </ul>
       </div>
       <div class="explanation-item">
-        <h3 class="h4">Module der Universität Leipzig</h3>
+        <h4>{{ $t('ApplicationInfoBox.Explanation.ModulesLeipzig.Heading') }}</h4>
         <ul class="points">
-          <li>Wählen sie ein oder mehrere Modul(e) aus, für die Sie ihre Leistungen anrechnen lassen wollen.</li>
-          <li>Sollten sie kein passendes Modul finden, besteht auch die Möglichkeit, keines auszuwählen.</li>
+          <li>{{ $t('ApplicationInfoBox.Explanation.ModulesLeipzig.0') }}</li>
+          <li>{{ $t('ApplicationInfoBox.Explanation.ModulesLeipzig.1') }}</li>
         </ul>
       </div>
       <div class="explanation-item">
-        <h3 class="h4">Kommentar</h3>
+        <h4>{{ $t('ApplicationInfoBox.Explanation.Comment.Heading') }}</h4>
         <ul class="points">
-          <li>Hier können weitere Informationen zu dieser Modulzuweisung mitgeteilt werden, dies ist optional.</li>
+          <li>{{ $t('ApplicationInfoBox.Explanation.Comment.0') }}</li>
         </ul>
       </div>
     </div>
-    <Button @click="showExample = !showExample">
-      Beispiel anzeigen
-      <ArrowIcon :direction="showExample ? 'up' : 'down'" color="red" />
-    </Button>
+    <ButtonInfo @click="showExample = !showExample" :collapsed="showExample">{{ $t('ApplicationInfoBox.Example.ShowExample') }}</ButtonInfo>
     <div v-if="showExample" class="explanation-expanded-container">
       <div class="explanation-item">
-        <h3 class="h4">
-          Modulzuweisung: "Automaten und Berechenbarkeit
-          <ArrowIcon direction="right" color="red" aria-label="wird angerechnet für" />
-          Automaten und Sprachen, Berechenbarkeit"
-        </h3>
-      </div>
-      <div class="explanation-item">
-        <h4>Fremdmodul</h4>
+        <h4>
+          {{ $t('ApplicationInfoBox.Example.ModuleAssignment.Heading') }}
+        </h4>
         <ul class="points">
-          <li>Modulname "Automaten und Berechenbarkeit"</li>
-          <li>Universität "Halle"</li>
-          <li>Punkte "10"</li>
-          <li>Punktsystem "LP"</li>
+          <li>
+            "{{ $t('ApplicationInfoBox.Example.ModuleAssignment.ExternalModules') }}
+            <span :aria-label="$t('ApplicationInfoBox.Example.ModuleAssignment.AriaCreditedFor')">
+              <ArrowIcon direction="right" color="red" />
+            </span>
+            {{ $t('ApplicationInfoBox.Example.ModuleAssignment.ModulesLeipzig') }}"
+          </li>
         </ul>
       </div>
       <div class="explanation-item">
-        <h4>Module der Universität Leipzig</h4>
+        <h4>{{ $t('ApplicationInfoBox.Example.ExternalModules.Heading') }}</h4>
         <ul class="points">
-          <li>"Automaten und Sprachen"</li>
-          <li>"Berechenbarkeit"</li>
+          <li>{{ $t('ApplicationInfoBox.Example.ExternalModules.0') }}</li>
+          <li>{{ $t('ApplicationInfoBox.Example.ExternalModules.1') }}</li>
+          <li>{{ $t('ApplicationInfoBox.Example.ExternalModules.2') }}</li>
+          <li>{{ $t('ApplicationInfoBox.Example.ExternalModules.3') }}</li>
+          <li>{{ $t('ApplicationInfoBox.Example.ExternalModules.4') }}</li>
+          <li>{{ $t('ApplicationInfoBox.Example.ExternalModules.5') }}</li>
+        </ul>
+      </div>
+      <div class="explanation-item">
+        <h4>{{ $t('ApplicationInfoBox.Example.ModulesLeipzig.Heading') }}</h4>
+        <ul class="points">
+          <li>{{ $t('ApplicationInfoBox.Example.ModulesLeipzig.0') }}</li>
+          <li>{{ $t('ApplicationInfoBox.Example.ModulesLeipzig.1') }}</li>
         </ul>
       </div>
     </div>
@@ -95,8 +101,7 @@ const showExample = ref(false)
 }
 .explanation-expanded-container {
   @include verticalList(s);
-  border-bottom: 2px solid $dark-gray;
   margin-bottom: spacing(s);
-  padding-bottom: spacing(s);
+  padding: spacing(xs);
 }
 </style>

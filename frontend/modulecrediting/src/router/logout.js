@@ -1,6 +1,7 @@
 import router from "@/router";
-import httpResource from "@/scripts/httpResource";
+import httpClient from "@/requests/httpClient";
 import { useUserStore } from "@/store/userStore";
+import { consoleDebug } from "@/requests/consoleDebug";
 
 async function logout() {
   await performLogout();
@@ -9,9 +10,9 @@ async function logout() {
 }
 
 async function performLogout() {
-  console.debug("performLogout()");
-  const response = await httpResource.post("/api/auth/logout");
-  console.log(response)
+  consoleDebug(null, "performLogout()");
+  const response = await httpClient.post("/api/auth/logout");
+  consoleDebug(null, "Logout response: " + response)
   const authUserStore = useUserStore();
   authUserStore.logout();
   const intervalName = authUserStore.getIntervalName;

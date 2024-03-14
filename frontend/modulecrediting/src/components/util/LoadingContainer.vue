@@ -1,8 +1,9 @@
 <script setup>
+
 </script>
 
 <template>
-    <div class="loading-container">
+    <div class="loading-container" :aria-label="$t('LoadingContainer.AriaLoading')">
         <div class="loader"></div>
     </div>
 </template>
@@ -34,4 +35,5 @@
     100% {
         transform: rotate(360deg);
     }
-}</style>
+}
+</style>

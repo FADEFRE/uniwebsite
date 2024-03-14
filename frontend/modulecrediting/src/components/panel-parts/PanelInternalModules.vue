@@ -1,41 +1,38 @@
-<!--
-choose modules form a list of options
-props:
-  - allowSelect
-  - allowDelete
-  - options (should be given if allowSelect)
-  - selectedModules (optional, elements must be elements of options)
-exposes:
-  - selectedModules
-displays:
-  - dropdown with filter, without selection shown (if allowSelect)
-  - selected modules as separate list with
-  - delete icon for every selected module (if allowDelete)
--->
-
 <script setup>
-import ArrowIcon from "@/assets/icons/ArrowIcon.vue";
+import { ref, computed } from "vue";
 import TrashIcon from "@/assets/icons/TrashIcon.vue";
-import { ref } from "vue";
+import CustomDropdown from "@/components/util/CustomDropdown.vue";
+
+/*
+list of internal modules,
+contains a dropdown for selection
+ */
 
 const props = defineProps({
+  /* controls if modules can be added */
   allowSelect: {
     required: true,
     type: Boolean,
   },
+  /* controls if modules can be deleted */
   allowDelete: {
     required: true,
     type: Boolean,
   },
+  /* array of Strings, selectable modules */
   options: {
     type: Array
   },
+  /* array of Strings, selected modules to be displayed (initially) */
   selectedModules: {
     type: Array
   }
 })
 
-const emit = defineEmits(['change'])
+const emit = defineEmits([
+  /* emitted if any data changes */
+  'change'
+])
 
 const selectedModules = ref(props.selectedModules || [])
 const addSelectedModule = (singleModule) => {
@@ -49,7 +46,17 @@ const removeSelectedModule = (index) => {
   emit('change')
 }
 
+const selectableModules = computed(() => {
+  return props.options.filter(m => !selectedModules.value.includes(m))
+})
+
+const emptyMessageKey = computed(() => {
+  if (props.options.length > 0) return 'PanelInternalModules.AllSelected'
+  else return 'PanelInternalModules.SelectCourse'
+})
+
 defineExpose({
+  /* array of Strings, names of selected internal modules */
   selectedModules
 })
 </script>
@@ -57,26 +64,19 @@ defineExpose({
 <template>
   <div class="panel-container">
 
-    <h4>Module der Universität Leipzig</h4>
+    <h4>{{ $t('PanelInternalModules.ModulesUniLeipzig') }}</h4>
 
     <div class="screen-split">
 
       <div class="module-dropdown" v-if="allowSelect">
-        <Dropdown
+        <CustomDropdown
             filter
-            placeholder="Modul auswählen"
-            emptyMessage="Studiengang auswählen"
-            emptyFilterMessage="Modul nicht gefunden"
-            :options="options"
+            :placeholder="$t('PanelInternalModules.ChooseModule')"
+            :emptyMessage="$t(emptyMessageKey)"
+            :emptyFilterMessage="$t('PanelInternalModules.ModuleNotFound')"
+            :options="selectableModules"
             @change="e => addSelectedModule(e.value)"
-        >
-          <template #filtericon>
-            <img class="search-icon" src="../../assets/icons/SearchIcon.svg">
-          </template>
-          <template #dropdownicon>
-            <ArrowIcon color="white" direction="down" />
-          </template>
-        </Dropdown>
+        />
       </div>
 
       <div class="module-list" :class="{ 'module-list-full': !allowSelect }">
@@ -85,7 +85,7 @@ defineExpose({
           <TrashIcon v-if="allowDelete" @click="removeSelectedModule(index)"/>
         </div>
         <div v-else-if="!allowSelect">
-          <p>Es sind keine Module der Universität Leipzig ausgewählt.</p>
+          <p>{{ $t('PanelInternalModules.NoModulesSelected') }}</p>
         </div>
       </div>
 

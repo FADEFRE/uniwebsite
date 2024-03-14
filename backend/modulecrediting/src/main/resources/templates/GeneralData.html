@@ -1,17 +1,12 @@
 <html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <style>
 
-/*black: #000;
-dark-gray: #262A31;
-gray: #F0F0F0;
-white: #fff;
-red: #D83D3B;*/
 
-            *,
-*::before,
-*::after {
+* {
   box-sizing: border-box;
   border: none;
   margin: 0;
@@ -72,13 +67,20 @@ ul {
                 font-size: 11px;
             }
 
+            h5, .h5 {
+                font-family: 'Jost';
+                font-weight: 600;
+                color: #262A31;
+                font-size: 10.5px;
+            }
+
             p, .p {
                 color: #000;
                 font-size: 13px;
             }
 
             .bold {
-                font-weight: bold;
+                font-weight: 600;
             }
 
             .info {
@@ -134,7 +136,7 @@ ul {
 
             }
 
-           .list-point {
+            .list-point {
                 position: absolute;
                 top: 5px;
                 left: 3px;
@@ -148,7 +150,7 @@ ul {
 <body>
 <div class="layout">
     <div class="header">
-        <img class="logo" src="src/main/resources/static/images/Universität_Leipzig_Logo.png">
+        <img class="logo" src="src/main/resources/static/images/Universitaet_Leipzig_Logo.png">
         <h1 id="HeadingPDF">ANTRAG ZUR MODULANRECHNUNG</h1>
     </div>
 
@@ -156,32 +158,32 @@ ul {
         <h2 id="SubHeadingPDF">Allgemeine Informationen</h2>
         <div class="content-table">
             <div class="table-row">
-                <p>Voragangsnummer</p>
-                <p class="bold" th:text="${id}">nicht verfügbar</p>
+                <p>Vorgangsnummer</p>
+                <p class="bold" th:text="${id}">nicht verf&#252gbar</p>
             </div>
             <div class="table-row">
                 <p>Erstelldatum</p>
-                <p class="bold" th:text="${Erstelldatum}">nicht entschieden</p>
+                <p class="bold" th:text="${Erstelldatum}">ausstehend</p>
             </div>
             <div class="table-row">
                 <p>Status</p>
-                <p class="bold" th:text="${Status}">nicht verfügbar</p>
+                <p class="bold" th:text="${Status}">nicht verf&#252gbar</p>
             </div>
             <div class="table-row">
                 <p>Entscheidungsdatum</p>
-                <p class="bold" th:text="${Entscheidungsdatum}">nicht verfügbar</p>
+                <p class="bold" th:text="${Entscheidungsdatum}">nicht verf&#252gbar</p>
             </div>
             <div class="table-row">
                 <p>Studiengang</p>
-                <p class="bold" th:text="${Studiengang}">nicht verfügbar</p>
+                <p class="bold" th:text="${Studiengang}">nicht verf&#252gbar</p>
             </div>
         </div>
     </div>
 
     <aside>
         <div class="heading">
-            <h3>Studienbüro</h3>
-            <p class="info">Studienbüro Fakultät für Mathematik und Informatik </p>
+            <h3>Studienb&#252ro</h3>
+            <p class="info">Studienb&#252ro Fakult&#228t f&#252r Mathematik und Informatik </p>
         </div>
         <ul>
             <h4>Anschrift</h4>

@@ -14,7 +14,7 @@ displays:
 import { ref } from "vue";
 import ButtonLink from "@/components/button/ButtonLink.vue";
 import FileIcon from "@/assets/icons/FileIcon.vue";
-import { url } from "@/scripts/url-config";
+import { url } from "@/config/url-config";
 
 const props = defineProps({
   readonly: {
@@ -85,15 +85,12 @@ const handleFiles = (e) => {
     const file = e.target.files[0]
     if (checkFile(file)) {
       selectedFile.value = file
-
-      console.log(selectedFile.value);
     }
   }
 }
 
 const dragOverHandler = (e) => {
   if (!props.readonly) e.currentTarget.classList.add('edit-container-highlight')
-  console.log(selectedFile.value);
 }
 
 const dragLeaveHandler = (e) => {
@@ -108,7 +105,6 @@ const dropHandler = (e) => {
     }
     e.currentTarget.classList.remove('edit-container-highlight')
   }
-  console.log(selectedFile.value);
 }
 
 const isValid = ref(true)
@@ -128,7 +124,7 @@ defineExpose({
 <template>
     <div v-if="readonly" class="read-only-container" :class="{ 'invalid': !isValid }">
       <p class="read-only-file-name">{{ props.selectedFile?.name }}</p>
-      <ButtonLink @click="openFile">PDF öffnen</ButtonLink>
+      <ButtonLink @click="openFile">{{ $t('FileInput.OpenPDF') }}</ButtonLink>
     </div>
     
     <div v-else
@@ -155,7 +151,7 @@ defineExpose({
       <input type="file" ref="fileInput" @change="handleFiles" />
 
     </div>
-    <small v-if="!isValid" class="invalid-text">Es muss eine Datei ausgewählt sein</small>
+    <small v-if="!isValid" class="invalid-text">{{ $t('FileInput.FileEmpty') }}</small>
 </template>
 
 <style scoped lang="scss">
@@ -170,9 +166,6 @@ defineExpose({
   justify-content: space-between;
 
   transition: 0.1s ease-in-out;
-   &:hover {
-    background-color: $gray-hover;
-  }
 }
 
 .read-only-file-name {
@@ -181,7 +174,7 @@ defineExpose({
 
   border: 2px solid $dark-gray;
   border-right: none;
-  display: flex;
+  display: block;
   flex-grow: 1;
   align-self: stretch;
   align-items: center;
@@ -189,7 +182,6 @@ defineExpose({
 }
 
 .edit-container {
-  width: 100%;
   border: 2px dashed $black;
   padding: spacing(s) 0;
   transition: 0.1s ease-in-out;
@@ -201,6 +193,7 @@ defineExpose({
 
   display: flex;
   justify-content: center;
+  flex-grow: 1;
 }
 
 .invalid {

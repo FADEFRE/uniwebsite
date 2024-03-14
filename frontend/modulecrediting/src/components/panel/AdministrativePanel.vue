@@ -44,7 +44,10 @@ const props = defineProps({
   connectionData: {
     required: true,
     type: Object,
-    // todo validator
+  },
+  showRelatedConnections: {
+    type: Boolean,
+    default: true
   }
 })
 
@@ -126,7 +129,7 @@ defineExpose({
       :selected-modules="connectionData['modulesLeipzig'].map(m => m['name'])" :options="selectableModules"
       ref="panelInternalModules" @change="emit('change')" />
     <PanelComment v-if="connectionData['commentApplicant']" :readonly="true" :comment="connectionData['commentApplicant']" />
-    <PanelRelatedModules :connection-id="connectionData['id']" />
+    <PanelRelatedModules v-if="showRelatedConnections" :connection-id="connectionData['id']" />
 
     <div v-if="formalRejection">
       <PanelDecision type="single">

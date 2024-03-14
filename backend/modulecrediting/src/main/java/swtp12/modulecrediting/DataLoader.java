@@ -15,6 +15,7 @@ import swtp12.modulecrediting.model.Role;
 import swtp12.modulecrediting.model.User;
 import swtp12.modulecrediting.repository.RoleRepository;
 import swtp12.modulecrediting.repository.UserRepository;
+import swtp12.modulecrediting.util.LogUtil;
 
 @Component
 public class DataLoader implements CommandLineRunner {
@@ -38,27 +39,34 @@ public class DataLoader implements CommandLineRunner {
     @Override
     @Transactional
     public void run(String... args) throws Exception {
-        System.out.println("--- Dataloader: Starting ---");
+        LogUtil.printLog("");
+        LogUtil.printLog("--- Dataloader: Starting ---");
 
         roleCreation();
 
         adminCreation();
 
         if (loadTestData.equals("true")) {
-            System.out.println();
-            System.out.println("--- Dataloader: Starting to load testdata ---");
+            LogUtil.printLog("");
+            LogUtil.printLog("--- Dataloader: Loading testdata ---");
+            LogUtil.printLog("");
+
             testDataLoader.run();
-            System.out.println();
-            System.out.println("--- Dataloader: Finished loading testdata ---");
+
+            LogUtil.printLog("");
+            LogUtil.printLog("--- Dataloader: Finished loading testdata ---");
         }
-        System.out.println();
-        System.out.println("--- Dataloader: Finished ---");
+        LogUtil.printLog("");
+        LogUtil.printLog("--- Dataloader: Finished ---");
     }
 
 
-
+    /**
+     * This function creates all the necessary {@link Role Roles} for this application.
+     */
     private void roleCreation() {
-        System.out.println("Checking for Roles");
+        LogUtil.printLog("");
+        LogUtil.printLog("Checking for Roles: ");
 
         List<String> namesDB = new ArrayList<>();
         List<String> names = namesList();
@@ -70,17 +78,20 @@ public class DataLoader implements CommandLineRunner {
             }
             names.removeAll(namesDB);
             if (!names.isEmpty()) {
-                System.out.println("Roles are missing - Creating new Roles");
+                LogUtil.printLog("=> Roles are missing - Creating new Roles");
                 createGivenRoles(names);
             }
-            else System.out.println("All necessary Roles exist");
+            else LogUtil.printLog("=> All necessary Roles exist");
         }
         else {
-            System.out.println("No Roles found - Creating new Roles");
+            LogUtil.printLog("=> No Roles found - Creating new Roles");
             createGivenRoles(names);
         }
     }
 
+    /**
+     * This function returns the {@link String names} of all the necessary {@link Role Roles} for this application.
+     */
     private List<String> namesList() {
         List<String> names = new ArrayList<>();
         names.add("ROLE_ADMIN");
@@ -89,17 +100,25 @@ public class DataLoader implements CommandLineRunner {
         return names;
     }
 
+    /**
+     * This function creates the {@link Role Roles} with the {@link String names} in the given {@link List}.
+     */
     private void createGivenRoles(List<String> names) {
         for (String name : names) {
-            System.out.println("Creating " + name);
+            LogUtil.printLog("  => Creating " + name);
             Role role = new Role(name);
             roleRepository.save(role);
         }
     }
 
 
+    /**
+     * This function checks if at least one {@link User} with the {@link Role Role "Admin"} exists and creates one if it doesnt.
+     * <p> Config for the default Admin can be found in the application-*.properties files.
+     */
     private void adminCreation() {
-        System.out.println("Checking for Admin user");
+        LogUtil.printLog("");
+        LogUtil.printLog("Checking for Admin user: ");
         List<User> usersDB = userRepository.findAll();
 
         Boolean adminExists = false;
@@ -115,7 +134,7 @@ public class DataLoader implements CommandLineRunner {
         Role role = null;
         Optional<Role> roleCandidate = roleRepository.findByRoleName("ROLE_ADMIN");
         if (!roleCandidate.isPresent()) {
-            System.out.println("There seems to be no ROLE_ADMIN in the database");
+            LogUtil.printLog("ERR: There seems to be no ROLE_ADMIN in the database");
         } 
         else {
             role = roleCandidate.get();
@@ -126,14 +145,14 @@ public class DataLoader implements CommandLineRunner {
             if (role != null) {
                 adminUser.setRole(role);
                 userRepository.save(adminUser);
-                System.out.println("Admin user created");
+                LogUtil.printLog("=> Admin user created");
             }
             else {
-                System.out.println("There seems to be no ROLE_ADMIN in the database");
+                LogUtil.printLog("ERR: There seems to be no ROLE_ADMIN in the database");
             }
         }
         else {
-            System.out.println("Admin user already exists");
+            LogUtil.printLog("=> Admin user already exists");
         }
     }
 }

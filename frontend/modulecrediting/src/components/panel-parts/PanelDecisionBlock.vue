@@ -1,23 +1,34 @@
 <script setup>
 import { ref, watch } from "vue";
 import ModuleStatusIcon from "@/assets/icons/ModuleStatusIcon.vue";
+
+/*
+decision selector / display with comment field
+ */
+
 const props = defineProps({
+  /* controls if editable */
   readonly: {
     required: true,
     type: Boolean
   },
+  /* decision to be displayed (initially) */
   displayDecision: {
     type: String,
     validator(value) {
       return ['accepted', 'asExamCertificate', 'denied', 'unedited'].includes(value)
     }
   },
+  /* comment on decision to be displayed (initially) */
   comment: {
     type: String
   }
 })
 
-const emit = defineEmits(['change'])
+const emit = defineEmits([
+    /* emitted when any data changes */
+    'change'
+])
 
 const decisionOptions = [
   { value: 'accepted', label: 'Annehmen', class: 'highlight-accepted' },
@@ -31,18 +42,18 @@ const comment = ref(props.comment);
 watch([comment, decision], () => emit('change'))
 
 defineExpose({
+  /* 'accepted', 'asExamCertificate' or 'denied' */
   decision,
+  /* String comment */
   comment
 })
 </script>
 
-<!-- todo accessibility -->
 <template>
   <div class="panel-decision-block">
 
-
     <div v-if="!readonly">
-      <SelectButton :allow-empty="false" :options="decisionOptions" optionLabel="label" optionValue="value" v-model="decision"/>
+      <SelectButton :allow-empty="false" :options="decisionOptions" optionLabel="label" optionValue="value" v-model="decision" />
     </div>
 
     <div v-else class="readonly-decision-container">
@@ -59,7 +70,7 @@ defineExpose({
       </div>
     </div>
 
-    <textarea :readonly="readonly" placeholder="Begründung" v-model="comment" @change="emit('change')" class="white"></textarea>
+    <textarea :readonly="readonly" :placeholder="$t('PanelDecisionBlock.Cause')" v-model="comment" @change="emit('change')" class="white"></textarea>
   </div>
 </template>
 
@@ -68,14 +79,12 @@ defineExpose({
 @use '@/assets/styles/global' as *;
 @use '@/assets/styles/components' as *;
 
-
 .panel-decision-block {
   display: flex;
   width: 100%;
 
   border: 2px solid $dark-gray;
 }
-
 
 :deep(.p-button) {
   width: 100%;
@@ -87,13 +96,14 @@ defineExpose({
     background-color: $green-hover;
   }
 }
+
 :deep(.p-button:nth-child(2).p-highlight) {
   background-color: $orange;
   &:hover, &:focus {
     background-color: $orange-hover;
   }
-  
 }
+
 :deep(.p-button:last-child.p-highlight) {
   background-color: $red;
   &:hover, &:focus {
@@ -101,14 +111,13 @@ defineExpose({
   }
 }
 
-
 .readonly-decision-container {
   display: flex;
 
   flex-direction: column;
   justify-content: space-around;
   border-right: 2px solid $black;
-  min-height: rem(118px);
+  min-height: rem(117px);
   width: spacing(xxxl);
 }
 

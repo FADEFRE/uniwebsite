@@ -9,7 +9,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import swtp12.modulecrediting.dto.EditUserDTO;
 import swtp12.modulecrediting.dto.UserSummary;
@@ -17,7 +24,7 @@ import swtp12.modulecrediting.model.Role;
 import swtp12.modulecrediting.model.User;
 import swtp12.modulecrediting.repository.UserRepository;
 import swtp12.modulecrediting.service.UserService;
-import swtp12.modulecrediting.util.IncorrectKeyOnDecryptException;
+
 
 
 @RestController
@@ -76,8 +83,7 @@ public class UserController {
 
     /**
      * Get {@link GetMapping /api/user/role} 
-     * <p> User needs to be logged in
-     * <p> Returns {@link Role} name of the currently logged in {@link User}
+     * <p> Returns {@link Role} name of the currently logged in {@link User} or {@code User} if current user is not logged in
      * 
      * @return Role name
      * @see GetMapping
@@ -86,18 +92,14 @@ public class UserController {
      * @see User
      */
     @GetMapping("/role")
-    @PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR') or hasRole('ROLE_ADMIN')")
     public ResponseEntity<String> getRole() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String name = auth.getName();
-        Optional<User> userCandidate = userRepository.findByUsername(name);
+        Optional<User> userCandidate = userRepository.findByUsername(auth.getName());
         if (userCandidate.isPresent()) {
-            User user = userCandidate.get();
-            Role role = user.getRole();
-            String roleName = role.getRoleName();
+            String roleName = userCandidate.get().getRole().getRoleName();
             return new ResponseEntity<>(roleName, HttpStatus.OK); 
         }
-        return new ResponseEntity<>("User doesnt exists!", HttpStatus.NOT_FOUND); 
+        return new ResponseEntity<>("User", HttpStatus.OK); 
     }
 
 
@@ -106,11 +108,18 @@ public class UserController {
     public ResponseEntity<List<UserSummary>> getAllUsers() {
         return ResponseEntity.ok(userService.getAllUsers());
     }
+
     
+    @PostMapping("/register")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<String> registerUser(@ModelAttribute EditUserDTO registerRequest) {
+        return ResponseEntity.ok(userService.register(registerRequest));
+    }
+
 
     @PutMapping("/change/username")
     @PreAuthorize("hasRole('ROLE_STUDY') or hasRole('ROLE_CHAIR') or hasRole('ROLE_ADMIN')")
-    public ResponseEntity<String> changeUsername(@ModelAttribute EditUserDTO changeRequest) throws IncorrectKeyOnDecryptException {
+    public ResponseEntity<String> changeUsername(@ModelAttribute EditUserDTO changeRequest) {
         return ResponseEntity.ok(userService.changeUsername(changeRequest));
     }
 
@@ -124,5 +133,12 @@ public class UserController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<String> changeRole(@ModelAttribute EditUserDTO changeRequest) {
         return ResponseEntity.ok(userService.changeRole(changeRequest));
+    }
+    
+    
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<String> deleteUser(@PathVariable Long id) {
+        return ResponseEntity.ok(userService.deleteUser(id));
     }
 }

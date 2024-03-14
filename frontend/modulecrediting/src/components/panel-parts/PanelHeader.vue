@@ -1,29 +1,25 @@
-<!--
-shows mapping of external modules on internal modules
-props:
-  - externalModules (Array of module names)
-  - internalModules (Array of module names)
-displays:
-  - list of external modules
-  - arrow icon
-  - list of internal modules
--->
-
 <script setup>
 import ArrowIcon from "@/assets/icons/ArrowIcon.vue";
 
+/*
+header component describing external and internal modules selected,
+displays comma-separated list of external module names mapped to comma-separated list of internal module names
+ */
+
 const props = defineProps({
+  /* array of Strings, external module names */
   externalModules: {
     type: Array
   },
+  /* array of Strings, internal module names */
   internalModules: {
     type: Array
   },
+  /* should be set true to apply different styling for displaying related modules */
   relatedModules: {
     type: Boolean
   }
-});
-
+})
 </script>
 
 <template>
@@ -33,20 +29,21 @@ const props = defineProps({
         class="single-module">
         {{ externalModules.join(', ') }}
       </span>
-      <span v-else class="single-module">(Anzurechnende Module)</span>
+      <span v-else class="single-module">({{ $t('PanelHeader.ModulesToBeCredited') }})</span>
     </span>
-
-    <span class="arrow-icon">
-      <ArrowIcon color="red" direction="right" aria-label="wird angerechnet für" />
-    </span>
+    
+    <div class="arrow-icon-container" :aria-label="$t('PanelHeader.AriaCreditedFor')">
+      <ArrowIcon color="red" direction="right" />
+    </div>
 
     <span class="modules-container">
       <span v-if="internalModules && internalModules.length" :class="{ 'related-modules-text': relatedModules }"
         class="single-module">
         {{ internalModules.join(', ') }}
       </span>
-      <span v-else class="single-module">(Module der Universität Leipzig)</span>
+      <span v-else class="single-module">({{ $t('PanelHeader.ModulesUniLeipzig') }})</span>
     </span>
+
   </h3>
 </template>
 
@@ -69,5 +66,10 @@ const props = defineProps({
 .single-module {
   @include ellipsisTextOverflow();
   display: block;
+}
+
+.arrow-icon-container {
+  display: flex;
+  align-items: center;
 }
 </style>

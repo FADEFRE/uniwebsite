@@ -1,11 +1,17 @@
 <script setup>
 import { ref } from "vue";
 
+/*
+formal rejection block with comment field
+ */
+
 const props = defineProps({
+  /* controls if editable */
   readonly: {
     required: true,
     type: Boolean
   },
+  /* comment on formal rejection */
   comment: {
     type: String
   }
@@ -14,6 +20,7 @@ const props = defineProps({
 const comment = ref(props.comment)
 
 defineExpose({
+  /* String comment */
   comment
 })
 </script>
@@ -21,9 +28,9 @@ defineExpose({
 <template>
   <div class="panel-formal-rejection-block">
     <div class="formal-rejection-container">
-      <p class="overview-text">Formfehler</p>
+      <p class="overview-text">{{ $t('PanelFormalRejectionBlock.FormalRejection') }}</p>
     </div>
-    <textarea :readonly="readonly" v-model="comment"></textarea>
+    <textarea :placeholder="$t('PanelFormalRejectionBlock.Cause')" :readonly="readonly" v-model="comment" />
   </div>
 </template>
 
@@ -43,12 +50,15 @@ defineExpose({
 
 .formal-rejection-container {
   @include smallHighlightBox();
+
+  background-color: $red;
+  width: rem(184px);
+  border-right: 2px solid $dark-gray;
+
   display: flex;
   align-self: stretch;
   align-items: center;
-  background-color: $red;
-
-  border-right: 2px solid $dark-gray;
+  
 }
 
 </style>

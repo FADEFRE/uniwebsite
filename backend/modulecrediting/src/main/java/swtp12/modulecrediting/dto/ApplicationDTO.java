@@ -6,7 +6,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import swtp12.modulecrediting.model.Application;
 
+/**
+ * DTO for creating or updating an {@link Application}
+ */
 @Getter
 @Setter
 @NoArgsConstructor

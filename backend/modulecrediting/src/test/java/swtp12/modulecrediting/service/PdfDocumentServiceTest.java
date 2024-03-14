@@ -31,24 +31,24 @@ public class PdfDocumentServiceTest {
     
 
     @Test
-    public void testCreateOrGetPdfDocument_WithPdfData() throws IOException {
+    public void testGetOrCreatePdfDocument_WithPdfData() throws IOException {
         MultipartFile pdfData = new MockMultipartFile("test.pdf", "test.pdf", "application/pdf", "Test data".getBytes());
 
-        swtp12.modulecrediting.model.PdfDocument result = pdfDocumentService.createOrGetPdfDocument(pdfData, null);
+        swtp12.modulecrediting.model.PdfDocument result = pdfDocumentService.getOrCreatePdfDocument(pdfData, null);
 
         assertNotNull(result);
         assertEquals("test.pdf", result.getName());
     }
 
     @Test
-    public void testCreateOrGetPdfDocument_WithExistingPdfId() {
+    public void testGetOrCreatePdfDocument_WithExistingPdfId() {
         Long pdfId = 123L;
 
         swtp12.modulecrediting.model.PdfDocument mockPdfDocument = mock(swtp12.modulecrediting.model.PdfDocument.class);
 
         when(pdfDocumentRepository.findById(pdfId)).thenReturn(Optional.of(mockPdfDocument));
 
-        swtp12.modulecrediting.model.PdfDocument result = pdfDocumentService.createOrGetPdfDocument(null, pdfId);
+        swtp12.modulecrediting.model.PdfDocument result = pdfDocumentService.getOrCreatePdfDocument(null, pdfId);
 
         assertNotNull(result);
         verify(pdfDocumentRepository, never()).save(any(swtp12.modulecrediting.model.PdfDocument.class));
@@ -56,12 +56,12 @@ public class PdfDocumentServiceTest {
     }
 
     @Test
-    public void testCreateOrGetPdfDocument_NoPdfDataAndNoPdfId() {
+    public void testGetOrCreatePdfDocument_NoPdfDataAndNoPdfId() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            pdfDocumentService.createOrGetPdfDocument(null, null);
+            pdfDocumentService.getOrCreatePdfDocument(null, null);
         });
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
-        assertEquals("No external module id given", exception.getReason());
+        assertEquals("No PDF file provided and no existing PDF file found", exception.getReason());
         verify(pdfDocumentRepository, never()).findById(any(Long.class));
         verify(pdfDocumentRepository, never()).save(any(swtp12.modulecrediting.model.PdfDocument.class));
     }

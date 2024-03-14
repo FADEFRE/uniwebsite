@@ -42,7 +42,7 @@ void testCreateExternalModules() {
     ExternalModuleDTO dto1 = new ExternalModuleDTO();
     dto1.setName("Modulname");
     dto1.setUniversity("Universitätsname");
-    dto1.setPoints(5);
+    dto1.setPoints("5");
     dto1.setPointSystem("ECTS");
     MultipartFile descriptionFile1 = null; 
     dto1.setDescription(descriptionFile1);
@@ -50,7 +50,7 @@ void testCreateExternalModules() {
     //  DTO without name
     ExternalModuleDTO dto2 = new ExternalModuleDTO();
     dto2.setUniversity("Universitätsname");
-    dto2.setPoints(5);
+    dto2.setPoints("5");
     dto2.setPointSystem("ECTS");
     MultipartFile descriptionFile2 = null; 
     dto2.setDescription(descriptionFile2);
@@ -58,7 +58,7 @@ void testCreateExternalModules() {
     //  DTO without uni
     ExternalModuleDTO dto3 = new ExternalModuleDTO();
     dto3.setName("Modulname");
-    dto3.setPoints(5);
+    dto3.setPoints("5");
     dto3.setPointSystem("ECTS");
     MultipartFile descriptionFile3 = null; 
     dto3.setDescription(descriptionFile3);
@@ -75,7 +75,7 @@ void testCreateExternalModules() {
     ExternalModuleDTO dto5 = new ExternalModuleDTO();
     dto5.setName("Modulname");
     dto5.setUniversity("Universitätsname");
-    dto5.setPoints(5);
+    dto5.setPoints("5");
     MultipartFile descriptionFile5 = null; 
     dto5.setDescription(descriptionFile5);
 
@@ -90,7 +90,7 @@ void testCreateExternalModules() {
     pdfDocument.setId(1L); 
     pdfDocument.setName("Beispiel-PDF-Name"); 
     pdfDocument.setPdfData(new byte[]{0x01, 0x02, 0x03}); 
-    when(pdfDocumentService.createOrGetPdfDocument(any(MultipartFile.class), anyLong())).thenReturn(pdfDocument);
+    when(pdfDocumentService.getOrCreatePdfDocument(any(MultipartFile.class), anyLong())).thenReturn(pdfDocument);
 
     when(externalModuleRepository.save(any(ExternalModule.class))).thenReturn(new ExternalModule());
 
@@ -105,7 +105,7 @@ void testCreateExternalModules() {
         dto.setId(1L);
         dto.setName("Updated Module Name");
         dto.setUniversity("Updated University Name");
-        dto.setPoints(8);
+        dto.setPoints("8");
         dto.setPointSystem("Updated ECTS");
 
         List<ExternalModuleDTO> externalModuleUpdateDTOs = new ArrayList<>();
@@ -115,7 +115,7 @@ void testCreateExternalModules() {
         existingModule.setId(dto.getId());
         existingModule.setName("Original Module Name");
         existingModule.setUniversity("Original University Name");
-        existingModule.setPoints(5);
+        existingModule.setPoints("5");
         existingModule.setPointSystem("Original ECTS");
 
         when(externalModuleRepository.findById(dto.getId())).thenReturn(Optional.of(existingModule));

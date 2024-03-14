@@ -15,16 +15,6 @@
     "description": "A description for 'app.auth.tokenSecret'"
   },
   {
-    "name": "app.auth.refreshTokenCookieName",
-    "type": "java.lang.String",
-    "description": "A description for 'auth.refreshTokenCookieName'"
-  },
-  {
-    "name": "app.auth.accessTokenCookieName",
-    "type": "java.lang.String",
-    "description": "A description for 'auth.accessTokenCookieName'"
-  },
-  {
     "name": "app.auth.refreshTokenExpirationMsec",
     "type": "java.lang.Integer",
     "description": "A description for 'auth.refreshTokenExpirationMsec'"
@@ -48,5 +38,10 @@
     "name": "app.config.data.loadTestData",
     "type": "java.lang.String",
     "description": "A description for 'app.config.data.loadTestData'"
+  },
+  {
+    "name": "app.auth.expireAtMidnight",
+    "type": "java.lang.String",
+    "description": "A description for 'app.auth.expireAtMidnight'"
   }
 ]}

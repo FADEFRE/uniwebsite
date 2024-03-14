@@ -14,16 +14,17 @@ functionality:
 <script setup>
 import router from "@/router";
 import { ref, onBeforeMount } from "vue";
-import { getFormattedDate } from "@/scripts/date-utils";
-import { getCoursesLeipzigName, getModulesByCourse, postApplication } from "@/scripts/axios-requests";
+import { getFormattedDate } from "@/utils/date-utils";
 import ApplicationPanel from "@/components/panel/ApplicationPanel.vue";
 import ButtonAdd from "@/components/button/ButtonAdd.vue";
 import ButtonLink from "@/components/button/ButtonLink.vue";
+import CustomDropdown from "@/components/util/CustomDropdown.vue";
 import ApplicationOverview from "@/components/abstract/ApplicationOverview.vue";
-import ArrowIcon from "@/assets/icons/ArrowIcon.vue";
 import SideInfoApplicationProcess from "@/components/side-info/SideInfoApplicationProcess.vue";
 import SideInfoStudyOffice from "@/components/side-info/SideInfoStudyOffice.vue";
 import ApplicationInfoBox from "@/components/info-box/ApplicationInfoBox.vue";
+import { getCoursesLeipzigName, getModulesByCourse } from "@/requests/module-course-requests";
+import { postApplication } from "@/requests/application-requests";
 
 const creationDate = new Date()
 
@@ -73,7 +74,7 @@ const triggerPostApplication = () => {
 
 <template>
   <div class="main">
-    <h1 class="screen-reader-only">Antrag stellen</h1>
+    <h1 class="screen-reader-only">{{ $t('SubmitApplicationView.SRHeading') }}</h1>
 
     <div class="content-container split">
 
@@ -81,13 +82,14 @@ const triggerPostApplication = () => {
 
       <ApplicationOverview :creation-date="getFormattedDate(creationDate)" :last-edited-date="undefined"
                            :decision-date="undefined" status="NEU">
-        <Dropdown v-model="selectedCourse" :options="courses" placeholder="Studiengang wählen"
-                  @change="setSelectableModules" :class="{ 'invalid': !courseValid }">
-          <template #dropdownicon>
-            <ArrowIcon direction="down" />
-          </template>
-        </Dropdown>
-        <small v-if="!courseValid" class="invalid-text">Es muss ein Studiengang ausgewählt werden</small>
+        <CustomDropdown
+            :placeholder="$t('SubmitApplicationView.ChooseCourse')"
+            :options="courses"
+            v-model="selectedCourse"
+            @change="setSelectableModules"
+            :class="{ 'invalid': !courseValid }"
+        />
+        <small v-if="!courseValid" class="invalid-text">{{ $t('SubmitApplicationView.CourseEmpty') }}</small>
       </ApplicationOverview>
 
       <ApplicationPanel v-for="item in moduleConnections" :key="item" :selectable-modules="selectableModules"
@@ -95,8 +97,8 @@ const triggerPostApplication = () => {
                         @delete-self="deleteModuleConnection(item)" />
 
       <div class="application-buttons-container">
-        <ButtonAdd @click="addModuleConnection">Modulzuweisung hinzufügen</ButtonAdd>
-        <ButtonLink @click="triggerPostApplication" :redButton="true">Absenden</ButtonLink>
+        <ButtonAdd @click="addModuleConnection">{{ $t('SubmitApplicationView.AddModule') }}</ButtonAdd>
+        <ButtonLink @click="triggerPostApplication" :redButton="true">{{ $t('SubmitApplicationView.Submit') }}</ButtonLink>
       </div>
     </div>
 

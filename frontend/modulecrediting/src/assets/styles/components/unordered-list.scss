@@ -1,8 +1,10 @@
 @use "@/assets/styles/util" as *;
 @use "@/assets/styles/global" as *;
 
+
+
 ul {
-  @include verticalList(s);
+  @include verticalList(xs);
 
   &.points {
     li {

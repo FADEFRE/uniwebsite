@@ -5,7 +5,7 @@ import { computed, onBeforeMount } from 'vue';
 import CopyIcon from "@/assets/icons/CopyIcon.vue";
 import ButtonLink from "@/components/button/ButtonLink.vue";
 import ButtonDownload from '@/components/button/ButtonDownload.vue';
-import { url } from '@/scripts/url-config';
+import { url } from '@/config/url-config';
 
 const route = useRoute()
 const router = useRouter()
@@ -43,24 +43,24 @@ const openPdf = () => {
 
 <template>
   <div class="main centered">
-    <h1 class="screen-reader-only">Bestätigung des Antrags</h1>
+    <h1 class="screen-reader-only">{{ $t('ApplicationConfirmationView.SRHeading') }}</h1>
     <div class="confirmation-container">
       <div class="id-section">
         <div class="id-container">
           <h2 class="id">{{ formattedId }}</h2>
-          <div class="copy-icon-container" @click=copyId>
-            <CopyIcon v-if="isSupported" :disabled="copied"/>
+          <div @click="copyId" @keydown.enter="copyId" class="copy-icon-container" tabindex="0" :aria-label="$t('ApplicationConfirmationView.AriaCopyProcessNumber')">
+            <CopyIcon v-if="isSupported" :disabled="copied" />
           </div>
         </div>
         <p class="description-text">
-          Notieren Sie sich die Vorgangsnummer. Diese ist notwendig, um später den Status Ihres Antrags einsehen zu können.
+          {{ $t('ApplicationConfirmationView.Text') }}
         </p>
       </div>
       <div class="button-container">
         <ButtonDownload @click="openPdf">
-          Antrag herunterladen
+          {{ $t('ApplicationConfirmationView.DownloadApplication') }}
         </ButtonDownload>
-        <ButtonLink @click="openDetailView" class="status-button">Status einsehen</ButtonLink>
+        <ButtonLink @click="openDetailView" class="status-button">{{ $t('ApplicationConfirmationView.ViewStatus') }}</ButtonLink>
       </div>
     </div>
   </div>
@@ -108,6 +108,10 @@ const openPdf = () => {
   top: 0;
   right: 0;
   padding: spacing(s);
+
+  &:focus-visible {
+    outline: 2.5px solid $dark-gray-hover;
+  }
 }
 
 .description-text {

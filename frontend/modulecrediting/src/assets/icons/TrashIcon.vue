@@ -14,9 +14,9 @@ const emit = defineEmits(['click'])
 </script>
 
 <template>
-  <div tabindex="0" aria-label="Löschen" class="trash-container" :class="[backgroundColor, backgroundSize]"
+  <div tabindex="0" :aria-label="$t('IconTrash.AriaDelete')" class="trash-container" :class="[backgroundColor, backgroundSize]"
        @keydown.enter.prevent="emit('click')" @click="emit('click')">
-    <svg class="trash-icon" :class="backgroundColor === 'dark-gray' ? 'white-icon' : 'dark-gray-icon'" viewBox="0 0 17 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg class="trash-icon" :class="backgroundColor === 'dark-gray' ? 'white-icon' : 'dark-gray-icon'" viewBox="0 0 17 19" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <path d="M2.5 4.97768V18H14.5V4.97768L17 4.9941L13 4.97768M0 4.9941L4 4.97768M4 4.97768L5.5 1.01369L11.5 1L13 4.97768M4 4.97768H8.5H13M6.42308 8.60815V14.6852M10.5769 8.60815V14.6852" stroke-width="2" />
     </svg>
   </div>

@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * DTO for getting or uploading {@code LeipzigData} via JSON
+ */
 @Getter
 @Setter
 @NoArgsConstructor

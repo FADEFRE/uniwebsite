@@ -26,7 +26,6 @@ Button,
       background-color: $red-hover;
     }
   }
-
   &:focus-visible {
     outline: 2.5px solid $dark-gray-hover;
     outline-offset: 2px;
@@ -39,6 +38,25 @@ Button,
       outline: 2.5px solid $red-hover;
       outline-offset: 2px;
     }
+  }
+}
+
+.info-box-button {
+  padding: 0;
+  background-color: transparent;
+  color: $dark-gray;
+  font-weight: 650;
+
+  &:focus {
+    text-decoration: none;
+    background-color: transparent;
+  }
+
+  &:hover,
+  &:focus-visible {
+    text-decoration: underline;
+    background-color: transparent;
+    outline: none;
   }
 }
 

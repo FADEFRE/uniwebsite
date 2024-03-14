@@ -10,17 +10,23 @@ import org.springframework.web.multipart.MultipartFile;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * This {@link Component} includes functions to grab a {@link JsonNode} from diffrent sources.
+ */
 @Component
 public class JsonUtil {
 
-    private final ObjectMapper objectMapper;
+    private static final ObjectMapper objectMapper = new ObjectMapper();
 
-    public JsonUtil(ObjectMapper objectMapper) {
-        this.objectMapper = objectMapper;
-    }
-
-
-    public JsonNode grabJsonNodeFromMultipartFile(MultipartFile multipartFile, String nodeName) {
+    /**
+     * This function grabs a {@link JsonNode} with given {@link String name} from given {@link MultipartFile multipartFile}.
+     * @param multipartFile {@code MultipartFile}
+     * @param nodeName {@code String}
+     * @return JsonNode
+     * @see JsonNode
+     * @see <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/multipart/MultipartFile.html">Spring MultipartFile</a> 
+     */
+    public static JsonNode grabJsonNodeFromMultipartFile(MultipartFile multipartFile, String nodeName) {
         JsonNode jsonNode;
         try (InputStream inputStream = multipartFile.getInputStream()) {
             jsonNode = objectMapper.readValue(inputStream, JsonNode.class);
@@ -32,8 +38,15 @@ public class JsonUtil {
                 .orElseThrow(() -> new IllegalArgumentException("Invalid JSON Object"));
     }
 
-    public JsonNode grabJsonNodeFromJsonNode(JsonNode courseNode, String nodeName) {
-        return Optional.ofNullable(courseNode)
+    /**
+     * This function grabs a {@link JsonNode} with given {@link String name} from given {@link JsonNode currentNode}.
+     * @param currentNode {@code JsonNode}
+     * @param nodeName {@code String}
+     * @return JsonNode
+     * @see JsonNode
+     */
+    public static JsonNode grabJsonNodeFromJsonNode(JsonNode currentNode, String nodeName) {
+        return Optional.ofNullable(currentNode)
         .map(j -> j.get(nodeName))
         .orElseThrow(() -> new IllegalArgumentException("Invalid JSON Object"));
     }

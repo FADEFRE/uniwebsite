@@ -11,36 +11,36 @@ import java.util.Optional;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.transaction.Transactional;
-
-
 import swtp12.modulecrediting.dto.ApplicationDTO;
 import swtp12.modulecrediting.dto.ExternalModuleDTO;
 import swtp12.modulecrediting.dto.ModuleLeipzigDTO;
 import swtp12.modulecrediting.dto.ModulesConnectionDTO;
 import swtp12.modulecrediting.model.Application;
-import swtp12.modulecrediting.model.Role;
 import swtp12.modulecrediting.model.CourseLeipzig;
 import swtp12.modulecrediting.model.EnumApplicationStatus;
 import swtp12.modulecrediting.model.EnumModuleConnectionDecision;
 import swtp12.modulecrediting.model.ExternalModule;
 import swtp12.modulecrediting.model.ModuleLeipzig;
 import swtp12.modulecrediting.model.ModulesConnection;
+import swtp12.modulecrediting.model.Role;
 import swtp12.modulecrediting.model.User;
-import swtp12.modulecrediting.repository.RoleRepository;
 import swtp12.modulecrediting.repository.CourseLeipzigRepository;
 import swtp12.modulecrediting.repository.ModuleLeipzigRepository;
+import swtp12.modulecrediting.repository.RoleRepository;
 import swtp12.modulecrediting.repository.UserRepository;
 import swtp12.modulecrediting.service.ApplicationService;
+import swtp12.modulecrediting.util.JsonUtil;
+import swtp12.modulecrediting.util.LogUtil;
 
 
 /**
@@ -50,19 +50,14 @@ import swtp12.modulecrediting.service.ApplicationService;
 public class TestDataLoader {
     @Autowired
     private ModuleLeipzigRepository modulLeipzigRepo;
-
     @Autowired
     private CourseLeipzigRepository courseLeipzigRepo;
-
     @Autowired
     private ApplicationService applicationService;
-
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private RoleRepository roleRepository;
-    
     @Autowired
     private PasswordEncoder encoder;
 
@@ -74,30 +69,44 @@ public class TestDataLoader {
     }
 
     /**
-     * The run function reads Uni Leipzig Data from a JSON and writes it into the database
-     * Reads test data from a Json and writes it into the databse
+     * The run function reads Uni Leipzig Data from a JSON and writes it into the database.
+     * Reads test data from a Json and writes it into the databse.
+     * <p> It creates {@link User Users} defined in the JSON aswell.
+     * 
+     * <p> NOTE: This should only be used for testing and it is recommended to use it with "create-drop" for your database.
+     * 
+     * @see Application
+     * @see CourseLeipzig
+     * @see ModuleLeipzig
+     * @see User
      */
     @Transactional
     public void run() {
-        String moduleLeipzigData = "/module_liste.json";
         String testData = "/test_data.json";
 
         userCreation(testData);
 
-        leipzigDataLoader(moduleLeipzigData);
+        leipzigDataLoader(testData);
 
         createTestData(testData);
     }
 
 
-    //creates users defined in filename (test data)
+
+    /**
+     * Loads data from a JSON file into the database, creating and linking {@link CourseLeipzig} and {@link ModuleLeipzig} objects.
+     * 
+     * @param fileName The `fileName` parameter is the name of the JSON file that contains the data to be loaded into the database.
+     * @see CourseLeipzig
+     * @see ModuleLeipzig
+     */
     private void userCreation(String fileName) {
         JsonNode userSettings = grabFirstNodeFromJson(fileName, "users");
         for (JsonNode user : userSettings) {
             String username = user.get("name").asText();
             String password = user.get("password").asText();
             String roleName = user.get("role").asText();
-            
+            LogUtil.printLog("Creating user: " + username);
             Optional<User> userCandidate = userRepository.findByUsername(username);
 
             if (!userCandidate.isPresent()) {
@@ -111,23 +120,20 @@ public class TestDataLoader {
                     if(userCreate.getRole() == null) {
                         userCreate.setRole(roleCandidate.get());
                     }
-                    System.out.println("Created User " + userCreate.getUsername());
                     userRepository.save(userCreate);
                 }
             }
         }
-        System.out.println();
+        LogUtil.printLog("");
     }
 
 
-    //the two dataloader functions (leipzigData/ testData):
-
     /**
-     * The function `leipzigDataLoader` loads data from a JSON file into the database, creating and linking
-     * `CourseLeipzig` and `ModuleLeipzig` objects.
+     * Loads data from a JSON file into the database, creating and linking {@link CourseLeipzig} and {@link ModuleLeipzig} objects.
      * 
-     * @param fileName The `fileName` parameter is the name of the JSON file that contains the data to be
-     * loaded into the database.
+     * @param fileName The `fileName` parameter is the name of the JSON file that contains the data to be loaded into the database.
+     * @see CourseLeipzig
+     * @see ModuleLeipzig
      */
     @Transactional
     private void leipzigDataLoader(String fileName) {
@@ -139,7 +145,7 @@ public class TestDataLoader {
                         return courseLeipzigRepo.save(new CourseLeipzig(courseName));
                     });
 
-            JsonNode modules = grabModulesFromJsonNode(courseNode);
+            JsonNode modules = JsonUtil.grabJsonNodeFromJsonNode(courseNode, "modules");
             for (JsonNode module : modules) {
                 String moduleName = module.get("name").asText();
                 String moduleCode = module.get("number").asText();
@@ -152,24 +158,20 @@ public class TestDataLoader {
                 courseLeipzigRepo.save(courseLeipzig);
             }
         }
-        System.out.println("Leipzig-Data successfully loaded into Database \n");
+        LogUtil.printLog("Leipzig-Data successfully loaded into Database");
     }
 
 
 
     /**
-     * The `createTestData` function generates dummy data for testing purposes by creating random
-     * applications with associated module blocks.
+     * This function generates dummy data for testing purposes by creating random {@link Application Applications}.
      * 
      * @param testFileName The `testFileName` parameter is the name of the JSON file from which the test
      * data settings will be extracted.
+     * @see Application
      */
-
     @Transactional
     private void createTestData(String testFileName) {
-        //Loads specified courses/modules
-        //leipzigDataLoader(testFileName);
-        //System.out.print("\033[2K\033[1G");
 
         JsonNode applicationSettingsNode = grabFirstNodeFromJson(testFileName, "randApplications").get(0);
         JsonNode moduleSettingsNode = grabFirstNodeFromJson(testFileName, "randExternalModules").get(0);
@@ -190,8 +192,9 @@ public class TestDataLoader {
             listOfCourseLeipzig.add(courseLeipzig);
         }
         
-
-        System.out.println("Generating random Dummy Applications:");
+        LogUtil.printLog("");
+        LogUtil.printLog("Generating random Dummy Applications:");
+        List<String> listOfApplicationNumbersGenerated = new ArrayList<>();
         for (CourseLeipzig cL : listOfCourseLeipzig) {
             List<ModulesConnectionDTO> listModuleCreateDTO = new ArrayList<>();
 
@@ -214,7 +217,7 @@ public class TestDataLoader {
             ApplicationDTO applicationUpdateDTO = new ApplicationDTO();
             Application application = applicationService.getApplicationById(vorgangsnummer);
 
-            String updatedData = "";
+
             if (closed > 0) { // update application to ABGESCHLOSSEN
                 List<ModulesConnectionDTO> mcuDTO = new ArrayList<>();
                 mcuDTO = updateModulesConnectionDTO(ABGESCHLOSSEN, application);
@@ -223,7 +226,8 @@ public class TestDataLoader {
                 applicationService.updateApplication(vorgangsnummer, applicationUpdateDTO, "study-office");
                 applicationService.updateApplication(vorgangsnummer, applicationUpdateDTO, "chairman");
                 applicationService.updateApplicationStatus(vorgangsnummer);
-                updatedData = "closed";
+
+                listOfApplicationNumbersGenerated.add(vorgangsnummer);
                 closed--;
             }
             else if (pav > 0) { // update application to PRUEFUNGSAUSSCHUSS
@@ -235,7 +239,7 @@ public class TestDataLoader {
                 applicationService.updateApplication(vorgangsnummer, applicationUpdateDTO, "chairman");
                 applicationService.updateApplicationStatus(vorgangsnummer);
 
-                updatedData = "pav";
+                listOfApplicationNumbersGenerated.add(vorgangsnummer);
                 pav--;
             }
             else if (studyOffice > 0) { // update application to STUDIENBUERO
@@ -244,7 +248,8 @@ public class TestDataLoader {
                 applicationUpdateDTO.setModulesConnections(mcuDTOs);
                 applicationService.updateApplication(vorgangsnummer, applicationUpdateDTO, "study-office");
                 applicationService.updateApplicationStatus(vorgangsnummer);
-                updatedData = "studyOffice";
+
+                listOfApplicationNumbersGenerated.add(vorgangsnummer);
                 studyOffice--;
             }
             
@@ -254,15 +259,21 @@ public class TestDataLoader {
                 applicationUpdateDTO.setModulesConnections(mcuDTOs);
                 applicationService.updateApplication(vorgangsnummer, applicationUpdateDTO, "study-office");
                 applicationService.updateApplicationStatus(vorgangsnummer);
-                updatedData = "formfehler";
+                
+                listOfApplicationNumbersGenerated.add(vorgangsnummer);
                 formfehler--;
             }
             
             else if (open > 0) { // update application to ABGESCHLOSSEN
-                updatedData = "open";
+                listOfApplicationNumbersGenerated.add(vorgangsnummer);
                 open--;
             }
-            System.out.println("Created Dummy Application: " + vorgangsnummer + " as: " + updatedData);
+        }
+
+        LogUtil.printLog("");
+        LogUtil.printLog("Generated Dummy Applications:");
+        for (String string : listOfApplicationNumbersGenerated) {
+            LogUtil.printLog("Application: " + string + " - " + applicationService.getApplicationById(string).getFullStatus());
         }
     }
 
@@ -274,12 +285,15 @@ public class TestDataLoader {
      * The function "grabFirstNodeFromJson" reads a JSON file from the given path and returns the first JsonNode
      * with the given name or throws mutliple exception if failed to do so.
      * 
+     * <p> NOTE: This is an older documentation and might be out of date!
+     * 
      * @exception IOException Gets thrown as RuntimeException if failed to read JSON data
      * @exception IllegalArgumentException Gets thrown if JsonNode is invalid
      * @param jsonPath String that represents the path to the JSON file that you want to read. 
      *                      It can be either an absolute path or a relative path to the JSON file.
      * @param nodeName String that represents the Name of the JsonNode you want to be returned
      * @return The JsonNode of the JSON file.
+     * 
      */
     private JsonNode grabFirstNodeFromJson(String jsonPath, String nodeName) {
         JsonNode jsonNode;
@@ -293,28 +307,13 @@ public class TestDataLoader {
                 .orElseThrow(() -> new IllegalArgumentException("Invalid JSON Object"));
     }
 
-    /**
-     * The function grabs the "modules" field from the 'courses' JsonNode and returns it as a JsonNode object 
-     * or throws an exception if object invalid.
-     * 
-     * @exception IllegalArgumentException Gets thrown if JsonNode is invalid
-     * @param courseNode A JsonNode object representing a course.
-     * @return The 'modules' JsonNode of the 'courseNode'
-     */
-    private JsonNode grabModulesFromJsonNode(JsonNode courseNode) {
-        return Optional.ofNullable(courseNode)
-        .map(c -> c.get("modules"))
-        .orElseThrow(() -> new IllegalArgumentException("Invalid JSON Object"));
-    }
-
-
-
     //Helper methods for creating and updating application data in the database:
 
     /**
      * The function `createModuleDTO` creates a `ModuleBlockCreateDTO` object with various properties and
      * sets a description file based on a resource file.
      * 
+     * <p> NOTE: This is an older documentation and might be out of date!
      * @param cL An instance of the CourseLeipzig class, which contains information about the Leipzig
      * course.
      * @param moduleSettingNode A JSON object containing the settings for a module. It has the following
@@ -347,13 +346,20 @@ public class TestDataLoader {
         return modulesConnectionDTO;
     }
 
+    /**
+     * <p> NOTE: This is an older documentation and might be out of date!
+     * @param moduleSettingNode
+     * @return
+     * 
+     */
     private ExternalModuleDTO createExternalModuleDTO(JsonNode moduleSettingNode) {
         ExternalModuleDTO externalModuleDTO = new ExternalModuleDTO();
 
         Random rdm = new Random();
         externalModuleDTO.setName(getRandValueOfNode(moduleSettingNode, "name", rdm));
+        externalModuleDTO.setExternalCourse(getRandValueOfNode(moduleSettingNode, "externalCourse", rdm));
         externalModuleDTO.setUniversity(getRandValueOfNode(moduleSettingNode, "uni", rdm));
-        externalModuleDTO.setPoints(Integer.parseInt(getRandValueOfNode(moduleSettingNode, "points", rdm)));
+        externalModuleDTO.setPoints(getRandValueOfNode(moduleSettingNode, "points", rdm));
         externalModuleDTO.setPointSystem(getRandValueOfNode(moduleSettingNode, "pointSystem", rdm));
 
         MultipartFile pdfMultipartFile = new MockMultipartFile("dummy", "dummy.pdf", "application/pdf", "pdf_data_mock".getBytes());
@@ -364,6 +370,8 @@ public class TestDataLoader {
 
     /**
      * The function retrieves a String from a random index from a specified node in a JSON object.
+     * 
+     * <p> NOTE: This is an older documentation and might be out of date!
      * 
      * @param currentNode The `currentNode` parameter is a `JsonNode` object that represents the current
      * node in a JSON structure.
@@ -380,6 +388,12 @@ public class TestDataLoader {
         return valueNode.get(rdmIdx).asText();
     }
 
+    /**
+     * <p> NOTE: This is an older documentation and might be out of date!
+     * @param status
+     * @param application
+     * @return
+     */
     private List<ModulesConnectionDTO> updateModulesConnectionDTO(EnumApplicationStatus status, Application application) {
         List<ModulesConnectionDTO> mcuDTO = new ArrayList<>();
         boolean studyBool = true;
@@ -457,8 +471,11 @@ public class TestDataLoader {
         return mcuDTO;
     }
 
-
-    public EnumModuleConnectionDecision generateDecision() {
+    /** 
+     * 
+     * <p> NOTE: This is an older documentation and might be out of date!
+    */
+    private EnumModuleConnectionDecision generateDecision() {
         Random rand = new Random();
         int index = rand.nextInt(3);
         if (index == 0) return accepted;

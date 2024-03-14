@@ -4,6 +4,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import org.springframework.stereotype.Repository;
 import swtp12.modulecrediting.model.ExternalModule;
+/**
+ * This is the {@code JpaRepository} for {@link ExternalModule}
+ * @see ExternalModule
+ * @see <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/stereotype/Repository.html">Spring Repository</a>
+ * @see <a href="https://docs.spring.io/spring-data/jpa/docs/current/api/org/springframework/data/jpa/repository/JpaRepository.html">Spring JpaRepository</a> 
+ */
 @Repository
 public interface ExternalModuleRepository extends JpaRepository<ExternalModule, Long>{
     

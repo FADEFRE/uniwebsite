@@ -3,7 +3,7 @@ shows status of an application
 -->
 
 <script setup>
-import { useRoute, useRouter } from 'vue-router';
+import { useRoute } from 'vue-router';
 import { ref, onBeforeMount, computed } from "vue";
 import ApplicationOverview from "@/components/abstract/ApplicationOverview.vue";
 import StatusPanel from "@/components/panel/StatusPanel.vue";
@@ -12,25 +12,27 @@ import ButtonLink from '@/components/button/ButtonLink.vue';
 import ButtonAdd from "@/components/button/ButtonAdd.vue";
 import ButtonDownloadVue from '@/components/button/ButtonDownload.vue';
 import LoadingContainer from "@/components/util/LoadingContainer.vue";
-import { url } from "@/scripts/url-config"
-import { getApplicationByIdForStatus, getModulesByCourse, putApplicationStudent } from "@/scripts/axios-requests";
-import { parseRequestDate } from "@/scripts/date-utils";
+import FormalRejectionInfoBox from "@/components/info-box/FormalRejectionInfoBox.vue";
+import FinishedInfoBox from "@/components/info-box/FinishedInfoBox.vue";
 import SideInfoApplicationProcess from '@/components/side-info/SideInfoApplicationProcess.vue';
 import SideInfoStudyOffice from '@/components/side-info/SideInfoStudyOffice.vue';
-import ModuleStatusIcon from "@/assets/icons/ModuleStatusIcon.vue";
+import { url } from "@/config/url-config"
+import { parseRequestDate } from "@/utils/date-utils";
+import { getModulesByCourse } from "@/requests/module-course-requests";
+import { getApplicationByIdForStatus, putApplicationStudent } from "@/requests/application-requests";
+import i18n from '@/i18n';
 
 const id = useRoute().params.id
 const summaryDocumentLink = `${url}/file/pdf-documents/application/${id}`
 
 const applicationData = ref()
 const moduleOptions = ref([])
-const router = useRouter();
 
 
 onBeforeMount(() => {
   getApplicationByIdForStatus(id)
     .then(data => {
-      applicationData.value = data;
+      setTimeout(() => applicationData.value = data, 5000)
       existingConnections.value = data['modulesConnections']
       return data;
     })
@@ -87,7 +89,8 @@ const checkValidity = () => {
 
 const triggerSubmit = () => {
   if (checkValidity()) {
-    if (confirm('Haben Sie alle Formfehler korrigiert?\n\nNach dem erneuten Einreichen können Sie den Antrag nicht weiter bearbeiten.')) {
+    let popup = i18n.global.t('StatusDetailView.Popup.Heading') + "\n\n" + i18n.global.t('StatusDetailView.Popup.Text')
+    if (confirm(popup)) {
       putApplicationStudent(applicationData.value['id'], applicationData.value['courseLeipzig']['name'], moduleConnections.value)
           .then(_ => location.reload())
     }
@@ -97,48 +100,16 @@ const triggerSubmit = () => {
 
 <template>
   <div v-if="applicationData" class="main">
-    <h1 class="screen-reader-only">Status des Antrags</h1>
+    <h1 class="screen-reader-only">{{ $t('StatusDetailView.SRHeading') }}</h1>
 
     <div class="content-container split">
 
-      <div v-if="applicationData['fullStatus'] === 'FORMFEHLER'" class="application-info-container">
-        <h2>Formfehler</h2>
-        <p class="text-justify">
-          Ihr Antrag wurde aufgrund von Formfehlern zurückgewiesen.
-          Es sind die Modulzuweisungen rot markiert, die Formfehler enthalten.
-          In der Modulzuweisung finden sie unten eine Erklärung des konkreten Fehlers.
-          Bitte korrigieren sie alle angegebenen Fehler.
-          Anschließend können sie ihren Antrag neu einreichen.
-        </p>
+      <div v-if="applicationData['fullStatus'] === 'FORMFEHLER'">
+        <FormalRejectionInfoBox />
       </div>
 
-      <div v-if="applicationData['fullStatus'] === 'ABGESCHLOSSEN'" class="application-info-container">
-        <h2>Wie geht es weiter?</h2>
-        <p class="text-justify">
-          Es wurde eine finale Entscheidung zu ihrem Antrag getroffen.
-          Dies ist nur eine Informationen über die Möglichkeit der Anrechnung.
-          Um sich ihre Leistungen offiziell anrechnen zu lassen, müssen sie zum Studienbüro gehen.
-          Bringen sie hierfür bitte alle relevanten Dokumente mit, die den Abschluss der anzurechnenden Leistungen
-          belegen.
-          Falls sie weitere Fragen zu ihrem Antrag haben, kontaktieren sie bitte das Studienbüro.
-        </p>
-        <div class="legend-container">
-          <h3 class="h4">Legende</h3>
-          <ul>
-            <li class="explanation-list-item">
-              <ModuleStatusIcon status-decision="accepted" size="small"/>
-              <p>Anrechnung angenommen</p>
-            </li>
-            <li class="explanation-list-item">
-              <ModuleStatusIcon status-decision="asExamCertificate" size="small"/>
-              <p>Anrechnung als Übungsschein</p>
-            </li>
-            <li class="explanation-list-item">
-              <ModuleStatusIcon status-decision="denied" size="small"/>
-              <p>Anrechnung abgelehnt</p>
-            </li>
-          </ul>
-        </div>
+      <div v-if="applicationData['fullStatus'] === 'ABGESCHLOSSEN'">
+        <FinishedInfoBox />
       </div>
 
       <ApplicationOverview :creation-date="parseRequestDate(applicationData['creationDate'])"
@@ -162,14 +133,14 @@ const triggerSubmit = () => {
 
       <div class="application-buttons-container">
         <ButtonAdd v-if="applicationData['fullStatus'] === 'FORMFEHLER'" @click="addNewConnection">
-          Modulzuweisung hinzufügen
+          {{ $t('StatusDetailView.AddModule') }}
         </ButtonAdd>
         <ButtonLink v-if="applicationData['fullStatus'] === 'FORMFEHLER'" :redButton="true" @click="triggerSubmit">
-          Neu einreichen
+          {{ $t('StatusDetailView.Renew') }}
         </ButtonLink>
       </div>
       <ButtonDownloadVue @click="openSummaryDocument">
-        Antrag herunterladen
+        {{ $t('StatusDetailView.DownloadApplication') }}
       </ButtonDownloadVue>
     </div>
 
@@ -180,6 +151,7 @@ const triggerSubmit = () => {
 
   </div>
   <div v-else class="main centered">
+    <h1 class="screen-reader-only">{{ $t('StatusDetailView.SRHeading') }}</h1>
     <LoadingContainer />
   </div>
 </template>
@@ -198,15 +170,5 @@ const triggerSubmit = () => {
 
 .formal-rejection-highlight {
   border-left: spacing(m) solid $red;
-}
-
-.legend-container {
-  @include verticalList(s);
-}
-
-.explanation-list-item {
-  @include smallHighlightBox();
-  @include verticalListItem($gray);
-  justify-content: flex-start;
 }
 </style>
