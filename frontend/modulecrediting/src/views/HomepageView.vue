@@ -4,6 +4,7 @@ import { ref } from 'vue'
 import SideInfoApplicationProcess from '@/components/side-info/SideInfoApplicationProcess.vue';
 import ButtonLink from '@/components/button/ButtonLink.vue';
 import { getApplicationExists } from "@/requests/application-requests";
+import SideInfoStudyOffice from "@/components/side-info/SideInfoStudyOffice.vue";
 
 const router = useRouter()
 
@@ -76,6 +77,7 @@ const getFormattedId = () => {
 
     <aside class="side-infos-list">
       <SideInfoApplicationProcess/>
+      <SideInfoStudyOffice/>
     </aside>
 
   </div>
