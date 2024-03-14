@@ -11,6 +11,11 @@ import {
   putCourseLeipzigEdit
 } from "@/requests/module-course-requests";
 
+/*
+allows to add / remove modules from courses,
+course to edit can be selected, afterward editor for modules will show
+ */
+
 const courses = ref()
 const selectedCourse = ref()
 

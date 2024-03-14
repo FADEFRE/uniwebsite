@@ -3,11 +3,19 @@ import { ref } from 'vue';
 import ButtonLink from "@/components/button/ButtonLink.vue";
 import { postCourseLeipzig, postModuleLeipzig } from "@/requests/module-course-requests";
 
+/*
+creating a course / module (depending on prop type)
+ */
+
 const props = defineProps({
-    type: {
-        required: true,
-        type: String
+  /* 'course' or 'module' */
+  type: {
+    required: true,
+    type: String,
+    validator(value) {
+      return ['course', 'module'].includes(value)
     }
+  }
 });
 
 const coursename = ref('');
@@ -89,15 +97,15 @@ const createModuleLeipzig = () => {
 @use '@/assets/styles/components' as *;
 
 .management-create-container {
-    @include basicContainer();
-    @include verticalListItem($white);
-    @include verticalList(l);
-    width: 100%;
+  @include basicContainer();
+  @include verticalListItem($white);
+  @include verticalList(l);
+  width: 100%;
 }
 
 .module-input-container {
-    @include screenSplit();
-    width: 100%;
+  @include screenSplit();
+  width: 100%;
 }
 
 </style>
