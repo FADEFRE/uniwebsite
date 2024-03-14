@@ -1,11 +1,10 @@
-<!--
-button with add icon
-slots:
-  - default slot for button name
--->
-
 <script setup>
+/*
+button with add icon
 
+slots:
+  default - button text
+ */
 </script>
 
 <template>

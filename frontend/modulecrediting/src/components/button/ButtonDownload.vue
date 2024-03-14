@@ -1,7 +1,15 @@
 <script setup>
 import FileIcon from '@/assets/icons/FileIcon.vue';
 
+/*
+button with download icon
+
+slots:
+  default - button text
+ */
+
 const props = defineProps({
+  /* should be set to true, if button should be fixed */
   fixed: {
     type: Boolean,
     default: false
