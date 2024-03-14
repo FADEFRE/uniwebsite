@@ -182,7 +182,6 @@ defineExpose({
 }
 
 .edit-container {
-  width: 100%;
   border: 2px dashed $black;
   padding: spacing(s) 0;
   transition: 0.1s ease-in-out;
@@ -194,6 +193,7 @@ defineExpose({
 
   display: flex;
   justify-content: center;
+  flex-grow: 1;
 }
 
 .invalid {

@@ -21,8 +21,9 @@ const uploadJson = () => {
 <template>
   <div class="config-container">
     <h2>Konfiguration</h2>
-
+    
     <div class="screen-split-container">
+      
 
       <div class="info-container text-justify">
         <h3>Hinweis zum Datei-Upload</h3>
@@ -99,8 +100,6 @@ const uploadJson = () => {
 
 
 .file-button-container {
-  display: flex;
-  align-items: center;
-  gap: spacing(m);
+  @include verticalList(s)
 }
 </style>
