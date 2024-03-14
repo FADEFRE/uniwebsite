@@ -30,6 +30,7 @@ import swtp12.modulecrediting.util.LogUtil;
  * @see #createModuleLeipzig
  * @see #updateModuleLeipzig
  * @see #deleteModuleLeipzig
+ * @see #removeModulesFromList
  * @see <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/stereotype/Service.html">Spring Service</a>
  */
 @Service
@@ -284,6 +285,21 @@ public class ModuleLeipzigService {
         return "DEACTIVATED";
     }
 
+    /**
+     * This method removes the given {@link ModuleLeipzig} from the {@code List} of {@link ModuleLeipzig}
+     * @param moduleList {@code List} of {@link ModuleLeipzig}
+     * @param moduleLeipzig {@link ModuleLeipzig}
+     * @return the edited {@code List} of {@link ModuleLeipzig}
+     */
+    public List<ModuleLeipzig> removeModulesFromList(List<ModuleLeipzig> moduleList, ModuleLeipzig moduleLeipzig) {
+        for (int i = 0; i < moduleList.size(); i++) {
+            ModuleLeipzig mL = moduleList.get(i);
+            if (moduleLeipzig.getName().equals(mL.getName())) {
+                moduleList.remove(i);
+            }
+        }
+        return moduleList;
+    }
 
     // ------- Private Methods -------
 
