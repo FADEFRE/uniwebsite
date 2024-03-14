@@ -32,7 +32,7 @@ const triggerCreateUser = () => {
     postNewUser(username.value, password.value, passwordConfirm.value, role.value)
         .then(_ => location.reload())
         .catch(error => {
-          if (error.response.status) {
+          if (error.response.status === 409) {
             createFailed.value = true
           } else {
             location.reload()

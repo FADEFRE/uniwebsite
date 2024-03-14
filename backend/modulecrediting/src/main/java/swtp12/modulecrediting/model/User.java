@@ -35,7 +35,7 @@ public class User implements Serializable{
 
     private Boolean enabled;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
         name = "user_roles",
         joinColumns = {@JoinColumn(name = "userId", referencedColumnName = "userId")},
