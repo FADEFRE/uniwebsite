@@ -1,9 +1,18 @@
 <script setup>
+/*
+styled container for homepage
+
+slots:
+  default - slot below the description text
+ */
+
 const props = defineProps({
+  /* heading text */
   header: {
     required: true,
     type: String,
   },
+  /* description text */
   text: {
     required: true,
     type: String
