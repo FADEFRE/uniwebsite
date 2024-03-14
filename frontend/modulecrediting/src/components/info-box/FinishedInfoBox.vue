@@ -1,6 +1,9 @@
 <script setup>
-
 import ModuleStatusIcon from "@/assets/icons/ModuleStatusIcon.vue";
+
+/*
+information about a finished application
+ */
 </script>
 
 <template>

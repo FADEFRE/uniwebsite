@@ -1,5 +1,7 @@
 <script setup>
-
+/*
+information about a formal rejection
+ */
 </script>
 
 <template>

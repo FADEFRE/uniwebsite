@@ -2,6 +2,10 @@
 import ArrowIcon from "@/assets/icons/ArrowIcon.vue";
 import { ref } from "vue";
 
+/*
+information about writing an application
+ */
+
 const showInformation = ref(false)
 const showExample = ref(false)
 </script>
