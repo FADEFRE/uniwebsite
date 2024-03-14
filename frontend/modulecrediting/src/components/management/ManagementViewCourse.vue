@@ -4,6 +4,10 @@ import ManagementListElement from "@/components/management/ManagementListElement
 import LoadingContainer from "@/components/util/LoadingContainer.vue";
 import { deleteCourseLeipzig, getCoursesLeipzigName, putUpdateCourseLeipzig } from "@/requests/module-course-requests";
 
+/*
+list of all courses
+ */
+
 const courses = ref();
 const searchString = ref('');
 
