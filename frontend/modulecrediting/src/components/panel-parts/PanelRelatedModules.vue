@@ -1,12 +1,3 @@
-<!--
-list of related module connections
-props:
-  - relatedModules (Array)
-      each item should have properties: decision, decisionDate, university, course, externalModules, internalModules
-displays:
-  - list of related module connections
--->
-
 <script setup>
 import router from "@/router";
 import { useRoute } from "vue-router";
@@ -17,7 +8,12 @@ import PanelHeader from "@/components/panel-parts/PanelHeader.vue";
 import ModuleStatusIcon from "@/assets/icons/ModuleStatusIcon.vue";
 import { getRelatedModuleConnections } from "@/requests/application-requests";
 
+/*
+displays list of related module connections to a specified connection (specified by prop connectionId)
+ */
+
 const props = defineProps({
+  /* module connection id of connection to display related to */
   connectionId: {
     required: true,
     type: Number
@@ -52,7 +48,6 @@ const openRelatedModule = (singleModule) => {
   })
   window.open(routeData.href, '_blank')
 }
-
 </script>
 
 <template>
@@ -80,12 +75,9 @@ const openRelatedModule = (singleModule) => {
           </div>
 
           <p class="info-text">{{ relatedModule['application']['courseLeipzig']['name'] }}</p>
-
-          
         </div>
 
       </div>
-
     </div>
 
     <div v-else>

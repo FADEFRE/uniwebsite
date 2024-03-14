@@ -1,46 +1,46 @@
-<!--
-status icons for administrative panel header
-props:
-  - decisionSuggestion (optional, may be 'accepted', 'asExamCertificate' or 'denied')
-  - decisionFinal (optional, may be 'accepted', 'asExamCertificate' or 'denied')
-displays:
-  - suggestion icon, arrow, final decision icon
--->
-
 <script setup>
 import ArrowIcon from '@/assets/icons/ArrowIcon.vue';
 import ModuleStatusIcon from '@/assets/icons/ModuleStatusIcon.vue';
 
+/*
+icons indicating internal decision status
+either prop formalRejection should be set (to display a formal rejection)
+or props decisionSuggestion and decisionFinal should be set (to display study-office and chairman decision)
+ */
+
 const props = defineProps({
-    formalRejection: {
-      type: Boolean
-    },
-    decisionSuggestion: {
-      type: String,
-      validator(value) {
-        return ['accepted', 'asExamCertificate', 'denied', 'unedited'].includes(value)
-      }
-    },
-    decisionFinal: {
-      type: String,
-      validator(value) {
-        return ['accepted', 'asExamCertificate', 'denied', 'unedited'].includes(value)
-      }
+  /* should be set true to indicate formal rejection */
+  formalRejection: {
+    type: Boolean
+  },
+  /* 'accepted', 'asExamCertificate', 'denied' or 'unedited' (omit if formalRejection) */
+  decisionSuggestion: {
+    type: String,
+    validator(value) {
+      return ['accepted', 'asExamCertificate', 'denied', 'unedited'].includes(value)
     }
-});
+  },
+  /* 'accepted', 'asExamCertificate', 'denied' or 'unedited' (omit if formalRejection) */
+  decisionFinal: {
+    type: String,
+    validator(value) {
+      return ['accepted', 'asExamCertificate', 'denied', 'unedited'].includes(value)
+    }
+  }
+})
 </script>
 
 <template>
 
-    <div v-if="formalRejection" class="panel-status-icons">
-      <ModuleStatusIcon status-decision="formalRejection"/>
-    </div>
+  <div v-if="formalRejection" class="panel-status-icons">
+    <ModuleStatusIcon status-decision="formalRejection"/>
+  </div>
 
-    <div v-else  class="panel-status-icons">
-      <ModuleStatusIcon :status-decision="decisionSuggestion"/>
-      <ArrowIcon direction="right" color="dark-gray"></ArrowIcon>
-      <ModuleStatusIcon :status-decision="decisionFinal"/>
-    </div>
+  <div v-else class="panel-status-icons">
+    <ModuleStatusIcon :status-decision="decisionSuggestion"/>
+    <ArrowIcon direction="right" color="dark-gray"></ArrowIcon>
+    <ModuleStatusIcon :status-decision="decisionFinal"/>
+  </div>
 
 </template>
 
@@ -50,10 +50,10 @@ const props = defineProps({
 @use '@/assets/styles/components' as *;
 
 .panel-status-icons {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: spacing(m);
-    margin-right: spacing(s);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: spacing(m);
+  margin-right: spacing(s);
 }
 </style>

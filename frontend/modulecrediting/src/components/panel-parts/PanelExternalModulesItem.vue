@@ -1,70 +1,64 @@
-<!--
-single external module
-props:
-  - allowTextEdit (toggles InputText elements readonly)
-  - allowFileEdit (toggles FileInput elements readonly)
-  - allowDelete
-  - moduleName
-  - university
-  - points
-  - pointSystem
-  - selectedFile
-emits:
-  - deleteSelf (called on trash button click)
-exposes:
-  - moduleName
-  - university
-  - points
-  - pointSystem
-  - selectedFile
-displays:
-  - input fields for moduleName, university, creditPoints, pointSystem
-  - drop zone for module description
-  - delete icon (if allowDelete)
--->
-
 <script setup>
 import { ref, computed, watch } from "vue";
 import FileInput from "@/components/util/FileInput.vue";
 import TrashIcon from "@/assets/icons/TrashIcon.vue";
 
+/*
+single external module
+ */
+
 const props = defineProps({
+  /* controls if text fields are editable */
   allowTextEdit: {
     required: true,
     type: Boolean
   },
+  /* controls if description file is editable */
   allowFileEdit: {
     required: true,
     type: Boolean
   },
+  /* controls if module can be deleted */
   allowDelete: {
     required: true,
     type: Boolean,
   },
+  /* external module id */
   id: {
     type: Number,
   },
+  /* name to be displayed (initially) */
   name: {
     type: String
   },
+  /* points to be displayed (initially) */
   points: {
     type: String
   },
+  /* pointSystem to be displayed (initially) */
   pointSystem: {
     type: String
   },
+  /* university to be displayed (initially) */
   university: {
     type: String
   },
+  /* external course to be displayed (initially) */
   externalCourse: {
     type: String
   },
+  /* selected file to be displayed (initially) */
   selectedFile: {
     type: Object
   }
 })
 
-const emit = defineEmits(['deleteSelf', 'change'])
+const emit = defineEmits([
+  /* emitted on delete icon click, delete has to be handled by parent */
+  'deleteSelf',
+  /* emitted if any data changes */
+  'change'
+])
 
 const id = props.id ? props.id : undefined
 
@@ -105,7 +99,22 @@ const checkValidity = () => {
 }
 
 defineExpose({
-  id, name, points, pointSystem, university, externalCourse, selectedFile, checkValidity
+  /* external module id */
+  id,
+  /* external module name */
+  name,
+  /* external module points */
+  points,
+  /* external module pointSystem */
+  pointSystem,
+  /* external module university */
+  university,
+  /* external module externalCourse */
+  externalCourse,
+  /* external module description file */
+  selectedFile,
+  /* function to check data validity */
+  checkValidity
 })
 </script>
 
