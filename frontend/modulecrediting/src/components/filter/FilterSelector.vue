@@ -147,7 +147,6 @@ defineExpose({
           <CustomDropdown show-clear placeholder="Studiengang auswählen" :options="courses" v-model="course" @clear="deleteCourse" />
         </div>
 
-
         <div class="single-filter-container">
           <h3 class="h4">Suchen</h3>
           <div class="input-search-field-container">
@@ -159,7 +158,7 @@ defineExpose({
         </div>
 
         <div class="single-filter-container">
-          <h3 class="h4">Zeit</h3>
+          <h3 class="h4">Sortieren</h3>
           <div class="date-filter-container">
             <div tabindex="0" @keydown.enter="setDateTypeCreation" @click="setDateTypeCreation" class="date-block" :class="{ 'selected': dateType === 'creationDate' }">
               <DateIcon type="creation"/>
