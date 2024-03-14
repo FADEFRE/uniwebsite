@@ -5,6 +5,10 @@ import RoleDropdown from "@/components/util/RoleDropdown.vue";
 import { postNewUser } from "@/requests/user-requests";
 import { usernameRegex, passwordRegex } from "@/config/regex";
 
+/*
+create a new user with a specific role
+ */
+
 const username = ref('')
 const password = ref('')
 const passwordConfirm = ref('')
