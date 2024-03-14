@@ -59,6 +59,10 @@ You can reach this groups VM under http://172.26.92.91:8080
 An explanation of the folder structures both in backend and frontend, 
 can be found at the <a href="#5-folder-structure-explanation"> end </a>of this README
 
+NOTE: if you use 'create-drop' this app will only create 1 admin user 
+(<a href="#23-dataloader-settings-in-application-devprodproperties">more here</a>),
+if the 'TestDataLoader' is not enabled
+
  <a href="#top">Back to top</a>
 
 # 2. Setup and settings
