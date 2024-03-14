@@ -1,5 +1,6 @@
 <script setup>
 import ArrowIcon from "@/assets/icons/ArrowIcon.vue";
+import ButtonInfo from "@/components/button/ButtonInfo.vue";
 import { ref } from "vue";
 
 /*
@@ -16,10 +17,9 @@ const showExample = ref(false)
     <div class="explanation-collapsed-container">
       <p class="text-justify">{{ $t('ApplicationInfoBox.BasicExplanation') }}</p>
     </div>
-    <Button @click="showInformation = !showInformation" class="info-box-button">
-      <h3>{{ $t('ApplicationInfoBox.Explanation.ShowExplanation') }}</h3>
-      <ArrowIcon :direction="showInformation ? 'up' : 'down'" color="red" />
-    </Button>
+
+    <ButtonInfo @click="showInformation = !showInformation" :collapsed="showInformation">{{ $t('ApplicationInfoBox.Explanation.ShowExplanation') }}</ButtonInfo>
+
     <div v-if="showInformation" class="explanation-expanded-container">
       <div class="explanation-item">
         <h4>{{ $t('ApplicationInfoBox.Explanation.ModuleAssignment.Heading') }}</h4>
@@ -52,10 +52,7 @@ const showExample = ref(false)
         </ul>
       </div>
     </div>
-    <Button @click="showExample = !showExample" class="info-box-button">
-      <h3>{{ $t('ApplicationInfoBox.Example.ShowExample') }}</h3>
-      <ArrowIcon :direction="showExample ? 'up' : 'down'" color="red" />
-    </Button>
+    <ButtonInfo @click="showExample = !showExample" :collapsed="showExample">{{ $t('ApplicationInfoBox.Example.ShowExample') }}</ButtonInfo>
     <div v-if="showExample" class="explanation-expanded-container">
       <div class="explanation-item">
         <h4>
@@ -104,7 +101,6 @@ const showExample = ref(false)
 }
 .explanation-expanded-container {
   @include verticalList(s);
-  // border-bottom: 2px solid $dark-gray;
   margin-bottom: spacing(s);
   padding: spacing(xs);
 }

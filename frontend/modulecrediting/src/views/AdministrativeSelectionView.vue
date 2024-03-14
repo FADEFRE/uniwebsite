@@ -65,6 +65,7 @@ const filteredApplications = computed(() => {
     </div>
   </div>
   <div v-else class="main centered">
+    <h1 class="screen-reader-only">Übersichtsseite aller Anträge</h1>
     <LoadingContainer />
   </div>
 </template>

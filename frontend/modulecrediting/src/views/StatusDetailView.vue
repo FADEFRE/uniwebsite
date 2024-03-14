@@ -151,6 +151,7 @@ const triggerSubmit = () => {
 
   </div>
   <div v-else class="main centered">
+    <h1 class="screen-reader-only">{{ $t('StatusDetailView.SRHeading') }}</h1>
     <LoadingContainer />
   </div>
 </template>
