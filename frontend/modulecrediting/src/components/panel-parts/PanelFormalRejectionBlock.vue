@@ -50,12 +50,15 @@ defineExpose({
 
 .formal-rejection-container {
   @include smallHighlightBox();
+
+  background-color: $red;
+  width: rem(184px);
+  border-right: 2px solid $dark-gray;
+
   display: flex;
   align-self: stretch;
   align-items: center;
-  background-color: $red;
-
-  border-right: 2px solid $dark-gray;
+  
 }
 
 </style>
