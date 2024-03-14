@@ -1,9 +1,14 @@
 <script setup>
-import { onBeforeMount, ref } from "vue";
-import { logout } from "@/router/logout"
+import { ref, onBeforeMount } from "vue";
 import ButtonLink from "@/components/button/ButtonLink.vue";
+import { logout } from "@/router/logout"
 import { getUserMe, putUserUsername, putUserPassword } from "@/requests/user-requests";
 import { passwordRegex, usernameRegex } from "@/config/regex";
+
+/*
+settings for a specific user,
+user will be specified by logged in user
+ */
 
 const userId = ref()
 
