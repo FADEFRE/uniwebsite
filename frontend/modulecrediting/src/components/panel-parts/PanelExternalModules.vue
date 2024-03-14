@@ -99,10 +99,9 @@ const checkValidity = () => {
 }
 
 defineExpose({
-  /* array of external module objects, each containing ...
-  *  id, name, points, pointSystem, university, externalCourse, selectedFile, (checkValidity) */
+  /* array of PanelExternalModuleItem refs, see expose of PanelExternalModulesItem */
   externalModules,
-  /* function to check data validity, cascades call */
+  /* function () to check data validity, cascades call */
   checkValidity
 })
 </script>

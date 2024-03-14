@@ -113,7 +113,7 @@ defineExpose({
   externalCourse,
   /* external module description file */
   selectedFile,
-  /* function to check data validity */
+  /* function () to check data validity */
   checkValidity
 })
 </script>
