@@ -1,23 +1,34 @@
 <script setup>
 import { ref, watch } from "vue";
 import ModuleStatusIcon from "@/assets/icons/ModuleStatusIcon.vue";
+
+/*
+decision selector / display with comment field
+ */
+
 const props = defineProps({
+  /* controls if editable */
   readonly: {
     required: true,
     type: Boolean
   },
+  /* decision to be displayed (initially) */
   displayDecision: {
     type: String,
     validator(value) {
       return ['accepted', 'asExamCertificate', 'denied', 'unedited'].includes(value)
     }
   },
+  /* comment on decision to be displayed (initially) */
   comment: {
     type: String
   }
 })
 
-const emit = defineEmits(['change'])
+const emit = defineEmits([
+    /* emitted when any data changes */
+    'change'
+])
 
 const decisionOptions = [
   { value: 'accepted', label: 'Annehmen', class: 'highlight-accepted' },
@@ -31,7 +42,9 @@ const comment = ref(props.comment);
 watch([comment, decision], () => emit('change'))
 
 defineExpose({
+  /* 'accepted', 'asExamCertificate' or 'denied' */
   decision,
+  /* String comment */
   comment
 })
 </script>

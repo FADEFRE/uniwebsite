@@ -1,41 +1,38 @@
-<!--
-choose modules form a list of options
-props:
-  - allowSelect
-  - allowDelete
-  - options (should be given if allowSelect)
-  - selectedModules (optional, elements must be elements of options)
-exposes:
-  - selectedModules
-displays:
-  - dropdown with filter, without selection shown (if allowSelect)
-  - selected modules as separate list with
-  - delete icon for every selected module (if allowDelete)
--->
-
 <script setup>
 import { ref, computed } from "vue";
 import TrashIcon from "@/assets/icons/TrashIcon.vue";
 import CustomDropdown from "@/components/util/CustomDropdown.vue";
 
+/*
+list of internal modules,
+contains a dropdown for selection
+ */
+
 const props = defineProps({
+  /* controls if modules can be added */
   allowSelect: {
     required: true,
     type: Boolean,
   },
+  /* controls if modules can be deleted */
   allowDelete: {
     required: true,
     type: Boolean,
   },
+  /* array of Strings, selectable modules */
   options: {
     type: Array
   },
+  /* array of Strings, selected modules to be displayed (initially) */
   selectedModules: {
     type: Array
   }
 })
 
-const emit = defineEmits(['change'])
+const emit = defineEmits([
+  /* emitted if any data changes */
+  'change'
+])
 
 const selectedModules = ref(props.selectedModules || [])
 const addSelectedModule = (singleModule) => {
@@ -59,6 +56,7 @@ const emptyMessageKey = computed(() => {
 })
 
 defineExpose({
+  /* array of Strings, names of selected internal modules */
   selectedModules
 })
 </script>

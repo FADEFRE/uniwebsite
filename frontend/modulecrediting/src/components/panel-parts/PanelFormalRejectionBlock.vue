@@ -1,11 +1,17 @@
 <script setup>
 import { ref } from "vue";
 
+/*
+formal rejection block with comment field
+ */
+
 const props = defineProps({
+  /* controls if editable */
   readonly: {
     required: true,
     type: Boolean
   },
+  /* comment on formal rejection */
   comment: {
     type: String
   }
@@ -14,6 +20,7 @@ const props = defineProps({
 const comment = ref(props.comment)
 
 defineExpose({
+  /* String comment */
   comment
 })
 </script>

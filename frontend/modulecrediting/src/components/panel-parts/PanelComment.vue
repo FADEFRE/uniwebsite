@@ -1,23 +1,17 @@
-<!--
-comment input
-props:
-  - type (may be 'new', 'edit' or 'readonly')
-  - comment (optional)
-exposes:
-  - comment
-displays:
-  - commentary heading
-  - textarea element
--->
-
 <script setup>
 import { ref } from 'vue';
 
+/*
+comment section
+ */
+
 const props = defineProps({
+  /* controls if editable */
   readonly: {
     required: true,
     Boolean
   },
+  /* comment to be displayed (initially) */
   comment: {
     type: String
   }
@@ -29,6 +23,7 @@ if (props.comment) {
 }
 
 defineExpose({
+  /* String comment */
   comment
 })
 </script>

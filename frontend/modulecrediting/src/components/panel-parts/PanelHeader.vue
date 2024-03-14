@@ -1,29 +1,25 @@
-<!--
-shows mapping of external modules on internal modules
-props:
-  - externalModules (Array of module names)
-  - internalModules (Array of module names)
-displays:
-  - list of external modules
-  - arrow icon
-  - list of internal modules
--->
-
 <script setup>
 import ArrowIcon from "@/assets/icons/ArrowIcon.vue";
 
+/*
+header component describing external and internal modules selected,
+displays comma-separated list of external module names mapped to comma-separated list of internal module names
+ */
+
 const props = defineProps({
+  /* array of Strings, external module names */
   externalModules: {
     type: Array
   },
+  /* array of Strings, internal module names */
   internalModules: {
     type: Array
   },
+  /* should be set true to apply different styling for displaying related modules */
   relatedModules: {
     type: Boolean
   }
-});
-
+})
 </script>
 
 <template>

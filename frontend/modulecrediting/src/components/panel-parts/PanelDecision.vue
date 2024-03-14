@@ -1,15 +1,16 @@
-<!--
-displays decision blocks via slots
-props:
-  - type (may be 'single' or 'study-office-chairman')
-slots:
-  - default (used if type === 'single')
-  - study-office (used if type === 'study-office-chairman')
-  - chairman (used if type === 'study-office-chairman')
--->
-
 <script setup>
+/*
+decision section
+this component controls layout, the below mentioned slots should hold the actual decision logic
+
+slots:
+  default - should be used if prop type is 'single'
+  study-office - should be used if prop type is 'study-office-chairman', displayed left
+  chairman - should be used if prop type is 'study-office-chairman', displayed right
+ */
+
 const props = defineProps({
+  /* 'single' or 'study-office-chairman' */
   type: {
     required: true,
     type: String,
