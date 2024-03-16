@@ -2,8 +2,11 @@ package swtp12.modulecrediting.service;
 
 import java.io.ByteArrayOutputStream;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
+import com.itextpdf.kernel.events.PdfDocumentEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
@@ -69,6 +72,14 @@ public class GeneratedPdfService {
         // Convert each module connection HTML to PDF and append to the main document
         Application application = applicationService.getApplicationById(id);
         List<ModulesConnection> modulesConnections = application.getModulesConnections();
+
+        Collections.sort(modulesConnections, new Comparator<ModulesConnection>() {
+            @Override
+            public int compare(ModulesConnection o1, ModulesConnection o2) {
+                return o1.getId().compareTo(o2.getId());
+            }
+        });
+
         for(ModulesConnection mc : modulesConnections) {
             html.append(modulesConnectionsTemplate(mc));
         }
