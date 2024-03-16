@@ -44,7 +44,7 @@ const uploadJson = () => {
           <div class="download-container">
           <h3>Download</h3>
           
-          <a :href="jsonLink" target="_blank" download>
+          <a :href="jsonLink" target="_blank" download class="download-button-container">
             <ButtonDownload>
               JSON herunterladen
             </ButtonDownload>
@@ -96,6 +96,10 @@ const uploadJson = () => {
 .upload-container, .download-container {
   @include verticalList(s);
   width: 100%;
+}
+
+.download-button-container {
+  width: min-content;
 }
 
 
