@@ -75,6 +75,10 @@ defineExpose({
   align-items: center;
   margin-left: spacing(s);
   gap: spacing(m);
+
+  @include breakpoint(m) {
+    gap: spacing(s);
+  }
 }
 
 :deep(.p-panel-content) {

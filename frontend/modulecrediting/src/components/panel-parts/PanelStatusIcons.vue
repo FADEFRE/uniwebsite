@@ -54,6 +54,9 @@ const props = defineProps({
   justify-content: center;
   align-items: center;
   gap: spacing(m);
-  margin-right: spacing(s);
+
+  @include breakpoint(s) {
+    gap: spacing(s);
+  }
 }
 </style>

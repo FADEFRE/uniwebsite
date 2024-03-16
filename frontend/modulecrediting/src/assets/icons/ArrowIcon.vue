@@ -37,6 +37,10 @@ const props = defineProps({
     width: rem(18px);
     height: rem(12px);
 }
+.small {
+    width: rem(14px);
+    height: rem(8px); 
+}
 
 
 .up {

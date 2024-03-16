@@ -32,8 +32,9 @@ const props = defineProps({
       <span v-else class="single-module">({{ $t('PanelHeader.ModulesToBeCredited') }})</span>
     </span>
     
+    <div class="second-row">
     <div class="arrow-icon-container" :aria-label="$t('PanelHeader.AriaCreditedFor')">
-      <ArrowIcon color="red" direction="right" />
+      <ArrowIcon color="red" direction="right" :size="relatedModules ? 'small' : 'mid'"/>
     </div>
 
     <span class="modules-container">
@@ -43,7 +44,7 @@ const props = defineProps({
       </span>
       <span v-else class="single-module">({{ $t('PanelHeader.ModulesUniLeipzig') }})</span>
     </span>
-
+  </div>
   </h3>
 </template>
 
@@ -53,10 +54,21 @@ const props = defineProps({
 @use '@/assets/styles/components' as *;
 
 .panel-heading-container {
+  width: 100%;
+
   display: flex;
   gap: spacing(s);
-  width: 100%;
+  
   overflow: hidden;
+
+  @include breakpoint(m) {
+    @include verticalList(none);
+  }
+}
+
+.second-row {
+  display: flex;
+  gap: spacing(s);
 }
 
 .modules-container {
