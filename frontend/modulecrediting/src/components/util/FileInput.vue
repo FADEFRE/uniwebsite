@@ -1,15 +1,3 @@
-<!--
-file input drop area with file dialog on click
-props:
-  - readonly
-  - selectedFile (File object)
-exposes:
-  - selectedFile (might be File Object OR object with properties name and id)
-displays:
-  - drop area
-  - file name inside drop area if file is selected
--->
-
 <script setup>
 import { ref } from "vue";
 import ButtonLink from "@/components/button/ButtonLink.vue";

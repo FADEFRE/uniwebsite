@@ -1,9 +1,3 @@
-<!--
-modified PrimeVue Panel component
-uses custom toggle icon
-slots header, icons and default are passed on to PrimeVue Panel
--->
-
 <script setup>
 import { ref, computed } from "vue";
 import ArrowIcon from "@/assets/icons/ArrowIcon.vue";
