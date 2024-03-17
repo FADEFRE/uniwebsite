@@ -1,17 +1,3 @@
-<!--
-panel representing one module connection, usable for administrative views
-props:
-  - selectableModules (array of internal modules that could be selected
-  - connectionData (element of API responses moduleConnections)
-exposes:
-  - externalModules (array of objects describing externalModules
-  - internalModules (array module names)
-  - applicantComment (String)
-displays:
-  - toggleable panel with dynamic header
-  - external module block, internal module block, comment block and decision block as panel content
--->
-
 <script setup>
 import { ref, computed } from "vue";
 import PanelHeader from "@/components/panel-parts/PanelHeader.vue";
@@ -25,7 +11,14 @@ import CustomPanel from "@/components/panel/CustomPanel.vue";
 import PanelRelatedModules from "@/components/panel-parts/PanelRelatedModules.vue";
 import PanelFormalRejectionBlock from "@/components/panel-parts/PanelFormalRejectionBlock.vue";
 
+/*
+panel to display a module connection for internal use
+allows edit of all data except description pdfs and applicant comment
+contains decision section
+ */
+
 const props = defineProps({
+  /* 'study-office' or 'chairman' */
   type: {
     required: true,
     type: String,
@@ -33,25 +26,35 @@ const props = defineProps({
       return ['study-office', 'chairman'].includes(value)
     }
   },
+  /* controls if editable */
   readonly: {
     required: true,
     type: Boolean
   },
+  /* array of Strings, module names that should be selectable as internal modules */
   selectableModules: {
     required: true,
     type: Array
   },
+  /* data of module connection to display / edit, should contain ...
+  *  Number id, array of objects externalModules, array of Strings modulesLeipzig, String commentApplicant
+  *  String decisionSuggestion, String commentStudyOffice, String decisionFinal, String commentDecision,
+  *  Boolean formalRejection, String formalRejectionComment */
   connectionData: {
     required: true,
     type: Object,
   },
+  /* controls if related modules section should be shown */
   showRelatedConnections: {
     type: Boolean,
     default: true
   }
 })
 
-const emit = defineEmits(['change'])
+const emit = defineEmits([
+  /* emitted when any data changes */
+  'change'
+])
 
 const id = props.connectionData['id']
 
@@ -99,13 +102,21 @@ const checkValidity = () => {
 }
 
 defineExpose({
+  /* connection id */
   id,
+  /* PanelExternalModules ref, see expose of PanelExternalModules */
   externalModules,
+  /* PanelInternalModules ref, see expose of PanelInternalModules */
   internalModules,
+  /* object containing Boolean formalRejection, String comment */
   formalRejectionData,
+  /* PanelDecisionBlock ref, see expose of PanelDecisionBlock */
   studyOfficeDecisionData,
+  /* PanelDecisionBlock ref, see expose of PanelDecisionBlock */
   chairmanDecisionData,
+  /* function (Boolean value) to set panel collapsed value */
   setCollapsed,
+  /* function () to check data validity, cascades call */
   checkValidity
 })
 </script>

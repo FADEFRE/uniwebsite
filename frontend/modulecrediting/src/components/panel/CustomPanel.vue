@@ -8,7 +8,18 @@ slots header, icons and default are passed on to PrimeVue Panel
 import { ref, computed } from "vue";
 import ArrowIcon from "@/assets/icons/ArrowIcon.vue";
 
+/*
+customized PrimeVue Panel,
+has customized toggle icon
+
+slots:
+  header - use to access the PrimeVue Panel header slot
+  icons - use to access the PrimeVue Panel icons slot
+  default - use to access the PrimeVue Panel default slot (content)
+ */
+
 const props = defineProps({
+  /* should be set false if the panel should be initially collapsed */
   initialCollapsedState: {
     type: Boolean,
     default: true
@@ -24,6 +35,7 @@ const setCollapsed = (value) => {
 const ariaLabelKey = computed(() => d_collapsed.value ? 'CustomPanel.AriaOpenPanel' : 'CustomPanel.AriaClosePanel')
 
 defineExpose({
+  /* function (Boolean value) to set collapsed value of the panel */
   setCollapsed
 })
 </script>
