@@ -1,8 +1,12 @@
 <script setup>
+import { ref, watch } from "vue";
+import { useRoute } from "vue-router";
 import { useUserStore } from "@/store/userStore";
 import translate from '@/i18n/translate';
-import { useRoute } from "vue-router";
-import { ref, watch } from "vue";
+
+/*
+language selection component for header bar
+ */
 
 const store = useUserStore()
 const showLanguage = ref()

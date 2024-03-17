@@ -1,13 +1,23 @@
 <script setup>
-import { logout } from "@/router/logout";
-import { useUserStore } from "@/store/userStore"
 import { computed } from "vue";
+import { useUserStore } from "@/store/userStore"
 import ArrowIcon from "@/assets/icons/ArrowIcon.vue";
 import AuthIcon from "@/assets/icons/AuthIcon.vue";
+import { logout } from "@/router/logout";
 
-const props = defineProps(['isMenuOpen'])
+/*
+navigation component for header bar
+ */
 
-const emit = defineEmits(['linkClicked'])
+const props = defineProps([
+  /* controls visibility for mobile version, should reflect current opened / closed state of mobile navigation */
+  'isMenuOpen'
+])
+
+const emit = defineEmits([
+  /* emitted on any link click */
+  'linkClicked'
+])
 
 const navStore = useUserStore();
 const isNavType = computed(() => {
