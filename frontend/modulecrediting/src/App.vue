@@ -1,7 +1,7 @@
 <script setup>
+import { ref, onBeforeMount } from "vue";
 import TheNavigation from "@/components/TheNavigation.vue";
 import TheLanguageSelection from "@/components/TheLanguageSelection.vue";
-import { onBeforeMount, ref } from "vue";
 import translate from '@/i18n/translate';
 import { intervalMilliSeconds } from "@/config/refreshTokenInterval-config"
 import { runInterval } from "@/router/login";
@@ -26,7 +26,6 @@ setInterval(runInterval, intervalMilliSeconds)
   <div>
 
     <div class="min-height">
-
     
     <header class="header-background">
       <div class="header-container">
@@ -62,12 +61,10 @@ setInterval(runInterval, intervalMilliSeconds)
   </div>
 </template>
 
-
 <style lang="scss">
 @use '@/assets/styles/global' as *;
 @use '@/assets/styles/util' as *;
 @use '@/assets/styles/components' as *;
-
 
 .header-background {
   background-color: $white;
