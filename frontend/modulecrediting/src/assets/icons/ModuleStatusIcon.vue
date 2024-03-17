@@ -1,18 +1,25 @@
 <script setup>
+/*
+unedited / formalRejection / accepted / asExamCertificate / denied icon
+optionally gray, variable size
+ */
 
 const props = defineProps({
-    statusDecision : {
-        type: String,
-        default: 'unedited'
-    },
-    gray: {
-        type: Boolean,
-        default: false
-    },
-    size: {
-        type: String,
-        default: 'mid'
-    }
+  /* 'unedited', 'formalRejection', 'accepted', 'asExamCertificate' or 'denied' */
+  statusDecision : {
+    type: String,
+    default: 'unedited'
+  },
+  /* should be set to true to indicate placeholder by a gray icon, sets aria-hidden="true" */
+  gray: {
+    type: Boolean,
+    default: false
+  },
+  /* 'small' or 'mid' */
+  size: {
+    type: String,
+    default: 'mid'
+  }
 })
 </script>
 
@@ -58,36 +65,36 @@ const props = defineProps({
 }
 
 .mid {
-    width: rem(26px);
-    height: rem(26px);
+  width: rem(26px);
+  height: rem(26px);
 }
 .small {
-    width: rem(24px);
-    height: rem(24px);
+  width: rem(24px);
+  height: rem(24px);
 }
 
 .gray-fill {
-    fill: $dark-gray;
-    stroke: none;
+  fill: $dark-gray;
+  stroke: none;
 }
 .gray {
-    stroke: $dark-gray;
+  stroke: $dark-gray;
 }
 
 .green {
-    stroke: $green;
+  stroke: $green;
 }
 
 .orange {
-    stroke: $orange;
+  stroke: $orange;
 }
 
 .red-fill {
-    fill: $red;
-    stroke: none;
+  fill: $red;
+  stroke: none;
 }
 
 .red {
-    stroke: $red;
+  stroke: $red;
 }
 </style>

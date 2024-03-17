@@ -1,5 +1,12 @@
 <script setup>
- const emit = defineEmits(['click'])
+/*
+edit icon
+ */
+
+const emit = defineEmits([
+  /* overwrites click, emitted on click or enter keydown */
+  'click'
+])
 </script>
 
 <template>

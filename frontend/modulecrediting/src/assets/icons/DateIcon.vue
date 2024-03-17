@@ -1,9 +1,14 @@
 <script setup>
+/*
+created / last edited / decided date icon
+ */
+
 const props = defineProps({
-    type : {
-        type: String,
-        default: 'creation'
-    }
+  /* 'creation', 'lastEdited' or 'decision */
+  type : {
+    type: String,
+    default: 'creation'
+  }
 })
 </script>
 

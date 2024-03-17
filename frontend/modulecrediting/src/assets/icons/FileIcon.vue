@@ -1,9 +1,14 @@
 <script setup>
+/*
+upload / download icon
+ */
+
 const props = defineProps({
-    type: {
-        type: String,
-        required: true
-    }
+  /* 'upload' or 'download' */
+  type: {
+    required: true,
+    type: String
+  }
 })
 </script>
 
@@ -27,7 +32,7 @@ const props = defineProps({
 @use '@/assets/styles/components' as *;
 
 .file-icon {
-    width: rem(22px);
-    height: rem(20px);
+  width: rem(22px);
+  height: rem(20px);
 }
 </style>

@@ -1,13 +1,19 @@
 <script setup>
+/*
+delete icon
+ */
+
 const props = defineProps({
-    backgroundColor: {
-        type: String,
-        default: 'gray'
-    },
-    backgroundSize: {
-        type: String,
-        default: 'mid'
-    }
+  /* 'gray' or 'white' */
+  backgroundColor: {
+    type: String,
+    default: 'gray'
+  },
+  /* 'small' or 'mid' */
+  backgroundSize: {
+    type: String,
+    default: 'mid'
+  }
 });
 
 const emit = defineEmits(['click'])
@@ -36,41 +42,37 @@ const emit = defineEmits(['click'])
   }
 }
 .gray:hover, .gray:focus {
-    background-color: $gray-hover;
+  background-color: $gray-hover;
 }
- 
+
 .white:hover, .white:focus {
-    background-color: $white-hover;
+  background-color: $white-hover;
 }
 .gray:focus-visible,
 .white:focus-visible {
-    outline: 2px solid $dark-gray-hover;
-    outline-offset: 2px;
+  outline: 2px solid $dark-gray-hover;
+  outline-offset: 2px;
 }
-
-
 
 .mid {
-    @include smallHighlightBox();
+  @include smallHighlightBox();
 }
 .small {
-    padding: spacing(s);
+  padding: spacing(s);
 }
-
-
 
 .trash-icon {
-    width: rem(17px);
-    height: rem(19px);
-    transition: 0.1s ease-in-out;
+  width: rem(17px);
+  height: rem(19px);
+  transition: 0.1s ease-in-out;
 }
 .white-icon {
-    stroke: $white-hover;
-    &:hover {
-        stroke: $white;
-    }
+  stroke: $white-hover;
+  &:hover {
+    stroke: $white;
+  }
 }
 .dark-gray-icon {
-    stroke: $dark-gray;
+  stroke: $dark-gray;
 }
 </style>
