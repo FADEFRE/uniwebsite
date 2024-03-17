@@ -1,5 +1,7 @@
 <script setup>
-
+/*
+animated loading icon
+ */
 </script>
 
 <template>

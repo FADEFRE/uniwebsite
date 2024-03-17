@@ -3,7 +3,16 @@ import { ref } from "vue";
 import ArrowIcon from "@/assets/icons/ArrowIcon.vue";
 import TrashIcon from "@/assets/icons/TrashIcon.vue";
 
-const emit = defineEmits(['clear'])
+/*
+customized PrimeVue Dropdown,
+has customized clear icon, filter icon, dropdown icon,
+Dropdown is root component, fallthrough attributes may be used
+ */
+
+const emit = defineEmits([
+  /* emitted on clear icon click */
+  'clear'
+])
 
 const isOpen = ref()
 </script>

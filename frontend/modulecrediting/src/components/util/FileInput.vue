@@ -16,15 +16,24 @@ import ButtonLink from "@/components/button/ButtonLink.vue";
 import FileIcon from "@/assets/icons/FileIcon.vue";
 import { url } from "@/config/url-config";
 
+/*
+file input shown as a box displaying selected file,
+click to open file dialog,
+drag and drop possible
+ */
+
 const props = defineProps({
+  /* controls if editable */
   readonly: {
     required: true,
     type: Boolean
   },
+  /* 'pdf' or 'json' */
   type: {
     required: true,
     type: String
   },
+  /* file to be displayed (should be given if readonly is true) object containing Number id, String name */
   selectedFile: {
     type: Object
   }
