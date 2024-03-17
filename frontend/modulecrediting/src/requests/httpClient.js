@@ -74,7 +74,7 @@ const errorHandler = (error) => {
     consoleDebug(errorColor, "Error Interceptor");
 
     const apiError = parseApierror(error)
-
+    consoleDebug(errorColor, apiError, "error");
     const currentRouteFullPath = router.currentRoute.value.fullPath
 
     switch (apiError.statusCode) {

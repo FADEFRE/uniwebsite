@@ -1,5 +1,9 @@
 export function consoleDebug(color, msgToColor, msgNoColor) {
   if (true) { //TODO set to false to remove debug logs
+    if (msgNoColor === "error") {
+      console.log(msgToColor);
+      return;
+    }
     if (color === null) {
       if (msgNoColor === undefined) {
         console.debug(msgToColor)
