@@ -34,8 +34,6 @@ const triggerCreateUser = () => {
         .catch(error => {
           if (error.response.status === 409) {
             createFailed.value = true
-          } else {
-            location.reload()
           }
         })
   }
