@@ -4,6 +4,7 @@ import ButtonLink from "@/components/button/ButtonLink.vue";
 import { logout } from "@/router/logout"
 import { getUserMe, putUserUsername, putUserPassword } from "@/requests/user-requests";
 import { passwordRegex, usernameRegex } from "@/config/regex";
+import {consoleDebug} from "@/requests/consoleDebug";
 
 /*
 settings for a specific user,
@@ -40,6 +41,7 @@ const saveUsername = () => {
         .catch(error => {
           if (error.response.status === 409) {
             usernameExists.value = true
+            consoleDebug('color:red', 'handled 409 in AccountSettings')
           }
         })
   }

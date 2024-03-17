@@ -3,6 +3,7 @@ import { ref, computed, onBeforeMount } from "vue";
 import ManagementListElement from "@/components/management/ManagementListElement.vue";
 import LoadingContainer from "@/components/util/LoadingContainer.vue";
 import { deleteCourseLeipzig, getCoursesLeipzigName, putUpdateCourseLeipzig } from "@/requests/module-course-requests";
+import {consoleDebug} from "@/requests/consoleDebug";
 
 /*
 list of all courses
@@ -24,6 +25,7 @@ const triggerEditCourseLeipzig = (existsVar, oldName, newName) => {
       .catch(error => {
         if (error.response.status === 409) {
           existsVar.value = true
+          consoleDebug('color:red', 'handled 409 in AccountAdminCreate')
         }
       })
 }

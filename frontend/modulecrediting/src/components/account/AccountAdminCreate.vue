@@ -3,6 +3,7 @@ import { ref } from "vue";
 import ButtonLink from "@/components/button/ButtonLink.vue";
 import RoleDropdown from "@/components/util/RoleDropdown.vue";
 import { postNewUser } from "@/requests/user-requests";
+import { consoleDebug } from "@/requests/consoleDebug";
 import { usernameRegex, passwordRegex } from "@/config/regex";
 
 /*
@@ -34,6 +35,7 @@ const triggerCreateUser = () => {
         .catch(error => {
           if (error.response.status === 409) {
             createFailed.value = true
+            consoleDebug('color:red', 'handled 409 in AccountAdminCreate')
           }
         })
   }
