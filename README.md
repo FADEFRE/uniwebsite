@@ -785,8 +785,13 @@ This basic formdata is used in most "Application"-Requests
 - container: container components used for styling purpose
 - filter: components used to select filters
 - info-box: components used on applicant views to provide further information
-- management components used in management views
-- panel: panel components
+- management: components used in management views
+- panel: panels assembled from panel-parts for specific use cases
+- panel-parts: components that provide single sections of a connection panel
+- side-info: side bar components providing futher information
+- util: utility components
+- TheLanguageSelection: language selection component for header bar
+- TheNavigation: navigation component for header bar
 ### config:
 - global configurations (as javascript files)
 ### i18n:
@@ -814,5 +819,3 @@ This basic formdata is used in most "Application"-Requests
 - Vue setup
 
  <a href="#top">Back to top</a>
-
-end of file 
