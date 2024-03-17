@@ -1,0 +1,101 @@
+{
+    "courses": [
+        {
+            "modules": [
+                {
+                    "code": "10-201-2012",
+                    "name": "Einführung in die objektorientierte Modellierung und Programmierung"
+                },
+                {
+                    "code": "10-201-2005-2",
+                    "name": "Programmierparadigmen"
+                },
+                {
+                    "code": "10-201-2001-1",
+                    "name": "Algorithmen und Datenstrukturen 1"
+                },
+                {
+                    "code": "10-201-2001-2",
+                    "name": "Algorithmen und Datenstrukturen 2"
+                },
+                {
+                    "code": "10-201-2006-1",
+                    "name": "Grundlagen der Technischen Informatik 1"
+                },
+                {
+                    "code": "10-201-2006-2",
+                    "name": "Grundlagen der Technischen Informatik 2"
+                },
+                {
+                    "code": "",
+                    "name": "Betriebs- und Kommunikationssysteme"
+                },
+                {
+                    "code": "10-201-2108-1",
+                    "name": "Logik"
+                },
+                {
+                    "code": "10-201-2108-2",
+                    "name": "Automaten und Sprachen"
+                },
+                {
+                    "code": "10-201-2009",
+                    "name": "Berechenbarkeit"
+                },
+                {
+                    "code": "10-201-2211",
+                    "name": "Datenbanksysteme 1"
+                },
+                {
+                    "code": "10-201-2321",
+                    "name": "Software Engineering"
+                },
+                {
+                    "code": "10-201-2320",
+                    "name": "Software Engineering Praktikum"
+                },
+                {
+                    "code": "10-201-1602",
+                    "name": "Diskrete Strukturen"
+                },
+                {
+                    "code": "10-201-1011",
+                    "name": "Analysis"
+                },
+                {
+                    "code": "10-201-1015",
+                    "name": "Lineare Algebra"
+                },
+                {
+                    "code": "10-201-1802",
+                    "name": "Wahrscheinlichkeitstheorie"
+                },
+                {
+                    "code": "",
+                    "name": "Kernmodul (Wahlpflichtfach)"
+                },
+                {
+                    "code": "",
+                    "name": "Seminarmodule (Wahlpflichtfach)"
+                },
+                {
+                    "code": "",
+                    "name": "Vertiefungsmodul (Wahlpflichtfach)"
+                },
+                {
+                    "code": "",
+                    "name": "Ergänzungsbereich (Wahlpflichtfach)"
+                },
+                {
+                    "code": "",
+                    "name": "Schlüsselqualifikation (Wahlpflichtfach)"
+                },
+                {
+                    "code": "",
+                    "name": "Bachelorseminar"
+                }
+            ],
+            "name": "B.Sc. Informatik"
+        }
+    ]
+}
