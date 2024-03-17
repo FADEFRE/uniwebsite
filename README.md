@@ -193,7 +193,7 @@ When set to "true", the refreshTokenExpirationDate will be changed to midnight a
 
 In some cases Views are used, instead of DTOs, to generate ResponseData
 
- - ApplicationLoginOverview
+ - **ApplicationLoginOverview**
     - request: GET: /api/applications
     - includes: 
          - application:
@@ -210,7 +210,7 @@ In some cases Views are used, instead of DTOs, to generate ResponseData
                - university
                - externalCourse
 
- - ApplicationLogin
+ - **ApplicationLogin**
     - request: GET: /api/applications/{id}
     - extends: ApplicationLoginOverview
     - includes:
@@ -233,7 +233,7 @@ In some cases Views are used, instead of DTOs, to generate ResponseData
                   - id
                   - name
 
- - ApplicationStudent
+ - **ApplicationStudent**
     - request: GET: /api/applications/student/{id}
     - includes:
       - application:
@@ -264,7 +264,7 @@ In some cases Views are used, instead of DTOs, to generate ResponseData
                   - id
                   - name
 
- - CoursesWithModules
+ - **CoursesWithModules**
     - request: GET: /api/courses-leipzig
     - inlcudes: 
       - courseLeipzig:
@@ -275,7 +275,7 @@ In some cases Views are used, instead of DTOs, to generate ResponseData
             - code
             - isActive
 
- - ModulesWithoutCourse
+ - **ModulesWithoutCourse**
     - request: GET: /api/modules-leipzig
     - includes: 
       - modulesLeipzig:
@@ -283,7 +283,7 @@ In some cases Views are used, instead of DTOs, to generate ResponseData
          - code
          - isActive
 
- - RelatedModulesConnection
+ - **RelatedModulesConnection**
     - request: GET: /api/modules-connection/{id}/related
     - includes: 
       - modulesConnection:
@@ -775,27 +775,43 @@ This basic formdata is used in most "Application"-Requests
 ## 5.2. Frontend
 #### The following folder and files are in the \src folder:
 ### assets:
-- todo
+- fonts: fonts used by the website
+- icons: svg files and Vue components containing svg elements
+- styles: scss style files
 ### components: 
-- todo
+- abstract: components to summarize an application
+- account: components used in account views
+- button: custom button components
+- container: container components used for styling purpose
+- filter: components used to select filters
+- info-box: components used on applicant views to provide further information
+- management components used in management views
+- panel: panel components
 ### config:
-- todo
+- global configurations (as javascript files)
 ### i18n:
-- todo
+- index.js: i18n setup
+- translate.js: translation logic
+- locales: language files (json)
 ### requests:
-- todo
+- consoleDebug.js: contains function for colored console log
+- httpClient.js: custom axios instance
+- *-requests.js: includes all request functions (except authentication requests)
 ### router:
-- todo
+- index.js: vue-router setup
+- login.js: includes login logic
+- logout.js includes logout logic
 ### store:
-- todo
+- userStore.js: pinia store setup
 ### utils:
-- todo
+- applications-filter.js: util functions to filter a list of applications based on selected filters
+- date-utils.js: util functions to format datetimes and get datetimes a certain time ago
 ### views:
-- todo
+- includes all views directly used as routes
 ### App.vue:
-- todo
+- main Vue component mounted in the Vue application
 ### main.js:
-- todo
+- Vue setup
 
  <a href="#top">Back to top</a>
 
