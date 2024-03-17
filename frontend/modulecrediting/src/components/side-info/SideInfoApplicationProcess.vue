@@ -1,5 +1,8 @@
 <script setup>
-
+/*
+information about the steps of an application process,
+use aside main content
+ */
 </script>
 
 <template>

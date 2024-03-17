@@ -1,5 +1,10 @@
 <script setup>
 import ButtonLink from "@/components/button/ButtonLink.vue";
+
+/*
+contact information for the study office,
+use aside main content
+ */
 </script>
 
 <template>
