@@ -21,8 +21,6 @@ export async function runInterval() {
     }
 }
 
-
-
 export async function login (login_username, login_password) {
     const loginRequest = {
         username: login_username,

@@ -1,10 +1,7 @@
-<!--
-shows status of an application
--->
-
 <script setup>
-import { useRoute } from 'vue-router';
+import i18n from '@/i18n';
 import { ref, onBeforeMount, computed } from "vue";
+import { useRoute } from 'vue-router';
 import ApplicationOverview from "@/components/abstract/ApplicationOverview.vue";
 import StatusPanel from "@/components/panel/StatusPanel.vue";
 import ApplicationPanel from "@/components/panel/ApplicationPanel.vue";
@@ -20,7 +17,6 @@ import { url } from "@/config/url-config"
 import { parseRequestDate } from "@/utils/date-utils";
 import { getModulesByCourse } from "@/requests/module-course-requests";
 import { getApplicationByIdForStatus, putApplicationStudent } from "@/requests/application-requests";
-import i18n from '@/i18n';
 
 const id = useRoute().params.id
 const summaryDocumentLink = `${url}/file/pdf-documents/application/${id}`
