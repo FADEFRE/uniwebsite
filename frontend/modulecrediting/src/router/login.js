@@ -14,16 +14,14 @@ async function refreshTokenInternal() {
     catch (error) { performLogout(); }
 }
 
-export async function runInterval() {
+async function runInterval() {
     const authUserStore = useUserStore();
     if (authUserStore.getCurrentUser === true) {
         refreshTokenInternal();
     }
 }
 
-
-
-export async function login (login_username, login_password) {
+async function login (login_username, login_password) {
     const loginRequest = {
         username: login_username,
         password: login_password
@@ -63,3 +61,5 @@ export async function login (login_username, login_password) {
         }
     }
 }
+
+export { runInterval, login }

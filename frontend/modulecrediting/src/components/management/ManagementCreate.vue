@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import ButtonLink from "@/components/button/ButtonLink.vue";
 import { postCourseLeipzig, postModuleLeipzig } from "@/requests/module-course-requests";
+import {consoleDebug} from "@/requests/consoleDebug";
 
 /*
 creating a course / module (depending on prop type)
@@ -39,8 +40,7 @@ const createCourseLeipzig = () => {
       .catch(error => {
         if (error.response.status === 409) {
           courseExists.value = true
-        } else {
-          location.reload()
+          consoleDebug('color:red', 'handled 409 in AccountAdminCreate')
         }
       })
 }
@@ -57,8 +57,7 @@ const createModuleLeipzig = () => {
       .catch(error => {
         if (error.response.status === 409) {
           moduleExists.value = true
-        } else {
-          location.reload()
+          consoleDebug('color:red', 'handled 409 in AccountAdminCreate')
         }
       })
 }

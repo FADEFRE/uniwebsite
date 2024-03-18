@@ -10,6 +10,8 @@
     4. [Other application.properties settings](#24-other-applicationproperties-settings)
         - [spring.jpa.hibernate.ddl-auto](#springjpahibernateddl-auto-create-drop--update)
         - [server.port](#serverport--default-8090)
+        - [token expiration msec](#appauthtokenexpirationmsec)
+        - [refreshToken midnight toggle](#appauthexpireatmidnight--true--false)
     5. [Test Data](#25-test-data)
         - [users](#1-parameters-to-create-these-users)
         - [random applications](#2-parameters-to-create-randapplications)
@@ -19,32 +21,13 @@
 4. **[Api-Endpoints](#4-api-endpoints)**
     1. [List of Views.class](#41-overview-of-views-modelviewsjava)
     2. [Application: "ApplicationController" -> /api/applications](#42-application-applicationcontroller)
-        - [GET-Requests](#get---requests)
-        - [POST-Requests](#post---requests)
-        - [PUT-Requests](#put---requests)
     3. [Authentication: "AuthController" -> /api/auth](#43-authentication-authcontroller)
-        - [POST-Requests](#post---requests-1)
     4. [Studiengaenge in Leipzig: "CourseLeipzigController" -> /api/courses-leipzig](#44-studiengaenge-in-leipzig-courseleipzigcontroller)
-        - [GET-Requests](#get---requests-1)
-        - [POST-Requests](#post---requests-2)
-        - [PUT-Requests](#put---requests-1)
-        - [DELETE-Requests](#delete---requests)
     5. [Handling of JSON files: "JsonFileController" -> /file/json](#45-handling-of-json-files-jsonfilecontroller)
-        - [GET-Requests](#get---requests-2)
-        - [POST-Requests](#post---requests-3)
     6. [Module in Leipzig: "ModuleLeipzigController" -> /api/modules-leipzig](#46-module-in-leipzig-moduleleipzigcontroller)
-        - [GET-Requests](#get---requests-3)
-        - [POST-Requests](#post---requests-4)
-        - [PUT-Requests](#put---requests-2)
-        - [DELETE-Requests](#delete---requests-1)
     7. [ModulesConnection: "ModulesConnectionController" -> /api/modules-connection](#47-modulesconnection-modulesconnectioncontroller)
-        - [GET-Requests](#get---requests-4)
     8. [Handling of PDF files: "PdfDocumentContoller" -> /file/pdf-documents](#48-handling-of-pdf-files-pdfdocumentcontoller)
-        - [GET-Requests](#get---requests-5)
     9. [User: "UserController" -> /api/user](#39-user-usercontroller)
-        - [GET-Requests](#get---requests-6)
-        - [POST-Requests](#post---requests-5)
-        - [PUT-Requests](#put---requests-3)
 5. **[Folder structure explanation](#5-folder-structure-explanation)**
     1. [Backend](#51-backend)
     2. [Frontend](#52-frontend)
@@ -55,6 +38,11 @@
 # 1. General Information 
 
 You can reach this groups VM under http://172.26.92.91:8080
+
+After a new deploy on the VM it might be, that only the admin user definied <a href="#5-folder-structure-explanation"> here </a> exists. In this case you might need to create other users.
+If no courses and modules exists, you should upload them as a JSON. A backup of this json can be found in this repository.    
+Current backup file is: _**modulecrediting_config_2024-03-10_16-57-48.json**_
+
 
 An explanation of the folder structures both in backend and frontend, 
 can be found at the <a href="#5-folder-structure-explanation"> end </a>of this README
@@ -205,19 +193,114 @@ When set to "true", the refreshTokenExpirationDate will be changed to midnight a
 
 In some cases Views are used, instead of DTOs, to generate ResponseData
 
- - ApplicationLoginOverview
-    - TODO: explanation
- - ApplicationLogin
-    - TODO: explanation
- - ApplicationStudent
-    - TODO: explanation
- - CoursesWithModules
-    - TODO: explanation
- - ModulesWithoutCourse
-    - TODO: explanation
- - RelatedModulesConnection
-    - TODO: explanation
+ - **ApplicationLoginOverview**
+    - request: GET: /api/applications
+    - includes: 
+         - application:
+            - id
+            - fullstatus
+            - creationDate
+            - lastEditedDate
+            - decisionDate
+         - courseLeipzig:
+            - name
+         - list of modulesConnections:
+            - list of externalModules:
+               - name
+               - university
+               - externalCourse
 
+ - **ApplicationLogin**
+    - request: GET: /api/applications/{id}
+    - extends: ApplicationLoginOverview
+    - includes:
+         - list of modulesConnections:
+            - id 
+            - commentApplicant
+            - commentStudyOffice
+            - decisionSuggestion
+            - commentDecision
+            - decisionFinal
+            - formalRejection
+            - formalRejectionComment
+            - list of modulesLeipzig:
+               - name
+            - list of externalModules:
+               - id
+               - points
+               - pointsystem
+               - pdfDocument:
+                  - id
+                  - name
+
+ - **ApplicationStudent**
+    - request: GET: /api/applications/student/{id}
+    - includes:
+      - application:
+         - id 
+         - fullstatus
+         - creationDate
+         - decisionDate
+         - courseLeipzig:
+            - name
+         - list of modulesConnections:
+            - modulesConnectionOriginal (includes same fields as modulesConnection)
+            - id
+            - commentApplicant
+            - commentDecision
+            - decisionFinal
+            - formalRejection
+            - formalRejectionComment
+            - list of modulesLeipzig:
+               - name
+            - list of externalModules:
+               - id
+               - name
+               - points
+               - pointsystem
+               - university
+               - externalCourse
+               - pdfDocument:
+                  - id
+                  - name
+
+ - **CoursesWithModules**
+    - request: GET: /api/courses-leipzig
+    - inlcudes: 
+      - courseLeipzig:
+         - name
+         - isActive
+         - list of modulesLeipzig:
+            - name
+            - code
+            - isActive
+
+ - **ModulesWithoutCourse**
+    - request: GET: /api/modules-leipzig
+    - includes: 
+      - modulesLeipzig:
+         - name
+         - code
+         - isActive
+
+ - **RelatedModulesConnection**
+    - request: GET: /api/modules-connection/{id}/related
+    - includes: 
+      - modulesConnection:
+         - id
+         - decisionFinal
+         - application:
+            - name
+            - decisionDate
+            - courseLeipzig
+               - name
+         - list of externalModules
+            - name
+            - university
+            - exernalCourse
+         - list of moduleLeipzig
+            - name
+            
  <a href="#top">Back to top</a>
 
 ## 4.2. Application: "ApplicationController"
@@ -386,7 +469,7 @@ This basic formdata is used in most "Application"-Requests
  - returns "list" of all "CourseLeipzig" 
  - http://localhost:8090/api/courses-leipzig
 
- <a href="#34-studiengaenge-in-leipzig-courseleipzigcontroller">Back to CourseLeipzigController</a>
+<a href="#top">Back to top</a>
 
 ### _**POST - Requests:**_
 
@@ -401,7 +484,7 @@ This basic formdata is used in most "Application"-Requests
  - returns "name" of created "CourseLeipzig" 
  - http://localhost:8090/api/courses-leipzig
 
- <a href="#34-studiengaenge-in-leipzig-courseleipzigcontroller">Back to CourseLeipzigController</a>
+<a href="#top">Back to top</a>
 
 ### _**PUT - Requests:**_
 
@@ -432,7 +515,7 @@ This basic formdata is used in most "Application"-Requests
  - returns "name" of updated "CourseLeipzig"
  - http://localhost:8090/api/courses-leipzig/{name}/edit
 
- <a href="#34-studiengaenge-in-leipzig-courseleipzigcontroller">Back to CourseLeipzigController</a>
+<a href="#top">Back to top</a>
 
 ### _**DELETE - Requests:**_
 
@@ -445,8 +528,7 @@ This basic formdata is used in most "Application"-Requests
     - ROLE_ADMIN
  - returns "DELETED" / "DEACTIVATED" 
  - http://localhost:8090/api/courses-leipzig/{name}
-
- <a href="#34-studiengaenge-in-leipzig-courseleipzigcontroller">Back to CourseLeipzigController</a>         
+       
  <a href="#top">Back to top</a>
 
 
@@ -693,28 +775,47 @@ This basic formdata is used in most "Application"-Requests
 ## 5.2. Frontend
 #### The following folder and files are in the \src folder:
 ### assets:
-- todo
+- fonts: fonts used by the website
+- icons: svg files and Vue components containing svg elements
+- styles: scss style files
 ### components: 
-- todo
+- abstract: components to summarize an application
+- account: components used in account views
+- button: custom button components
+- container: container components used for styling purpose
+- filter: components used to select filters
+- info-box: components used on applicant views to provide further information
+- management: components used in management views
+- panel: panels assembled from panel-parts for specific use cases
+- panel-parts: components that provide single sections of a connection panel
+- side-info: side bar components providing futher information
+- util: utility components
+- TheLanguageSelection: language selection component for header bar
+- TheNavigation: navigation component for header bar
 ### config:
-- todo
+- global configurations (as javascript files)
 ### i18n:
-- todo
+- index.js: i18n setup
+- translate.js: translation logic
+- locales: language files (json)
 ### requests:
-- todo
+- consoleDebug.js: contains function for colored console log
+- httpClient.js: custom axios instance
+- *-requests.js: includes all request functions (except authentication requests)
 ### router:
-- todo
+- index.js: vue-router setup
+- login.js: includes login logic
+- logout.js includes logout logic
 ### store:
-- todo
+- userStore.js: pinia store setup
 ### utils:
-- todo
+- applications-filter.js: util functions to filter a list of applications based on selected filters
+- date-utils.js: util functions to format datetimes and get datetimes a certain time ago
 ### views:
-- todo
+- includes all views directly used as routes
 ### App.vue:
-- todo
+- main Vue component mounted in the Vue application
 ### main.js:
-- todo
+- Vue setup
 
  <a href="#top">Back to top</a>
-
-end of file 

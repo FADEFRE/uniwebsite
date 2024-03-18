@@ -1,15 +1,19 @@
 <script setup>
+/*
+collapse / expand icon
+ */
+
 const props = defineProps({
+  /* 'collapse' or 'expand' */
   type: {
-    type: String,
-    required: true
+    required: true,
+    type: String
   }
 })
 </script>
 
 <template>
   <div class="controll-container">
-
 
     <svg v-if="type === 'expand'" width="18" height="36" viewBox="0 0 18 36" fill="none" xmlns="http://www.w3.org/2000/svg">
       <g clip-path="url(#clip0_853_9031)">

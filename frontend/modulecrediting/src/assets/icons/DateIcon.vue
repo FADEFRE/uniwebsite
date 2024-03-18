@@ -1,9 +1,14 @@
 <script setup>
+/*
+created / last edited / decided date icon
+ */
+
 const props = defineProps({
-    type : {
-        type: String,
-        default: 'creation'
-    }
+  /* 'creation', 'lastEdited' or 'decision */
+  type : {
+    type: String,
+    default: 'creation'
+  }
 })
 </script>
 
@@ -31,7 +36,7 @@ const props = defineProps({
 @use '@/assets/styles/global' as *;
 @use '@/assets/styles/components' as *;
 .date-icon {
-    width: rem(26px);
-    height: rem(24px);
+  width: rem(26px);
+  height: rem(24px);
 }
 </style>

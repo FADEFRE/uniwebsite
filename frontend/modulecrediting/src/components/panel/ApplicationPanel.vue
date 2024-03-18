@@ -1,19 +1,3 @@
-<!--
-panel representing one module connection, usable for application
-props:
-  - selectableModules (array of internal modules that could be selected)
-  - allowDelete (Boolean, defaults to false)
-emits:
-  - deleteSelf (called on trash icon click)
-exposes:
-  - externalModules (array of objects describing externalModules)
-  - internalModules (array module names)
-  - applicantComment (String)
-displays:
-  - toggleable panel with dynamic header and delete option
-  - external module block, internal module block and commentary block as panel content
--->
-
 <script setup>
 import CustomPanel from "@/components/panel/CustomPanel.vue";
 import PanelHeader from "@/components/panel-parts/PanelHeader.vue";
@@ -23,11 +7,18 @@ import PanelInternalModules from "@/components/panel-parts/PanelInternalModules.
 import { ref, computed } from "vue";
 import TrashIcon from "@/assets/icons/TrashIcon.vue";
 
+/*
+panel to use for creating an application
+allows edit of all fields provided
+ */
+
 const props = defineProps({
+  /* array of Strings, module names that should be selectable as internal modules */
   selectableModules: {
     required: true,
     type: Array
   },
+  /* controls if panel can be deleted */
   allowDelete: {
     required: true,
     type: Boolean
@@ -42,7 +33,10 @@ const externalModules = computed(() => panelExternalModules.value?.externalModul
 const internalModules = computed(() => panelInternalModules.value?.selectedModules)
 const commentApplicant = computed(() => panelComment.value?.comment)
 
-const emit = defineEmits(['deleteSelf'])
+const emit = defineEmits([
+  /* emitted on delete icon click, delete must be handled by parent */
+  'deleteSelf'
+])
 
 const panelRef = ref()
 
@@ -53,48 +47,52 @@ const checkValidity = () => {
 }
 
 defineExpose({
+  /* PanelExternalModules ref, see expose of PanelExternalModules */
   externalModules,
+  /* PanelInternalModules ref, see expose of PanelInternalModules */
   internalModules,
+  /* String comment of applicant */
   commentApplicant,
+  /* function () to check data validity, cascades call */
   checkValidity
 })
 </script>
 
 
 <template>
-    <CustomPanel :initial-collapsed-state="false" ref="panelRef">
-      <!-- Header Content -->
-      <template #header>
-        <PanelHeader :external-modules="externalModules?.map(m => m.name).filter(name => name !== '')"
-          :internal-modules="internalModules" />
-      </template>
+  <CustomPanel :initial-collapsed-state="false" ref="panelRef">
+    <!-- Header Content -->
+    <template #header>
+      <PanelHeader :external-modules="externalModules?.map(m => m.name).filter(name => name !== '')"
+                   :internal-modules="internalModules" />
+    </template>
 
-      <!-- Icons Slot -->
-      <template #icons>
-        <TrashIcon v-if="allowDelete" @click="emit('deleteSelf')" backgroundColor="white"
-                   :aria-label="$t('ApplicationPanel.AriaDeleteModule')" />
-      </template>
+    <!-- Icons Slot -->
+    <template #icons>
+      <TrashIcon v-if="allowDelete" @click="emit('deleteSelf')" backgroundColor="white"
+                 :aria-label="$t('ApplicationPanel.AriaDeleteModule')" />
+    </template>
 
-      <!-- Panel Content -->
-      <PanelExternalModules
-          :allow-text-edit="true"
-          :allow-file-edit="true"
-          :allow-delete="true"
-          :allow-add="true"
-          :has-initial-new="true"
-          ref="panelExternalModules"
-      />
-      <PanelInternalModules
-          :allow-select="true"
-          :allow-delete="true"
-          :options="selectableModules"
-          ref="panelInternalModules"
-      />
-      <PanelComment
-          :readonly="false"
-          ref="panelComment"
-      />
-    </CustomPanel>
+    <!-- Panel Content -->
+    <PanelExternalModules
+        :allow-text-edit="true"
+        :allow-file-edit="true"
+        :allow-delete="true"
+        :allow-add="true"
+        :has-initial-new="true"
+        ref="panelExternalModules"
+    />
+    <PanelInternalModules
+        :allow-select="true"
+        :allow-delete="true"
+        :options="selectableModules"
+        ref="panelInternalModules"
+    />
+    <PanelComment
+        :readonly="false"
+        ref="panelComment"
+    />
+  </CustomPanel>
 </template>
 
 
@@ -103,5 +101,3 @@ defineExpose({
 @use '@/assets/styles/global' as *;
 @use '@/assets/styles/components' as *;
 </style>
-
-

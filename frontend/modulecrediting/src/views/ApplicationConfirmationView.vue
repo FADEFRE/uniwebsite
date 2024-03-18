@@ -1,7 +1,7 @@
 <script setup>
-import { useClipboard } from '@vueuse/core'
-import { useRoute, useRouter } from 'vue-router';
 import { computed, onBeforeMount } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { useClipboard } from '@vueuse/core'
 import CopyIcon from "@/assets/icons/CopyIcon.vue";
 import ButtonLink from "@/components/button/ButtonLink.vue";
 import ButtonDownload from '@/components/button/ButtonDownload.vue';

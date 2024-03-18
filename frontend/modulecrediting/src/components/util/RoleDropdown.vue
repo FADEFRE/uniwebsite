@@ -2,8 +2,24 @@
 import { ref, watch } from "vue";
 import CustomDropdown from "@/components/util/CustomDropdown.vue";
 
-const props = defineProps(['modelValue','invalid'])
-const emit = defineEmits(['update:modelValue'])
+/*
+dropdown for role selection
+ */
+
+const props = defineProps({
+  /* built-in for v-model */
+  modelValue: {},
+  /* should be set true to apply invalid styling */
+  invalid: {
+    type: Boolean,
+    default: false
+  }
+})
+
+const emit = defineEmits([
+  /* built-in for v-model */
+  'update:modelValue']
+)
 
 const roleOptions = [
   { value: 'ROLE_STUDY', label: 'STUDIENBUERO' },

@@ -1,16 +1,3 @@
-<!--
-user can edit and submit an application
-displays:
-- course selection dropdown
-- module panels (varying amount) VIA ApplicationModulePanel
-- add module button VIA NewApplicationModulePanel
-- submit button
-functionality:
-- course selection
-- adding and deleting module panels
-- submitting i.e. triggering /applications POST-request
--->
-
 <script setup>
 import router from "@/router";
 import { ref, onBeforeMount } from "vue";

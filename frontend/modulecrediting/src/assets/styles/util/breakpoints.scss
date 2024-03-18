@@ -5,7 +5,7 @@ $breakpoints-down: (
     m: 62em, // tablets < 992px
     l: 75em, // desktops < 1200px
     xl: 87.5em // large desktops < 1400px
-); 
+);      
 
 
 @mixin breakpoint($size) {
