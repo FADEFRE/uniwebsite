@@ -69,6 +69,7 @@ const props = defineProps({
 .second-row {
   display: flex;
   gap: spacing(s);
+  overflow: hidden;
 }
 
 .modules-container {
