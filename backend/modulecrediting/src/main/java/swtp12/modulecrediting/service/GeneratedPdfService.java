@@ -115,9 +115,9 @@ public class GeneratedPdfService {
         context.setVariable("Erstelldatum", application.getCreationDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
 
         String status = application.getFullStatus().toString();
-        if (status.equals(EnumApplicationStatus.IN_BEARBEITUNG.toString())) status = "in Bearbeitung";
-        if (status.equals(EnumApplicationStatus.NEU.toString())) status = "neu";
-        if (status.equals(EnumApplicationStatus.ABGESCHLOSSEN.toString())) status = "abgeschlossen";
+        if (status.equals(EnumApplicationStatus.IN_BEARBEITUNG.toString())) status = "In Bearbeitung";
+        if (status.equals(EnumApplicationStatus.NEU.toString())) status = "Neu";
+        if (status.equals(EnumApplicationStatus.ABGESCHLOSSEN.toString())) status = "Abgeschlossen";
         if (status.equals(EnumApplicationStatus.FORMFEHLER.toString())) status = "Formfehler";
         context.setVariable("Status", status);
 
@@ -173,11 +173,14 @@ public class GeneratedPdfService {
             if(i!= 0) externalModulesHeading.append(", ");
             externalModulesHeading.append(externalModulesArray[i].getName());
         }
-        for(int i = 0; i < modulesLeipzigArray.length; i++) {
-            if(i!= 0) modulesLeipzigHeading.append(", ");
-            modulesLeipzigHeading.append(modulesLeipzigArray[i].getName());
+        if (modulesLeipzig.isEmpty()) {
+            modulesLeipzigHeading.append("(Module der Universität Leipzig)");
+        } else {
+            for(int i = 0; i < modulesLeipzigArray.length; i++) {
+                if(i!= 0) modulesLeipzigHeading.append(", ");
+                modulesLeipzigHeading.append(modulesLeipzigArray[i].getName());
+            }
         }
-
         context.setVariable("externalModulesHeading", externalModulesHeading);
         context.setVariable("modulesLeipzigHeading", modulesLeipzigHeading);
 
@@ -186,9 +189,9 @@ public class GeneratedPdfService {
 
         String decisionFinal = connection.getDecisionFinal().toString();
         if(decisionFinal.equals(EnumModuleConnectionDecision.unedited.toString())) decisionFinal = "ausstehend";
-        if(decisionFinal.equals(EnumModuleConnectionDecision.accepted.toString())) decisionFinal = "angenommen";
-        if(decisionFinal.equals(EnumModuleConnectionDecision.asExamCertificate.toString())) decisionFinal = "als Übungsschein angenommen";
-        if(decisionFinal.equals(EnumModuleConnectionDecision.denied.toString())) decisionFinal = "abgelehnt";
+        if(decisionFinal.equals(EnumModuleConnectionDecision.accepted.toString())) decisionFinal = "Angenommen";
+        if(decisionFinal.equals(EnumModuleConnectionDecision.asExamCertificate.toString())) decisionFinal = "Als Übungsschein angenommen";
+        if(decisionFinal.equals(EnumModuleConnectionDecision.denied.toString())) decisionFinal = "Abgelehnt";
         context.setVariable("decisionFinal", decisionFinal);
 
         context.setVariable("commentDecision", connection.getCommentDecision());
